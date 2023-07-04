@@ -49,6 +49,7 @@ const CreateProjectForm = ({t, sessionFormData, setSessionFormData, clearSession
     const ULB = Digit.Utils.locale.getCityLocale(tenantId);
     let ULBOptions = []
     ULBOptions.push({code: tenantId, name: t(ULB),  i18nKey: ULB });
+    let isMuktaCustomasization = Digit.SessionStorage.get("initData")?.modules?.some(ob => ob?.module === "Mukta" && ob?.active === true);
     const { isLoading, data : wardsAndLocalities } = Digit.Hooks.useLocation(
       tenantId, 'Ward',
       {
@@ -64,7 +65,19 @@ const CreateProjectForm = ({t, sessionFormData, setSessionFormData, clearSession
              }
           }
       });
-    const filteredLocalities = wardsAndLocalities?.localities[selectedWard];
+      const { data : Localities } = Digit.Hooks.useLocation(
+        tenantId, 'Locality',
+        {
+            select: (data) => {
+                const localities = []
+                data?.TenantBoundary[0]?.boundary.forEach((item) => {
+                    localities.push({ code: item.code, name: item.name, i18nKey: `${headerLocale}_ADMIN_${item?.code}` })
+                });
+               return localities;
+            }
+        });
+      
+    const filteredLocalities = isMuktaCustomasization ? Localities : wardsAndLocalities?.localities[selectedWard];
     const config = useMemo(
       () => Digit.Utils.preProcessMDMSConfig(t, createProjectConfig, {
         updateDependent : [
@@ -165,10 +178,10 @@ const CreateProjectForm = ({t, sessionFormData, setSessionFormData, clearSession
         if(formData?.basicDetails_hasSubProjects) {
           setSelectedProjectType(formData?.basicDetails_hasSubProjects);
         }
-        if(formData.noSubProject_ward) {
+        if(formData.noSubProject_ward && !isMuktaCustomasization) {
             setSelectedWard(formData?.noSubProject_ward?.code)
         }
-        if (difference?.noSubProject_ward) {
+        if (difference?.noSubProject_ward && !isMuktaCustomasization) {
             setValue("noSubProject_locality", '');
         }
         if(formData?.noSubProject_typeOfProject) {
