@@ -31,7 +31,9 @@ public class Constants {
 	public static final String PURCHASE_BILL_APPROVE_TO_VENDOR_LOCALIZATION_CODE = "PURCHASE_BILL_APPROVE_TO_VENDOR";
 	public static final String PURCHASE_BILL_REJECT_TO_CREATOR_LOCALIZATION_CODE = "PURCHASE_BILL_REJECT_TO_CREATOR";
 	public static final String SUPERVISION_BILL_APPROVE_ON_CREATE_TO_CBO_LOCALIZATION_CODE = "SUPERVISION_BILL_APPROVE_ON_CREATE_TO_CBO";
-
+	public static final String INDIVIDUAL = "Individual";
+	public static final String INDIVIDUAL_GENDER_PATH = "$.Individual.*.gender";
+	public static final String GENDER = "gender";
 	public static final String TENANT_MODULE_NAME = "tenant";
 
 	public static final String TENANT_CODE_FILTER = "$.*.code";

@@ -164,4 +164,11 @@ public class Configuration {
 	@Value("${sms.isAdditonalFieldRequired}")
 	private boolean isAdditonalFieldRequired;
 
+	//Individual Service
+	@Value("${works.individual.host}")
+	private String individualServiceHost;
+
+	@Value("${works.individual.endpoint}")
+	private String individualServiceEndpoint;
+
 }

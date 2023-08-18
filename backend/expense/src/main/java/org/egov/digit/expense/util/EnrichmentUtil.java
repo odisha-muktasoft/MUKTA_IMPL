@@ -4,9 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.HashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egov.digit.expense.config.Configuration;
 import org.egov.digit.expense.config.Constants;
 import org.egov.digit.expense.web.models.Bill;
@@ -25,6 +27,7 @@ import org.egov.digit.expense.web.models.enums.PaymentStatus;
 import org.egov.digit.expense.web.models.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import static org.egov.digit.expense.config.Constants.GENDER;
 
 import digit.models.coremodels.AuditDetails;
 
@@ -36,7 +39,9 @@ public class EnrichmentUtil {
 
     @Autowired
     private IdgenUtil idgenUtil;
-
+    @Autowired
+    private GenderUtil genderUtil;
+    
     public BillRequest encrichBillForCreate(BillRequest billRequest) {
 
         Bill bill = billRequest.getBill();
@@ -66,7 +71,15 @@ public class EnrichmentUtil {
             billDetail.getPayee().setParentId(billDetail.getBillId());
             billDetail.getPayee().setAuditDetails(audit);
             billDetail.getPayee().setStatus(Status.ACTIVE);
-            
+            String gender = genderUtil.getGenderDetails(billRequest.getRequestInfo(),billDetail.getPayee().getTenantId(),billDetail.getPayee().getIdentifier());
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> map = objectMapper.convertValue(billDetail.getPayee().getAdditionalDetails(), new TypeReference<Map<String, Object>>() {});
+            if(map == null){
+                map = new HashMap<>();
+            }
+            map.put(GENDER,gender);
+            billDetail.getPayee().setAdditionalDetails(objectMapper.convertValue(map,Object.class));
             for (LineItem lineItem : billDetail.getLineItems()) {
                 lineItem.setId(UUID.randomUUID().toString());
                 lineItem.setAuditDetails(audit);
