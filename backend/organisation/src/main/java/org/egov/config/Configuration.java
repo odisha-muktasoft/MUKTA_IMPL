@@ -130,6 +130,9 @@ public class Configuration {
     @Value("${egov.sms.notification.topic}")
     private String smsNotificationTopic;
 
+    @Value("${kafka.topics.works.notification.sms.name}")
+    private String muktaNotificationTopic;
+
     //topic config
     @Value("${org.kafka.create.topic}")
     private String orgKafkaCreateTopic;
@@ -185,5 +188,7 @@ public class Configuration {
     @Value("${egov.localization.statelevel}")
     private Boolean isLocalizationStateLevel;
 
+    @Value("${sms.isAdditonalFieldRequired}")
+    private boolean isAdditonalFieldRequired;
 
 }
