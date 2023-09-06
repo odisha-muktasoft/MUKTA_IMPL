@@ -5,6 +5,7 @@ import EmployeeApp from "./pages/employee"
 import EstimateCard from "./components/EstimateCard";
 import ViewProject from "./pageComponents/ViewProject";
 import SOR from "./pageComponents/SOR";
+import SORTable from "./pageComponents/SORTable";
 import NonSORTable from "./pageComponents/NonSORTable";
 import EstimateTemplate from "./pageComponents/EstimateTemplate";
 import OverheadsTable from "./pageComponents/OverheadsTable";
@@ -12,7 +13,9 @@ import ViewEstimateComponent from "./components/ViewEstimateComponent";
 import TotalEstAmount from "./pageComponents/TotalEstAmount";
 import LabourAnalysis from "./pageComponents/LabourAnalysis";
 import ViewTotalEstAmount from "./components/ViewTotalEstAmount";
-import ViewLabourAnalysis from "./components/ViewLabourAnalysis"
+import ViewLabourAnalysis from "./components/ViewLabourAnalysis";
+import MeasurementSheetTable from "./pageComponents/MeasurementSheetTable";
+import SearchSORinSOR from "./pageComponents/SearchSORinSOR";
 
 const EstimateModule = ({ stateCode, userType, tenants }) => {
     const { path, url } = useRouteMatch();
@@ -38,13 +41,16 @@ const componentsToRegister = {
     ViewProject,
     EstimateTemplate,
     SOR,
+    SORTable,
     NonSORTable,
     OverheadsTable,
     ViewEstimatePage: ViewEstimateComponent,
     TotalEstAmount,
     LabourAnalysis,
     ViewTotalEstAmount,
-    ViewLabourAnalysis
+    ViewLabourAnalysis,
+    MeasurementSheetTable,
+    SearchSORinSOR
 };
 
 export const initEstimateComponents = () => {

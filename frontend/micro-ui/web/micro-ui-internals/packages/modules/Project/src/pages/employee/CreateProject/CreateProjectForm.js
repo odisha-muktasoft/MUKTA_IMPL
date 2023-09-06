@@ -344,6 +344,7 @@ const CreateProjectForm = ({t, sessionFormData, setSessionFormData, clearSession
         }
     },[selectedProjectType]);
 
+    console.log(config, "configconfigconfig")
 
     return (
         <React.Fragment>

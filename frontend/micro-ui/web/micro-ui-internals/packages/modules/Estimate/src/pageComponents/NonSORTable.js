@@ -1,7 +1,10 @@
 import React, { Fragment, useState, useEffect, useMemo } from "react";
-import { AddIcon, DeleteIcon, RemoveIcon, TextInput, CardLabelError, Dropdown, Loader, TextArea,InputTextAmount } from "@egovernments/digit-ui-react-components";
+import { AddIcon, DeleteIcon, RemoveIcon, TextInput, CardLabelError, Dropdown, Loader, TextArea,InputTextAmount, CrossIcon, PlusIcon } from "@egovernments/digit-ui-react-components";
 import { Controller } from "react-hook-form";
 import _ from "lodash";
+import MeasurementSheetTable from "./MeasurementSheetTable";
+import cloneDeep from "lodash/cloneDeep";
+
 
 const NonSORTable = ({ control, watch,config, ...props }) => {
   const populators = config?.populators
@@ -27,10 +30,12 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
               ? {
                   key: index,
                   isShow:row?.isActive ? row?.isActive : !(row?.estimatedAmount==="0"),
+                  isMeasurementSheet: false
                 }
               : {
                 key: index + 1000,
                 isShow: false,
+                isMeasurementSheet: false
               };
           })
           ?.filter((row) => row)
@@ -163,6 +168,22 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
     setRows((prev) => [...prev, obj]);
   };
 
+  const showHideMeasurementSheet = (row, index) => {
+    let noOfRows = cloneDeep(rows)
+    noOfRows[index] = {
+      ...noOfRows?.[index],
+      isMeasurementSheet: !(noOfRows?.[index]?.isMeasurementSheet)
+    }
+    // const obj = {
+    //   key: null,
+    //   isShow: true,
+    // };
+    // obj.key = rows[rows.length - 1].key + 1;
+    // setRows((prev) => [...prev, obj]);
+    setRows(noOfRows);
+  };
+
+
   const getDropDownDataFromMDMS = (t, row, inputName, props, register, optionKey = "name", options = []) => {
     const { isLoading, data } = Digit.Hooks.useCustomMDMS(
       Digit.ULBService.getStateId(),
@@ -218,13 +239,14 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
     return rows.map((row, index) => {
       if (row.isShow) i++;
       return row.isShow && (
+        <>
           <tr key={index} style={!row?.isShow ? {display:'none'}: {}}>
             <td style={getStyles(1)}>{i}</td>
 
             <td style={getStyles(2)}>
               <div style={cellContainerStyle}>
                 <div>
-                  {/* <TextInput
+                  <TextInput
                     style={{ marginBottom: "0px", wordWrap: "break-word" }}
                     maxlength={512}
                     name={`${formFieldName}.${row.key}.description`}
@@ -234,8 +256,8 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
                       //@Burhan-j Don't remove this whitespace in pattern, it is used for validation
                       // pattern: /^[a-zA-Z0-9_ .$@#{}:;&(),\/ ]*$/
                     })}
-                  /> */}
-                  <TextArea
+                  />
+                  {/* <TextArea
                     style={{ marginBottom: "0px", wordWrap: "break-word" }}
                     name={`${formFieldName}.${row.key}.description`}
                     inputRef={register({
@@ -245,7 +267,7 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
                         },
                         required:true
                     })}
-                  />
+                  /> */}
                 </div>
                 <div style={errorContainerStyles}>
                   {errors && errors?.[formFieldName]?.[row.key]?.description?.type === "pattern" && (
@@ -356,7 +378,7 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
 
             <td style={getStyles(5)}>
               <div style={cellContainerStyle}>
-                <div>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                   <TextInput
                     style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
                     name={`${formFieldName}.${row.key}.estimatedQuantity`}
@@ -368,6 +390,9 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
                     })}
                     onChange={(e) => setAmountField(e, row)}
                   />
+                  <div onClick={() => showHideMeasurementSheet(row, index)}>
+                    <PlusIcon />
+                  </div>
                 </div>
                 <div style={errorContainerStyles}>
                   {errors && errors?.[formFieldName]?.[row.key]?.estimatedQuantity?.type === "pattern" && (
@@ -445,7 +470,29 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
               <div style={errorContainerStyles}></div>
             </td>
           </tr>
-        
+        {row?.isMeasurementSheet && <tr>
+          <td colSpan={1} style={getStyles(1)}></td>
+          <td colSpan={5} style={getStyles(2)}>
+            <div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h2 style={{fontWeight: "700"}}>Measurement Sheet</h2>
+                <div onClick={() => showHideMeasurementSheet(row, index)}>
+                <CrossIcon />
+                </div>
+              </div>
+              <div style={{padding: "0px 20px"}}>
+                <MeasurementSheetTable
+                  control={control}
+                  watch={watch}
+                  config={config}
+                  props={props}
+                />
+              </div>
+            </div>
+          </td>
+          <td colSpan={1} style={getStyles(3)}></td>
+        </tr>}
+        </>
       );
     });
   }, [rows,formData])

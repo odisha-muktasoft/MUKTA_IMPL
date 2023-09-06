@@ -1,10 +1,10 @@
 import { Card, StatusTable, Row, Header, HorizontalNav, ActionBar, SubmitBar, WorkflowModal, FormComposer, Loader, Toast, ViewDetailsCard } from '@egovernments/digit-ui-react-components'
-import React,{Fragment,useEffect,useState} from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import getModalConfig from './config'
 import { createEstimateConfig } from './createEstimateConfig'
 import { createEstimatePayload } from './createEstimatePayload'
-import { useHistory,useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { editEstimateUtil } from './editEstimateUtil'
 
 
@@ -23,26 +23,26 @@ const CreateEstimate = () => {
     const tenant = Digit.ULBService.getStateId();
     const { t } = useTranslation()
     const [showToast, setShowToast] = useState(null)
-    const { tenantId, projectNumber,isEdit,estimateNumber } = Digit.Hooks.useQueryParams();
+    const { tenantId, projectNumber, isEdit, estimateNumber } = Digit.Hooks.useQueryParams();
     // const [ isFormReady,setIsFormReady ] = useState(isEdit ? false : true) 
-    const [ isFormReady,setIsFormReady ] = useState(true) 
-    
+    const [isFormReady, setIsFormReady] = useState(true)
+
     const history = useHistory()
-    
+
     // const {state} = useLocation()
-    
+
     //if estimateNumber is there and isEdit is true then search estimate
     //fetching estimate data
-    const { isLoading: isEstimateLoading,data:estimate } = Digit.Hooks.estimates.useEstimateSearch({
+    const { isLoading: isEstimateLoading, data: estimate } = Digit.Hooks.estimates.useEstimateSearch({
         tenantId,
         filters: { estimateNumber },
-        config:{
+        config: {
             enabled: isEdit && estimateNumber ? true : false
         }
     })
-    
-    
-    
+
+
+
     const searchParams = {
         Projects: [
             {
@@ -59,7 +59,7 @@ const CreateEstimate = () => {
     }
 
     const headerLocale = Digit.Utils.locale.getTransformedLocale(tenantId);
-    const { data:projectData, isLoading } = Digit.Hooks.works.useViewProjectDetails(t, tenantId, searchParams, filters, headerLocale);
+    const { data: projectData, isLoading } = Digit.Hooks.works.useViewProjectDetails(t, tenantId, searchParams, filters, headerLocale);
 
     const cardState = [
 
@@ -91,21 +91,21 @@ const CreateEstimate = () => {
         }
     ]
 
-    if(isEdit) {
+    if (isEdit) {
         cardState[0].values = [{
-                "title": "WORKS_ESTIMATE_ID",
-                "value": estimateNumber
-            },...cardState?.[0]?.values]
+            "title": "WORKS_ESTIMATE_ID",
+            "value": estimateNumber
+        }, ...cardState?.[0]?.values]
     }
-    
-   
-    
-    
+
+
+
+
     //for creating estimates
     const { mutate: EstimateMutation } = Digit.Hooks.works.useCreateEstimateNew("WORKS");
 
     //for updating estimate
-    const {mutate: EstimateUpdateMutation} = Digit.Hooks.works.useApplicationActionsEstimate();
+    const { mutate: EstimateUpdateMutation } = Digit.Hooks.works.useApplicationActionsEstimate();
 
 
     const [showModal, setShowModal] = useState(false);
@@ -121,7 +121,7 @@ const CreateEstimate = () => {
     // const [designation, setDesignation] = useState([]);
     // const [selectedDesignation, setSelectedDesignation] = useState({})
 
-    const [inputFormData,setInputFormData] = useState({})
+    const [inputFormData, setInputFormData] = useState({})
 
 
     //getting uom and overheads masters from mdms
@@ -134,7 +134,7 @@ const CreateEstimate = () => {
             }
         ],
         {
-            select:(data)=> {
+            select: (data) => {
                 return data?.["common-masters"]?.uom
             }
         }
@@ -149,13 +149,13 @@ const CreateEstimate = () => {
             }
         ],
         {
-            select:(data)=> {
+            select: (data) => {
                 return data?.["works"]?.Overheads
             }
         }
     );
 
-    
+
     const moduleName = Digit.Utils.getConfigModuleName()
     let { isLoading: isConfigLoading, data: estimateFormConfig } = Digit.Hooks.useCustomMDMS(
         tenant,
@@ -166,7 +166,7 @@ const CreateEstimate = () => {
             }
         ],
         {
-            select:(data)=> {
+            select: (data) => {
                 return data?.[moduleName]?.CreateEstimateConfig?.[0]
             }
         }
@@ -181,24 +181,24 @@ const CreateEstimate = () => {
     // estimateFormConfig = createEstimateConfig()
 
     const EstimateSession = Digit.Hooks.useSessionStorage("NEW_ESTIMATE_CREATE", {});
-    const [sessionFormData,setSessionFormData, clearSessionFormData] = EstimateSession;
-    
-    const initialDefaultValues = editEstimateUtil(estimate,uom,overheads)
+    const [sessionFormData, setSessionFormData, clearSessionFormData] = EstimateSession;
+
+    const initialDefaultValues = editEstimateUtil(estimate, uom, overheads)
 
     // useEffect(() => {
-        
+
     // }, [])
-    
-    
-    
+
+
+
 
     useEffect(() => {
-        if(uom && estimate && overheads && isEdit){
-        setSessionFormData(initialDefaultValues)
+        if (uom && estimate && overheads && isEdit) {
+            setSessionFormData(initialDefaultValues)
         }
-    }, [estimate,uom,overheads])
-    
-    
+    }, [estimate, uom, overheads])
+
+
 
     const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
         if (!_.isEqual(sessionFormData, formData)) {
@@ -219,39 +219,39 @@ const CreateEstimate = () => {
         //added this totalEst amount logic here because setValues in pageComponents don't work
         //after setting the value, in consequent renders value changes to undefined
         //check TotalEstAmount.js
-            let totalNonSor = _data?.nonSORTablev1?.reduce((acc, row) => {
-                let amountNonSor = parseFloat(row?.estimatedAmount)
-                amountNonSor = amountNonSor ? amountNonSor : 0
-                return amountNonSor + parseFloat(acc)
-            }, 0)
-            totalNonSor = totalNonSor ? totalNonSor : 0
-            let totalOverHeads = _data?.overheadDetails?.reduce((acc, row) => {
-                let amountOverheads = parseFloat(row?.amount)
-                amountOverheads = amountOverheads ? amountOverheads : 0
-                return amountOverheads + parseFloat(acc)
-            }, 0)
-            totalOverHeads = totalOverHeads ? totalOverHeads : 0
-            _data.totalEstimateAmount =  totalNonSor + totalOverHeads
+        let totalNonSor = _data?.nonSORTablev1?.reduce((acc, row) => {
+            let amountNonSor = parseFloat(row?.estimatedAmount)
+            amountNonSor = amountNonSor ? amountNonSor : 0
+            return amountNonSor + parseFloat(acc)
+        }, 0)
+        totalNonSor = totalNonSor ? totalNonSor : 0
+        let totalOverHeads = _data?.overheadDetails?.reduce((acc, row) => {
+            let amountOverheads = parseFloat(row?.amount)
+            amountOverheads = amountOverheads ? amountOverheads : 0
+            return amountOverheads + parseFloat(acc)
+        }, 0)
+        totalOverHeads = totalOverHeads ? totalOverHeads : 0
+        _data.totalEstimateAmount = totalNonSor + totalOverHeads
 
         let totalLabourAndMaterial = parseInt(_data.analysis.labour) + parseInt(_data.analysis.material)
         //here check totalEst amount should be less than material+labour
-        if (_data.totalEstimateAmount < totalLabourAndMaterial )   {
+        if (_data.totalEstimateAmount < totalLabourAndMaterial) {
             setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_MISMATCH" })
             closeToast()
             return
-        } 
-        
+        }
 
-        else if(totalLabourAndMaterial === 0) {
+
+        else if (totalLabourAndMaterial === 0) {
             setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_IMPROPER" })
             closeToast()
             return
         }
-            
+
 
         setInputFormData((prevState) => _data)
         //first do whatever processing you want on form data then pass it over to modal's onSubmit function
-        
+
         setShowModal(true);
     };
     const onModalSubmit = async (_data) => {
@@ -263,82 +263,82 @@ const CreateEstimate = () => {
             // selectedDept,
             // selectedDesignation
         }
-       
-        
 
-        const payload = createEstimatePayload(completeFormData, projectData,isEdit,estimate)
+
+
+        const payload = createEstimatePayload(completeFormData, projectData, isEdit, estimate)
         setShowModal(false);
 
         //make a util for updateEstimatePayload since there are some deviations 
-        
-        if(isEdit && estimateNumber){
-            
-            await EstimateUpdateMutation(payload, {
-            onError: async (error, variables) => {
-                
-                setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
-                setTimeout(() => {
-                    setShowToast(false);
-                }, 5000);
-            },
-            onSuccess: async (responseData, variables) => {
-                
-                clearSessionFormData();
-                const state = {
-                    header: t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
-                    id: responseData?.estimates[0]?.estimateNumber,
-                    info: t("ESTIMATE_ESTIMATE_NO"),
-                    // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-                    links: [
-                        {
-                            name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-                            redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-                            code: "",
-                            svg: "GotoInboxIcon",
-                            isVisible: true,
-                            type: "inbox",
-                        }
-                    ],
-                }
-                
-                history.push(`/${window?.contextPath}/employee/estimate/response`, state);
-                
-            },
-        });
-        }
-        
 
-        else{
+        if (isEdit && estimateNumber) {
+
+            await EstimateUpdateMutation(payload, {
+                onError: async (error, variables) => {
+
+                    setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+                    setTimeout(() => {
+                        setShowToast(false);
+                    }, 5000);
+                },
+                onSuccess: async (responseData, variables) => {
+
+                    clearSessionFormData();
+                    const state = {
+                        header: t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
+                        id: responseData?.estimates[0]?.estimateNumber,
+                        info: t("ESTIMATE_ESTIMATE_NO"),
+                        // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
+                        links: [
+                            {
+                                name: t("WORKS_GOTO_ESTIMATE_INBOX"),
+                                redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
+                                code: "",
+                                svg: "GotoInboxIcon",
+                                isVisible: true,
+                                type: "inbox",
+                            }
+                        ],
+                    }
+
+                    history.push(`/${window?.contextPath}/employee/estimate/response`, state);
+
+                },
+            });
+        }
+
+
+        else {
             await EstimateMutation(payload, {
-            onError: async (error, variables) => {
-                setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
-                setTimeout(() => {
-                    setShowToast(false);
-                }, 5000);
-            },
-            onSuccess: async (responseData, variables) => {
-                clearSessionFormData();
-                const state = {
-                    header: t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
-                    id: responseData?.estimates[0]?.estimateNumber,
-                    info: t("ESTIMATE_ESTIMATE_NO"),
-                    // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-                    links: [
-                        {
-                            name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-                            redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-                            code: "",
-                            svg: "GotoInboxIcon",
-                            isVisible: true,
-                            type: "inbox",
-                        }
-                    ],
-                }
-                
-                history.push(`/${window?.contextPath}/employee/estimate/response`, state);
-                
-            },
-        });
+                onError: async (error, variables) => {
+                    setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+                    setTimeout(() => {
+                        setShowToast(false);
+                    }, 5000);
+                },
+                onSuccess: async (responseData, variables) => {
+                    clearSessionFormData();
+                    const state = {
+                        header: t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
+                        id: responseData?.estimates[0]?.estimateNumber,
+                        info: t("ESTIMATE_ESTIMATE_NO"),
+                        // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
+                        links: [
+                            {
+                                name: t("WORKS_GOTO_ESTIMATE_INBOX"),
+                                redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
+                                code: "",
+                                svg: "GotoInboxIcon",
+                                isVisible: true,
+                                type: "inbox",
+                            }
+                        ],
+                    }
+
+                    history.push(`/${window?.contextPath}/employee/estimate/response`, state);
+
+                },
+            });
         }
     }
 
@@ -369,7 +369,7 @@ const CreateEstimate = () => {
 
 
     // const { isLoading: approverLoading, isError, error, data: employeeDatav1 } = Digit.Hooks.hrms.useHRMSSearch({ designations: selectedDesignation?.code, departments: selectedDept?.code, roles: rolesForThisAction, isActive: true }, Digit.ULBService.getCurrentTenantId(), null, null, { enabled: !!(selectedDept || selectedDesignation) });
-    const { isLoading: approverLoading, isError, error, data: employeeDatav1 } = Digit.Hooks.hrms.useHRMSSearch({ roles: rolesForThisAction, isActive: true }, Digit.ULBService.getCurrentTenantId(), null, null, { enabled:true });
+    const { isLoading: approverLoading, isError, error, data: employeeDatav1 } = Digit.Hooks.hrms.useHRMSSearch({ roles: rolesForThisAction, isActive: true }, Digit.ULBService.getCurrentTenantId(), null, null, { enabled: true });
 
 
     employeeDatav1?.Employees.map(emp => emp.nameOfEmp = emp?.user?.name || "NA")
@@ -398,63 +398,265 @@ const CreateEstimate = () => {
 
     }, [approvers])
 
-    
-    if(isConfigLoading || isEstimateLoading || isUomLoading || isOverheadsLoading){
+
+    if (isConfigLoading || isEstimateLoading || isUomLoading || isOverheadsLoading) {
         return <Loader />
     }
-    if(isEdit && Object.keys(sessionFormData).length ===0) return <Loader />
-  return (
-    <Fragment>
-          {showModal && <WorkflowModal
-              closeModal={() => setShowModal(false)}
-              onSubmit={onModalSubmit}
-              config={config}
-          />
-          }
-        <Header className="works-header-create" styles={{ marginLeft: "14px" }}>{isEdit ? t("ACTION_TEST_EDIT_ESTIMATE") :t("ACTION_TEST_CREATE_ESTIMATE")}</Header>
-        {/* Will fetch projectId from url params and do a search for project to show the below data in card while integrating with the API  */}
-        {isLoading?<Loader /> : <ViewDetailsCard cardState={cardState} t={t} createScreen={true}/>}
-        {/* {isLoading? <Loader/>: <ViewDetailsCard cardState={cardState} t={t} />} */}
-        {isFormReady ? <FormComposer
-            label={isEdit ? "CORE_COMMON_SUBMIT" :"ACTION_TEST_CREATE_ESTIMATE"}
-            config={estimateFormConfig?.form.map((config) => {
-                return {
-                    ...config,
-                    body: config?.body.filter((a) => !a.hideInEmployee),
-                };
-            })}
-            onSubmit={onFormSubmit}
-            submitInForm={false}
-            fieldStyle={{ marginRight: 0 }}
-            inline={false}
-            // className="card-no-margin"
-            // defaultValues={(isEdit && estimateNumber) ? initialDefaultValues : sessionFormData}
-            defaultValues = {sessionFormData}
-            showWrapperContainers={false}
-            isDescriptionBold={false}
-            noBreakLine={true}
-            showMultipleCardsWithoutNavs={false}
-            showMultipleCardsInNavs={false}
-            horizontalNavConfig={configNavItems}
-            showFormInNav={true}  
-            showNavs={true}
-            sectionHeadStyle={{marginTop:"2rem"}} 
-            labelBold={true} 
-            onFormValueChange={onFormValueChange}
-        />:null}
-          {showToast && (
-              <Toast
-                  error={showToast.error}
-                  warning={showToast.warning}
-                  label={t(showToast.label)}
-                  onClose={() => {
-                      setShowToast(null);
-                  }}
-                  isDleteBtn={true}
-              />
-          )}
-    </Fragment>
-  )
+    if (isEdit && Object.keys(sessionFormData).length === 0) return <Loader />
+
+    console.log(JSON.stringify(estimateFormConfig), "estimateFormConfigestimateFormConfigestimateFormConfig");
+
+    estimateFormConfig = {
+        "form": [
+            {
+                "head": "",
+                "subHead": "",
+                "navLink": "Project Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "ViewProject",
+                        "withoutLabel": true,
+                        "key": "projectDetails",
+                        "customProps": {
+                            "module": "estimate"
+                        }
+                    }
+                ]
+            },
+            {
+                "head": "SOR",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "isMandatory": true,
+                        "key": "noSubProject_sorType",
+                        "type": "radioordropdown",
+                        "label": "SOR Type",
+                        "disable": false,
+                        "populators": {
+                            "name": "noSubProject_sorType",
+                            "optionsKey": "name",
+                            "error": "WORKS_REQUIRED_ERR",
+                            "required": true,
+                            "optionsCustomStyle": {
+                                "top": "2.5rem"
+                            },
+                            "mdmsConfig": {
+                                "masterName": "ProjectType",
+                                "moduleName": "works",
+                                "localePrefix": "COMMON_MASTERS"
+                            }
+                        }
+                    },
+                    {
+                        "isMandatory": false,
+                        "key": "noSubProject_sorSubType",
+                        "type": "radioordropdown",
+                        "label": "SOR Sub Type",
+                        "disable": false,
+                        "populators": {
+                            "name": "noSubProject_sorSubType",
+                            "optionsKey": "name",
+                            "error": "WORKS_REQUIRED_ERR",
+                            "required": true,
+                            "optionsCustomStyle": {
+                                "top": "2.5rem"
+                            },
+                            "mdmsConfig": {
+                                "masterName": "ProjectType",
+                                "moduleName": "works",
+                                "localePrefix": "COMMON_MASTERS"
+                            }
+                        }
+                    },
+                    {
+                        "isMandatory": false,
+                        "key": "noSubProject_sorVariant",
+                        "type": "radioordropdown",
+                        "label": "SOR Variant ",
+                        "disable": false,
+                        "populators": {
+                            "name": "noSubProject_sorVariant",
+                            "optionsKey": "name",
+                            "error": "WORKS_REQUIRED_ERR",
+                            "required": true,
+                            "optionsCustomStyle": {
+                                "top": "2.5rem"
+                            },
+                            "mdmsConfig": {
+                                "masterName": "ProjectType",
+                                "moduleName": "works",
+                                "localePrefix": "COMMON_MASTERS"
+                            }
+                        }
+                    },
+                    // {
+                    //     "type": "component",
+                    //     "component": "SearchSORinSOR",
+                    //     "withoutLabel": true,
+                    //     "key": "SearchSORinSOR",
+                    //     "populators": {
+                    //         "rate": {
+                    //             "max": 5000000,
+                    //             "error": "ESTIMATE_LINE_ITEM_RATE_LIMIT"
+                    //         },
+                    //         "quantity": {
+                    //             "max": 999999,
+                    //             "error": "ESTIMATE_LINE_ITEM_QTY_LIMIT"
+                    //         }
+                    //     }
+                    // },
+                    {
+                        "type": "component",
+                        "component": "SORTable",
+                        "withoutLabel": true,
+                        "key": "SORDetails",
+                        "populators": {
+                            "rate": {
+                                "max": 5000000,
+                                "error": "ESTIMATE_LINE_ITEM_RATE_LIMIT"
+                            },
+                            "quantity": {
+                                "max": 999999,
+                                "error": "ESTIMATE_LINE_ITEM_QTY_LIMIT"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "head": "Non SOR",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "NonSORTable",
+                        "withoutLabel": true,
+                        "key": "nonSORDetails",
+                        "populators": {
+                            "rate": {
+                                "max": 5000000,
+                                "error": "ESTIMATE_LINE_ITEM_RATE_LIMIT"
+                            },
+                            "quantity": {
+                                "max": 999999,
+                                "error": "ESTIMATE_LINE_ITEM_QTY_LIMIT"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "head": "WORKS_OVERHEADS",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "OverheadsTable",
+                        "withoutLabel": true,
+                        "key": "overheadsDetails"
+                    }
+                ]
+            },
+            {
+                "head": "",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "TotalEstAmount",
+                        "withoutLabel": true,
+                        "key": "totalEstimatedAmount"
+                    }
+                ]
+            },
+            // {
+            //     "head": "",
+            //     "subHead": "",
+            //     "navLink": "Work Details",
+            //     "body": [
+            //         {
+            //             "type": "component",
+            //             "component": "LabourAnalysis",
+            //             "withoutLabel": true,
+            //             "key": "labourMaterialAnalysis"
+            //         }
+            //     ]
+            // },
+            // {
+            //     "navLink": "Work Details",
+            //     "head": "",
+            //     "body": [
+            //         {
+            //             "type": "documentUpload",
+            //             "withoutLabel": true,
+            //             "module": "Estimate",
+            //             "error": "WORKS_REQUIRED_ERR",
+            //             "name": "uploadedDocs",
+            //             "customClass": "",
+            //             "localePrefix": "ESTIMATE_DOC"
+            //         }
+            //     ]
+            // }
+        ]
+    };
+    return (
+        <Fragment>
+            {showModal && <WorkflowModal
+                closeModal={() => setShowModal(false)}
+                onSubmit={onModalSubmit}
+                config={config}
+            />
+            }
+            <Header className="works-header-create" styles={{ marginLeft: "14px" }}>{isEdit ? t("ACTION_TEST_EDIT_ESTIMATE") : t("ACTION_TEST_CREATE_ESTIMATE")}</Header>
+            {/* Will fetch projectId from url params and do a search for project to show the below data in card while integrating with the API  */}
+            {isLoading ? <Loader /> : <ViewDetailsCard cardState={cardState} t={t} createScreen={true} />}
+            {/* {isLoading? <Loader/>: <ViewDetailsCard cardState={cardState} t={t} />} */}
+            {isFormReady ? <FormComposer
+                label={isEdit ? "CORE_COMMON_SUBMIT" : "ACTION_TEST_CREATE_ESTIMATE"}
+                config={estimateFormConfig?.form.map((config) => {
+                    return {
+                        ...config,
+                        body: config?.body.filter((a) => !a.hideInEmployee),
+                    };
+                })}
+                onSubmit={onFormSubmit}
+                submitInForm={false}
+                fieldStyle={{ marginRight: 0 }}
+                inline={false}
+                // className="card-no-margin"
+                // defaultValues={(isEdit && estimateNumber) ? initialDefaultValues : sessionFormData}
+                defaultValues={sessionFormData}
+                showWrapperContainers={false}
+                isDescriptionBold={false}
+                noBreakLine={true}
+                showMultipleCardsWithoutNavs={false}
+                showMultipleCardsInNavs={true}
+                horizontalNavConfig={configNavItems}
+                showFormInNav={true}
+                showNavs={true}
+                sectionHeadStyle={{ marginTop: "2rem" }}
+                labelBold={true}
+                onFormValueChange={onFormValueChange}
+            /> : null}
+            {showToast && (
+                <Toast
+                    error={showToast.error}
+                    warning={showToast.warning}
+                    label={t(showToast.label)}
+                    onClose={() => {
+                        setShowToast(null);
+                    }}
+                    isDleteBtn={true}
+                />
+            )}
+        </Fragment>
+    )
 }
 
 export default CreateEstimate
