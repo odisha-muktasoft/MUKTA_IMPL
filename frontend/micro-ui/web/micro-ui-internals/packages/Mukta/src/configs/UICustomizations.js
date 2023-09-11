@@ -2514,6 +2514,119 @@ export const UICustomizations = {
       });
       return link;
     },
+  },
+  SearchFundAllocationRegistryConfig: {
+    customValidationCheck: (data) => {
+      //checking both to and from date are present
+      const { createdFrom, createdTo } = data;
+      if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
+        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+  
+      return false;
+    },
+    postProcess: (responseArray, uiConfig) => {
+      const statusOptions = responseArray?.statusMap
+        ?.filter((item) => item.applicationstatus)
+        ?.map((item) => ({ code: item.applicationstatus, i18nKey: `COMMON_MASTERS_${item.applicationstatus}` }));
+      if (uiConfig?.type === "filter") {
+        let fieldConfig = uiConfig?.fields?.filter((item) => item.type === "dropdown" && item.populators.name === "musterRollStatus");
+        if (fieldConfig.length) {
+          fieldConfig[0].populators.options = statusOptions;
+        }
+      }
+    },
+    preProcess: (data) => {  
+        let requestBody = { ...data.body.searchCriteria };
+        const pathConfig = {
+          type: "functions.type",
+        };
+        const dateConfig = {
+          createdFrom: "daystart",
+          createdTo: "dayend",
+        };
+        const selectConfig = {
+          boundaryCode: "boundaryCode[0].code",
+          type:"type.code",
+          applicationStatus: "applicationStatus.code",
+        };
+        const textConfig = ["name", "orgNumber"]
+  
+        let searchCriteria = Object.keys(requestBody)
+          .map((key) => {
+            if (selectConfig[key]) {
+              requestBody[key] = _.get(requestBody, selectConfig[key], null);
+            } else if (typeof requestBody[key] == "object") {
+              requestBody[key] = requestBody[key]?.code;
+            } else if (textConfig?.includes(key)) {
+              requestBody[key] = requestBody[key]?.trim()
+            }
+            return key;
+          })
+          .filter((key) => requestBody[key])
+          .reduce((acc, curr) => {
+            if (pathConfig[curr]) {
+              _.set(acc, pathConfig[curr], requestBody[curr]);
+            } else if (dateConfig[curr] && dateConfig[curr]?.includes("day")) {
+              _.set(acc, curr, Digit.Utils.date.convertDateToEpoch(requestBody[curr], dateConfig[curr]));
+            } else {
+              _.set(acc, curr, requestBody[curr]);
+            }
+            return acc;
+          }, {});
+        data.body.searchCriteria = { ...searchCriteria,tenantId:Digit.ULBService.getCurrentTenantId()  };
+        return data;
+      },
+      
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      
+    console.log(searchResult)
+      //here we can add multiple conditions
+      //like if a cell is link then we return link
+      //first we can identify which column it belongs to then we can return relevant result
+      switch (key) {
+        case "MASTERS_ORGANISATION_ID":
+          return (
+            <span className="link">
+              <Link to={`/${window.contextPath}/employee/masters/view-organization?tenantId=${row?.tenantId}&orgId=${value}`}>
+                 {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              </Link>
+            </span>
+          );
+        case "MASTERS_ADDRESS":
+          return value ? (
+            <span style={{ whiteSpace: "break-spaces" }}>
+              {String(`${t(Digit.Utils.locale.getCityLocale(row?.tenantId))} ${t(Digit.Utils.locale.getMohallaLocale(value, row?.tenantId))}`)}
+            </span>
+          ) : (
+            t("ES_COMMON_NA")
+          );
+        case "CORE_COMMON_STATUS":
+          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(`MASTERS_ORG_STATUS_${value}`))}</span> : t("ES_COMMON_NA");
+  
+        case "MASTERS_ORGANISATION_TYPE":
+          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(`COMMON_MASTERS_ORG_${value?.split?.('.')?.[0]}`))}</span> : t("ES_COMMON_NA");
+  
+        case "MASTERS_ORGANISATION_SUB_TYPE":
+          return value ? <span style={{ whiteSpace: "nowrap" }}>{String(t(`COMMON_MASTERS_SUBORG_${row?.functions?.[0]?.type?.split?.('.')?.[1]}`))}</span> : t("ES_COMMON_NA");
+        case "Transaction Date":
+          return value ? Digit.DateUtils.ConvertTimestampToDate(parseInt(value), "dd/MM/yyyy") : t("ES_COMMON_NA");
+          default:
+          return t("ES_COMMON_NA");
+      }
+    },
+    MobileDetailsOnClick: (row, tenantId) => {
+      let link;
+      Object.keys(row).map((key) => {
+        if (key === "MASTERS_ORGANISATION_ID")
+          link = `/${window.contextPath}/employee/masters/view-organization?tenantId=${tenantId}&orgId=${row[key]}`;
+      });
+      return link;
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
+    }
   }
 };
 

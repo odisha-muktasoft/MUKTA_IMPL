@@ -180,6 +180,11 @@ const WorksCard = () => {
       label: t("EXP_PAYMENT_INS"),
       link: `/${window?.contextPath}/employee/expenditure/search-payment-instruction`,
       roles: ROLES.PAYMENT,
+    },
+    {
+      label: t("ACTION_TEST_10FOUNDALLOCATIONREGISTER"),
+      link: `/${window?.contextPath}/employee/mukta/fund-allocation-register`,
+      roles: ROLES.PROJECT,
     }
   ];
 
