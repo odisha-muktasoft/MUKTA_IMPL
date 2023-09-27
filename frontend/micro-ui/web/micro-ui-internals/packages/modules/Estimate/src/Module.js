@@ -6,6 +6,7 @@ import EstimateCard from "./components/EstimateCard";
 import ViewProject from "./pageComponents/ViewProject";
 import SOR from "./pageComponents/SOR";
 import NonSORTable from "./pageComponents/NonSORTable";
+import SORTable from "./pageComponents/SORTable";
 import EstimateTemplate from "./pageComponents/EstimateTemplate";
 import OverheadsTable from "./pageComponents/OverheadsTable";
 import ViewEstimateComponent from "./components/ViewEstimateComponent";
@@ -39,6 +40,7 @@ const componentsToRegister = {
     EstimateTemplate,
     SOR,
     NonSORTable,
+    SORTable,
     OverheadsTable,
     ViewEstimatePage: ViewEstimateComponent,
     TotalEstAmount,

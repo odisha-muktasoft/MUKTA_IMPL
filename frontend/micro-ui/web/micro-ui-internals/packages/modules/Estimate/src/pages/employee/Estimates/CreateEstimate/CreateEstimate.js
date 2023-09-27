@@ -6,6 +6,7 @@ import { createEstimateConfig } from './createEstimateConfig'
 import { createEstimatePayload } from './createEstimatePayload'
 import { useHistory,useLocation } from "react-router-dom";
 import { editEstimateUtil } from './editEstimateUtil'
+import cloneDeep from "lodash/cloneDeep";
 
 
 const configNavItems = [
@@ -172,6 +173,172 @@ const CreateEstimate = () => {
         }
     );
 
+    estimateFormConfig = {
+        "form": [
+            {
+                "head": "",
+                "subHead": "",
+                "navLink": "Project Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "ViewProject",
+                        "withoutLabel": true,
+                        "key": "projectDetails",
+                        "customProps": {
+                            "module": "estimate"
+                        }
+                    }
+                ]
+            },
+            {
+                "head": "SOR",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    // {
+                    //     "isMandatory": true,
+                    //     "key": "noSubProject_sorType",
+                    //     "type": "dropDown",
+                    //     "label": "SOR Type",
+                    //     "disable": false,
+                    //     "populators": {
+                    //         "name": "sorType",
+                    //         "optionsKey": "code",
+                    //         "allowMultiSelect": false,
+                    //         "masterName": "commonUiConfig",
+                    //         "moduleName": "SORTypeConfig",
+                    //         "customfn": "populateReqCriteria"
+                    //       }
+                    // },
+                    // {
+                    //     "isMandatory": false,
+                    //     "key": "noSubProject_sorSubType",
+                    //     "type": "dropDown",
+                    //     "label": "SOR Sub Type",
+                    //     "disable": false,
+                    //     "populators": {
+                    //         "name": "sorSubType",
+                    //         "optionsKey": "code",
+                    //         "allowMultiSelect": false,
+                    //         "masterName": "commonUiConfig",
+                    //         "moduleName": "SORSubTypeConfig",
+                    //         "customfn": "populateReqCriteria"
+                    //       }
+                    // },
+                    // {
+                    //     "isMandatory": false,
+                    //     "key": "noSubProject_sorVariant",
+                    //     "type": "dropDown",
+                    //     "label": "SOR Variant ",
+                    //     "disable": false,
+                    //     "populators": {
+                    //         "name": "sorVariant",
+                    //         "optionsKey": "code",
+                    //         "allowMultiSelect": false,
+                    //         "masterName": "commonUiConfig",
+                    //         "moduleName": "SORVariantConfig",
+                    //         "customfn": "populateReqCriteria"
+                    //       }
+                    // },
+                    {
+                        "type": "component",
+                        "component": "SORTable",
+                        "withoutLabel": true,
+                        "key": "SORDetailsData",
+                        "populators": {
+                            "rate": {
+                                "max": 5000000,
+                                "error": "ESTIMATE_LINE_ITEM_RATE_LIMIT"
+                            },
+                            "quantity": {
+                                "max": 999999,
+                                "error": "ESTIMATE_LINE_ITEM_QTY_LIMIT"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "head": "Non SOR",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "NonSORTable",
+                        "withoutLabel": true,
+                        "key": "nonSORDetailsData",
+                        "populators": {
+                            "rate": {
+                                "max": 5000000,
+                                "error": "ESTIMATE_LINE_ITEM_RATE_LIMIT"
+                            },
+                            "quantity": {
+                                "max": 999999,
+                                "error": "ESTIMATE_LINE_ITEM_QTY_LIMIT"
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "head": "WORKS_OVERHEADS",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "OverheadsTable",
+                        "withoutLabel": true,
+                        "key": "overheadsDetails"
+                    }
+                ]
+            },
+            {
+                "head": "",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        "type": "component",
+                        "component": "TotalEstAmount",
+                        "withoutLabel": true,
+                        "key": "totalEstimatedAmount"
+                    }
+                ]
+            },
+            // {
+            //     "head": "",
+            //     "subHead": "",
+            //     "navLink": "Work Details",
+            //     "body": [
+            //         {
+            //             "type": "component",
+            //             "component": "LabourAnalysis",
+            //             "withoutLabel": true,
+            //             "key": "labourMaterialAnalysis"
+            //         }
+            //     ]
+            // },
+            // {
+            //     "navLink": "Work Details",
+            //     "head": "",
+            //     "body": [
+            //         {
+            //             "type": "documentUpload",
+            //             "withoutLabel": true,
+            //             "module": "Estimate",
+            //             "error": "WORKS_REQUIRED_ERR",
+            //             "name": "uploadedDocs",
+            //             "customClass": "",
+            //             "localePrefix": "ESTIMATE_DOC"
+            //         }
+            //     ]
+            // }
+        ]
+    };
+
     const closeToast = () => {
         setTimeout(() => {
             setShowToast(null)
@@ -208,7 +375,18 @@ const CreateEstimate = () => {
             // else{
             //     setSessionFormData({ ...sessionFormData, ...formData });
             // }
-            setSessionFormData({ ...sessionFormData, ...formData });
+
+            if (sessionFormData?.sorMeasurementSheetTableData && !formData?.sorMeasurementSheetTableData) {
+                const formDetails = cloneDeep(formData);
+                // delete formDetails?.measurementSheetTableData
+                setSessionFormData(formDetails)
+            }  else if (sessionFormData?.nonSORMeasurementSheetTableData && !formData?.nonSORMeasurementSheetTableData) {
+
+            }   else {
+                setSessionFormData({ ...sessionFormData, ...formData });
+
+            }
+            
         }
 
     }
@@ -434,7 +612,7 @@ const CreateEstimate = () => {
             isDescriptionBold={false}
             noBreakLine={true}
             showMultipleCardsWithoutNavs={false}
-            showMultipleCardsInNavs={false}
+            showMultipleCardsInNavs={true}
             horizontalNavConfig={configNavItems}
             showFormInNav={true}  
             showNavs={true}

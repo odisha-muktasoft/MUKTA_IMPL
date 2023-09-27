@@ -1714,6 +1714,25 @@ const PaymentIcon = ({ className = "", fill = "none", style = {} }) => (
   </svg>
 );
 
+const CrossIcon = ({ className = "", fill = "none", style = {} }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#clip0_9447_27171)">
+      <path d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z" fill="#0B0C0C" />
+    </g>
+    <defs>
+      <clipPath id="clip0_9447_27171">
+        <rect width="24" height="24" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+)
+
+const PlusIcon = ({ className = "", fill = "none", style = {} }) => (
+  <svg width="28" height="25" viewBox="0 0 28 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20.408 6.47174C16.6462 3.0916 10.5648 3.0916 6.80297 6.47174C3.04118 9.85188 3.04118 15.3163 6.80297 18.6965C10.5648 22.0766 16.6462 22.0766 20.408 18.6965C24.1698 15.3163 24.1698 9.85188 20.408 6.47174ZM14.5646 17.8346H12.6463V13.4459H7.76212L7.76212 11.7223L12.6463 11.7223L12.6463 7.33358H14.5646L14.5646 11.7223L19.4488 11.7223L19.4488 13.4459H14.5646V17.8346Z" fill="#F47738" />
+  </svg>
+)
+
 const ExpenditureIcon = BillsIcon;
 
 export {
@@ -1863,5 +1882,7 @@ export {
   ExpenditureIcon,
   DoubleTickIcon,
   InfoIcon,
-  PaymentIcon
+  PaymentIcon,
+  PlusIcon,
+  CrossIcon
 };

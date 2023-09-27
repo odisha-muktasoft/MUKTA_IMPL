@@ -1,7 +1,20 @@
 import React, { Fragment, useState, useEffect, useMemo } from "react";
-import { AddIcon, DeleteIcon, RemoveIcon, TextInput, CardLabelError, Dropdown, Loader, TextArea,InputTextAmount } from "@egovernments/digit-ui-react-components";
+import { 
+  AddIcon, 
+  DeleteIcon, 
+  RemoveIcon, 
+  TextInput, 
+  CardLabelError, 
+  Dropdown, 
+  Loader, 
+  TextArea,
+  InputTextAmount,
+  CrossIcon,
+  PlusIcon
+ } from "@egovernments/digit-ui-react-components";
 import { Controller } from "react-hook-form";
-import _ from "lodash";
+import MeasurementSheetTable from "./MeasurementSheetTable";
+import cloneDeep from "lodash/cloneDeep";
 
 const NonSORTable = ({ control, watch,config, ...props }) => {
   const populators = config?.populators
@@ -9,9 +22,11 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   const formFieldName = "nonSORTablev1"; // this will be the key under which the data for this table will be present on onFormSubmit
+  const formFieldNames = "nonSORDetailsData";
+  
   const initialState = [
     {
-      key: 1,
+      key: 0,
       isShow: true,
     },
   ];
@@ -20,8 +35,8 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
 
   // const [rows, setRows] = useState(initialState);
   const [rows, setRows] = useState(
-    formData?.[formFieldName]?.length > 2
-      ? formData?.[formFieldName]
+    formData?.[formFieldNames]?.length > 0
+      ? formData?.[formFieldNames]
           ?.map((row, index) => {
             return row
               ? {
@@ -59,6 +74,12 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
   useEffect(() => {
     setTotal(formData);
   }, [formData, rows]);
+
+  useEffect(() => {
+    setValue(formFieldNames, [{
+      isMeasurementSheet: false
+    }])
+  }, [])
 
   const getStyles = (index) => {
     let obj = {};
@@ -121,39 +142,24 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
     }
     return true;
   };
+
   const removeRow = (row) => {
-    const countRows = rows.reduce((acc,row)=> {
-      return row.isShow ? acc+1 : acc
-    },0)
-    if(countRows === 1) {
-      //clear the 1st rows data
-     
-      formData?.[formFieldName]?.map((row,index) => {
-        if(row) {
-          setValue(`${formFieldName}.${index}.description`,'')
-          setValue(`${formFieldName}.${index}.rate`,"0")
-          setValue(`${formFieldName}.${index}.uom`,'')
-          setValue(`${formFieldName}.${index}.estimatedQuantity`,'')
-          setValue(`${formFieldName}.${index}.estimatedAmount`,"0")
-        }
-      })
-      
-      return 
-    }
+    const noOfRows = cloneDeep(rows);
+    const noOfRowsData = cloneDeep(formData?.[formFieldNames]);
+    noOfRows.splice(row?.key, 1);
+    noOfRowsData?.splice(row?.key, 1);
     
-    //make a new state here which doesn't have this key
-    const updatedState = rows.map((e) => {
-      if (e.key === row.key) {
-        return {
-          key: e.key,
-          isShow: false,
-        };
+    const reIndexData = noOfRows?.map((data, index) => {
+      return {
+        ...data,
+        key: index
       }
-      return e;
     });
-    setValue(`${formFieldName}.${row.key}.estimatedAmount`, 0);
-    setRows((prev) => updatedState);
+
+    setValue(formFieldNames, noOfRowsData);
+    setRows((prev) => reIndexData);
   };
+
   const addRow = () => {
     const obj = {
       key: null,
@@ -161,6 +167,16 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
     };
     obj.key = rows[rows.length - 1].key + 1;
     setRows((prev) => [...prev, obj]);
+  };
+
+  const showHideMeasurementSheet = (row, index) => {
+    if (!formData?.[formFieldNames]) setValue(formFieldNames, []);
+    let noOfRows = cloneDeep(formData?.[formFieldNames] || []);
+    noOfRows[index] = {
+      ...noOfRows?.[index],
+      isMeasurementSheet: !(noOfRows?.[index]?.isMeasurementSheet)
+    }
+    setValue(formFieldNames, noOfRows);
   };
 
   const getDropDownDataFromMDMS = (t, row, inputName, props, register, optionKey = "name", options = []) => {
@@ -216,26 +232,16 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
   const renderBody = useMemo(() => {
     let i = 0;
     return rows.map((row, index) => {
-      if (row.isShow) i++;
+      // if (row.isShow) i++;
       return row.isShow && (
+        <>
           <tr key={index} style={!row?.isShow ? {display:'none'}: {}}>
-            <td style={getStyles(1)}>{i}</td>
+            <td style={getStyles(1)}>{index}</td>
 
             <td style={getStyles(2)}>
               <div style={cellContainerStyle}>
                 <div>
-                  {/* <TextInput
-                    style={{ marginBottom: "0px", wordWrap: "break-word" }}
-                    maxlength={512}
-                    name={`${formFieldName}.${row.key}.description`}
-                    inputRef={register({
-                      required: true,
-                      maxLength: 512,
-                      //@Burhan-j Don't remove this whitespace in pattern, it is used for validation
-                      // pattern: /^[a-zA-Z0-9_ .$@#{}:;&(),\/ ]*$/
-                    })}
-                  /> */}
-                  <TextArea
+                  <TextInput
                     style={{ marginBottom: "0px", wordWrap: "break-word" }}
                     name={`${formFieldName}.${row.key}.description`}
                     inputRef={register({
@@ -296,18 +302,6 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
             <td style={getStyles(4)}>
               <div style={cellContainerStyle}>
                 <div>
-                  {/* <TextInput
-                    style={{ marginBottom: "0px", textAlign: "right", paddingRight: "1rem" }}
-                    name={`${formFieldName}.${row.key}.rate`}
-                    inputRef={register({
-                      required: true,
-                      max:populators?.rate?.max,
-                      // pattern: /^\d*\.?\d*$/,
-                      // pattern: /^\d*(\.\d{0,2})?$/,
-                      pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
-                    })}
-                    onChange={(e) => setAmountField(e, row)}
-                  /> */}
                   <Controller
                     defaultValue={formData?.[formFieldName]?.[row?.key]?.rate}
                     render={({ onChange, ref, value }) => (
@@ -333,8 +327,6 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
                     rules={{
                       required: true,
                       max:populators?.rate?.max,
-                      // pattern: /^\d*\.?\d*$/,
-                      // pattern: /^\d*(\.\d{0,2})?$/,
                       pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                     }}
                     control={control}
@@ -356,19 +348,23 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
 
             <td style={getStyles(5)}>
               <div style={cellContainerStyle}>
-                <div>
-                  <TextInput
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div >
+                <TextInput
                     style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
                     name={`${formFieldName}.${row.key}.estimatedQuantity`}
                     inputRef={register({
                       required: true,
-                      // pattern: /^[0-9]*$/,
                       max:populators?.quantity?.max,
                       pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                     })}
                     onChange={(e) => setAmountField(e, row)}
                   />
                 </div>
+                <div onClick={() => showHideMeasurementSheet(row, index)}>
+                  <PlusIcon />
+                </div>
+              </div>
                 <div style={errorContainerStyles}>
                   {errors && errors?.[formFieldName]?.[row.key]?.estimatedQuantity?.type === "pattern" && (
                     <CardLabelError style={errorCardStyle}>{t(`WORKS_QT_ERR`)}</CardLabelError>
@@ -386,51 +382,28 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
             <td style={getStyles(6)}>
               <div>
                 <div>
-                  {/* <TextInput
-                    style={{ marginBottom: "0px", textAlign: "right", paddingRight: "1rem" }}
-                    name={`${formFieldName}.${row.key}.estimatedAmount`}
-                    inputRef={register({
-                      required: true,
-                      pattern: /^\d*\.?\d*$/,
-                      // pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/
-                    })}
-                    disable={true}
-                  /> */}
                   <Controller
                     defaultValue={formData?.[formFieldName]?.[row?.key]?.estimatedAmount}
-                    // defaultValue={getValues(`${formFieldName}.${row.key}.estimatedAmount`)}
                     render={({ onChange, ref, value }) => (
                       <InputTextAmount
                         value={formData?.[formFieldName]?.[row?.key]?.estimatedAmount}
-                        // value={getValues(`${formFieldName}.${row.key}.estimatedAmount`)}
                         style={{ marginBottom: "0px", textAlign: "right", paddingRight: "1rem" }}
                         type={"text"}
                         name={`${formFieldName}.${row.key}.estimatedAmount`}
                         onChange= {()=>{}}
-                        // onChange={(e)=>{
-                        //   onChange(e)}
-                        // }
                         inputRef={ref}
-                        // errorStyle={errors?.[populators.name]}
                         disable={true}
-                        // customIcon={populators?.customIcon}
-                        // customClass={populators?.customClass}
                       />
                     )}
                     name={`${formFieldName}.${row.key}.estimatedAmount`}
                     rules={{
                       required: true,
                       pattern: /^\d*\.?\d*$/,
-                      // pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/
                     }}
                     control={control}
                    />
                 </div>
                 <div style={errorContainerStyles}>
-                  {/* {errors && errors?.[formFieldName]?.[row.key]?.estimatedAmount?.type === "pattern" && (
-            <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>)}
-          {errors && errors?.[formFieldName]?.[row.key]?.estimatedAmount?.type === "required" && (
-            <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>)} */}
                 </div>
               </div>
             </td>
@@ -445,6 +418,34 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
               <div style={errorContainerStyles}></div>
             </td>
           </tr>
+          {formData?.[formFieldNames]?.[row?.key]?.isMeasurementSheet ? <tr>
+            <td colSpan={1} style={getStyles(1)}></td>
+            <td colSpan={7} style={getStyles(2)}>
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <h2 style={{ fontWeight: "700" }}>Measurement Sheet</h2>
+                  <div onClick={() => showHideMeasurementSheet(row, index)}>
+                    <CrossIcon />
+                  </div>
+                </div>
+                <div style={{ padding: "0px 20px" }}>
+                  <MeasurementSheetTable
+                    control={control}
+                    watch={watch}
+                    config={config}
+                    indexValue={row?.key}
+                    data={formData?.[formFieldNames]?.[row?.key]?.measurementSheetData}
+                    formFieldNames={formFieldNames}
+                    props={props}
+                    key={`${formFieldNames} + ${row?.key}`}
+                    formFieldName={`nonSORMeasurementSheetTableData.${index}`}
+                  />
+                </div>
+              </div>
+            </td>
+            <td colSpan={1} style={getStyles(3)}></td>
+          </tr> : null}
+          </>
         
       );
     });
@@ -470,14 +471,12 @@ const NonSORTable = ({ control, watch,config, ...props }) => {
         </tr>
 
         <tr>
-          {/* <td style={getStyles(1)}></td> */}
           <td colSpan={7} style={{ textAlign: "center" }} onClick={addRow}>
             <span>
               <AddIcon fill={"#F47738"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
               <label style={{ marginLeft: "10px", fontWeight: "600", color: "#F47738" }}>{t("WORKS_ADD_ITEM")}</label>
             </span>
           </td>
-          {/* <td style={getStyles(1)}></td> */}
         </tr>
       </tbody>
     </table>
