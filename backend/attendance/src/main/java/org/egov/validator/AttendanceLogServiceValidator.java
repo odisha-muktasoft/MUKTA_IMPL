@@ -120,6 +120,9 @@ public class AttendanceLogServiceValidator {
         // Verify given attendance log against register params
         validateAttendanceLogsAgainstRegisterParams(attendanceLogRequest);
 
+        // Check if the attendance of an individual is marked for a same day in different project
+        checkAttendeeIsMappedToAnotherRegisterOrNot(attendanceLogRequest);
+
         // Verify if individuals are part of the given register and individuals were active during given attendance log time.
         validateAttendees(attendanceLogRequest);
 
@@ -266,8 +269,7 @@ public class AttendanceLogServiceValidator {
 
         log.info("All attendees are fetched successfully for register ["+registerId+"]");
 
-        // Check if the attendance of an individual is marked for a same day in different project
-        checkAttendeeIsMappedToAnotherRegisterOrNot(attendanceLogRequest);
+
 
         // Convert the fetched Attendee List into a Map with individualId as key and corresponding Attendee list as value.
         Map<String, List<IndividualEntry>> attendanceAttendeeListMap = fetchAttendanceAttendeeLst
@@ -281,6 +283,12 @@ public class AttendanceLogServiceValidator {
         log.info("Attendee validation is done for register ["+registerId+"]");
     }
 
+    /**
+     * This method is used to check if the same individual is mapped to
+     * another register and his/her attendance is logged for the same day
+     * or not
+     * @param attendanceLogRequest
+     */
     private void checkAttendeeIsMappedToAnotherRegisterOrNot(AttendanceLogRequest attendanceLogRequest) {
         List<AttendanceLog> attendanceLogs = attendanceLogRequest.getAttendance();
 
@@ -305,6 +313,10 @@ public class AttendanceLogServiceValidator {
         }
     }
 
+    /**
+     * @param individualId
+     * @return List of all the Attendance Logs  entries for a particular individual
+     */
     public List<AttendanceLog> fetchAllTheAttendanceLogsForIndividual(String individualId) {
         AttendanceLogSearchCriteria searchCriteria = AttendanceLogSearchCriteria
                 .builder()
@@ -314,6 +326,12 @@ public class AttendanceLogServiceValidator {
     }
 
 
+    /**
+     * This method is used to check the attendance time passed in the attendance logs request of a particular individual
+     * with all the attendance time which we get from the oepn search of attendance log on the individual id
+     * @param attendanceLogs
+     * @param attendanceAttendeeListMap
+     */
     private void identifyAttendeeMappedInAnotherRegisterForASameDay(List<AttendanceLog> attendanceLogs, Map<String, List<AttendanceLog>> attendanceAttendeeListMap) {
         if (!attendanceLogs.isEmpty() && !attendanceAttendeeListMap.isEmpty()) {
             Instant requestAttendanceLogsStartTime = Instant.ofEpochMilli(attendanceLogs.get(0).getTime().longValue());
