@@ -61,6 +61,9 @@ public class AttendanceLogServiceValidator {
         // Verify given attendance log against register params
         validateAttendanceLogsAgainstRegisterParams(attendanceLogRequest);
 
+        // Check if the attendance of an individual is marked for a same day in different project
+        checkAttendeeIsMappedToAnotherRegisterOrNot(attendanceLogRequest);
+
         // Verify if individuals are part of the given register and individuals were active during given attendance log time.
         validateAttendees(attendanceLogRequest);
 
@@ -120,8 +123,6 @@ public class AttendanceLogServiceValidator {
         // Verify given attendance log against register params
         validateAttendanceLogsAgainstRegisterParams(attendanceLogRequest);
 
-        // Check if the attendance of an individual is marked for a same day in different project
-        checkAttendeeIsMappedToAnotherRegisterOrNot(attendanceLogRequest);
 
         // Verify if individuals are part of the given register and individuals were active during given attendance log time.
         validateAttendees(attendanceLogRequest);
