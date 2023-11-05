@@ -4,7 +4,9 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 const Captcha = (props) => {
 
-    const key = globalConfigs?.getConfig("RECAPTCHA_SITE_KEY");
+
+    //use this key if running locally 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+    const key = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" || globalConfigs?.getConfig("RECAPTCHA_SITE_KEY");
 
     const onChange = (value) => {
         if(value)
