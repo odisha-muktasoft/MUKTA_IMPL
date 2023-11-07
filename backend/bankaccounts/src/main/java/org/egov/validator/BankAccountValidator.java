@@ -3,7 +3,10 @@ package org.egov.validator;
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.repository.BankAccountRepository;
+import org.egov.service.EncryptionService;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.IndividualUtil;
 import org.egov.util.OrganisationUtil;
@@ -13,11 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static org.egov.service.BankAccountService.BANK_ACCOUNT_NUMBER_ENCRYPT_KEY;
 import static org.egov.util.BankAccountConstant.IND;
 import static org.egov.util.BankAccountConstant.ORG;
 
@@ -31,9 +32,17 @@ public class BankAccountValidator {
     @Autowired
     private OrganisationUtil organisationUtil;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
+    @Autowired
+    private BankAccountRepository bankAccountRepository;
+
     public static final String jsonPathForInds = "$.Individual.*.id";
 
     public static final String jsonPathForOrgs = "$.organisations.*.id";
+
+
 
     /**
      * validate the search bank account
@@ -70,6 +79,8 @@ public class BankAccountValidator {
         validateRequestInfo(requestInfo, errorMap);
         validateBankAccount(bankAccountList, errorMap);
 
+        checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot(bankAccountRequest, errorMap,Boolean.TRUE);
+
         validateOrgIdAndIndId(bankAccountRequest, errorMap);
 
         if (!errorMap.isEmpty())
@@ -84,6 +95,7 @@ public class BankAccountValidator {
 
         validateRequestInfo(requestInfo, errorMap);
         validateOnUpdate(bankAccountList, errorMap);
+        checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot(bankAccountRequest, errorMap,Boolean.FALSE);
         validateOrgIdAndIndId(bankAccountRequest, errorMap);
 
         if (!errorMap.isEmpty())
@@ -271,6 +283,48 @@ public class BankAccountValidator {
         }
         if (requestInfo.getUserInfo() != null && StringUtils.isBlank(requestInfo.getUserInfo().getUuid())) {
             throw new CustomException("USERINFO_UUID", "UUID is mandatory");
+        }
+    }
+
+    private void checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot(BankAccountRequest bankAccountRequest, Map<String, String> errorMap, Boolean isCreate){
+        String tenantId = bankAccountRequest.getBankAccounts().get(0).getTenantId();
+
+        BankAccountSearchCriteria bankAccountSearchCriteria;
+        if(isCreate.equals(Boolean.TRUE)){
+            List<String> accountNumber= Arrays.asList(bankAccountRequest.getBankAccounts().get(0).getBankAccountDetails().get(0).getAccountNumber());
+            bankAccountSearchCriteria = BankAccountSearchCriteria.builder()
+                    .tenantId(tenantId)
+                    .accountNumber(accountNumber)
+                    .build();
+        }else{
+          String referenceId=  bankAccountRequest.getBankAccounts().get(0).getReferenceId();
+            bankAccountSearchCriteria=BankAccountSearchCriteria.builder()
+                    .tenantId(tenantId)
+                    .referenceId(Arrays.asList(referenceId))
+                    .build();
+        }
+
+
+        BankAccountSearchRequest searchRequest= BankAccountSearchRequest.builder()
+                                                .bankAccountDetails(bankAccountSearchCriteria)
+                                                .build();
+
+        if(isCreate.equals(Boolean.TRUE)){
+            encryptionService.encrypt(searchRequest, BANK_ACCOUNT_NUMBER_ENCRYPT_KEY);
+        }
+
+
+        List<BankAccount> encryptedBankAccountList = bankAccountRepository.getBankAccount(searchRequest);
+
+        if(!encryptedBankAccountList.isEmpty()){
+            encryptedBankAccountList.forEach(bankAccount -> {
+                if(bankAccount.getServiceCode().equalsIgnoreCase("IND")){
+                    errorMap.put("DUPLICATE_BANK_ACCOUNT_NUMBER", "The Provided Bank Account Number is already mapped to this : "+bankAccount.getReferenceId()+" individual id");
+                }else{
+                    errorMap.put("DUPLICATE_BANK_ACCOUNT_NUMBER", "The Provided Bank Account Number is already mapped to this : "+bankAccount.getReferenceId()+" organisation id");
+                }
+            });
+
         }
     }
 }
