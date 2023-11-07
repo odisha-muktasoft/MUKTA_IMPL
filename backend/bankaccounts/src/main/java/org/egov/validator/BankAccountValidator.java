@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.repository.BankAccountRepository;
 import org.egov.service.EncryptionService;
+import org.egov.service.EnrichmentService;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.IndividualUtil;
 import org.egov.util.OrganisationUtil;
@@ -37,6 +38,8 @@ public class BankAccountValidator {
 
     @Autowired
     private BankAccountRepository bankAccountRepository;
+    @Autowired
+    private EnrichmentService enrichmentService;
 
     public static final String jsonPathForInds = "$.Individual.*.id";
 
@@ -312,7 +315,7 @@ public class BankAccountValidator {
         if(isCreate.equals(Boolean.TRUE)){
             encryptionService.encrypt(searchRequest, BANK_ACCOUNT_NUMBER_ENCRYPT_KEY);
         }
-
+        enrichmentService.enrichBankAccountOnSearch(searchRequest);
 
         List<BankAccount> encryptedBankAccountList = bankAccountRepository.getBankAccount(searchRequest);
 
