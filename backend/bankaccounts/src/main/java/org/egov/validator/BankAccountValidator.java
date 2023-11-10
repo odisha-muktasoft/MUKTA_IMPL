@@ -290,24 +290,24 @@ public class BankAccountValidator {
     }
 
     private void checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot(BankAccountRequest bankAccountRequest, Map<String, String> errorMap, Boolean isCreate){
+        log.info("BankAccountValidator::checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot");
         String tenantId = bankAccountRequest.getBankAccounts().get(0).getTenantId();
-
+        String referenceId=bankAccountRequest.getBankAccounts().get(0).getReferenceId();
         BankAccountSearchCriteria bankAccountSearchCriteria;
         if(isCreate.equals(Boolean.TRUE)){
+            log.info("BankAccountValidator::checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot for create bank account details call");
             List<String> accountNumber= Arrays.asList(bankAccountRequest.getBankAccounts().get(0).getBankAccountDetails().get(0).getAccountNumber());
             bankAccountSearchCriteria = BankAccountSearchCriteria.builder()
                     .tenantId(tenantId)
                     .accountNumber(accountNumber)
                     .build();
         }else{
-          String referenceId=  bankAccountRequest.getBankAccounts().get(0).getReferenceId();
+            log.info("BankAccountValidator::checkAccNumberAndIfscCodeLinkedToOtherBenefeciaryOrNot for update bank account details call");
             bankAccountSearchCriteria=BankAccountSearchCriteria.builder()
                     .tenantId(tenantId)
                     .referenceId(Arrays.asList(referenceId))
                     .build();
         }
-
-
         BankAccountSearchRequest searchRequest= BankAccountSearchRequest.builder()
                                                 .bankAccountDetails(bankAccountSearchCriteria)
                                                 .build();
@@ -316,15 +316,16 @@ public class BankAccountValidator {
             encryptionService.encrypt(searchRequest, BANK_ACCOUNT_NUMBER_ENCRYPT_KEY);
         }
         enrichmentService.enrichBankAccountOnSearch(searchRequest);
-
         List<BankAccount> encryptedBankAccountList = bankAccountRepository.getBankAccount(searchRequest);
-
         if(!encryptedBankAccountList.isEmpty()){
             encryptedBankAccountList.forEach(bankAccount -> {
+                if(!bankAccount.getReferenceId().equals(referenceId)){
+                    log.info("Bank Account is already linked to other beneficiary");
                 if(bankAccount.getServiceCode().equalsIgnoreCase("IND")){
                     errorMap.put("DUPLICATE_BANK_ACCOUNT_NUMBER", "The Provided Bank Account Number is already mapped to this : "+bankAccount.getReferenceId()+" individual id");
                 }else{
                     errorMap.put("DUPLICATE_BANK_ACCOUNT_NUMBER", "The Provided Bank Account Number is already mapped to this : "+bankAccount.getReferenceId()+" organisation id");
+                }
                 }
             });
 
