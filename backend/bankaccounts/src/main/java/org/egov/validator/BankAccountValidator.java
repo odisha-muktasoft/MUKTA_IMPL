@@ -320,12 +320,12 @@ public class BankAccountValidator {
         if(!encryptedBankAccountList.isEmpty()){
             encryptedBankAccountList.forEach(bankAccount -> {
                 if(!bankAccount.getReferenceId().equals(referenceId)){
-                    log.info("Bank Account is already linked to other beneficiary");
                 if(bankAccount.getServiceCode().equalsIgnoreCase("IND")){
                     errorMap.put("DUPLICATE_BANK_ACCOUNT_NUMBER", "The Provided Bank Account Number is already mapped to this : "+bankAccount.getReferenceId()+" individual id");
                 }else{
                     errorMap.put("DUPLICATE_BANK_ACCOUNT_NUMBER", "The Provided Bank Account Number is already mapped to this : "+bankAccount.getReferenceId()+" organisation id");
                 }
+                    log.info("Request triggered for the same individual with which the bank account is already linked");
                 }
             });
 
