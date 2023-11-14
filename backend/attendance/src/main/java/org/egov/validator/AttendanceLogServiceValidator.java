@@ -396,6 +396,7 @@ public class AttendanceLogServiceValidator {
     private void fetchEntryAndExitTime(  List<String> attendanceByDay, Map<String,String> entryAndExitTime ){
         String entryTime = null;
         String exitTime=null;
+        if(!attendanceByDay.isEmpty()){
         for (String entryInfo : attendanceByDay) {
             if (entryInfo.contains("ENTRY")) {
                 entryTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
@@ -404,6 +405,9 @@ public class AttendanceLogServiceValidator {
                 exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
                 entryAndExitTime.put("EXIT",exitTime);
             }
+        }
+        }else{
+            log.info("Attendance Map is empty");
         }
 
 
