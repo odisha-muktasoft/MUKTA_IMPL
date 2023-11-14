@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -293,25 +294,49 @@ public class AttendanceLogServiceValidator {
     private void checkAttendeeIsMappedToAnotherRegisterOrNot(AttendanceLogRequest attendanceLogRequest) {
         List<AttendanceLog> attendanceLogs = attendanceLogRequest.getAttendance();
 
+
         Map<String, List<AttendanceLog>> attendanceLogMap = attendanceLogs.stream().
                 collect(Collectors.groupingBy(AttendanceLog::getIndividualId));
 
-        for (Map.Entry<String, List<AttendanceLog>> entry : attendanceLogMap.entrySet()) {
-            String individualId = entry.getKey();
-            List<AttendanceLog> attendanceLogsOfAnIndividual = entry.getValue();
-            Map<String, List<AttendanceLog>> attendanceAttendeeListMap = new HashMap<>();
+        Map<String, List<String>> requestAttendanceLogsByDay=createAttendanceMap(attendanceLogs);
+
+        for (Map.Entry<String, List<String>> entry : requestAttendanceLogsByDay.entrySet()) {
+            String[] keyParts = entry.getKey().split("_");
+            String individualId =keyParts[0];
+            Map<String, List<String>> fetchedAttendanceLogsByDay= new HashMap<>();
             boolean checkAttendeeMappedToAnotherRegister = false;
             if (!fetchAllTheAttendanceLogsForIndividual(individualId).isEmpty()) {
                 checkAttendeeMappedToAnotherRegister = true;
                 List<AttendanceLog> fetchAttendeeListMappedWithAnotherRegister = fetchAllTheAttendanceLogsForIndividual(individualId);
-                attendanceAttendeeListMap = fetchAttendeeListMappedWithAnotherRegister
-                        .stream()
-                        .collect(Collectors.groupingBy(AttendanceLog::getIndividualId));
+
+                fetchedAttendanceLogsByDay = createAttendanceMap(fetchAttendeeListMappedWithAnotherRegister);
             }
+
+
             if (checkAttendeeMappedToAnotherRegister) {
-                identifyAttendeeMappedInAnotherRegisterForASameDay(attendanceLogsOfAnIndividual, attendanceAttendeeListMap);
+                identifyAttendeeMappedInAnotherRegisterForASameDay(entry, fetchedAttendanceLogsByDay, individualId);
             }
         }
+    }
+
+
+    private Map<String, List<String>> createAttendanceMap(List<AttendanceLog> attendanceLogs){
+        // Create a map to store entry and exit times grouped by day
+        Map<String, List<String>> attendanceByDay = new HashMap<>();
+        for (AttendanceLog record : attendanceLogs) {
+            String individualId =  record.getIndividualId();
+            long timeMillis =  record.getTime().longValue();
+            Date time = new Date(timeMillis);
+
+            // Format the date to get the day
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String day = dateFormat.format(time);
+
+            // Group entry and exit times by day
+            attendanceByDay.computeIfAbsent(individualId + "_" + day, k -> new ArrayList<>())
+                    .add(record.getType() + " at " + new SimpleDateFormat("HH:mm:ss").format(time));
+        }
+        return attendanceByDay;
     }
 
     /**
@@ -330,26 +355,57 @@ public class AttendanceLogServiceValidator {
     /**
      * This method is used to check the attendance time passed in the attendance logs request of a particular individual
      * with all the attendance time which we get from the oepn search of attendance log on the individual id
-     * @param attendanceLogs
-     * @param attendanceAttendeeListMap
+     * @param requestedAttendanceLogsByDay
+     * @param fetchedLogsByDay
      */
-    private void identifyAttendeeMappedInAnotherRegisterForASameDay(List<AttendanceLog> attendanceLogs, Map<String, List<AttendanceLog>> attendanceAttendeeListMap) {
-        if (!attendanceLogs.isEmpty() && !attendanceAttendeeListMap.isEmpty()) {
-            Instant requestAttendanceLogsStartTime = Instant.ofEpochMilli(attendanceLogs.get(0).getTime().longValue());
-            Instant requestAttendanceLogsEndTime = Instant.ofEpochMilli(attendanceLogs.get(1).getTime().longValue());
+    private void identifyAttendeeMappedInAnotherRegisterForASameDay(Map.Entry<String, List<String>> requestedAttendanceLogsByDay,
+                                                                    Map<String, List<String>> fetchedLogsByDay, String individualId) {
+        log.info("AttendanceLogServiceValidator:: identifyAttendeeMappedInAnotherRegisterForASameDay");
+        Map<String, List<String>> mapFromEntry = new HashMap<>();
+        mapFromEntry.put(requestedAttendanceLogsByDay.getKey(), requestedAttendanceLogsByDay.getValue());
+        Map<String,String> entryAndExitTime= new HashMap<>();
 
-            String givenIndividualId = attendanceLogs.get(0).getIndividualId();
-            if (attendanceAttendeeListMap.containsKey(givenIndividualId)) {
-                List<AttendanceLog> lst = attendanceAttendeeListMap.get(givenIndividualId);
-                for (AttendanceLog attenLog : lst) {
-                    Instant otherAttendanceLogsTime = Instant.ofEpochMilli(attenLog.getTime().longValue());
-                    if (otherAttendanceLogsTime.compareTo(requestAttendanceLogsStartTime) == 0 || otherAttendanceLogsTime.compareTo(requestAttendanceLogsEndTime) == 0) {
-                        log.error("[" + givenIndividualId + "] is already engaged for the selected time");
-                        throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "[" + givenIndividualId + "] is already engaged for same day");
-                    }
+
+        mapFromEntry.forEach((key, value) -> {
+            List<String> value2 = fetchedLogsByDay.get(key);
+            String[] keyparts=key.split("_");
+            String day=keyparts[1];
+            Map<String,String> entryAndExitTimeForFetchedAttedance= new HashMap<>();
+            fetchEntryAndExitTime(mapFromEntry.get(key),entryAndExitTime);
+            fetchEntryAndExitTime(value2,entryAndExitTimeForFetchedAttedance);
+
+            if(value2 != null && !entryAndExitTime.isEmpty()&& !entryAndExitTimeForFetchedAttedance.isEmpty()){
+                if(entryAndExitTime.get("ENTRY").equals(entryAndExitTimeForFetchedAttedance.get("ENTRY"))
+                        && entryAndExitTime.get("EXIT").equals(entryAndExitTimeForFetchedAttedance.get("EXIT"))){
+                    log.error("Attedance is already marked for "+ "[" + individualId + "] " +
+                            "on this day :" +day +" for this time period "+entryAndExitTime.get("ENTRY") +"  to " + entryAndExitTime.get("EXIT"));
+                    throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for "+ "[" + individualId + "] " +
+                            "on this day :" +day +" for this time period "+entryAndExitTime.get("ENTRY") +"  to " + entryAndExitTime.get("EXIT"));
+
                 }
+
+            }
+
+
+
+    });
+    }
+
+    private void fetchEntryAndExitTime(  List<String> attendanceByDay, Map<String,String> entryAndExitTime ){
+        String entryTime = null;
+        String exitTime=null;
+        for (String entryInfo : attendanceByDay) {
+            if (entryInfo.contains("ENTRY")) {
+                entryTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
+                entryAndExitTime.put("ENTRY",entryTime);
+            } else if (entryInfo.contains("EXIT")) {
+                exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
+                entryAndExitTime.put("EXIT",exitTime);
             }
         }
+
+
+
     }
 
     private void identifyUnassociatedAndIneligibleAttendees(AttendanceLogRequest attendanceLogRequest, Map<String, List<IndividualEntry>> attendanceAttendeeListMap) {
