@@ -371,7 +371,9 @@ public class AttendanceLogServiceValidator {
             String[] keyparts=key.split("_");
             String day=keyparts[1];
             Map<String,String> entryAndExitTimeForFetchedAttedance= new HashMap<>();
+            log.info("Fetch Entry And Exit Time for requested attendance logs");
             fetchEntryAndExitTime(mapFromEntry.get(key),entryAndExitTime);
+            log.info("Fetch Entry and  Exit Time for fetched attendance logs");
             fetchEntryAndExitTime(value2,entryAndExitTimeForFetchedAttedance);
 
             if(value2 != null && !entryAndExitTime.isEmpty()&& !entryAndExitTimeForFetchedAttedance.isEmpty()){
