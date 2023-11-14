@@ -21,6 +21,8 @@
     import java.math.BigDecimal;
     import java.text.SimpleDateFormat;
     import java.time.Instant;
+    import java.time.LocalTime;
+    import java.time.format.DateTimeFormatter;
     import java.util.*;
     import java.util.stream.Collectors;
 
@@ -378,23 +380,50 @@
                 log.info("Fetch Entry and  Exit Time for fetched attendance logs");
                 fetchEntryAndExitTime(value2, entryAndExitTimeForFetchedAttedance);
                 if ( !entryAndExitTime.isEmpty() && !entryAndExitTimeForFetchedAttedance.isEmpty()) {
+                    if(!entryAndExitTime.get("ENTRY").equals(entryAndExitTime.get("EXIT"))){
                     if (entryAndExitTime.get("ENTRY").equals(entryAndExitTimeForFetchedAttedance.get("ENTRY"))
-                            && entryAndExitTime.get("EXIT").equals(entryAndExitTimeForFetchedAttedance.get("EXIT"))) {
+                            && (entryAndExitTime.get("EXIT").equals(entryAndExitTimeForFetchedAttedance.get("EXIT")) ||
+                           ! checkForHalfDayTime(entryAndExitTime.get("EXIT"),entryAndExitTimeForFetchedAttedance.get("EXIT")) ||
+                           ! checkForHalfDayTime(entryAndExitTimeForFetchedAttedance.get("EXIT"),entryAndExitTime.get("EXIT")))) {
                         log.error("Attedance is already marked for " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
                         throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
 
+                    }else{
+                        log.info("Logging Attendance for " + "[" + individualId + "] " +
+                                "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
                     }
+
+                }
 
                 }
             }else{
                     log.info("No Existing Attendance Logs found ");
                 }
 
-
-
         });
+        }
+
+        private Boolean checkForHalfDayTime(String requestExitTime, String fetchedExitTime){
+            Boolean attendanceMarkedForHalfDay=Boolean.FALSE;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            LocalTime time1 = LocalTime.parse(requestExitTime, formatter);
+            LocalTime time2 = LocalTime.parse(fetchedExitTime, formatter);
+            if (time1.isBefore(time2)) {
+                log.info("Half Day Attendance is Marked in the new Attendance Log");
+              return  attendanceMarkedForHalfDay=Boolean.FALSE;
+
+            } else if (time1.isAfter(time2)) {
+                log.info(" Attendance  Marked in the new Attendance Log is greater than the existing attendance");
+               return attendanceMarkedForHalfDay=Boolean.TRUE;
+
+            }else{
+                log.info("Attendance already Logged for the individual");
+                return attendanceMarkedForHalfDay=Boolean.FALSE;
+
+            }
+
         }
 
         private void fetchEntryAndExitTime(  List<String> attendanceByDay, Map<String,String> entryAndExitTime ){
