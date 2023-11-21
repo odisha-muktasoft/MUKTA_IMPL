@@ -393,8 +393,8 @@ public class AttendanceLogServiceValidator {
                             String exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
                             entryAndExitTimeForFetchedAttedance.put("EXIT", exitTime);
                         }
-                        validateAttendanceWithExistingOne(entryAndExitTime, entryAndExitTimeForFetchedAttedance, individualId, day, isUpdate);
                     }
+                    validateAttendanceWithExistingOne(entryAndExitTime, entryAndExitTimeForFetchedAttedance, individualId, day, isUpdate);
                 } else {
                     log.info("No Existing Attendance Logs found");
                 }
