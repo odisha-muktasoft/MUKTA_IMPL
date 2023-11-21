@@ -409,13 +409,11 @@ public class AttendanceLogServiceValidator {
     private void validateAttendanceWithExistingOne(Map<String, String> entryAndExitTime, Map<String, String> entryAndExitTimeForFetchedAttedance, String individualId, String day, Boolean isUpdate) {
         if (!entryAndExitTime.isEmpty() && !entryAndExitTimeForFetchedAttedance.isEmpty()) {
             if (!isUpdate || !entryAndExitTime.get("REGISTER_ID").equals(entryAndExitTimeForFetchedAttedance.get("REGISTER_ID"))) {
-                if (!entryAndExitTime.get("ENTRY").equals(entryAndExitTime.get("EXIT"))) {
-                    if (!entryAndExitTimeForFetchedAttedance.get("ENTRY").equals(entryAndExitTimeForFetchedAttedance.get("EXIT"))) {
-                        log.error("Attedance is already marked for " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
-                        throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
-                    }
+                if (!entryAndExitTime.get("EXIT").contains("09:00:00") || !entryAndExitTimeForFetchedAttedance.get("EXIT").contains("09:00:00")) {
+                    log.error("Attedance is already marked for " + "[" + individualId + "] " +
+                            "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
+                    throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for " + "[" + individualId + "] " +
+                            "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
                 } else {
                     log.info("Logging Attendance for " + "[" + individualId + "] " +
                             "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
