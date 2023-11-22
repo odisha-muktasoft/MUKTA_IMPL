@@ -409,20 +409,26 @@ public class AttendanceLogServiceValidator {
     private void validateAttendanceWithExistingOne(Map<String, String> entryAndExitTime, Map<String, String> entryAndExitTimeForFetchedAttedance, String individualId, String day, Boolean isUpdate) {
         if (!entryAndExitTime.isEmpty() && !entryAndExitTimeForFetchedAttedance.isEmpty()) {
             if (!isUpdate || !entryAndExitTime.get("REGISTER_ID").equals(entryAndExitTimeForFetchedAttedance.get("REGISTER_ID"))) {
-                if (!entryAndExitTime.get("EXIT").contains("09:00:00") || !entryAndExitTimeForFetchedAttedance.get("EXIT").contains("09:00:00")) {
-                    log.error("Attedance is already marked for " + "[" + individualId + "] " +
-                            "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
-                    throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for " + "[" + individualId + "] " +
-                            "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
+                if (!entryAndExitTimeForFetchedAttedance.get("EXIT").contains("09:00:00") ) {
+                    if(entryAndExitTime.get("EXIT").contains("09:00:00")){
+                        log.info("Logging Attendance for " + "[" + individualId + "] " +
+                                "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+                    }else{
+                        log.error("Attedance is already marked for " + "[" + individualId + "] " +
+                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
+                        throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for individual " + "[" + individualId + "] " +
+                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
+                    }
+
                 } else {
-                    log.info("Logging Attendance for " + "[" + individualId + "] " +
+                    log.info("Logging Attendance for individual" + "[" + individualId + "] " +
                             "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
                 }
             }
-            log.info("Logging Attendance for " + "[" + individualId + "] " +
+            log.info("Logging Attendance with Update Api call as no existing attendance logs with same register id is found " + "[" + individualId + "] " +
                     "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
         }
-        log.info("Logging Attendance for " + "[" + individualId + "] " +
+        log.info("Logging Attendance as this is the create logs call and there is not existing attendance logs for this individual " + "[" + individualId + "] " +
                 "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
     }
 
