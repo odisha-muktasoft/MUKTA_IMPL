@@ -388,16 +388,17 @@ public class AttendanceLogServiceValidator {
                 List<Map<String, String>> listOfAttendanceMap = new ArrayList<>();
                 Map<String, String> entryAndExitTimeForFetchedAttedance = new HashMap<>();
                 if (!value2.isEmpty()) {
+                    String registerId=null;
                     for (String entryInfo : value2) {
                         String exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
-                        String registerId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
+                        registerId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
                         if (!requestAttendanceRegisterID.equals(registerId)) {
                             entryAndExitTimeForFetchedAttedance.put(registerId, exitTime);
                             listOfAttendanceMap.add(entryAndExitTimeForFetchedAttedance);
                         }
 
                     }
-                    validateAttendanceWithExistingOne(entryAndExitTime, listOfAttendanceMap, individualId, day, isUpdate);
+                    validateAttendanceWithExistingOne(entryAndExitTime, listOfAttendanceMap, individualId, day, isUpdate,registerId,requestAttendanceRegisterID);
                 } else {
                     log.info("No Existing Attendance Logs found");
                 }
@@ -409,22 +410,20 @@ public class AttendanceLogServiceValidator {
         });
     }
 
-    private void validateAttendanceWithExistingOne(Map<String, String> entryAndExitTime, List<Map<String, String>> listOfAttendanceMap, String individualId, String day, Boolean isUpdate) {
+    private void validateAttendanceWithExistingOne(Map<String, String> entryAndExitTime, List<Map<String, String>> listOfAttendanceMap, String individualId,
+                                                   String day, Boolean isUpdate,String registerId, String requestAttendanceRegisterID) {
         if (!listOfAttendanceMap.isEmpty()) {
             for (Map<String, String> entryMap : listOfAttendanceMap) {
-                String requestAttendanceRegisterID = entryAndExitTime.get("EXIT").substring(entryAndExitTime.get("EXIT").indexOf("register") + "register".length()).trim();
-                String fetchedAttendanceRegisterID = entryMap.get("EXIT").substring(entryAndExitTime.get("EXIT").indexOf("register") + "register".length()).trim();
-
-                if (!isUpdate || !requestAttendanceRegisterID.equals(fetchedAttendanceRegisterID)) {
-                    if (!entryMap.get(fetchedAttendanceRegisterID).contains("09:00:00")) {
+                if (!isUpdate || !requestAttendanceRegisterID.equals(registerId)) {
+                    if (!entryMap.get(registerId).contains("09:00:00")) {
                         if (entryAndExitTime.get(requestAttendanceRegisterID).contains("09:00:00")) {
                             log.info("Logging Attendance for " + "[" + individualId + "] " +
-                                    "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+                                    "on this day :" + day + "with this as exit time " + entryAndExitTime.get(requestAttendanceRegisterID));
                         } else {
                             log.error("Attedance is already marked for " + "[" + individualId + "] " +
-                                    "on this day :" + day + "with this as exit time" + entryMap.get(fetchedAttendanceRegisterID));
+                                    "on this day :" + day + "with this as exit time" + entryMap.get(registerId));
                             throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for " + "[" + individualId + "] " +
-                                    "on this day :" + day + "with this as exit time" + entryMap.get(fetchedAttendanceRegisterID));
+                                    "on this day :" + day + "with this as exit time" + entryMap.get(registerId));
                         }
 
                     } else {
