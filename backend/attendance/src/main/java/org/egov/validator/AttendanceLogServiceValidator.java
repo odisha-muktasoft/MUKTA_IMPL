@@ -380,10 +380,10 @@ public class AttendanceLogServiceValidator {
             List<String> value2 = fetchedLogsByDay.get(key);
             String[] keyparts = key.split("_");
             String day = keyparts[1];
+            String requestRegisterId;
 
             log.info("Fetch Entry And Exit Time for requested attendance logs");
-            fetchEntryAndExitTime(mapFromEntry.get(key), entryAndExitTime);
-            String requestAttendanceRegisterID = entryAndExitTime.get("EXIT").substring(entryAndExitTime.get("EXIT").indexOf("register") + "register".length()).trim();
+            String requestAttendanceRegisterID =  fetchEntryAndExitTimeAndRegisterId(mapFromEntry.get(key), entryAndExitTime);
             if (value2 != null) {
                 List<Map<String, String>> listOfAttendanceMap = new ArrayList<>();
                 Map<String, String> entryAndExitTimeForFetchedAttedance = new HashMap<>();
@@ -444,13 +444,12 @@ public class AttendanceLogServiceValidator {
     }
 
 
-    private void fetchEntryAndExitTime(List<String> attendanceByDay, Map<String, String> entryAndExitTime) {
-        String entryTime = null;
+    private String fetchEntryAndExitTimeAndRegisterId(List<String> attendanceByDay, Map<String, String> entryAndExitTime) {
         String exitTime = null;
-        String registerId = null;
+        String requestRegisterId=null;
         if (!attendanceByDay.isEmpty()) {
             for (String entryInfo : attendanceByDay) {
-                registerId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
+                requestRegisterId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
                 //entryAndExitTime.put("REGISTER_ID", registerId);
               /*  if (entryInfo.contains("ENTRY")) {
                     entryTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
@@ -458,13 +457,14 @@ public class AttendanceLogServiceValidator {
                 } else*/
                 if (entryInfo.contains("EXIT")) {
                     exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
-                    entryAndExitTime.put(registerId, exitTime);
+                    entryAndExitTime.put(requestRegisterId, exitTime);
                 }
+
             }
         } else {
             log.info("Attendance Map is empty");
         }
-
+return requestRegisterId;
 
     }
 
