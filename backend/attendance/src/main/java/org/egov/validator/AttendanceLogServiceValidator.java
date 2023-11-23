@@ -329,7 +329,10 @@ public class AttendanceLogServiceValidator {
     private Map<String, List<String>> createAttendanceMap(List<AttendanceLog> attendanceLogs) {
         // Create a map to store entry and exit times grouped by day
         Map<String, List<String>> attendanceByDay = new HashMap<>();
-        for (AttendanceLog record : attendanceLogs) {
+        List<AttendanceLog> attendanceList=attendanceLogs.stream()
+                .filter(x -> x.getType().contains("EXIT"))
+                .collect(Collectors.toList());
+        for (AttendanceLog record : attendanceList) {
             String individualId = record.getIndividualId();
             long timeMillis = record.getTime().longValue();
             Date time = new Date(timeMillis);
@@ -380,21 +383,21 @@ public class AttendanceLogServiceValidator {
 
             log.info("Fetch Entry And Exit Time for requested attendance logs");
             fetchEntryAndExitTime(mapFromEntry.get(key), entryAndExitTime);
+            String requestAttendanceRegisterID = entryAndExitTime.get("EXIT").substring(entryAndExitTime.get("EXIT").indexOf("register") + "register".length()).trim();
             if (value2 != null) {
+                List<Map<String, String>> listOfAttendanceMap = new ArrayList<>();
                 Map<String, String> entryAndExitTimeForFetchedAttedance = new HashMap<>();
                 if (!value2.isEmpty()) {
                     for (String entryInfo : value2) {
+                        String exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
                         String registerId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
-                        entryAndExitTimeForFetchedAttedance.put("REGISTER_ID", registerId);
-                        if (entryInfo.contains("ENTRY")) {
-                            String entryTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
-                            entryAndExitTimeForFetchedAttedance.put("ENTRY", entryTime);
-                        } else if (entryInfo.contains("EXIT")) {
-                            String exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
-                            entryAndExitTimeForFetchedAttedance.put("EXIT", exitTime);
+                        if (!requestAttendanceRegisterID.equals(registerId)) {
+                            entryAndExitTimeForFetchedAttedance.put(registerId, exitTime);
+                            listOfAttendanceMap.add(entryAndExitTimeForFetchedAttedance);
                         }
+
                     }
-                    validateAttendanceWithExistingOne(entryAndExitTime, entryAndExitTimeForFetchedAttedance, individualId, day, isUpdate);
+                    validateAttendanceWithExistingOne(entryAndExitTime, listOfAttendanceMap, individualId, day, isUpdate);
                 } else {
                     log.info("No Existing Attendance Logs found");
                 }
@@ -406,30 +409,38 @@ public class AttendanceLogServiceValidator {
         });
     }
 
-    private void validateAttendanceWithExistingOne(Map<String, String> entryAndExitTime, Map<String, String> entryAndExitTimeForFetchedAttedance, String individualId, String day, Boolean isUpdate) {
-        if (!entryAndExitTime.isEmpty() && !entryAndExitTimeForFetchedAttedance.isEmpty()) {
-            if (!isUpdate || !entryAndExitTime.get("REGISTER_ID").equals(entryAndExitTimeForFetchedAttedance.get("REGISTER_ID"))) {
-                if (!entryAndExitTimeForFetchedAttedance.get("EXIT").contains("09:00:00") ) {
-                    if(entryAndExitTime.get("EXIT").contains("09:00:00")){
-                        log.info("Logging Attendance for " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
-                    }else{
-                        log.error("Attedance is already marked for " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
-                        throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for individual " + "[" + individualId + "] " +
-                                "on this day :" + day + " for this time period " + entryAndExitTimeForFetchedAttedance.get("ENTRY") + "  to " + entryAndExitTimeForFetchedAttedance.get("EXIT"));
-                    }
+    private void validateAttendanceWithExistingOne(Map<String, String> entryAndExitTime, List<Map<String, String>> listOfAttendanceMap, String individualId, String day, Boolean isUpdate) {
+        if (!listOfAttendanceMap.isEmpty()) {
+            for (Map<String, String> entryMap : listOfAttendanceMap) {
+                String requestAttendanceRegisterID = entryAndExitTime.get("EXIT").substring(entryAndExitTime.get("EXIT").indexOf("register") + "register".length()).trim();
+                String fetchedAttendanceRegisterID = entryMap.get("EXIT").substring(entryAndExitTime.get("EXIT").indexOf("register") + "register".length()).trim();
 
-                } else {
-                    log.info("Logging Attendance for individual" + "[" + individualId + "] " +
-                            "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
-                }
+                if (!isUpdate || !requestAttendanceRegisterID.equals(fetchedAttendanceRegisterID)) {
+                    if (!entryMap.get(fetchedAttendanceRegisterID).contains("09:00:00")) {
+                        if (entryAndExitTime.get(requestAttendanceRegisterID).contains("09:00:00")) {
+                            log.info("Logging Attendance for " + "[" + individualId + "] " +
+                                    "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+                        } else {
+                            log.error("Attedance is already marked for " + "[" + individualId + "] " +
+                                    "on this day :" + day + "with this as exit time" + entryMap.get(fetchedAttendanceRegisterID));
+                            throw new CustomException("ATTENDANCE_FOR_SAME_DAY", "Attedance is already marked for " + "[" + individualId + "] " +
+                                    "on this day :" + day + "with this as exit time" + entryMap.get(fetchedAttendanceRegisterID));
+                        }
+
+                    } else {
+                        log.info("Logging Attendance for individual" + "[" + individualId + "] " +
+                                "on this day :" + day + "with this as exit time" + entryAndExitTime.get(requestAttendanceRegisterID));
+                    }
+                } else
+                    log.info("Logging Attendance with Update Api call as no existing attendance logs with same register id is found " + "[" + individualId + "] " +
+                            "on this day :" + day + "with this as exit time" + entryAndExitTime.get(requestAttendanceRegisterID));
+
             }
-            log.info("Logging Attendance with Update Api call as no existing attendance logs with same register id is found " + "[" + individualId + "] " +
-                    "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+
+
         }
-        log.info("Logging Attendance as this is the create logs call and there is not existing attendance logs for this individual " + "[" + individualId + "] " +
-                "on this day :" + day + " for this time period " + entryAndExitTime.get("ENTRY") + "  to " + entryAndExitTime.get("EXIT"));
+        log.info("Logging Attendance as there is no existing attendance logs for this individual " + "[" + individualId + "] " +
+                "on this day :" + day);
     }
 
 
@@ -440,13 +451,14 @@ public class AttendanceLogServiceValidator {
         if (!attendanceByDay.isEmpty()) {
             for (String entryInfo : attendanceByDay) {
                 registerId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
-                entryAndExitTime.put("REGISTER_ID", registerId);
-                if (entryInfo.contains("ENTRY")) {
+                //entryAndExitTime.put("REGISTER_ID", registerId);
+              /*  if (entryInfo.contains("ENTRY")) {
                     entryTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
                     entryAndExitTime.put("ENTRY", entryTime);
-                } else if (entryInfo.contains("EXIT")) {
+                } else*/
+                if (entryInfo.contains("EXIT")) {
                     exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
-                    entryAndExitTime.put("EXIT", exitTime);
+                    entryAndExitTime.put(registerId, exitTime);
                 }
             }
         } else {
