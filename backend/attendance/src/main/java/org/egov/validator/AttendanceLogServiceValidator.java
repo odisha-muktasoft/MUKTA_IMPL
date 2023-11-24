@@ -391,8 +391,9 @@ public class AttendanceLogServiceValidator {
                     String registerId=null;
                     for (String entryInfo : value2) {
                         String exitTime = entryInfo.substring(entryInfo.indexOf("at") + 3);
-                        registerId = entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
-                        if (!requestAttendanceRegisterID.equals(registerId)) {
+                        String id=entryInfo.substring(entryInfo.indexOf("register") + "register".length()).trim();
+                        if (!requestAttendanceRegisterID.equals(id)) {
+                            registerId = id;
                             entryAndExitTimeForFetchedAttedance.put(registerId, exitTime);
                             listOfAttendanceMap.add(entryAndExitTimeForFetchedAttedance);
                         }
