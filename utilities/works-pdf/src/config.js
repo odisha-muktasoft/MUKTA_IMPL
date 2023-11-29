@@ -38,6 +38,7 @@ module.exports = {
       process.env.WORK_ORDER_TEMPLATE_ODIYA_IA || "work-order-odiya_ia",
     work_order_template_odiya_ip:
       process.env.WORK_ORDER_TEMPLATE_ODIYA_IP || "work-order-odiya_ip",  
+    measurement_template: process.env.MEASUREMENT_TEMPLATE || "measurement-book",
   },
   app: {
     port: parseInt(process.env.APP_PORT || 8098) ,
@@ -45,8 +46,8 @@ module.exports = {
     contextPath: process.env.CONTEXT_PATH || "/egov-pdf",
   },
   host: {
-    mdms: process.env.EGOV_MDMS_HOST || 'http://localhost:8099',
-    pdf: process.env.EGOV_PDF_HOST || 'http://localhost:9057',
+    mdms: process.env.EGOV_MDMS_HOST || 'http://localhost:8082',
+    pdf: process.env.EGOV_PDF_HOST || 'http://localhost:8091',
     user: process.env.EGOV_USER_HOST || HOST,
     workflow: process.env.EGOV_WORKFLOW_HOST || 'http://localhost:8094',
     projectDetails: process.env.EGOV_PROJECT_HOST || 'http://localhost:8081/',
@@ -60,6 +61,8 @@ module.exports = {
     filestore: process.env.EGOV_FILESTORE_SERVICE_HOST || 'http://localhost:8092',
     expense_calculator: process.env.EXPENSE_CALCULATOR_SERVICE_HOST || 'http://localhost:8093',
     hrms: process.env.EGOV_HRMS_HOST || 'http://localhost:8095',
+    measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8098',
+
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
@@ -78,7 +81,9 @@ module.exports = {
     expense_calculator_estimate: "/expense-calculator/v1/_estimate",
     expense_calculator_search: "/expense-calculator/v1/_search",
     localization_search: "/localization/messages/v1/_search",
-    hrms_search: "/egov-hrms/employees/_search"
+    hrms_search: "/egov-hrms/employees/_search",
+    measurement_book_search: "/mukta-services/measurement/_search",
+
   },
   constraints: {
     "beneficiaryIdByHeadCode": "Deduction_{tanentId}_{headcode}"
