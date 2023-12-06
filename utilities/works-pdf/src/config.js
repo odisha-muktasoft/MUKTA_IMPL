@@ -39,6 +39,7 @@ module.exports = {
     work_order_template_odiya_ip:
       process.env.WORK_ORDER_TEMPLATE_ODIYA_IP || "work-order-odiya_ip",  
     measurement_template: process.env.MEASUREMENT_TEMPLATE || "measurement-book",
+    deviationStatement_template: process.env.MEASUREMENT_TEMPLATE || "deviation-statement",
   },
   app: {
     port: parseInt(process.env.APP_PORT || 8098) ,
@@ -62,6 +63,7 @@ module.exports = {
     expense_calculator: process.env.EXPENSE_CALCULATOR_SERVICE_HOST || 'http://localhost:8093',
     hrms: process.env.EGOV_HRMS_HOST || 'http://localhost:8095',
     measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8098',
+    deviationStatement: process.env.EGOV_ESTIMATE_HOST || 'http://localhost:8088/',
 
   },
   paths: {
@@ -83,6 +85,7 @@ module.exports = {
     localization_search: "/localization/messages/v1/_search",
     hrms_search: "/egov-hrms/employees/_search",
     measurement_book_search: "/mukta-services/measurement/_search",
+    deviationStatement_search: "/estimate/v1/_search",
 
   },
   constraints: {

@@ -73,7 +73,6 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
 
       sorIdMeasuresMap[sorId] = sorIdMeasuresMapKey;
     }
-    console.log(sorIdMeasuresMap);
     return sorIdMeasuresMap;
   };
 

@@ -137,7 +137,7 @@ async function search_estimateDetails(tenantId, requestinfo, estimateNumber) {
   var params = {
     tenantId: tenantId,
     estimateNumber: estimateNumber,
-    limit: 1,
+    limit: 10,
     _offset: 0,
     get offset() {
       return this._offset;
@@ -518,7 +518,21 @@ async function search_measurementBookDetails(tenantId, requestinfo,contractNumbe
   }
   return await axios({
     method: "post",
-    url: url.resolve(config.host.measurements, searchEndpoint),
+    url: url.resolve(config.host.estimates, searchEndpoint),
+    data: Object.assign(requestinfo, data)
+  });
+}
+
+async function search_deviationStatementDetails(tenantId, requestinfo,estimateNumber) {
+
+  var searchEndpoint = config.paths.deviationStatement_search;
+  var data = {
+    "estimateNumber": estimateNumber,
+    "tenantId": tenantId
+  }
+  return await axios({
+    method: "post",
+    url: url.resolve(config.host.deviationStatement, searchEndpoint),
     data: Object.assign(requestinfo, data)
   });
 }
@@ -549,5 +563,6 @@ module.exports = {
   exec_query_eg_payments_excel,
   search_hrms,
   search_mdms_terms_and_conditions,
-  search_measurementBookDetails
+  search_measurementBookDetails,
+  search_deviationStatementDetails
 };
