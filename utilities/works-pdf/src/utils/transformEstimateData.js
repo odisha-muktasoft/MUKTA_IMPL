@@ -1,82 +1,71 @@
+const { pdf } = require("../config");
 
 const transformEstimateData = (lineItems, contract, measurement, allMeasurements, estimateDetails) => {
 
-
-    var idEstimateDetailsMap = {};
-    for (let i = 0; i < estimateDetails.length; i++) {
-      if(estimateDetails[i].category=="OVERHEAD"){
-        continue;
-      }
-      if(estimateDetails[i].sorId==null){
-        if(idEstimateDetailsMap["null"]){
-          var updatedArray=idEstimateDetailsMap["null"]
-          updatedArray.push(estimateDetails[i])
-          idEstimateDetailsMap["null"]=updatedArray
-        }
-        else{
-          idEstimateDetailsMap["null"]=[estimateDetails[i]]
-        }
+  var idEstimateDetailsMap = {};
+  for (let i = 0; i < estimateDetails.length; i++) {
+    if(estimateDetails[i].category=="OVERHEAD"){
+      continue;
+    }
+    if(estimateDetails[i].sorId==null){
+      if(idEstimateDetailsMap["null"]){
+        var updatedArray=idEstimateDetailsMap["null"]
+        updatedArray.push(estimateDetails[i])
+        idEstimateDetailsMap["null"]=updatedArray
       }
       else{
-        if(idEstimateDetailsMap[estimateDetails[i].sorId]){
-          var updatedArray=idEstimateDetailsMap[estimateDetails[i].sorId]
-          updatedArray.push(estimateDetails[i])
-          idEstimateDetailsMap[estimateDetails[i].sorId]=updatedArray
-        }
-        else{
-          idEstimateDetailsMap[estimateDetails[i].sorId]=[estimateDetails[i]]
-        }
+        idEstimateDetailsMap["null"]=[estimateDetails[i]]
       }
     }
-    var sorIdMeasuresMap = {};
-    // iterate over idEstimateDetailsMap and from idEstimateDetailsMap[sorId] we will get array of estimateDetails and then get id of each estimateDetails and then match that id with estimateLineItemId of lineItems and get contractLineItemId and then match that contractLineItemId with targetId of measurement and get measures
-    for (let i = 0; i < Object.keys(idEstimateDetailsMap).length; i++) {
-      var sorId = Object.keys(idEstimateDetailsMap)[i];
-      var estimateDetailsArray = idEstimateDetailsMap[sorId];
+    else{
+      if(idEstimateDetailsMap[estimateDetails[i].sorId]){
+        const updatedArray=idEstimateDetailsMap[estimateDetails[i].sorId]
+        updatedArray.push(estimateDetails[i])
+        idEstimateDetailsMap[estimateDetails[i].sorId]=updatedArray
+      }
+      else{
+        idEstimateDetailsMap[estimateDetails[i].sorId]=[estimateDetails[i]]
+      }
+    }
+  }
+  const sorIdMeasuresMap = {};
+  // iterate over idEstimateDetailsMap and from idEstimateDetailsMap[sorId] we will get array of estimateDetails and then get id of each estimateDetails and then match that id with estimateLineItemId of lineItems and get contractLineItemId and then match that contractLineItemId with targetId of measurement and get measures
+  for (let i = 0; i < Object.keys(idEstimateDetailsMap).length; i++) {
+    const sorId = Object.keys(idEstimateDetailsMap)[i];
+    const estimateDetailsArray = idEstimateDetailsMap[sorId];
 
-      var description = estimateDetailsArray[0].name;
-      var uom = estimateDetailsArray[0].uom;
-      var unitRate = estimateDetailsArray[0].unitRate;
-      var quantity = estimateDetailsArray[0].quantity;
+    // if there is any square bracket in name then replace it with round bracket
+    if(estimateDetailsArray[0].name.includes("[")){
+      estimateDetailsArray[0].name=estimateDetailsArray[0].name.replace("[","(")
+      estimateDetailsArray[0].name=estimateDetailsArray[0].name.replace("]",")")
+    }
+
+    var description = estimateDetailsArray[0].name;
+    var uom = estimateDetailsArray[0].uom;
+    var unitRate = estimateDetailsArray[0].unitRate;
+    var quantity = estimateDetailsArray[0].quantity;
+    var mbAmount = estimateDetailsArray[0].amountDetail[0].amount;
     
+  
 
-      var sorIdMeasuresMapKey = {
-        sorId: sorId,
-        description: description,
-        uom: uom,
-        unitRate: unitRate,
-        quantity: quantity
-      };
-      
-      // here loop over estimateDetailsArray and get estimateLineItemId and then match that estimateLineItemId with estimateLineItemId of lineItems and get contractLineItemId and then match that contractLineItemId with targetId of measurement and get measures
-      var measures = [];
-      for (let j = 0; j < estimateDetailsArray.length; j++) {
-        var estimateLineItemId = estimateDetailsArray[j].id;
-        var contractLineItemId = lineItems.find((e) => e.estimateLineItemId == estimateLineItemId).contractLineItemRef;
-        var targetId = measurement.measures.find((e) => e.targetId == contractLineItemId).id;
-        measures.push(measurement.measures.find((e) => e.id == targetId));
-        
-        if(estimateDetailsArray[j].isDeduction){
-          measures[j].type = "Minus";
-        }
-        else{
-          measures[j].isDeduction = "Plus";
-        }
-      }
-      
-      // i want to have sorIdMeasuresMapKey as key and measures as value
-      sorIdMeasuresMapKey = {
-        ...sorIdMeasuresMapKey,
-        measures: measures
-      }
-
-
-      sorIdMeasuresMap[sorId] = sorIdMeasuresMapKey;
+    var sorIdMeasuresMapKey = {
+      sorId: sorId,
+      description: description,
+      uom: uom,
+      unitRate: unitRate,
+      quantity: quantity,
+      mbAmount: mbAmount
+    };    
+    sorIdMeasuresMapKey = {
+      ...sorIdMeasuresMapKey
     }
-    console.log(sorIdMeasuresMap);
-    return sorIdMeasuresMap;
-  };
 
-  module.exports = {
-    transformEstimateData
-    };
+
+    sorIdMeasuresMap[sorId] = sorIdMeasuresMapKey;
+  }
+  return sorIdMeasuresMap;
+};
+
+module.exports = {
+  transformEstimateData
+  };

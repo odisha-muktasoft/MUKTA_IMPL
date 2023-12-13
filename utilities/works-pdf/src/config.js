@@ -61,7 +61,7 @@ module.exports = {
     filestore: process.env.EGOV_FILESTORE_SERVICE_HOST || 'http://localhost:8092',
     expense_calculator: process.env.EXPENSE_CALCULATOR_SERVICE_HOST || 'http://localhost:8093',
     hrms: process.env.EGOV_HRMS_HOST || 'http://localhost:8095',
-    measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8098',
+    measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8099',
 
   },
   paths: {
