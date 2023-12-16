@@ -108,6 +108,7 @@ config:
   - name: "builds/mukta_impl/utilities/bulk-upload"
     build:
       - work-dir: "utilities/bulk-upload"
+        dockerfile: "build/maven/Dockerfile"
         image-name: "bulk-upload"        
 
 # frontend
