@@ -103,7 +103,7 @@ const measurement= {
   wfStatus: null,
   workflow: {
     action: data?.wfStatus === "SENT_BACK" ? "EDIT/RE-SUBMIT" : data?.workflowAction,
-    assignes : [data?.selectedApprover?.uuid ? data?.selectedApprover?.uuid: undefined],
+    assignes : data?.selectedApprover?.uuid ? [data?.selectedApprover?.uuid] : undefined,
     comments : data?.comments
   },
 }
