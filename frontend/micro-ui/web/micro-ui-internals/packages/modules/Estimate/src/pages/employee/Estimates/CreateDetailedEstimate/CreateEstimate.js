@@ -582,7 +582,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
         selectedApprover,
         setSelectedApprover,
         approverLoading,
-        isEdit,
+        isEdit : isEdit || isEditRevisionEstimate,
         // designation,
         // selectedDesignation,
         // setSelectedDesignation,
