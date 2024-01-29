@@ -61,7 +61,7 @@ const ViewDetailedEstimate = () => {
   //here make a contract search based on the estimateNumber
   let { isLoading: isLoadingContracts, data: contracts } = Digit.Hooks.contracts.useContractSearch({
     tenantId,
-    filters: { tenantId, estimateIds: [detailedEstimate?.estimates[0]?.id] },
+    filters: { tenantId, estimateIds: detailedEstimate?.estimates?.map((ob) => ob?.id) },
     config: {
       enabled: !isDetailedEstimateLoading && detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" ? true : false,
       cacheTime: 0,
@@ -73,7 +73,7 @@ const ViewDetailedEstimate = () => {
   let allContract = contracts;
   //getting the object which will be in workflow, as 1:1:1 mapping is there, one one inworkflow workorder will be there for one estimate
   let inWorkflowContract = allContract?.filter((ob) => ob?.wfStatus !== "REJECTED")?.[0];
-  let isCreateContractallowed = !(allContract?.filter((ob) => ob?.wfStatus !== "REJECTED")?.length > 0);
+  let isCreateContractallowed = !(allContract?.filter((ob) => ob?.wfStatus !== "REJECTED")?.length > 0) && !inWorkflowContract;
 
   useEffect(() => {
     let isUserContractCreator = loggedInUserRoles?.includes("WORK_ORDER_CREATOR");

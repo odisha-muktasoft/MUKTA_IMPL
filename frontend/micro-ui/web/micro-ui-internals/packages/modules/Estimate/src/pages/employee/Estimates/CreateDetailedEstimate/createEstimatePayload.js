@@ -248,7 +248,7 @@ export const createEstimatePayload = (data, projectData, isEdit, estimate, isCre
       workflow: {
         action:  (estimate?.wfStatus === "PENDINGFORCORRECTION" && (data?.wfAction === "SUBMIT" || data?.workflowAction === "SUBMIT")) ? "RE-SUBMIT" : data?.workflowAction,
         comment: filteredFormData?.comments,
-        assignees: [filteredFormData?.selectedApprover?.uuid ? filteredFormData?.selectedApprover?.uuid : undefined],
+        assignees: [data?.workflowAction === "DRAFT" ? Digit.UserService.getUser()?.info?.uuid : (filteredFormData?.selectedApprover?.uuid ? filteredFormData?.selectedApprover?.uuid : undefined)],
       },
     };
 
@@ -303,7 +303,7 @@ export const createEstimatePayload = (data, projectData, isEdit, estimate, isCre
       workflow: {
         action: data?.workflowAction,
         comment: filteredFormData?.comments,
-        assignees: [filteredFormData?.selectedApprover?.uuid ? filteredFormData?.selectedApprover?.uuid : undefined],
+        assignees: [data?.workflowAction === "DRAFT" ? Digit.UserService.getUser()?.info?.uuid : (filteredFormData?.selectedApprover?.uuid ? filteredFormData?.selectedApprover?.uuid : undefined)],
       },
     };
 
