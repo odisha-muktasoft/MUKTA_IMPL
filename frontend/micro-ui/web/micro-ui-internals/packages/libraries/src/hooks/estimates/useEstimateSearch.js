@@ -10,7 +10,8 @@ const useEstimateSearch = ({ tenantId, filters, config = {} }) => useQuery(
         ...config,
         cacheTime:0,
         select:(data)=>{
-            return data?.estimates?.[0]
+            //adding patch fix for getting latest approved contract in create wo, need to update
+            return window.location.href.includes("/contracts/create-contract") ? data?.estimates?.filter((es) => es?.wfStatus?.includes("APPROVED"))?.[0] : data?.estimates?.[0]
         }
         
     }
