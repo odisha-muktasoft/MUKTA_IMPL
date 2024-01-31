@@ -416,6 +416,12 @@ export const UICustomizations = {
           }
         });
       }
+      //uncomment once the business service is enabled for etimate search
+      // const businessService = data?.body?.inbox?.moduleSearchCriteria?.businessService;
+      // if(businessService)
+      // {
+      //   data.body.inbox.moduleSearchCriteria.businessService = businessService?.replace("[","").replace("]","").split(",")
+      // }
 
       return data;
     },
@@ -1007,7 +1013,7 @@ export const UICustomizations = {
 
        //Added the condition because to revised work order, it will have state as approved instead of pending for acceptance
        if(status === "PENDING_FOR_ACCEPTANCE")
-       status = [...status, "APPROVED"]
+       status = [status, "APPROVED"]
 
       const projectType = data.body.inbox?.moduleSearchCriteria?.projectType?.code;
       const projectName = data.body.inbox?.moduleSearchCriteria?.projectName?.trim();
