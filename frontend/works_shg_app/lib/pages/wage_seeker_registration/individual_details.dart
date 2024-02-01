@@ -19,6 +19,7 @@ import '../../models/wage_seeker/skill_details_model.dart';
 import '../../utils/notifiers.dart';
 import '../../widgets/atoms/multiselect_checkbox.dart';
 import '../../widgets/molecules/file_picker.dart';
+import 'indi_detail_sub.dart';
 
 class IndividualDetailsPage extends StatefulWidget {
   final void Function() onPressed;
@@ -47,6 +48,9 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
   String socialCategoryKey = 'socialCategory';
   String mobileKey = 'mobileNo';
   List<String> selectedOptions = [];
+  String identityDocument = "identityDocument";
+
+  int check = 0;
 
   @override
   void initState() {
@@ -68,6 +72,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
               .toList();
     }
   }
+
 
   void _onSelectedOptionsChanged(List<String> options) {
     setState(() {
@@ -96,29 +101,34 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                 .toList()
             : [];
 
+    switch (check) {
+      case 0:
+        return identificationMethod(context,
+            t, relationship, gender, socialCategory, skills, photo);
+      case 1:
+       
+        return IndividualSubDetailPage(gender: gender, photo: photo, relationship: relationship, skills: skills, socialCategory: socialCategory,);
+      case 2:
+        return skillMethod(context,
+            t, relationship, gender, socialCategory, skills, photo);
+      default:
+        return identificationMethod(context,
+            t, relationship, gender, socialCategory, skills, photo);
+    }
+  }
+
+  ReactiveFormBuilder identificationMethod(
+    BuildContext context,
+      AppLocalizations t,
+      List<String> relationship,
+      List<String> gender,
+      List<String> socialCategory,
+      List<String> skills,
+      String? photo) {
     return ReactiveFormBuilder(
-      form: buildForm,
+      form: identificationBuildForm,
       builder: (context, form, child) {
-        if (individualDetails != null) {
-          form.control(nameKey).value =
-              individualDetails?.name ?? form.control(nameKey).value;
-          form.control(fatherNameKey).value = individualDetails?.fatherName ??
-              form.control(fatherNameKey).value;
-          form.control(aadhaarNoKey).value =
-              individualDetails?.aadhaarNo ?? form.control(aadhaarNoKey).value;
-          form.control(relationshipKey).value =
-              individualDetails?.relationship ??
-                  form.control(relationshipKey).value;
-          form.control(socialCategoryKey).value =
-              individualDetails?.socialCategory ??
-                  form.control(socialCategoryKey).value;
-          form.control(genderKey).value =
-              individualDetails?.gender ?? form.control(genderKey).value;
-          form.control(dobKey).value =
-              individualDetails?.dateOfBirth ?? form.control(dobKey).value;
-          form.control(mobileKey).value =
-              individualDetails?.mobileNumber ?? form.control(mobileKey).value;
-        }
+       
         return GestureDetector(
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
@@ -135,15 +145,27 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      t.translate(i18.attendanceMgmt.individualDetails),
+                      "Individual's Identification Details",
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.displayMedium
                           ?.apply(color: const DigitColors().black),
                     ),
                     Column(children: [
+                      DigitReactiveDropdown<String>(
+                        label: "Identity Document",
+                        menuItems: ["Adhar", "VoterId", "Rasan Card"]
+                            .map((e) => e.toString())
+                            .toList(),
+                        isRequired: true,
+                        formControlName: identityDocument,
+                        valueMapper: (value) =>
+                            t.translate('CORE_COMMON_$value'),
+                        onChanged: (value) {},
+                       
+                      ),
                       DigitTextFormField(
                         formControlName: aadhaarNoKey,
-                        label: t.translate(i18.common.aadhaarNumber),
+                        label: "Identity Number",
                         isRequired: true,
                         minLength: 12,
                         maxLength: 12,
@@ -167,7 +189,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                         padding: const EdgeInsets.only(top: 0),
                         formControlName: nameKey,
                         isRequired: true,
-                        label: t.translate(i18.common.nameLabel),
+                        label: "Name on Document",
                         inputFormatter: [
                           FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
                         ],
@@ -183,29 +205,74 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               ),
                         },
                       ),
-                      DigitTextFormField(
-                        formControlName: fatherNameKey,
-                        isRequired: true,
-                        label: t.translate(i18.common.guardianName),
-                        inputFormatter: [
-                          FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
-                        ],
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.fatherNameRequired,
-                              ),
-                          'minLength': (_) => t.translate(
-                                i18.wageSeeker.minFatherNameCharacters,
-                              ),
-                          'maxLength': (_) => t.translate(
-                                i18.wageSeeker.maxFatherNameCharacters,
-                              ),
-                        },
-                      ),
+                      
+                    ]),
+                    Center(
+                      child: DigitElevatedButton(
+                          onPressed: () {
+                            form.markAllAsTouched(updateParent: false);
+                            if (!form.valid) return;
+                           
+                              setState(() {
+                                check = 1;
+                              });
+                            
+                          },
+                          child: Center(
+                            child: Text(t.translate(i18.common.next)),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  
+
+  ReactiveFormBuilder skillMethod(
+     BuildContext contexttt,
+      AppLocalizations t,
+      List<String> relationship,
+      List<String> gender,
+      List<String> socialCategory,
+      List<String> skills,
+      String? photo) {
+    return ReactiveFormBuilder(
+      form: buildForm,
+      builder: (contexttt, form2, child) {
+        
+        return GestureDetector(
+          onTap: () {
+            if (FocusScope.of(context).hasFocus) {
+              FocusScope.of(context).unfocus();
+            }
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              DigitCard(
+                margin: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "Individual's Skill Details",
+                      style: DigitTheme
+                          .instance.mobileTheme.textTheme.displayMedium
+                          ?.apply(color: const DigitColors().black),
+                    ),
+                    Column(children: [
                       DigitReactiveDropdown<String>(
-                        label: t.translate(i18.common.relationship),
-                        menuItems:
-                            relationship.map((e) => e.toString()).toList(),
+                        label: "Identity Document",
+                        menuItems: ["Adhar", "VoterId", "Rasan Card"]
+                            .map((e) => e.toString())
+                            .toList(),
                         isRequired: true,
                         formControlName: relationshipKey,
                         valueMapper: (value) =>
@@ -217,160 +284,53 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               ),
                         },
                       ),
-                      DigitDateFormPicker(
-                        label: t.translate(i18.common.dateOfBirth),
-                        padding: const EdgeInsets.only(top: 32.0),
-                        isRequired: true,
-                        cancelText: t.translate(i18.common.cancel),
-                        fieldHintText: 'dd/mm/yyyy',
-                        confirmText: t.translate(i18.common.oK),
-                        icon: Icons.info_outline_rounded,
-                        toolTipMsg: t.translate(i18.wageSeeker.ageValidation),
-                        formControlName: dobKey,
-                        autoValidation: AutovalidateMode.always,
-                        requiredMessage:
-                            t.translate(i18.wageSeeker.dobRequired),
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.dobRequired,
-                              ),
-                          'max': (_) =>
-                              t.translate(i18.wageSeeker.ageValidation)
-                        },
-                      ),
-                      StatefulBuilder(builder:
-                          (BuildContext context, StateSetter setState) {
-                        return DigitRadioButtonList<String>(
-                          labelText: t.translate(i18.common.gender),
-                          formControlName: genderKey,
-                          options: gender.map((e) => e.toString()).toList(),
-                          isRequired: true,
-                          valueMapper: (value) => t.translate(value),
-                          onValueChange: (value) {
-                            genderController = value;
-                          },
-                        );
-                      }),
-                      DigitReactiveDropdown<String>(
-                        label: t.translate(i18.common.socialCategory),
-                        menuItems:
-                            socialCategory.map((e) => e.toString()).toList(),
-                        formControlName: socialCategoryKey,
-                        valueMapper: (value) =>
-                            t.translate('COMMON_MASTERS_SOCIAL_$value'),
-                        onChanged: (value) {},
-                      ),
                       DigitTextFormField(
-                        label: t.translate(i18.common.mobileNumber),
-                        padding: const EdgeInsets.only(top: 32),
-                        formControlName: mobileKey,
-                        prefixText: '+91 - ',
+                        formControlName: aadhaarNoKey,
+                        label: "Identity Number",
                         isRequired: true,
-                        minLength: 10,
-                        maxLength: 10,
-                        keyboardType: TextInputType.phone,
+                        minLength: 12,
+                        maxLength: 12,
+                        keyboardType: TextInputType.number,
                         inputFormatter: [
                           FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                         ],
                         validationMessages: {
                           'required': (_) => t.translate(
-                                i18.wageSeeker.mobileRequired,
+                                i18.wageSeeker.aadhaarRequired,
                               ),
                           'minLength': (_) => t.translate(
-                                i18.wageSeeker.minMobileCharacters,
+                                i18.wageSeeker.minAadhaarCharacters,
                               ),
                           'maxLength': (_) => t.translate(
-                                i18.wageSeeker.maxMobileCharacters,
-                              ),
-                          'min': (_) => t.translate(
-                                i18.wageSeeker.validMobileCharacters,
-                              ),
-                          'max': (_) => t.translate(
-                                i18.wageSeeker.validMobileCharacters,
+                                i18.wageSeeker.maxAadhaarCharacters,
                               ),
                         },
                       ),
-                      // StatefulBuilder(
-                      //     builder: (BuildContext context, StateSetter setState) {
-                      MultiSelectSearchCheckBox(
-                        label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                        onChange: _onSelectedOptionsChanged,
-                        options: skills,
-                        hintText: t.translate(i18.attendanceMgmt.skill),
-                        selectedOptions: selectedOptions,
-                      ),
-                      // }),
-                      SHGFilePicker(
-                        callBack: (List<FileStoreModel>? fileStore) {
-                          if (fileStore != null && fileStore.isNotEmpty) {
-                            // setState(() {
-                            photo = fileStore.first.fileStoreId;
-                            // });
-                          } else {
-                            // setState(() {
-                            photo = '';
-                            // });
-                          }
+                      DigitTextFormField(
+                        padding: const EdgeInsets.only(top: 0),
+                        formControlName: nameKey,
+                        isRequired: true,
+                        label: "Name on Document",
+                        inputFormatter: [
+                          FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
+                        ],
+                        validationMessages: {
+                          'required': (_) => t.translate(
+                                i18.wageSeeker.nameRequired,
+                              ),
+                          'minLength': (_) => t.translate(
+                                i18.wageSeeker.minNameCharacters,
+                              ),
+                          'maxLength': (_) => t.translate(
+                                i18.wageSeeker.maxNameCharacters,
+                              ),
                         },
-                        extensions: const ['jpg', 'png', 'jpeg'],
-                        moduleName: 'works',
-                        label: t.translate(i18.common.photoGraph),
-                      )
+                      ),
                     ]),
-                    const SizedBox(height: 16),
                     Center(
                       child: DigitElevatedButton(
                           onPressed: () {
-                            form.markAllAsTouched(updateParent: false);
-                            if (!form.valid) return;
-                            if (form.value[genderKey] == null ||
-                                form.value[genderKey].toString().isEmpty) {
-                              Notifiers.getToastMessage(
-                                  context,
-                                  t.translate(i18.wageSeeker.genderRequired),
-                                  'ERROR');
-                            } else if (!getSkillsValid()) {
-                              Notifiers.getToastMessage(
-                                  context,
-                                  i18.wageSeeker.selectSkillValidation,
-                                  'ERROR');
-                            } else if (selectedOptions.isEmpty) {
-                              Notifiers.getToastMessage(context,
-                                  i18.wageSeeker.skillsRequired, 'ERROR');
-                            } else {
-                              final individualDetails = IndividualDetails(
-                                  name: form.value[nameKey].toString(),
-                                  fatherName:
-                                      form.value[fatherNameKey].toString(),
-                                  aadhaarNo:
-                                      form.value[aadhaarNoKey].toString(),
-                                  relationship:
-                                      form.value[relationshipKey].toString(),
-                                  socialCategory:
-                                      form.value[socialCategoryKey].toString(),
-                                  dateOfBirth: form.value[dobKey] as DateTime,
-                                  mobileNumber:
-                                      form.value[mobileKey].toString(),
-                                  gender: form.value[genderKey].toString(),
-                                  imageFile: FilePickerData.imageFile,
-                                  bytes: FilePickerData.bytes,
-                                  photo: photo);
-                              final skillList = SkillDetails(
-                                  individualSkills: selectedOptions
-                                      .map((e) => IndividualSkill(
-                                          type: e.toString().split('.').last,
-                                          level: e.toString().split('.').first))
-                                      .toList());
-
-                              BlocProvider.of<WageSeekerBloc>(context).add(
-                                WageSeekerCreateEvent(
-                                    individualDetails: individualDetails,
-                                    skillDetails: skillList,
-                                    locationDetails: locationDetails,
-                                    financialDetails: financialDetails),
-                              );
-                              widget.onPressed();
-                            }
+                            
                           },
                           child: Center(
                             child: Text(t.translate(i18.common.next)),
@@ -443,6 +403,28 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           Validators.min('5999999999'),
           Validators.max('9999999999'),
           Validators.maxLength(10)
-        ])
+        ]),
+     
       });
+
+  // identification
+
+  FormGroup identificationBuildForm() => fb.group(<String, Object>{
+        aadhaarNoKey: FormControl<String>(value: '', validators: [
+          Validators.required,
+          Validators.minLength(12),
+          Validators.maxLength(12)
+        ]),
+        nameKey: FormControl<String>(value: '', validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(128)
+        ]),
+        identityDocument: FormControl<String>(
+          value: null,
+        ),
+      });
+
+
+
 }
