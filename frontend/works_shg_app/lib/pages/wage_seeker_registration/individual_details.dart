@@ -75,25 +75,14 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     }
   }
 
-
-  void _onSelectedOptionsChanged(List<String> options) {
-    setState(() {
-      selectedOptions = options;
-    });
-  }
-
-   void _onPageChange(int count) {
-
-     if(count==4)
-      {
-        widget.onPressed();
-        
-      }else{
-        setState(() {
-      check = count;
-    });
-     }
-    
+  void _onPageChange(int count) {
+    if (count == 4) {
+      widget.onPressed();
+    } else {
+      setState(() {
+        check = count;
+      });
+    }
   }
 
   @override
@@ -119,33 +108,57 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
 
     switch (check) {
       case 0:
-        return identificationMethod(context,
-            t, relationship, gender, socialCategory, skills, photo);
+        return identificationMethod(
+            context, t, relationship, gender, socialCategory, skills, photo,
+            individualDetails,
+            );
       case 1:
-       
-        return IndividualSubDetailPage(gender: gender, photo: photo, relationship: relationship, skills: skills, socialCategory: socialCategory, onPageChanged: (int page) {_onPageChange(page);  },);
+        return IndividualSubDetailPage(
+          gender: gender,
+          photo: photo,
+          relationship: relationship,
+          skills: skills,
+          socialCategory: socialCategory,
+          onPageChanged: (int page) {
+            _onPageChange(page);
+          },
+        );
       case 2:
-       return IndividualSkillSubPage(gender: gender, photo: photo, relationship: relationship, skills: skills, socialCategory: socialCategory, onPageChanged: (int page) { _onPageChange(page);  },);
+        return IndividualSkillSubPage(
+          gender: gender,
+          photo: photo,
+          relationship: relationship,
+          skills: skills,
+          socialCategory: socialCategory,
+          onPageChanged: (int page) {
+            _onPageChange(page);
+          },
+        );
       case 3:
-      return IndividualPhotoSubPage(onPageChanged: (int page) {  _onPageChange(page);  },);
+        return IndividualPhotoSubPage(
+          onPageChanged: (int page) {
+            _onPageChange(page);
+          },
+        );
       default:
-        return identificationMethod(context,
-            t, relationship, gender, socialCategory, skills, photo);
+        return identificationMethod(
+            context, t, relationship, gender, socialCategory, skills, photo,individualDetails);
     }
   }
 
   ReactiveFormBuilder identificationMethod(
-    BuildContext context,
+      BuildContext context,
       AppLocalizations t,
       List<String> relationship,
       List<String> gender,
       List<String> socialCategory,
       List<String> skills,
-      String? photo) {
+      String? photo,
+      IndividualDetails? individualDetails,
+      ) {
     return ReactiveFormBuilder(
-      form: identificationBuildForm,
+      form:()=> identificationBuildForm(individualDetails??IndividualDetails()),
       builder: (context, form, child) {
-       
         return GestureDetector(
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
@@ -178,7 +191,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                         valueMapper: (value) =>
                             t.translate('CORE_COMMON_$value'),
                         onChanged: (value) {},
-                       
                       ),
                       DigitTextFormField(
                         formControlName: aadhaarNoKey,
@@ -222,133 +234,25 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               ),
                         },
                       ),
-                      
                     ]),
                     Center(
                       child: DigitElevatedButton(
                           onPressed: () {
                             form.markAllAsTouched(updateParent: false);
                             if (!form.valid) return;
-                           
-                          context.read<WageSeekerBloc>().add(const WageSeekerIdentificationCreateEvent(adharVerified: true, documentType: 'adhar', name: 'pitabash', number: '65657474657575', timeStamp: 354758437363,),);
-                              setState(() {
-                                check = 1;
-                              });
-                            
-                          },
-                          child: Center(
-                            child: Text(t.translate(i18.common.next)),
-                          )),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  
-
-  ReactiveFormBuilder skillMethod(
-     BuildContext contexttt,
-      AppLocalizations t,
-      List<String> relationship,
-      List<String> gender,
-      List<String> socialCategory,
-      List<String> skills,
-      String? photo) {
-    return ReactiveFormBuilder(
-      form: buildForm,
-      builder: (contexttt, form2, child) {
-        
-        return GestureDetector(
-          onTap: () {
-            if (FocusScope.of(context).hasFocus) {
-              FocusScope.of(context).unfocus();
-            }
-          },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              DigitCard(
-                margin: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Individual's Skill Details",
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.displayMedium
-                          ?.apply(color: const DigitColors().black),
-                    ),
-                    Column(children: [
-                      DigitReactiveDropdown<String>(
-                        label: "Identity Document",
-                        menuItems: ["Adhar", "VoterId", "Rasan Card"]
-                            .map((e) => e.toString())
-                            .toList(),
-                        isRequired: true,
-                        formControlName: relationshipKey,
-                        valueMapper: (value) =>
-                            t.translate('CORE_COMMON_$value'),
-                        onChanged: (value) {},
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.relationshipRequired,
-                              ),
-                        },
-                      ),
-                      DigitTextFormField(
-                        formControlName: aadhaarNoKey,
-                        label: "Identity Number",
-                        isRequired: true,
-                        minLength: 12,
-                        maxLength: 12,
-                        keyboardType: TextInputType.number,
-                        inputFormatter: [
-                          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                        ],
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.aadhaarRequired,
-                              ),
-                          'minLength': (_) => t.translate(
-                                i18.wageSeeker.minAadhaarCharacters,
-                              ),
-                          'maxLength': (_) => t.translate(
-                                i18.wageSeeker.maxAadhaarCharacters,
-                              ),
-                        },
-                      ),
-                      DigitTextFormField(
-                        padding: const EdgeInsets.only(top: 0),
-                        formControlName: nameKey,
-                        isRequired: true,
-                        label: "Name on Document",
-                        inputFormatter: [
-                          FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
-                        ],
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.nameRequired,
-                              ),
-                          'minLength': (_) => t.translate(
-                                i18.wageSeeker.minNameCharacters,
-                              ),
-                          'maxLength': (_) => t.translate(
-                                i18.wageSeeker.maxNameCharacters,
-                              ),
-                        },
-                      ),
-                    ]),
-                    Center(
-                      child: DigitElevatedButton(
-                          onPressed: () {
-                            
+print(form.value[identityDocument].toString());
+                            context.read<WageSeekerBloc>().add(
+                                  const WageSeekerIdentificationCreateEvent(
+                                    adharVerified: true,
+                                    documentType: 'adhar',
+                                    name: 'pitabash',
+                                    number: '65657474657575',
+                                    timeStamp: 354758437363,
+                                  ),
+                                );
+                            setState(() {
+                              check = 1;
+                            });
                           },
                           child: Center(
                             child: Text(t.translate(i18.common.next)),
@@ -387,62 +291,21 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     return true;
   }
 
-  FormGroup buildForm() => fb.group(<String, Object>{
-        aadhaarNoKey: FormControl<String>(value: '', validators: [
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12)
-        ]),
-        nameKey: FormControl<String>(value: '', validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(128)
-        ]),
-        genderKey: FormControl<String>(value: null),
-        fatherNameKey: FormControl<String>(value: '', validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(128)
-        ]),
-        relationshipKey:
-            FormControl<String>(value: null, validators: [Validators.required]),
-        dobKey: FormControl<DateTime>(
-          value: null,
-          validators: [
-            Validators.required,
-            Validators.max(DateTime(DateTime.now().year - 18,
-                DateTime.now().month, DateTime.now().day))
-          ],
-        ),
-        socialCategoryKey: FormControl<String>(value: null),
-        mobileKey: FormControl<String>(value: '', validators: [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.min('5999999999'),
-          Validators.max('9999999999'),
-          Validators.maxLength(10)
-        ]),
-     
-      });
-
   // identification
 
-  FormGroup identificationBuildForm() => fb.group(<String, Object>{
-        aadhaarNoKey: FormControl<String>(value: '', validators: [
+  FormGroup identificationBuildForm(IndividualDetails individualDetails,) => fb.group(<String, Object>{
+        aadhaarNoKey: FormControl<String>(value: individualDetails.aadhaarNo??'', validators: [
           Validators.required,
           Validators.minLength(12),
           Validators.maxLength(12)
         ]),
-        nameKey: FormControl<String>(value: '', validators: [
+        nameKey: FormControl<String>(value: individualDetails.name??'', validators: [
           Validators.required,
           Validators.minLength(2),
           Validators.maxLength(128)
         ]),
         identityDocument: FormControl<String>(
-          value: null,
+          value: individualDetails.documentType,
         ),
       });
-
-
-
 }
