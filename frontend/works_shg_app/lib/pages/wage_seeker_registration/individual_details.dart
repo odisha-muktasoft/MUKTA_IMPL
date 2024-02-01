@@ -20,6 +20,7 @@ import '../../widgets/common_info_card.dart';
 import 'indi_detail_sub.dart';
 import 'indi_photo_sub.dart';
 import 'indi_skill_sub.dart';
+import '../../widgets/loaders.dart' as shg_loader;
 
 class IndividualDetailsPage extends StatefulWidget {
   final void Function() onPressed;
