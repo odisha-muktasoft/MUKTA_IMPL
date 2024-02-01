@@ -16,6 +16,7 @@ import 'package:works_shg_app/widgets/molecules/digit_stepper.dart';
 import '../../blocs/app_initilization/app_initilization.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
+import '../../blocs/wage_seeker_registration/wage_seeker_create_bloc.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_mdms_bloc.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
@@ -50,6 +51,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
     context.read<WageSeekerBloc>().add(
           const WageSeekerClearEvent(),
         );
+        context.read<WageSeekerCreateBloc>().add(const CreateWageSeekerDisposeEvent());
     FilePickerData.imageFile = null;
     FilePickerData.bytes = null;
     context.read<WageSeekerMDMSBloc>().add(

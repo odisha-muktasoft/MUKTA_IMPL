@@ -10,6 +10,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
 import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 
+import '../../blocs/wage_seeker_registration/wage_seeker_create_bloc.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../models/mdms/wage_seeker_mdms.dart';
@@ -22,6 +23,7 @@ import '../../widgets/molecules/file_picker.dart';
 import 'indi_detail_sub.dart';
 import 'indi_photo_sub.dart';
 import 'indi_skill_sub.dart';
+import '../../widgets/loaders.dart' as shg_loader;
 
 class IndividualDetailsPage extends StatefulWidget {
   final void Function() onPressed;
@@ -109,9 +111,15 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     switch (check) {
       case 0:
         return identificationMethod(
-            context, t, relationship, gender, socialCategory, skills, photo,
-            individualDetails,
-            );
+          context,
+          t,
+          relationship,
+          gender,
+          socialCategory,
+          skills,
+          photo,
+          individualDetails,
+        );
       case 1:
         return IndividualSubDetailPage(
           gender: gender,
@@ -141,23 +149,24 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           },
         );
       default:
-        return identificationMethod(
-            context, t, relationship, gender, socialCategory, skills, photo,individualDetails);
+        return identificationMethod(context, t, relationship, gender,
+            socialCategory, skills, photo, individualDetails);
     }
   }
 
   ReactiveFormBuilder identificationMethod(
-      BuildContext context,
-      AppLocalizations t,
-      List<String> relationship,
-      List<String> gender,
-      List<String> socialCategory,
-      List<String> skills,
-      String? photo,
-      IndividualDetails? individualDetails,
-      ) {
+    BuildContext context,
+    AppLocalizations t,
+    List<String> relationship,
+    List<String> gender,
+    List<String> socialCategory,
+    List<String> skills,
+    String? photo,
+    IndividualDetails? individualDetails,
+  ) {
     return ReactiveFormBuilder(
-      form:()=> identificationBuildForm(individualDetails??IndividualDetails()),
+      form: () =>
+          identificationBuildForm(individualDetails ?? IndividualDetails()),
       builder: (context, form, child) {
         return GestureDetector(
           onTap: () {
@@ -169,7 +178,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               DigitCard(
-                margin: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -215,7 +223,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                         },
                       ),
                       DigitTextFormField(
-                        padding: const EdgeInsets.only(top: 0),
                         formControlName: nameKey,
                         isRequired: true,
                         label: "Name on Document",
@@ -234,20 +241,64 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               ),
                         },
                       ),
+                      BlocBuilder<WageSeekerCreateBloc, WageSeekerCreateState>(
+                        builder: (context, state) {
+
+                         return  state.maybeWhen(
+                          orElse: () => const Offstage(),
+                            loaded: (value) {
+                              return const SizedBox.shrink();
+                            },
+                           loading: () {
+                             
+                             return const CircularProgressIndicator.adaptive();
+                           },
+                          initial: () {
+                            return Center(
+                              child: DigitIconButton(
+                                iconText: "Validate",
+                                onPressed: () {
+                                  context.read<WageSeekerCreateBloc>().add(
+                                        const VerifyAdharEvent(name: '', uid: ''),
+                                      );
+                                },
+                              ),
+                            );
+                          },
+                          verified: (value) {
+                            return Center(
+                              child: SizedBox(
+                                height: 30,
+                                child: Text(value!.status=="SUCCESS"?"verified":"error",
+                                 style: const TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.green,
+                                 ),
+                                ),
+                              ),
+                            );
+                          },
+                        
+                          );
+                          
+                        },
+                      ),
                     ]),
                     Center(
                       child: DigitElevatedButton(
                           onPressed: () {
                             form.markAllAsTouched(updateParent: false);
                             if (!form.valid) return;
-print(form.value[identityDocument].toString());
+
                             context.read<WageSeekerBloc>().add(
-                                  const WageSeekerIdentificationCreateEvent(
+                                  WageSeekerIdentificationCreateEvent(
                                     adharVerified: true,
-                                    documentType: 'adhar',
-                                    name: 'pitabash',
-                                    number: '65657474657575',
-                                    timeStamp: 354758437363,
+                                    documentType:
+                                        form.value[identityDocument].toString(),
+                                    name: form.value[nameKey].toString(),
+                                    number: form.value[aadhaarNoKey].toString(),
+                                    timeStamp:
+                                        DateTime.now().millisecondsSinceEpoch,
                                   ),
                                 );
                             setState(() {
@@ -293,17 +344,24 @@ print(form.value[identityDocument].toString());
 
   // identification
 
-  FormGroup identificationBuildForm(IndividualDetails individualDetails,) => fb.group(<String, Object>{
-        aadhaarNoKey: FormControl<String>(value: individualDetails.aadhaarNo??'', validators: [
-          Validators.required,
-          Validators.minLength(12),
-          Validators.maxLength(12)
-        ]),
-        nameKey: FormControl<String>(value: individualDetails.name??'', validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(128)
-        ]),
+  FormGroup identificationBuildForm(
+    IndividualDetails individualDetails,
+  ) =>
+      fb.group(<String, Object>{
+        aadhaarNoKey: FormControl<String>(
+            value: individualDetails.aadhaarNo ?? '',
+            validators: [
+              Validators.required,
+              Validators.minLength(12),
+              Validators.maxLength(12)
+            ]),
+        nameKey: FormControl<String>(
+            value: individualDetails.name ?? '',
+            validators: [
+              Validators.required,
+              Validators.minLength(2),
+              Validators.maxLength(128)
+            ]),
         identityDocument: FormControl<String>(
           value: individualDetails.documentType,
         ),

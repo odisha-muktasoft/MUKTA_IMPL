@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:works_shg_app/services/urls.dart';
 
 import '../../data/remote_client.dart';
 import '../../data/repositories/wage_seeker_repository/wage_seeker_repository.dart';
+import '../../models/adharModel/adhar_response.dart';
 import '../../models/attendance/individual_list_model.dart';
 import '../../models/wage_seeker/financial_details_model.dart';
 import '../../models/wage_seeker/individual_details_model.dart';
@@ -23,6 +25,42 @@ class WageSeekerCreateBloc
   WageSeekerCreateBloc() : super(const WageSeekerCreateState.initial()) {
     on<CreateWageSeekerEvent>(_onCreate);
     on<CreateWageSeekerDisposeEvent>(_onDispose);
+    on<VerifyAdharEvent>(_onVerifyAdhar);
+  }
+
+  FutureOr<void> _onVerifyAdhar(
+      VerifyAdharEvent event, WageSeekerCreateEmitter emit) async {
+    Client client = Client();
+
+    final  data={
+    "uid": "558777440419",
+    "uidType": "A",
+    "consent": "Y",
+    "subAuaCode": "0002590000",
+    "txn": "",
+    "isPI": "y",
+    "isBio": "n",
+    "isOTP": "n",
+    "bioType": "n",
+    "name": "Kunilata choudhury",
+    "dob": "",
+    "gender": "",
+    "rdInfo": "",
+    "rdData": "",
+    "otpValue": ""
+};
+    try {
+      emit(const WageSeekerCreateState.loading());
+      AdharCardResponse s =
+          await WageSeekerRepository(client.init()).verifyingAdharCard(
+        url: Urls.wageSeekerServices.adharVerifyUrl,
+        body: jsonEncode(data),
+      );
+      emit(WageSeekerCreateState.verified(s));
+      print(s);
+    } on DioError catch (ex) {
+      print(ex);
+    }
   }
 
   FutureOr<void> _onCreate(
@@ -104,6 +142,12 @@ class WageSeekerCreateEvent with _$WageSeekerCreateEvent {
       SkillDetails? skillDetails,
       LocationDetails? locationDetails,
       FinancialDetails? financialDetails}) = CreateWageSeekerEvent;
+
+  const factory WageSeekerCreateEvent.verifyAdhar({
+    required String name,
+    required String uid,
+  }) = VerifyAdharEvent;
+
   const factory WageSeekerCreateEvent.dispose() = CreateWageSeekerDisposeEvent;
 }
 
@@ -114,6 +158,10 @@ class WageSeekerCreateState with _$WageSeekerCreateState {
   const factory WageSeekerCreateState.initial() = _Initial;
   const factory WageSeekerCreateState.loading() = _Loading;
   const factory WageSeekerCreateState.loaded(
-      SingleIndividualModel? individualListModel) = _Loaded;
+    SingleIndividualModel? individualListModel,
+  ) = _Loaded;
+  const factory WageSeekerCreateState.verified(
+    AdharCardResponse? adharCardResponse,
+  ) = _Verified;
   const factory WageSeekerCreateState.error(String? error) = _Error;
 }

@@ -27,19 +27,23 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
     on<WageSeekerPhotoCreateEvent>(_onPhotoCreate);
   }
 
-FutureOr<void>_onPhotoCreate(WageSeekerPhotoCreateEvent event, WageSeekerBlocEmitter emit)async{
-
-state.maybeMap(orElse: ()=>{},
-create: (value) {
-  emit(value.copyWith(individualDetails: value.individualDetails!.copyWith(photo: event.photo,
-  imageFile: event.imageFile,
-  bytes: event.bytes,
-   ),),);
-
-},
-);
-
-}
+  FutureOr<void> _onPhotoCreate(
+      WageSeekerPhotoCreateEvent event, WageSeekerBlocEmitter emit) async {
+    state.maybeMap(
+      orElse: () => {},
+      create: (value) {
+        emit(
+          value.copyWith(
+            individualDetails: value.individualDetails!.copyWith(
+              photo: event.photo,
+              imageFile: event.imageFile,
+              bytes: event.bytes,
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   FutureOr<void> _onSkillCreate(
       WageSeekerSkillCreateEvent event, WageSeekerBlocEmitter emit) async {
@@ -132,15 +136,10 @@ class WageSeekerBlocEvent with _$WageSeekerBlocEvent {
   }) = WageSeekerSkillCreateEvent;
 
   const factory WageSeekerBlocEvent.photoCreate({
-    
-
-     File? imageFile,
-   Uint8List? bytes,
-   String ? photo,
-
+    File? imageFile,
+    Uint8List? bytes,
+    String? photo,
   }) = WageSeekerPhotoCreateEvent;
-
-  
 
   const factory WageSeekerBlocEvent.clear() = WageSeekerClearEvent;
 }

@@ -412,7 +412,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                             if (debouncer != null && debouncer!.isActive) {
                               debouncer!.cancel(); // Cancel the previous timer if it's active.
                             }
-                            debouncer = Timer(Duration(milliseconds: 1000), () {
+                            debouncer = Timer(const Duration(milliseconds: 1000), () {
                           context.read<WageSeekerCreateBloc>().add(
                                 CreateWageSeekerEvent(
                                     individualDetails: individualDetails,
