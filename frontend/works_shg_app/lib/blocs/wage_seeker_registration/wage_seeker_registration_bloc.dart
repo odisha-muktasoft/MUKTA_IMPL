@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,71 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
   WageSeekerBloc() : super(const WageSeekerBlocState.create()) {
     on<WageSeekerCreateEvent>(_onCreate);
     on<WageSeekerClearEvent>(_onClear);
+
+    on<WageSeekerIdentificationCreateEvent>(_onIdentificationCreate);
+
+    on<WageSeekerDetailsCreateEvent>(_onDetailsCreate);
+
+    on<WageSeekerSkillCreateEvent>(_onSkillCreate);
+
+    on<WageSeekerPhotoCreateEvent>(_onPhotoCreate);
+  }
+
+FutureOr<void>_onPhotoCreate(WageSeekerPhotoCreateEvent event, WageSeekerBlocEmitter emit)async{
+
+state.maybeMap(orElse: ()=>{},
+create: (value) {
+  emit(value.copyWith(individualDetails: value.individualDetails!.copyWith(photo: event.photo,
+  imageFile: event.imageFile,
+  bytes: event.bytes,
+   ),),);
+
+},
+);
+
+}
+
+  FutureOr<void> _onSkillCreate(
+      WageSeekerSkillCreateEvent event, WageSeekerBlocEmitter emit) async {
+    state.maybeMap(
+      orElse: () => {},
+      create: (value) {
+        emit(value.copyWith(
+          skillDetails: event.skillDetails,
+        ));
+      },
+    );
+  }
+
+  FutureOr<void> _onIdentificationCreate(
+      WageSeekerIdentificationCreateEvent event,
+      WageSeekerBlocEmitter emit) async {
+    emit(WageSeekerBlocState.create(
+      individualDetails: IndividualDetails(
+        aadhaarNo: event.number,
+        name: event.name,
+        documentType: event.documentType,
+        adharVerified: event.adharVerified,
+      ),
+    ));
+  }
+
+  FutureOr<void> _onDetailsCreate(
+      WageSeekerDetailsCreateEvent event, WageSeekerBlocEmitter emit) async {
+    state.maybeMap(
+      orElse: () => {},
+      create: (value) {
+        emit(value.copyWith(
+            individualDetails: value.individualDetails!.copyWith(
+          dateOfBirth: event.dob,
+          gender: event.gender,
+          fatherName: event.fatherName,
+          relationship: event.relationShip,
+          socialCategory: event.socialCategory,
+          mobileNumber: event.mobileNumber,
+        )));
+      },
+    );
   }
 
   FutureOr<void> _onCreate(
@@ -44,6 +110,38 @@ class WageSeekerBlocEvent with _$WageSeekerBlocEvent {
       SkillDetails? skillDetails,
       LocationDetails? locationDetails,
       FinancialDetails? financialDetails}) = WageSeekerCreateEvent;
+
+  const factory WageSeekerBlocEvent.identificationCreate({
+    required String documentType,
+    required String number,
+    required String name,
+    required bool adharVerified,
+    required int timeStamp,
+  }) = WageSeekerIdentificationCreateEvent;
+
+  const factory WageSeekerBlocEvent.detailsCreate(
+      {required String fatherName,
+      required DateTime dob,
+      required String relationShip,
+      required String gender,
+      required String socialCategory,
+      required String mobileNumber}) = WageSeekerDetailsCreateEvent;
+
+  const factory WageSeekerBlocEvent.skillCreate({
+    required SkillDetails skillDetails,
+  }) = WageSeekerSkillCreateEvent;
+
+  const factory WageSeekerBlocEvent.photoCreate({
+    
+
+     File? imageFile,
+   Uint8List? bytes,
+   String ? photo,
+
+  }) = WageSeekerPhotoCreateEvent;
+
+  
+
   const factory WageSeekerBlocEvent.clear() = WageSeekerClearEvent;
 }
 

@@ -1,15 +1,130 @@
+import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../blocs/localization/app_localization.dart';
+import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
+import '../../models/wage_seeker/skill_details_model.dart';
+import '../../widgets/atoms/multiselect_checkbox.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class IndividualSkillSubPage extends StatefulWidget {
-  const IndividualSkillSubPage({super.key});
+  final List<String> relationship;
+  final List<String> gender;
+  final List<String> socialCategory;
+  final List<String> skills;
+  final String? photo;
+  final Function(int page) onPageChanged;
+  const IndividualSkillSubPage({
+    super.key,
+    required this.relationship,
+    required this.gender,
+    required this.photo,
+    required this.skills,
+    required this.socialCategory,
+    required this.onPageChanged,
+  });
 
   @override
   State<IndividualSkillSubPage> createState() => _IndividualSkillSubPageState();
 }
 
 class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
+  List<String> selectedOptions = [];
+  SkillDetails? skillDetails = SkillDetails();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    final registrationState = BlocProvider.of<WageSeekerBloc>(context).state;
+
+    skillDetails = registrationState.skillDetails;
+
+    if (registrationState.skillDetails != null &&
+        registrationState.skillDetails?.individualSkills != null) {
+      selectedOptions = registrationState.skillDetails!.individualSkills!
+              .any((a) => a.type == null)
+          ? []
+          : registrationState.skillDetails!.individualSkills!
+              .where((e) => e.type != null)
+              .map((e) => '${e.level}.${e.type}')
+              .toList();
+    }
+
+    super.initState();
+  }
+
+  void _onSelectedOptionsChanged(List<String> options) {
+    setState(() {
+      selectedOptions = options;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final t = AppLocalizations.of(context);
+
+    return GestureDetector(
+      onTap: () {
+        if (FocusScope.of(context).hasFocus) {
+          FocusScope.of(context).unfocus();
+        }
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          DigitCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "Individual's Skill Details",
+                  style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
+                      ?.apply(color: const DigitColors().black),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(children: [
+                  MultiSelectSearchCheckBox(
+                    label: t.translate(i18.attendanceMgmt.skill) + ' *',
+                    onChange: _onSelectedOptionsChanged,
+                    options: widget.skills,
+                    hintText: t.translate(i18.attendanceMgmt.skill),
+                    selectedOptions: selectedOptions,
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                ]),
+                Center(
+                  child: DigitElevatedButton(
+                      onPressed: () {
+                        final skillList = SkillDetails(
+                            individualSkills: selectedOptions
+                                .map((e) => IndividualSkill(
+                                    type: e.toString().split('.').last,
+                                    level: e.toString().split('.').first))
+                                .toList());
+
+                        context.read<WageSeekerBloc>().add(
+                              WageSeekerSkillCreateEvent(
+                                  skillDetails: skillList),
+                            );
+
+                        widget.onPageChanged(3);
+                      },
+                      child: Center(
+                        child: Text(t.translate(i18.common.next)),
+                      )),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

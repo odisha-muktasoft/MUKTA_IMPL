@@ -7,34 +7,39 @@ import 'package:digit_components/widgets/digit_card.dart';
 import 'package:digit_components/widgets/digit_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../blocs/localization/app_localization.dart';
+import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../widgets/atoms/radio_button_list.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
 class IndividualSubDetailPage extends StatefulWidget {
- final List<String> relationship;
- final     List<String> gender;
- final     List<String> socialCategory;
- final     List<String> skills;
-  final    String? photo;
-  const IndividualSubDetailPage({super.key, 
-   required this.relationship,
-   required this.gender, 
-   required this.photo,
-   required this.skills,
-   required this.socialCategory,
-   });
+  final List<String> relationship;
+  final List<String> gender;
+  final List<String> socialCategory;
+  final List<String> skills;
+  final String? photo;
+  final Function(int page) onPageChanged; 
+  const IndividualSubDetailPage({
+    super.key,
+    required this.relationship,
+    required this.gender,
+    required this.photo,
+    required this.skills,
+    required this.socialCategory,
+    required this.onPageChanged,
+  });
 
   @override
-  State<IndividualSubDetailPage> createState() => _IndividualSubDetailPageState();
+  State<IndividualSubDetailPage> createState() =>
+      _IndividualSubDetailPageState();
 }
 
 class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
-
-String genderController = '';
+  String genderController = '';
   String fatherNameKey = 'fatherName';
   String aadhaarNoKey = 'aadhaarNo';
   String relationshipKey = 'relationship';
@@ -43,17 +48,22 @@ String genderController = '';
   String socialCategoryKey = 'socialCategory';
   String mobileKey = 'mobileNo';
 
+  @override
+  void initState() {
+    final state = context.read<WageSeekerBloc>().state;
 
+    print(state.individualDetails!.name);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-     final t = AppLocalizations.of(context);
-   
+    final t = AppLocalizations.of(context);
+
     return ReactiveFormBuilder(
-     
-      form:detailBuildForm,
+      form: detailBuildForm,
       builder: (contextt, form1, child) {
-       
         return GestureDetector(
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
@@ -64,7 +74,6 @@ String genderController = '';
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               DigitCard(
-                //margin: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -101,7 +110,8 @@ String genderController = '';
                         return DigitRadioButtonList<String>(
                           labelText: t.translate(i18.common.gender),
                           formControlName: genderKey,
-                          options: widget.gender.map((e) => e.toString()).toList(),
+                          options:
+                              widget.gender.map((e) => e.toString()).toList(),
                           isRequired: true,
                           valueMapper: (value) => t.translate(value),
                           onValueChange: (value) {
@@ -130,8 +140,9 @@ String genderController = '';
                       ),
                       DigitReactiveDropdown<String>(
                         label: t.translate(i18.common.relationship),
-                        menuItems:
-                           widget. relationship.map((e) => e.toString()).toList(),
+                        menuItems: widget.relationship
+                            .map((e) => e.toString())
+                            .toList(),
                         isRequired: true,
                         formControlName: relationshipKey,
                         valueMapper: (value) =>
@@ -173,8 +184,9 @@ String genderController = '';
                       ),
                       DigitReactiveDropdown<String>(
                         label: t.translate(i18.common.socialCategory),
-                        menuItems:
-                           widget. socialCategory.map((e) => e.toString()).toList(),
+                        menuItems: widget.socialCategory
+                            .map((e) => e.toString())
+                            .toList(),
                         formControlName: socialCategoryKey,
                         valueMapper: (value) =>
                             t.translate('COMMON_MASTERS_SOCIAL_$value'),
@@ -187,9 +199,18 @@ String genderController = '';
                     Center(
                       child: DigitElevatedButton(
                           onPressed: () {
-                            
-                             
-                            
+                            context.read<WageSeekerBloc>().add(
+                                  WageSeekerDetailsCreateEvent(
+                                    dob: DateTime.now(),
+                                    fatherName: 'Pradipta',
+                                    gender: 'Male',
+                                    mobileNumber: '9583871974',
+                                    relationShip: 'father',
+                                    socialCategory: 'obc',
+                                  ),
+                                );
+
+widget.onPageChanged(2);
                           },
                           child: Center(
                             child: Text(t.translate(i18.common.next)),
@@ -205,10 +226,7 @@ String genderController = '';
     );
   }
 
-
   FormGroup detailBuildForm() => fb.group(<String, Object>{
-      
-       
         genderKey: FormControl<String>(value: null),
         fatherNameKey: FormControl<String>(value: '', validators: [
           Validators.required,
@@ -218,7 +236,7 @@ String genderController = '';
         relationshipKey:
             FormControl<String>(value: null, validators: [Validators.required]),
         dobKey: FormControl<DateTime>(
-          value:  DateTime.now(),
+          value: DateTime.now(),
           validators: [
             Validators.required,
             Validators.max(DateTime(DateTime.now().year - 18,
@@ -233,6 +251,5 @@ String genderController = '';
           Validators.max('9999999999'),
           Validators.maxLength(10)
         ]),
-     
       });
 }

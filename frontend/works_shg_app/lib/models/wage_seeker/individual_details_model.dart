@@ -18,6 +18,10 @@ class IndividualDetails with IndividualDetailsMappable {
   final File? imageFile;
   final Uint8List? bytes;
   final String? photo;
+  final String? documentType;
+   
+  final bool? adharVerified;
+    final  int? timeStamp;
 
   IndividualDetails(
       {this.aadhaarNo,
@@ -30,5 +34,9 @@ class IndividualDetails with IndividualDetailsMappable {
       this.mobileNumber,
       this.imageFile,
       this.bytes,
-      this.photo});
+      this.photo,
+      this.adharVerified,
+      this.documentType,
+      this.timeStamp,
+      });
 }

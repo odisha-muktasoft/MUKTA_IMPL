@@ -20,6 +20,8 @@ import '../../utils/notifiers.dart';
 import '../../widgets/atoms/multiselect_checkbox.dart';
 import '../../widgets/molecules/file_picker.dart';
 import 'indi_detail_sub.dart';
+import 'indi_photo_sub.dart';
+import 'indi_skill_sub.dart';
 
 class IndividualDetailsPage extends StatefulWidget {
   final void Function() onPressed;
@@ -80,6 +82,20 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     });
   }
 
+   void _onPageChange(int count) {
+
+     if(count==4)
+      {
+        widget.onPressed();
+        
+      }else{
+        setState(() {
+      check = count;
+    });
+     }
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
@@ -107,10 +123,11 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
             t, relationship, gender, socialCategory, skills, photo);
       case 1:
        
-        return IndividualSubDetailPage(gender: gender, photo: photo, relationship: relationship, skills: skills, socialCategory: socialCategory,);
+        return IndividualSubDetailPage(gender: gender, photo: photo, relationship: relationship, skills: skills, socialCategory: socialCategory, onPageChanged: (int page) {_onPageChange(page);  },);
       case 2:
-        return skillMethod(context,
-            t, relationship, gender, socialCategory, skills, photo);
+       return IndividualSkillSubPage(gender: gender, photo: photo, relationship: relationship, skills: skills, socialCategory: socialCategory, onPageChanged: (int page) { _onPageChange(page);  },);
+      case 3:
+      return IndividualPhotoSubPage(onPageChanged: (int page) {  _onPageChange(page);  },);
       default:
         return identificationMethod(context,
             t, relationship, gender, socialCategory, skills, photo);
@@ -213,6 +230,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                             form.markAllAsTouched(updateParent: false);
                             if (!form.valid) return;
                            
+                          context.read<WageSeekerBloc>().add(const WageSeekerIdentificationCreateEvent(adharVerified: true, documentType: 'adhar', name: 'pitabash', number: '65657474657575', timeStamp: 354758437363,),);
                               setState(() {
                                 check = 1;
                               });
