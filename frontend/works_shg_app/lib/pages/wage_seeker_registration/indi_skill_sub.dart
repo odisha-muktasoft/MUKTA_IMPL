@@ -37,7 +37,6 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
 
   @override
   void initState() {
-   
     final registrationState = BlocProvider.of<WageSeekerBloc>(context).state;
 
     skillDetails = registrationState.skillDetails;
@@ -103,29 +102,26 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                 Center(
                   child: DigitElevatedButton(
                       onPressed: () {
-
                         if (!getSkillsValid()) {
+                          Notifiers.getToastMessage(context,
+                              i18.wageSeeker.selectSkillValidation, 'ERROR');
+                        } else if (selectedOptions.isEmpty) {
                           Notifiers.getToastMessage(
-                                  context,
-                                  i18.wageSeeker.selectSkillValidation,
-                                  'ERROR');
+                              context, i18.wageSeeker.skillsRequired, 'ERROR');
                         } else {
-                          
-                        
-                        final skillList = SkillDetails(
-                            individualSkills: selectedOptions
-                                .map((e) => IndividualSkill(
-                                    type: e.toString().split('.').last,
-                                    level: e.toString().split('.').first))
-                                .toList());
+                          final skillList = SkillDetails(
+                              individualSkills: selectedOptions
+                                  .map((e) => IndividualSkill(
+                                      type: e.toString().split('.').last,
+                                      level: e.toString().split('.').first))
+                                  .toList());
 
+                          context.read<WageSeekerBloc>().add(
+                                WageSeekerSkillCreateEvent(
+                                    skillDetails: skillList),
+                              );
 
-                        context.read<WageSeekerBloc>().add(
-                              WageSeekerSkillCreateEvent(
-                                  skillDetails: skillList),
-                            );
-
-                        widget.onPageChanged(3);
+                          widget.onPageChanged(3);
                         }
                       },
                       child: Center(
@@ -144,13 +140,6 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
     Map<String, int> beforeDotCount = {};
     Map<String, int> afterDotCount = {};
 
-    if (selectedOptions.isEmpty) {
-      
-      return false;
-    } else {
-      
-    
-
     for (String skill in selectedOptions) {
       List<String> skillParts = skill.split(".");
       String beforeDot = skillParts[0];
@@ -168,6 +157,5 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
       return false;
     }
     return true;
-  }}
-
+  }
 }

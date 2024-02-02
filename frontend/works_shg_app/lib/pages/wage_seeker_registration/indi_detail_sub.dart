@@ -12,6 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
+import '../../utils/notifiers.dart';
 import '../../widgets/atoms/radio_button_list.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -22,7 +23,7 @@ class IndividualSubDetailPage extends StatefulWidget {
   final List<String> socialCategory;
   final List<String> skills;
   final String? photo;
-  final Function(int page) onPageChanged; 
+  final Function(int page) onPageChanged;
   const IndividualSubDetailPage({
     super.key,
     required this.relationship,
@@ -199,21 +200,33 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                     Center(
                       child: DigitElevatedButton(
                           onPressed: () {
-                             form1.markAllAsTouched(
-                                            updateParent: false);
-                                        if (!form1.valid) return;
-                            context.read<WageSeekerBloc>().add(
-                                  WageSeekerDetailsCreateEvent(
-                                    dob: DateTime.now(),
-                                    fatherName: 'Pradipta',
-                                    gender: 'Male',
-                                    mobileNumber: '9583871974',
-                                    relationShip: 'father',
-                                    socialCategory: 'obc',
-                                  ),
-                                );
+                            form1.markAllAsTouched(updateParent: false);
+                            if (!form1.valid) return;
+                            if (form1.value[genderKey] == null ||
+                                form1.value[genderKey].toString().isEmpty) {
+                              Notifiers.getToastMessage(
+                                  context,
+                                  t.translate(i18.wageSeeker.genderRequired),
+                                  'ERROR');
+                            } else {
+                              context.read<WageSeekerBloc>().add(
+                                    WageSeekerDetailsCreateEvent(
+                                      dob: form1.value[dobKey] as DateTime,
+                                      fatherName:
+                                          form1.value[fatherNameKey].toString(),
+                                      gender: form1.value[genderKey].toString(),
+                                      mobileNumber:
+                                          form1.value[mobileKey].toString(),
+                                      relationShip: form1.value[relationshipKey]
+                                          .toString(),
+                                      socialCategory: form1
+                                          .value[socialCategoryKey]
+                                          .toString(),
+                                    ),
+                                  );
 
-widget.onPageChanged(2);
+                              widget.onPageChanged(2);
+                            }
                           },
                           child: Center(
                             child: Text(t.translate(i18.common.next)),
@@ -239,7 +252,7 @@ widget.onPageChanged(2);
         relationshipKey:
             FormControl<String>(value: null, validators: [Validators.required]),
         dobKey: FormControl<DateTime>(
-          value: DateTime.now(),
+          value: null,
           validators: [
             Validators.required,
             Validators.max(DateTime(DateTime.now().year - 18,

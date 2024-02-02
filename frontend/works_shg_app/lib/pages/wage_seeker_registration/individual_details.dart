@@ -7,23 +7,16 @@ import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/wage_seeker/financial_details_model.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/utils/models/file_picker_data.dart';
-import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_create_bloc.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
-import '../../models/file_store/file_store_model.dart';
 import '../../models/mdms/wage_seeker_mdms.dart';
 import '../../models/wage_seeker/individual_details_model.dart';
 import '../../models/wage_seeker/location_details_model.dart';
 import '../../models/wage_seeker/skill_details_model.dart';
-import '../../utils/notifiers.dart';
-import '../../widgets/atoms/multiselect_checkbox.dart';
-import '../../widgets/molecules/file_picker.dart';
 import 'indi_detail_sub.dart';
 import 'indi_photo_sub.dart';
 import 'indi_skill_sub.dart';
-import '../../widgets/loaders.dart' as shg_loader;
 
 class IndividualDetailsPage extends StatefulWidget {
   final void Function() onPressed;
@@ -57,6 +50,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
   int check = 0;
 
   bool adhar = false;
+  bool isVerified = false;
 
   @override
   void initState() {
@@ -104,6 +98,12 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     }
   }
 
+  void isVerifyDone(bool value) {
+    setState(() {
+      isVerified = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
@@ -128,19 +128,22 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     switch (check) {
       case 0:
         return identificationMethod(
-          context,
-          t,
-          relationship,
-          gender,
-          socialCategory,
-          skills,
-          photo,
-          individualDetails,
-          adhar,
-          (adhar) {
-            updateAdhar(adhar);
-          },
-        );
+            context,
+            t,
+            relationship,
+            gender,
+            socialCategory,
+            skills,
+            photo,
+            individualDetails,
+            adhar,
+            (adhar) {
+              updateAdhar(adhar);
+            },
+            isVerified,
+            (value) {
+              isVerifyDone(value);
+            });
       case 1:
         return IndividualSubDetailPage(
           gender: gender,
@@ -171,23 +174,26 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
         );
       default:
         return identificationMethod(
-          context,
-          t,
-          relationship,
-          gender,
-          socialCategory,
-          skills,
-          photo,
-          individualDetails,
-          adhar,
-          (adhar) {
-            updateAdhar(adhar);
-          },
-        );
+            context,
+            t,
+            relationship,
+            gender,
+            socialCategory,
+            skills,
+            photo,
+            individualDetails,
+            adhar,
+            (adhar) {
+              updateAdhar(adhar);
+            },
+            isVerified,
+            (value) {
+              isVerifyDone(value);
+            });
     }
   }
 
-  ReactiveFormBuilder identificationMethod(
+  BlocListener identificationMethod(
     BuildContext context,
     AppLocalizations t,
     List<String> relationship,
@@ -198,114 +204,132 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     IndividualDetails? individualDetails,
     bool adhar,
     final Function(String adhar) adharSelect,
+    bool isVerified,
+    final Function(bool value) isVerifyFunction,
   ) {
-    bool isVerified = false;
-    return ReactiveFormBuilder(
-      form: () =>
-          identificationBuildForm(individualDetails ?? IndividualDetails()),
-      builder: (context, form, child) {
-        return GestureDetector(
-          onTap: () {
-            if (FocusScope.of(context).hasFocus) {
-              FocusScope.of(context).unfocus();
-            }
+    // bool isVerified = false;
+    return BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
+      listener: (context, state) {
+        state.maybeMap(
+          orElse: () => {const SizedBox.shrink()},
+          verified: (adharCardResponse) {
+            isVerified =
+                adharCardResponse!.adharCardResponse!.status == "SUCCESS"
+                    ? true
+                    : false;
+
+            isVerifyDone(isVerified);
           },
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              DigitCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Individual's Identification Details",
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.displayMedium
-                          ?.apply(color: const DigitColors().black),
-                    ),
-                    Column(children: [
-                      DigitReactiveDropdown<String>(
-                        label: "Identity Document",
-                        menuItems: [
-                          "AADHAAR",
-                          "Election Photo Identity Card(EPIC)",
-                          "Driving License",
-                          "Ration Card under TPDS"
-                        ].map((e) => e.toString()).toList(),
-                        isRequired: true,
-                        formControlName: identityDocument,
-                        valueMapper: (value) =>
-                            t.translate('CORE_COMMON_$value'),
-                        onChanged: (value) {
-                          adharSelect(value);
-                        },
+          error: (error) {
+            isVerified = false;
+            isVerifyDone(isVerified);
+          },
+        );
+      },
+      child: ReactiveFormBuilder(
+        form: () =>
+            identificationBuildForm(individualDetails ?? IndividualDetails()),
+        builder: (context, form, child) {
+          return GestureDetector(
+            onTap: () {
+              if (FocusScope.of(context).hasFocus) {
+                FocusScope.of(context).unfocus();
+              }
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DigitCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Individual's Identification Details",
+                        style: DigitTheme
+                            .instance.mobileTheme.textTheme.displayMedium
+                            ?.apply(color: const DigitColors().black),
                       ),
-                      DigitTextFormField(
-                        onChanged: (p0) {
-                          context
-                              .read<WageSeekerCreateBloc>()
-                              .add(const CreateWageSeekerDisposeEvent());
-                        },
-                        formControlName: aadhaarNoKey,
-                        label: "Identity Number",
-                        isRequired: true,
-                        minLength: 12,
-                        maxLength: 12,
-                        keyboardType: TextInputType.number,
-                        inputFormatter: [
-                          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                        ],
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.aadhaarRequired,
-                              ),
-                          'minLength': (_) => t.translate(
-                                i18.wageSeeker.minAadhaarCharacters,
-                              ),
-                          'maxLength': (_) => t.translate(
-                                i18.wageSeeker.maxAadhaarCharacters,
-                              ),
-                        },
-                      ),
-                      DigitTextFormField(
-                        formControlName: nameKey,
-                        isRequired: true,
-                        label: "Name on Document",
-                        inputFormatter: [
-                          FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
-                        ],
-                        validationMessages: {
-                          'required': (_) => t.translate(
-                                i18.wageSeeker.nameRequired,
-                              ),
-                          'minLength': (_) => t.translate(
-                                i18.wageSeeker.minNameCharacters,
-                              ),
-                          'maxLength': (_) => t.translate(
-                                i18.wageSeeker.maxNameCharacters,
-                              ),
-                        },
-                      ),
-                      adhar
-                          ? BlocListener<WageSeekerCreateBloc,
-                              WageSeekerCreateState>(
-                              listener: (context, state) {
-                                state.maybeWhen(
-                                  orElse: () => {const SizedBox.shrink()},
-                                  verified: (adharCardResponse) {
-                                    isVerified =
-                                        adharCardResponse!.status == "SUCCESS"
-                                            ? true
-                                            : false;
-                                  },
-                                  error: (error) {
-                                    isVerified = false;
-                                  },
-                                );
-                              },
-                              child: BlocBuilder<WageSeekerCreateBloc,
-                                  WageSeekerCreateState>(
+                      Column(children: [
+                        DigitReactiveDropdown<String>(
+                          label: "Identity Document",
+                          menuItems: [
+                            "AADHAAR",
+                            "Election Photo Identity Card(EPIC)",
+                            "Driving License",
+                            "Ration Card under TPDS"
+                          ].map((e) => e.toString()).toList(),
+                          isRequired: true,
+                          formControlName: identityDocument,
+                          valueMapper: (value) =>
+                              t.translate('CORE_COMMON_$value'),
+                          onChanged: (value) {
+                            adharSelect(value);
+                          },
+                        ),
+                        DigitTextFormField(
+                          onChanged: (p0) {
+                            if (adhar) {
+                              adharSelect("AADHAAR");
+                            }
+                            isVerifyDone(false);
+                            context
+                                .read<WageSeekerCreateBloc>()
+                                .add(const CreateWageSeekerDisposeEvent());
+                          },
+                          formControlName: aadhaarNoKey,
+                          label: "Identity Number",
+                          isRequired: true,
+                          minLength: 12,
+                          maxLength: 12,
+                          keyboardType: TextInputType.number,
+                          inputFormatter: [
+                            FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                          ],
+                          validationMessages: {
+                            'required': (_) => t.translate(
+                                  i18.wageSeeker.aadhaarRequired,
+                                ),
+                            'minLength': (_) => t.translate(
+                                  i18.wageSeeker.minAadhaarCharacters,
+                                ),
+                            'maxLength': (_) => t.translate(
+                                  i18.wageSeeker.maxAadhaarCharacters,
+                                ),
+                          },
+                        ),
+                        DigitTextFormField(
+                          onChanged: (p0) {
+                            if (adhar) {
+                              adharSelect("AADHAAR");
+                            }
+                            isVerifyDone(false);
+                            context
+                                .read<WageSeekerCreateBloc>()
+                                .add(const CreateWageSeekerDisposeEvent());
+                          },
+                          formControlName: nameKey,
+                          isRequired: true,
+                          label: "Name on Document",
+                          inputFormatter: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp("[A-Za-z ]"))
+                          ],
+                          validationMessages: {
+                            'required': (_) => t.translate(
+                                  i18.wageSeeker.nameRequired,
+                                ),
+                            'minLength': (_) => t.translate(
+                                  i18.wageSeeker.minNameCharacters,
+                                ),
+                            'maxLength': (_) => t.translate(
+                                  i18.wageSeeker.maxNameCharacters,
+                                ),
+                          },
+                        ),
+                        adhar
+                            ? BlocBuilder<WageSeekerCreateBloc,
+                                WageSeekerCreateState>(
                                 builder: (context, state) {
                                   return state.maybeWhen(
                                     orElse: () => const Offstage(),
@@ -324,7 +348,10 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                             form.markAllAsTouched(
                                                 updateParent: false);
                                             if (!form.valid) return;
-
+                                            if (FocusScope.of(context)
+                                                .hasFocus) {
+                                              FocusScope.of(context).unfocus();
+                                            }
                                             context
                                                 .read<WageSeekerCreateBloc>()
                                                 .add(
@@ -373,27 +400,10 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                     },
                                   );
                                 },
-                              ),
-                            )
-                          : const SizedBox.shrink(),
-                    ]),
-                    Center(
-                      child: BlocListener<WageSeekerCreateBloc,
-                                  WageSeekerCreateState>(
-                        listener: (context, state) {
-                         state.maybeWhen(
-                                  orElse: () => {const SizedBox.shrink()},
-                                  verified: (adharCardResponse) {
-                                    isVerified =
-                                        adharCardResponse!.status == "SUCCESS"
-                                            ? true
-                                            : false;
-                                  },
-                                  error: (error) {
-                                    isVerified = false;
-                                  },
-                                );
-                        },
+                              )
+                            : const SizedBox.shrink(),
+                      ]),
+                      Center(
                         child: DigitElevatedButton(
                             onPressed: (adhar)
                                 ? isVerified
@@ -446,15 +456,15 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                             child: Center(
                               child: Text(t.translate(i18.common.next)),
                             )),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
