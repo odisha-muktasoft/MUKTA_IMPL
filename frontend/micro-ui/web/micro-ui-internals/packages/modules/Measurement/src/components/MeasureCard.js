@@ -47,7 +47,7 @@ const initialValue = (element) => {
 }
 const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tableData, tableKey, tableIndex, unitRate, mode }) => {
   const { t } = useTranslation();
-  const [error, setError] = useState(false)
+  const [error, setError] = useState({message:"",enable:false})
 
   const reducer = (state, action) => {
     // console.log(state, action, "reducer");
@@ -56,6 +56,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         const { state: newRow } = action;
         return [...state, newRow];
       case "UPDATE_ROW":
+        setError({message:"",enable:false});
         const {
           state: { id, value, row, type },
         } = action;
@@ -77,7 +78,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         const updatedTableState = state.filter((row, index) => index + 1 !== rowIdToRemove);
         return [...updatedTableState];
       case "CLEAR_STATE":
-        setError(false);
+        setError({message:"",enable:false});
         const clearedTableState = state.map((item) => ({
           ...item,
           height: 0,
@@ -134,7 +135,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
           {renderBody()}
           <tr>
             <td colSpan={"3"}>
-            {error && <CardLabelError style={{width:"100%"}}>{t("MB_APPROVED_QTY_VALIDATION")}</CardLabelError>}
+            {error?.enable && <CardLabelError style={{width:"100%"}}>{t(error?.message)}</CardLabelError>}
               <div style={{ display: "flex", flexDirection: "row" }}>
                 { (
                   <>
@@ -177,7 +178,11 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                         // check for deduction and set accordingly
                         const totalQuantity = state?.reduce((total, item) => item?.isDeduction == true ? total - parseFloat(item.noOfunit) :  total + parseFloat(item.noOfunit), 0);
                         if(mode === "CREATE" && (totalQuantity < 0 || totalQuantity > tableData[tableIndex]?.approvedQuantity - tableData[tableIndex]?.consumedQ))
-                        setError(true);
+                          setError({message:"MB_APPROVED_QTY_VALIDATION",enable:true});
+                        else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => !obj.description || obj.description.length < 2 || obj?.description?.length > 64) !== -1)
+                          setError({message:`${t("ERR_DESCRIPTION_IS_MANDATORY_AND_LENGTH")} ${state.findIndex(obj => !obj.description|| obj.description.length < 2 || obj?.description?.length > 64 )+1}`,enable:true});
+                        else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => !obj.length && !obj.width && !obj.height && !obj.noOfunit) !== -1)
+                          setError({message:`${t("ERR_LEN_DEP_HIGH_NO_NOT_PRESENT")} ${state.findIndex(obj => !obj.length || !obj.width || !obj.height || !obj.noOfunit)+1}`,enable:true});
                         else
                         {
                         tableData[tableIndex].measures = state;
