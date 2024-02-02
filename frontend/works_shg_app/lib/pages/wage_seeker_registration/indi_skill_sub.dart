@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../models/wage_seeker/skill_details_model.dart';
+import '../../utils/notifiers.dart';
 import '../../widgets/atoms/multiselect_checkbox.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -102,6 +103,15 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                 Center(
                   child: DigitElevatedButton(
                       onPressed: () {
+
+                        if (!getSkillsValid()) {
+                          Notifiers.getToastMessage(
+                                  context,
+                                  i18.wageSeeker.selectSkillValidation,
+                                  'ERROR');
+                        } else {
+                          
+                        
                         final skillList = SkillDetails(
                             individualSkills: selectedOptions
                                 .map((e) => IndividualSkill(
@@ -109,12 +119,14 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                                     level: e.toString().split('.').first))
                                 .toList());
 
+
                         context.read<WageSeekerBloc>().add(
                               WageSeekerSkillCreateEvent(
                                   skillDetails: skillList),
                             );
 
                         widget.onPageChanged(3);
+                        }
                       },
                       child: Center(
                         child: Text(t.translate(i18.common.next)),
@@ -127,4 +139,35 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
       ),
     );
   }
+
+  bool getSkillsValid() {
+    Map<String, int> beforeDotCount = {};
+    Map<String, int> afterDotCount = {};
+
+    if (selectedOptions.isEmpty) {
+      
+      return false;
+    } else {
+      
+    
+
+    for (String skill in selectedOptions) {
+      List<String> skillParts = skill.split(".");
+      String beforeDot = skillParts[0];
+      String afterDot = skillParts[1];
+
+      beforeDotCount[beforeDot] = (beforeDotCount[beforeDot] ?? 0) + 1;
+      afterDotCount[afterDot] = (afterDotCount[afterDot] ?? 0) + 1;
+    }
+
+    // int countBeforeDot =
+    //     beforeDotCount.values.where((count) => count > 1).length;
+    int countAfterDot = afterDotCount.values.where((count) => count > 1).length;
+
+    if (countAfterDot > 0) {
+      return false;
+    }
+    return true;
+  }}
+
 }

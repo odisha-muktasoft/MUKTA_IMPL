@@ -108,7 +108,7 @@ class WageSeekerCreateBloc
               "relationship": event.individualDetails?.relationship,
               "identifiers": [
                 {
-                  "identifierType": "AADHAAR",
+                  "identifierType": event.individualDetails?.documentType,
                   "identifierId": event.individualDetails?.aadhaarNo
                 }
               ],
@@ -121,7 +121,16 @@ class WageSeekerCreateBloc
                   {
                     "key": "SOCIAL_CATEGORY",
                     "value": event.individualDetails?.socialCategory
+                  },
+                  {
+                   "key": "is_aadhaar_verified",
+                    "value":event.individualDetails?.adharVerified??false
+                  },
+                  {
+                     "key": "verification_time",
+                    "value":event.individualDetails?.timeStamp??123456
                   }
+                
                 ]
               }
             }
