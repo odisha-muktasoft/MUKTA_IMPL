@@ -56,6 +56,8 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
 
   int check = 0;
 
+  bool adhar = false;
+
   @override
   void initState() {
     super.initState();
@@ -83,6 +85,21 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     } else {
       setState(() {
         check = count;
+      });
+    }
+  }
+
+  void updateAdhar(String adharName) {
+    context
+        .read<WageSeekerCreateBloc>()
+        .add(const CreateWageSeekerDisposeEvent());
+    if (adharName == "AADHAAR") {
+      setState(() {
+        adhar = true;
+      });
+    } else {
+      setState(() {
+        adhar = false;
       });
     }
   }
@@ -119,6 +136,10 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           skills,
           photo,
           individualDetails,
+          adhar,
+          (adhar) {
+            updateAdhar(adhar);
+          },
         );
       case 1:
         return IndividualSubDetailPage(
@@ -149,8 +170,20 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           },
         );
       default:
-        return identificationMethod(context, t, relationship, gender,
-            socialCategory, skills, photo, individualDetails);
+        return identificationMethod(
+          context,
+          t,
+          relationship,
+          gender,
+          socialCategory,
+          skills,
+          photo,
+          individualDetails,
+          adhar,
+          (adhar) {
+            updateAdhar(adhar);
+          },
+        );
     }
   }
 
@@ -163,7 +196,10 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     List<String> skills,
     String? photo,
     IndividualDetails? individualDetails,
+    bool adhar,
+    final Function(String adhar) adharSelect,
   ) {
+    bool isVerified = false;
     return ReactiveFormBuilder(
       form: () =>
           identificationBuildForm(individualDetails ?? IndividualDetails()),
@@ -191,16 +227,26 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                     Column(children: [
                       DigitReactiveDropdown<String>(
                         label: "Identity Document",
-                        menuItems: ["Adhar", "VoterId", "Rasan Card"]
-                            .map((e) => e.toString())
-                            .toList(),
+                        menuItems: [
+                          "AADHAAR",
+                          "Election Photo Identity Card(EPIC)",
+                          "Driving License",
+                          "Ration Card under TPDS"
+                        ].map((e) => e.toString()).toList(),
                         isRequired: true,
                         formControlName: identityDocument,
                         valueMapper: (value) =>
                             t.translate('CORE_COMMON_$value'),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          adharSelect(value);
+                        },
                       ),
                       DigitTextFormField(
+                        onChanged: (p0) {
+                          context
+                              .read<WageSeekerCreateBloc>()
+                              .add(const CreateWageSeekerDisposeEvent());
+                        },
                         formControlName: aadhaarNoKey,
                         label: "Identity Number",
                         isRequired: true,
@@ -241,73 +287,166 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               ),
                         },
                       ),
-                      BlocBuilder<WageSeekerCreateBloc, WageSeekerCreateState>(
-                        builder: (context, state) {
+                      adhar
+                          ? BlocListener<WageSeekerCreateBloc,
+                              WageSeekerCreateState>(
+                              listener: (context, state) {
+                                state.maybeWhen(
+                                  orElse: () => {const SizedBox.shrink()},
+                                  verified: (adharCardResponse) {
+                                    isVerified =
+                                        adharCardResponse!.status == "SUCCESS"
+                                            ? true
+                                            : false;
+                                  },
+                                  error: (error) {
+                                    isVerified = false;
+                                  },
+                                );
+                              },
+                              child: BlocBuilder<WageSeekerCreateBloc,
+                                  WageSeekerCreateState>(
+                                builder: (context, state) {
+                                  return state.maybeWhen(
+                                    orElse: () => const Offstage(),
+                                    loaded: (value) {
+                                      return const SizedBox.shrink();
+                                    },
+                                    loading: () {
+                                      return const CircularProgressIndicator
+                                          .adaptive();
+                                    },
+                                    initial: () {
+                                      return Center(
+                                        child: DigitIconButton(
+                                          iconText: "Validate",
+                                          onPressed: () {
+                                            form.markAllAsTouched(
+                                                updateParent: false);
+                                            if (!form.valid) return;
 
-                         return  state.maybeWhen(
-                          orElse: () => const Offstage(),
-                            loaded: (value) {
-                              return const SizedBox.shrink();
-                            },
-                           loading: () {
-                             
-                             return const CircularProgressIndicator.adaptive();
-                           },
-                          initial: () {
-                            return Center(
-                              child: DigitIconButton(
-                                iconText: "Validate",
-                                onPressed: () {
-                                  context.read<WageSeekerCreateBloc>().add(
-                                        const VerifyAdharEvent(name: '', uid: ''),
+                                            context
+                                                .read<WageSeekerCreateBloc>()
+                                                .add(
+                                                  VerifyAdharEvent(
+                                                      name: form.value[nameKey]
+                                                          .toString(),
+                                                      uid: form
+                                                          .value[aadhaarNoKey]
+                                                          .toString()),
+                                                );
+                                          },
+                                        ),
                                       );
+                                    },
+                                    verified: (value) {
+                                      return Center(
+                                        child: SizedBox(
+                                          height: 50,
+                                          child: Text(
+                                            value!.status == "SUCCESS"
+                                                ? "AADHAAR provide is valid!"
+                                                : "AADHAR provided is invalid, enter a valid AADHAAR or choose any other idetity document!",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: value!.status == "SUCCESS"
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    error: (error) {
+                                      return const Center(
+                                        child: SizedBox(
+                                          height: 50,
+                                          child: Text(
+                                            "Validation process failed, try again or choose any other idetity document!",
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                               ),
-                            );
-                          },
-                          verified: (value) {
-                            return Center(
-                              child: SizedBox(
-                                height: 30,
-                                child: Text(value!.status=="SUCCESS"?"verified":"error",
-                                 style: const TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.green,
-                                 ),
-                                ),
-                              ),
-                            );
-                          },
-                        
-                          );
-                          
-                        },
-                      ),
+                            )
+                          : const SizedBox.shrink(),
                     ]),
                     Center(
-                      child: DigitElevatedButton(
-                          onPressed: () {
-                            form.markAllAsTouched(updateParent: false);
-                            if (!form.valid) return;
-
-                            context.read<WageSeekerBloc>().add(
-                                  WageSeekerIdentificationCreateEvent(
-                                    adharVerified: true,
-                                    documentType:
-                                        form.value[identityDocument].toString(),
-                                    name: form.value[nameKey].toString(),
-                                    number: form.value[aadhaarNoKey].toString(),
-                                    timeStamp:
-                                        DateTime.now().millisecondsSinceEpoch,
-                                  ),
+                      child: BlocListener<WageSeekerCreateBloc,
+                                  WageSeekerCreateState>(
+                        listener: (context, state) {
+                         state.maybeWhen(
+                                  orElse: () => {const SizedBox.shrink()},
+                                  verified: (adharCardResponse) {
+                                    isVerified =
+                                        adharCardResponse!.status == "SUCCESS"
+                                            ? true
+                                            : false;
+                                  },
+                                  error: (error) {
+                                    isVerified = false;
+                                  },
                                 );
-                            setState(() {
-                              check = 1;
-                            });
-                          },
-                          child: Center(
-                            child: Text(t.translate(i18.common.next)),
-                          )),
+                        },
+                        child: DigitElevatedButton(
+                            onPressed: (adhar)
+                                ? isVerified
+                                    ? () {
+                                        form.markAllAsTouched(
+                                            updateParent: false);
+                                        if (!form.valid) return;
+
+                                        context.read<WageSeekerBloc>().add(
+                                              WageSeekerIdentificationCreateEvent(
+                                                adharVerified: true,
+                                                documentType: form
+                                                    .value[identityDocument]
+                                                    .toString(),
+                                                name: form.value[nameKey]
+                                                    .toString(),
+                                                number: form.value[aadhaarNoKey]
+                                                    .toString(),
+                                                timeStamp: DateTime.now()
+                                                    .millisecondsSinceEpoch,
+                                              ),
+                                            );
+                                        setState(() {
+                                          check = 1;
+                                        });
+                                      }
+                                    : null
+                                : () {
+                                    form.markAllAsTouched(updateParent: false);
+                                    if (!form.valid) return;
+
+                                    context.read<WageSeekerBloc>().add(
+                                          WageSeekerIdentificationCreateEvent(
+                                            adharVerified: false,
+                                            documentType: form
+                                                .value[identityDocument]
+                                                .toString(),
+                                            name:
+                                                form.value[nameKey].toString(),
+                                            number: form.value[aadhaarNoKey]
+                                                .toString(),
+                                            timeStamp: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                          ),
+                                        );
+                                    setState(() {
+                                      check = 1;
+                                    });
+                                  },
+                            child: Center(
+                              child: Text(t.translate(i18.common.next)),
+                            )),
+                      ),
                     )
                   ],
                 ),
@@ -363,7 +502,9 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
               Validators.maxLength(128)
             ]),
         identityDocument: FormControl<String>(
-          value: individualDetails.documentType,
-        ),
+            value: individualDetails.documentType,
+            validators: [
+              Validators.required,
+            ]),
       });
 }

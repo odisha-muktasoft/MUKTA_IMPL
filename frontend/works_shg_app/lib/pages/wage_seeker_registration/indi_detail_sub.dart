@@ -199,6 +199,9 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                     Center(
                       child: DigitElevatedButton(
                           onPressed: () {
+                             form1.markAllAsTouched(
+                                            updateParent: false);
+                                        if (!form1.valid) return;
                             context.read<WageSeekerBloc>().add(
                                   WageSeekerDetailsCreateEvent(
                                     dob: DateTime.now(),

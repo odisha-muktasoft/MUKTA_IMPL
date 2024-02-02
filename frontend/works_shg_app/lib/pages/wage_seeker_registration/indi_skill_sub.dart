@@ -36,7 +36,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+   
     final registrationState = BlocProvider.of<WageSeekerBloc>(context).state;
 
     skillDetails = registrationState.skillDetails;

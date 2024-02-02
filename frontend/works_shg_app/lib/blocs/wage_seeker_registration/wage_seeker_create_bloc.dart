@@ -32,8 +32,11 @@ class WageSeekerCreateBloc
       VerifyAdharEvent event, WageSeekerCreateEmitter emit) async {
     Client client = Client();
 
+ //"uid": "558777440419",
+ //"name": "Kunilata choudhury"
+
     final  data={
-    "uid": "558777440419",
+    "uid": event.uid,
     "uidType": "A",
     "consent": "Y",
     "subAuaCode": "0002590000",
@@ -42,7 +45,7 @@ class WageSeekerCreateBloc
     "isBio": "n",
     "isOTP": "n",
     "bioType": "n",
-    "name": "Kunilata choudhury",
+    "name": event.name,
     "dob": "",
     "gender": "",
     "rdInfo": "",
@@ -56,10 +59,11 @@ class WageSeekerCreateBloc
         url: Urls.wageSeekerServices.adharVerifyUrl,
         body: jsonEncode(data),
       );
+      
       emit(WageSeekerCreateState.verified(s));
-      print(s);
-    } on DioError catch (ex) {
-      print(ex);
+     
+    }  catch (e) {
+     emit(WageSeekerCreateState.error(e.toString()));
     }
   }
 
