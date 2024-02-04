@@ -12,6 +12,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
+import '../../models/wage_seeker/individual_details_model.dart';
 import '../../utils/notifiers.dart';
 import '../../widgets/atoms/radio_button_list.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -23,6 +24,7 @@ class IndividualSubDetailPage extends StatefulWidget {
   final List<String> socialCategory;
   final List<String> skills;
   final String? photo;
+  final IndividualDetails? individualDetails;
   final Function(int page) onPageChanged;
   const IndividualSubDetailPage({
     super.key,
@@ -32,6 +34,7 @@ class IndividualSubDetailPage extends StatefulWidget {
     required this.skills,
     required this.socialCategory,
     required this.onPageChanged,
+    required this.individualDetails,
   });
 
   @override
@@ -48,12 +51,12 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
   String genderKey = 'gender';
   String socialCategoryKey = 'socialCategory';
   String mobileKey = 'mobileNo';
+//IndividualDetails? individualDetails = IndividualDetails();
+
 
   @override
   void initState() {
-    final state = context.read<WageSeekerBloc>().state;
-
-    print(state.individualDetails!.name);
+   
 
     super.initState();
   }
@@ -65,6 +68,8 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
     return ReactiveFormBuilder(
       form: detailBuildForm,
       builder: (contextt, form1, child) {
+       
+
         return GestureDetector(
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
@@ -243,24 +248,24 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
   }
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
-        genderKey: FormControl<String>(value: null),
-        fatherNameKey: FormControl<String>(value: '', validators: [
+        genderKey: FormControl<String>(value:widget. individualDetails?.gender?? null),
+        fatherNameKey: FormControl<String>(value: widget.individualDetails?.fatherName??'', validators: [
           Validators.required,
           Validators.minLength(2),
           Validators.maxLength(128)
         ]),
         relationshipKey:
-            FormControl<String>(value: null, validators: [Validators.required]),
+            FormControl<String>(value: widget.individualDetails?.relationship??null, validators: [Validators.required]),
         dobKey: FormControl<DateTime>(
-          value: null,
+          value: widget.individualDetails?.dateOfBirth??null,
           validators: [
             Validators.required,
             Validators.max(DateTime(DateTime.now().year - 18,
                 DateTime.now().month, DateTime.now().day))
           ],
         ),
-        socialCategoryKey: FormControl<String>(value: null),
-        mobileKey: FormControl<String>(value: '', validators: [
+        socialCategoryKey: FormControl<String>(value:widget. individualDetails?.socialCategory??null),
+        mobileKey: FormControl<String>(value: widget.individualDetails?.mobileNumber??null, validators: [
           Validators.required,
           Validators.minLength(10),
           Validators.min('5999999999'),

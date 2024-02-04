@@ -17,6 +17,7 @@ class IndividualSkillSubPage extends StatefulWidget {
   final List<String> skills;
   final String? photo;
   final Function(int page) onPageChanged;
+  final SkillDetails? skillDetails;
   const IndividualSkillSubPage({
     super.key,
     required this.relationship,
@@ -25,6 +26,7 @@ class IndividualSkillSubPage extends StatefulWidget {
     required this.skills,
     required this.socialCategory,
     required this.onPageChanged,
+    required this.skillDetails,
   });
 
   @override
@@ -33,23 +35,18 @@ class IndividualSkillSubPage extends StatefulWidget {
 
 class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
   List<String> selectedOptions = [];
-  SkillDetails? skillDetails = SkillDetails();
 
   @override
   void initState() {
-    final registrationState = BlocProvider.of<WageSeekerBloc>(context).state;
-
-    skillDetails = registrationState.skillDetails;
-
-    if (registrationState.skillDetails != null &&
-        registrationState.skillDetails?.individualSkills != null) {
-      selectedOptions = registrationState.skillDetails!.individualSkills!
-              .any((a) => a.type == null)
-          ? []
-          : registrationState.skillDetails!.individualSkills!
-              .where((e) => e.type != null)
-              .map((e) => '${e.level}.${e.type}')
-              .toList();
+    if (widget.skillDetails != null &&
+        widget.skillDetails?.individualSkills != null) {
+      selectedOptions =
+          widget.skillDetails!.individualSkills!.any((a) => a.type == null)
+              ? []
+              : widget.skillDetails!.individualSkills!
+                  .where((e) => e.type != null)
+                  .map((e) => '${e.level}.${e.type}')
+                  .toList();
     }
 
     super.initState();

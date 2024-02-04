@@ -14,10 +14,11 @@ import '../../utils/models/file_picker_data.dart';
 import '../../widgets/molecules/file_picker.dart';
 
 class IndividualPhotoSubPage extends StatefulWidget {
+  final String? photo;
   final Function(int page) onPageChanged;
   const IndividualPhotoSubPage({
     super.key,
-    required this.onPageChanged,
+    required this.onPageChanged, required this.photo,
   });
 
   @override
@@ -31,6 +32,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
   void initState() {
     FilePickerData.imageFile = null;
     FilePickerData.bytes = null;
+    photo= widget.photo;
     super.initState();
   }
 

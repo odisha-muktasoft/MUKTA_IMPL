@@ -153,7 +153,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           socialCategory: socialCategory,
           onPageChanged: (int page) {
             _onPageChange(page);
-          },
+          }, individualDetails: individualDetails,
         );
       case 2:
         return IndividualSkillSubPage(
@@ -164,13 +164,13 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           socialCategory: socialCategory,
           onPageChanged: (int page) {
             _onPageChange(page);
-          },
+          }, skillDetails: skillDetails,
         );
       case 3:
         return IndividualPhotoSubPage(
           onPageChanged: (int page) {
             _onPageChange(page);
-          },
+          }, photo: individualDetails?.photo??'',
         );
       default:
         return identificationMethod(
