@@ -60,7 +60,12 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
   FutureOr<void> _onIdentificationCreate(
       WageSeekerIdentificationCreateEvent event,
       WageSeekerBlocEmitter emit) async {
-    emit(WageSeekerBlocState.create(
+    
+
+   WageSeekerBlocState state =this.state;
+
+   if (state.individualDetails?.aadhaarNo==null) {
+      emit(WageSeekerBlocState.create(
       individualDetails: IndividualDetails(
         aadhaarNo: event.number,
         name: event.name,
@@ -68,6 +73,26 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
         adharVerified: event.adharVerified,
       ),
     ));
+   } else {
+     
+     emit(
+
+      state.copyWith(individualDetails: state.individualDetails?.copyWith(
+        aadhaarNo: event.number,
+        name: event.name,
+        documentType: event.documentType,
+        adharVerified: event.adharVerified, ))
+     );
+   }
+    
+    // emit(WageSeekerBlocState.create(
+    //   individualDetails: IndividualDetails(
+    //     aadhaarNo: event.number,
+    //     name: event.name,
+    //     documentType: event.documentType,
+    //     adharVerified: event.adharVerified,
+    //   ),
+    // ));
   }
 
   FutureOr<void> _onDetailsCreate(
@@ -90,11 +115,18 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
 
   FutureOr<void> _onCreate(
       WageSeekerCreateEvent event, WageSeekerBlocEmitter emit) async {
-    emit(WageSeekerBlocState.create(
-        individualDetails: event.individualDetails,
-        locationDetails: event.locationDetails,
-        skillDetails: event.skillDetails,
-        financialDetails: event.financialDetails));
+    state.maybeMap(
+      orElse: () => {},
+      create: (value) {
+        emit(value.copyWith(
+          financialDetails: event.financialDetails,
+          locationDetails: event.locationDetails,
+        ));
+      
+      },
+    );
+
+
   }
 
   FutureOr<void> _onClear(
