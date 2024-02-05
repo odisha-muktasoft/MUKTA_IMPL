@@ -32,8 +32,7 @@ class WageSeekerCreateBloc
       VerifyAdharEvent event, WageSeekerCreateEmitter emit) async {
     Client client = Client();
 
- //"uid": "558777440419",
- //"name": "Kunilata choudhury"
+ 
 
     final  data={
     "uid": event.uid,
