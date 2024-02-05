@@ -14,6 +14,8 @@ import '../../models/mdms/wage_seeker_mdms.dart';
 import '../../models/wage_seeker/individual_details_model.dart';
 import '../../models/wage_seeker/location_details_model.dart';
 import '../../models/wage_seeker/skill_details_model.dart';
+import '../../utils/constants.dart';
+import '../../widgets/common_info_card.dart';
 import 'indi_detail_sub.dart';
 import 'indi_photo_sub.dart';
 import 'indi_skill_sub.dart';
@@ -153,7 +155,8 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           socialCategory: socialCategory,
           onPageChanged: (int page) {
             _onPageChange(page);
-          }, individualDetails: individualDetails,
+          },
+          individualDetails: individualDetails,
         );
       case 2:
         return IndividualSkillSubPage(
@@ -164,13 +167,15 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           socialCategory: socialCategory,
           onPageChanged: (int page) {
             _onPageChange(page);
-          }, skillDetails: skillDetails,
+          },
+          skillDetails: skillDetails,
         );
       case 3:
         return IndividualPhotoSubPage(
           onPageChanged: (int page) {
             _onPageChange(page);
-          }, photo: individualDetails?.photo??'',
+          },
+          photo: individualDetails?.photo ?? '',
         );
       default:
         return identificationMethod(
@@ -207,16 +212,16 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     bool isVerified,
     final Function(bool value) isVerifyFunction,
   ) {
-    // bool isVerified = false;
+    
     return BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
       listener: (context, state) {
         state.maybeMap(
           orElse: () => {const SizedBox.shrink()},
           verified: (adharCardResponse) {
-            isVerified =
-                adharCardResponse!.adharCardResponse!.status == "SUCCESS"
-                    ? true
-                    : false;
+            isVerified = adharCardResponse!.adharCardResponse!.status ==
+                    Constants.verifyAdhar
+                ? true
+                : false;
 
             isVerifyDone(isVerified);
           },
@@ -236,259 +241,322 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                 FocusScope.of(context).unfocus();
               }
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                DigitCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Individual's Identification Details",
-                        style: DigitTheme
-                            .instance.mobileTheme.textTheme.displayMedium
-                            ?.apply(color: const DigitColors().black),
+            child: DigitCard(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                     
+                      t.translate(
+                        i18.wageSeeker.identificationHeader,
                       ),
-                      Column(children: [
-                        DigitReactiveDropdown<String>(
-                          label: "Identity Document",
-                          menuItems: [
-                            "AADHAAR",
-                            "Election Photo Identity Card(EPIC)",
-                            "Driving License",
-                            "Ration Card under TPDS"
-                          ].map((e) => e.toString()).toList(),
-                          isRequired: true,
-                          formControlName: identityDocument,
-                          valueMapper: (value) =>
-                              t.translate('CORE_COMMON_$value'),
-                          onChanged: (value) {
-                            adharSelect(value);
-                          },
-                        ),
-                        DigitTextFormField(
-                          onChanged: (p0) {
-                            if (adhar) {
-                              adharSelect("AADHAAR");
+                      style: DigitTheme
+                          .instance.mobileTheme.textTheme.displayMedium
+                          ?.apply(color: const DigitColors().black),
+                    ),
+                    DigitReactiveDropdown<String>(
+                      
+                      label: t.translate(i18.wageSeeker.identityDocumentLabel),
+                      menuItems: [
+                        "AADHAAR",
+                        "Election Photo Identity Card(EPIC)",
+                        "Driving License",
+                        "Ration Card under TPDS"
+                      ].map((e) => e.toString()).toList(),
+                      isRequired: true,
+                      formControlName: identityDocument,
+                      valueMapper: (value) => t.translate('CORE_COMMON_$value'),
+                      onChanged: (value) {
+                        adharSelect(value);
+                      },
+                    ),
+                    DigitTextFormField(
+                      onChanged: (p0) {
+                        if (adhar) {
+                          adharSelect("AADHAAR");
+                        }
+                        isVerifyDone(false);
+                        context
+                            .read<WageSeekerCreateBloc>()
+                            .add(const CreateWageSeekerDisposeEvent());
+                      },
+                      formControlName: aadhaarNoKey,
+                     
+                      label: t.translate(i18.wageSeeker.identityNumberLabel),
+                      isRequired: true,
+                      minLength: adhar ? 12 : null,
+                      maxLength: adhar ? 12 : null,
+                      keyboardType: TextInputType.number,
+                      inputFormatter: [
+                        FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                      ],
+                      validationMessages: adhar
+                          ? {
+                              'required': (_) => t.translate(
+                                    i18.wageSeeker.aadhaarRequired,
+                                  ),
+                              'minLength': (_) => t.translate(
+                                    i18.wageSeeker.minAadhaarCharacters,
+                                  ),
+                              'maxLength': (_) => t.translate(
+                                    i18.wageSeeker.maxAadhaarCharacters,
+                                  ),
                             }
-                            isVerifyDone(false);
-                            context
-                                .read<WageSeekerCreateBloc>()
-                                .add(const CreateWageSeekerDisposeEvent());
-                          },
-                          formControlName: aadhaarNoKey,
-                          label: "Identity Number",
-                          isRequired: true,
-                          minLength: 12,
-                          maxLength: 12,
-                          keyboardType: TextInputType.number,
-                          inputFormatter: [
-                            FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                          ],
-                          validationMessages: {
-                            'required': (_) => t.translate(
-                                  i18.wageSeeker.aadhaarRequired,
-                                ),
-                            'minLength': (_) => t.translate(
-                                  i18.wageSeeker.minAadhaarCharacters,
-                                ),
-                            'maxLength': (_) => t.translate(
-                                  i18.wageSeeker.maxAadhaarCharacters,
-                                ),
-                          },
-                        ),
-                        DigitTextFormField(
-                          onChanged: (p0) {
-                            if (adhar) {
-                              adharSelect("AADHAAR");
-                            }
-                            isVerifyDone(false);
-                            context
-                                .read<WageSeekerCreateBloc>()
-                                .add(const CreateWageSeekerDisposeEvent());
-                          },
-                          formControlName: nameKey,
-                          isRequired: true,
-                          label: "Name on Document",
-                          inputFormatter: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp("[A-Za-z ]"))
-                          ],
-                          validationMessages: {
-                            'required': (_) => t.translate(
-                                  i18.wageSeeker.nameRequired,
-                                ),
-                            'minLength': (_) => t.translate(
-                                  i18.wageSeeker.minNameCharacters,
-                                ),
-                            'maxLength': (_) => t.translate(
-                                  i18.wageSeeker.maxNameCharacters,
-                                ),
-                          },
-                        ),
-                        adhar
-                            ? BlocBuilder<WageSeekerCreateBloc,
-                                WageSeekerCreateState>(
-                                builder: (context, state) {
-                                  return state.maybeWhen(
-                                    orElse: () => const Offstage(),
-                                    loaded: (value) {
-                                      return const SizedBox.shrink();
-                                    },
-                                    loading: () {
-                                      return const CircularProgressIndicator
-                                          .adaptive();
-                                    },
-                                    initial: () {
-                                      return Center(
-                                        child: DigitIconButton(
-                                          iconText: "Validate",
-                                          onPressed: () {
-                                            form.markAllAsTouched(
-                                                updateParent: false);
-                                            if (!form.valid) return;
-                                            if (FocusScope.of(context)
-                                                .hasFocus) {
-                                              FocusScope.of(context).unfocus();
-                                            }
-                                            context
-                                                .read<WageSeekerCreateBloc>()
-                                                .add(
-                                                  VerifyAdharEvent(
-                                                      name: form.value[nameKey]
-                                                          .toString(),
-                                                      uid: form
-                                                          .value[aadhaarNoKey]
-                                                          .toString()),
-                                                );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    verified: (value) {
-                                      return Center(
-                                        child: SizedBox(
-                                          height: 50,
-                                          child: Text(
-                                            value!.status == "SUCCESS"
-                                                ? "AADHAAR provide is valid!"
-                                                : "AADHAR provided is invalid, enter a valid AADHAAR or choose any other idetity document!",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: value!.status == "SUCCESS"
-                                                  ? Colors.green
-                                                  : Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    error: (error) {
-                                      return const Center(
-                                        child: SizedBox(
-                                          height: 50,
-                                          child: Text(
-                                            "Validation process failed, try again or choose any other idetity document!",
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    },
+                          : {
+                              'required': (_) => t.translate(
+                                    i18.wageSeeker.aadhaarRequired,
+                                  ),
+                            },
+                    ),
+                    DigitTextFormField(
+                      onChanged: (p0) {
+                        if (adhar) {
+                          adharSelect("AADHAAR");
+                        }
+                        isVerifyDone(false);
+                        context
+                            .read<WageSeekerCreateBloc>()
+                            .add(const CreateWageSeekerDisposeEvent());
+                      },
+                      formControlName: nameKey,
+                      isRequired: true,
+                      
+                      label: t.translate(i18.wageSeeker.identityNameLabel),
+
+                      inputFormatter: [
+                        FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
+                      ],
+                      validationMessages: {
+                        'required': (_) => t.translate(
+                              i18.wageSeeker.nameRequired,
+                            ),
+                        'minLength': (_) => t.translate(
+                              i18.wageSeeker.minNameCharacters,
+                            ),
+                        'maxLength': (_) => t.translate(
+                              i18.wageSeeker.maxNameCharacters,
+                            ),
+                      },
+                    ),
+                    adhar
+                        ? BlocBuilder<WageSeekerCreateBloc,
+                            WageSeekerCreateState>(
+                            builder: (context, state) {
+                              return state.maybeWhen(
+                                orElse: () => const Offstage(),
+                                loaded: (value) {
+                                  return const SizedBox.shrink();
+                                },
+                                loading: () {
+                                  return const Center(
+                                    child: CircularProgressIndicator.adaptive(),
                                   );
                                 },
-                              )
-                            : const SizedBox.shrink(),
-                      ]),
-                      Center(
-                        child: DigitElevatedButton(
-                            onPressed: (adhar)
-                                ? isVerified
-                                    ? () {
-                                        form.markAllAsTouched(
-                                            updateParent: false);
-                                        if (!form.valid) return;
-
-                                        context.read<WageSeekerBloc>().add(
-                                              WageSeekerIdentificationCreateEvent(
-                                                adharVerified: true,
-                                                documentType: form
-                                                    .value[identityDocument]
-                                                    .toString(),
-                                                name: form.value[nameKey]
-                                                    .toString(),
-                                                number: form.value[aadhaarNoKey]
-                                                    .toString(),
-                                                timeStamp: DateTime.now()
-                                                    .millisecondsSinceEpoch,
-                                              ),
-                                            );
-                                        setState(() {
-                                          check = 1;
-                                        });
-                                      }
-                                    : null
-                                : () {
-                                    form.markAllAsTouched(updateParent: false);
-                                    if (!form.valid) return;
-
-                                    context.read<WageSeekerBloc>().add(
-                                          WageSeekerIdentificationCreateEvent(
-                                            adharVerified: false,
-                                            documentType: form
-                                                .value[identityDocument]
-                                                .toString(),
-                                            name:
-                                                form.value[nameKey].toString(),
-                                            number: form.value[aadhaarNoKey]
-                                                .toString(),
-                                            timeStamp: DateTime.now()
-                                                .millisecondsSinceEpoch,
+                                initial: () {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: TextButton(
+                                        style: OutlinedButton.styleFrom(
+                                          side: BorderSide(
+                                            width: 1.0,
+                                            color: DigitTheme
+                                                .instance.colorScheme.primary,
                                           ),
-                                        );
-                                    setState(() {
-                                      check = 1;
-                                    });
-                                  },
-                            child: Center(
-                              child: Text(t.translate(i18.common.next)),
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-              ],
+                                        ),
+                                        onPressed: () {
+                                          form.markAllAsTouched(
+                                              updateParent: false);
+                                          if (!form.valid) return;
+                                          if (FocusScope.of(context).hasFocus) {
+                                            FocusScope.of(context).unfocus();
+                                          }
+                                          context
+                                              .read<WageSeekerCreateBloc>()
+                                              .add(
+                                                VerifyAdharEvent(
+                                                    name: form.value[nameKey]
+                                                        .toString(),
+                                                    uid: form
+                                                        .value[aadhaarNoKey]
+                                                        .toString()),
+                                              );
+                                        },
+                                        child: Text(
+                                         
+                                          t.translate(
+                                              i18.wageSeeker.adharValidate),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                verified: (value) {
+                                  return Center(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8.0),
+                                      child: CommonInfoCard(
+                                        color: value!.status ==
+                                                Constants.verifyAdhar
+                                            ? DigitTheme
+                                                .instance.colors.paleLeafGreen
+                                            : DigitTheme
+                                                .instance.colors.paleRose,
+                                        widget: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                flex: 0,
+                                                child: value!.status ==
+                                                        Constants.verifyAdhar
+                                                    ? CircleAvatar(
+                                                        radius: 18,
+                                                        backgroundColor:
+                                                            DigitTheme
+                                                                .instance
+                                                                .colors
+                                                                .darkSpringGreen,
+                                                        child: Icon(
+                                                          Icons.done,
+                                                          color: DigitTheme
+                                                              .instance
+                                                              .colors
+                                                              .white,
+                                                          size: 30,
+                                                        ),
+                                                      )
+                                                    : Icon(
+                                                      Icons.error_outline,
+                                                      color: DigitTheme
+                                                          .instance
+                                                          .colors
+                                                          .lavaRed,
+                                                      size: 28,
+                                                    ),
+                                              ),
+                                              Flexible(
+                                                flex: 3,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
+                                                  child: Text(
+                                                    value!.status ==
+                                                            Constants
+                                                                .verifyAdhar
+                                                       
+                                                        ? t.translate(i18
+                                                            .wageSeeker
+                                                            .adharVerifySuccess)
+                                                        
+                                                        : t.translate(i18
+                                                            .wageSeeker
+                                                            .adharVerifyError),
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      color: value!.status ==
+                                                              Constants
+                                                                  .verifyAdhar
+                                                          ? DigitTheme
+                                                              .instance
+                                                              .colors
+                                                              .darkSpringGreen
+                                                          : DigitTheme.instance
+                                                              .colors.lavaRed,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                error: (error) {
+                                  return Center(
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: Text(
+                                       
+                                        t.translate(
+                                            i18.wageSeeker.adharVerifyFailed),
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          )
+                        : const SizedBox.shrink(),
+                    Center(
+                      child: DigitElevatedButton(
+                          onPressed: (adhar)
+                              ? isVerified
+                                  ? () {
+                                      form.markAllAsTouched(
+                                          updateParent: false);
+                                      if (!form.valid) return;
+
+                                      context.read<WageSeekerBloc>().add(
+                                            WageSeekerIdentificationCreateEvent(
+                                              adharVerified: true,
+                                              documentType: form
+                                                  .value[identityDocument]
+                                                  .toString(),
+                                              name: form.value[nameKey]
+                                                  .toString(),
+                                              number: form.value[aadhaarNoKey]
+                                                  .toString(),
+                                              timeStamp: DateTime.now()
+                                                  .millisecondsSinceEpoch,
+                                            ),
+                                          );
+                                      setState(() {
+                                        check = 1;
+                                      });
+                                    }
+                                  : null
+                              : () {
+                                  form.markAllAsTouched(updateParent: false);
+                                  if (!form.valid) return;
+
+                                  context.read<WageSeekerBloc>().add(
+                                        WageSeekerIdentificationCreateEvent(
+                                          adharVerified: false,
+                                          documentType: form
+                                              .value[identityDocument]
+                                              .toString(),
+                                          name: form.value[nameKey].toString(),
+                                          number: form.value[aadhaarNoKey]
+                                              .toString(),
+                                          timeStamp: DateTime.now()
+                                              .millisecondsSinceEpoch,
+                                        ),
+                                      );
+                                  setState(() {
+                                    check = 1;
+                                  });
+                                },
+                          child: Center(
+                            child: Text(t.translate(i18.common.next)),
+                          )),
+                    )
+                  ]),
             ),
           );
         },
       ),
     );
-  }
-
-  bool getSkillsValid() {
-    Map<String, int> beforeDotCount = {};
-    Map<String, int> afterDotCount = {};
-
-    for (String skill in selectedOptions) {
-      List<String> skillParts = skill.split(".");
-      String beforeDot = skillParts[0];
-      String afterDot = skillParts[1];
-
-      beforeDotCount[beforeDot] = (beforeDotCount[beforeDot] ?? 0) + 1;
-      afterDotCount[afterDot] = (afterDotCount[afterDot] ?? 0) + 1;
-    }
-
-    // int countBeforeDot =
-    //     beforeDotCount.values.where((count) => count > 1).length;
-    int countAfterDot = afterDotCount.values.where((count) => count > 1).length;
-
-    if (countAfterDot > 0) {
-      return false;
-    }
-    return true;
   }
 
   // identification
@@ -499,11 +567,15 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
       fb.group(<String, Object>{
         aadhaarNoKey: FormControl<String>(
             value: individualDetails.aadhaarNo ?? '',
-            validators: [
-              Validators.required,
-              Validators.minLength(12),
-              Validators.maxLength(12)
-            ]),
+            validators: adhar
+                ? [
+                    Validators.required,
+                    Validators.minLength(12),
+                    Validators.maxLength(12)
+                  ]
+                : [
+                    Validators.required,
+                  ]),
         nameKey: FormControl<String>(
             value: individualDetails.name ?? '',
             validators: [

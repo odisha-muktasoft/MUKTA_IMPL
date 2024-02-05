@@ -51,13 +51,9 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
   String genderKey = 'gender';
   String socialCategoryKey = 'socialCategory';
   String mobileKey = 'mobileNo';
-//IndividualDetails? individualDetails = IndividualDetails();
-
 
   @override
   void initState() {
-   
-
     super.initState();
   }
 
@@ -68,8 +64,6 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
     return ReactiveFormBuilder(
       form: detailBuildForm,
       builder: (contextt, form1, child) {
-       
-
         return GestureDetector(
           onTap: () {
             if (FocusScope.of(context).hasFocus) {
@@ -85,7 +79,8 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "Individual's Personal Details",
+                      
+                      t.translate(i18.wageSeeker.personalDetailHeader),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.displayMedium
                           ?.apply(color: const DigitColors().black),
@@ -248,29 +243,36 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
   }
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
-        genderKey: FormControl<String>(value:widget. individualDetails?.gender?? null),
-        fatherNameKey: FormControl<String>(value: widget.individualDetails?.fatherName??'', validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(128)
-        ]),
-        relationshipKey:
-            FormControl<String>(value: widget.individualDetails?.relationship??null, validators: [Validators.required]),
+        genderKey: FormControl<String>(
+            value: widget.individualDetails?.gender ?? null),
+        fatherNameKey: FormControl<String>(
+            value: widget.individualDetails?.fatherName ?? '',
+            validators: [
+              Validators.required,
+              Validators.minLength(2),
+              Validators.maxLength(128)
+            ]),
+        relationshipKey: FormControl<String>(
+            value: widget.individualDetails?.relationship ?? null,
+            validators: [Validators.required]),
         dobKey: FormControl<DateTime>(
-          value: widget.individualDetails?.dateOfBirth??null,
+          value: widget.individualDetails?.dateOfBirth ?? null,
           validators: [
             Validators.required,
             Validators.max(DateTime(DateTime.now().year - 18,
                 DateTime.now().month, DateTime.now().day))
           ],
         ),
-        socialCategoryKey: FormControl<String>(value:widget. individualDetails?.socialCategory??null),
-        mobileKey: FormControl<String>(value: widget.individualDetails?.mobileNumber??null, validators: [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.min('5999999999'),
-          Validators.max('9999999999'),
-          Validators.maxLength(10)
-        ]),
+        socialCategoryKey: FormControl<String>(
+            value: widget.individualDetails?.socialCategory ?? null),
+        mobileKey: FormControl<String>(
+            value: widget.individualDetails?.mobileNumber ?? null,
+            validators: [
+              Validators.required,
+              Validators.minLength(10),
+              Validators.min('5999999999'),
+              Validators.max('9999999999'),
+              Validators.maxLength(10)
+            ]),
       });
 }

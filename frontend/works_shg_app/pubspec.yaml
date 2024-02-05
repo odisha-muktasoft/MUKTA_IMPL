@@ -113,8 +113,8 @@ dev_dependencies:
 flutter_icons:
   android: "ic_launcher"
   ios: true
-  image_path_android: "assets/icons/png/ic_launcher.png"
-  image_path_ios: "assets/icons/png/ic_launcher.png"
+  image_path_android: "assets/png/ic_launcher.png"
+  image_path_ios: "assets/png/ic_launcher.png"
   remove_alpha_ios: true
 
 # For information on the generic Dart part of this file, see the

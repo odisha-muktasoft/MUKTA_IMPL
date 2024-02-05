@@ -36,6 +36,7 @@ class Constants {
   static const approvedKey = 'APPROVED';
   static const tenantIdKey = 'tenantId';
   static const inWorkFlowKey = 'INWORKFLOW';
+  static const verifyAdhar="SUCCESS";
 }
 
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

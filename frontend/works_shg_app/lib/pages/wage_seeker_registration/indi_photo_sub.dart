@@ -18,7 +18,8 @@ class IndividualPhotoSubPage extends StatefulWidget {
   final Function(int page) onPageChanged;
   const IndividualPhotoSubPage({
     super.key,
-    required this.onPageChanged, required this.photo,
+    required this.onPageChanged,
+    required this.photo,
   });
 
   @override
@@ -32,7 +33,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
   void initState() {
     FilePickerData.imageFile = null;
     FilePickerData.bytes = null;
-    photo= widget.photo;
+    photo = widget.photo;
     super.initState();
   }
 
@@ -55,7 +56,8 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Individual's photo Details",
+                  //"Individual's photo Details",
+                  t.translate(i18.wageSeeker.individualPhotoHeader),
                   style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
                       ?.apply(color: const DigitColors().black),
                 ),

@@ -271,6 +271,26 @@ class WageSeeker {
   String get pinCodeValidation => 'COMMON_PINCODE_VALIDATION';
   String get maxStreetCharacters => 'MAX_STREET_NAME_CHARACTERS';
   String get maxDoorNoCharacters => 'MAX_DOOR_NO_CHARACTERS';
+
+  // wage seeker indentification flow
+
+  String get identificationHeader => 'WAGE_SEEKER_IDENTIFICATION_HEADER';
+  String get personalDetailHeader=> 'WAGE_SEEKER_PERSONAL_DETAIL_HEADER';
+  String get identityDocumentLabel=>'WAGE_SEEKER_IDENTITY_DOCUMENT_LABEL';
+  String get identityNumberLabel=>'WAGE_SEEKER_IDENTITY_NUMBER_LABEL';
+  String get identityNameLabel=>'WAGE_SEEKER_IDENTITY_NAME_LABEL';
+  String get adharValidate=>'AADHAAR_VALIDATE';
+  String get adharVerifySuccess=>'WAGE_SEEKER_AADHAAR_VERIFY_SUCCESS';
+  String get adharVerifyError=>'WAGE_SEEKER_AADHAAR_VERIFY_ERROR';
+  String get adharVerifyFailed=>'WAGE_SEEKER_AADHAAR_VERIFY_FAILED';
+  String get individualSkillHeader=>'WAGE_SEEKER_SKILL_DETAIL_HEADER';
+  String get individualPhotoHeader=>'WAGE_SEEKER_PHOTO_DETAIL_HEADER';
+
+
+
+ 
+
+
 }
 
 class AttendanceMgmt {

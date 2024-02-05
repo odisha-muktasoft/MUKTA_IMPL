@@ -77,7 +77,8 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Individual's Skill Details",
+                  //  "Individual's Skill Details",
+                  t.translate(i18.wageSeeker.individualSkillHeader),
                   style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
                       ?.apply(color: const DigitColors().black),
                 ),
