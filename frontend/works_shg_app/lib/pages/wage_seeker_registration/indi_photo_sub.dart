@@ -56,7 +56,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  //"Individual's photo Details",
+                 
                   t.translate(i18.wageSeeker.individualPhotoHeader),
                   style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
                       ?.apply(color: const DigitColors().black),

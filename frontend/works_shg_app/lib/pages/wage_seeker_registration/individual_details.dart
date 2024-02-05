@@ -49,7 +49,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
   List<String> selectedOptions = [];
   String identityDocument = "identityDocument";
 
-  int check = 0;
+  int switchPage = 0;
 
   bool adhar = false;
   bool isVerified = false;
@@ -63,16 +63,16 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     locationDetails = registrationState.locationDetails;
     financialDetails = registrationState.financialDetails;
 
-    if (registrationState.skillDetails != null &&
-        registrationState.skillDetails?.individualSkills != null) {
-      selectedOptions = registrationState.skillDetails!.individualSkills!
-              .any((a) => a.type == null)
-          ? []
-          : registrationState.skillDetails!.individualSkills!
-              .where((e) => e.type != null)
-              .map((e) => '${e.level}.${e.type}')
-              .toList();
-    }
+    // if (registrationState.skillDetails != null &&
+    //     registrationState.skillDetails?.individualSkills != null) {
+    //   selectedOptions = registrationState.skillDetails!.individualSkills!
+    //           .any((a) => a.type == null)
+    //       ? []
+    //       : registrationState.skillDetails!.individualSkills!
+    //           .where((e) => e.type != null)
+    //           .map((e) => '${e.level}.${e.type}')
+    //           .toList();
+    // }
   }
 
   void _onPageChange(int count) {
@@ -80,7 +80,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
       widget.onPressed();
     } else {
       setState(() {
-        check = count;
+        switchPage = count;
       });
     }
   }
@@ -127,7 +127,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                 .toList()
             : [];
 
-    switch (check) {
+    switch (switchPage) {
       case 0:
         return identificationMethod(
             context,
@@ -522,7 +522,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                             ),
                                           );
                                       setState(() {
-                                        check = 1;
+                                        switchPage = 1;
                                       });
                                     }
                                   : null
@@ -544,7 +544,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                         ),
                                       );
                                   setState(() {
-                                    check = 1;
+                                    switchPage = 1;
                                   });
                                 },
                           child: Center(
