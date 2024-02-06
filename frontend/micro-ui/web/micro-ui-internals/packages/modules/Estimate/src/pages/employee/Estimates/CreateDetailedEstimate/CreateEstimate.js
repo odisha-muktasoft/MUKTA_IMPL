@@ -40,6 +40,7 @@ const CreateEstimate = ({props}) => {
   const [showToast, setShowToast] = useState(null);
   const [displayMenu, setDisplayMenu] = useState(false);
   const [actionSelected, setActionSelected] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   let { tenantId, projectNumber, isEdit,isCreateRevisionEstimate,isEditRevisionEstimate, estimateNumber, revisionNumber } = Digit.Hooks.useQueryParams();
   // const [ isFormReady,setIsFormReady ] = useState(isEdit ? false : true)
   const [isFormReady, setIsFormReady] = useState(true);
@@ -437,6 +438,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
 }
 
   const onModalSubmit = async (_data, action) => {
+    setIsButtonDisabled(true);
     _data = Digit.Utils.trimStringsInObject(_data);
     const completeFormData = {
       ..._data,
@@ -458,6 +460,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if ((isEdit || isEditRevisionEstimate) && (estimateNumber  || revisionNumber)) {
       await EstimateUpdateMutation(payload, {
         onError: async (error, variables) => {
+          setIsButtonDisabled(false);
           setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
           setTimeout(() => {
             setShowToast(false);
@@ -483,6 +486,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           };
           if(action === "DRAFT")
           {
+            setIsButtonDisabled(false);
             setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
             if(isCreateRevisionEstimate || isEditRevisionEstimate)
               setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
@@ -496,12 +500,14 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     } else {
       await EstimateMutation(payload, {
         onError: async (error, variables) => {
+          setIsButtonDisabled(false);
           setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
           setTimeout(() => {
             setShowToast(false);
           }, 5000);
         },
         onSuccess: async (responseData, variables) => {
+          setIsButtonDisabled(false);
           clearSessionFormData();
           const state = {
             header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
@@ -599,7 +605,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
   if ((isEdit || isCreateRevisionEstimate || isEditRevisionEstimate) && Object.keys(sessionFormData).length === 0) return <Loader />;
   return (
     <Fragment>
-      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} />}
+      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} isDisabled={isButtonDisabled} />}
       <Header className="works-header-create" styles={{ marginLeft: "14px" }}>
         {isEdit ? (isCreateRevisionEstimate || isEditRevisionEstimate ? t("ACTION_TEST_EDIT_REVISION_ESTIMATE") : t("ACTION_TEST_EDIT_ESTIMATE")) : (isCreateRevisionEstimate || isEditRevisionEstimate ? t("ACTION_TEST_CREATE_REVISION_ESTIMATE") : t("ACTION_TEST_CREATE_ESTIMATE"))}
       </Header>
@@ -647,8 +653,8 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
         />
       )}
       <ActionBar>
-        {displayMenu ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
-        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+        {displayMenu && !isButtonDisabled ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
+        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />
       </ActionBar>
     </Fragment>
   );
