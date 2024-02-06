@@ -11,6 +11,16 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
   const transformedContract = transformContractObject(contract);
   const isMeasurement = measurement && Object.keys(measurement)?.length > 0;
   let isMeasurementCreate = window.location.href.includes("measurement/create")
+
+  lineItems?.filter(e => e.category === "NON-SOR")
+    .forEach((item, index) => {
+      // Check if the "sorId" is not null or undefined
+      if (item.sorId !== null && item.sorId !== undefined && item?.sorId === "45") {
+          // Update the "sorId" with the desired sequence
+          item.sorId = (index + 1).toString();
+      }
+      });
+      
   const transformedEstimateObject = lineItems
     .filter((e) => e.category === type)
     .reduce((acc, curr) => {
