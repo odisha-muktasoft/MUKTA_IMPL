@@ -39,18 +39,9 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
   SkillDetails? skillDetails = SkillDetails();
   FinancialDetails? financialDetails = FinancialDetails();
   String nameKey = 'name';
-  String fatherNameKey = 'fatherName';
   String aadhaarNoKey = 'aadhaarNo';
-  String relationshipKey = 'relationship';
-  String dobKey = 'dob';
-  String genderKey = 'gender';
-  String socialCategoryKey = 'socialCategory';
-  String mobileKey = 'mobileNo';
-  List<String> selectedOptions = [];
   String identityDocument = "identityDocument";
-
   int switchPage = 0;
-
   bool adhar = false;
   bool isVerified = false;
 
@@ -62,17 +53,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     skillDetails = registrationState.skillDetails;
     locationDetails = registrationState.locationDetails;
     financialDetails = registrationState.financialDetails;
-
-    // if (registrationState.skillDetails != null &&
-    //     registrationState.skillDetails?.individualSkills != null) {
-    //   selectedOptions = registrationState.skillDetails!.individualSkills!
-    //           .any((a) => a.type == null)
-    //       ? []
-    //       : registrationState.skillDetails!.individualSkills!
-    //           .where((e) => e.type != null)
-    //           .map((e) => '${e.level}.${e.type}')
-    //           .toList();
-    // }
   }
 
   void _onPageChange(int count) {
@@ -108,6 +88,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Localization object
     final t = AppLocalizations.of(context);
     String? photo;
     List<String> relationship = widget.wageSeekerMDMS!.commonMDMS!.relationship!
@@ -126,7 +107,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                 .map((e) => e.code)
                 .toList()
             : [];
-
+// Returning appropriate subpage based on the switchPage variable
     switch (switchPage) {
       case 0:
         return identificationMethod(
@@ -198,6 +179,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     }
   }
 
+// Widget for displaying identification method form
   BlocListener identificationMethod(
     BuildContext context,
     AppLocalizations t,
@@ -212,12 +194,13 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     bool isVerified,
     final Function(bool value) isVerifyFunction,
   ) {
-    
     return BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
       listener: (context, state) {
+        // Listen to state changes in WageSeekerCreateBloc
         state.maybeMap(
           orElse: () => {const SizedBox.shrink()},
           verified: (adharCardResponse) {
+             // Update Aadhaar verification status
             isVerified = adharCardResponse!.adharCardResponse!.status ==
                     Constants.verifyAdhar
                 ? true
@@ -247,7 +230,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                     
                       t.translate(
                         i18.wageSeeker.identificationHeader,
                       ),
@@ -256,7 +238,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                           ?.apply(color: const DigitColors().black),
                     ),
                     DigitReactiveDropdown<String>(
-                      
                       label: t.translate(i18.wageSeeker.identityDocumentLabel),
                       menuItems: [
                         "AADHAAR",
@@ -282,7 +263,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                             .add(const CreateWageSeekerDisposeEvent());
                       },
                       formControlName: aadhaarNoKey,
-                     
                       label: t.translate(i18.wageSeeker.identityNumberLabel),
                       isRequired: true,
                       minLength: adhar ? 12 : null,
@@ -321,9 +301,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       },
                       formControlName: nameKey,
                       isRequired: true,
-                      
                       label: t.translate(i18.wageSeeker.identityNameLabel),
-
                       inputFormatter: [
                         FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
                       ],
@@ -385,7 +363,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                               );
                                         },
                                         child: Text(
-                                         
                                           t.translate(
                                               i18.wageSeeker.adharValidate),
                                         ),
@@ -430,13 +407,13 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                                         ),
                                                       )
                                                     : Icon(
-                                                      Icons.error_outline,
-                                                      color: DigitTheme
-                                                          .instance
-                                                          .colors
-                                                          .lavaRed,
-                                                      size: 28,
-                                                    ),
+                                                        Icons.error_outline,
+                                                        color: DigitTheme
+                                                            .instance
+                                                            .colors
+                                                            .lavaRed,
+                                                        size: 28,
+                                                      ),
                                               ),
                                               Flexible(
                                                 flex: 3,
@@ -448,11 +425,9 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                                     value!.status ==
                                                             Constants
                                                                 .verifyAdhar
-                                                       
                                                         ? t.translate(i18
                                                             .wageSeeker
                                                             .adharVerifySuccess)
-                                                        
                                                         : t.translate(i18
                                                             .wageSeeker
                                                             .adharVerifyError),
@@ -483,7 +458,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                     child: SizedBox(
                                       height: 50,
                                       child: Text(
-                                       
                                         t.translate(
                                             i18.wageSeeker.adharVerifyFailed),
                                         style: const TextStyle(
@@ -559,8 +533,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     );
   }
 
-  // identification
-
+ // Build Reactive Forms FormGroup for identification details
   FormGroup identificationBuildForm(
     IndividualDetails individualDetails,
   ) =>

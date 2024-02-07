@@ -73,7 +73,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
           ),
         ),
         DigitCard(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -356,9 +356,22 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   listener: (context, individualState) {
                     individualState.maybeWhen(
                         orElse: () => false,
-                        loading: () =>
-                            shg_loader.Loaders.circularLoader(context),
+                        loading: () {
+                           Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil(
+                      (route) => route is! PopupRoute,
+                    );
+                        Loaders.showLoadingDialog(context);},
+                            //shg_loader.Loaders.circularLoader(context),
                         loaded: (SingleIndividualModel? individualListModel) {
+                           Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil(
+                      (route) => route is! PopupRoute,
+                    );
                           context.read<WageSeekerBankCreateBloc>().add(
                                 CreateBankWageSeekerEvent(
                                     tenantId: individualListModel
@@ -383,10 +396,23 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                     listener: (context, individualState) {
                       individualState.maybeWhen(
                           orElse: () => false,
-                          loading: () =>
-                              shg_loader.Loaders.circularLoader(context),
+                          loading: () {
+                           Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil(
+                      (route) => route is! PopupRoute,
+                    );
+                          Loaders.showLoadingDialog(context);},
+                              //shg_loader.Loaders.circularLoader(context),
                           loaded: (BankingDetailsModel? bankingDetails,
                               BankAccounts? bankAccountDetails) {
+                                 Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil(
+                      (route) => route is! PopupRoute,
+                    );
                             var localizationText =
                                 '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
                             localizationText = localizationText.replaceFirst(
