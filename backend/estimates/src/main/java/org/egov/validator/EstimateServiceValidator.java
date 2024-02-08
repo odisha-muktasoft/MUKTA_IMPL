@@ -180,7 +180,7 @@ public class EstimateServiceValidator {
         String contractLineItemRefId = getContractLineItemRefId(contractResponse, jsonPathForContractLineItemRef, estimateDetail1.getPreviousLineItemId());
 
         String jsonPathForMeasurementCumulativeValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].cumulativeValue";
-        List<Integer> measurementCumulativeValue = getMeasurementCumulativeValue(measurementResponse, jsonPathForMeasurementCumulativeValue, contractLineItemRefId);
+        List<Double> measurementCumulativeValue = getMeasurementCumulativeValue(measurementResponse, jsonPathForMeasurementCumulativeValue, contractLineItemRefId);
 
         if (measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()) {
             log.info("No measurement found for the given estimate");
@@ -199,24 +199,30 @@ public class EstimateServiceValidator {
         return contractLineItemRef.get(0);
     }
 
-    private List<Integer> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
+    private List<Double> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
         List<Integer> measurementCumulativeValue;
+        List<Double> doubleList = new ArrayList<Double>();
+
         try {
             measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
-        return measurementCumulativeValue;
+        for (Integer val : measurementCumulativeValue) {
+            doubleList.add(val.doubleValue());
+        }
+        return doubleList;
     }
 
-    private void validateMeasurementCumulativeValue(List<Integer> measurementCumulativeValue, Object measurementResponse, String contractLineItemRefId, EstimateDetail estimateDetail1, Map<String, String> errorMap) {
+    private void validateMeasurementCumulativeValue(List<Double> measurementCumulativeValue, Object measurementResponse, String contractLineItemRefId, EstimateDetail estimateDetail1, Map<String, String> errorMap) {
         String jsonPathForMeasurementWfStatus = "$.measurements[*].wfStatus";
         List<String> wfStatus = getMeasurementWfStatus(measurementResponse, jsonPathForMeasurementWfStatus);
 
-        Integer cumulativeValue = measurementCumulativeValue.get(0);
+        Double cumulativeValue = measurementCumulativeValue.get(0);
         if (!wfStatus.isEmpty() && !wfStatus.get(0).equalsIgnoreCase(ESTIMATE_APPROVED_STATUS)) {
             String jsonPathForMeasurementCurrentValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].currentValue";
-            List<Integer> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
+            List<Double> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
+
             cumulativeValue = cumulativeValue - measurementCurrentValue.get(0);
         }
 
@@ -235,14 +241,19 @@ public class EstimateServiceValidator {
         return wfStatus;
     }
 
-    private List<Integer> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
+    private List<Double> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
         List<Integer> measurementCurrentValue;
+        List<Double> measurementCurrentValueInDouble= new ArrayList<Double>();
         try {
             measurementCurrentValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
-        return measurementCurrentValue;
+        for(Integer val:measurementCurrentValue){
+            measurementCurrentValueInDouble.add(val.doubleValue());
+        }
+
+        return measurementCurrentValueInDouble;
     }
     private void validateMDMSDataForUOM(Estimate estimate, Object mdmsDataForUOM, Map<String, String> errorMap) {
         log.info("EstimateServiceValidator::validateMDMSDataForUOM");
