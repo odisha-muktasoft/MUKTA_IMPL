@@ -135,6 +135,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
                 onChange={(e) => setExtensionRequested(e.target.value)}
                 ValidationRequired={true}
                 validation={{ type: "number" }}
+                maxlength={3}
                 min={1}
                 step={1}
                 defaultValue={isEdit ? contractObject?.additionalDetails?.timeExt : null}

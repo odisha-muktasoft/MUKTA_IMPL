@@ -72,7 +72,7 @@ const useMBDataForPB=({workOrderNumber, tenantId})=>{
 
     let allMeasurementsIds = ValidMeasurement?.map((ob) => ob?.measurementNumber);
 
-    const totalPaidAmountForSuccessfulBills = BillData?.bills?.reduce((total, bill) => (bill.bill?.additionalDetails?.paymentStatus === 'SUCCESSFUL' ? total + (bill.bill?.totalPaidAmount || 0) : total), 0);
+    const totalPaidAmountForSuccessfulBills = BillData?.bills?.filter((bl) => bl?.bill?.businessService?.includes("PURCHASE")).reduce((total, bill) => (bill.bill?.additionalDetails?.wfStatus !== 'REJECTED' ? total + (bill.bill?.totalAmount || 0) : total), 0);
 
     let finalObject = {
         allMeasurementsIds,
