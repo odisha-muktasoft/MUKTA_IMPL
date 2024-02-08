@@ -836,24 +836,32 @@ public class ContractServiceValidator {
         contractRequest.getContract().getLineItems().forEach(lineItems -> {
             if (lineItems.getContractLineItemRef() != null) {
                 List<Integer> measurementCumulativeValue = null;
+                List<Double> measurementCumulativeValueInDouble=null;
                 try {
                     measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCumulativeValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                 } catch (Exception e) {
                     throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                 }
-                if(measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()){
+                for(Integer val:measurementCumulativeValue){
+                    measurementCumulativeValueInDouble.add(val.doubleValue());
+                }
+                if(measurementCumulativeValueInDouble == null || measurementCumulativeValueInDouble.isEmpty()){
                     log.info("No measurement found for the given estimate");
                 }
                 else {
-                    Integer cumulativeValue = measurementCumulativeValue.get(0);
+                    Double cumulativeValue = measurementCumulativeValueInDouble.get(0);
                     if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")){
                         List<Integer> measurementCurrentValue;
+                        List<Double> measurementCurrentValueInDouble=null;
                         try {
                             measurementCurrentValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCurrentValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                         } catch (Exception e) {
                             throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                         }
-                        cumulativeValue = cumulativeValue - measurementCurrentValue.get(0);
+                        for (Integer val:measurementCurrentValue ){
+                            measurementCurrentValueInDouble.add(val.doubleValue());
+                        }
+                        cumulativeValue = cumulativeValue - measurementCurrentValueInDouble.get(0);
                     }
                     if (lineItems.getNoOfunit() < cumulativeValue)
                         throw new CustomException("CUMULATIVE_VALUE_GREATER_THAN_CONTRACT_UNITS", "No of Unit of contract" +
