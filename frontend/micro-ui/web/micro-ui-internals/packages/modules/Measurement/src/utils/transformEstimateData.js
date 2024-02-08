@@ -48,7 +48,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       number: isMeasurementCreate ? 0 : (measuredObject?.numItems || 0),
       noOfunit:  isMeasurementCreate ? 0 : (measuredObject?.currentValue || 0),
       rowAmount: isMeasurementCreate ? 0 : (measuredObject?.additionalDetails?.mbAmount || 0),
-      consumedRowQuantity: window.location.href.includes("/measurement/update") || window.location.href.includes("/measurement/view")? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
+      consumedRowQuantity: window.location.href.includes("/measurement/update") || (window.location.href.includes("/measurement/view") && measurement?.wfStatus !== "APPROVED")? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
     })
   });
     return {

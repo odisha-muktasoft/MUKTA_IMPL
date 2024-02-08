@@ -182,7 +182,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => !obj.description || obj.description.length < 2 || obj?.description?.length > 64) !== -1)
                           setError({message:`${t("ERR_DESCRIPTION_IS_MANDATORY_AND_LENGTH")} ${state.findIndex(obj => !obj.description|| obj.description.length < 2 || obj?.description?.length > 64 )+1}`,enable:true});
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => !obj.length && !obj.width && !obj.height && !obj.noOfunit) !== -1)
-                          setError({message:`${t("ERR_LEN_DEP_HIGH_NO_NOT_PRESENT")} ${state.findIndex(obj => !obj.length || !obj.width || !obj.height || !obj.noOfunit)+1}`,enable:true});
+                          setError({message:`${t("ERR_LEN_DEP_HIGH_NO_NOT_PRESENT")} ${state.findIndex(obj => !obj.length && !obj.width && !obj.height && !obj.noOfunit)+1}`,enable:true});
                         else
                         {
                         tableData[tableIndex].measures = state;
