@@ -69,9 +69,9 @@ public class BulkUploadService {
         return false;
     }
 
+//    Function to read the file
+    public List<Map<String, Object>> readFile(MultipartFile file) throws IOException{
 
-
-    public List<Map<String, Object>> bulkUpload(MultipartFile file, String schemaCode, String tenantId) throws IOException {
         List<Map<String, Object>> jsonData = new ArrayList<>();
 
         Path tempDir = Files.createTempDirectory("");
@@ -89,17 +89,6 @@ public class BulkUploadService {
             Row headerRow = rowIterator.next();
             List<String> headers = getHeaders(headerRow);
 
-            /*
-                while (rowIterator.hasNext()) {
-
-                    Row row = rowIterator.next();
-                    Map<String, Object> rowData = processRow(row, headers);
-
-                    jsonData.add(rowData);
-                }
-            */
-
-            //Updated to not iterate for empty rows
             while (rowIterator.hasNext()) {
 
                 Row row = rowIterator.next();
@@ -112,9 +101,20 @@ public class BulkUploadService {
                     // If the row is empty, break
                     break;
                 }
+
             }
 
         }
+
+        return jsonData;
+    }
+
+
+    public List<Map<String, Object>> bulkUpload(MultipartFile file, String schemaCode, String tenantId) throws IOException {
+
+//      Reading and getting data from file
+        List<Map<String, Object>> jsonData = readFile(file);
+
         MdmsRequest mdmsRequest;
 
         if(schemaCode.equals("WORKS-SOR.SOR")){
@@ -129,9 +129,7 @@ public class BulkUploadService {
             return createSORRate(mdmsRequest,jsonData);
         }
 
-       // return jsonData
     }
-
 
 
     private Map<String, Object> processRow(Row row, List<String> headers) {
@@ -253,7 +251,7 @@ public class BulkUploadService {
         return mapList;
     }
 
-    private List<Map<String, Object>> createSORRate(MdmsRequest mdmsRequest, List<Map<String, Object>> jsonData) {
+    public List<Map<String, Object>> createSORRate(MdmsRequest mdmsRequest, List<Map<String, Object>> jsonData) {
 
         List<Map<String,Object>> list=new ArrayList<>();
 
@@ -264,6 +262,7 @@ public class BulkUploadService {
 
                 ObjectNode mainNode = mapper.createObjectNode();
                 ArrayNode amountDetailsArray = mapper.createArrayNode();
+
             entry.entrySet().stream().forEach(e->{
                 if(!Objects.equals(e.getKey(), "sorId") &&
                         !Objects.equals(e.getKey(), "total")&&
@@ -326,7 +325,7 @@ public class BulkUploadService {
 
     }
 
-    private long convertDateToEpochDateTime(String dateString){
+    public long convertDateToEpochDateTime(String dateString){
         // Define the date format pattern
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 

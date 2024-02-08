@@ -32,13 +32,17 @@ public class Configuration {
 
     @Value("${egov.mdms.host.v2}")
     private String mdmsHostForSor;
-    @Value("${egov.mdms.v2.search.endpoint}")
+    @Value("${egov.mdms.v2.create.endpoint}")
     private String mdmsSorEndPoint;
+
+    @Value("${egov.mdms.v2.search.endpoint}")
+    private String mdmsSorSearchEndPoint;
+
+    @Value("${egov.mdms.v2.update.endpoint}")
+    private String mdmsSorUpdateEndPoint;
 
 
     //id format
-
-
     @Value("${egov.idgen.sor.number.name}")
     private String idgenSorName;
     @Value("${egov.idgen.sor.number.format}")
