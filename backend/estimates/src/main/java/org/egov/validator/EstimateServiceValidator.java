@@ -200,18 +200,15 @@ public class EstimateServiceValidator {
     }
 
     private List<Double> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
-        List<Integer> measurementCumulativeValue;
-        List<Double> doubleList = new ArrayList<Double>();
+        List<Double> measurementCumulativeValue;
 
         try {
             measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
-        for (Integer val : measurementCumulativeValue) {
-            doubleList.add(val.doubleValue());
-        }
-        return doubleList;
+
+        return measurementCumulativeValue;
     }
 
     private void validateMeasurementCumulativeValue(List<Double> measurementCumulativeValue, Object measurementResponse, String contractLineItemRefId, EstimateDetail estimateDetail1, Map<String, String> errorMap) {
@@ -242,18 +239,16 @@ public class EstimateServiceValidator {
     }
 
     private List<Double> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
-        List<Integer> measurementCurrentValue;
-        List<Double> measurementCurrentValueInDouble= new ArrayList<Double>();
+        List<Double> measurementCurrentValue;
+
         try {
             measurementCurrentValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
-        for(Integer val:measurementCurrentValue){
-            measurementCurrentValueInDouble.add(val.doubleValue());
-        }
 
-        return measurementCurrentValueInDouble;
+
+        return measurementCurrentValue;
     }
     private void validateMDMSDataForUOM(Estimate estimate, Object mdmsDataForUOM, Map<String, String> errorMap) {
         log.info("EstimateServiceValidator::validateMDMSDataForUOM");
