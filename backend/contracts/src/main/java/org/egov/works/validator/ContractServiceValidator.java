@@ -835,24 +835,28 @@ public class ContractServiceValidator {
 
         contractRequest.getContract().getLineItems().forEach(lineItems -> {
             if (lineItems.getContractLineItemRef() != null) {
-                List<Integer> measurementCumulativeValue = null;
+                List<Double> measurementCumulativeValue = null;
+
                 try {
                     measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCumulativeValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                 } catch (Exception e) {
                     throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                 }
+
                 if(measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()){
                     log.info("No measurement found for the given estimate");
                 }
                 else {
-                    Integer cumulativeValue = measurementCumulativeValue.get(0);
+                    Double cumulativeValue = measurementCumulativeValue.get(0);
                     if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")){
-                        List<Integer> measurementCurrentValue;
+                        List<Double> measurementCurrentValue;
+
                         try {
                             measurementCurrentValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCurrentValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                         } catch (Exception e) {
                             throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                         }
+
                         cumulativeValue = cumulativeValue - measurementCurrentValue.get(0);
                     }
                     if (lineItems.getNoOfunit() < cumulativeValue)
