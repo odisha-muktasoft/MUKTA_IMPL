@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:works_shg_app/models/adharModel/adhar_response.dart';
 import 'package:works_shg_app/models/wage_seeker/financial_details_model.dart';
 import 'package:works_shg_app/models/wage_seeker/individual_details_model.dart';
 import 'package:works_shg_app/models/wage_seeker/location_details_model.dart';
@@ -75,6 +76,8 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
           name: event.name,
           documentType: event.documentType,
           adharVerified: event.adharVerified,
+          timeStamp: event.timeStamp,
+          adharCardResponse: event.adharCardResponse,
         ),
       ));
     } else {
@@ -86,6 +89,8 @@ class WageSeekerBloc extends Bloc<WageSeekerBlocEvent, WageSeekerBlocState> {
         name: event.name,
         documentType: event.documentType,
         adharVerified: event.adharVerified,
+         timeStamp: event.timeStamp,
+        adharCardResponse: event.adharCardResponse,
       )));
     }
 
@@ -158,6 +163,7 @@ class WageSeekerBlocEvent with _$WageSeekerBlocEvent {
     required String name,
     required bool adharVerified,
     required int timeStamp,
+    AdharCardResponse? adharCardResponse
   }) = WageSeekerIdentificationCreateEvent;
 
   const factory WageSeekerBlocEvent.detailsCreate(

@@ -10,7 +10,21 @@ class AdharCardResponse with _$AdharCardResponse {
     String? status,
     @JsonKey(name: 'txn')
     String? txn,
-    
+    @JsonKey(name: 'ret')
+    String? ret,
+    @JsonKey(name: 'err')
+    String? err,
+    @JsonKey(name: 'errMsg')
+    String? errMsg,
+    @JsonKey(name: 'responseCode')
+    String? responseCode,
+    @JsonKey(name: 'uidToken')
+    String? uidToken,
+    @JsonKey(name: 'mobileNumber')
+    String? mobileNumber,
+    @JsonKey(name: 'email')
+    String? email
+
        
   }) = _AdharCardResponse;
 
@@ -18,4 +32,6 @@ class AdharCardResponse with _$AdharCardResponse {
     Map<String, dynamic> json,
   ) =>
       _$AdharCardResponseFromJson(json);
+
+     
 }

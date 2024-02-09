@@ -364,7 +364,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                       (route) => route is! PopupRoute,
                     );
                         Loaders.showLoadingDialog(context);},
-                            //shg_loader.Loaders.circularLoader(context),
+                       //     shg_loader.Loaders.circularLoader(context),
                         loaded: (SingleIndividualModel? individualListModel) {
                            Navigator.of(
                       context,
@@ -388,8 +388,18 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                                     bankName: '${financialDetails?.bankName}'),
                               );
                         },
-                        error: (String? error) => Notifiers.getToastMessage(
-                            context, error.toString(), 'ERROR'));
+                        error: (String? error) {
+                           Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil(
+                      (route) => route is! PopupRoute,
+                    );
+                          Notifiers.getToastMessage(
+                            context, error.toString(), 'ERROR');}
+                            
+                            
+                            );
                   },
                   child: BlocListener<WageSeekerBankCreateBloc,
                       WageSeekerBankCreateState>(
@@ -429,8 +439,17 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                                   i18.common.backToHome,
                                 )));
                           },
-                          error: (String? error) => Notifiers.getToastMessage(
-                              context, error.toString(), 'ERROR'));
+                          error: (String? error) { 
+                             Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).popUntil(
+                      (route) => route is! PopupRoute,
+                    );
+                            Notifiers.getToastMessage(
+                              context, error.toString(), 'ERROR');}
+                              
+                              );
                     },
                     child: Center(
                       child: DigitElevatedButton(

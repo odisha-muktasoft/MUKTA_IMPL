@@ -44,7 +44,8 @@ class IndividualDetailsMapperElement
       photo: container.$getOpt(map, 'photo'),
       adharVerified: container.$getOpt(map, 'adharVerified'),
       documentType: container.$getOpt(map, 'documentType'),
-      timeStamp: container.$getOpt(map, 'timeStamp'));
+      timeStamp: container.$getOpt(map, 'timeStamp'),
+      adharCardResponse: container.$getOpt(map, 'adharCardResponse'));
 
   @override
   Function get encoder => encode;
@@ -63,12 +64,14 @@ class IndividualDetailsMapperElement
         'photo': container.$enc(i.photo, 'photo'),
         'adharVerified': container.$enc(i.adharVerified, 'adharVerified'),
         'documentType': container.$enc(i.documentType, 'documentType'),
-        'timeStamp': container.$enc(i.timeStamp, 'timeStamp')
+        'timeStamp': container.$enc(i.timeStamp, 'timeStamp'),
+        'adharCardResponse':
+            container.$enc(i.adharCardResponse, 'adharCardResponse')
       };
 
   @override
   String stringify(IndividualDetails self) =>
-      'IndividualDetails(aadhaarNo: ${container.asString(self.aadhaarNo)}, name: ${container.asString(self.name)}, fatherName: ${container.asString(self.fatherName)}, relationship: ${container.asString(self.relationship)}, dateOfBirth: ${container.asString(self.dateOfBirth)}, gender: ${container.asString(self.gender)}, socialCategory: ${container.asString(self.socialCategory)}, mobileNumber: ${container.asString(self.mobileNumber)}, imageFile: ${container.asString(self.imageFile)}, bytes: ${container.asString(self.bytes)}, photo: ${container.asString(self.photo)}, documentType: ${container.asString(self.documentType)}, adharVerified: ${container.asString(self.adharVerified)}, timeStamp: ${container.asString(self.timeStamp)})';
+      'IndividualDetails(aadhaarNo: ${container.asString(self.aadhaarNo)}, name: ${container.asString(self.name)}, fatherName: ${container.asString(self.fatherName)}, relationship: ${container.asString(self.relationship)}, dateOfBirth: ${container.asString(self.dateOfBirth)}, gender: ${container.asString(self.gender)}, socialCategory: ${container.asString(self.socialCategory)}, mobileNumber: ${container.asString(self.mobileNumber)}, imageFile: ${container.asString(self.imageFile)}, bytes: ${container.asString(self.bytes)}, photo: ${container.asString(self.photo)}, documentType: ${container.asString(self.documentType)}, adharVerified: ${container.asString(self.adharVerified)}, timeStamp: ${container.asString(self.timeStamp)}, adharCardResponse: ${container.asString(self.adharCardResponse)})';
   @override
   int hash(IndividualDetails self) =>
       container.hash(self.aadhaarNo) ^
@@ -84,7 +87,8 @@ class IndividualDetailsMapperElement
       container.hash(self.photo) ^
       container.hash(self.documentType) ^
       container.hash(self.adharVerified) ^
-      container.hash(self.timeStamp);
+      container.hash(self.timeStamp) ^
+      container.hash(self.adharCardResponse);
   @override
   bool equals(IndividualDetails self, IndividualDetails other) =>
       container.isEqual(self.aadhaarNo, other.aadhaarNo) &&
@@ -100,7 +104,8 @@ class IndividualDetailsMapperElement
       container.isEqual(self.photo, other.photo) &&
       container.isEqual(self.documentType, other.documentType) &&
       container.isEqual(self.adharVerified, other.adharVerified) &&
-      container.isEqual(self.timeStamp, other.timeStamp);
+      container.isEqual(self.timeStamp, other.timeStamp) &&
+      container.isEqual(self.adharCardResponse, other.adharCardResponse);
 }
 
 mixin IndividualDetailsMappable {
@@ -151,7 +156,8 @@ abstract class IndividualDetailsCopyWith<$R, $In extends IndividualDetails,
       String? photo,
       bool? adharVerified,
       String? documentType,
-      int? timeStamp});
+      int? timeStamp,
+      AdharCardResponse? adharCardResponse});
 }
 
 class _IndividualDetailsCopyWithImpl<$R, $Out extends IndividualDetails>
@@ -179,7 +185,8 @@ class _IndividualDetailsCopyWithImpl<$R, $Out extends IndividualDetails>
           Object? photo = $none,
           Object? adharVerified = $none,
           Object? documentType = $none,
-          Object? timeStamp = $none}) =>
+          Object? timeStamp = $none,
+          Object? adharCardResponse = $none}) =>
       $then(IndividualDetails(
           aadhaarNo: or(aadhaarNo, $value.aadhaarNo),
           name: or(name, $value.name),
@@ -194,5 +201,6 @@ class _IndividualDetailsCopyWithImpl<$R, $Out extends IndividualDetails>
           photo: or(photo, $value.photo),
           adharVerified: or(adharVerified, $value.adharVerified),
           documentType: or(documentType, $value.documentType),
-          timeStamp: or(timeStamp, $value.timeStamp)));
+          timeStamp: or(timeStamp, $value.timeStamp),
+          adharCardResponse: or(adharCardResponse, $value.adharCardResponse)));
 }

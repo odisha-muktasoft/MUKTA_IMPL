@@ -24,8 +24,13 @@ mixin _$WageSeekerBlocEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -49,8 +54,13 @@ mixin _$WageSeekerBlocEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -69,8 +79,13 @@ mixin _$WageSeekerBlocEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -257,8 +272,13 @@ class _$WageSeekerCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -286,8 +306,13 @@ class _$WageSeekerCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -310,8 +335,13 @@ class _$WageSeekerCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -404,7 +434,10 @@ abstract class _$$WageSeekerIdentificationCreateEventCopyWith<$Res> {
       String number,
       String name,
       bool adharVerified,
-      int timeStamp});
+      int timeStamp,
+      AdharCardResponse? adharCardResponse});
+
+  $AdharCardResponseCopyWith<$Res>? get adharCardResponse;
 }
 
 /// @nodoc
@@ -425,6 +458,7 @@ class __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>
     Object? name = null,
     Object? adharVerified = null,
     Object? timeStamp = null,
+    Object? adharCardResponse = freezed,
   }) {
     return _then(_$WageSeekerIdentificationCreateEvent(
       documentType: null == documentType
@@ -447,7 +481,23 @@ class __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>
           ? _value.timeStamp
           : timeStamp // ignore: cast_nullable_to_non_nullable
               as int,
+      adharCardResponse: freezed == adharCardResponse
+          ? _value.adharCardResponse
+          : adharCardResponse // ignore: cast_nullable_to_non_nullable
+              as AdharCardResponse?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AdharCardResponseCopyWith<$Res>? get adharCardResponse {
+    if (_value.adharCardResponse == null) {
+      return null;
+    }
+
+    return $AdharCardResponseCopyWith<$Res>(_value.adharCardResponse!, (value) {
+      return _then(_value.copyWith(adharCardResponse: value));
+    });
   }
 }
 
@@ -461,7 +511,8 @@ class _$WageSeekerIdentificationCreateEvent
       required this.number,
       required this.name,
       required this.adharVerified,
-      required this.timeStamp});
+      required this.timeStamp,
+      this.adharCardResponse});
 
   @override
   final String documentType;
@@ -473,10 +524,12 @@ class _$WageSeekerIdentificationCreateEvent
   final bool adharVerified;
   @override
   final int timeStamp;
+  @override
+  final AdharCardResponse? adharCardResponse;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'WageSeekerBlocEvent.identificationCreate(documentType: $documentType, number: $number, name: $name, adharVerified: $adharVerified, timeStamp: $timeStamp)';
+    return 'WageSeekerBlocEvent.identificationCreate(documentType: $documentType, number: $number, name: $name, adharVerified: $adharVerified, timeStamp: $timeStamp, adharCardResponse: $adharCardResponse)';
   }
 
   @override
@@ -489,7 +542,8 @@ class _$WageSeekerIdentificationCreateEvent
       ..add(DiagnosticsProperty('number', number))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('adharVerified', adharVerified))
-      ..add(DiagnosticsProperty('timeStamp', timeStamp));
+      ..add(DiagnosticsProperty('timeStamp', timeStamp))
+      ..add(DiagnosticsProperty('adharCardResponse', adharCardResponse));
   }
 
   @override
@@ -504,12 +558,14 @@ class _$WageSeekerIdentificationCreateEvent
             (identical(other.adharVerified, adharVerified) ||
                 other.adharVerified == adharVerified) &&
             (identical(other.timeStamp, timeStamp) ||
-                other.timeStamp == timeStamp));
+                other.timeStamp == timeStamp) &&
+            (identical(other.adharCardResponse, adharCardResponse) ||
+                other.adharCardResponse == adharCardResponse));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, documentType, number, name, adharVerified, timeStamp);
+  int get hashCode => Object.hash(runtimeType, documentType, number, name,
+      adharVerified, timeStamp, adharCardResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -528,8 +584,13 @@ class _$WageSeekerIdentificationCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -544,8 +605,8 @@ class _$WageSeekerIdentificationCreateEvent
         photoCreate,
     required TResult Function() clear,
   }) {
-    return identificationCreate(
-        documentType, number, name, adharVerified, timeStamp);
+    return identificationCreate(documentType, number, name, adharVerified,
+        timeStamp, adharCardResponse);
   }
 
   @override
@@ -557,8 +618,13 @@ class _$WageSeekerIdentificationCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -568,8 +634,8 @@ class _$WageSeekerIdentificationCreateEvent
         photoCreate,
     TResult? Function()? clear,
   }) {
-    return identificationCreate?.call(
-        documentType, number, name, adharVerified, timeStamp);
+    return identificationCreate?.call(documentType, number, name, adharVerified,
+        timeStamp, adharCardResponse);
   }
 
   @override
@@ -581,8 +647,13 @@ class _$WageSeekerIdentificationCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -594,8 +665,8 @@ class _$WageSeekerIdentificationCreateEvent
     required TResult orElse(),
   }) {
     if (identificationCreate != null) {
-      return identificationCreate(
-          documentType, number, name, adharVerified, timeStamp);
+      return identificationCreate(documentType, number, name, adharVerified,
+          timeStamp, adharCardResponse);
     }
     return orElse();
   }
@@ -650,17 +721,20 @@ class _$WageSeekerIdentificationCreateEvent
 abstract class WageSeekerIdentificationCreateEvent
     implements WageSeekerBlocEvent {
   const factory WageSeekerIdentificationCreateEvent(
-      {required final String documentType,
-      required final String number,
-      required final String name,
-      required final bool adharVerified,
-      required final int timeStamp}) = _$WageSeekerIdentificationCreateEvent;
+          {required final String documentType,
+          required final String number,
+          required final String name,
+          required final bool adharVerified,
+          required final int timeStamp,
+          final AdharCardResponse? adharCardResponse}) =
+      _$WageSeekerIdentificationCreateEvent;
 
   String get documentType;
   String get number;
   String get name;
   bool get adharVerified;
   int get timeStamp;
+  AdharCardResponse? get adharCardResponse;
   @JsonKey(ignore: true)
   _$$WageSeekerIdentificationCreateEventCopyWith<
           _$WageSeekerIdentificationCreateEvent>
@@ -813,8 +887,13 @@ class _$WageSeekerDetailsCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -842,8 +921,13 @@ class _$WageSeekerDetailsCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -866,8 +950,13 @@ class _$WageSeekerDetailsCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -1037,8 +1126,13 @@ class _$WageSeekerSkillCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -1065,8 +1159,13 @@ class _$WageSeekerSkillCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -1088,8 +1187,13 @@ class _$WageSeekerSkillCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -1268,8 +1372,13 @@ class _$WageSeekerPhotoCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -1296,8 +1405,13 @@ class _$WageSeekerPhotoCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -1319,8 +1433,13 @@ class _$WageSeekerPhotoCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -1450,8 +1569,13 @@ class _$WageSeekerClearEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
-    required TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
         identificationCreate,
     required TResult Function(
             String fatherName,
@@ -1478,8 +1602,13 @@ class _$WageSeekerClearEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult? Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult? Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?
@@ -1501,8 +1630,13 @@ class _$WageSeekerClearEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
-    TResult Function(String documentType, String number, String name,
-            bool adharVerified, int timeStamp)?
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
         identificationCreate,
     TResult Function(String fatherName, DateTime dob, String relationShip,
             String gender, String socialCategory, String mobileNumber)?

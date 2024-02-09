@@ -32,25 +32,23 @@ class WageSeekerCreateBloc
       VerifyAdharEvent event, WageSeekerCreateEmitter emit) async {
     Client client = Client();
 
- 
-
-    final  data={
-    "uid": event.uid,
-    "uidType": "A",
-    "consent": "Y",
-    "subAuaCode": "0002590000",
-    "txn": "",
-    "isPI": "y",
-    "isBio": "n",
-    "isOTP": "n",
-    "bioType": "n",
-    "name": event.name,
-    "dob": "",
-    "gender": "",
-    "rdInfo": "",
-    "rdData": "",
-    "otpValue": ""
-};
+    final data = {
+      "uid": event.uid,
+      "uidType": "A",
+      "consent": "Y",
+      "subAuaCode": "0002590000",
+      "txn": "",
+      "isPI": "y",
+      "isBio": "n",
+      "isOTP": "n",
+      "bioType": "n",
+      "name": event.name,
+      "dob": "",
+      "gender": "",
+      "rdInfo": "",
+      "rdData": "",
+      "otpValue": ""
+    };
     try {
       emit(const WageSeekerCreateState.loading());
       AdharCardResponse s =
@@ -58,11 +56,10 @@ class WageSeekerCreateBloc
         url: Urls.wageSeekerServices.adharVerifyUrl,
         body: jsonEncode(data),
       );
-      
+
       emit(WageSeekerCreateState.verified(s));
-     
-    }  catch (e) {
-     emit(WageSeekerCreateState.error(e.toString()));
+    } catch (e) {
+      emit(WageSeekerCreateState.error(e.toString()));
     }
   }
 
@@ -70,6 +67,7 @@ class WageSeekerCreateBloc
       CreateWageSeekerEvent event, WageSeekerCreateEmitter emit) async {
     Client client = Client();
     try {
+      print(event.individualDetails?.adharCardResponse?.toJson());
       emit(const WageSeekerCreateState.loading());
       SingleIndividualModel individualListModel =
           await WageSeekerRepository(client.init()).createIndividual(
@@ -122,15 +120,31 @@ class WageSeekerCreateBloc
                     "value": event.individualDetails?.socialCategory
                   },
                   {
-                   "key": "is_aadhaar_verified",
-                    "value":event.individualDetails?.adharVerified??false
+                    "key": "is_aadhaar_verified",
+                    "value": event.individualDetails?.adharVerified ?? false
                   },
                   {
-                     "key": "verification_time",
-                    "value":event.individualDetails?.timeStamp??123456
+                    "key": "verification_time",
+                    "value": event.individualDetails?.timeStamp
                   }
-                
-                ]
+                  
+                ],
+                "adhaar_res": 
+                    event.individualDetails?.adharCardResponse != null
+                        ? {
+                            "ret": event.individualDetails?.adharCardResponse?.ret,
+                            "err": event.individualDetails?.adharCardResponse?.err,
+                            "status": event.individualDetails?.adharCardResponse?.status,
+                            "errMsg": event.individualDetails?.adharCardResponse?.errMsg,
+                            "txn": event.individualDetails?.adharCardResponse?.txn,
+                            "responseCode": event.individualDetails?.adharCardResponse?.responseCode,
+                            "uidToken":
+                                event.individualDetails?.adharCardResponse?.uidToken,
+                            "mobileNumber": event.individualDetails?.adharCardResponse?.mobileNumber,
+                            "email": event.individualDetails?.adharCardResponse?.email
+                          }
+                        : null
+                  
               }
             }
           });

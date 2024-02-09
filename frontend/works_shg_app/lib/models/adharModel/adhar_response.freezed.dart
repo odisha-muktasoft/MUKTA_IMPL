@@ -24,6 +24,20 @@ mixin _$AdharCardResponse {
   String? get status => throw _privateConstructorUsedError;
   @JsonKey(name: 'txn')
   String? get txn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ret')
+  String? get ret => throw _privateConstructorUsedError;
+  @JsonKey(name: 'err')
+  String? get err => throw _privateConstructorUsedError;
+  @JsonKey(name: 'errMsg')
+  String? get errMsg => throw _privateConstructorUsedError;
+  @JsonKey(name: 'responseCode')
+  String? get responseCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'uidToken')
+  String? get uidToken => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mobileNumber')
+  String? get mobileNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'email')
+  String? get email => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,7 +53,14 @@ abstract class $AdharCardResponseCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'txn') String? txn});
+      @JsonKey(name: 'txn') String? txn,
+      @JsonKey(name: 'ret') String? ret,
+      @JsonKey(name: 'err') String? err,
+      @JsonKey(name: 'errMsg') String? errMsg,
+      @JsonKey(name: 'responseCode') String? responseCode,
+      @JsonKey(name: 'uidToken') String? uidToken,
+      @JsonKey(name: 'mobileNumber') String? mobileNumber,
+      @JsonKey(name: 'email') String? email});
 }
 
 /// @nodoc
@@ -57,6 +78,13 @@ class _$AdharCardResponseCopyWithImpl<$Res, $Val extends AdharCardResponse>
   $Res call({
     Object? status = freezed,
     Object? txn = freezed,
+    Object? ret = freezed,
+    Object? err = freezed,
+    Object? errMsg = freezed,
+    Object? responseCode = freezed,
+    Object? uidToken = freezed,
+    Object? mobileNumber = freezed,
+    Object? email = freezed,
   }) {
     return _then(_value.copyWith(
       status: freezed == status
@@ -66,6 +94,34 @@ class _$AdharCardResponseCopyWithImpl<$Res, $Val extends AdharCardResponse>
       txn: freezed == txn
           ? _value.txn
           : txn // ignore: cast_nullable_to_non_nullable
+              as String?,
+      ret: freezed == ret
+          ? _value.ret
+          : ret // ignore: cast_nullable_to_non_nullable
+              as String?,
+      err: freezed == err
+          ? _value.err
+          : err // ignore: cast_nullable_to_non_nullable
+              as String?,
+      errMsg: freezed == errMsg
+          ? _value.errMsg
+          : errMsg // ignore: cast_nullable_to_non_nullable
+              as String?,
+      responseCode: freezed == responseCode
+          ? _value.responseCode
+          : responseCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uidToken: freezed == uidToken
+          ? _value.uidToken
+          : uidToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -81,7 +137,14 @@ abstract class _$$_AdharCardResponseCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'txn') String? txn});
+      @JsonKey(name: 'txn') String? txn,
+      @JsonKey(name: 'ret') String? ret,
+      @JsonKey(name: 'err') String? err,
+      @JsonKey(name: 'errMsg') String? errMsg,
+      @JsonKey(name: 'responseCode') String? responseCode,
+      @JsonKey(name: 'uidToken') String? uidToken,
+      @JsonKey(name: 'mobileNumber') String? mobileNumber,
+      @JsonKey(name: 'email') String? email});
 }
 
 /// @nodoc
@@ -97,6 +160,13 @@ class __$$_AdharCardResponseCopyWithImpl<$Res>
   $Res call({
     Object? status = freezed,
     Object? txn = freezed,
+    Object? ret = freezed,
+    Object? err = freezed,
+    Object? errMsg = freezed,
+    Object? responseCode = freezed,
+    Object? uidToken = freezed,
+    Object? mobileNumber = freezed,
+    Object? email = freezed,
   }) {
     return _then(_$_AdharCardResponse(
       status: freezed == status
@@ -107,6 +177,34 @@ class __$$_AdharCardResponseCopyWithImpl<$Res>
           ? _value.txn
           : txn // ignore: cast_nullable_to_non_nullable
               as String?,
+      ret: freezed == ret
+          ? _value.ret
+          : ret // ignore: cast_nullable_to_non_nullable
+              as String?,
+      err: freezed == err
+          ? _value.err
+          : err // ignore: cast_nullable_to_non_nullable
+              as String?,
+      errMsg: freezed == errMsg
+          ? _value.errMsg
+          : errMsg // ignore: cast_nullable_to_non_nullable
+              as String?,
+      responseCode: freezed == responseCode
+          ? _value.responseCode
+          : responseCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uidToken: freezed == uidToken
+          ? _value.uidToken
+          : uidToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -115,7 +213,15 @@ class __$$_AdharCardResponseCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AdharCardResponse implements _AdharCardResponse {
   const _$_AdharCardResponse(
-      {@JsonKey(name: 'status') this.status, @JsonKey(name: 'txn') this.txn});
+      {@JsonKey(name: 'status') this.status,
+      @JsonKey(name: 'txn') this.txn,
+      @JsonKey(name: 'ret') this.ret,
+      @JsonKey(name: 'err') this.err,
+      @JsonKey(name: 'errMsg') this.errMsg,
+      @JsonKey(name: 'responseCode') this.responseCode,
+      @JsonKey(name: 'uidToken') this.uidToken,
+      @JsonKey(name: 'mobileNumber') this.mobileNumber,
+      @JsonKey(name: 'email') this.email});
 
   factory _$_AdharCardResponse.fromJson(Map<String, dynamic> json) =>
       _$$_AdharCardResponseFromJson(json);
@@ -126,10 +232,31 @@ class _$_AdharCardResponse implements _AdharCardResponse {
   @override
   @JsonKey(name: 'txn')
   final String? txn;
+  @override
+  @JsonKey(name: 'ret')
+  final String? ret;
+  @override
+  @JsonKey(name: 'err')
+  final String? err;
+  @override
+  @JsonKey(name: 'errMsg')
+  final String? errMsg;
+  @override
+  @JsonKey(name: 'responseCode')
+  final String? responseCode;
+  @override
+  @JsonKey(name: 'uidToken')
+  final String? uidToken;
+  @override
+  @JsonKey(name: 'mobileNumber')
+  final String? mobileNumber;
+  @override
+  @JsonKey(name: 'email')
+  final String? email;
 
   @override
   String toString() {
-    return 'AdharCardResponse(status: $status, txn: $txn)';
+    return 'AdharCardResponse(status: $status, txn: $txn, ret: $ret, err: $err, errMsg: $errMsg, responseCode: $responseCode, uidToken: $uidToken, mobileNumber: $mobileNumber, email: $email)';
   }
 
   @override
@@ -138,12 +265,23 @@ class _$_AdharCardResponse implements _AdharCardResponse {
         (other.runtimeType == runtimeType &&
             other is _$_AdharCardResponse &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.txn, txn) || other.txn == txn));
+            (identical(other.txn, txn) || other.txn == txn) &&
+            (identical(other.ret, ret) || other.ret == ret) &&
+            (identical(other.err, err) || other.err == err) &&
+            (identical(other.errMsg, errMsg) || other.errMsg == errMsg) &&
+            (identical(other.responseCode, responseCode) ||
+                other.responseCode == responseCode) &&
+            (identical(other.uidToken, uidToken) ||
+                other.uidToken == uidToken) &&
+            (identical(other.mobileNumber, mobileNumber) ||
+                other.mobileNumber == mobileNumber) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, status, txn);
+  int get hashCode => Object.hash(runtimeType, status, txn, ret, err, errMsg,
+      responseCode, uidToken, mobileNumber, email);
 
   @JsonKey(ignore: true)
   @override
@@ -163,7 +301,14 @@ class _$_AdharCardResponse implements _AdharCardResponse {
 abstract class _AdharCardResponse implements AdharCardResponse {
   const factory _AdharCardResponse(
       {@JsonKey(name: 'status') final String? status,
-      @JsonKey(name: 'txn') final String? txn}) = _$_AdharCardResponse;
+      @JsonKey(name: 'txn') final String? txn,
+      @JsonKey(name: 'ret') final String? ret,
+      @JsonKey(name: 'err') final String? err,
+      @JsonKey(name: 'errMsg') final String? errMsg,
+      @JsonKey(name: 'responseCode') final String? responseCode,
+      @JsonKey(name: 'uidToken') final String? uidToken,
+      @JsonKey(name: 'mobileNumber') final String? mobileNumber,
+      @JsonKey(name: 'email') final String? email}) = _$_AdharCardResponse;
 
   factory _AdharCardResponse.fromJson(Map<String, dynamic> json) =
       _$_AdharCardResponse.fromJson;
@@ -174,6 +319,27 @@ abstract class _AdharCardResponse implements AdharCardResponse {
   @override
   @JsonKey(name: 'txn')
   String? get txn;
+  @override
+  @JsonKey(name: 'ret')
+  String? get ret;
+  @override
+  @JsonKey(name: 'err')
+  String? get err;
+  @override
+  @JsonKey(name: 'errMsg')
+  String? get errMsg;
+  @override
+  @JsonKey(name: 'responseCode')
+  String? get responseCode;
+  @override
+  @JsonKey(name: 'uidToken')
+  String? get uidToken;
+  @override
+  @JsonKey(name: 'mobileNumber')
+  String? get mobileNumber;
+  @override
+  @JsonKey(name: 'email')
+  String? get email;
   @override
   @JsonKey(ignore: true)
   _$$_AdharCardResponseCopyWith<_$_AdharCardResponse> get copyWith =>

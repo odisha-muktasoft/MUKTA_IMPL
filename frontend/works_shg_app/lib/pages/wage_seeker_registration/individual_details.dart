@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/models/adharModel/adhar_response.dart';
 import 'package:works_shg_app/models/wage_seeker/financial_details_model.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -200,7 +201,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
         state.maybeMap(
           orElse: () => {const SizedBox.shrink()},
           verified: (adharCardResponse) {
-             // Update Aadhaar verification status
+            // Update Aadhaar verification status
             isVerified = adharCardResponse!.adharCardResponse!.status ==
                     Constants.verifyAdhar
                 ? true
@@ -480,20 +481,30 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                       form.markAllAsTouched(
                                           updateParent: false);
                                       if (!form.valid) return;
+                                      final adharState = context
+                                          .read<WageSeekerCreateBloc>()
+                                          .state;
 
+                                      AdharCardResponse? s =
+                                          adharState.maybeMap(
+                                        orElse: () => const AdharCardResponse(),
+                                        verified: (value) {
+                                          return value.adharCardResponse;
+                                        },
+                                      );
                                       context.read<WageSeekerBloc>().add(
                                             WageSeekerIdentificationCreateEvent(
-                                              adharVerified: true,
-                                              documentType: form
-                                                  .value[identityDocument]
-                                                  .toString(),
-                                              name: form.value[nameKey]
-                                                  .toString(),
-                                              number: form.value[aadhaarNoKey]
-                                                  .toString(),
-                                              timeStamp: DateTime.now()
-                                                  .millisecondsSinceEpoch,
-                                            ),
+                                                adharVerified: true,
+                                                documentType: form
+                                                    .value[identityDocument]
+                                                    .toString(),
+                                                name: form.value[nameKey]
+                                                    .toString(),
+                                                number: form.value[aadhaarNoKey]
+                                                    .toString(),
+                                                timeStamp: DateTime.now()
+                                                    .millisecondsSinceEpoch,
+                                                adharCardResponse: s),
                                           );
                                       setState(() {
                                         switchPage = 1;
@@ -515,6 +526,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                               .toString(),
                                           timeStamp: DateTime.now()
                                               .millisecondsSinceEpoch,
+                                              adharCardResponse: const AdharCardResponse()
                                         ),
                                       );
                                   setState(() {
@@ -533,7 +545,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     );
   }
 
- // Build Reactive Forms FormGroup for identification details
+  // Build Reactive Forms FormGroup for identification details
   FormGroup identificationBuildForm(
     IndividualDetails individualDetails,
   ) =>
