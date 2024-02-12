@@ -84,6 +84,7 @@ public class BulkUploadUtil {
 
     public MdmsResponseV2 getMdmsV2Response(Object response){
 
+//        Parse data of reponse to MdmsResponseV2
         MdmsResponseV2 responseV2 = objectMapper.convertValue(response, MdmsResponseV2.class);
         return responseV2;
     }
