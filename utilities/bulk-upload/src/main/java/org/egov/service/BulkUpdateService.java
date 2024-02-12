@@ -27,6 +27,7 @@ public class BulkUpdateService {
 
     private List<Mdms> getMdmsV2Data(MdmsCriteriaReqV2 mdmsCriteriaReqV2){
 
+//        Getting all the data from MDMS-V2
         return bulkUploadUtil.search(mdmsCriteriaReqV2).getMdms();
 
     }
