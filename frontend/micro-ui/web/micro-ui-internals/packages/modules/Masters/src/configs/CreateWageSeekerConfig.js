@@ -30,21 +30,39 @@ export const CreateWageSeekerConfig = {
               }
             },
             {
-              label: "ES_COMMON_AADHAR",
+              label: "WAGE_SEEKER_IDENTITY_DOCUMENT_LABEL",
+              isMandatory: false,
+              key: "basicDetails_doc",
+              type: "radioordropdown",
+              disable: false,
+              populators: {
+                name: "basicDetails_doc",
+                optionsKey: "name",
+                options: [ // Updated options array with only name attribute
+                { code: "AADHAAR", name: "Aadhaar", active:true},
+                { code: "ELECTION_PHOTO", name: "Election Photo Identity Card (EPIC)", active: true},
+                { code: "DRIVING_LICENSE", name: "Driving License", active: true},
+                { code: "RATION_CARD", name: "Ration Card under TDPS", active: true},
+              ],
+                error: "WORKS_REQUIRED_ERR",
+                optionsCustomStyle : {
+                  top : "2.3rem"
+                }
+              }
+            },
+            {
+              label: "WAGE_SEEKER_IDENTITY_NUMBER_LABEL",
               isMandatory: true,
               key: "basicDetails_aadhar",
-              type: "text",
-              disable: false,
+              type: "component",
+              component: "AadharValidationComponent",
+              disable: true,
               preProcess : {
-                updateDependent : ["populators.customStyle.pointerEvents", "populators.customClass"]
+                convertStringToRegEx : ["populators.validation.pattern"]
               },
               populators: { 
-                name: "basicDetails_aadhar",
-                error: "WORKS_REQUIRED_ERR",
-                customStyle : {
-                  pointerEvents : "auto"
-                },
-                customClass : "field-value-no-border" 
+                name: "basicDetails_aadhar", 
+                error: "WORKS_REQUIRED_ERR"
               }
             },
             {

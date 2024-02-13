@@ -32,7 +32,8 @@ export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sess
         if(isModify) {
             configs.defaultValues.basicDetails_wageSeekerId = individual?.individualId ? individual?.individualId : ""
         }
-        configs.defaultValues.basicDetails_aadhar = adhaar ? adhaar?.identifierId : ""
+        configs.defaultValues.basicDetails_aadhar = individual?.identifiers?.length ? individual?.identifiers[0].identifierId : ""
+        configs.defaultValues.basicDetails_doc = individual?.identifiers?.length ? { code: individual?.identifiers[0].identifierType, name: individual?.identifiers[0].identifierType, active: true } : ""
         configs.defaultValues.basicDetails_wageSeekerName = individual?.name?.givenName ? individual?.name?.givenName : ""
         configs.defaultValues.basicDetails_fatherHusbandName = individual?.fatherName ? individual?.fatherName : ""
         configs.defaultValues.basicDetails_relationShip = individual?.relationship ? { code: individual?.relationship, name: `COMMON_MASTERS_RELATIONSHIP_${individual?.relationship}`, active: true } : ""
@@ -168,6 +169,8 @@ export const getWageSeekerUpdatePayload = ({formData, wageSeekerDataFromAPI, ten
         Individual.rowVersion = wageSeekerDataFromAPI?.individual?.rowVersion
         //here set the identifiers on Individual object
         Individual.identifiers = wageSeekerDataFromAPI?.individual?.identifiers
+        Individual.identifiers[0].identifierId = formData.basicDetails_aadhar
+        Individual.identifiers[0].identifierType = formData.basicDetails_doc.name
     }
     
     return {
