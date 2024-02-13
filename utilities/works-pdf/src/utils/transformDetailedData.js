@@ -60,6 +60,8 @@ const transformDetailedData = (data) => {
     
         if (sorIdMap[sorId] === undefined) {
             const amount = isDeduction ? -amountDetail[0].amount : amountDetail[0].amount;
+            // Apply condition on estimatedQuantity according to isDeduction
+            const adjustedEstimatedQuantity = isDeduction ? -estimatedQuantity : estimatedQuantity;
     
             sorIdMap[sorId] = {
                 sorId,
@@ -68,7 +70,7 @@ const transformDetailedData = (data) => {
                 description,
                 uom,
                 unitRate,
-                estimatedQuantity,
+                estimatedQuantity: adjustedEstimatedQuantity,
                 amount,
                 additionalDetails
             };
