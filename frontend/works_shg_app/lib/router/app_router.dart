@@ -7,6 +7,8 @@ import 'package:works_shg_app/pages/wage_seeker_registration/register_individual
 
 import '../pages/attendance_register_table.dart';
 import '../pages/authenticated.dart';
+import '../pages/employee/mb_inbox.dart';
+import '../pages/employee/mb_wrapper.dart';
 import '../pages/home.dart';
 import '../pages/language_selection_page.dart';
 import '../pages/login.dart';
@@ -67,6 +69,21 @@ part 'app_router.gr.dart';
             page: CreateTimeExtensionRequestPage,
             path: 'create-time-extension'),
         AutoRoute(page: MyServiceRequestsPage, path: 'my-service-requests'),
+
+        // mb for employee
+
+        AutoRoute(
+           page: MeasurementBookWrapperPage,
+          path: 'measurement-book',
+          children: [
+           // MeasurementBookInboxPage
+            AutoRoute(
+               page: MeasurementBookInboxPage,
+          path: 'measurement-inbox',
+          initial: true
+            )
+          ]
+        ),
       ],
     ),
   ],

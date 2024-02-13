@@ -1,7 +1,9 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -9,6 +11,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
     as i18;
 import 'package:works_shg_app/widgets/atoms/app_logo.dart';
 
+import '../blocs/app_initilization/app_initilization.dart';
 import '../blocs/localization/app_localization.dart';
 import '../utils/notifiers.dart';
 import '../widgets/molecules/desktop_view.dart';
@@ -30,6 +33,11 @@ class _LoginPage extends State<LoginPage> {
   bool autoValidation = false;
   bool phoneNumberAutoValidation = false;
   final FocusNode _numberFocus = FocusNode();
+
+  List<DigitRowCardModel> btns = [
+    const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
+    const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
+  ];
 
   @override
   void initState() {
@@ -59,7 +67,7 @@ class _LoginPage extends State<LoginPage> {
     }
   }
 
-  Widget getLoginCard(BuildContext loginContext) {
+  Widget getLoginCard(BuildContext loginContext, AppInitializationState data) {
     return Form(
       key: formKey,
       autovalidateMode:
@@ -77,76 +85,127 @@ class _LoginPage extends State<LoginPage> {
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w700)),
             ),
-            DigitTextField(
-              label:
-                  '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
-              controller: userIdController,
-              isRequired: true,
-              prefixText: '+91 - ',
-              focusNode: _numberFocus,
-              autoValidation: phoneNumberAutoValidation
-                  ? AutovalidateMode.always
-                  : AutovalidateMode.disabled,
-              textInputType: TextInputType.number,
-              inputFormatter: [
-                FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-              ],
-              validator: (val) {
-                if (val!.trim().isEmpty || val!.trim().length != 10) {
-                  return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-                }
-                return null;
-              },
-              onChange: (value) {
-                setState(() {
-                  canContinue = value.length == 10;
-                });
-                if (value.length == 10) {
-                  _numberFocus.unfocus();
-                }
-              },
-              maxLength: 10,
-            ),
+            btns.first.isSelected
+                ? cboLogin(loginContext)
+                : employeeLogin(loginContext, data),
             const SizedBox(height: 16),
-            BlocListener<OTPBloc, OTPBlocState>(
-              listener: (context, state) {
-                state.maybeWhen(
-                    orElse: () => Container(),
-                    loaded: () {
-                      context.router.push(OTPVerificationRoute(
-                          mobileNumber: userIdController.text));
-                    },
-                    error: () => Notifiers.getToastMessage(
-                        context,
-                        AppLocalizations.of(context)
-                            .translate(i18.login.enteredMobileNotRegistered),
-                        'ERROR'));
+            DigitRowCard(
+              onChanged: (value) {
+                setState(() {
+                  final m = btns.map((e) {
+                    if (e.label == value.label) {
+                      final s = DigitRowCardModel(
+                          label: e.label, value: e.value, isSelected: true);
+                      return s;
+                    } else {
+                      final k = DigitRowCardModel(
+                          label: e.label, value: e.value, isSelected: false);
+                      return k;
+                    }
+                  }).toList();
+                  btns.clear();
+                  btns.addAll(m);
+                });
               },
-              child: DigitElevatedButton(
-                onPressed: canContinue
-                    ? () {
-                        if (formKey.currentState!.validate()) {
-                          loginContext.read<OTPBloc>().add(
-                                OTPSendEvent(
-                                  mobileNumber: userIdController.text,
-                                ),
-                              );
-                        } else {
-                          setState(() {
-                            autoValidation = true;
-                          });
-                        }
-                      }
-                    : null,
-                child: Center(
-                  child: Text(AppLocalizations.of(loginContext)
-                      .translate(i18.common.continueLabel)),
-                ),
-              ),
+              rowItems: btns,
+              width: MediaQuery.of(context).size.width > 720
+                  ? (MediaQuery.of(context).size.width / (2 * 3)) - 20
+                  : (MediaQuery.of(context).size.width / 2) - 16 * 2,
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            btns.first.isSelected
+                ? BlocListener<OTPBloc, OTPBlocState>(
+                    listener: (context, state) {
+                      state.maybeWhen(
+                          orElse: () => Container(),
+                          loaded: () {
+                            context.router.push(OTPVerificationRoute(
+                                mobileNumber: userIdController.text));
+                          },
+                          error: () => Notifiers.getToastMessage(
+                              context,
+                              AppLocalizations.of(context).translate(
+                                  i18.login.enteredMobileNotRegistered),
+                              'ERROR'));
+                    },
+                    child: DigitElevatedButton(
+                      onPressed: canContinue
+                          ? () {
+                              if (formKey.currentState!.validate()) {
+                                loginContext.read<OTPBloc>().add(
+                                      OTPSendEvent(
+                                        mobileNumber: userIdController.text,
+                                      ),
+                                    );
+                              } else {
+                                setState(() {
+                                  autoValidation = true;
+                                });
+                              }
+                            }
+                          : null,
+                      child: Center(
+                        child: Text(AppLocalizations.of(loginContext)
+                            .translate(i18.common.continueLabel)),
+                      ),
+                    ),
+                  )
+                : BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) {
+                      // TODO: implement listener
+                    },
+                    child: DigitElevatedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              "Employee button hit",
+                            ),
+                          ),
+                        );
+                      },
+                      child: Center(
+                        child: Text(AppLocalizations.of(loginContext)
+                            .translate(i18.common.continueLabel)),
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),
+    );
+  }
+
+  DigitTextField cboLogin(BuildContext loginContext) {
+    return DigitTextField(
+      label:
+          '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+      controller: userIdController,
+      isRequired: true,
+      prefixText: '+91 - ',
+      focusNode: _numberFocus,
+      autoValidation: phoneNumberAutoValidation
+          ? AutovalidateMode.always
+          : AutovalidateMode.disabled,
+      textInputType: TextInputType.number,
+      inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+      validator: (val) {
+        if (val!.trim().isEmpty || val!.trim().length != 10) {
+          return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+        }
+        return null;
+      },
+      onChange: (value) {
+        setState(() {
+          canContinue = value.length == 10;
+        });
+        if (value.length == 10) {
+          _numberFocus.unfocus();
+        }
+      },
+      maxLength: 10,
     );
   }
 
@@ -156,18 +215,72 @@ class _LoginPage extends State<LoginPage> {
         appBar: AppBar(
           automaticallyImplyLeading: true,
         ),
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth < 720) {
-            return MobileView(
-              getLoginCard(context),
-              GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
-              logoBottomPosition: constraints.maxHeight / 8,
-              cardBottomPosition: constraints.maxHeight / 3,
-            );
-          } else {
-            return DesktopView(getLoginCard(context),
-                GlobalVariables.stateInfoListModel!.bannerUrl.toString());
-          }
-        }));
+        body: BlocBuilder<AppInitializationBloc, AppInitializationState>(
+          builder: (context, state) {
+            return LayoutBuilder(builder: (context, constraints) {
+              if (constraints.maxWidth < 720) {
+                return MobileView(
+                  getLoginCard(context, state),
+                  GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
+                  logoBottomPosition: constraints.maxHeight / 8,
+                  cardBottomPosition: constraints.maxHeight / 3,
+                );
+              } else {
+                return DesktopView(getLoginCard(context, state),
+                    GlobalVariables.stateInfoListModel!.bannerUrl.toString());
+              }
+            });
+          },
+        ));
+  }
+
+  Column employeeLogin(BuildContext context, AppInitializationState data) {
+    return Column(
+      children: [
+        DigitTextField(
+          label: 'User Name*',
+          // controller: userIdController,
+          isRequired: true,
+
+          validator: (val) {
+            if (val!.trim().isEmpty || val!.trim().length != 10) {
+              return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+            }
+            return null;
+          },
+          onChange: (value) {},
+        ),
+        DigitTextField(
+          label: 'Password*',
+          // controller: userIdController,
+          isRequired: true,
+
+          //  focusNode: _numberFocus,
+          validator: (val) {
+            if (val!.trim().isEmpty || val!.trim().length != 10) {
+              return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+            }
+            return null;
+          },
+          onChange: (value) {},
+        ),
+        DigitDropdown(
+            onChanged: (value) {},
+            value: null,
+            label: "City *",
+            menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
+            valueMapper: (value) {
+              return value!.code!;
+            })
+      ],
+    );
   }
 }
+// const [
+//               "testing",
+//               "delhi",
+//               "mumbai",
+//               "bbsr",
+//               "ctc",
+//               "puri"
+//             ]

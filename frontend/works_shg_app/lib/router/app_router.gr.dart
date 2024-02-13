@@ -211,6 +211,18 @@ class _$AppRouter extends RootStackRouter {
         child: const MyServiceRequestsPage(),
       );
     },
+    MeasurementBookWrapperRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: WrappedRoute(child: const MeasurementBookWrapperPage()),
+      );
+    },
+    MeasurementBookInboxRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MeasurementBookInboxPage(),
+      );
+    },
   };
 
   @override
@@ -323,6 +335,25 @@ class _$AppRouter extends RootStackRouter {
               MyServiceRequestsRoute.name,
               path: 'my-service-requests',
               parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MeasurementBookWrapperRoute.name,
+              path: 'measurement-book',
+              parent: AuthenticatedRouteWrapper.name,
+              children: [
+                RouteConfig(
+                  '#redirect',
+                  path: '',
+                  parent: MeasurementBookWrapperRoute.name,
+                  redirectTo: 'measurement-inbox',
+                  fullMatch: true,
+                ),
+                RouteConfig(
+                  MeasurementBookInboxRoute.name,
+                  path: 'measurement-inbox',
+                  parent: MeasurementBookWrapperRoute.name,
+                ),
+              ],
             ),
           ],
         ),
@@ -834,4 +865,29 @@ class MyServiceRequestsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyServiceRequestsRoute';
+}
+
+/// generated route for
+/// [MeasurementBookWrapperPage]
+class MeasurementBookWrapperRoute extends PageRouteInfo<void> {
+  const MeasurementBookWrapperRoute({List<PageRouteInfo>? children})
+      : super(
+          MeasurementBookWrapperRoute.name,
+          path: 'measurement-book',
+          initialChildren: children,
+        );
+
+  static const String name = 'MeasurementBookWrapperRoute';
+}
+
+/// generated route for
+/// [MeasurementBookInboxPage]
+class MeasurementBookInboxRoute extends PageRouteInfo<void> {
+  const MeasurementBookInboxRoute()
+      : super(
+          MeasurementBookInboxRoute.name,
+          path: 'measurement-inbox',
+        );
+
+  static const String name = 'MeasurementBookInboxRoute';
 }

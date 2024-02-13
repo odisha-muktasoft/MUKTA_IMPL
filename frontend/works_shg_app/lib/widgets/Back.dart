@@ -20,7 +20,7 @@ class Back extends StatelessWidget {
     return BlocBuilder<AppInitializationBloc, AppInitializationState>(
         builder: (context, state) {
       return Padding(
-          padding: const EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.only(top: 16.0,left: 0.0),
           child: Row(
               mainAxisAlignment: widget == null
                   ? MainAxisAlignment.start

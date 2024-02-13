@@ -107,83 +107,119 @@ class _HomePage extends State<HomePage> {
                 orElse: () => Container(),
                 loading: () => shg_loader.Loaders.circularLoader(context),
                 loaded: (OrganisationListModel? organisationListModel) {
-                  return ScrollableContent(
-                    footer: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: PoweredByDigit(),
-                    ),
-                    children: [
-                      DigitCard(
-                        onPressed: null,
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: Align(
-                            alignment: Alignment.topCenter,
-                            child: BlocBuilder<HomeScreenBloc,
-                                HomeScreenBlocState>(
-                              builder: (context, config) {
-                                return config.maybeWhen(
-                                    orElse: () => Container(),
-                                    loading: () =>
-                                        shg_loader.Loaders.circularLoader(
-                                            context),
-                                    loaded: (List<CBOHomeScreenConfigModel>?
-                                        cboHomeScreenConfig) {
-                                      return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: cboHomeScreenConfig
-                                                  ?.map((e) {
-                                                if (e.order == 1) {
-                                                  return Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            t.translate(
-                                                                i18.home.mukta),
-                                                            style: DigitTheme
-                                                                .instance
-                                                                .mobileTheme
-                                                                .textTheme
-                                                                .headlineLarge,
-                                                          ),
-                                                          SvgPicture.asset(
-                                                              Constants
-                                                                  .muktaIcon)
-                                                        ],
-                                                      ),
-                                                      ButtonLink(
-                                                          t.translate(
-                                                              e.label ?? ''),
-                                                          getRoute(
-                                                              e.key.toString(),
-                                                              context))
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return ButtonLink(
-                                                      t.translate(
-                                                          e.label ?? ''),
-                                                      getRoute(e.key.toString(),
-                                                          context));
-                                                }
-                                              }).toList() ??
-                                              []);
-                                    });
-                              },
-                            )),
-                      )
-                    ],
+                  return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
+                    builder: (context, config) {
+                      return config.maybeWhen(
+                          orElse: () => Container(),
+                          loading: () =>
+                              shg_loader.Loaders.circularLoader(context),
+                          loaded: (List<CBOHomeScreenConfigModel>?
+                              cboHomeScreenConfig) {
+                            if (false) {
+                              return cboBasedLayout(
+                                  cboHomeScreenConfig, t, context);
+                            } else {
+                              return empBasedLayout(context);
+                            }
+                          });
+                    },
                   );
                 });
           }));
         }));
+  }
+
+  ScrollableContent empBasedLayout(BuildContext context) {
+    return ScrollableContent(
+      slivers: [
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return _getItems(context).elementAt(index);
+            },
+            childCount: 2,
+          ),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 145,
+            childAspectRatio: 104 / 128,
+          ),
+        ),
+      ],
+    );
+  }
+// data
+
+  List<Widget> _getItems(BuildContext context) {
+    return  [
+      HomeItemCard(
+        icon: Icons.flaky,
+        label: 'Measurement Books',
+        onPressed: () {
+          context.router.push(
+            const MeasurementBookWrapperRoute(),
+          );
+          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
+        },
+      ),
+      HomeItemCard(
+        icon: Icons.on_device_training_outlined,
+        label: 'Work Orders',
+        onPressed: () {
+         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));  
+        },
+      )
+    ];
+  }
+
+//
+  ScrollableContent cboBasedLayout(
+      List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+      AppLocalizations t,
+      BuildContext context) {
+    return ScrollableContent(
+        footer: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: PoweredByDigit(),
+        ),
+        children: [
+          DigitCard(
+            onPressed: null,
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: cboHomeScreenConfig?.map((e) {
+                        if (e.order == 1) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    t.translate(i18.home.mukta),
+                                    style: DigitTheme.instance.mobileTheme
+                                        .textTheme.headlineLarge,
+                                  ),
+                                  SvgPicture.asset(Constants.muktaIcon)
+                                ],
+                              ),
+                              ButtonLink(t.translate(e.label ?? ''),
+                                  getRoute(e.key.toString(), context))
+                            ],
+                          );
+                        } else {
+                          return ButtonLink(t.translate(e.label ?? ''),
+                              getRoute(e.key.toString(), context));
+                        }
+                      }).toList() ??
+                      []),
+            ),
+          ),
+        ]);
   }
 
   Future<void> localeLoad() async {
@@ -239,5 +275,53 @@ class _HomePage extends State<HomePage> {
       default:
         return null;
     }
+  }
+}
+
+class HomeItemCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback? onPressed;
+
+  const HomeItemCard({
+    required this.icon,
+    required this.label,
+    this.onPressed,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DigitCard(
+      onPressed: onPressed,
+      padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 5),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: onPressed == null
+                  ? theme.disabledColor
+                  : theme.colorScheme.secondary,
+              size: 30,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              AppLocalizations.of(context).translate(
+                label,
+              ),
+              style: theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
