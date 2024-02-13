@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -320,7 +321,7 @@ public class EstimateServiceValidator {
             total = total.multiply(estimateDetail.getQuantity());
             allNull = false;
         }
-        return allNull ? null : total;
+        return allNull ? null : total.setScale(4, RoundingMode.HALF_UP);
     }
 
     private void validateTotalAgainstNoOfUnit(BigDecimal total, EstimateDetail estimateDetail) {
