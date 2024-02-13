@@ -45,6 +45,11 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
   ];
 
+  List<DigitRowCardModel> btns = [
+    const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
+    const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
+  ];
+
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -328,6 +333,37 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 
+  DigitTextField cboLogin(BuildContext loginContext) {
+    return DigitTextField(
+      label:
+          '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+      controller: userIdController,
+      isRequired: true,
+      prefixText: '+91 - ',
+      focusNode: _numberFocus,
+      autoValidation: phoneNumberAutoValidation
+          ? AutovalidateMode.always
+          : AutovalidateMode.disabled,
+      textInputType: TextInputType.number,
+      inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+      validator: (val) {
+        if (val!.trim().isEmpty || val!.trim().length != 10) {
+          return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+        }
+        return null;
+      },
+      onChange: (value) {
+        setState(() {
+          canContinue = value.length == 10;
+        });
+        if (value.length == 10) {
+          _numberFocus.unfocus();
+        }
+      },
+      maxLength: 10,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
@@ -418,3 +454,11 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 }
+// const [
+//               "testing",
+//               "delhi",
+//               "mumbai",
+//               "bbsr",
+//               "ctc",
+//               "puri"
+//             ]
