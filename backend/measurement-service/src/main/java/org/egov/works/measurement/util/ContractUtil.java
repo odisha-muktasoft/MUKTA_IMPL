@@ -100,8 +100,8 @@ public class ContractUtil {
 
 
 
-        boolean isValidEntryDate = ((measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getStartDate()) >= 0)
-                && (measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getEndDate()) <= 0));
+        boolean isValidEntryDate = ((measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getStartDate()) >= 0));
+//                && (measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getEndDate()) <= 0));
 
         lineItemsToEstimateIdMap = getValidLineItemsId(contractResponse); // get set of active line items
 
