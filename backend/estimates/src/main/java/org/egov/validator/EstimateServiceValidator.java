@@ -328,7 +328,8 @@ public class EstimateServiceValidator {
         if(total == null || total.doubleValue() == estimateDetail.getNoOfunit()){
             log.info("No of unit is valid");
         } else {
-            throw new CustomException("NO_OF_UNIT", "noOfUnit value is not correct");
+            throw new CustomException("NO_OF_UNIT", "Oops! It appears that the calculated quantity is causing an issue. " +
+                    "Please contact the system administrator for assistance.");
         }
     }
 
