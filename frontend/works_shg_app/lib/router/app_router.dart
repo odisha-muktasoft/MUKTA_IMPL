@@ -8,6 +8,7 @@ import 'package:works_shg_app/pages/wage_seeker_registration/register_individual
 
 import '../pages/attendance_register_table.dart';
 import '../pages/authenticated.dart';
+import '../pages/employee/mb_detail_page.dart';
 import '../pages/employee/mb_inbox.dart';
 import '../pages/employee/mb_wrapper.dart';
 import '../pages/home.dart';
@@ -86,6 +87,10 @@ part 'app_router.gr.dart';
             AutoRoute(
               page:MBFilterPage,
               path:'mb-filter'
+            ),
+            AutoRoute(
+              page: MBDetailPage,
+              path: 'mb-detail'
             ),
           ]
         ),

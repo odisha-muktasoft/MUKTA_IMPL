@@ -229,6 +229,12 @@ class _$AppRouter extends RootStackRouter {
         child: const MBFilterPage(),
       );
     },
+    MBDetailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MBDetailPage(),
+      );
+    },
   };
 
   @override
@@ -362,6 +368,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   MBFilterRoute.name,
                   path: 'mb-filter',
+                  parent: MeasurementBookWrapperRoute.name,
+                ),
+                RouteConfig(
+                  MBDetailRoute.name,
+                  path: 'mb-detail',
                   parent: MeasurementBookWrapperRoute.name,
                 ),
               ],
@@ -913,4 +924,16 @@ class MBFilterRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MBFilterRoute';
+}
+
+/// generated route for
+/// [MBDetailPage]
+class MBDetailRoute extends PageRouteInfo<void> {
+  const MBDetailRoute()
+      : super(
+          MBDetailRoute.name,
+          path: 'mb-detail',
+        );
+
+  static const String name = 'MBDetailRoute';
 }

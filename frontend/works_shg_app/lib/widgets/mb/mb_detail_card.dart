@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/router/app_router.dart';
 
 class CommonMBCard extends StatelessWidget {
   final String? headLabel;
@@ -18,7 +20,9 @@ class CommonMBCard extends StatelessWidget {
           ),
           DigitOutLineButton(
             label: "Open Measurement Book",
-            onPressed: () {},
+            onPressed: () {
+              context.router.push(const MBDetailRoute());
+            },
           )
         ],
       ),
