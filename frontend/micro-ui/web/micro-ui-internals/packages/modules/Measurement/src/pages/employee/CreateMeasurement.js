@@ -107,7 +107,7 @@ const CreateMeasurement = ({ props }) => {
         createState?.accessors?.setValue?.("NONSOR", defaultValues?.NONSOR);
         createState?.accessors?.setValue?.("contract", data?.contract);
         if (data?.period?.type == "error") {
-          setErrorMessage(data?.period?.message);
+          setErrorMessage(t(data?.period?.message));
           setShowToast({display:true, error:true});
         }
       }
@@ -143,7 +143,7 @@ const CreateMeasurement = ({ props }) => {
 
   function onActionSelect(action = "SUBMIT") {
     if (createState?.period?.type == "error") {
-      setErrorMessage(createState?.period?.message);
+      setErrorMessage(t(createState?.period?.message));
       setShowToast({display:true, error:true});
       return null;
     }
@@ -175,7 +175,7 @@ const CreateMeasurement = ({ props }) => {
     //call the createMutation for MB and route to response page on onSuccess or show error
     const onError = (resp) => {
       setIsButtonDisabled(false);
-      setErrorMessage(resp?.response?.data?.Errors?.[0]?.message);
+      setErrorMessage(t(resp?.response?.data?.Errors?.[0]?.message));
       setShowToast({display:true, error:true});
     };
     const onSuccess = (resp) => {
