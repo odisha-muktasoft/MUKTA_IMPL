@@ -19,7 +19,7 @@ const SearchMeasurementConfig = () => {
         masterName: "commonUiConfig",
         moduleName: "WMSSearchMeasurementConfig",
 
-        tableFormJsonPath: "requestParam",
+        tableFormJsonPath: "requestBody.inbox",
         filterFormJsonPath: "requestBody.inbox.moduleSearchCriteria",
         searchFormJsonPath: "requestBody.inbox.moduleSearchCriteria",
         
