@@ -223,6 +223,12 @@ class _$AppRouter extends RootStackRouter {
         child: const MeasurementBookInboxPage(),
       );
     },
+    MBFilterRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MBFilterPage(),
+      );
+    },
   };
 
   @override
@@ -351,6 +357,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   MeasurementBookInboxRoute.name,
                   path: 'measurement-inbox',
+                  parent: MeasurementBookWrapperRoute.name,
+                ),
+                RouteConfig(
+                  MBFilterRoute.name,
+                  path: 'mb-filter',
                   parent: MeasurementBookWrapperRoute.name,
                 ),
               ],
@@ -890,4 +901,16 @@ class MeasurementBookInboxRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MeasurementBookInboxRoute';
+}
+
+/// generated route for
+/// [MBFilterPage]
+class MBFilterRoute extends PageRouteInfo<void> {
+  const MBFilterRoute()
+      : super(
+          MBFilterRoute.name,
+          path: 'mb-filter',
+        );
+
+  static const String name = 'MBFilterRoute';
 }

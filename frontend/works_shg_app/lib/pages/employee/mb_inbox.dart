@@ -162,7 +162,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                        onPressed: () {},
+                                        onPressed: ()  {
+                                          context.router.push(const MBFilterRoute());
+                                     //  final result=   await filterDialog(context);
+                                        },
                                         icon: const Icon(
                                           Icons.filter_alt,
                                         )),
@@ -216,6 +219,29 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                     ),
                   ],
                 ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> filterDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          titlePadding: EdgeInsets.zero,
+          insetPadding: EdgeInsets.only(top: AppBar().preferredSize.height),
+          title: const Text("sd"),
+          contentPadding: EdgeInsets.zero,
+          content: Card(
+            child: SizedBox(
+              height: double.maxFinite,
+              width: MediaQuery.of(context).size.width,
+              child: const Center(
+                child: Text("Loading"),
+              ),
+            ),
+          ),
         );
       },
     );

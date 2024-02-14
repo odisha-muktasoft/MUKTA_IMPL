@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/pages/bills/my_bills.dart';
+import 'package:works_shg_app/pages/employee/mb_filter_page.dart';
 import 'package:works_shg_app/pages/org_profile.dart';
 import 'package:works_shg_app/pages/time_extension_request/create_time_extension.dart';
 import 'package:works_shg_app/pages/wage_seeker_registration/register_individual.dart';
@@ -81,7 +82,11 @@ part 'app_router.gr.dart';
                page: MeasurementBookInboxPage,
           path: 'measurement-inbox',
           initial: true
-            )
+            ),
+            AutoRoute(
+              page:MBFilterPage,
+              path:'mb-filter'
+            ),
           ]
         ),
       ],
