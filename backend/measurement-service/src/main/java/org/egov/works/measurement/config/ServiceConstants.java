@@ -49,6 +49,7 @@ public class ServiceConstants {
     public static final String REJECTED_STATUS = "REJECTED";
     public static final String APPROVED_STATUS = "APPROVED";
     public static final String ACCEPTED_STATUS = "ACCEPTED";
+    public static final String APPROVE_ACTION = "APPROVE";
     public static final String REJECT_ACTION = "REJECT";
     public static final String SAVE_AS_DRAFT_ACTION = "SAVE_AS_DRAFT";
     public static final String SUBMIT_ACTION = "SUBMIT";
