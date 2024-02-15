@@ -14,11 +14,13 @@ class CommonMBCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DigitCard(
       child: Column(
+        crossAxisAlignment:widget!=null? CrossAxisAlignment.start:CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           DigitTableCard(
             element: items,
           ),
-          DigitOutLineButton(
+         widget ?? DigitOutLineButton(
             label: "Open Measurement Book",
             onPressed: () {
               context.router.push(const MBDetailRoute());
