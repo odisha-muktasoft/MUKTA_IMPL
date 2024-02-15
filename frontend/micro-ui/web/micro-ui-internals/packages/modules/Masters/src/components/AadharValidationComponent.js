@@ -7,19 +7,26 @@ const AadharValidationComponent = ({ data, setValue }) => {
   const [validationResult, setValidationResult] = useState('');
   const [showValidateButton, setShowValidateButton] = useState(true);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [isVerified, setIsVerified] = useState(false); // New state variable for verification status
+  const [isVerified, setIsVerified] = useState(data.basicDetails_isVerified);
 
 
   useEffect(() => {
-    // Set the Aadhaar number from data when the component mounts
     setAadharNumber(data.basicDetails_aadhar);
-  }, [data.basicDetails_aadhar]); // Update the state when the Aadhaar number changes
+  }, [data.basicDetails_aadhar]);
+
+  useEffect(() => {
+    setIsVerified(data.basicDetails_isVerified);
+  }, [data.basicDetails_isVerified]);
+
+  useEffect(() => {
+    setIsVerified(data.basicDetails_aadhaarResponse);
+  }, [data.basicDetails_aadhaarResponse]);
 
   const handleAadharChange = (event) => {
     const newValue = event.target.value;
     setAadharNumber(newValue);
-    setShowValidateButton(true); // Show the validate button again
-    setShowSuccessMessage(false); // Hide the success message
+    setShowValidateButton(true);
+    setShowSuccessMessage(false);
     setValue("basicDetails_aadhar", newValue);
   };
 
@@ -34,7 +41,7 @@ const AadharValidationComponent = ({ data, setValue }) => {
       isBio: "n",
       isOTP: "n",
       bioType: "n",
-      name: data.basicDetails_wageSeekerName, // Use basicDetails_wageSeekerName if doc is AADHAAR
+      name: data.basicDetails_wageSeekerName,
       dob: "",
       gender: "",
       rdInfo: "",
@@ -55,27 +62,28 @@ const AadharValidationComponent = ({ data, setValue }) => {
         // Check the status field in the response
         if (data.status === "SUCCESS") {
           setShowSuccessMessage(true);
+          setValue("basicDetails_isVerified", true);
+          setValue("basicDetails_aadhaarResponse", JSON.stringify(data));
           setIsVerified(true);
         } else if (data.status === "ERROR") {
           setShowSuccessMessage(false);
           setShowValidateButton(false);
+          setValue("basicDetails_isVerified", false);
           setIsVerified(false);
         } else {
-          // Handle other status values
           setValidationResult('Unknown error occurred.');
           setIsVerified(false);
         }
         setValue("isVerified", isVerified);
       })
       .catch(error => {
-        // Handle errors
         console.error('Error:', error);
         setValidationResult('An error occurred while validating Aadhaar.');
         setIsVerified(false);
         setValue("isVerified", isVerified);
       });
   };
-  
+
   if (data.basicDetails_doc.name === "Aadhaar") {
     return (
       <div style={{ display: 'flex' }}>
@@ -88,7 +96,7 @@ const AadharValidationComponent = ({ data, setValue }) => {
             border: '1px solid black',
             padding: '5px'
           }}
-          disabled={false} // Set read-only based on state
+          disabled={false}
         />
         {showSuccessMessage ? (
           <div style={{ backgroundColor: 'white', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px' }}>

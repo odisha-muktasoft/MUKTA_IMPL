@@ -66,6 +66,30 @@ export const CreateWageSeekerConfig = {
               }
             },
             {
+              label: "IS_AADHAAR_VERIFIED",
+              key: "basicDetails_isVerified",
+              type: "text",
+              disable: true,
+              populators: {
+                name: "basicDetails_isVerified",
+                customStyle: {
+                    display: "none"
+                }
+              }
+            },
+            {
+              "label": "AADHAAR_RESPONSE",
+              "key": "basicDetails_aadhaarResponse",
+              "type": "text",
+              "disable": true,
+              "populators": {
+                  "name": "basicDetails_aadhaarResponse",
+                  "customStyle": {
+                      "display": "none"
+                  }
+              }
+            },
+            {
               label: "MASTERS_NAME_OF_WAGE_SEEKER",
               isMandatory: true,
               key: "basicDetails_wageSeekerName",
