@@ -99,11 +99,11 @@ const AadharValidationComponent = ({ data, setValue }) => {
           disabled={false}
         />
         {showSuccessMessage ? (
-          <div style={{ backgroundColor: 'white', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px' }}>
-            <div style={{ backgroundColor: '#4CAF50', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div style={{ backgroundColor: '#BAD6C9', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px', borderRadius: '5px' }}>
+            <div style={{ backgroundColor: '#00703C', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <span style={{ color: 'white', fontWeight: 'bold' }}>&#10004;</span>
             </div>
-            <span style={{ color: '#4CAF50', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Aadhaar validated successfully!</span>
+            <span style={{ color: '#00703C', fontWeight: 'bold', whiteSpace: 'nowrap', padding: '5px' }}>Aadhaar validated successfully!</span>
           </div>
         ) : showValidateButton ? (
           <Button
@@ -117,11 +117,11 @@ const AadharValidationComponent = ({ data, setValue }) => {
             }}
           />
         ) : (
-          <div style={{ backgroundColor: 'white', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px' }}>
+          <div style={{ backgroundColor: '#D6B9B9', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px', borderRadius: '5px' }}>
             <div style={{ backgroundColor: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <span style={{ color: 'white', fontWeight: 'bold' }}>❌</span>
+              <span style={{ color: '#840000', fontWeight: 'bold' }}>&#10006;</span>
             </div>
-            <span style={{ color: 'red', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Aadhaar validation failed!</span>
+            <span style={{ color: '#840000', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Aadhaar validation failed!</span>
           </div>
         )}
 
