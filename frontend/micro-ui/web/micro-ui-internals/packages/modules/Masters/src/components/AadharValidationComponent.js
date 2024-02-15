@@ -30,59 +30,58 @@ const AadharValidationComponent = ({ data, setValue }) => {
     setValue("basicDetails_aadhar", newValue);
   };
 
-  const handleValidateClick = () => {
-    const requestBody = {
-      uid: aadharNumber,
-      uidType: "A",
-      consent: "Y",
-      subAuaCode: "0002590000",
-      txn: "",
-      isPI: "y",
-      isBio: "n",
-      isOTP: "n",
-      bioType: "n",
-      name: data.basicDetails_wageSeekerName,
-      dob: "",
-      gender: "",
-      rdInfo: "",
-      rdData: "",
-      otpValue: ""
-    };
-
-    // Make the API call
-    fetch('http://164.100.141.79/authekycv4/api/authenticate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    })
-      .then(response => response.json())
-      .then(data => {
-        // Check the status field in the response
-        if (data.status === "SUCCESS") {
-          setShowSuccessMessage(true);
-          setValue("basicDetails_isVerified", true);
-          setValue("basicDetails_aadhaarResponse", JSON.stringify(data));
-          setIsVerified(true);
-        } else if (data.status === "ERROR") {
-          setShowSuccessMessage(false);
-          setShowValidateButton(false);
-          setValue("basicDetails_isVerified", false);
-          setIsVerified(false);
-        } else {
-          setValidationResult('Unknown error occurred.');
-          setIsVerified(false);
-        }
-        setValue("isVerified", isVerified);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        setValidationResult('An error occurred while validating Aadhaar.');
-        setIsVerified(false);
-        setValue("isVerified", isVerified);
+  const handleValidateClick = async () => {
+    try {
+      const requestBody = {
+        uid: aadharNumber,
+        uidType: "A",
+        consent: "Y",
+        subAuaCode: "0002590000",
+        txn: "",
+        isPI: "y",
+        isBio: "n",
+        isOTP: "n",
+        bioType: "n",
+        name: data.basicDetails_wageSeekerName,
+        dob: "",
+        gender: "",
+        rdInfo: "",
+        rdData: "",
+        otpValue: ""
+      };
+  
+      const response = await fetch('http://164.100.141.79/authekycv4/api/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
       });
-  };
+  
+      const responseData = await response.json();
+  
+      if (responseData.status === "SUCCESS") {
+        setShowSuccessMessage(true);
+        setValue("basicDetails_isVerified", true);
+        setValue("basicDetails_aadhaarResponse", JSON.stringify(responseData));
+        setIsVerified(true);
+      } else if (responseData.status === "ERROR") {
+        setShowSuccessMessage(false);
+        setShowValidateButton(false);
+        setValue("basicDetails_isVerified", false);
+        setIsVerified(false);
+      } else {
+        setValidationResult('Unknown error occurred.');
+        setIsVerified(false);
+      }
+      setValue("isVerified", isVerified);
+    } catch (error) {
+      console.error('Error:', error);
+      setValidationResult('An error occurred while validating Aadhaar.');
+      setIsVerified(false);
+      setValue("isVerified", isVerified);
+    }
+  };  
 
   if (data.basicDetails_doc.name === "Aadhaar") {
     return (
