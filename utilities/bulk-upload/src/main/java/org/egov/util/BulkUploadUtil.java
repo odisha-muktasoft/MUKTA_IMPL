@@ -62,9 +62,9 @@ public class BulkUploadUtil {
         return IntStream.range(0, end).boxed();
     }
 
-    public MdmsRequest getMdmsRequestForBulkUpload(String tenantId) throws IOException {
+    public MdmsRequest getMdmsRequest(String tenantId, String location) throws IOException {
         MdmsRequest mdmsRequest;
-        Resource classPathResource = resourceLoader.getResource("classpath:RatesMdmsRequest.json");
+        Resource classPathResource = resourceLoader.getResource(location);
         mdmsRequest=objectMapper.readValue(classPathResource.getInputStream(),MdmsRequest.class);
         mdmsRequest.getMdms().setTenantId(tenantId);
         return mdmsRequest;

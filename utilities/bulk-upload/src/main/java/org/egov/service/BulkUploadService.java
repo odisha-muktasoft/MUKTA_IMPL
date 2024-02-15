@@ -16,6 +16,7 @@ import org.egov.repository.IdGenRepository;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.BulkUploadUtil;
 import org.egov.web.models.Mdms;
+import org.egov.web.models.MdmsCriteriaReqV2;
 import org.egov.web.models.MdmsRequest;
 import org.egov.web.models.MdmsResponseV2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,11 @@ public class BulkUploadService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
+
+    private static final String RESOURCE_LOCATION_FOR_WORKS_SOR = "classpath:Mdms.json";
+
+    private static final String RESOURCE_LOCATION_FOR_WORKS_SOR_RATES = "classpath:RatesMdmsRequest.json";
 
 
     // Function to check if a row is empty
@@ -105,6 +110,9 @@ public class BulkUploadService {
             }
 
         }
+        if(jsonData.isEmpty()){
+            throw new CustomException("FILE_READING_FAILURE","File cannot be empty");
+        }
 
         return jsonData;
     }
@@ -118,14 +126,12 @@ public class BulkUploadService {
         MdmsRequest mdmsRequest;
 
         if(schemaCode.equals("WORKS-SOR.SOR")){
-            Resource classPathResource = resourceLoader.getResource("classpath:Mdms.json");
-            mdmsRequest=objectMapper.readValue(classPathResource.getInputStream(),MdmsRequest.class);
-            mdmsRequest.getMdms().setTenantId(tenantId);
+//            Getting MdmsRequest from json file
+            mdmsRequest = bulkUploadUtil.getMdmsRequest(tenantId, RESOURCE_LOCATION_FOR_WORKS_SOR);
             return createSOR( mdmsRequest,jsonData);
         }else{
-            Resource classPathResource = resourceLoader.getResource("classpath:RatesMdmsRequest.json");
-            mdmsRequest=objectMapper.readValue(classPathResource.getInputStream(),MdmsRequest.class);
-            mdmsRequest.getMdms().setTenantId(tenantId);
+//            Getting MdmsRequest from json file
+            mdmsRequest = bulkUploadUtil.getMdmsRequest(tenantId, RESOURCE_LOCATION_FOR_WORKS_SOR_RATES);
             return createSORRate(mdmsRequest,jsonData);
         }
 
@@ -311,8 +317,6 @@ public class BulkUploadService {
                 }
 
 
-
-
                 //Material Analysis=MA.1
                 //LH.2 = Labour Head
                 //MH.2 = Machinery Head
@@ -339,7 +343,70 @@ public class BulkUploadService {
     }
 
 
+//    Code for Bulk Update
+    public List<Map<String, Object>> bulkUpdate(MultipartFile file, String mdmsSearchCriteria, String newValidToDate) throws IOException {
 
+    //        Reading new SOR Rates File
+        List<Map<String, Object>> fileData = readFile(file);
+
+    //        Getting sorIds from file to disable old SOR Rates
+        List<String> sorIds = getSorIdsToUpdate(fileData);
+
+    //        Parsing mdmsSearchCriteria to MdmsSearchCrtiteria of MDMS-V2
+        MdmsCriteriaReqV2 mdmsCriteriaReqV2 = bulkUploadUtil.getMdmsV2Request(mdmsSearchCriteria);
+
+    //        Updating... (Disabling Old SOR Rates) in MDMS-V2
+        updateValidToDate(sorIds, mdmsCriteriaReqV2, newValidToDate);
+
+    //        Uploading new SOR Rates to MDMS-V2
+        String tenantId = mdmsCriteriaReqV2.getMdmsCriteria().getTenantId();
+        MdmsRequest mdmsRequest = bulkUploadUtil.getMdmsRequest(tenantId, RESOURCE_LOCATION_FOR_WORKS_SOR_RATES);
+        return createSORRate(mdmsRequest,fileData);
+
+    }
+
+    private List<Mdms> getMdmsV2Data(MdmsCriteriaReqV2 mdmsCriteriaReqV2){
+
+//        Getting all the data from MDMS-V2
+        return bulkUploadUtil.search(mdmsCriteriaReqV2).getMdms();
+
+    }
+
+    private List<String> getSorIdsToUpdate(List<Map<String, Object>> jsonData){
+
+        List<String> sorIdsList = new ArrayList<>();
+
+        jsonData.forEach(jsonDatamap -> {
+
+//            Getting sorIds to be updated
+            String sorId = (String) jsonDatamap.get("sorId");
+            sorIdsList.add(sorId);
+
+        });
+
+        return sorIdsList;
+
+    }
+
+    private void updateValidToDate(List<String> sorIds, MdmsCriteriaReqV2 mdmsCriteriaReqV2, String newValidToDate){
+
+//        Getting Data from Mdms-v2 to update 'validTo' date
+        List<Mdms> mdmsDataList = getMdmsV2Data(mdmsCriteriaReqV2);
+
+//        Converting date format to epoc date format
+        long epocValidToDate = convertDateToEpochDateTime(newValidToDate);
+
+        for (Mdms mdms : mdmsDataList) {
+            ObjectNode dataNode = (ObjectNode) mdms.getData();
+
+//            Updating validTo date of SORs matching with sorId in file
+            if (sorIds.contains(dataNode.get("sorId").asText())) {
+                dataNode.put("validTo", String.valueOf(epocValidToDate));
+                MdmsRequest mdmsRequest = MdmsRequest.builder().requestInfo(mdmsCriteriaReqV2.getRequestInfo()).mdms(mdms).build();
+                MdmsResponseV2 mdmsResponseV2 = bulkUploadUtil.update(mdmsRequest);
+            }
+        }
+    }
 
 
 
