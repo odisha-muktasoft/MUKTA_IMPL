@@ -5,6 +5,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
     as i18;
 
 class CommonMBCard extends StatelessWidget {
+  
   final String? headLabel;
   final Map<String, dynamic> items;
   final Widget? widget;

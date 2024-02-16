@@ -281,6 +281,18 @@ class _$AppRouter extends RootStackRouter {
         child: const WOFilterPage(),
       );
     },
+    MBHistoryBookRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MBHistoryBookPage(),
+      );
+    },
+    WorkOderInboxRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WorkOderInboxPage(),
+      );
+    },
   };
 
   @override
