@@ -38,7 +38,7 @@ export const CreateWageSeekerConfig = {
               populators: {
                 name: "basicDetails_doc",
                 optionsKey: "name",
-                options: [ // Updated options array with only name attribute
+                options: [ // These options are hardcoded, need to integrate with mdms once the new env is up
                 { code: "AADHAAR", name: "Aadhaar", active:true},
                 { code: "ELECTION_PHOTO", name: "Election Photo Identity Card (EPIC)", active: true},
                 { code: "DRIVING_LICENSE", name: "Driving License", active: true},
