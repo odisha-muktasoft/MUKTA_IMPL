@@ -9,8 +9,11 @@ import 'package:works_shg_app/pages/wage_seeker_registration/register_individual
 import '../pages/attendance_register_table.dart';
 import '../pages/authenticated.dart';
 import '../pages/employee/mb_detail_page.dart';
+import '../pages/employee/mb_history.dart';
 import '../pages/employee/mb_inbox.dart';
 import '../pages/employee/mb_wrapper.dart';
+import '../pages/employee/workOrder/work_order_inbox.dart';
+import '../pages/employee/workOrder/work_order_wrapper.dart';
 import '../pages/home.dart';
 import '../pages/language_selection_page.dart';
 import '../pages/login.dart';
@@ -75,25 +78,27 @@ part 'app_router.gr.dart';
         // mb for employee
 
         AutoRoute(
-           page: MeasurementBookWrapperPage,
-          path: 'measurement-book',
-          children: [
-           // MeasurementBookInboxPage
-            AutoRoute(
-               page: MeasurementBookInboxPage,
-          path: 'measurement-inbox',
-          initial: true
-            ),
-            AutoRoute(
-              page:MBFilterPage,
-              path:'mb-filter'
-            ),
-            AutoRoute(
-              page: MBDetailPage,
-              path: 'mb-detail'
-            ),
-          ]
-        ),
+            page: MeasurementBookWrapperPage,
+            path: 'measurement-book',
+            children: [
+              // MeasurementBookInboxPage
+              AutoRoute(
+                  page: MeasurementBookInboxPage,
+                  path: 'measurement-inbox',
+                  initial: true),
+              AutoRoute(page: MBFilterPage, path: 'mb-filter'),
+              AutoRoute(page: MBDetailPage, path: 'mb-detail'),
+              AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
+            ]),
+
+        // work order -employee
+
+        AutoRoute(
+            page: WorkOrderWrapperPage,
+            path: 'workOrder-book',
+            children: [
+              AutoRoute(page: WorkOderInboxPage, path: 'workOrder-inbox',initial: true),
+            ]),
       ],
     ),
   ],

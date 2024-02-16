@@ -85,7 +85,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                     },
                   );
                 },
-                itemCount: 6,
+                itemCount: 4,
               ),
             ),
             const SizedBox(height: 20),
@@ -102,7 +102,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                       Expanded(
                         child: DigitOutLineButton(
                           label: "Close",
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -110,9 +112,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                       ),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
+                          onPressed: () {},
                           child: const Text('Submit'),
                         ),
                       ),
@@ -142,7 +142,7 @@ class _CardWidgetState extends State<CardWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.sizeOf(context).width,
+      // width: MediaQuery.sizeOf(context).width-200,
       decoration: BoxDecoration(
         color: const DigitColors().white,
         borderRadius: BorderRadius.circular(10),
@@ -153,6 +153,7 @@ class _CardWidgetState extends State<CardWidget> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Container(
+            width: MediaQuery.sizeOf(context).width,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(5),

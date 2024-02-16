@@ -115,6 +115,7 @@ class _HomePage extends State<HomePage> {
                               shg_loader.Loaders.circularLoader(context),
                           loaded: (List<CBOHomeScreenConfigModel>?
                               cboHomeScreenConfig) {
+                                // role based config
                             if (false) {
                               return cboBasedLayout(
                                   cboHomeScreenConfig, t, context);
@@ -165,7 +166,10 @@ class _HomePage extends State<HomePage> {
         icon: Icons.on_device_training_outlined,
         label: 'Work Orders',
         onPressed: () {
-         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));  
+           context.router.push(
+            const WorkOrderWrapperRoute(),
+          );
+         //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));  
         },
       )
     ];

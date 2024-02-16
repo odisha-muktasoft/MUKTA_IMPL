@@ -217,6 +217,12 @@ class _$AppRouter extends RootStackRouter {
         child: WrappedRoute(child: const MeasurementBookWrapperPage()),
       );
     },
+    WorkOrderWrapperRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: WrappedRoute(child: const WorkOrderWrapperPage()),
+      );
+    },
     MeasurementBookInboxRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -233,6 +239,18 @@ class _$AppRouter extends RootStackRouter {
       return MaterialPageX<dynamic>(
         routeData: routeData,
         child: const MBDetailPage(),
+      );
+    },
+    MBHistoryBookRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MBHistoryBookPage(),
+      );
+    },
+    WorkOderInboxRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WorkOderInboxPage(),
       );
     },
   };
@@ -374,6 +392,30 @@ class _$AppRouter extends RootStackRouter {
                   MBDetailRoute.name,
                   path: 'mb-detail',
                   parent: MeasurementBookWrapperRoute.name,
+                ),
+                RouteConfig(
+                  MBHistoryBookRoute.name,
+                  path: 'mb-history',
+                  parent: MeasurementBookWrapperRoute.name,
+                ),
+              ],
+            ),
+            RouteConfig(
+              WorkOrderWrapperRoute.name,
+              path: 'workOrder-book',
+              parent: AuthenticatedRouteWrapper.name,
+              children: [
+                RouteConfig(
+                  '#redirect',
+                  path: '',
+                  parent: WorkOrderWrapperRoute.name,
+                  redirectTo: 'workOrder-inbox',
+                  fullMatch: true,
+                ),
+                RouteConfig(
+                  WorkOderInboxRoute.name,
+                  path: 'workOrder-inbox',
+                  parent: WorkOrderWrapperRoute.name,
                 ),
               ],
             ),
@@ -903,6 +945,19 @@ class MeasurementBookWrapperRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [WorkOrderWrapperPage]
+class WorkOrderWrapperRoute extends PageRouteInfo<void> {
+  const WorkOrderWrapperRoute({List<PageRouteInfo>? children})
+      : super(
+          WorkOrderWrapperRoute.name,
+          path: 'workOrder-book',
+          initialChildren: children,
+        );
+
+  static const String name = 'WorkOrderWrapperRoute';
+}
+
+/// generated route for
 /// [MeasurementBookInboxPage]
 class MeasurementBookInboxRoute extends PageRouteInfo<void> {
   const MeasurementBookInboxRoute()
@@ -936,4 +991,28 @@ class MBDetailRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MBDetailRoute';
+}
+
+/// generated route for
+/// [MBHistoryBookPage]
+class MBHistoryBookRoute extends PageRouteInfo<void> {
+  const MBHistoryBookRoute()
+      : super(
+          MBHistoryBookRoute.name,
+          path: 'mb-history',
+        );
+
+  static const String name = 'MBHistoryBookRoute';
+}
+
+/// generated route for
+/// [WorkOderInboxPage]
+class WorkOderInboxRoute extends PageRouteInfo<void> {
+  const WorkOderInboxRoute()
+      : super(
+          WorkOderInboxRoute.name,
+          path: 'workOrder-inbox',
+        );
+
+  static const String name = 'WorkOderInboxRoute';
 }

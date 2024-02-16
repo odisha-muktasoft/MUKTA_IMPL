@@ -6,50 +6,20 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
-import '../../blocs/localization/app_localization.dart';
-import '../../utils/common_methods.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
-import '../../widgets/mb/mb_detail_card.dart';
+import '../../../blocs/localization/app_localization.dart';
+import '../../../utils/common_methods.dart';
+import '../../../widgets/Back.dart';
+import '../../../widgets/SideBar.dart';
+import '../../../widgets/mb/mb_detail_card.dart';
 
-class MeasurementBookInboxPage extends StatefulWidget {
-  const MeasurementBookInboxPage({super.key});
+class WorkOderInboxPage extends StatefulWidget {
+  const WorkOderInboxPage({super.key});
 
   @override
-  State<MeasurementBookInboxPage> createState() =>
-      _MeasurementBookInboxPageState();
+  State<WorkOderInboxPage> createState() => _WorkOderInboxPageState();
 }
 
-class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
-  // @override
-  // Widget build(BuildContext context) {
-  //   var t = AppLocalizations.of(context);
-  //   return BlocBuilder<LocalizationBloc, LocalizationState>(
-  //     builder: (context, state) {
-  //       return Scaffold(
-  //         appBar: AppBar(
-  //           titleSpacing: 0,
-  //           title: const AppBarLogo(),
-  //         ),
-  //         drawer: DrawerWrapper(
-  //           Drawer(
-  //             child: SideBar(
-  //               module: CommonMethods.getLocaleModules(),
-  //             ),
-  //           ),
-  //         ),
-  //      body: SingleChildScrollView(
-  //       child: Column(
-  //         children: [
-  //           const Back(),
-  //         ],
-  //       ),
-  //      ),
-  //       );
-  //     },
-  //   );
-  // }
-
+class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
   final ScrollController _scrollController = ScrollController();
   List<String> items = []; // List to hold items
   int pageCount = 1; // Initial page count
@@ -95,9 +65,14 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
     // Simulate delay
     Future.delayed(const Duration(seconds: 2), () {
+      if (items.length>=27) {
+         isLoading = false;
+        return;
+        
+      }
       // Generate random data
       List<String> newData =
-          List.generate(10, (index) => "Item ${items.length + index + 1}");
+          List.generate(items.length==20?7:10, (index) => "Item ${items.length + index + 1}");
       setState(() {
         items.addAll(newData); // Add generated data to the list
         isLoading = false;
@@ -141,18 +116,17 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Back(
-                               // widget: null,
+                                // widget: null,
                                 callback: () {
                                   context.router.navigateBack();
-                                // Navigator.of(context).pop();
+                                  // Navigator.of(context).pop();
                                   //context.router.push(const HomeRoute());
-                                 
                                 },
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
-                                  "MB Inbox(2)",
+                                  "WorkOrder Inbox(2)",
                                   style: DigitTheme.instance.mobileTheme
                                       .textTheme.headlineLarge,
                                 ),
@@ -165,10 +139,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                        onPressed: ()  {
-                                          context.router.push(const MBFilterRoute());
-                                     //  final result=   await filterDialog(context);
-                                        },
+                                        onPressed: () {},
                                         icon: const Icon(
                                           Icons.filter_alt,
                                         )),
@@ -180,14 +151,15 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               ),
                             ],
                           ),
-                        ), height: 150,
+                        ),
+                        height: 150,
                       ),
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                           // Display items
-                          if (index == items.length) {
+                          if (index == items.length && index<27) {
                             // Display loading indicator
                             return Container(
                               padding: const EdgeInsets.all(16.0),
@@ -195,21 +167,14 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               child: const CircularProgressIndicator(),
                             );
                           }
-                          // return Card(
-                          //   color: Colors.white,
-                          //   child: SizedBox(
-                          //     height: 200,
-                          //     child: ListTile(
-                          //       title: Text(items[index]),
-                          //     ),
-                          //   ),
-                          // );
 
                           return CommonMBCard(
-                            widget: DigitOutLineButton(label: "Open Measurement Book",
-                            onPressed: () {
-                              context.router.push(const MBDetailRoute());
-                            },),
+                            widget: DigitOutLineButton(
+                              label: "Open Measurement Book",
+                              onPressed: () {
+                                context.router.push(const MBDetailRoute());
+                              },
+                            ),
                             items: {
                               "MB number": "MB-233",
                               "Project Description": "Wall Painting in Ward 1",

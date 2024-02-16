@@ -9,7 +9,9 @@ import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
+import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
+import '../../widgets/mb/text_button_underline.dart';
 
 class MBDetailPage extends StatefulWidget {
   const MBDetailPage({super.key});
@@ -49,7 +51,9 @@ class _MBDetailPageState extends State<MBDetailPage>
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        bottomNavigationBar: floatActionMethod(context),
+        bottomNavigationBar: FloatActionCard(actions: () {  }, amount: '10000000', openButtonSheet: () {
+          _openBottomSheet(context);
+          }, totalAmountText: 'Total MB Amount',subtext: '(For Current Entry)',),
         backgroundColor: const DigitColors().seaShellGray,
         appBar: AppBar(
           titleSpacing: 0,
@@ -67,12 +71,7 @@ class _MBDetailPageState extends State<MBDetailPage>
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Back(
-                widget: null,
-                callback: () {
-                  context.router.navigateBack();
-                },
-              ),
+              const Back(),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: Text(
@@ -102,7 +101,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                         "MB Account": "240000",
                         "SLA Days remaining": 2,
                       },
-                      widget: viewMBHistory(),
+                      widget: CommonTextButtonUnderline(
+                        label: 'View MB History',
+                        onPressed: () {
+                          context.router.push(const MBHistoryBookRoute());
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -270,107 +274,76 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 
-  SizedBox viewMBHistory() {
-    return SizedBox(
-      width: 200,
-      child: TextButton(
-        style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            minimumSize: const Size(50, 30),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            alignment: Alignment.centerLeft),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "View MB History",
-              style:
-                  DigitTheme.instance.mobileTheme.textTheme.bodyLarge!.copyWith(
-                color: const DigitColors().burningOrange,
-                decoration: TextDecoration.underline,
-                decorationColor: const DigitColors().burningOrange,
-                decorationThickness: 2,
-              ),
-            ),
-            const Icon(Icons.arrow_forward_outlined)
-          ],
-        ),
-        onPressed: () {},
-      ),
-    );
-  }
+  // Card floatActionMethod(BuildContext context) {
+  //   return Card(
+  //       // color: Colors.grey,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.only(
+  //           topLeft: Radius.circular(20),
+  //           topRight: Radius.circular(20),
+  //         ),
+  //       ),
 
-  Card floatActionMethod(BuildContext context) {
-    return Card(
-        // color: Colors.grey,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-
-        //  margin: const EdgeInsets.symmetric(horizontal: 8),
-        child: SizedBox(
-            height: 160,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Center(
-                    child: SizedBox(
-                      width: 100,
-                      child: Divider(
-                        thickness: 5,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _openBottomSheet(context);
-                    },
-                    child: Container(
-                      height: 80,
-                      width: MediaQuery.sizeOf(context).width,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 0.0),
-                      // decoration: BoxDecoration(
-                      //   border: Border.all(color: Colors.grey),
-                      //   borderRadius: BorderRadius.circular(8),
-                      // ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                                text: 'Total MB Amount \n',
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .headlineMedium,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '(For current entry)',
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.bodySmall,
-                                  )
-                                ]),
-                          ),
-                          Text(
-                            '10000000.00',
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.headlineMedium,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  DigitElevatedButton(
-                      child: const Text("Actions"), onPressed: () {}),
-                ],
-              ),
-            )));
-  }
+  //       //  margin: const EdgeInsets.symmetric(horizontal: 8),
+  //       child: SizedBox(
+  //           height: 160,
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(8.0),
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 const Center(
+  //                   child: SizedBox(
+  //                     width: 100,
+  //                     child: Divider(
+  //                       thickness: 5,
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     _openBottomSheet(context);
+  //                   },
+  //                   child: Container(
+  //                     height: 80,
+  //                     width: MediaQuery.sizeOf(context).width,
+  //                     padding: const EdgeInsets.symmetric(
+  //                         horizontal: 16, vertical: 0.0),
+  //                     // decoration: BoxDecoration(
+  //                     //   border: Border.all(color: Colors.grey),
+  //                     //   borderRadius: BorderRadius.circular(8),
+  //                     // ),
+  //                     child: Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         RichText(
+  //                           text: TextSpan(
+  //                               text: 'Total MB Amount \n',
+  //                               style: DigitTheme.instance.mobileTheme.textTheme
+  //                                   .headlineMedium,
+  //                               children: <TextSpan>[
+  //                                 TextSpan(
+  //                                   text: '(For current entry)',
+  //                                   style: DigitTheme.instance.mobileTheme
+  //                                       .textTheme.bodySmall,
+  //                                 )
+  //                               ]),
+  //                         ),
+  //                         Text(
+  //                           '10000000.00',
+  //                           style: DigitTheme
+  //                               .instance.mobileTheme.textTheme.headlineMedium,
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 DigitElevatedButton(
+  //                     child: const Text("Actions"), onPressed: () {}),
+  //               ],
+  //             ),
+  //           )));
+  // }
 
   void _openBottomSheet(BuildContext context) {
     showModalBottomSheet(
