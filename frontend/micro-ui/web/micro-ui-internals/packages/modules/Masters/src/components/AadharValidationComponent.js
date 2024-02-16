@@ -2,7 +2,6 @@ import { Button, TextInput } from '@egovernments/digit-ui-react-components';
 import React, { useState, useEffect } from 'react';
 
 const AadharValidationComponent = ({ data, setValue }) => {
-  console.log(data);
   const [aadharNumber, setAadharNumber] = useState('');
   const [validationResult, setValidationResult] = useState('');
   const [showValidateButton, setShowValidateButton] = useState(true);
@@ -76,7 +75,6 @@ const AadharValidationComponent = ({ data, setValue }) => {
       }
       setValue("isVerified", isVerified);
     } catch (error) {
-      console.error('Error:', error);
       setValidationResult('An error occurred while validating Aadhaar.');
       setIsVerified(false);
       setValue("isVerified", isVerified);
