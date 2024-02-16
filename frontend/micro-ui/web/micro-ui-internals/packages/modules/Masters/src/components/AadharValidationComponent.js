@@ -99,7 +99,7 @@ const AadharValidationComponent = ({ data, setValue }) => {
         />
         {showSuccessMessage ? (
           <div style={{ backgroundColor: '#BAD6C9', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px', borderRadius: '5px' }}>
-            <div style={{ backgroundColor: '#00703C', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ backgroundColor: '#00703C', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '5px' }}>
               <span style={{ color: 'white', fontWeight: 'bold' }}>&#10004;</span>
             </div>
             <span style={{ color: '#00703C', fontWeight: 'bold', whiteSpace: 'nowrap', padding: '5px' }}>Aadhaar validated successfully!</span>
@@ -116,11 +116,11 @@ const AadharValidationComponent = ({ data, setValue }) => {
             }}
           />
         ) : (
-          <div style={{ backgroundColor: '#D6B9B9', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px', borderRadius: '5px' }}>
-            <div style={{ backgroundColor: 'white', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <span style={{ color: '#840000', fontWeight: 'bold' }}>&#10006;</span>
+          <div style={{ backgroundColor: '#EFC7C1', display: 'flex', alignItems: 'center', marginLeft: '20px', marginBottom: '25px', borderRadius: '5px' }}>
+            <div style={{ backgroundColor: '#D63E26', borderRadius: '50%', width: '20px', height: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '5px' }}>
+              <span style={{ color: '#EAAFA6', fontWeight: 'bold' }}>!</span>
             </div>
-            <span style={{ color: '#840000', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Aadhaar validation failed!</span>
+            <span style={{ color: '#D63E26', fontWeight: 'bold', whiteSpace: 'nowrap' }}>&nbsp;Aadhaar validation failed!</span>
           </div>
         )}
 
