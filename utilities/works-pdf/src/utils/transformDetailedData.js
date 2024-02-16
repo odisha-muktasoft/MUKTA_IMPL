@@ -22,6 +22,12 @@ const transformDetailedData = (data) => {
         return Nformatter.format(value);
     }
 
+    const Nformatter1 = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
+    // Function to format a number with commas
+    function formatNumberWithCommas1(value) {
+        return Nformatter1.format(value);
+    }
+    
     // Format totalEstimatedAmount with commas
     var totalEstimatedAmount = parseFloat(data.estimates[lastIndex].additionalDetails.totalEstimatedAmount).toFixed(2);
 
@@ -55,6 +61,8 @@ const transformDetailedData = (data) => {
 
         var estQ = estimateDetail.length*estimateDetail.width*estimateDetail.height*estimateDetail.quantity;
         estimateDetail.estimatedQuantity = estQ;
+
+        estimateDetail.unitRate = formatNumberWithCommas1(estimateDetail.unitRate);
 
         const { sorId, category, isDeduction, name, description, uom, unitRate, estimatedQuantity, amountDetail, additionalDetails } = estimateDetail;
     
