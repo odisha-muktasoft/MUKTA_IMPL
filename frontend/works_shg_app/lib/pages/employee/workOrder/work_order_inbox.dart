@@ -11,6 +11,8 @@ import '../../../utils/common_methods.dart';
 import '../../../widgets/Back.dart';
 import '../../../widgets/SideBar.dart';
 import '../../../widgets/mb/mb_detail_card.dart';
+import '../../../widgets/mb/text_button_underline.dart';
+import '../../../widgets/work_order/work_order_card.dart';
 
 class WorkOderInboxPage extends StatefulWidget {
   const WorkOderInboxPage({super.key});
@@ -65,14 +67,13 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
     // Simulate delay
     Future.delayed(const Duration(seconds: 2), () {
-      if (items.length>=27) {
-         isLoading = false;
+      if (items.length >= 27) {
+        isLoading = false;
         return;
-        
       }
       // Generate random data
-      List<String> newData =
-          List.generate(items.length==20?7:10, (index) => "Item ${items.length + index + 1}");
+      List<String> newData = List.generate(items.length == 20 ? 7 : 10,
+          (index) => "Item ${items.length + index + 1}");
       setState(() {
         items.addAll(newData); // Add generated data to the list
         isLoading = false;
@@ -159,7 +160,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                           // Display items
-                          if (index == items.length && index<27) {
+                          if (index == items.length && index < 27) {
                             // Display loading indicator
                             return Container(
                               padding: const EdgeInsets.all(16.0),
@@ -168,20 +169,30 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                             );
                           }
 
-                          return CommonMBCard(
-                            widget: DigitOutLineButton(
-                              label: "Open Measurement Book",
+                          return WorkOrderCard(
+                            widget1: CommonTextButtonUnderline(
+                              label: 'View Details',
                               onPressed: () {
-                                context.router.push(const MBDetailRoute());
+                                context.router.push(const WorkOrderDetailRoute());
                               },
                             ),
+                            widget2: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: DigitElevatedButton(
+                                child: const Text("Create Measurement Book"),
+                                onPressed: () {},
+                              ),
+                            ),
                             items: {
-                              "MB number": "MB-233",
+                              "Work Order Number": "MB-233",
                               "Project Description": "Wall Painting in Ward 1",
-                              "Assignee": "SHG group-C#1",
-                              "Workflow State": "Pending for verification",
-                              "MB Account": "240000",
-                              "SLA Days remaining": index + 1
+                              "CBO Name": "SHG group-C#1",
+                              "CBO Role": "Pending for verification",
+                              "Officer In-charge name": "240000",
+                              "Start Date": index + 1,
+                              "End Date": index + 1,
+                              "Work value(Rs)": 240000,
+                              "Status": "Approved"
                             },
                           );
                         },

@@ -253,6 +253,12 @@ class _$AppRouter extends RootStackRouter {
         child: const WorkOderInboxPage(),
       );
     },
+    WorkOrderDetailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WorkOrderDetailPage(),
+      );
+    },
   };
 
   @override
@@ -415,6 +421,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   WorkOderInboxRoute.name,
                   path: 'workOrder-inbox',
+                  parent: WorkOrderWrapperRoute.name,
+                ),
+                RouteConfig(
+                  WorkOrderDetailRoute.name,
+                  path: 'workOrder-details',
                   parent: WorkOrderWrapperRoute.name,
                 ),
               ],
@@ -1015,4 +1026,16 @@ class WorkOderInboxRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'WorkOderInboxRoute';
+}
+
+/// generated route for
+/// [WorkOrderDetailPage]
+class WorkOrderDetailRoute extends PageRouteInfo<void> {
+  const WorkOrderDetailRoute()
+      : super(
+          WorkOrderDetailRoute.name,
+          path: 'workOrder-details',
+        );
+
+  static const String name = 'WorkOrderDetailRoute';
 }

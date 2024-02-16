@@ -12,6 +12,7 @@ import '../pages/employee/mb_detail_page.dart';
 import '../pages/employee/mb_history.dart';
 import '../pages/employee/mb_inbox.dart';
 import '../pages/employee/mb_wrapper.dart';
+import '../pages/employee/workOrder/work_order_details.dart';
 import '../pages/employee/workOrder/work_order_inbox.dart';
 import '../pages/employee/workOrder/work_order_wrapper.dart';
 import '../pages/home.dart';
@@ -98,6 +99,10 @@ part 'app_router.gr.dart';
             path: 'workOrder-book',
             children: [
               AutoRoute(page: WorkOderInboxPage, path: 'workOrder-inbox',initial: true),
+              AutoRoute(
+                page: WorkOrderDetailPage,
+                path: 'workOrder-details'
+              ),
             ]),
       ],
     ),
