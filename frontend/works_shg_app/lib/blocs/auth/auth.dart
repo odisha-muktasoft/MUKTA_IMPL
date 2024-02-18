@@ -30,8 +30,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthClearLoggedDetailsEvent>(_onClearLoggedInDetails);
   }
 
-
-
   FutureOr<void> _onLogin(AuthLoginEvent event, AuthEmitter emit) async {
     Client client = Client();
 
