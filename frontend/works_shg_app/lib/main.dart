@@ -335,7 +335,7 @@ class _MainApplicationState extends State<MainApplication> {
                               initial: () =>
                                   const UnauthenticatedRouteWrapper(),
                               loaded: (UserDetailsModel? userDetailsModel,
-                                      String? accessToken) =>
+                                      String? accessToken,roleType) =>
                                   const AuthenticatedRouteWrapper(),
                               orElse: () => const UnauthenticatedRouteWrapper())
                         ],

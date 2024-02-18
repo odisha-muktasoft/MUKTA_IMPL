@@ -9,6 +9,7 @@ class Urls {
   static WorkServices workServices = const WorkServices();
   static ORGServices orgServices = const ORGServices();
   static BillServices billServices = const BillServices();
+  static MeasurementService measurementService= const MeasurementService();
 }
 
 class CommonServices {
@@ -88,4 +89,13 @@ class AttendanceRegisterServices {
   String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
   String get individualSearch => 'individual/v1/_search';
   String get wmsIndividualSearch => 'wms/individual/_search';
+}
+
+
+
+
+class MeasurementService{
+   const MeasurementService();
+
+   String get measurementInbox=>'inbox/v2/_search';
 }

@@ -28,6 +28,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPage extends State<LoginPage> {
   var userIdController = TextEditingController();
+
+  var userNameController = TextEditingController();
+  var userPasswordController = TextEditingController();
   bool canContinue = false;
   final formKey = GlobalKey<FormState>();
   bool autoValidation = false;
@@ -87,10 +90,15 @@ class _LoginPage extends State<LoginPage> {
             ),
             btns.first.isSelected
                 ? cboLogin(loginContext)
-                : employeeLogin(loginContext, data),
+                : employeeLogin(loginContext, data,
+                    userName: userNameController,
+                    userpassword: userPasswordController),
             const SizedBox(height: 16),
             DigitRowCard(
               onChanged: (value) {
+                userIdController.clear();
+                userNameController.clear();
+                userPasswordController.clear();
                 setState(() {
                   final m = btns.map((e) {
                     if (e.label == value.label) {
@@ -154,17 +162,27 @@ class _LoginPage extends State<LoginPage> {
                   )
                 : BlocListener<AuthBloc, AuthState>(
                     listener: (context, state) {
-                      // TODO: implement listener
+
+                      state.maybeWhen(
+                        error: () {
+                          Notifiers.getToastMessage(
+                              context,
+                              AppLocalizations.of(context)
+                                  .translate(i18.login.invalidOTP),
+                              'ERROR');
+                         
+                        },
+                        orElse: () => Container());
                     },
                     child: DigitElevatedButton(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              "Employee button hit",
-                            ),
-                          ),
-                        );
+                        context.read<AuthBloc>().add(
+                              AuthLoginEvent(
+                                userId: userNameController.text,
+                                password: userPasswordController.text,
+                                roleType: RoleType.employee,
+                              ),
+                            );
                       },
                       child: Center(
                         child: Text(AppLocalizations.of(loginContext)
@@ -234,14 +252,15 @@ class _LoginPage extends State<LoginPage> {
         ));
   }
 
-  Column employeeLogin(BuildContext context, AppInitializationState data) {
+  Column employeeLogin(BuildContext context, AppInitializationState data,
+      {required TextEditingController userName,
+      required TextEditingController userpassword}) {
     return Column(
       children: [
         DigitTextField(
           label: 'User Name*',
-          // controller: userIdController,
+          controller: userName,
           isRequired: true,
-
           validator: (val) {
             if (val!.trim().isEmpty || val!.trim().length != 10) {
               return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
@@ -252,7 +271,7 @@ class _LoginPage extends State<LoginPage> {
         ),
         DigitTextField(
           label: 'Password*',
-          // controller: userIdController,
+          controller: userpassword,
           isRequired: true,
 
           //  focusNode: _numberFocus,

@@ -6,6 +6,7 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
+import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../utils/common_methods.dart';
 import '../../widgets/Back.dart';
@@ -57,10 +58,19 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
   @override
   void initState() {
-    super.initState();
+    context.read<MeasurementInboxBloc>().add(
+          const MeasurementBookInboxBlocEvent(
+            businessService: "MB",
+            limit: 10,
+            moduleName: 'measurement-module',
+            offset: 0,
+            tenantId: 'od.testing',
+          ),
+        );
     _scrollController.addListener(_scrollListener);
     // Initial data
     _addInitialData();
+    super.initState();
   }
 
   @override
@@ -141,12 +151,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Back(
-                               // widget: null,
+                                // widget: null,
                                 callback: () {
                                   context.router.navigateBack();
-                                // Navigator.of(context).pop();
+                                  // Navigator.of(context).pop();
                                   //context.router.push(const HomeRoute());
-                                 
                                 },
                               ),
                               Padding(
@@ -165,9 +174,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                        onPressed: ()  {
-                                          context.router.push(const MBFilterRoute());
-                                     //  final result=   await filterDialog(context);
+                                        onPressed: () {
+                                          context.router
+                                              .push(const MBFilterRoute());
+                                          //  final result=   await filterDialog(context);
                                         },
                                         icon: const Icon(
                                           Icons.filter_alt,
@@ -180,7 +190,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               ),
                             ],
                           ),
-                        ), height: 150,
+                        ),
+                        height: 150,
                       ),
                     ),
                     SliverList(
@@ -206,10 +217,12 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                           // );
 
                           return CommonMBCard(
-                            widget: DigitOutLineButton(label: "Open Measurement Book",
-                            onPressed: () {
-                              context.router.push(const MBDetailRoute());
-                            },),
+                            widget: DigitOutLineButton(
+                              label: "Open Measurement Book",
+                              onPressed: () {
+                                context.router.push(const MBDetailRoute());
+                              },
+                            ),
                             items: {
                               "MB number": "MB-233",
                               "Project Description": "Wall Painting in Ward 1",
