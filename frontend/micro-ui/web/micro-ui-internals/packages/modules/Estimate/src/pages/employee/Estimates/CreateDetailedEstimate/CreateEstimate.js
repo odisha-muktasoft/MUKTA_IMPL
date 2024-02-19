@@ -383,6 +383,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(!documentValidated)
     {
       setShowToast({ error: true, label: `${t("ERR_DOCUMENT_IS_MANDATORY")}` });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -395,7 +396,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     //added this totalEst amount logic here because setValues in pageComponents don't work
     //after setting the value, in consequent renders value changes to undefined
     //check TotalEstAmount.js
-    let totalLabourAndMaterial = parseInt(getLabourMaterialAnalysisCost(_data,"LH")) + parseInt(getLabourMaterialAnalysisCost(_data,"MA")) + parseInt(getLabourMaterialAnalysisCost(_data,"MH")) || (_data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery);
+    let totalLabourAndMaterial = parseInt(getLabourMaterialAnalysisCost(_data,["LA"])) + parseInt(getLabourMaterialAnalysisCost(_data,["MA","RA","CA","EMF","DMF","ADC","LC"])) + parseInt(getLabourMaterialAnalysisCost(_data,["MHA"])) || (_data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery);
     //here check totalEst amount should be less than material+labour
     if (_data.totalEstimateAmount < totalLabourAndMaterial && action !== "DRAFT") {
       setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_MISMATCH" });

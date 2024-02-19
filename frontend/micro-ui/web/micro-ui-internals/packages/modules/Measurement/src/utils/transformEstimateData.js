@@ -31,7 +31,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       }
       return acc;
     }, {});
-  const lastApprovedMeasurementObject = transformMeasureObject(allMeasurements?.filter?.((e) => e?.isActive && e?.wfStatus === "APPROVED")?.[0])
+  const lastApprovedMeasurementObject = transformMeasureObject(allMeasurements?.filter?.((e) => e?.isActive && e?.wfStatus === "APPROVED")?.find((ob) => ob?.auditDetails?.lastModifiedTime < measurement?.auditDetails?.lastModifiedTime)) || {};
   const transformMeasurementData = isMeasurement ? transformMeasureObject(measurement) : transformMeasureObject(lastMeasuredObject);
   return Object.keys(transformedEstimateObject).map((key, index) => {
     const measures = transformedEstimateObject[key].map((estimate, index) =>{
@@ -48,7 +48,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       number: isMeasurementCreate ? 0 : (measuredObject?.numItems || 0),
       noOfunit:  isMeasurementCreate ? 0 : (measuredObject?.currentValue || 0),
       rowAmount: isMeasurementCreate ? 0 : (measuredObject?.additionalDetails?.mbAmount || 0),
-      consumedRowQuantity: window.location.href.includes("/measurement/update") || (window.location.href.includes("/measurement/view") && measurement?.wfStatus !== "APPROVED")? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
+      consumedRowQuantity: window.location.href.includes("/measurement/update") || (window.location.href.includes("/measurement/view"))? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
     })
   });
     return {
@@ -100,8 +100,8 @@ export const transformMeasureObject = (measurement = {}) => {
 export const getDefaultValues = (data, t, mbNumber) => {
   const { contract, estimate, allMeasurements, measurement, musterRollNumber, period } = data;
 
-  const SOR = transformEstimateData(estimate?.estimateDetails, contract, "SOR", measurement, allMeasurements);
-  const NONSOR = transformEstimateData(estimate?.estimateDetails, contract, "NON-SOR", measurement, allMeasurements);
+  const SOR = transformEstimateData(estimate?.estimateDetails, contract, "SOR", allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0], allMeasurements);
+  const NONSOR = transformEstimateData(estimate?.estimateDetails, contract, "NON-SOR", allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0], allMeasurements);
 
   // extract details from contract
   const {
