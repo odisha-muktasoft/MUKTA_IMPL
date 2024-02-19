@@ -8,6 +8,7 @@ import 'package:works_shg_app/pages/wage_seeker_registration/register_individual
 
 import '../pages/attendance_register_table.dart';
 import '../pages/authenticated.dart';
+import '../pages/employee/mb_config_warning.dart';
 import '../pages/employee/mb_detail_page.dart';
 import '../pages/employee/mb_history.dart';
 import '../pages/employee/mb_inbox.dart';
@@ -90,6 +91,8 @@ part 'app_router.gr.dart';
               AutoRoute(page: MBFilterPage, path: 'mb-filter'),
               AutoRoute(page: MBDetailPage, path: 'mb-detail'),
               AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
+              AutoRoute(
+                  page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
             ]),
 
         // work order -employee
@@ -98,11 +101,11 @@ part 'app_router.gr.dart';
             page: WorkOrderWrapperPage,
             path: 'workOrder-book',
             children: [
-              AutoRoute(page: WorkOderInboxPage, path: 'workOrder-inbox',initial: true),
               AutoRoute(
-                page: WorkOrderDetailPage,
-                path: 'workOrder-details'
-              ),
+                  page: WorkOderInboxPage,
+                  path: 'workOrder-inbox',
+                  initial: true),
+              AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
             ]),
       ],
     ),

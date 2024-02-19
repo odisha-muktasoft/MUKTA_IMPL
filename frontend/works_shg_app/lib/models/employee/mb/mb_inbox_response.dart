@@ -194,7 +194,7 @@ class Measure with _$Measure {
       @JsonKey(name: 'id')
           String? id,
       @JsonKey(name: 'currentValue')
-          int? currentValue,
+          double? currentValue,
       @JsonKey(name: 'cumulativeValue')
           int? cumulativeValue,
       @JsonKey(name: 'height')

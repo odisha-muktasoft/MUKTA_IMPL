@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/Back.dart';
 
 import '../../../blocs/localization/app_localization.dart';
@@ -26,6 +28,22 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(color: const DigitColors().white),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DigitElevatedButton(
+              child: const Text("Create Measurement Book"),
+              onPressed: () {
+               // context.router.push(const MBDetailRoute());
+              },
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         titleSpacing: 0,
         title: const AppBarLogo(),
@@ -56,9 +74,22 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
                 })
               ],
             ),
-            children: const [
-              Text("Work Order Details"),
-              WorkOrderCard(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Work Order Details",
+                      style: DigitTheme
+                          .instance.mobileTheme.textTheme.headlineLarge,
+                    ),
+                  ],
+                ),
+              ),
+              const WorkOrderCard(
                 items: {
                   "Work Order Number": "we#12",
                   "Project Name": "sa",
@@ -68,7 +99,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
                   "Project Description": "Wall Painting in Ward 1"
                 },
               ),
-              WorkOrderCard(
+              const WorkOrderCard(
                 headLabel: "Contact Details",
                 items: {
                   "Name of CBO": "we#12",
@@ -79,7 +110,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
                   "Work Value": "Wall Painting in Ward 1"
                 },
               ),
-              WorkOrderCard(
+              const WorkOrderCard(
                 headLabel: "Work Timelines",
                 items: {
                   "Name of CBO": "we#12",

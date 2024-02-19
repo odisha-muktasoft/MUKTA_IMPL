@@ -15,7 +15,15 @@ class WorkOrderCard extends StatelessWidget {
         crossAxisAlignment:widget1!=null? CrossAxisAlignment.start:CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          headLabel!=null?Text(headLabel!):const SizedBox.shrink(),
+          headLabel!=null?Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(headLabel!,
+              style: DigitTheme.instance.mobileTheme.textTheme.headlineMedium,
+              ),
+            ],
+          ):const SizedBox.shrink(),
           DigitTableCard(
             element: items,
           ),

@@ -51,7 +51,9 @@ class _MBDetailPageState extends State<MBDetailPage>
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        bottomNavigationBar: FloatActionCard(actions: () {  }, amount: '10000000', openButtonSheet: () {
+        bottomNavigationBar: FloatActionCard(actions: () { 
+           context.router.push(const MBTypeConfirmationRoute());
+         }, amount: '10000000', openButtonSheet: () {
           _openBottomSheet(context);
           }, totalAmountText: 'Total MB Amount',subtext: '(For Current Entry)',),
         backgroundColor: const DigitColors().seaShellGray,
@@ -473,6 +475,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   child: const Text("Actions"),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    context.router.push(const MBTypeConfirmationRoute());
                   }),
             ],
           ),

@@ -247,6 +247,12 @@ class _$AppRouter extends RootStackRouter {
         child: const MBHistoryBookPage(),
       );
     },
+    MBTypeConfirmationRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MBTypeConfirmationPage(),
+      );
+    },
     WorkOderInboxRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -402,6 +408,11 @@ class _$AppRouter extends RootStackRouter {
                 RouteConfig(
                   MBHistoryBookRoute.name,
                   path: 'mb-history',
+                  parent: MeasurementBookWrapperRoute.name,
+                ),
+                RouteConfig(
+                  MBTypeConfirmationRoute.name,
+                  path: 'mb-type-confirmation',
                   parent: MeasurementBookWrapperRoute.name,
                 ),
               ],
@@ -1014,6 +1025,18 @@ class MBHistoryBookRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MBHistoryBookRoute';
+}
+
+/// generated route for
+/// [MBTypeConfirmationPage]
+class MBTypeConfirmationRoute extends PageRouteInfo<void> {
+  const MBTypeConfirmationRoute()
+      : super(
+          MBTypeConfirmationRoute.name,
+          path: 'mb-type-confirmation',
+        );
+
+  static const String name = 'MBTypeConfirmationRoute';
 }
 
 /// generated route for

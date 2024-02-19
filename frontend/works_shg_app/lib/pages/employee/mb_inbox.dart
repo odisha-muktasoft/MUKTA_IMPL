@@ -161,7 +161,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: Text(
-                                  "MB Inbox(2)",
+                                  "MB Inbox(12)",
                                   style: DigitTheme.instance.mobileTheme
                                       .textTheme.headlineLarge,
                                 ),
@@ -173,18 +173,52 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    IconButton(
-                                        onPressed: () {
-                                          context.router
-                                              .push(const MBFilterRoute());
-                                          //  final result=   await filterDialog(context);
-                                        },
-                                        icon: const Icon(
-                                          Icons.filter_alt,
-                                        )),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.sort_outlined)),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                            color: const DigitColors()
+                                                .burningOrange,
+                                            onPressed: () {
+                                              context.router
+                                                  .push(const MBFilterRoute());
+                                              //  final result=   await filterDialog(context);
+                                            },
+                                            icon: const Icon(
+                                              Icons.filter_alt,
+                                            )),
+                                        Text(
+                                          "Filter",
+                                          style: DigitTheme.instance.mobileTheme
+                                              .textTheme.labelLarge!
+                                              .copyWith(
+                                            color: const DigitColors()
+                                                .burningOrange,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        IconButton(
+                                            color: const DigitColors()
+                                                .burningOrange,
+                                            onPressed: () {},
+                                            icon: const Icon(
+                                                Icons.sort_outlined)),
+                                        Text(
+                                          "Sort",
+                                          style: DigitTheme.instance.mobileTheme
+                                              .textTheme.labelLarge!
+                                              .copyWith(
+                                            color: const DigitColors()
+                                                .burningOrange,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -217,11 +251,13 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                           // );
 
                           return CommonMBCard(
-                            widget: DigitOutLineButton(
-                              label: "Open Measurement Book",
-                              onPressed: () {
-                                context.router.push(const MBDetailRoute());
-                              },
+                            widget: Center(
+                              child: DigitOutLineButton(
+                                label: "Open Measurement Book",
+                                onPressed: () {
+                                  context.router.push(const MBDetailRoute());
+                                },
+                              ),
                             ),
                             items: {
                               "MB number": "MB-233",

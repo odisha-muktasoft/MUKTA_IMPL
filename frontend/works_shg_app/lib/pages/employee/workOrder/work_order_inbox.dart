@@ -180,7 +180,10 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: DigitElevatedButton(
                                 child: const Text("Create Measurement Book"),
-                                onPressed: () {},
+                                onPressed: () {
+
+                                  // context.router.push(const MBDetailRoute());
+                                },
                               ),
                             ),
                             items: {
