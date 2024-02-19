@@ -57,9 +57,6 @@ export const CreateWageSeekerConfig = {
               type: "component",
               component: "AadharValidationComponent",
               disable: true,
-              preProcess : {
-                convertStringToRegEx : ["populators.validation.pattern"]
-              },
               populators: { 
                 name: "basicDetails_aadhar", 
                 error: "WORKS_REQUIRED_ERR"
