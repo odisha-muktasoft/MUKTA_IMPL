@@ -5,23 +5,32 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 
+import '../../../models/employee/mb/mb_inbox_response.dart';
+import '../../../utils/global_variables.dart';
+
 class MBRepository {
   final Dio _client;
   MBRepository(this._client);
 
-  Future<dynamic> fetchMbInbox({
+  Future<MBInboxResponse> fetchMbInbox({
     Map<String, String>? queryParameters,
     dynamic body,
     required String url,
   }) async {
     try {
-      Dio http=Dio();
-      final res = await http.post(url,
-          queryParameters: queryParameters,
-          data: body ?? {},
-         );
+      //Dio http=Dio();
+      final res = await _client.post(
+        url,
+        queryParameters: queryParameters,
+        data: body ?? {},
+        options: Options(extra: {
+          "userInfo": GlobalVariables.userRequestModel,
+          "accessToken": GlobalVariables.authToken
+        }),
+      );
 
-      return jsonDecode(res.data);
+      // return res.data;
+      return MBInboxResponse.fromJson(res.data);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;

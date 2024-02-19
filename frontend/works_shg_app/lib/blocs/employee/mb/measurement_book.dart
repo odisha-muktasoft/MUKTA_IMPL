@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
+import '../../../models/employee/mb/mb_inbox_response.dart';
 import '../../../services/urls.dart';
 part 'measurement_book.freezed.dart';
 
@@ -24,9 +25,10 @@ class MeasurementInboxBloc
     try {
       emit(const MeasurementInboxState.loading());
 
-      final res = await MBRepository(client.init()).fetchMbInbox(
+      final MBInboxResponse res = await MBRepository(client.init()).fetchMbInbox(
           url:
-              "https://mukta-uat.digit.org/${Urls.measurementService.measurementInbox}",
+              //"https://mukta-uat.digit.org/${Urls.measurementService.measurementInbox}",
+              Urls.measurementService.measurementInbox,
           body: {
             "inbox": {
               "tenantId": "od.testing",
@@ -38,25 +40,25 @@ class MeasurementInboxBloc
               "limit": 10,
               "offset": 0
             },
-            "RequestInfo": {
-              "apiId": "Rainmaker",
-              "authToken": "db570c2b-950a-4084-87fc-6fa7482a22f7",
-              "userInfo": {
-                "id": 357,
-                "uuid": "4ec9da90-ef66-47c8-8a0b-eb87d8cf9c31",
-                "userName": "EMPJIT",
-                "name": "Sumana Naga sai",
-                "mobileNumber": "7895456214",
-                "emailId": null,
-                "locale": null,
-                "type": "EMPLOYEE",
-                "active": true,
-                "tenantId": "od.testing",
-                "permanentCity": null
-              },
-              "msgId": "1708076019861|en_IN",
-              "plainAccessRequest": {}
-            }
+            // "RequestInfo": {
+            //   "apiId": "Rainmaker",
+            //   "authToken": "db570c2b-950a-4084-87fc-6fa7482a22f7",
+            //   "userInfo": {
+            //     "id": 357,
+            //     "uuid": "4ec9da90-ef66-47c8-8a0b-eb87d8cf9c31",
+            //     "userName": "EMPJIT",
+            //     "name": "Sumana Naga sai",
+            //     "mobileNumber": "7895456214",
+            //     "emailId": null,
+            //     "locale": null,
+            //     "type": "EMPLOYEE",
+            //     "active": true,
+            //     "tenantId": "od.testing",
+            //     "permanentCity": null
+            //   },
+            //   "msgId": "1708076019861|en_IN",
+            //   "plainAccessRequest": {}
+            // }
           });
 
       print(res);
