@@ -216,12 +216,12 @@ public class EstimateServiceValidator {
         String jsonPathForMeasurementWfStatus = "$.measurements[*].wfStatus";
         List<String> wfStatus = getMeasurementWfStatus(measurementResponse, jsonPathForMeasurementWfStatus);
 
-        Double cumulativeValue = Double.valueOf(measurementCumulativeValue.get(0));
+        Double cumulativeValue = measurementCumulativeValue.get(0).doubleValue();
         if (!wfStatus.isEmpty() && !wfStatus.get(0).equalsIgnoreCase(ESTIMATE_APPROVED_STATUS)) {
             String jsonPathForMeasurementCurrentValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].currentValue";
             List<Double> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
 
-            cumulativeValue = cumulativeValue - Double.valueOf(measurementCurrentValue.get(0));
+            cumulativeValue = cumulativeValue -measurementCurrentValue.get(0).doubleValue();
         }
 
         if (estimateDetail1.getNoOfunit() < cumulativeValue) {
