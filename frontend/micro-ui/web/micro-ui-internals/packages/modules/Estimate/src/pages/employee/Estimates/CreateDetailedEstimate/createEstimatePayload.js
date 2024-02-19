@@ -190,9 +190,9 @@ const fetchDocuments = (docs) => {
 //Method is used to create labourAnalysisPayload in additional details
 const getLabourMaterialAnalysis = (data) => {
   return {
-    labour : parseFloat(getLabourMaterialAnalysisCost(data,"LH")),
-    material : parseFloat(getLabourMaterialAnalysisCost(data,"MA")),
-    machinery : parseFloat(getLabourMaterialAnalysisCost(data,"MH"))
+    labour : parseFloat(getLabourMaterialAnalysisCost(data,["LA"])),
+    material : parseFloat(getLabourMaterialAnalysisCost(data,["MA","RA","CA","EMF","DMF","ADC","LC"])),
+    machinery : parseFloat(getLabourMaterialAnalysisCost(data,["MHA"]))
   }
 }
 

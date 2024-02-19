@@ -18,9 +18,9 @@ const ViewAnalysisStatement = ({watch,formState,...props}) => {
     let isEstimateCreateorUpdate = /(estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(window.location.href);
     //Defined the codes for charges upserted in mdmsV2
     const ChargesCodeMapping = {
-        LabourCost : "LA",
-        MaterialCost : "MA",
-        MachineryCost : "MHA",
+        LabourCost : ["LA"],
+        MaterialCost : ["MA","RA","CA","EMF","DMF","ADC","LC"],
+        MachineryCost : ["MHA"],
     }
 
     const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -51,10 +51,10 @@ const ViewAnalysisStatement = ({watch,formState,...props}) => {
     let currentDateInMillis = isEstimateCreateorUpdate ? new Date().getTime() : formData?.auditDetails?.createdTime; 
 
     //this method is used for calculating labour charges which rate * qty(current Mb entry)
-    function getAnalysisCost(category){
+    function getAnalysisCost(categories){
         let SORAmount = formData?.SORtable?.reduce((tot,ob) => {
-            let amount = ob?.amountDetails?.reduce((total,item) => item?.heads?.includes(category) ? (item?.amount + total) : total,0);
-            return (tot + amount * ob?.currentMBEntry)
+            let amount = ob?.amountDetails?.reduce((total, item) => total + (categories.some(category => item?.heads?.includes(category)) ? item?.amount : 0), 0);
+            return (tot + amount * ob?.currentMBEntry);
         },0);
         SORAmount = SORAmount ? SORAmount : 0;
         if(SORAmount == 0)
@@ -70,15 +70,15 @@ const ViewAnalysisStatement = ({watch,formState,...props}) => {
                       && validFromInMillis <= currentDateInMillis
                       && currentDateInMillis < validToInMillis;
                   })?.[0]?.amountDetails;
-                let amount = amountDetails?.reduce((total,item) => item?.heads?.includes(category) ? (item?.amount + total) : total,0);
+                let amount = amountDetails?.reduce((total, item) => total + (categories.some(category => item?.heads?.includes(category)) ? item?.amount : 0), 0);
                 return (tot + amount * ob?.currentMBEntry)
             },0);
         }
         if(window.location.href.includes("estimate-details"))
         {
-                    if(category === "LA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.labour;
-                    if(category === "MA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.material;
-                    if(category === "MHA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+                    if(categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+                    if(categories.some(cat => ChargesCodeMapping?.MaterialCost?.includes(cat)) && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.material;
+                    if(categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
         }
         //Conditions is used in the case of View details to capture the data from additional details
         // if(category === "LA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) return formData?.additionalDetails?.labourMaterialAnalysis?.labour;
