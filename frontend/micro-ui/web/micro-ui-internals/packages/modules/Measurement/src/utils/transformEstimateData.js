@@ -100,8 +100,8 @@ export const transformMeasureObject = (measurement = {}) => {
 export const getDefaultValues = (data, t, mbNumber) => {
   const { contract, estimate, allMeasurements, measurement, musterRollNumber, period } = data;
 
-  const SOR = transformEstimateData(estimate?.estimateDetails, contract, "SOR", allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0], allMeasurements);
-  const NONSOR = transformEstimateData(estimate?.estimateDetails, contract, "NON-SOR", allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0], allMeasurements);
+  const SOR = transformEstimateData(estimate?.estimateDetails, contract, "SOR", allMeasurements?.length > 0 ? allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0] : measurement, allMeasurements);
+  const NONSOR = transformEstimateData(estimate?.estimateDetails, contract, "NON-SOR", allMeasurements?.length > 0 ? allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0] : measurement, allMeasurements);
 
   // extract details from contract
   const {
