@@ -64,7 +64,7 @@ const useMBDataForPB=({workOrderNumber, tenantId})=>{
 
     //const SOR = data && transformEstimateData(data?.estimate?.estimateDetails, data?.contract, "SOR", data?.measurement, ValidMeasurement);
     let SOR = [];
-    data && data?.allMeasurements?.map((mb) => {
+    data?.allMeasurements?.length > 0 && data?.allMeasurements?.map((mb) => {
         let sorResult = transformEstimateData(data?.estimate?.estimateDetails, data?.contract, "SOR", data?.measurement, [mb]);
         SOR?.push(...sorResult);
     });
