@@ -53,23 +53,22 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
   final ScrollController _scrollController = ScrollController();
   List<String> items = []; // List to hold items
-  int pageCount = 1; // Initial page count
+  int pageCount = 0; // Initial page count
   bool isLoading = false; // Loading indicator
 
   @override
   void initState() {
     context.read<MeasurementInboxBloc>().add(
-          const MeasurementBookInboxBlocEvent(
+          MeasurementBookInboxBlocEvent(
             businessService: "MB",
             limit: 10,
             moduleName: 'measurement-module',
-            offset: 0,
+            offset: pageCount,
             tenantId: 'od.testing',
           ),
         );
     _scrollController.addListener(_scrollListener);
-    // Initial data
-    _addInitialData();
+
     super.initState();
   }
 
@@ -83,46 +82,47 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      // Reach the end of the list
       _addRandomData();
     }
+    //  else if (_scrollController.position.pixels ==
+    //     _scrollController.position.minScrollExtent) {
+    //   if (pageCount > 0) {
+    //     _removeRandomData();
+    //   }
+    // }
   }
 
-  void _addInitialData() {
-    // Generate initial data
-    List<String> initialData =
-        List.generate(20, (index) => "Initial Item ${index + 1}");
-    setState(() {
-      items.addAll(initialData); // Add initial data to the list
-    });
-  }
-
-  void _addRandomData() {
+  void _removeRandomData() {
+    int s = pageCount - 10;
     context.read<MeasurementInboxBloc>().add(
           MeasurementBookInboxBlocEvent(
             businessService: "MB",
             limit: 20,
             moduleName: 'measurement-module',
-            offset: pageCount,
+            offset: s,
             tenantId: 'od.testing',
           ),
         );
 
-    // Simulate loading
     setState(() {
-      isLoading = true;
+      pageCount = s;
     });
+  }
 
-    // Simulate delay
-    Future.delayed(const Duration(seconds: 2), () {
-      // Generate random data
-      List<String> newData =
-          List.generate(10, (index) => "Item ${items.length + index + 1}");
-      setState(() {
-        items.addAll(newData); // Add generated data to the list
-        isLoading = false;
-        pageCount++; // Increment page count
-      });
+  void _addRandomData() {
+    int s = pageCount + 10;
+    context.read<MeasurementInboxBloc>().add(
+          MeasurementBookInboxBlocEvent(
+            businessService: "MB",
+            limit: 10,
+            moduleName: 'measurement-module',
+            offset: s,
+            tenantId: 'od.testing',
+          ),
+        );
+
+    setState(() {
+      pageCount = s;
     });
   }
 
@@ -133,6 +133,32 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: const DigitColors().seaShellGray,
+          floatingActionButton:
+              BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
+            builder: (context, state) {
+              return state.maybeMap(
+                orElse: () {
+                  return const SizedBox.shrink();
+                },
+                loaded: (value) {
+                  if (value.mbInboxResponse.items!.length > 19) {
+                    return DigitIconButton(
+                      iconText: "Back to top",
+                      onPressed: () {
+                        _scrollController.animateTo(
+                          0.0,
+                          duration: const Duration(milliseconds: 800),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              );
+            },
+          ),
           appBar: AppBar(
             titleSpacing: 0,
             title: const AppBarLogo(),
@@ -146,7 +172,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
           ),
           body: BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
             builder: (context, state) {
-              return state.maybeWhen(
+              return state.maybeMap(
                 orElse: () {
                   return const SizedBox.shrink();
                 },
@@ -155,6 +181,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                     controller: _scrollController,
                     slivers: [
                       SliverPersistentHeader(
+                        floating: true,
                         pinned: true,
                         delegate: MyHeaderDelegate(
                           child: Container(
@@ -174,7 +201,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "MB Inbox (${mbInboxResponse.items?.length ?? 0})",
+                                    "MB Inbox (${mbInboxResponse.mbInboxResponse.items?.length ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
                                   ),
@@ -252,7 +279,14 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             // Display items
-                            if (index == items.length) {
+                            if (index ==
+                                    (mbInboxResponse.isLoading
+                                        ? mbInboxResponse
+                                            .mbInboxResponse!.items!.length
+                                        : mbInboxResponse.mbInboxResponse!
+                                                .items!.length -
+                                            1) &&
+                                mbInboxResponse.isLoading) {
                               // Display loading indicator
                               return Container(
                                 padding: const EdgeInsets.all(16.0),
@@ -271,10 +305,14 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 ),
                               ),
                               items: {
-                                "MB number": mbInboxResponse.items?[index]
-                                        .businessObject?.measurementNumber ??
+                                "MB number": mbInboxResponse
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.measurementNumber ??
                                     "",
                                 "Project Description": mbInboxResponse
+                                        .mbInboxResponse
                                         .items?[index]
                                         .businessObject
                                         ?.contract
@@ -282,10 +320,15 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ?.projectDesc ??
                                     "",
                                 "Assignee": "SHG group-C#1",
-                                "Workflow State": mbInboxResponse.items?[index]
-                                        .processInstance?.state?.state ??
+                                "Workflow State": mbInboxResponse
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .processInstance
+                                        ?.state
+                                        ?.state ??
                                     "",
                                 "MB Account": mbInboxResponse
+                                        .mbInboxResponse
                                         .items?[index]
                                         .businessObject
                                         ?.measures
@@ -299,16 +342,19 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               },
                             );
                           },
-                          childCount: items.length +
-                              1, // Number of items in the list + 1 for loading indicator
+                          childCount: mbInboxResponse.isLoading
+                              ? mbInboxResponse!.mbInboxResponse.items!.length +
+                                  1
+                              : mbInboxResponse!.mbInboxResponse.items!.length,
                         ),
                       ),
                     ],
                   );
                 },
-                loading: () {
+                loading: (value) {
                   return const Center(
-                      child: CircularProgressIndicator.adaptive());
+                    child: CircularProgressIndicator.adaptive(),
+                  );
                 },
               );
             },
