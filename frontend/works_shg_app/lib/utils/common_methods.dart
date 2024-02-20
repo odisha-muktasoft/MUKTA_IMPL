@@ -11,6 +11,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:root_checker_plus/root_checker_plus.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/services/local_storage.dart';
 
 import '../data/repositories/core_repo/core_repository.dart';
