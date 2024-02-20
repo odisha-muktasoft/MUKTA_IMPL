@@ -56,44 +56,93 @@ class _SideBar extends State<SideBar> {
         children: [
           BlocBuilder<LocalizationBloc, LocalizationState>(
               builder: (context, localeState) {
-            return BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                builder: (context, orgState) {
-              return orgState.maybeWhen(
-                  orElse: () => Container(),
-                  loading: () => SizedBox(
-                      height: MediaQuery.of(buildContext).size.height / 3,
-                      child: Loaders.circularLoader(context)),
-                  loaded: (OrganisationListModel? organisationListModel) {
-                    return organisationListModel?.organisations != null
-                        ? Container(
-                            width: MediaQuery.of(buildContext).size.width,
-                            height: MediaQuery.of(buildContext).size.height / 3,
-                            color: const DigitColors().quillGray,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  organisationListModel!
-                                      .organisations!.first.name
-                                      .toString(),
-                                  style: theme
-                                      .mobileTheme.textTheme.headlineMedium
-                                      ?.apply(color: const DigitColors().black),
+            return BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+
+                return state.maybeMap(orElse: () { return const SizedBox.shrink(); },
+                loaded: (value) {
+                  
+                  if (value.roleType==RoleType.cbo) {
+                    return BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                    builder: (context, orgState) {
+                  return orgState.maybeWhen(
+                      orElse: () => Container(),
+                      loading: () => SizedBox(
+                          height: MediaQuery.of(buildContext).size.height / 3,
+                          child: Loaders.circularLoader(context)),
+                      loaded: (OrganisationListModel? organisationListModel) {
+                        return organisationListModel?.organisations != null
+                            ? Container(
+                                width: MediaQuery.of(buildContext).size.width,
+                                height:
+                                    MediaQuery.of(buildContext).size.height / 3,
+                                color: const DigitColors().quillGray,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      organisationListModel!
+                                          .organisations!.first.name
+                                          .toString(),
+                                      style: theme
+                                          .mobileTheme.textTheme.headlineMedium
+                                          ?.apply(
+                                              color: const DigitColors().black),
+                                    ),
+                                    Text(
+                                      organisationListModel
+                                          .organisations!
+                                          .first
+                                          .contactDetails!
+                                          .first
+                                          .contactMobileNumber
+                                          .toString(),
+                                      style: theme
+                                          .mobileTheme.textTheme.bodyMedium
+                                          ?.apply(
+                                              color:
+                                                  const DigitColors().davyGray),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  organisationListModel.organisations!.first
-                                      .contactDetails!.first.contactMobileNumber
-                                      .toString(),
-                                  style: theme.mobileTheme.textTheme.bodyMedium
-                                      ?.apply(
-                                          color: const DigitColors().davyGray),
+                              )
+                            : Container();
+                      });
+                });
+                  } else {
+                    
+                    return Container(
+                                width: MediaQuery.of(buildContext).size.width,
+                                height:
+                                    MediaQuery.of(buildContext).size.height / 3,
+                                color: const DigitColors().quillGray,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      value.userDetailsModel?.userRequestModel?.name.toString()??'',
+                                      style: theme
+                                          .mobileTheme.textTheme.headlineMedium
+                                          ?.apply(
+                                              color: const DigitColors().black),
+                                    ),
+                                    Text(
+                                      value.userDetailsModel?.userRequestModel?.mobileNumber.toString()??'',
+                                      style: theme
+                                          .mobileTheme.textTheme.bodyMedium
+                                          ?.apply(
+                                              color:
+                                                  const DigitColors().davyGray),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                        : Container();
-                  });
-            });
+                              );
+                  }
+                },
+                );
+                
+              },
+            );
           }),
           Row(
             children: [
@@ -148,9 +197,9 @@ class _SideBar extends State<SideBar> {
                             ).load();
                           },
                           rowItems: state.digitRowCardItems
-                                  ?.map((e) =>
-                                      DigitRowCardModel.fromJson(e.toJson()))
-                                  .toList() as List<DigitRowCardModel>,
+                              ?.map(
+                                  (e) => DigitRowCardModel.fromJson(e.toJson()))
+                              .toList() as List<DigitRowCardModel>,
                           width: 80)
                       : const Text('');
                 },

@@ -79,34 +79,27 @@ part 'app_router.gr.dart';
 
         // mb for employee
 
-        AutoRoute(
-            page: MeasurementBookWrapperPage,
-            path: 'measurement-book',
-            children: [
+       
               // MeasurementBookInboxPage
               AutoRoute(
                   page: MeasurementBookInboxPage,
                   path: 'measurement-inbox',
-                  initial: true),
+                  ),
               AutoRoute(page: MBFilterPage, path: 'mb-filter'),
               AutoRoute(page: MBDetailPage, path: 'mb-detail'),
               AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
               AutoRoute(
                   page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
-            ]),
+          
 
         // work order -employee
 
-        AutoRoute(
-            page: WorkOrderWrapperPage,
-            path: 'workOrder-book',
-            children: [
               AutoRoute(
                   page: WorkOderInboxPage,
                   path: 'workOrder-inbox',
-                  initial: true),
+                  ),
               AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
-            ]),
+          
       ],
     ),
   ],

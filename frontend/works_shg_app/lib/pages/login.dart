@@ -123,6 +123,11 @@ class _LoginPage extends State<LoginPage> {
             const SizedBox(
               height: 10,
             ),
+            btns.first.isSelected?const SizedBox.shrink(): DigitIconButton(iconText: "Forgot Password?",onPressed: () {
+
+              forgotPassword();
+              
+            },),
             btns.first.isSelected
                 ? BlocListener<OTPBloc, OTPBlocState>(
                     listener: (context, state) {
@@ -194,6 +199,39 @@ class _LoginPage extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> forgotPassword() {
+    return showDialog(
+              barrierDismissible: false,
+              context: context, builder:(context) {
+              
+             return AlertDialog(
+              contentPadding: const EdgeInsets.all(5.0) ,
+              titlePadding: const EdgeInsets.only(top:8.0, left:5.0,bottom: 8.0),
+              title: const Text("Forgot Password"),
+              content: SizedBox(
+                width: MediaQuery.sizeOf(context).width,
+                height: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                     Padding(
+                       padding: const EdgeInsets.only(bottom:12.0,top: 8.0),
+                       child: Text("Please use MUKTAsoft web login to reset the password",
+                       style: DigitTheme.instance.mobileTheme.textTheme.labelMedium,
+                                           ),
+                     ),
+                    DigitElevatedButton(child: const Text("OK"), onPressed:() {
+                      
+                      Navigator.of(context).pop();
+                    },)
+                  ],
+                ),
+              ),
+             );
+            },);
   }
 
   DigitTextField cboLogin(BuildContext loginContext) {
@@ -294,6 +332,10 @@ class _LoginPage extends State<LoginPage> {
       ],
     );
   }
+
+
+
+
 }
 // const [
 //               "testing",

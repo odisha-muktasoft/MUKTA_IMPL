@@ -68,65 +68,79 @@ class _HomePage extends State<HomePage> {
         drawer: const DrawerWrapper(Drawer(child: SideBar())),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
             builder: (context, localState) {
-          return BlocListener<ORGSearchBloc, ORGSearchState>(
-              listener: (context, orgState) {
-            orgState.maybeWhen(
-                orElse: () => false,
-                error: (String? error) {
-                  Notifiers.getToastMessage(context,
-                      t.translate(i18.common.noOrgLinkedWithMob), 'ERROR');
-                  context.read<AuthBloc>().add(const AuthLogoutEvent());
-                },
-                loaded: (OrganisationListModel? organisationListModel) async {
-                  if ((organisationListModel?.organisations ?? []).isEmpty) {
-                    Notifiers.getToastMessage(context,
-                        t.translate(i18.common.noOrgLinkedWithMob), 'ERROR');
-                    context.read<AuthBloc>().add(const AuthLogoutEvent());
-                  } else {
-                    var currLoc = await GlobalVariables.selectedLocale();
-                    context.read<LocalizationBloc>().add(
-                          LocalizationEvent.onLoadLocalization(
-                              module: CommonMethods.getLocaleModules(),
-                              tenantId: GlobalVariables.globalConfigObject!
-                                  .globalConfigs!.stateTenantId
-                                  .toString(),
-                              locale: currLoc.toString()),
-                        );
-                    context.read<AppInitializationBloc>().add(
-                        AppInitializationSetupEvent(
-                            selectedLang: currLoc.toString()));
-                    await AppLocalizations(
-                      Locale(currLoc.toString().split('_').first,
-                          currLoc.toString().split('_').last),
-                    ).load();
-                  }
-                });
-          }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                  builder: (context, state) {
-            return state.maybeWhen(
-                orElse: () => Container(),
-                loading: () => shg_loader.Loaders.circularLoader(context),
-                loaded: (OrganisationListModel? organisationListModel) {
-                  return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
-                    builder: (context, config) {
-                      return config.maybeWhen(
-                          orElse: () => Container(),
-                          loading: () =>
-                              shg_loader.Loaders.circularLoader(context),
-                          loaded: (List<CBOHomeScreenConfigModel>?
-                              cboHomeScreenConfig) {
-                                // role based config
-                            if (false) {
-                              return cboBasedLayout(
-                                  cboHomeScreenConfig, t, context);
-                            } else {
-                              return empBasedLayout(context);
-                            }
-                          });
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+                  return state.maybeMap(loaded: (value) {
+                    if (value.roleType==RoleType.cbo) {
+                      return BlocListener<ORGSearchBloc, ORGSearchState>(
+                  listener: (context, orgState) {
+                orgState.maybeWhen(
+                    orElse: () => false,
+                    error: (String? error) {
+                      Notifiers.getToastMessage(context,
+                          t.translate(i18.common.noOrgLinkedWithMob), 'ERROR');
+                      context.read<AuthBloc>().add(const AuthLogoutEvent());
                     },
-                  );
-                });
-          }));
+                    loaded:
+                        (OrganisationListModel? organisationListModel) async {
+                      if ((organisationListModel?.organisations ?? [])
+                          .isEmpty) {
+                        Notifiers.getToastMessage(
+                            context,
+                            t.translate(i18.common.noOrgLinkedWithMob),
+                            'ERROR');
+                        context.read<AuthBloc>().add(const AuthLogoutEvent());
+                      } else {
+                        var currLoc = await GlobalVariables.selectedLocale();
+                        context.read<LocalizationBloc>().add(
+                              LocalizationEvent.onLoadLocalization(
+                                  module: CommonMethods.getLocaleModules(),
+                                  tenantId: GlobalVariables.globalConfigObject!
+                                      .globalConfigs!.stateTenantId
+                                      .toString(),
+                                  locale: currLoc.toString()),
+                            );
+                        context.read<AppInitializationBloc>().add(
+                            AppInitializationSetupEvent(
+                                selectedLang: currLoc.toString()));
+                        await AppLocalizations(
+                          Locale(currLoc.toString().split('_').first,
+                              currLoc.toString().split('_').last),
+                        ).load();
+                      }
+                    });
+              }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                      builder: (context, state) {
+                return state.maybeWhen(
+                    orElse: () => Container(),
+                    loading: () => shg_loader.Loaders.circularLoader(context),
+                    loaded: (OrganisationListModel? organisationListModel) {
+                      return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
+                        builder: (context, config) {
+                          return config.maybeWhen(
+                              orElse: () => Container(),
+                              loading: () =>
+                                  shg_loader.Loaders.circularLoader(context),
+                              loaded: (List<CBOHomeScreenConfigModel>?
+                                  cboHomeScreenConfig) {
+                                // role based config
+                               
+                                  return cboBasedLayout(
+                                      cboHomeScreenConfig, t, context);
+                               
+                              });
+                        },
+                      );
+                    });
+              }));
+                    } else {
+                      return empBasedLayout(context); 
+                    }
+                    
+                  }, orElse: () { return const SizedBox.shrink() ;},);
+              
+            },
+          );
         }));
   }
 
@@ -151,13 +165,13 @@ class _HomePage extends State<HomePage> {
 // data
 
   List<Widget> _getItems(BuildContext context) {
-    return  [
+    return [
       HomeItemCard(
         icon: Icons.flaky,
         label: 'Measurement Books',
         onPressed: () {
           context.router.push(
-            const MeasurementBookWrapperRoute(),
+            const MeasurementBookInboxRoute(),
           );
           // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
         },
@@ -166,10 +180,10 @@ class _HomePage extends State<HomePage> {
         icon: Icons.on_device_training_outlined,
         label: 'Work Orders',
         onPressed: () {
-           context.router.push(
-            const WorkOrderWrapperRoute(),
+          context.router.push(
+            const WorkOderInboxRoute(),
           );
-         //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));  
+          //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));
         },
       )
     ];

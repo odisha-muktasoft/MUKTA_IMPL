@@ -46,6 +46,7 @@ import 'blocs/attendance/individual_wms_search.dart';
 import 'blocs/attendance/muster_submission_mdms.dart';
 import 'blocs/attendance/search_projects/search_individual_project.dart';
 import 'blocs/auth/auth.dart';
+import 'blocs/employee/mb/measurement_book.dart';
 import 'blocs/localization/app_localization.dart';
 import 'blocs/localization/localization.dart';
 import 'blocs/muster_rolls/from_to_date_search_muster_roll.dart';
@@ -178,6 +179,9 @@ class _MainApplicationState extends State<MainApplication> {
 
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+      create: (context) => MeasurementInboxBloc(),
+        ),
         BlocProvider(
           create: (context) => AppInitializationBloc(
             const AppInitializationState(),

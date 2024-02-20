@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 class AppBarLogo extends StatelessWidget {
@@ -23,6 +24,8 @@ class AppBarLogo extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
+                    GlobalVariables.roleType==RoleType.employee?
+                    GlobalVariables.userRequestModel!['name']:
                     GlobalVariables.organisationListModel != null
                         ? GlobalVariables.organisationListModel?.organisations
                                 ?.first.name ??
@@ -35,6 +38,8 @@ class AppBarLogo extends StatelessWidget {
                     textAlign: TextAlign.start,
                   ),
                   Text(
+                     GlobalVariables.roleType==RoleType.employee?
+                     GlobalVariables.userRequestModel!['mobileNumber']:
                     GlobalVariables.organisationListModel?.organisations?.first
                             .orgNumber ??
                         '',

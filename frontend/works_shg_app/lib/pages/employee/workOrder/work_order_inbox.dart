@@ -182,7 +182,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 child: const Text("Create Measurement Book"),
                                 onPressed: () {
 
-                                  // context.router.push(const MBDetailRoute());
+                                   context.router.push(const MBDetailRoute());
                                 },
                               ),
                             ),

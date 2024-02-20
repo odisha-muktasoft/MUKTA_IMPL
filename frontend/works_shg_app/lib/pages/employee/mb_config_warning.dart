@@ -44,14 +44,19 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                   flex: 2,
                   child: DigitOutLineButton(
                     label: "Cancel",
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.pop();
+                    },
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: DigitElevatedButton(
                     child: const Text("Forward"),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).popUntil((route) => route is HomeRoute);
+                      context.router.push(const HomeRoute());
+                    },
                   ),
                 )
               ],
@@ -86,7 +91,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
               onChanged: (value) {},
               value: null,
               label: "Assignee name",
-              menuItems: const ["WARD1", "WARD2", "WARD3", "WARD4"],
+              menuItems: const ["MUKTAUAT", "AE-Engineer", "Executive-engineer"],
               valueMapper: (value) {
                 return value.toString();
               },

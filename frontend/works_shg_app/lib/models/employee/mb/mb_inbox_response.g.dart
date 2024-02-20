@@ -240,7 +240,7 @@ _$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(
       numItems: (json['numItems'] as num?)?.toDouble(),
       id: json['id'] as String?,
       currentValue: (json['currentValue'] as num?)?.toDouble(),
-      cumulativeValue: json['cumulativeValue'] as int?,
+      cumulativeValue: (json['cumulativeValue'] as num?)?.toDouble(),
       height: (json['height'] as num?)?.toDouble(),
       measureAdditionalDetails: json['additionalDetails'] == null
           ? null

@@ -98,6 +98,16 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
   }
 
   void _addRandomData() {
+    context.read<MeasurementInboxBloc>().add(
+          MeasurementBookInboxBlocEvent(
+            businessService: "MB",
+            limit: 20,
+            moduleName: 'measurement-module',
+            offset: pageCount,
+            tenantId: 'od.testing',
+          ),
+        );
+
     // Simulate loading
     setState(() {
       isLoading = true;
@@ -134,147 +144,175 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
               ),
             ),
           ),
-          body: false
-              ? Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
-              : CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: MyHeaderDelegate(
-                        child: Container(
-                          color: const DigitColors().seaShellGray,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Back(
-                                // widget: null,
-                                callback: () {
-                                  context.router.navigateBack();
-                                  // Navigator.of(context).pop();
-                                  //context.router.push(const HomeRoute());
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "MB Inbox(12)",
-                                  style: DigitTheme.instance.mobileTheme
-                                      .textTheme.headlineLarge,
+          body: BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                orElse: () {
+                  return const SizedBox.shrink();
+                },
+                loaded: (mbInboxResponse) {
+                  return CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: MyHeaderDelegate(
+                          child: Container(
+                            color: const DigitColors().seaShellGray,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Back(
+                                  // widget: null,
+                                  callback: () {
+                                    context.router.navigateBack();
+                                    // Navigator.of(context).pop();
+                                    //context.router.push(const HomeRoute());
+                                  },
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0, top: 10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        IconButton(
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                            onPressed: () {
-                                              context.router
-                                                  .push(const MBFilterRoute());
-                                              //  final result=   await filterDialog(context);
-                                            },
-                                            icon: const Icon(
-                                              Icons.filter_alt,
-                                            )),
-                                        Text(
-                                          "Filter",
-                                          style: DigitTheme.instance.mobileTheme
-                                              .textTheme.labelLarge!
-                                              .copyWith(
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        IconButton(
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                            onPressed: () {},
-                                            icon: const Icon(
-                                                Icons.sort_outlined)),
-                                        Text(
-                                          "Sort",
-                                          style: DigitTheme.instance.mobileTheme
-                                              .textTheme.labelLarge!
-                                              .copyWith(
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    "MB Inbox (${mbInboxResponse.items?.length ?? 0})",
+                                    style: DigitTheme.instance.mobileTheme
+                                        .textTheme.headlineLarge,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        height: 150,
-                      ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          // Display items
-                          if (index == items.length) {
-                            // Display loading indicator
-                            return Container(
-                              padding: const EdgeInsets.all(16.0),
-                              alignment: Alignment.center,
-                              child: const CircularProgressIndicator(),
-                            );
-                          }
-                          // return Card(
-                          //   color: Colors.white,
-                          //   child: SizedBox(
-                          //     height: 200,
-                          //     child: ListTile(
-                          //       title: Text(items[index]),
-                          //     ),
-                          //   ),
-                          // );
-
-                          return CommonMBCard(
-                            widget: Center(
-                              child: DigitOutLineButton(
-                                label: "Open Measurement Book",
-                                onPressed: () {
-                                  context.router.push(const MBDetailRoute());
-                                },
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, right: 8.0, top: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                              onPressed: () {
+                                                context.router.push(
+                                                    const MBFilterRoute());
+                                                //  final result=   await filterDialog(context);
+                                              },
+                                              icon: const Icon(
+                                                Icons.filter_alt,
+                                              )),
+                                          Text(
+                                            "Filter",
+                                            style: DigitTheme
+                                                .instance
+                                                .mobileTheme
+                                                .textTheme
+                                                .labelLarge!
+                                                .copyWith(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                              onPressed: () {},
+                                              icon: const Icon(
+                                                  Icons.sort_outlined)),
+                                          Text(
+                                            "Sort",
+                                            style: DigitTheme
+                                                .instance
+                                                .mobileTheme
+                                                .textTheme
+                                                .labelLarge!
+                                                .copyWith(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            items: {
-                              "MB number": "MB-233",
-                              "Project Description": "Wall Painting in Ward 1",
-                              "Assignee": "SHG group-C#1",
-                              "Workflow State": "Pending for verification",
-                              "MB Account": "240000",
-                              "SLA Days remaining": index + 1
-                            },
-                          );
-                        },
-                        childCount: items.length +
-                            1, // Number of items in the list + 1 for loading indicator
+                          ),
+                          height: 150,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            // Display items
+                            if (index == items.length) {
+                              // Display loading indicator
+                              return Container(
+                                padding: const EdgeInsets.all(16.0),
+                                alignment: Alignment.center,
+                                child: const CircularProgressIndicator(),
+                              );
+                            }
+
+                            return CommonMBCard(
+                              widget: Center(
+                                child: DigitOutLineButton(
+                                  label: "Open Measurement Book",
+                                  onPressed: () {
+                                    context.router.push(const MBDetailRoute());
+                                  },
+                                ),
+                              ),
+                              items: {
+                                "MB number": mbInboxResponse.items?[index]
+                                        .businessObject?.measurementNumber ??
+                                    "",
+                                "Project Description": mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.contract
+                                        ?.additionalDetails
+                                        ?.projectDesc ??
+                                    "",
+                                "Assignee": "SHG group-C#1",
+                                "Workflow State": mbInboxResponse.items?[index]
+                                        .processInstance?.state?.state ??
+                                    "",
+                                "MB Account": mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.measures
+                                        ?.first
+                                        .measureAdditionalDetails
+                                        ?.mbAmount
+                                        ?.roundToDouble()
+                                        .toString() ??
+                                    "0.0",
+                                "SLA Days remaining": index + 1
+                              },
+                            );
+                          },
+                          childCount: items.length +
+                              1, // Number of items in the list + 1 for loading indicator
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                loading: () {
+                  return const Center(
+                      child: CircularProgressIndicator.adaptive());
+                },
+              );
+            },
+          ),
         );
       },
     );

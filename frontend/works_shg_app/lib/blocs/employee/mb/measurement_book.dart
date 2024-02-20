@@ -61,7 +61,7 @@ class MeasurementInboxBloc
             // }
           });
 
-      print(res);
+     emit(MeasurementInboxState.loaded(res));
       //  emit(HomeScreenBlocState.loaded(cboHomeScreenConfig));
     } on DioError catch (e) {
       print(e);
@@ -90,7 +90,7 @@ class MeasurementInboxState with _$MeasurementInboxState {
 
   const factory MeasurementInboxState.initial() = _Initial;
   const factory MeasurementInboxState.loading() = _Loading;
-  const factory MeasurementInboxState.loaded(dynamic cboHomeScreenConfig) =
+  const factory MeasurementInboxState.loaded(MBInboxResponse mbInboxResponse) =
       _Loaded;
   const factory MeasurementInboxState.error(String? error) = _Error;
 }

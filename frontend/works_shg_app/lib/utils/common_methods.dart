@@ -10,6 +10,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:root_checker_plus/root_checker_plus.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/services/local_storage.dart';
 
 import '../data/repositories/core_repo/core_repository.dart';
@@ -207,7 +208,11 @@ class CommonMethods {
   }
 
   static String getLocaleModules() {
-    return 'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString()},rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}';
+   return  GlobalVariables.roleType==RoleType.cbo?
+
+
+     'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString()},rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}'
+  :  'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}';
   }
 
   static DateTime firstDayOfWeek(DateTime date) {

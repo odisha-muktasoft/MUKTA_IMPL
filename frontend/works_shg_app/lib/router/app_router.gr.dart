@@ -211,18 +211,6 @@ class _$AppRouter extends RootStackRouter {
         child: const MyServiceRequestsPage(),
       );
     },
-    MeasurementBookWrapperRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: WrappedRoute(child: const MeasurementBookWrapperPage()),
-      );
-    },
-    WorkOrderWrapperRoute.name: (routeData) {
-      return MaterialPageX<dynamic>(
-        routeData: routeData,
-        child: WrappedRoute(child: const WorkOrderWrapperPage()),
-      );
-    },
     MeasurementBookInboxRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
@@ -379,67 +367,39 @@ class _$AppRouter extends RootStackRouter {
               parent: AuthenticatedRouteWrapper.name,
             ),
             RouteConfig(
-              MeasurementBookWrapperRoute.name,
-              path: 'measurement-book',
+              MeasurementBookInboxRoute.name,
+              path: 'measurement-inbox',
               parent: AuthenticatedRouteWrapper.name,
-              children: [
-                RouteConfig(
-                  '#redirect',
-                  path: '',
-                  parent: MeasurementBookWrapperRoute.name,
-                  redirectTo: 'measurement-inbox',
-                  fullMatch: true,
-                ),
-                RouteConfig(
-                  MeasurementBookInboxRoute.name,
-                  path: 'measurement-inbox',
-                  parent: MeasurementBookWrapperRoute.name,
-                ),
-                RouteConfig(
-                  MBFilterRoute.name,
-                  path: 'mb-filter',
-                  parent: MeasurementBookWrapperRoute.name,
-                ),
-                RouteConfig(
-                  MBDetailRoute.name,
-                  path: 'mb-detail',
-                  parent: MeasurementBookWrapperRoute.name,
-                ),
-                RouteConfig(
-                  MBHistoryBookRoute.name,
-                  path: 'mb-history',
-                  parent: MeasurementBookWrapperRoute.name,
-                ),
-                RouteConfig(
-                  MBTypeConfirmationRoute.name,
-                  path: 'mb-type-confirmation',
-                  parent: MeasurementBookWrapperRoute.name,
-                ),
-              ],
             ),
             RouteConfig(
-              WorkOrderWrapperRoute.name,
-              path: 'workOrder-book',
+              MBFilterRoute.name,
+              path: 'mb-filter',
               parent: AuthenticatedRouteWrapper.name,
-              children: [
-                RouteConfig(
-                  '#redirect',
-                  path: '',
-                  parent: WorkOrderWrapperRoute.name,
-                  redirectTo: 'workOrder-inbox',
-                  fullMatch: true,
-                ),
-                RouteConfig(
-                  WorkOderInboxRoute.name,
-                  path: 'workOrder-inbox',
-                  parent: WorkOrderWrapperRoute.name,
-                ),
-                RouteConfig(
-                  WorkOrderDetailRoute.name,
-                  path: 'workOrder-details',
-                  parent: WorkOrderWrapperRoute.name,
-                ),
-              ],
+            ),
+            RouteConfig(
+              MBDetailRoute.name,
+              path: 'mb-detail',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBHistoryBookRoute.name,
+              path: 'mb-history',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBTypeConfirmationRoute.name,
+              path: 'mb-type-confirmation',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              WorkOderInboxRoute.name,
+              path: 'workOrder-inbox',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              WorkOrderDetailRoute.name,
+              path: 'workOrder-details',
+              parent: AuthenticatedRouteWrapper.name,
             ),
           ],
         ),
@@ -951,32 +911,6 @@ class MyServiceRequestsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyServiceRequestsRoute';
-}
-
-/// generated route for
-/// [MeasurementBookWrapperPage]
-class MeasurementBookWrapperRoute extends PageRouteInfo<void> {
-  const MeasurementBookWrapperRoute({List<PageRouteInfo>? children})
-      : super(
-          MeasurementBookWrapperRoute.name,
-          path: 'measurement-book',
-          initialChildren: children,
-        );
-
-  static const String name = 'MeasurementBookWrapperRoute';
-}
-
-/// generated route for
-/// [WorkOrderWrapperPage]
-class WorkOrderWrapperRoute extends PageRouteInfo<void> {
-  const WorkOrderWrapperRoute({List<PageRouteInfo>? children})
-      : super(
-          WorkOrderWrapperRoute.name,
-          path: 'workOrder-book',
-          initialChildren: children,
-        );
-
-  static const String name = 'WorkOrderWrapperRoute';
 }
 
 /// generated route for

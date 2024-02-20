@@ -2898,7 +2898,7 @@ mixin _$Measure {
   @JsonKey(name: 'currentValue')
   double? get currentValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'cumulativeValue')
-  int? get cumulativeValue => throw _privateConstructorUsedError;
+  double? get cumulativeValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'height')
   double? get height => throw _privateConstructorUsedError;
   @JsonKey(name: 'additionalDetails')
@@ -2935,7 +2935,7 @@ abstract class $MeasureCopyWith<$Res> {
       @JsonKey(name: 'currentValue')
           double? currentValue,
       @JsonKey(name: 'cumulativeValue')
-          int? cumulativeValue,
+          double? cumulativeValue,
       @JsonKey(name: 'height')
           double? height,
       @JsonKey(name: 'additionalDetails')
@@ -3010,7 +3010,7 @@ class _$MeasureCopyWithImpl<$Res, $Val extends Measure>
       cumulativeValue: freezed == cumulativeValue
           ? _value.cumulativeValue
           : cumulativeValue // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -3063,7 +3063,7 @@ abstract class _$$_MeasureCopyWith<$Res> implements $MeasureCopyWith<$Res> {
       @JsonKey(name: 'currentValue')
           double? currentValue,
       @JsonKey(name: 'cumulativeValue')
-          int? cumulativeValue,
+          double? cumulativeValue,
       @JsonKey(name: 'height')
           double? height,
       @JsonKey(name: 'additionalDetails')
@@ -3136,7 +3136,7 @@ class __$$_MeasureCopyWithImpl<$Res>
       cumulativeValue: freezed == cumulativeValue
           ? _value.cumulativeValue
           : cumulativeValue // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
@@ -3198,7 +3198,7 @@ class _$_Measure implements _Measure {
   final double? currentValue;
   @override
   @JsonKey(name: 'cumulativeValue')
-  final int? cumulativeValue;
+  final double? cumulativeValue;
   @override
   @JsonKey(name: 'height')
   final double? height;
@@ -3291,7 +3291,7 @@ abstract class _Measure implements Measure {
           @JsonKey(name: 'currentValue')
               final double? currentValue,
           @JsonKey(name: 'cumulativeValue')
-              final int? cumulativeValue,
+              final double? cumulativeValue,
           @JsonKey(name: 'height')
               final double? height,
           @JsonKey(name: 'additionalDetails')
@@ -3329,7 +3329,7 @@ abstract class _Measure implements Measure {
   double? get currentValue;
   @override
   @JsonKey(name: 'cumulativeValue')
-  int? get cumulativeValue;
+  double? get cumulativeValue;
   @override
   @JsonKey(name: 'height')
   double? get height;

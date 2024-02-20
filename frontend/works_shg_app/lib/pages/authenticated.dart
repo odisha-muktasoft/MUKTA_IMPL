@@ -57,9 +57,9 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
             )),
           child: BlocProvider(
             create: (_) => ORGSearchBloc()
-              ..add(SearchORGEvent(
-                  GlobalVariables.userRequestModel!['mobileNumber'])),
-            child: const AutoRouter(),
+              // ..add(SearchORGEvent(
+              //     GlobalVariables.userRequestModel!['mobileNumber'])),
+            ,child: const AutoRouter(),
           ),
         ),
       ),

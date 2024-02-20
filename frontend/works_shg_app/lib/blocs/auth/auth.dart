@@ -45,6 +45,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         "grant_type": "password"
       });
       await Future.delayed(const Duration(seconds: 1));
+      GlobalVariables.roleType =
+          event.roleType == RoleType.cbo ? RoleType.cbo : RoleType.employee;
       GlobalVariables.authToken = userDetailsModel.access_token;
       GlobalVariables.uuid = userDetailsModel.userRequestModel?.uuid;
       GlobalVariables.userRequestModel =
@@ -110,6 +112,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
+      GlobalVariables.roleType = RoleType.none;
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
     } on DioError catch (e) {
@@ -132,6 +135,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
+      GlobalVariables.roleType = RoleType.none;
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
     } on DioError catch (e) {

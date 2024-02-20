@@ -401,7 +401,7 @@ mixin _$MeasurementInboxState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic cboHomeScreenConfig) loaded,
+    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
     required TResult Function(String? error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -409,7 +409,7 @@ mixin _$MeasurementInboxState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -417,7 +417,7 @@ mixin _$MeasurementInboxState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -507,7 +507,7 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic cboHomeScreenConfig) loaded,
+    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
     required TResult Function(String? error) error,
   }) {
     return initial();
@@ -518,7 +518,7 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -529,7 +529,7 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -621,7 +621,7 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic cboHomeScreenConfig) loaded,
+    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
     required TResult Function(String? error) error,
   }) {
     return loading();
@@ -632,7 +632,7 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -643,7 +643,7 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -701,7 +701,9 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({dynamic cboHomeScreenConfig});
+  $Res call({MBInboxResponse mbInboxResponse});
+
+  $MBInboxResponseCopyWith<$Res> get mbInboxResponse;
 }
 
 /// @nodoc
@@ -714,28 +716,36 @@ class __$$_LoadedCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? cboHomeScreenConfig = freezed,
+    Object? mbInboxResponse = null,
   }) {
     return _then(_$_Loaded(
-      freezed == cboHomeScreenConfig
-          ? _value.cboHomeScreenConfig
-          : cboHomeScreenConfig // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+      null == mbInboxResponse
+          ? _value.mbInboxResponse
+          : mbInboxResponse // ignore: cast_nullable_to_non_nullable
+              as MBInboxResponse,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MBInboxResponseCopyWith<$Res> get mbInboxResponse {
+    return $MBInboxResponseCopyWith<$Res>(_value.mbInboxResponse, (value) {
+      return _then(_value.copyWith(mbInboxResponse: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.cboHomeScreenConfig) : super._();
+  const _$_Loaded(this.mbInboxResponse) : super._();
 
   @override
-  final dynamic cboHomeScreenConfig;
+  final MBInboxResponse mbInboxResponse;
 
   @override
   String toString() {
-    return 'MeasurementInboxState.loaded(cboHomeScreenConfig: $cboHomeScreenConfig)';
+    return 'MeasurementInboxState.loaded(mbInboxResponse: $mbInboxResponse)';
   }
 
   @override
@@ -743,13 +753,12 @@ class _$_Loaded extends _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
-            const DeepCollectionEquality()
-                .equals(other.cboHomeScreenConfig, cboHomeScreenConfig));
+            (identical(other.mbInboxResponse, mbInboxResponse) ||
+                other.mbInboxResponse == mbInboxResponse));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(cboHomeScreenConfig));
+  int get hashCode => Object.hash(runtimeType, mbInboxResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -762,10 +771,10 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic cboHomeScreenConfig) loaded,
+    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(cboHomeScreenConfig);
+    return loaded(mbInboxResponse);
   }
 
   @override
@@ -773,10 +782,10 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(cboHomeScreenConfig);
+    return loaded?.call(mbInboxResponse);
   }
 
   @override
@@ -784,12 +793,12 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(cboHomeScreenConfig);
+      return loaded(mbInboxResponse);
     }
     return orElse();
   }
@@ -833,10 +842,10 @@ class _$_Loaded extends _Loaded {
 }
 
 abstract class _Loaded extends MeasurementInboxState {
-  const factory _Loaded(final dynamic cboHomeScreenConfig) = _$_Loaded;
+  const factory _Loaded(final MBInboxResponse mbInboxResponse) = _$_Loaded;
   const _Loaded._() : super._();
 
-  dynamic get cboHomeScreenConfig;
+  MBInboxResponse get mbInboxResponse;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -906,7 +915,7 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic cboHomeScreenConfig) loaded,
+    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
     required TResult Function(String? error) error,
   }) {
     return error(this.error);
@@ -917,7 +926,7 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -928,7 +937,7 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic cboHomeScreenConfig)? loaded,
+    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
