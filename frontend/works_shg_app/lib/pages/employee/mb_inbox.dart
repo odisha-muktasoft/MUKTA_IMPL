@@ -8,6 +8,7 @@ import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
 import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
+import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import '../../utils/common_methods.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
@@ -67,6 +68,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             tenantId: 'od.testing',
           ),
         );
+
+         context.read<WageSeekerLocationBloc>().add(
+          const LocationEventWageSeeker(
+              tenantId: "od.testing"),
+        );
     _scrollController.addListener(_scrollListener);
 
     super.initState();
@@ -84,30 +90,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
         _scrollController.position.maxScrollExtent) {
       _addRandomData();
     }
-    //  else if (_scrollController.position.pixels ==
-    //     _scrollController.position.minScrollExtent) {
-    //   if (pageCount > 0) {
-    //     _removeRandomData();
-    //   }
-    // }
+   
   }
 
-  void _removeRandomData() {
-    int s = pageCount - 10;
-    context.read<MeasurementInboxBloc>().add(
-          MeasurementBookInboxBlocEvent(
-            businessService: "MB",
-            limit: 20,
-            moduleName: 'measurement-module',
-            offset: s,
-            tenantId: 'od.testing',
-          ),
-        );
-
-    setState(() {
-      pageCount = s;
-    });
-  }
+  
 
   void _addRandomData() {
     int s = pageCount + 10;
