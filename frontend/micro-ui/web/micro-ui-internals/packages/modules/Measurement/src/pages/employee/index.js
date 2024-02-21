@@ -64,7 +64,7 @@ const App = ({ path }) => {
   return (
     <Switch>
       <React.Fragment>
-        <div style={{marginLeft: "15px"}}><MeasurementBreadCrumbs location={location} /></div>
+        <div style={/(measurement\/update|measurement\/update)/.test(window.location.href) ? {marginLeft: "15px"}: {}}><MeasurementBreadCrumbs location={location} /></div>
 
         <PrivateRoute path={`${path}/create`} component={() => <CreateMeasurement {...{ path }} />} />
         <PrivateRoute path={`${path}/search`} component={() => <SearchMeasurement {...{ path }} />} />
