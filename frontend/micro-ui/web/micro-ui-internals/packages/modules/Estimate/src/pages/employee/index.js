@@ -95,7 +95,7 @@ const EstimateBreadCrumbs = ({ location }) => {
             isBack: fromScreen && true,
         },
     ];
-    return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
+    return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} zerothStyle={location.pathname.includes("/estimate/inbox") || location.pathname.includes("/estimate/search-estimate")  ? {marginLeft:"-0.2rem"} : {}} />;
 
 }
 
