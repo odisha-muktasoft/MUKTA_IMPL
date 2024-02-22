@@ -164,8 +164,8 @@ config:
         image-name: "expense-cronjob"
         dockerfile: "utilities/expense-cronjob/Dockerfile"
 
-# mukta-qa
-  - name: "builds/mukta_impl/mukta-qa/mukta-attendance"
+# mukta
+  - name: "builds/mukta_impl/mukta/mukta-attendance"
     build:
       - work-dir: "backend/attendance"
         dockerfile: "build/maven/Dockerfile"
@@ -173,7 +173,7 @@ config:
       - work-dir: "backend/attendance/src/main/resources/db"
         image-name: "mukta-attendance-db"
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-bankaccounts"
+  - name: "builds/mukta_impl/mukta/mukta-bankaccounts"
     build:
       - work-dir: "backend/bankaccounts"
         dockerfile: "build/maven/Dockerfile"
@@ -181,7 +181,7 @@ config:
       - work-dir: "backend/bankaccounts/src/main/resources/db"
         image-name: "mukta-bankaccounts-db"
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-contracts"
+  - name: "builds/mukta_impl/mukta/mukta-contracts"
     build:
       - work-dir: "backend/contracts"
         dockerfile: "build/maven/Dockerfile"
@@ -189,7 +189,7 @@ config:
       - work-dir: "backend/contracts/src/main/resources/db"
         image-name: "mukta-contracts-db"      
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-estimates"
+  - name: "builds/mukta_impl/mukta/mukta-estimates"
     build:
       - work-dir: "backend/estimates"
         dockerfile: "build/maven/Dockerfile"
@@ -197,7 +197,7 @@ config:
       - work-dir: "backend/estimates/src/main/resources/db"
         image-name: "mukta-estimates-db"      
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-expense"
+  - name: "builds/mukta_impl/mukta/mukta-expense"
     build:
       - work-dir: "backend/expense"
         dockerfile: "build/maven/Dockerfile"
@@ -205,7 +205,7 @@ config:
       - work-dir: "backend/expense/src/main/resources/db"
         image-name: "mukta-expense-db"      
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-expense-calculator"
+  - name: "builds/mukta_impl/mukta/mukta-expense-calculator"
     build:
       - work-dir: "backend/expense-calculator"
         dockerfile: "build/maven/Dockerfile"
@@ -213,7 +213,7 @@ config:
       - work-dir: "backend/expense-calculator/src/main/resources/db"
         image-name: "mukta-expense-calculator-db"   
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-reference-adapters/mukta-ifms-adapter"
+  - name: "builds/mukta_impl/mukta/mukta-reference-adapters/mukta-ifms-adapter"
     build:
       - work-dir: "reference-adapters/ifms-adapter"
         dockerfile: "build/maven/Dockerfile"
@@ -221,7 +221,7 @@ config:
       - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
         image-name: "mukta-ifms-adapter-db"      
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-individual"
+  - name: "builds/mukta_impl/mukta/mukta-individual"
     build:
       - work-dir: "backend/individual"
         dockerfile: "build/maven/Dockerfile"
@@ -229,7 +229,7 @@ config:
       - work-dir: "backend/individual/src/main/resources/db"
         image-name: "mukta-individual-db"       
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-measurement-registry"
+  - name: "builds/mukta_impl/mukta/mukta-measurement-registry"
     build:
       - work-dir: "backend/measurement-registry"
         dockerfile: "build/maven/Dockerfile"
@@ -237,7 +237,7 @@ config:
       - work-dir: "backend/measurement-registry/src/main/resources/db"
         image-name: "mukta-measurement-registry-db"             
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-measurement-service"
+  - name: "builds/mukta_impl/mukta/mukta-measurement-service"
     build:
       - work-dir: "backend/measurement-service"
         dockerfile: "build/maven/Dockerfile"
@@ -245,13 +245,13 @@ config:
       - work-dir: "backend/measurement-service/src/main/resources/db"
         image-name: "mukta-measurement-service-db"    
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-service"
+  - name: "builds/mukta_impl/mukta/mukta-service"
     build:
       - work-dir: "utilities/mukta-service"
         dockerfile: "build/maven/Dockerfile"
         image-name: "mukta-service"       
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-muster-roll"
+  - name: "builds/mukta_impl/mukta/mukta-muster-roll"
     build:
       - work-dir: "backend/muster-roll"
         dockerfile: "build/maven/Dockerfile"
@@ -259,7 +259,7 @@ config:
       - work-dir: "backend/muster-roll/src/main/resources/db"
         image-name: "mukta-muster-roll-db"      
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-organisation"
+  - name: "builds/mukta_impl/mukta/mukta-organisation"
     build:
       - work-dir: "backend/organisation"
         dockerfile: "build/maven/Dockerfile"
@@ -267,7 +267,7 @@ config:
       - work-dir: "backend/organisation/src/main/resources/db"
         image-name: "mukta-organisation-db"  
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-project"
+  - name: "builds/mukta_impl/mukta/mukta-project"
     build:
       - work-dir: "backend/project"
         image-name: "mukta-project"
@@ -275,13 +275,13 @@ config:
       - work-dir: "backend/project/src/main/resources/db"
         image-name: "mukta-project-db"
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-works-management-service"
+  - name: "builds/mukta_impl/mukta/mukta-works-management-service"
     build:
       - work-dir: "backend/wms"
         dockerfile: "build/maven/Dockerfile"
         image-name: "mukta-works-management-service"      
 
-  - name: "builds/mukta_impl/mukta-qa/mukta-works-pdf"
+  - name: "builds/mukta_impl/mukta/mukta-works-pdf"
     build:
       - work-dir: "utilities/works-pdf"
         image-name: "mukta-works-pdf"
