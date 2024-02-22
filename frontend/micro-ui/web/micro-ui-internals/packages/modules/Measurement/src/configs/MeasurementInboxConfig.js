@@ -215,6 +215,7 @@ const InboxMeasurementConfig = () => {
               label: "MB_AMOUNT",
               jsonPath: "businessObject.additionalDetails.totalAmount",
               additionalCustomization: true,
+              headerAlign: "right"
             },
             {
               label: "MB_SLA_DAYS_REMAINING",

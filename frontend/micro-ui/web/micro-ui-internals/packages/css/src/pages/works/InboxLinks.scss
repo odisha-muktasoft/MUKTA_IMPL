@@ -43,6 +43,7 @@
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+        margin-left: -0.5rem;
         .link {
             padding: 8px;
             --text-opacity: 1;

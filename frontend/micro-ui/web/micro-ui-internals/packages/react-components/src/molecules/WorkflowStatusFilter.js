@@ -46,6 +46,7 @@ const WorkflowStatusFilter = ({ props, t, populators, formData,inboxResponse }) 
             value={row.uuid}
             checked={formData?.[populators.name]?.[row.uuid]}
             label={t(Digit.Utils.locale.getTransformedLocale(`${populators.labelPrefix}${row?.businessService}_STATE_${row?.state}`))}
+            style={{marginLeft:"40px"}}
           />
         );
       })}
