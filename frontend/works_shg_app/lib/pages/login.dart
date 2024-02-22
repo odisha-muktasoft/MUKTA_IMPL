@@ -45,10 +45,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
   ];
 
-  List<DigitRowCardModel> btns = [
-    const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
-    const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
-  ];
+  
 
   @override
   void initState() {
@@ -333,69 +330,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 
-  Future<dynamic> forgotPassword() {
-    return showDialog(
-              barrierDismissible: false,
-              context: context, builder:(context) {
-              
-             return AlertDialog(
-              contentPadding: const EdgeInsets.all(5.0) ,
-              titlePadding: const EdgeInsets.only(top:8.0, left:5.0,bottom: 8.0),
-              title: const Text("Forgot Password"),
-              content: SizedBox(
-                width: MediaQuery.sizeOf(context).width,
-                height: 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                     Padding(
-                       padding: const EdgeInsets.only(bottom:12.0,top: 8.0),
-                       child: Text("Please use MUKTAsoft web login to reset the password",
-                       style: DigitTheme.instance.mobileTheme.textTheme.labelMedium,
-                                           ),
-                     ),
-                    DigitElevatedButton(child: const Text("OK"), onPressed:() {
-                      
-                      Navigator.of(context).pop();
-                    },)
-                  ],
-                ),
-              ),
-             );
-            },);
-  }
-
-  DigitTextField cboLogin(BuildContext loginContext) {
-    return DigitTextField(
-      label:
-          '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
-      controller: userIdController,
-      isRequired: true,
-      prefixText: '+91 - ',
-      focusNode: _numberFocus,
-      autoValidation: phoneNumberAutoValidation
-          ? AutovalidateMode.always
-          : AutovalidateMode.disabled,
-      textInputType: TextInputType.number,
-      inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-      validator: (val) {
-        if (val!.trim().isEmpty || val!.trim().length != 10) {
-          return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-        }
-        return null;
-      },
-      onChange: (value) {
-        setState(() {
-          canContinue = value.length == 10;
-        });
-        if (value.length == 10) {
-          _numberFocus.unfocus();
-        }
-      },
-      maxLength: 10,
-    );
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -487,15 +422,5 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 
-
-
-
+  
 }
-// const [
-//               "testing",
-//               "delhi",
-//               "mumbai",
-//               "bbsr",
-//               "ctc",
-//               "puri"
-//             ]
