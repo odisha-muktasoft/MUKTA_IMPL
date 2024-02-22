@@ -1,6 +1,7 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
@@ -29,6 +30,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
   @override
   void initState() {
+    context.read<MeasurementDetailBloc>().add(const MeasurementDetailBookBlocEvent(businessService: "", limit: 0, moduleName: '', offset: 10, tenantId: ''));
     super.initState();
     _scrollController.addListener(_scrollListener);
     // Initial data

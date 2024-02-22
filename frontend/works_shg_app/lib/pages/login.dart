@@ -26,7 +26,9 @@ class LoginPage extends StatefulWidget {
   }
 }
 
-class _LoginPage extends State<LoginPage> {
+class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  int _selectedIndex = 0;
   var userIdController = TextEditingController();
 
   var userNameController = TextEditingController();
@@ -44,12 +46,25 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(_handleTabSelection);
     _numberFocus.addListener(_onFocusChange);
     super.initState();
   }
 
+  void _handleTabSelection() {
+    userIdController.clear();
+    userNameController.clear();
+    userPasswordController.clear();
+    setState(() {
+      _selectedIndex = _tabController.index;
+    });
+  }
+
   @override
   dispose() {
+    _tabController.dispose();
+    _tabController.removeListener(_handleTabSelection);
     _numberFocus.removeListener(_onFocusChange);
     super.dispose();
   }
@@ -71,131 +86,157 @@ class _LoginPage extends State<LoginPage> {
   }
 
   Widget getLoginCard(BuildContext loginContext, AppInitializationState data) {
-    return Form(
-      key: formKey,
-      autovalidateMode:
-          autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
-      child: DigitCard(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const AppLogo(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                  AppLocalizations.of(loginContext)
-                      .translate(i18.login.loginLabel),
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w700)),
-            ),
-            btns.first.isSelected
-                ? cboLogin(loginContext)
-                : employeeLogin(loginContext, data,
-                    userName: userNameController,
-                    userpassword: userPasswordController),
-            const SizedBox(height: 16),
-            DigitRowCard(
-              onChanged: (value) {
-                userIdController.clear();
-                userNameController.clear();
-                userPasswordController.clear();
-                setState(() {
-                  final m = btns.map((e) {
-                    if (e.label == value.label) {
-                      final s = DigitRowCardModel(
-                          label: e.label, value: e.value, isSelected: true);
-                      return s;
-                    } else {
-                      final k = DigitRowCardModel(
-                          label: e.label, value: e.value, isSelected: false);
-                      return k;
-                    }
-                  }).toList();
-                  btns.clear();
-                  btns.addAll(m);
-                });
-              },
-              rowItems: btns,
-              width: MediaQuery.of(context).size.width > 720
-                  ? (MediaQuery.of(context).size.width / (2 * 3)) - 20
-                  : (MediaQuery.of(context).size.width / 2) - 16 * 2,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            btns.first.isSelected?const SizedBox.shrink(): DigitIconButton(iconText: "Forgot Password?",onPressed: () {
-
-              forgotPassword();
-              
-            },),
-            btns.first.isSelected
-                ? BlocListener<OTPBloc, OTPBlocState>(
-                    listener: (context, state) {
-                      state.maybeWhen(
-                          orElse: () => Container(),
-                          loaded: () {
-                            context.router.push(OTPVerificationRoute(
-                                mobileNumber: userIdController.text));
-                          },
-                          error: () => Notifiers.getToastMessage(
-                              context,
-                              AppLocalizations.of(context).translate(
-                                  i18.login.enteredMobileNotRegistered),
-                              'ERROR'));
-                    },
-                    child: DigitElevatedButton(
-                      onPressed: canContinue
-                          ? () {
-                              if (formKey.currentState!.validate()) {
-                                loginContext.read<OTPBloc>().add(
-                                      OTPSendEvent(
-                                        mobileNumber: userIdController.text,
-                                      ),
-                                    );
-                              } else {
-                                setState(() {
-                                  autoValidation = true;
-                                });
-                              }
-                            }
-                          : null,
-                      child: Center(
-                        child: Text(AppLocalizations.of(loginContext)
-                            .translate(i18.common.continueLabel)),
+    return Center(
+      child: Form(
+        key: formKey,
+        autovalidateMode: autoValidation
+            ? AutovalidateMode.always
+            : AutovalidateMode.disabled,
+        child: DigitCard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const AppLogo(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                    AppLocalizations.of(loginContext)
+                        .translate(i18.login.loginLabel),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w700)),
+              ),
+              TabBar(
+                  controller: _tabController,
+                  labelColor: const DigitColors().burningOrange,
+                  unselectedLabelColor: Colors.black,
+                  tabs: const [
+                    Tab(
+                      child: Text(
+                        "CBO",
                       ),
                     ),
-                  )
-                : BlocListener<AuthBloc, AuthState>(
-                    listener: (context, state) {
+                    Tab(
+                      child: Text(
+                        "Employee",
+                      ),
+                    ),
+                  ]),
+              AnimatedContainer(
+                height: _tabController.index == 0 ? 120 : 320,
+                duration: Duration(
+                    milliseconds: _tabController.index == 0 ? 100 : 100),
+                child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController, children: [
+                  cboLogin(loginContext),
+                  employeeLogin(loginContext, data,
+                      userName: userNameController,
+                      userpassword: userPasswordController)
+                ]),
+              ),
+              // btns.first.isSelected
+              //     ? cboLogin(loginContext)
+              //     : employeeLogin(loginContext, data,
+              //         userName: userNameController,
+              //         userpassword: userPasswordController),
+              // const SizedBox(height: 16),
+              // DigitRowCard(
+              //   onChanged: (value) {
+              //     userIdController.clear();
+              //     userNameController.clear();
+              //     userPasswordController.clear();
+              //     setState(() {
+              //       final m = btns.map((e) {
+              //         if (e.label == value.label) {
+              //           final s = DigitRowCardModel(
+              //               label: e.label, value: e.value, isSelected: true);
+              //           return s;
+              //         } else {
+              //           final k = DigitRowCardModel(
+              //               label: e.label, value: e.value, isSelected: false);
+              //           return k;
+              //         }
+              //       }).toList();
+              //       btns.clear();
+              //       btns.addAll(m);
+              //     });
+              //   },
+              //   rowItems: btns,
+              //   width: MediaQuery.of(context).size.width > 720
+              //       ? (MediaQuery.of(context).size.width / (2 * 3)) - 20
+              //       : (MediaQuery.of(context).size.width / 2) - 16 * 2,
+              // ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
 
-                      state.maybeWhen(
-                        error: () {
-                          Notifiers.getToastMessage(
-                              context,
-                              AppLocalizations.of(context)
-                                  .translate(i18.login.invalidOTP),
-                              'ERROR');
-                         
-                        },
-                        orElse: () => Container());
-                    },
-                    child: DigitElevatedButton(
-                      onPressed: () {
-                        context.read<AuthBloc>().add(
-                              AuthLoginEvent(
-                                userId: userNameController.text,
-                                password: userPasswordController.text,
-                                roleType: RoleType.employee,
-                              ),
-                            );
+              _tabController.index == 0
+                  ? BlocListener<OTPBloc, OTPBlocState>(
+                      listener: (context, state) {
+                        state.maybeWhen(
+                            orElse: () => Container(),
+                            loaded: () {
+                              context.router.push(OTPVerificationRoute(
+                                  mobileNumber: userIdController.text));
+                            },
+                            error: () => Notifiers.getToastMessage(
+                                context,
+                                AppLocalizations.of(context).translate(
+                                    i18.login.enteredMobileNotRegistered),
+                                'ERROR'));
                       },
-                      child: Center(
-                        child: Text(AppLocalizations.of(loginContext)
-                            .translate(i18.common.continueLabel)),
+                      child: DigitElevatedButton(
+                        onPressed: canContinue
+                            ? () {
+                                if (formKey.currentState!.validate()) {
+                                  loginContext.read<OTPBloc>().add(
+                                        OTPSendEvent(
+                                          mobileNumber: userIdController.text,
+                                        ),
+                                      );
+                                } else {
+                                  setState(() {
+                                    autoValidation = true;
+                                  });
+                                }
+                              }
+                            : null,
+                        child: Center(
+                          child: Text(AppLocalizations.of(loginContext)
+                              .translate(i18.common.continueLabel)),
+                        ),
+                      ),
+                    )
+                  : BlocListener<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        state.maybeWhen(
+                            error: () {
+                              Notifiers.getToastMessage(
+                                  context,
+                                  AppLocalizations.of(context)
+                                      .translate(i18.login.invalidOTP),
+                                  'ERROR');
+                            },
+                            orElse: () => Container());
+                      },
+                      child: DigitElevatedButton(
+                        onPressed: () {
+                          context.read<AuthBloc>().add(
+                                AuthLoginEvent(
+                                  userId: userNameController.text,
+                                  password: userPasswordController.text,
+                                  roleType: RoleType.employee,
+                                ),
+                              );
+                        },
+                        child: Center(
+                          child: Text(AppLocalizations.of(loginContext)
+                              .translate(i18.common.continueLabel)),
+                        ),
                       ),
                     ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -203,145 +244,157 @@ class _LoginPage extends State<LoginPage> {
 
   Future<dynamic> forgotPassword() {
     return showDialog(
-              barrierDismissible: false,
-              context: context, builder:(context) {
-              
-             return AlertDialog(
-              contentPadding: const EdgeInsets.all(5.0) ,
-              titlePadding: const EdgeInsets.only(top:8.0, left:5.0,bottom: 8.0),
-              title: const Text("Forgot Password"),
-              content: SizedBox(
-                width: MediaQuery.sizeOf(context).width,
-                height: 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                     Padding(
-                       padding: const EdgeInsets.only(bottom:12.0,top: 8.0),
-                       child: Text("Please use MUKTAsoft web login to reset the password",
-                       style: DigitTheme.instance.mobileTheme.textTheme.labelMedium,
-                                           ),
-                     ),
-                    DigitElevatedButton(child: const Text("OK"), onPressed:() {
-                      
-                      Navigator.of(context).pop();
-                    },)
-                  ],
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(5.0),
+          titlePadding: const EdgeInsets.only(top: 8.0, left: 5.0, bottom: 8.0),
+          title: const Text("Forgot Password"),
+          content: SizedBox(
+            width: MediaQuery.sizeOf(context).width,
+            height: 120,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0, top: 8.0),
+                  child: Text(
+                    "Please use MUKTAsoft web login to reset the password",
+                    style:
+                        DigitTheme.instance.mobileTheme.textTheme.labelMedium,
+                  ),
                 ),
-              ),
-             );
-            },);
+                DigitElevatedButton(
+                  child: const Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
-  DigitTextField cboLogin(BuildContext loginContext) {
-    return DigitTextField(
-      label:
-          '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
-      controller: userIdController,
-      isRequired: true,
-      prefixText: '+91 - ',
-      focusNode: _numberFocus,
-      autoValidation: phoneNumberAutoValidation
-          ? AutovalidateMode.always
-          : AutovalidateMode.disabled,
-      textInputType: TextInputType.number,
-      inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-      validator: (val) {
-        if (val!.trim().isEmpty || val!.trim().length != 10) {
-          return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-        }
-        return null;
-      },
-      onChange: (value) {
-        setState(() {
-          canContinue = value.length == 10;
-        });
-        if (value.length == 10) {
-          _numberFocus.unfocus();
-        }
-      },
-      maxLength: 10,
+  SizedBox cboLogin(BuildContext loginContext) {
+    return SizedBox(
+      height: 340,
+      child: SingleChildScrollView(
+        child: DigitTextField(
+          label:
+              '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+          controller: userIdController,
+          isRequired: true,
+          prefixText: '+91 - ',
+          focusNode: _numberFocus,
+          autoValidation: phoneNumberAutoValidation
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
+          textInputType: TextInputType.number,
+          inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+          validator: (val) {
+            if (val!.trim().isEmpty || val!.trim().length != 10) {
+              return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+            }
+            return null;
+          },
+          onChange: (value) {
+            setState(() {
+              canContinue = value.length == 10;
+            });
+            if (value.length == 10) {
+              _numberFocus.unfocus();
+            }
+          },
+          maxLength: 10,
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-        ),
-        body: BlocBuilder<AppInitializationBloc, AppInitializationState>(
-          builder: (context, state) {
-            return LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth < 720) {
-                return MobileView(
-                  getLoginCard(context, state),
-                  GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
-                  logoBottomPosition: constraints.maxHeight / 8,
-                  cardBottomPosition: constraints.maxHeight / 3,
-                );
-              } else {
-                return DesktopView(getLoginCard(context, state),
-                    GlobalVariables.stateInfoListModel!.bannerUrl.toString());
-              }
-            });
-          },
-        ));
-  }
-
-  Column employeeLogin(BuildContext context, AppInitializationState data,
-      {required TextEditingController userName,
-      required TextEditingController userpassword}) {
-    return Column(
-      children: [
-        DigitTextField(
-          label: 'User Name*',
-          controller: userName,
-          isRequired: true,
-          validator: (val) {
-            if (val!.trim().isEmpty || val!.trim().length != 10) {
-              return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-            }
-            return null;
-          },
-          onChange: (value) {},
-        ),
-        DigitTextField(
-          label: 'Password*',
-          controller: userpassword,
-          isRequired: true,
-
-          //  focusNode: _numberFocus,
-          validator: (val) {
-            if (val!.trim().isEmpty || val!.trim().length != 10) {
-              return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-            }
-            return null;
-          },
-          onChange: (value) {},
-        ),
-        DigitDropdown(
-            onChanged: (value) {},
-            value: null,
-            label: "City *",
-            menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
-            valueMapper: (value) {
-              return value!.code!;
-            })
-      ],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: true,
+          ),
+          body: BlocBuilder<AppInitializationBloc, AppInitializationState>(
+            builder: (context, state) {
+              return LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth < 720) {
+                  return Center(
+                    child: MobileView(
+                      getLoginCard(context, state),
+                      GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
+                      logoBottomPosition: constraints.maxHeight / 8,
+                      cardBottomPosition: constraints.maxHeight / 3,
+                    ),
+                  );
+                } else {
+                  return DesktopView(getLoginCard(context, state),
+                      GlobalVariables.stateInfoListModel!.bannerUrl.toString());
+                }
+              });
+            },
+          )),
     );
   }
 
+  SizedBox employeeLogin(BuildContext context, AppInitializationState data,
+      {required TextEditingController userName,
+      required TextEditingController userpassword}) {
+    return SizedBox(
+      height: 340,
+      child: Column(
+        children: [
+          DigitTextField(
+            label: 'User Name*',
+            controller: userName,
+            isRequired: true,
+            validator: (val) {
+              if (val!.trim().isEmpty || val!.trim().length != 10) {
+                return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+              }
+              return null;
+            },
+            onChange: (value) {},
+          ),
+          DigitTextField(
+            label: 'Password*',
+            controller: userpassword,
+            isRequired: true,
 
-
-
+            //  focusNode: _numberFocus,
+            validator: (val) {
+              if (val!.trim().isEmpty || val!.trim().length != 10) {
+                return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+              }
+              return null;
+            },
+            onChange: (value) {},
+          ),
+          DigitDropdown(
+              onChanged: (value) {},
+              value: null,
+              label: "City *",
+              menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
+              valueMapper: (value) {
+                return value!.code!;
+              }),
+          DigitIconButton(
+            iconText: "Forgot Password?",
+            onPressed: () {
+              forgotPassword();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
-// const [
-//               "testing",
-//               "delhi",
-//               "mumbai",
-//               "bbsr",
-//               "ctc",
-//               "puri"
-//             ]

@@ -79,6 +79,9 @@ _$_ProcessInstance _$$_ProcessInstanceFromJson(Map<String, dynamic> json) =>
       auditDetails: json['auditDetails'] == null
           ? null
           : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
+      assignes: (json['assignes'] as List<dynamic>?)
+          ?.map((e) => Assigne.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ProcessInstanceToJson(_$_ProcessInstance instance) =>
@@ -94,6 +97,7 @@ Map<String, dynamic> _$$_ProcessInstanceToJson(_$_ProcessInstance instance) =>
       'state': instance.state,
       'assigner': instance.assigner,
       'auditDetails': instance.auditDetails,
+      'assignes': instance.assignes,
     };
 
 _$_AuditDetails _$$_AuditDetailsFromJson(Map<String, dynamic> json) =>
@@ -190,6 +194,33 @@ Map<String, dynamic> _$$_AssignerToJson(_$_Assigner instance) =>
       'roles': instance.roles,
     };
 
+_$_Assigne _$$_AssigneFromJson(Map<String, dynamic> json) => _$_Assigne(
+      id: json['id'] as int?,
+      userName: json['userName'] as String?,
+      name: json['name'] as String?,
+      type: json['type'] as String?,
+      mobileNumber: json['mobileNumber'] as String?,
+      emailId: json['emailId'] as String?,
+      tenantId: json['tenantId'] as String?,
+      uuid: json['uuid'] as String?,
+      roles: (json['roles'] as List<dynamic>?)
+          ?.map((e) => Role.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_AssigneToJson(_$_Assigne instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'userName': instance.userName,
+      'name': instance.name,
+      'type': instance.type,
+      'mobileNumber': instance.mobileNumber,
+      'emailId': instance.emailId,
+      'tenantId': instance.tenantId,
+      'uuid': instance.uuid,
+      'roles': instance.roles,
+    };
+
 _$_Role _$$_RoleFromJson(Map<String, dynamic> json) => _$_Role(
       name: json['name'] as String?,
       id: json['id'] as String?,
@@ -218,6 +249,7 @@ _$_BusinessObject _$$_BusinessObjectFromJson(Map<String, dynamic> json) =>
       contract: json['contract'] == null
           ? null
           : Contract.fromJson(json['contract'] as Map<String, dynamic>),
+      serviceSla: json['serviceSla'] as int?,
     );
 
 Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
@@ -228,6 +260,7 @@ Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
       'measures': instance.measures,
       'auditDetails': instance.auditDetails,
       'contract': instance.contract,
+      'serviceSla': instance.serviceSla,
     };
 
 _$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(
@@ -281,6 +314,27 @@ Map<String, dynamic> _$$_MeasureAdditionalDetailsToJson(
 _$_Contract _$$_ContractFromJson(Map<String, dynamic> json) => _$_Contract(
       contractNumber: json['contractNumber'] as String?,
       id: json['id'] as String?,
+      versionNumber: json['versionNumber'] as int?,
+      oldUuid: json['oldUuid'] as String?,
+      businessService: json['businessService'] as String?,
+      tenantId: json['tenantId'] as String?,
+      wfStatus: json['wfStatus'] as String?,
+      executingAuthority: json['executingAuthority'] as String?,
+      contractType: json['contractType'] as String?,
+      totalContractedAmount:
+          (json['totalContractedAmount'] as num?)?.toDouble(),
+      securityDeposit: (json['securityDeposit'] as num?)?.toDouble(),
+      agreementDate: json['agreementDate'] as int?,
+      issueDate: json['issueDate'] as int?,
+      defectLiabilityPeriod: json['defectLiabilityPeriod'] as int?,
+      orgId: json['orgId'] as String?,
+      startDate: json['startDate'] as int?,
+      endDate: json['endDate'] as int?,
+      completionPeriod: json['completionPeriod'] as int?,
+      status: json['status'] as String?,
+      lineItems: (json['lineItems'] as List<dynamic>?)
+          ?.map((e) => LineItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
       additionalDetails: json['additionalDetails'] == null
           ? null
           : ContractAdditionalDetails.fromJson(
@@ -291,6 +345,24 @@ Map<String, dynamic> _$$_ContractToJson(_$_Contract instance) =>
     <String, dynamic>{
       'contractNumber': instance.contractNumber,
       'id': instance.id,
+      'versionNumber': instance.versionNumber,
+      'oldUuid': instance.oldUuid,
+      'businessService': instance.businessService,
+      'tenantId': instance.tenantId,
+      'wfStatus': instance.wfStatus,
+      'executingAuthority': instance.executingAuthority,
+      'contractType': instance.contractType,
+      'totalContractedAmount': instance.totalContractedAmount,
+      'securityDeposit': instance.securityDeposit,
+      'agreementDate': instance.agreementDate,
+      'issueDate': instance.issueDate,
+      'defectLiabilityPeriod': instance.defectLiabilityPeriod,
+      'orgId': instance.orgId,
+      'startDate': instance.startDate,
+      'endDate': instance.endDate,
+      'completionPeriod': instance.completionPeriod,
+      'status': instance.status,
+      'lineItems': instance.lineItems,
       'additionalDetails': instance.additionalDetails,
     };
 
@@ -313,6 +385,14 @@ _$_ContractAdditionalDetails _$$_ContractAdditionalDetailsFromJson(
       cboCode: json['cboCode'] as String?,
       projectId: json['projectId'] as String?,
       cboName: json['cboName'] as String?,
+      timeExt: json['timeExt'],
+      completionPeriod: json['completionPeriod'] as int?,
+      estmateDocs: (json['estimateDocs'] as List<dynamic>?)
+          ?.map((e) => EstmateDoc.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      termsAndConditions: (json['termsAndConditions'] as List<dynamic>?)
+          ?.map((e) => TermsAndConditions.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_ContractAdditionalDetailsToJson(
@@ -334,4 +414,89 @@ Map<String, dynamic> _$$_ContractAdditionalDetailsToJson(
       'cboCode': instance.cboCode,
       'projectId': instance.projectId,
       'cboName': instance.cboName,
+      'timeExt': instance.timeExt,
+      'completionPeriod': instance.completionPeriod,
+      'estimateDocs': instance.estmateDocs,
+      'termsAndConditions': instance.termsAndConditions,
+    };
+
+_$_EstmateDoc _$$_EstmateDocFromJson(Map<String, dynamic> json) =>
+    _$_EstmateDoc(
+      fileName: json['fileName'] as String?,
+      fileType: json['fileType'] as String?,
+      tenantId: json['tenantId'] as String?,
+      documentUid: json['documentUid'] as String?,
+      fileStoreId: json['fileStoreId'] as String?,
+    );
+
+Map<String, dynamic> _$$_EstmateDocToJson(_$_EstmateDoc instance) =>
+    <String, dynamic>{
+      'fileName': instance.fileName,
+      'fileType': instance.fileType,
+      'tenantId': instance.tenantId,
+      'documentUid': instance.documentUid,
+      'fileStoreId': instance.fileStoreId,
+    };
+
+_$_TermsAndConditions _$$_TermsAndConditionsFromJson(
+        Map<String, dynamic> json) =>
+    _$_TermsAndConditions(
+      description: json['description'] as String?,
+    );
+
+Map<String, dynamic> _$$_TermsAndConditionsToJson(
+        _$_TermsAndConditions instance) =>
+    <String, dynamic>{
+      'description': instance.description,
+    };
+
+_$_LineItem _$$_LineItemFromJson(Map<String, dynamic> json) => _$_LineItem(
+      id: json['id'] as String?,
+      estimateId: json['estimateId'] as String?,
+      estimateLineItemId: json['estimateLineItemId'] as String?,
+      contractLineItemRef: json['contractLineItemRef'] as String?,
+      tenantId: json['tenantId'] as String?,
+      unitRate: (json['unitRate'] as num?)?.toDouble(),
+      category: json['category'] as String?,
+      noOfunit: json['noOfunit'] as int?,
+      name: json['name'] as String?,
+      status: json['status'] as String?,
+      amountBreakups: (json['amountBreakups'] as List<dynamic>?)
+          ?.map((e) => AmountBreakup.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      auditDetails: json['auditDetails'] == null
+          ? null
+          : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$_LineItemToJson(_$_LineItem instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'estimateId': instance.estimateId,
+      'estimateLineItemId': instance.estimateLineItemId,
+      'contractLineItemRef': instance.contractLineItemRef,
+      'tenantId': instance.tenantId,
+      'unitRate': instance.unitRate,
+      'category': instance.category,
+      'noOfunit': instance.noOfunit,
+      'name': instance.name,
+      'status': instance.status,
+      'amountBreakups': instance.amountBreakups,
+      'auditDetails': instance.auditDetails,
+    };
+
+_$_AmountBreakup _$$_AmountBreakupFromJson(Map<String, dynamic> json) =>
+    _$_AmountBreakup(
+      id: json['id'] as String?,
+      estimateAmountBreakupId: json['estimateAmountBreakupId'] as String?,
+      amount: (json['amount'] as num?)?.toDouble(),
+      status: json['status'] as String?,
+    );
+
+Map<String, dynamic> _$$_AmountBreakupToJson(_$_AmountBreakup instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'estimateAmountBreakupId': instance.estimateAmountBreakupId,
+      'amount': instance.amount,
+      'status': instance.status,
     };

@@ -717,6 +717,8 @@ mixin _$ProcessInstance {
   Assigner? get assigner => throw _privateConstructorUsedError;
   @JsonKey(name: 'auditDetails')
   AuditDetails? get auditDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: 'assignes')
+  List<Assigne>? get assignes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -741,7 +743,8 @@ abstract class $ProcessInstanceCopyWith<$Res> {
       @JsonKey(name: 'rating') int? rating,
       @JsonKey(name: 'state') State? state,
       @JsonKey(name: 'assigner') Assigner? assigner,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails});
+      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+      @JsonKey(name: 'assignes') List<Assigne>? assignes});
 
   $StateCopyWith<$Res>? get state;
   $AssignerCopyWith<$Res>? get assigner;
@@ -772,6 +775,7 @@ class _$ProcessInstanceCopyWithImpl<$Res, $Val extends ProcessInstance>
     Object? state = freezed,
     Object? assigner = freezed,
     Object? auditDetails = freezed,
+    Object? assignes = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -818,6 +822,10 @@ class _$ProcessInstanceCopyWithImpl<$Res, $Val extends ProcessInstance>
           ? _value.auditDetails
           : auditDetails // ignore: cast_nullable_to_non_nullable
               as AuditDetails?,
+      assignes: freezed == assignes
+          ? _value.assignes
+          : assignes // ignore: cast_nullable_to_non_nullable
+              as List<Assigne>?,
     ) as $Val);
   }
 
@@ -877,7 +885,8 @@ abstract class _$$_ProcessInstanceCopyWith<$Res>
       @JsonKey(name: 'rating') int? rating,
       @JsonKey(name: 'state') State? state,
       @JsonKey(name: 'assigner') Assigner? assigner,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails});
+      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+      @JsonKey(name: 'assignes') List<Assigne>? assignes});
 
   @override
   $StateCopyWith<$Res>? get state;
@@ -909,6 +918,7 @@ class __$$_ProcessInstanceCopyWithImpl<$Res>
     Object? state = freezed,
     Object? assigner = freezed,
     Object? auditDetails = freezed,
+    Object? assignes = freezed,
   }) {
     return _then(_$_ProcessInstance(
       id: freezed == id
@@ -955,6 +965,10 @@ class __$$_ProcessInstanceCopyWithImpl<$Res>
           ? _value.auditDetails
           : auditDetails // ignore: cast_nullable_to_non_nullable
               as AuditDetails?,
+      assignes: freezed == assignes
+          ? _value._assignes
+          : assignes // ignore: cast_nullable_to_non_nullable
+              as List<Assigne>?,
     ));
   }
 }
@@ -973,7 +987,9 @@ class _$_ProcessInstance implements _ProcessInstance {
       @JsonKey(name: 'rating') this.rating,
       @JsonKey(name: 'state') this.state,
       @JsonKey(name: 'assigner') this.assigner,
-      @JsonKey(name: 'auditDetails') this.auditDetails});
+      @JsonKey(name: 'auditDetails') this.auditDetails,
+      @JsonKey(name: 'assignes') final List<Assigne>? assignes})
+      : _assignes = assignes;
 
   factory _$_ProcessInstance.fromJson(Map<String, dynamic> json) =>
       _$$_ProcessInstanceFromJson(json);
@@ -1011,10 +1027,20 @@ class _$_ProcessInstance implements _ProcessInstance {
   @override
   @JsonKey(name: 'auditDetails')
   final AuditDetails? auditDetails;
+  final List<Assigne>? _assignes;
+  @override
+  @JsonKey(name: 'assignes')
+  List<Assigne>? get assignes {
+    final value = _assignes;
+    if (value == null) return null;
+    if (_assignes is EqualUnmodifiableListView) return _assignes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ProcessInstance(id: $id, tenantId: $tenantId, businessService: $businessService, businessId: $businessId, action: $action, moduleName: $moduleName, businesssServiceSla: $businesssServiceSla, rating: $rating, state: $state, assigner: $assigner, auditDetails: $auditDetails)';
+    return 'ProcessInstance(id: $id, tenantId: $tenantId, businessService: $businessService, businessId: $businessId, action: $action, moduleName: $moduleName, businesssServiceSla: $businesssServiceSla, rating: $rating, state: $state, assigner: $assigner, auditDetails: $auditDetails, assignes: $assignes)';
   }
 
   @override
@@ -1039,7 +1065,8 @@ class _$_ProcessInstance implements _ProcessInstance {
             (identical(other.assigner, assigner) ||
                 other.assigner == assigner) &&
             (identical(other.auditDetails, auditDetails) ||
-                other.auditDetails == auditDetails));
+                other.auditDetails == auditDetails) &&
+            const DeepCollectionEquality().equals(other._assignes, _assignes));
   }
 
   @JsonKey(ignore: true)
@@ -1056,7 +1083,8 @@ class _$_ProcessInstance implements _ProcessInstance {
       rating,
       state,
       assigner,
-      auditDetails);
+      auditDetails,
+      const DeepCollectionEquality().hash(_assignes));
 
   @JsonKey(ignore: true)
   @override
@@ -1084,7 +1112,8 @@ abstract class _ProcessInstance implements ProcessInstance {
           @JsonKey(name: 'rating') final int? rating,
           @JsonKey(name: 'state') final State? state,
           @JsonKey(name: 'assigner') final Assigner? assigner,
-          @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails}) =
+          @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails,
+          @JsonKey(name: 'assignes') final List<Assigne>? assignes}) =
       _$_ProcessInstance;
 
   factory _ProcessInstance.fromJson(Map<String, dynamic> json) =
@@ -1123,6 +1152,9 @@ abstract class _ProcessInstance implements ProcessInstance {
   @override
   @JsonKey(name: 'auditDetails')
   AuditDetails? get auditDetails;
+  @override
+  @JsonKey(name: 'assignes')
+  List<Assigne>? get assignes;
   @override
   @JsonKey(ignore: true)
   _$$_ProcessInstanceCopyWith<_$_ProcessInstance> get copyWith =>
@@ -2359,6 +2391,349 @@ abstract class _Assigner implements Assigner {
       throw _privateConstructorUsedError;
 }
 
+Assigne _$AssigneFromJson(Map<String, dynamic> json) {
+  return _Assigne.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Assigne {
+  @JsonKey(name: 'id')
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'userName')
+  String? get userName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'type')
+  String? get type => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mobileNumber')
+  String? get mobileNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'emailId')
+  String? get emailId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tenantId')
+  String? get tenantId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'uuid')
+  String? get uuid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'roles')
+  List<Role>? get roles => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AssigneCopyWith<Assigne> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AssigneCopyWith<$Res> {
+  factory $AssigneCopyWith(Assigne value, $Res Function(Assigne) then) =
+      _$AssigneCopyWithImpl<$Res, Assigne>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') int? id,
+      @JsonKey(name: 'userName') String? userName,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'type') String? type,
+      @JsonKey(name: 'mobileNumber') String? mobileNumber,
+      @JsonKey(name: 'emailId') String? emailId,
+      @JsonKey(name: 'tenantId') String? tenantId,
+      @JsonKey(name: 'uuid') String? uuid,
+      @JsonKey(name: 'roles') List<Role>? roles});
+}
+
+/// @nodoc
+class _$AssigneCopyWithImpl<$Res, $Val extends Assigne>
+    implements $AssigneCopyWith<$Res> {
+  _$AssigneCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? userName = freezed,
+    Object? name = freezed,
+    Object? type = freezed,
+    Object? mobileNumber = freezed,
+    Object? emailId = freezed,
+    Object? tenantId = freezed,
+    Object? uuid = freezed,
+    Object? roles = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailId: freezed == emailId
+          ? _value.emailId
+          : emailId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      roles: freezed == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<Role>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_AssigneCopyWith<$Res> implements $AssigneCopyWith<$Res> {
+  factory _$$_AssigneCopyWith(
+          _$_Assigne value, $Res Function(_$_Assigne) then) =
+      __$$_AssigneCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') int? id,
+      @JsonKey(name: 'userName') String? userName,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'type') String? type,
+      @JsonKey(name: 'mobileNumber') String? mobileNumber,
+      @JsonKey(name: 'emailId') String? emailId,
+      @JsonKey(name: 'tenantId') String? tenantId,
+      @JsonKey(name: 'uuid') String? uuid,
+      @JsonKey(name: 'roles') List<Role>? roles});
+}
+
+/// @nodoc
+class __$$_AssigneCopyWithImpl<$Res>
+    extends _$AssigneCopyWithImpl<$Res, _$_Assigne>
+    implements _$$_AssigneCopyWith<$Res> {
+  __$$_AssigneCopyWithImpl(_$_Assigne _value, $Res Function(_$_Assigne) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? userName = freezed,
+    Object? name = freezed,
+    Object? type = freezed,
+    Object? mobileNumber = freezed,
+    Object? emailId = freezed,
+    Object? tenantId = freezed,
+    Object? uuid = freezed,
+    Object? roles = freezed,
+  }) {
+    return _then(_$_Assigne(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailId: freezed == emailId
+          ? _value.emailId
+          : emailId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      roles: freezed == roles
+          ? _value._roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<Role>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Assigne implements _Assigne {
+  const _$_Assigne(
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'userName') this.userName,
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'type') this.type,
+      @JsonKey(name: 'mobileNumber') this.mobileNumber,
+      @JsonKey(name: 'emailId') this.emailId,
+      @JsonKey(name: 'tenantId') this.tenantId,
+      @JsonKey(name: 'uuid') this.uuid,
+      @JsonKey(name: 'roles') final List<Role>? roles})
+      : _roles = roles;
+
+  factory _$_Assigne.fromJson(Map<String, dynamic> json) =>
+      _$$_AssigneFromJson(json);
+
+  @override
+  @JsonKey(name: 'id')
+  final int? id;
+  @override
+  @JsonKey(name: 'userName')
+  final String? userName;
+  @override
+  @JsonKey(name: 'name')
+  final String? name;
+  @override
+  @JsonKey(name: 'type')
+  final String? type;
+  @override
+  @JsonKey(name: 'mobileNumber')
+  final String? mobileNumber;
+  @override
+  @JsonKey(name: 'emailId')
+  final String? emailId;
+  @override
+  @JsonKey(name: 'tenantId')
+  final String? tenantId;
+  @override
+  @JsonKey(name: 'uuid')
+  final String? uuid;
+  final List<Role>? _roles;
+  @override
+  @JsonKey(name: 'roles')
+  List<Role>? get roles {
+    final value = _roles;
+    if (value == null) return null;
+    if (_roles is EqualUnmodifiableListView) return _roles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'Assigne(id: $id, userName: $userName, name: $name, type: $type, mobileNumber: $mobileNumber, emailId: $emailId, tenantId: $tenantId, uuid: $uuid, roles: $roles)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Assigne &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.mobileNumber, mobileNumber) ||
+                other.mobileNumber == mobileNumber) &&
+            (identical(other.emailId, emailId) || other.emailId == emailId) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            const DeepCollectionEquality().equals(other._roles, _roles));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      userName,
+      name,
+      type,
+      mobileNumber,
+      emailId,
+      tenantId,
+      uuid,
+      const DeepCollectionEquality().hash(_roles));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_AssigneCopyWith<_$_Assigne> get copyWith =>
+      __$$_AssigneCopyWithImpl<_$_Assigne>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_AssigneToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Assigne implements Assigne {
+  const factory _Assigne(
+      {@JsonKey(name: 'id') final int? id,
+      @JsonKey(name: 'userName') final String? userName,
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'type') final String? type,
+      @JsonKey(name: 'mobileNumber') final String? mobileNumber,
+      @JsonKey(name: 'emailId') final String? emailId,
+      @JsonKey(name: 'tenantId') final String? tenantId,
+      @JsonKey(name: 'uuid') final String? uuid,
+      @JsonKey(name: 'roles') final List<Role>? roles}) = _$_Assigne;
+
+  factory _Assigne.fromJson(Map<String, dynamic> json) = _$_Assigne.fromJson;
+
+  @override
+  @JsonKey(name: 'id')
+  int? get id;
+  @override
+  @JsonKey(name: 'userName')
+  String? get userName;
+  @override
+  @JsonKey(name: 'name')
+  String? get name;
+  @override
+  @JsonKey(name: 'type')
+  String? get type;
+  @override
+  @JsonKey(name: 'mobileNumber')
+  String? get mobileNumber;
+  @override
+  @JsonKey(name: 'emailId')
+  String? get emailId;
+  @override
+  @JsonKey(name: 'tenantId')
+  String? get tenantId;
+  @override
+  @JsonKey(name: 'uuid')
+  String? get uuid;
+  @override
+  @JsonKey(name: 'roles')
+  List<Role>? get roles;
+  @override
+  @JsonKey(ignore: true)
+  _$$_AssigneCopyWith<_$_Assigne> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Role _$RoleFromJson(Map<String, dynamic> json) {
   return _Role.fromJson(json);
 }
@@ -2581,6 +2956,8 @@ mixin _$BusinessObject {
   AuditDetails? get auditDetails => throw _privateConstructorUsedError;
   @JsonKey(name: 'contract')
   Contract? get contract => throw _privateConstructorUsedError;
+  @JsonKey(name: 'serviceSla')
+  int? get serviceSla => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2600,7 +2977,8 @@ abstract class $BusinessObjectCopyWith<$Res> {
       @JsonKey(name: 'referenceId') String? referenceId,
       @JsonKey(name: 'measures') List<Measure>? measures,
       @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') Contract? contract});
+      @JsonKey(name: 'contract') Contract? contract,
+      @JsonKey(name: 'serviceSla') int? serviceSla});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $ContractCopyWith<$Res>? get contract;
@@ -2625,6 +3003,7 @@ class _$BusinessObjectCopyWithImpl<$Res, $Val extends BusinessObject>
     Object? measures = freezed,
     Object? auditDetails = freezed,
     Object? contract = freezed,
+    Object? serviceSla = freezed,
   }) {
     return _then(_value.copyWith(
       measurementNumber: freezed == measurementNumber
@@ -2651,6 +3030,10 @@ class _$BusinessObjectCopyWithImpl<$Res, $Val extends BusinessObject>
           ? _value.contract
           : contract // ignore: cast_nullable_to_non_nullable
               as Contract?,
+      serviceSla: freezed == serviceSla
+          ? _value.serviceSla
+          : serviceSla // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -2693,7 +3076,8 @@ abstract class _$$_BusinessObjectCopyWith<$Res>
       @JsonKey(name: 'referenceId') String? referenceId,
       @JsonKey(name: 'measures') List<Measure>? measures,
       @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') Contract? contract});
+      @JsonKey(name: 'contract') Contract? contract,
+      @JsonKey(name: 'serviceSla') int? serviceSla});
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -2718,6 +3102,7 @@ class __$$_BusinessObjectCopyWithImpl<$Res>
     Object? measures = freezed,
     Object? auditDetails = freezed,
     Object? contract = freezed,
+    Object? serviceSla = freezed,
   }) {
     return _then(_$_BusinessObject(
       measurementNumber: freezed == measurementNumber
@@ -2744,6 +3129,10 @@ class __$$_BusinessObjectCopyWithImpl<$Res>
           ? _value.contract
           : contract // ignore: cast_nullable_to_non_nullable
               as Contract?,
+      serviceSla: freezed == serviceSla
+          ? _value.serviceSla
+          : serviceSla // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -2757,7 +3146,8 @@ class _$_BusinessObject implements _BusinessObject {
       @JsonKey(name: 'referenceId') this.referenceId,
       @JsonKey(name: 'measures') final List<Measure>? measures,
       @JsonKey(name: 'auditDetails') this.auditDetails,
-      @JsonKey(name: 'contract') this.contract})
+      @JsonKey(name: 'contract') this.contract,
+      @JsonKey(name: 'serviceSla') this.serviceSla})
       : _measures = measures;
 
   factory _$_BusinessObject.fromJson(Map<String, dynamic> json) =>
@@ -2789,10 +3179,13 @@ class _$_BusinessObject implements _BusinessObject {
   @override
   @JsonKey(name: 'contract')
   final Contract? contract;
+  @override
+  @JsonKey(name: 'serviceSla')
+  final int? serviceSla;
 
   @override
   String toString() {
-    return 'BusinessObject(measurementNumber: $measurementNumber, id: $id, referenceId: $referenceId, measures: $measures, auditDetails: $auditDetails, contract: $contract)';
+    return 'BusinessObject(measurementNumber: $measurementNumber, id: $id, referenceId: $referenceId, measures: $measures, auditDetails: $auditDetails, contract: $contract, serviceSla: $serviceSla)';
   }
 
   @override
@@ -2809,7 +3202,9 @@ class _$_BusinessObject implements _BusinessObject {
             (identical(other.auditDetails, auditDetails) ||
                 other.auditDetails == auditDetails) &&
             (identical(other.contract, contract) ||
-                other.contract == contract));
+                other.contract == contract) &&
+            (identical(other.serviceSla, serviceSla) ||
+                other.serviceSla == serviceSla));
   }
 
   @JsonKey(ignore: true)
@@ -2821,7 +3216,8 @@ class _$_BusinessObject implements _BusinessObject {
       referenceId,
       const DeepCollectionEquality().hash(_measures),
       auditDetails,
-      contract);
+      contract,
+      serviceSla);
 
   @JsonKey(ignore: true)
   @override
@@ -2844,7 +3240,8 @@ abstract class _BusinessObject implements BusinessObject {
       @JsonKey(name: 'referenceId') final String? referenceId,
       @JsonKey(name: 'measures') final List<Measure>? measures,
       @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') final Contract? contract}) = _$_BusinessObject;
+      @JsonKey(name: 'contract') final Contract? contract,
+      @JsonKey(name: 'serviceSla') final int? serviceSla}) = _$_BusinessObject;
 
   factory _BusinessObject.fromJson(Map<String, dynamic> json) =
       _$_BusinessObject.fromJson;
@@ -2867,6 +3264,9 @@ abstract class _BusinessObject implements BusinessObject {
   @override
   @JsonKey(name: 'contract')
   Contract? get contract;
+  @override
+  @JsonKey(name: 'serviceSla')
+  int? get serviceSla;
   @override
   @JsonKey(ignore: true)
   _$$_BusinessObjectCopyWith<_$_BusinessObject> get copyWith =>
@@ -3525,6 +3925,42 @@ mixin _$Contract {
   String? get contractNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'id')
   String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'versionNumber')
+  int? get versionNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'oldUuid')
+  String? get oldUuid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'businessService')
+  String? get businessService => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tenantId')
+  String? get tenantId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'wfStatus')
+  String? get wfStatus => throw _privateConstructorUsedError;
+  @JsonKey(name: 'executingAuthority')
+  String? get executingAuthority => throw _privateConstructorUsedError;
+  @JsonKey(name: 'contractType')
+  String? get contractType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'totalContractedAmount')
+  double? get totalContractedAmount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'securityDeposit')
+  double? get securityDeposit => throw _privateConstructorUsedError;
+  @JsonKey(name: 'agreementDate')
+  int? get agreementDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'issueDate')
+  int? get issueDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'defectLiabilityPeriod')
+  int? get defectLiabilityPeriod => throw _privateConstructorUsedError;
+  @JsonKey(name: 'orgId')
+  String? get orgId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'startDate')
+  int? get startDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'endDate')
+  int? get endDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'completionPeriod')
+  int? get completionPeriod => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
+  String? get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'lineItems')
+  List<LineItem>? get lineItems => throw _privateConstructorUsedError;
   @JsonKey(name: 'additionalDetails')
   ContractAdditionalDetails? get additionalDetails =>
       throw _privateConstructorUsedError;
@@ -3545,6 +3981,42 @@ abstract class $ContractCopyWith<$Res> {
           String? contractNumber,
       @JsonKey(name: 'id')
           String? id,
+      @JsonKey(name: 'versionNumber')
+          int? versionNumber,
+      @JsonKey(name: 'oldUuid')
+          String? oldUuid,
+      @JsonKey(name: 'businessService')
+          String? businessService,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'wfStatus')
+          String? wfStatus,
+      @JsonKey(name: 'executingAuthority')
+          String? executingAuthority,
+      @JsonKey(name: 'contractType')
+          String? contractType,
+      @JsonKey(name: 'totalContractedAmount')
+          double? totalContractedAmount,
+      @JsonKey(name: 'securityDeposit')
+          double? securityDeposit,
+      @JsonKey(name: 'agreementDate')
+          int? agreementDate,
+      @JsonKey(name: 'issueDate')
+          int? issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod')
+          int? defectLiabilityPeriod,
+      @JsonKey(name: 'orgId')
+          String? orgId,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'lineItems')
+          List<LineItem>? lineItems,
       @JsonKey(name: 'additionalDetails')
           ContractAdditionalDetails? additionalDetails});
 
@@ -3566,6 +4038,24 @@ class _$ContractCopyWithImpl<$Res, $Val extends Contract>
   $Res call({
     Object? contractNumber = freezed,
     Object? id = freezed,
+    Object? versionNumber = freezed,
+    Object? oldUuid = freezed,
+    Object? businessService = freezed,
+    Object? tenantId = freezed,
+    Object? wfStatus = freezed,
+    Object? executingAuthority = freezed,
+    Object? contractType = freezed,
+    Object? totalContractedAmount = freezed,
+    Object? securityDeposit = freezed,
+    Object? agreementDate = freezed,
+    Object? issueDate = freezed,
+    Object? defectLiabilityPeriod = freezed,
+    Object? orgId = freezed,
+    Object? startDate = freezed,
+    Object? endDate = freezed,
+    Object? completionPeriod = freezed,
+    Object? status = freezed,
+    Object? lineItems = freezed,
     Object? additionalDetails = freezed,
   }) {
     return _then(_value.copyWith(
@@ -3577,6 +4067,78 @@ class _$ContractCopyWithImpl<$Res, $Val extends Contract>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      versionNumber: freezed == versionNumber
+          ? _value.versionNumber
+          : versionNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+      oldUuid: freezed == oldUuid
+          ? _value.oldUuid
+          : oldUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      businessService: freezed == businessService
+          ? _value.businessService
+          : businessService // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wfStatus: freezed == wfStatus
+          ? _value.wfStatus
+          : wfStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      executingAuthority: freezed == executingAuthority
+          ? _value.executingAuthority
+          : executingAuthority // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractType: freezed == contractType
+          ? _value.contractType
+          : contractType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      totalContractedAmount: freezed == totalContractedAmount
+          ? _value.totalContractedAmount
+          : totalContractedAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      securityDeposit: freezed == securityDeposit
+          ? _value.securityDeposit
+          : securityDeposit // ignore: cast_nullable_to_non_nullable
+              as double?,
+      agreementDate: freezed == agreementDate
+          ? _value.agreementDate
+          : agreementDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      issueDate: freezed == issueDate
+          ? _value.issueDate
+          : issueDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      defectLiabilityPeriod: freezed == defectLiabilityPeriod
+          ? _value.defectLiabilityPeriod
+          : defectLiabilityPeriod // ignore: cast_nullable_to_non_nullable
+              as int?,
+      orgId: freezed == orgId
+          ? _value.orgId
+          : orgId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startDate: freezed == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      completionPeriod: freezed == completionPeriod
+          ? _value.completionPeriod
+          : completionPeriod // ignore: cast_nullable_to_non_nullable
+              as int?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lineItems: freezed == lineItems
+          ? _value.lineItems
+          : lineItems // ignore: cast_nullable_to_non_nullable
+              as List<LineItem>?,
       additionalDetails: freezed == additionalDetails
           ? _value.additionalDetails
           : additionalDetails // ignore: cast_nullable_to_non_nullable
@@ -3610,6 +4172,42 @@ abstract class _$$_ContractCopyWith<$Res> implements $ContractCopyWith<$Res> {
           String? contractNumber,
       @JsonKey(name: 'id')
           String? id,
+      @JsonKey(name: 'versionNumber')
+          int? versionNumber,
+      @JsonKey(name: 'oldUuid')
+          String? oldUuid,
+      @JsonKey(name: 'businessService')
+          String? businessService,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'wfStatus')
+          String? wfStatus,
+      @JsonKey(name: 'executingAuthority')
+          String? executingAuthority,
+      @JsonKey(name: 'contractType')
+          String? contractType,
+      @JsonKey(name: 'totalContractedAmount')
+          double? totalContractedAmount,
+      @JsonKey(name: 'securityDeposit')
+          double? securityDeposit,
+      @JsonKey(name: 'agreementDate')
+          int? agreementDate,
+      @JsonKey(name: 'issueDate')
+          int? issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod')
+          int? defectLiabilityPeriod,
+      @JsonKey(name: 'orgId')
+          String? orgId,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'lineItems')
+          List<LineItem>? lineItems,
       @JsonKey(name: 'additionalDetails')
           ContractAdditionalDetails? additionalDetails});
 
@@ -3630,6 +4228,24 @@ class __$$_ContractCopyWithImpl<$Res>
   $Res call({
     Object? contractNumber = freezed,
     Object? id = freezed,
+    Object? versionNumber = freezed,
+    Object? oldUuid = freezed,
+    Object? businessService = freezed,
+    Object? tenantId = freezed,
+    Object? wfStatus = freezed,
+    Object? executingAuthority = freezed,
+    Object? contractType = freezed,
+    Object? totalContractedAmount = freezed,
+    Object? securityDeposit = freezed,
+    Object? agreementDate = freezed,
+    Object? issueDate = freezed,
+    Object? defectLiabilityPeriod = freezed,
+    Object? orgId = freezed,
+    Object? startDate = freezed,
+    Object? endDate = freezed,
+    Object? completionPeriod = freezed,
+    Object? status = freezed,
+    Object? lineItems = freezed,
     Object? additionalDetails = freezed,
   }) {
     return _then(_$_Contract(
@@ -3641,6 +4257,78 @@ class __$$_ContractCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      versionNumber: freezed == versionNumber
+          ? _value.versionNumber
+          : versionNumber // ignore: cast_nullable_to_non_nullable
+              as int?,
+      oldUuid: freezed == oldUuid
+          ? _value.oldUuid
+          : oldUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      businessService: freezed == businessService
+          ? _value.businessService
+          : businessService // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      wfStatus: freezed == wfStatus
+          ? _value.wfStatus
+          : wfStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      executingAuthority: freezed == executingAuthority
+          ? _value.executingAuthority
+          : executingAuthority // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractType: freezed == contractType
+          ? _value.contractType
+          : contractType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      totalContractedAmount: freezed == totalContractedAmount
+          ? _value.totalContractedAmount
+          : totalContractedAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      securityDeposit: freezed == securityDeposit
+          ? _value.securityDeposit
+          : securityDeposit // ignore: cast_nullable_to_non_nullable
+              as double?,
+      agreementDate: freezed == agreementDate
+          ? _value.agreementDate
+          : agreementDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      issueDate: freezed == issueDate
+          ? _value.issueDate
+          : issueDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      defectLiabilityPeriod: freezed == defectLiabilityPeriod
+          ? _value.defectLiabilityPeriod
+          : defectLiabilityPeriod // ignore: cast_nullable_to_non_nullable
+              as int?,
+      orgId: freezed == orgId
+          ? _value.orgId
+          : orgId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startDate: freezed == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      completionPeriod: freezed == completionPeriod
+          ? _value.completionPeriod
+          : completionPeriod // ignore: cast_nullable_to_non_nullable
+              as int?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      lineItems: freezed == lineItems
+          ? _value._lineItems
+          : lineItems // ignore: cast_nullable_to_non_nullable
+              as List<LineItem>?,
       additionalDetails: freezed == additionalDetails
           ? _value.additionalDetails
           : additionalDetails // ignore: cast_nullable_to_non_nullable
@@ -3655,7 +4343,26 @@ class _$_Contract implements _Contract {
   const _$_Contract(
       {@JsonKey(name: 'contractNumber') this.contractNumber,
       @JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'additionalDetails') this.additionalDetails});
+      @JsonKey(name: 'versionNumber') this.versionNumber,
+      @JsonKey(name: 'oldUuid') this.oldUuid,
+      @JsonKey(name: 'businessService') this.businessService,
+      @JsonKey(name: 'tenantId') this.tenantId,
+      @JsonKey(name: 'wfStatus') this.wfStatus,
+      @JsonKey(name: 'executingAuthority') this.executingAuthority,
+      @JsonKey(name: 'contractType') this.contractType,
+      @JsonKey(name: 'totalContractedAmount') this.totalContractedAmount,
+      @JsonKey(name: 'securityDeposit') this.securityDeposit,
+      @JsonKey(name: 'agreementDate') this.agreementDate,
+      @JsonKey(name: 'issueDate') this.issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod') this.defectLiabilityPeriod,
+      @JsonKey(name: 'orgId') this.orgId,
+      @JsonKey(name: 'startDate') this.startDate,
+      @JsonKey(name: 'endDate') this.endDate,
+      @JsonKey(name: 'completionPeriod') this.completionPeriod,
+      @JsonKey(name: 'status') this.status,
+      @JsonKey(name: 'lineItems') final List<LineItem>? lineItems,
+      @JsonKey(name: 'additionalDetails') this.additionalDetails})
+      : _lineItems = lineItems;
 
   factory _$_Contract.fromJson(Map<String, dynamic> json) =>
       _$$_ContractFromJson(json);
@@ -3667,12 +4374,74 @@ class _$_Contract implements _Contract {
   @JsonKey(name: 'id')
   final String? id;
   @override
+  @JsonKey(name: 'versionNumber')
+  final int? versionNumber;
+  @override
+  @JsonKey(name: 'oldUuid')
+  final String? oldUuid;
+  @override
+  @JsonKey(name: 'businessService')
+  final String? businessService;
+  @override
+  @JsonKey(name: 'tenantId')
+  final String? tenantId;
+  @override
+  @JsonKey(name: 'wfStatus')
+  final String? wfStatus;
+  @override
+  @JsonKey(name: 'executingAuthority')
+  final String? executingAuthority;
+  @override
+  @JsonKey(name: 'contractType')
+  final String? contractType;
+  @override
+  @JsonKey(name: 'totalContractedAmount')
+  final double? totalContractedAmount;
+  @override
+  @JsonKey(name: 'securityDeposit')
+  final double? securityDeposit;
+  @override
+  @JsonKey(name: 'agreementDate')
+  final int? agreementDate;
+  @override
+  @JsonKey(name: 'issueDate')
+  final int? issueDate;
+  @override
+  @JsonKey(name: 'defectLiabilityPeriod')
+  final int? defectLiabilityPeriod;
+  @override
+  @JsonKey(name: 'orgId')
+  final String? orgId;
+  @override
+  @JsonKey(name: 'startDate')
+  final int? startDate;
+  @override
+  @JsonKey(name: 'endDate')
+  final int? endDate;
+  @override
+  @JsonKey(name: 'completionPeriod')
+  final int? completionPeriod;
+  @override
+  @JsonKey(name: 'status')
+  final String? status;
+  final List<LineItem>? _lineItems;
+  @override
+  @JsonKey(name: 'lineItems')
+  List<LineItem>? get lineItems {
+    final value = _lineItems;
+    if (value == null) return null;
+    if (_lineItems is EqualUnmodifiableListView) return _lineItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
   @JsonKey(name: 'additionalDetails')
   final ContractAdditionalDetails? additionalDetails;
 
   @override
   String toString() {
-    return 'Contract(contractNumber: $contractNumber, id: $id, additionalDetails: $additionalDetails)';
+    return 'Contract(contractNumber: $contractNumber, id: $id, versionNumber: $versionNumber, oldUuid: $oldUuid, businessService: $businessService, tenantId: $tenantId, wfStatus: $wfStatus, executingAuthority: $executingAuthority, contractType: $contractType, totalContractedAmount: $totalContractedAmount, securityDeposit: $securityDeposit, agreementDate: $agreementDate, issueDate: $issueDate, defectLiabilityPeriod: $defectLiabilityPeriod, orgId: $orgId, startDate: $startDate, endDate: $endDate, completionPeriod: $completionPeriod, status: $status, lineItems: $lineItems, additionalDetails: $additionalDetails)';
   }
 
   @override
@@ -3683,14 +4452,68 @@ class _$_Contract implements _Contract {
             (identical(other.contractNumber, contractNumber) ||
                 other.contractNumber == contractNumber) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.versionNumber, versionNumber) ||
+                other.versionNumber == versionNumber) &&
+            (identical(other.oldUuid, oldUuid) || other.oldUuid == oldUuid) &&
+            (identical(other.businessService, businessService) ||
+                other.businessService == businessService) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.wfStatus, wfStatus) ||
+                other.wfStatus == wfStatus) &&
+            (identical(other.executingAuthority, executingAuthority) ||
+                other.executingAuthority == executingAuthority) &&
+            (identical(other.contractType, contractType) ||
+                other.contractType == contractType) &&
+            (identical(other.totalContractedAmount, totalContractedAmount) ||
+                other.totalContractedAmount == totalContractedAmount) &&
+            (identical(other.securityDeposit, securityDeposit) ||
+                other.securityDeposit == securityDeposit) &&
+            (identical(other.agreementDate, agreementDate) ||
+                other.agreementDate == agreementDate) &&
+            (identical(other.issueDate, issueDate) ||
+                other.issueDate == issueDate) &&
+            (identical(other.defectLiabilityPeriod, defectLiabilityPeriod) ||
+                other.defectLiabilityPeriod == defectLiabilityPeriod) &&
+            (identical(other.orgId, orgId) || other.orgId == orgId) &&
+            (identical(other.startDate, startDate) ||
+                other.startDate == startDate) &&
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.completionPeriod, completionPeriod) ||
+                other.completionPeriod == completionPeriod) &&
+            (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality()
+                .equals(other._lineItems, _lineItems) &&
             (identical(other.additionalDetails, additionalDetails) ||
                 other.additionalDetails == additionalDetails));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, contractNumber, id, additionalDetails);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        contractNumber,
+        id,
+        versionNumber,
+        oldUuid,
+        businessService,
+        tenantId,
+        wfStatus,
+        executingAuthority,
+        contractType,
+        totalContractedAmount,
+        securityDeposit,
+        agreementDate,
+        issueDate,
+        defectLiabilityPeriod,
+        orgId,
+        startDate,
+        endDate,
+        completionPeriod,
+        status,
+        const DeepCollectionEquality().hash(_lineItems),
+        additionalDetails
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -3712,6 +4535,42 @@ abstract class _Contract implements Contract {
           final String? contractNumber,
       @JsonKey(name: 'id')
           final String? id,
+      @JsonKey(name: 'versionNumber')
+          final int? versionNumber,
+      @JsonKey(name: 'oldUuid')
+          final String? oldUuid,
+      @JsonKey(name: 'businessService')
+          final String? businessService,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'wfStatus')
+          final String? wfStatus,
+      @JsonKey(name: 'executingAuthority')
+          final String? executingAuthority,
+      @JsonKey(name: 'contractType')
+          final String? contractType,
+      @JsonKey(name: 'totalContractedAmount')
+          final double? totalContractedAmount,
+      @JsonKey(name: 'securityDeposit')
+          final double? securityDeposit,
+      @JsonKey(name: 'agreementDate')
+          final int? agreementDate,
+      @JsonKey(name: 'issueDate')
+          final int? issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod')
+          final int? defectLiabilityPeriod,
+      @JsonKey(name: 'orgId')
+          final String? orgId,
+      @JsonKey(name: 'startDate')
+          final int? startDate,
+      @JsonKey(name: 'endDate')
+          final int? endDate,
+      @JsonKey(name: 'completionPeriod')
+          final int? completionPeriod,
+      @JsonKey(name: 'status')
+          final String? status,
+      @JsonKey(name: 'lineItems')
+          final List<LineItem>? lineItems,
       @JsonKey(name: 'additionalDetails')
           final ContractAdditionalDetails? additionalDetails}) = _$_Contract;
 
@@ -3723,6 +4582,60 @@ abstract class _Contract implements Contract {
   @override
   @JsonKey(name: 'id')
   String? get id;
+  @override
+  @JsonKey(name: 'versionNumber')
+  int? get versionNumber;
+  @override
+  @JsonKey(name: 'oldUuid')
+  String? get oldUuid;
+  @override
+  @JsonKey(name: 'businessService')
+  String? get businessService;
+  @override
+  @JsonKey(name: 'tenantId')
+  String? get tenantId;
+  @override
+  @JsonKey(name: 'wfStatus')
+  String? get wfStatus;
+  @override
+  @JsonKey(name: 'executingAuthority')
+  String? get executingAuthority;
+  @override
+  @JsonKey(name: 'contractType')
+  String? get contractType;
+  @override
+  @JsonKey(name: 'totalContractedAmount')
+  double? get totalContractedAmount;
+  @override
+  @JsonKey(name: 'securityDeposit')
+  double? get securityDeposit;
+  @override
+  @JsonKey(name: 'agreementDate')
+  int? get agreementDate;
+  @override
+  @JsonKey(name: 'issueDate')
+  int? get issueDate;
+  @override
+  @JsonKey(name: 'defectLiabilityPeriod')
+  int? get defectLiabilityPeriod;
+  @override
+  @JsonKey(name: 'orgId')
+  String? get orgId;
+  @override
+  @JsonKey(name: 'startDate')
+  int? get startDate;
+  @override
+  @JsonKey(name: 'endDate')
+  int? get endDate;
+  @override
+  @JsonKey(name: 'completionPeriod')
+  int? get completionPeriod;
+  @override
+  @JsonKey(name: 'status')
+  String? get status;
+  @override
+  @JsonKey(name: 'lineItems')
+  List<LineItem>? get lineItems;
   @override
   @JsonKey(name: 'additionalDetails')
   ContractAdditionalDetails? get additionalDetails;
@@ -3771,6 +4684,15 @@ mixin _$ContractAdditionalDetails {
   String? get projectId => throw _privateConstructorUsedError;
   @JsonKey(name: 'cboName')
   String? get cboName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'timeExt')
+  dynamic get timeExt => throw _privateConstructorUsedError;
+  @JsonKey(name: 'completionPeriod')
+  int? get completionPeriod => throw _privateConstructorUsedError;
+  @JsonKey(name: 'estimateDocs')
+  List<EstmateDoc>? get estmateDocs => throw _privateConstructorUsedError;
+  @JsonKey(name: 'termsAndConditions')
+  List<TermsAndConditions>? get termsAndConditions =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3816,7 +4738,15 @@ abstract class $ContractAdditionalDetailsCopyWith<$Res> {
       @JsonKey(name: 'projectId')
           String? projectId,
       @JsonKey(name: 'cboName')
-          String? cboName});
+          String? cboName,
+      @JsonKey(name: 'timeExt')
+          dynamic timeExt,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'estimateDocs')
+          List<EstmateDoc>? estmateDocs,
+      @JsonKey(name: 'termsAndConditions')
+          List<TermsAndConditions>? termsAndConditions});
 }
 
 /// @nodoc
@@ -3849,6 +4779,10 @@ class _$ContractAdditionalDetailsCopyWithImpl<$Res,
     Object? cboCode = freezed,
     Object? projectId = freezed,
     Object? cboName = freezed,
+    Object? timeExt = freezed,
+    Object? completionPeriod = freezed,
+    Object? estmateDocs = freezed,
+    Object? termsAndConditions = freezed,
   }) {
     return _then(_value.copyWith(
       orgName: freezed == orgName
@@ -3915,6 +4849,22 @@ class _$ContractAdditionalDetailsCopyWithImpl<$Res,
           ? _value.cboName
           : cboName // ignore: cast_nullable_to_non_nullable
               as String?,
+      timeExt: freezed == timeExt
+          ? _value.timeExt
+          : timeExt // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      completionPeriod: freezed == completionPeriod
+          ? _value.completionPeriod
+          : completionPeriod // ignore: cast_nullable_to_non_nullable
+              as int?,
+      estmateDocs: freezed == estmateDocs
+          ? _value.estmateDocs
+          : estmateDocs // ignore: cast_nullable_to_non_nullable
+              as List<EstmateDoc>?,
+      termsAndConditions: freezed == termsAndConditions
+          ? _value.termsAndConditions
+          : termsAndConditions // ignore: cast_nullable_to_non_nullable
+              as List<TermsAndConditions>?,
     ) as $Val);
   }
 }
@@ -3960,7 +4910,15 @@ abstract class _$$_ContractAdditionalDetailsCopyWith<$Res>
       @JsonKey(name: 'projectId')
           String? projectId,
       @JsonKey(name: 'cboName')
-          String? cboName});
+          String? cboName,
+      @JsonKey(name: 'timeExt')
+          dynamic timeExt,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'estimateDocs')
+          List<EstmateDoc>? estmateDocs,
+      @JsonKey(name: 'termsAndConditions')
+          List<TermsAndConditions>? termsAndConditions});
 }
 
 /// @nodoc
@@ -3992,6 +4950,10 @@ class __$$_ContractAdditionalDetailsCopyWithImpl<$Res>
     Object? cboCode = freezed,
     Object? projectId = freezed,
     Object? cboName = freezed,
+    Object? timeExt = freezed,
+    Object? completionPeriod = freezed,
+    Object? estmateDocs = freezed,
+    Object? termsAndConditions = freezed,
   }) {
     return _then(_$_ContractAdditionalDetails(
       orgName: freezed == orgName
@@ -4058,6 +5020,22 @@ class __$$_ContractAdditionalDetailsCopyWithImpl<$Res>
           ? _value.cboName
           : cboName // ignore: cast_nullable_to_non_nullable
               as String?,
+      timeExt: freezed == timeExt
+          ? _value.timeExt
+          : timeExt // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      completionPeriod: freezed == completionPeriod
+          ? _value.completionPeriod
+          : completionPeriod // ignore: cast_nullable_to_non_nullable
+              as int?,
+      estmateDocs: freezed == estmateDocs
+          ? _value._estmateDocs
+          : estmateDocs // ignore: cast_nullable_to_non_nullable
+              as List<EstmateDoc>?,
+      termsAndConditions: freezed == termsAndConditions
+          ? _value._termsAndConditions
+          : termsAndConditions // ignore: cast_nullable_to_non_nullable
+              as List<TermsAndConditions>?,
     ));
   }
 }
@@ -4066,22 +5044,48 @@ class __$$_ContractAdditionalDetailsCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
   const _$_ContractAdditionalDetails(
-      {@JsonKey(name: 'orgName') this.orgName,
-      @JsonKey(name: 'totalEstimatedAmount') this.totalEstimatedAmount,
-      @JsonKey(name: 'attendanceRegisterNumber') this.attendanceRegisterNumber,
-      @JsonKey(name: 'officerInChargeId') this.officerInChargeId,
-      @JsonKey(name: 'cboOrgNumber') this.cboOrgNumber,
-      @JsonKey(name: 'estimateNumber') this.estimateNumber,
-      @JsonKey(name: 'locality') this.locality,
-      @JsonKey(name: 'projectType') this.projectType,
-      @JsonKey(name: 'timeExtReason') this.timeExtReason,
-      @JsonKey(name: 'ward') this.ward,
-      @JsonKey(name: 'officerInChargeDesgn') this.officerInChargeDesgn,
-      @JsonKey(name: 'projectDesc') this.projectDesc,
-      @JsonKey(name: 'projectName') this.projectName,
-      @JsonKey(name: 'cboCode') this.cboCode,
-      @JsonKey(name: 'projectId') this.projectId,
-      @JsonKey(name: 'cboName') this.cboName});
+      {@JsonKey(name: 'orgName')
+          this.orgName,
+      @JsonKey(name: 'totalEstimatedAmount')
+          this.totalEstimatedAmount,
+      @JsonKey(name: 'attendanceRegisterNumber')
+          this.attendanceRegisterNumber,
+      @JsonKey(name: 'officerInChargeId')
+          this.officerInChargeId,
+      @JsonKey(name: 'cboOrgNumber')
+          this.cboOrgNumber,
+      @JsonKey(name: 'estimateNumber')
+          this.estimateNumber,
+      @JsonKey(name: 'locality')
+          this.locality,
+      @JsonKey(name: 'projectType')
+          this.projectType,
+      @JsonKey(name: 'timeExtReason')
+          this.timeExtReason,
+      @JsonKey(name: 'ward')
+          this.ward,
+      @JsonKey(name: 'officerInChargeDesgn')
+          this.officerInChargeDesgn,
+      @JsonKey(name: 'projectDesc')
+          this.projectDesc,
+      @JsonKey(name: 'projectName')
+          this.projectName,
+      @JsonKey(name: 'cboCode')
+          this.cboCode,
+      @JsonKey(name: 'projectId')
+          this.projectId,
+      @JsonKey(name: 'cboName')
+          this.cboName,
+      @JsonKey(name: 'timeExt')
+          this.timeExt,
+      @JsonKey(name: 'completionPeriod')
+          this.completionPeriod,
+      @JsonKey(name: 'estimateDocs')
+          final List<EstmateDoc>? estmateDocs,
+      @JsonKey(name: 'termsAndConditions')
+          final List<TermsAndConditions>? termsAndConditions})
+      : _estmateDocs = estmateDocs,
+        _termsAndConditions = termsAndConditions;
 
   factory _$_ContractAdditionalDetails.fromJson(Map<String, dynamic> json) =>
       _$$_ContractAdditionalDetailsFromJson(json);
@@ -4134,10 +5138,38 @@ class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
   @override
   @JsonKey(name: 'cboName')
   final String? cboName;
+  @override
+  @JsonKey(name: 'timeExt')
+  final dynamic timeExt;
+  @override
+  @JsonKey(name: 'completionPeriod')
+  final int? completionPeriod;
+  final List<EstmateDoc>? _estmateDocs;
+  @override
+  @JsonKey(name: 'estimateDocs')
+  List<EstmateDoc>? get estmateDocs {
+    final value = _estmateDocs;
+    if (value == null) return null;
+    if (_estmateDocs is EqualUnmodifiableListView) return _estmateDocs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<TermsAndConditions>? _termsAndConditions;
+  @override
+  @JsonKey(name: 'termsAndConditions')
+  List<TermsAndConditions>? get termsAndConditions {
+    final value = _termsAndConditions;
+    if (value == null) return null;
+    if (_termsAndConditions is EqualUnmodifiableListView)
+      return _termsAndConditions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ContractAdditionalDetails(orgName: $orgName, totalEstimatedAmount: $totalEstimatedAmount, attendanceRegisterNumber: $attendanceRegisterNumber, officerInChargeId: $officerInChargeId, cboOrgNumber: $cboOrgNumber, estimateNumber: $estimateNumber, locality: $locality, projectType: $projectType, timeExtReason: $timeExtReason, ward: $ward, officerInChargeDesgn: $officerInChargeDesgn, projectDesc: $projectDesc, projectName: $projectName, cboCode: $cboCode, projectId: $projectId, cboName: $cboName)';
+    return 'ContractAdditionalDetails(orgName: $orgName, totalEstimatedAmount: $totalEstimatedAmount, attendanceRegisterNumber: $attendanceRegisterNumber, officerInChargeId: $officerInChargeId, cboOrgNumber: $cboOrgNumber, estimateNumber: $estimateNumber, locality: $locality, projectType: $projectType, timeExtReason: $timeExtReason, ward: $ward, officerInChargeDesgn: $officerInChargeDesgn, projectDesc: $projectDesc, projectName: $projectName, cboCode: $cboCode, projectId: $projectId, cboName: $cboName, timeExt: $timeExt, completionPeriod: $completionPeriod, estmateDocs: $estmateDocs, termsAndConditions: $termsAndConditions)';
   }
 
   @override
@@ -4173,29 +5205,41 @@ class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
             (identical(other.cboCode, cboCode) || other.cboCode == cboCode) &&
             (identical(other.projectId, projectId) ||
                 other.projectId == projectId) &&
-            (identical(other.cboName, cboName) || other.cboName == cboName));
+            (identical(other.cboName, cboName) || other.cboName == cboName) &&
+            const DeepCollectionEquality().equals(other.timeExt, timeExt) &&
+            (identical(other.completionPeriod, completionPeriod) ||
+                other.completionPeriod == completionPeriod) &&
+            const DeepCollectionEquality()
+                .equals(other._estmateDocs, _estmateDocs) &&
+            const DeepCollectionEquality()
+                .equals(other._termsAndConditions, _termsAndConditions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      orgName,
-      totalEstimatedAmount,
-      attendanceRegisterNumber,
-      officerInChargeId,
-      cboOrgNumber,
-      estimateNumber,
-      locality,
-      projectType,
-      timeExtReason,
-      ward,
-      officerInChargeDesgn,
-      projectDesc,
-      projectName,
-      cboCode,
-      projectId,
-      cboName);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        orgName,
+        totalEstimatedAmount,
+        attendanceRegisterNumber,
+        officerInChargeId,
+        cboOrgNumber,
+        estimateNumber,
+        locality,
+        projectType,
+        timeExtReason,
+        ward,
+        officerInChargeDesgn,
+        projectDesc,
+        projectName,
+        cboCode,
+        projectId,
+        cboName,
+        const DeepCollectionEquality().hash(timeExt),
+        completionPeriod,
+        const DeepCollectionEquality().hash(_estmateDocs),
+        const DeepCollectionEquality().hash(_termsAndConditions)
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -4214,38 +5258,47 @@ class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
 
 abstract class _ContractAdditionalDetails implements ContractAdditionalDetails {
   const factory _ContractAdditionalDetails(
-      {@JsonKey(name: 'orgName')
-          final String? orgName,
-      @JsonKey(name: 'totalEstimatedAmount')
-          final double? totalEstimatedAmount,
-      @JsonKey(name: 'attendanceRegisterNumber')
-          final String? attendanceRegisterNumber,
-      @JsonKey(name: 'officerInChargeId')
-          final String? officerInChargeId,
-      @JsonKey(name: 'cboOrgNumber')
-          final String? cboOrgNumber,
-      @JsonKey(name: 'estimateNumber')
-          final String? estimateNumber,
-      @JsonKey(name: 'locality')
-          final String? locality,
-      @JsonKey(name: 'projectType')
-          final String? projectType,
-      @JsonKey(name: 'timeExtReason')
-          final String? timeExtReason,
-      @JsonKey(name: 'ward')
-          final String? ward,
-      @JsonKey(name: 'officerInChargeDesgn')
-          final String? officerInChargeDesgn,
-      @JsonKey(name: 'projectDesc')
-          final String? projectDesc,
-      @JsonKey(name: 'projectName')
-          final String? projectName,
-      @JsonKey(name: 'cboCode')
-          final String? cboCode,
-      @JsonKey(name: 'projectId')
-          final String? projectId,
-      @JsonKey(name: 'cboName')
-          final String? cboName}) = _$_ContractAdditionalDetails;
+          {@JsonKey(name: 'orgName')
+              final String? orgName,
+          @JsonKey(name: 'totalEstimatedAmount')
+              final double? totalEstimatedAmount,
+          @JsonKey(name: 'attendanceRegisterNumber')
+              final String? attendanceRegisterNumber,
+          @JsonKey(name: 'officerInChargeId')
+              final String? officerInChargeId,
+          @JsonKey(name: 'cboOrgNumber')
+              final String? cboOrgNumber,
+          @JsonKey(name: 'estimateNumber')
+              final String? estimateNumber,
+          @JsonKey(name: 'locality')
+              final String? locality,
+          @JsonKey(name: 'projectType')
+              final String? projectType,
+          @JsonKey(name: 'timeExtReason')
+              final String? timeExtReason,
+          @JsonKey(name: 'ward')
+              final String? ward,
+          @JsonKey(name: 'officerInChargeDesgn')
+              final String? officerInChargeDesgn,
+          @JsonKey(name: 'projectDesc')
+              final String? projectDesc,
+          @JsonKey(name: 'projectName')
+              final String? projectName,
+          @JsonKey(name: 'cboCode')
+              final String? cboCode,
+          @JsonKey(name: 'projectId')
+              final String? projectId,
+          @JsonKey(name: 'cboName')
+              final String? cboName,
+          @JsonKey(name: 'timeExt')
+              final dynamic timeExt,
+          @JsonKey(name: 'completionPeriod')
+              final int? completionPeriod,
+          @JsonKey(name: 'estimateDocs')
+              final List<EstmateDoc>? estmateDocs,
+          @JsonKey(name: 'termsAndConditions')
+              final List<TermsAndConditions>? termsAndConditions}) =
+      _$_ContractAdditionalDetails;
 
   factory _ContractAdditionalDetails.fromJson(Map<String, dynamic> json) =
       _$_ContractAdditionalDetails.fromJson;
@@ -4299,7 +5352,1087 @@ abstract class _ContractAdditionalDetails implements ContractAdditionalDetails {
   @JsonKey(name: 'cboName')
   String? get cboName;
   @override
+  @JsonKey(name: 'timeExt')
+  dynamic get timeExt;
+  @override
+  @JsonKey(name: 'completionPeriod')
+  int? get completionPeriod;
+  @override
+  @JsonKey(name: 'estimateDocs')
+  List<EstmateDoc>? get estmateDocs;
+  @override
+  @JsonKey(name: 'termsAndConditions')
+  List<TermsAndConditions>? get termsAndConditions;
+  @override
   @JsonKey(ignore: true)
   _$$_ContractAdditionalDetailsCopyWith<_$_ContractAdditionalDetails>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+EstmateDoc _$EstmateDocFromJson(Map<String, dynamic> json) {
+  return _EstmateDoc.fromJson(json);
+}
+
+/// @nodoc
+mixin _$EstmateDoc {
+  @JsonKey(name: 'fileName')
+  String? get fileName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fileType')
+  String? get fileType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tenantId')
+  String? get tenantId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'documentUid')
+  String? get documentUid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fileStoreId')
+  String? get fileStoreId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EstmateDocCopyWith<EstmateDoc> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EstmateDocCopyWith<$Res> {
+  factory $EstmateDocCopyWith(
+          EstmateDoc value, $Res Function(EstmateDoc) then) =
+      _$EstmateDocCopyWithImpl<$Res, EstmateDoc>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'fileName') String? fileName,
+      @JsonKey(name: 'fileType') String? fileType,
+      @JsonKey(name: 'tenantId') String? tenantId,
+      @JsonKey(name: 'documentUid') String? documentUid,
+      @JsonKey(name: 'fileStoreId') String? fileStoreId});
+}
+
+/// @nodoc
+class _$EstmateDocCopyWithImpl<$Res, $Val extends EstmateDoc>
+    implements $EstmateDocCopyWith<$Res> {
+  _$EstmateDocCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fileName = freezed,
+    Object? fileType = freezed,
+    Object? tenantId = freezed,
+    Object? documentUid = freezed,
+    Object? fileStoreId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileType: freezed == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentUid: freezed == documentUid
+          ? _value.documentUid
+          : documentUid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileStoreId: freezed == fileStoreId
+          ? _value.fileStoreId
+          : fileStoreId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_EstmateDocCopyWith<$Res>
+    implements $EstmateDocCopyWith<$Res> {
+  factory _$$_EstmateDocCopyWith(
+          _$_EstmateDoc value, $Res Function(_$_EstmateDoc) then) =
+      __$$_EstmateDocCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'fileName') String? fileName,
+      @JsonKey(name: 'fileType') String? fileType,
+      @JsonKey(name: 'tenantId') String? tenantId,
+      @JsonKey(name: 'documentUid') String? documentUid,
+      @JsonKey(name: 'fileStoreId') String? fileStoreId});
+}
+
+/// @nodoc
+class __$$_EstmateDocCopyWithImpl<$Res>
+    extends _$EstmateDocCopyWithImpl<$Res, _$_EstmateDoc>
+    implements _$$_EstmateDocCopyWith<$Res> {
+  __$$_EstmateDocCopyWithImpl(
+      _$_EstmateDoc _value, $Res Function(_$_EstmateDoc) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fileName = freezed,
+    Object? fileType = freezed,
+    Object? tenantId = freezed,
+    Object? documentUid = freezed,
+    Object? fileStoreId = freezed,
+  }) {
+    return _then(_$_EstmateDoc(
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileType: freezed == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentUid: freezed == documentUid
+          ? _value.documentUid
+          : documentUid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileStoreId: freezed == fileStoreId
+          ? _value.fileStoreId
+          : fileStoreId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_EstmateDoc implements _EstmateDoc {
+  const _$_EstmateDoc(
+      {@JsonKey(name: 'fileName') this.fileName,
+      @JsonKey(name: 'fileType') this.fileType,
+      @JsonKey(name: 'tenantId') this.tenantId,
+      @JsonKey(name: 'documentUid') this.documentUid,
+      @JsonKey(name: 'fileStoreId') this.fileStoreId});
+
+  factory _$_EstmateDoc.fromJson(Map<String, dynamic> json) =>
+      _$$_EstmateDocFromJson(json);
+
+  @override
+  @JsonKey(name: 'fileName')
+  final String? fileName;
+  @override
+  @JsonKey(name: 'fileType')
+  final String? fileType;
+  @override
+  @JsonKey(name: 'tenantId')
+  final String? tenantId;
+  @override
+  @JsonKey(name: 'documentUid')
+  final String? documentUid;
+  @override
+  @JsonKey(name: 'fileStoreId')
+  final String? fileStoreId;
+
+  @override
+  String toString() {
+    return 'EstmateDoc(fileName: $fileName, fileType: $fileType, tenantId: $tenantId, documentUid: $documentUid, fileStoreId: $fileStoreId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_EstmateDoc &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
+            (identical(other.fileType, fileType) ||
+                other.fileType == fileType) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.documentUid, documentUid) ||
+                other.documentUid == documentUid) &&
+            (identical(other.fileStoreId, fileStoreId) ||
+                other.fileStoreId == fileStoreId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, fileName, fileType, tenantId, documentUid, fileStoreId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_EstmateDocCopyWith<_$_EstmateDoc> get copyWith =>
+      __$$_EstmateDocCopyWithImpl<_$_EstmateDoc>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_EstmateDocToJson(
+      this,
+    );
+  }
+}
+
+abstract class _EstmateDoc implements EstmateDoc {
+  const factory _EstmateDoc(
+      {@JsonKey(name: 'fileName') final String? fileName,
+      @JsonKey(name: 'fileType') final String? fileType,
+      @JsonKey(name: 'tenantId') final String? tenantId,
+      @JsonKey(name: 'documentUid') final String? documentUid,
+      @JsonKey(name: 'fileStoreId') final String? fileStoreId}) = _$_EstmateDoc;
+
+  factory _EstmateDoc.fromJson(Map<String, dynamic> json) =
+      _$_EstmateDoc.fromJson;
+
+  @override
+  @JsonKey(name: 'fileName')
+  String? get fileName;
+  @override
+  @JsonKey(name: 'fileType')
+  String? get fileType;
+  @override
+  @JsonKey(name: 'tenantId')
+  String? get tenantId;
+  @override
+  @JsonKey(name: 'documentUid')
+  String? get documentUid;
+  @override
+  @JsonKey(name: 'fileStoreId')
+  String? get fileStoreId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_EstmateDocCopyWith<_$_EstmateDoc> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+TermsAndConditions _$TermsAndConditionsFromJson(Map<String, dynamic> json) {
+  return _TermsAndConditions.fromJson(json);
+}
+
+/// @nodoc
+mixin _$TermsAndConditions {
+  @JsonKey(name: 'description')
+  String? get description => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $TermsAndConditionsCopyWith<TermsAndConditions> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TermsAndConditionsCopyWith<$Res> {
+  factory $TermsAndConditionsCopyWith(
+          TermsAndConditions value, $Res Function(TermsAndConditions) then) =
+      _$TermsAndConditionsCopyWithImpl<$Res, TermsAndConditions>;
+  @useResult
+  $Res call({@JsonKey(name: 'description') String? description});
+}
+
+/// @nodoc
+class _$TermsAndConditionsCopyWithImpl<$Res, $Val extends TermsAndConditions>
+    implements $TermsAndConditionsCopyWith<$Res> {
+  _$TermsAndConditionsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? description = freezed,
+  }) {
+    return _then(_value.copyWith(
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_TermsAndConditionsCopyWith<$Res>
+    implements $TermsAndConditionsCopyWith<$Res> {
+  factory _$$_TermsAndConditionsCopyWith(_$_TermsAndConditions value,
+          $Res Function(_$_TermsAndConditions) then) =
+      __$$_TermsAndConditionsCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({@JsonKey(name: 'description') String? description});
+}
+
+/// @nodoc
+class __$$_TermsAndConditionsCopyWithImpl<$Res>
+    extends _$TermsAndConditionsCopyWithImpl<$Res, _$_TermsAndConditions>
+    implements _$$_TermsAndConditionsCopyWith<$Res> {
+  __$$_TermsAndConditionsCopyWithImpl(
+      _$_TermsAndConditions _value, $Res Function(_$_TermsAndConditions) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? description = freezed,
+  }) {
+    return _then(_$_TermsAndConditions(
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_TermsAndConditions implements _TermsAndConditions {
+  const _$_TermsAndConditions({@JsonKey(name: 'description') this.description});
+
+  factory _$_TermsAndConditions.fromJson(Map<String, dynamic> json) =>
+      _$$_TermsAndConditionsFromJson(json);
+
+  @override
+  @JsonKey(name: 'description')
+  final String? description;
+
+  @override
+  String toString() {
+    return 'TermsAndConditions(description: $description)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_TermsAndConditions &&
+            (identical(other.description, description) ||
+                other.description == description));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, description);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_TermsAndConditionsCopyWith<_$_TermsAndConditions> get copyWith =>
+      __$$_TermsAndConditionsCopyWithImpl<_$_TermsAndConditions>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_TermsAndConditionsToJson(
+      this,
+    );
+  }
+}
+
+abstract class _TermsAndConditions implements TermsAndConditions {
+  const factory _TermsAndConditions(
+          {@JsonKey(name: 'description') final String? description}) =
+      _$_TermsAndConditions;
+
+  factory _TermsAndConditions.fromJson(Map<String, dynamic> json) =
+      _$_TermsAndConditions.fromJson;
+
+  @override
+  @JsonKey(name: 'description')
+  String? get description;
+  @override
+  @JsonKey(ignore: true)
+  _$$_TermsAndConditionsCopyWith<_$_TermsAndConditions> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+LineItem _$LineItemFromJson(Map<String, dynamic> json) {
+  return _LineItem.fromJson(json);
+}
+
+/// @nodoc
+mixin _$LineItem {
+  @JsonKey(name: 'id')
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'estimateId')
+  String? get estimateId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'estimateLineItemId')
+  String? get estimateLineItemId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'contractLineItemRef')
+  String? get contractLineItemRef => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tenantId')
+  String? get tenantId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'unitRate')
+  double? get unitRate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'category')
+  String? get category => throw _privateConstructorUsedError;
+  @JsonKey(name: 'noOfunit')
+  int? get noOfunit => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
+  String? get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'amountBreakups')
+  List<AmountBreakup>? get amountBreakups => throw _privateConstructorUsedError;
+  @JsonKey(name: 'auditDetails')
+  AuditDetails? get auditDetails => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $LineItemCopyWith<LineItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LineItemCopyWith<$Res> {
+  factory $LineItemCopyWith(LineItem value, $Res Function(LineItem) then) =
+      _$LineItemCopyWithImpl<$Res, LineItem>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'estimateId') String? estimateId,
+      @JsonKey(name: 'estimateLineItemId') String? estimateLineItemId,
+      @JsonKey(name: 'contractLineItemRef') String? contractLineItemRef,
+      @JsonKey(name: 'tenantId') String? tenantId,
+      @JsonKey(name: 'unitRate') double? unitRate,
+      @JsonKey(name: 'category') String? category,
+      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'status') String? status,
+      @JsonKey(name: 'amountBreakups') List<AmountBreakup>? amountBreakups,
+      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails});
+
+  $AuditDetailsCopyWith<$Res>? get auditDetails;
+}
+
+/// @nodoc
+class _$LineItemCopyWithImpl<$Res, $Val extends LineItem>
+    implements $LineItemCopyWith<$Res> {
+  _$LineItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? estimateId = freezed,
+    Object? estimateLineItemId = freezed,
+    Object? contractLineItemRef = freezed,
+    Object? tenantId = freezed,
+    Object? unitRate = freezed,
+    Object? category = freezed,
+    Object? noOfunit = freezed,
+    Object? name = freezed,
+    Object? status = freezed,
+    Object? amountBreakups = freezed,
+    Object? auditDetails = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimateId: freezed == estimateId
+          ? _value.estimateId
+          : estimateId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimateLineItemId: freezed == estimateLineItemId
+          ? _value.estimateLineItemId
+          : estimateLineItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractLineItemRef: freezed == contractLineItemRef
+          ? _value.contractLineItemRef
+          : contractLineItemRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      unitRate: freezed == unitRate
+          ? _value.unitRate
+          : unitRate // ignore: cast_nullable_to_non_nullable
+              as double?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      noOfunit: freezed == noOfunit
+          ? _value.noOfunit
+          : noOfunit // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amountBreakups: freezed == amountBreakups
+          ? _value.amountBreakups
+          : amountBreakups // ignore: cast_nullable_to_non_nullable
+              as List<AmountBreakup>?,
+      auditDetails: freezed == auditDetails
+          ? _value.auditDetails
+          : auditDetails // ignore: cast_nullable_to_non_nullable
+              as AuditDetails?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AuditDetailsCopyWith<$Res>? get auditDetails {
+    if (_value.auditDetails == null) {
+      return null;
+    }
+
+    return $AuditDetailsCopyWith<$Res>(_value.auditDetails!, (value) {
+      return _then(_value.copyWith(auditDetails: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$_LineItemCopyWith<$Res> implements $LineItemCopyWith<$Res> {
+  factory _$$_LineItemCopyWith(
+          _$_LineItem value, $Res Function(_$_LineItem) then) =
+      __$$_LineItemCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'estimateId') String? estimateId,
+      @JsonKey(name: 'estimateLineItemId') String? estimateLineItemId,
+      @JsonKey(name: 'contractLineItemRef') String? contractLineItemRef,
+      @JsonKey(name: 'tenantId') String? tenantId,
+      @JsonKey(name: 'unitRate') double? unitRate,
+      @JsonKey(name: 'category') String? category,
+      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'status') String? status,
+      @JsonKey(name: 'amountBreakups') List<AmountBreakup>? amountBreakups,
+      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails});
+
+  @override
+  $AuditDetailsCopyWith<$Res>? get auditDetails;
+}
+
+/// @nodoc
+class __$$_LineItemCopyWithImpl<$Res>
+    extends _$LineItemCopyWithImpl<$Res, _$_LineItem>
+    implements _$$_LineItemCopyWith<$Res> {
+  __$$_LineItemCopyWithImpl(
+      _$_LineItem _value, $Res Function(_$_LineItem) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? estimateId = freezed,
+    Object? estimateLineItemId = freezed,
+    Object? contractLineItemRef = freezed,
+    Object? tenantId = freezed,
+    Object? unitRate = freezed,
+    Object? category = freezed,
+    Object? noOfunit = freezed,
+    Object? name = freezed,
+    Object? status = freezed,
+    Object? amountBreakups = freezed,
+    Object? auditDetails = freezed,
+  }) {
+    return _then(_$_LineItem(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimateId: freezed == estimateId
+          ? _value.estimateId
+          : estimateId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimateLineItemId: freezed == estimateLineItemId
+          ? _value.estimateLineItemId
+          : estimateLineItemId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractLineItemRef: freezed == contractLineItemRef
+          ? _value.contractLineItemRef
+          : contractLineItemRef // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      unitRate: freezed == unitRate
+          ? _value.unitRate
+          : unitRate // ignore: cast_nullable_to_non_nullable
+              as double?,
+      category: freezed == category
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      noOfunit: freezed == noOfunit
+          ? _value.noOfunit
+          : noOfunit // ignore: cast_nullable_to_non_nullable
+              as int?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amountBreakups: freezed == amountBreakups
+          ? _value._amountBreakups
+          : amountBreakups // ignore: cast_nullable_to_non_nullable
+              as List<AmountBreakup>?,
+      auditDetails: freezed == auditDetails
+          ? _value.auditDetails
+          : auditDetails // ignore: cast_nullable_to_non_nullable
+              as AuditDetails?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_LineItem implements _LineItem {
+  const _$_LineItem(
+      {@JsonKey(name: 'id')
+          this.id,
+      @JsonKey(name: 'estimateId')
+          this.estimateId,
+      @JsonKey(name: 'estimateLineItemId')
+          this.estimateLineItemId,
+      @JsonKey(name: 'contractLineItemRef')
+          this.contractLineItemRef,
+      @JsonKey(name: 'tenantId')
+          this.tenantId,
+      @JsonKey(name: 'unitRate')
+          this.unitRate,
+      @JsonKey(name: 'category')
+          this.category,
+      @JsonKey(name: 'noOfunit')
+          this.noOfunit,
+      @JsonKey(name: 'name')
+          this.name,
+      @JsonKey(name: 'status')
+          this.status,
+      @JsonKey(name: 'amountBreakups')
+          final List<AmountBreakup>? amountBreakups,
+      @JsonKey(name: 'auditDetails')
+          this.auditDetails})
+      : _amountBreakups = amountBreakups;
+
+  factory _$_LineItem.fromJson(Map<String, dynamic> json) =>
+      _$$_LineItemFromJson(json);
+
+  @override
+  @JsonKey(name: 'id')
+  final String? id;
+  @override
+  @JsonKey(name: 'estimateId')
+  final String? estimateId;
+  @override
+  @JsonKey(name: 'estimateLineItemId')
+  final String? estimateLineItemId;
+  @override
+  @JsonKey(name: 'contractLineItemRef')
+  final String? contractLineItemRef;
+  @override
+  @JsonKey(name: 'tenantId')
+  final String? tenantId;
+  @override
+  @JsonKey(name: 'unitRate')
+  final double? unitRate;
+  @override
+  @JsonKey(name: 'category')
+  final String? category;
+  @override
+  @JsonKey(name: 'noOfunit')
+  final int? noOfunit;
+  @override
+  @JsonKey(name: 'name')
+  final String? name;
+  @override
+  @JsonKey(name: 'status')
+  final String? status;
+  final List<AmountBreakup>? _amountBreakups;
+  @override
+  @JsonKey(name: 'amountBreakups')
+  List<AmountBreakup>? get amountBreakups {
+    final value = _amountBreakups;
+    if (value == null) return null;
+    if (_amountBreakups is EqualUnmodifiableListView) return _amountBreakups;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  @JsonKey(name: 'auditDetails')
+  final AuditDetails? auditDetails;
+
+  @override
+  String toString() {
+    return 'LineItem(id: $id, estimateId: $estimateId, estimateLineItemId: $estimateLineItemId, contractLineItemRef: $contractLineItemRef, tenantId: $tenantId, unitRate: $unitRate, category: $category, noOfunit: $noOfunit, name: $name, status: $status, amountBreakups: $amountBreakups, auditDetails: $auditDetails)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_LineItem &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.estimateId, estimateId) ||
+                other.estimateId == estimateId) &&
+            (identical(other.estimateLineItemId, estimateLineItemId) ||
+                other.estimateLineItemId == estimateLineItemId) &&
+            (identical(other.contractLineItemRef, contractLineItemRef) ||
+                other.contractLineItemRef == contractLineItemRef) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.unitRate, unitRate) ||
+                other.unitRate == unitRate) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.noOfunit, noOfunit) ||
+                other.noOfunit == noOfunit) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.status, status) || other.status == status) &&
+            const DeepCollectionEquality()
+                .equals(other._amountBreakups, _amountBreakups) &&
+            (identical(other.auditDetails, auditDetails) ||
+                other.auditDetails == auditDetails));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      estimateId,
+      estimateLineItemId,
+      contractLineItemRef,
+      tenantId,
+      unitRate,
+      category,
+      noOfunit,
+      name,
+      status,
+      const DeepCollectionEquality().hash(_amountBreakups),
+      auditDetails);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_LineItemCopyWith<_$_LineItem> get copyWith =>
+      __$$_LineItemCopyWithImpl<_$_LineItem>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_LineItemToJson(
+      this,
+    );
+  }
+}
+
+abstract class _LineItem implements LineItem {
+  const factory _LineItem(
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'estimateId')
+          final String? estimateId,
+      @JsonKey(name: 'estimateLineItemId')
+          final String? estimateLineItemId,
+      @JsonKey(name: 'contractLineItemRef')
+          final String? contractLineItemRef,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'unitRate')
+          final double? unitRate,
+      @JsonKey(name: 'category')
+          final String? category,
+      @JsonKey(name: 'noOfunit')
+          final int? noOfunit,
+      @JsonKey(name: 'name')
+          final String? name,
+      @JsonKey(name: 'status')
+          final String? status,
+      @JsonKey(name: 'amountBreakups')
+          final List<AmountBreakup>? amountBreakups,
+      @JsonKey(name: 'auditDetails')
+          final AuditDetails? auditDetails}) = _$_LineItem;
+
+  factory _LineItem.fromJson(Map<String, dynamic> json) = _$_LineItem.fromJson;
+
+  @override
+  @JsonKey(name: 'id')
+  String? get id;
+  @override
+  @JsonKey(name: 'estimateId')
+  String? get estimateId;
+  @override
+  @JsonKey(name: 'estimateLineItemId')
+  String? get estimateLineItemId;
+  @override
+  @JsonKey(name: 'contractLineItemRef')
+  String? get contractLineItemRef;
+  @override
+  @JsonKey(name: 'tenantId')
+  String? get tenantId;
+  @override
+  @JsonKey(name: 'unitRate')
+  double? get unitRate;
+  @override
+  @JsonKey(name: 'category')
+  String? get category;
+  @override
+  @JsonKey(name: 'noOfunit')
+  int? get noOfunit;
+  @override
+  @JsonKey(name: 'name')
+  String? get name;
+  @override
+  @JsonKey(name: 'status')
+  String? get status;
+  @override
+  @JsonKey(name: 'amountBreakups')
+  List<AmountBreakup>? get amountBreakups;
+  @override
+  @JsonKey(name: 'auditDetails')
+  AuditDetails? get auditDetails;
+  @override
+  @JsonKey(ignore: true)
+  _$$_LineItemCopyWith<_$_LineItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+AmountBreakup _$AmountBreakupFromJson(Map<String, dynamic> json) {
+  return _AmountBreakup.fromJson(json);
+}
+
+/// @nodoc
+mixin _$AmountBreakup {
+  @JsonKey(name: 'id')
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'estimateAmountBreakupId')
+  String? get estimateAmountBreakupId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'amount')
+  double? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
+  String? get status => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AmountBreakupCopyWith<AmountBreakup> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AmountBreakupCopyWith<$Res> {
+  factory $AmountBreakupCopyWith(
+          AmountBreakup value, $Res Function(AmountBreakup) then) =
+      _$AmountBreakupCopyWithImpl<$Res, AmountBreakup>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'estimateAmountBreakupId') String? estimateAmountBreakupId,
+      @JsonKey(name: 'amount') double? amount,
+      @JsonKey(name: 'status') String? status});
+}
+
+/// @nodoc
+class _$AmountBreakupCopyWithImpl<$Res, $Val extends AmountBreakup>
+    implements $AmountBreakupCopyWith<$Res> {
+  _$AmountBreakupCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? estimateAmountBreakupId = freezed,
+    Object? amount = freezed,
+    Object? status = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimateAmountBreakupId: freezed == estimateAmountBreakupId
+          ? _value.estimateAmountBreakupId
+          : estimateAmountBreakupId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_AmountBreakupCopyWith<$Res>
+    implements $AmountBreakupCopyWith<$Res> {
+  factory _$$_AmountBreakupCopyWith(
+          _$_AmountBreakup value, $Res Function(_$_AmountBreakup) then) =
+      __$$_AmountBreakupCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id') String? id,
+      @JsonKey(name: 'estimateAmountBreakupId') String? estimateAmountBreakupId,
+      @JsonKey(name: 'amount') double? amount,
+      @JsonKey(name: 'status') String? status});
+}
+
+/// @nodoc
+class __$$_AmountBreakupCopyWithImpl<$Res>
+    extends _$AmountBreakupCopyWithImpl<$Res, _$_AmountBreakup>
+    implements _$$_AmountBreakupCopyWith<$Res> {
+  __$$_AmountBreakupCopyWithImpl(
+      _$_AmountBreakup _value, $Res Function(_$_AmountBreakup) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? estimateAmountBreakupId = freezed,
+    Object? amount = freezed,
+    Object? status = freezed,
+  }) {
+    return _then(_$_AmountBreakup(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimateAmountBreakupId: freezed == estimateAmountBreakupId
+          ? _value.estimateAmountBreakupId
+          : estimateAmountBreakupId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_AmountBreakup implements _AmountBreakup {
+  const _$_AmountBreakup(
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'estimateAmountBreakupId') this.estimateAmountBreakupId,
+      @JsonKey(name: 'amount') this.amount,
+      @JsonKey(name: 'status') this.status});
+
+  factory _$_AmountBreakup.fromJson(Map<String, dynamic> json) =>
+      _$$_AmountBreakupFromJson(json);
+
+  @override
+  @JsonKey(name: 'id')
+  final String? id;
+  @override
+  @JsonKey(name: 'estimateAmountBreakupId')
+  final String? estimateAmountBreakupId;
+  @override
+  @JsonKey(name: 'amount')
+  final double? amount;
+  @override
+  @JsonKey(name: 'status')
+  final String? status;
+
+  @override
+  String toString() {
+    return 'AmountBreakup(id: $id, estimateAmountBreakupId: $estimateAmountBreakupId, amount: $amount, status: $status)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_AmountBreakup &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(
+                    other.estimateAmountBreakupId, estimateAmountBreakupId) ||
+                other.estimateAmountBreakupId == estimateAmountBreakupId) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, id, estimateAmountBreakupId, amount, status);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_AmountBreakupCopyWith<_$_AmountBreakup> get copyWith =>
+      __$$_AmountBreakupCopyWithImpl<_$_AmountBreakup>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_AmountBreakupToJson(
+      this,
+    );
+  }
+}
+
+abstract class _AmountBreakup implements AmountBreakup {
+  const factory _AmountBreakup(
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'estimateAmountBreakupId')
+          final String? estimateAmountBreakupId,
+      @JsonKey(name: 'amount')
+          final double? amount,
+      @JsonKey(name: 'status')
+          final String? status}) = _$_AmountBreakup;
+
+  factory _AmountBreakup.fromJson(Map<String, dynamic> json) =
+      _$_AmountBreakup.fromJson;
+
+  @override
+  @JsonKey(name: 'id')
+  String? get id;
+  @override
+  @JsonKey(name: 'estimateAmountBreakupId')
+  String? get estimateAmountBreakupId;
+  @override
+  @JsonKey(name: 'amount')
+  double? get amount;
+  @override
+  @JsonKey(name: 'status')
+  String? get status;
+  @override
+  @JsonKey(ignore: true)
+  _$$_AmountBreakupCopyWith<_$_AmountBreakup> get copyWith =>
+      throw _privateConstructorUsedError;
 }

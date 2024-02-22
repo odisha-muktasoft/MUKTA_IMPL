@@ -43,6 +43,7 @@ class _MBDetailPageState extends State<MBDetailPage>
   @override
   void dispose() {
     _tabController.dispose();
+    _tabController.removeListener(_handleTabSelection);
     super.dispose();
   }
 

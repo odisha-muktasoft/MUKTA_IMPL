@@ -98,4 +98,5 @@ class MeasurementService{
    const MeasurementService();
 
    String get measurementInbox=>'inbox/v2/_search';
+   String get measurementDetail=>"mukta-services/measurement/_search";
 }

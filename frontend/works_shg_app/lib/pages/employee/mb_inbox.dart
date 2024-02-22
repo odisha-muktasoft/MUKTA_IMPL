@@ -305,7 +305,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ?.additionalDetails
                                         ?.projectDesc ??
                                     "",
-                                "Assignee": "SHG group-C#1",
+                                "Assignee": mbInboxResponse
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .processInstance?.assignes?.first.name??"NA",
                                 "Workflow State": mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
@@ -324,7 +327,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ?.roundToDouble()
                                         .toString() ??
                                     "0.0",
-                                "SLA Days remaining": index + 1
+                                "SLA Days remaining": mbInboxResponse
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject?.serviceSla??"NA"
                               },
                             );
                           },
