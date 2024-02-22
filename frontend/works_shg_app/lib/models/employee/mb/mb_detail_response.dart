@@ -12,6 +12,7 @@ class MBDetailResponse with _$MBDetailResponse {
     @JsonKey(name: 'period') Period? period,
     @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
     @JsonKey(name: 'measurement') Measurement? measurement,
+    @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls
   }) = _MBDetailResponse;
 
   factory MBDetailResponse.fromJson(
@@ -23,6 +24,60 @@ class MBDetailResponse with _$MBDetailResponse {
 /// estimate
 ///
 ///
+
+
+@freezed
+class MusterRoll with _$MusterRoll {
+  const factory MusterRoll({
+    @JsonKey(name: 'id') String? id,
+    @JsonKey(name: 'tenantId') String? tenantId,
+    @JsonKey(name: 'musterRollNumber')String? musterRollNumber,
+    @JsonKey(name: 'registerId')String? registerId,
+    @JsonKey(name: 'status') String? status,
+    @JsonKey(name: 'musterRollStatus') String? musterRollStatus,
+    @JsonKey(name: 'startDate')int? startDate,
+    @JsonKey(name: 'endDate') int? endDate,
+    @JsonKey(name: 'referenceId')String? referenceId,
+    @JsonKey(name: 'serviceCode')String? serviceCode,
+    @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+    @JsonKey(name: 'additionalDetails') MusterRollAdditionalDetails? additional
+
+  }) = _MusterRoll;
+
+  factory MusterRoll.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$MusterRollFromJson(json);
+}
+
+
+@freezed
+class MusterRollAdditionalDetails with _$MusterRollAdditionalDetails {
+  const factory MusterRollAdditionalDetails({
+    @JsonKey(name: 'ward') String? ward,
+    @JsonKey(name: 'orgId') String? orgId,
+    @JsonKey(name: 'amount')double? amount,
+    @JsonKey(name: 'orgName')String? orgName,
+    @JsonKey(name: 'locality') String? locality,
+    @JsonKey(name: 'projectId') String? projectId,
+    @JsonKey(name: 'contractId')String? contractId,
+    @JsonKey(name: 'projectDesc') String? projectDesc,
+    @JsonKey(name: 'projectName')String? projectName,
+    @JsonKey(name: 'projectType')String? projectType,
+    @JsonKey(name: 'executingAuthority') String? executingAuthority,
+    @JsonKey(name: 'attendanceRegisterNo')String? attendanceRegisterNo,
+    @JsonKey(name: 'attendanceRegisterName')String? attendanceRegisterName,
+    
+
+  }) = _MusterRollAdditionalDetails;
+
+  factory MusterRollAdditionalDetails.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$MusterRollAdditionalDetailsFromJson(json);
+}
+
+
 
 @freezed
 class Measurement with _$Measurement {
@@ -49,6 +104,10 @@ class Measurement with _$Measurement {
         AuditDetails? auditDetails,
     @JsonKey(name: 'additionalDetails')
         MeasurementAdditionalDetail? additionalDetail,
+
+    @JsonKey(name: 'measures')
+    List<Measure>? measures,
+
   }) = _Measurement;
 
   factory Measurement.fromJson(

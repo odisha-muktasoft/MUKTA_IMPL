@@ -23,6 +23,9 @@ _$_MBDetailResponse _$$_MBDetailResponseFromJson(Map<String, dynamic> json) =>
       measurement: json['measurement'] == null
           ? null
           : Measurement.fromJson(json['measurement'] as Map<String, dynamic>),
+      musterRolls: (json['musterRolls'] as List<dynamic>?)
+          ?.map((e) => MusterRoll.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>
@@ -32,6 +35,80 @@ Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>
       'period': instance.period,
       'allMeasurements': instance.allMeasurements,
       'measurement': instance.measurement,
+      'musterRolls': instance.musterRolls,
+    };
+
+_$_MusterRoll _$$_MusterRollFromJson(Map<String, dynamic> json) =>
+    _$_MusterRoll(
+      id: json['id'] as String?,
+      tenantId: json['tenantId'] as String?,
+      musterRollNumber: json['musterRollNumber'] as String?,
+      registerId: json['registerId'] as String?,
+      status: json['status'] as String?,
+      musterRollStatus: json['musterRollStatus'] as String?,
+      startDate: json['startDate'] as int?,
+      endDate: json['endDate'] as int?,
+      referenceId: json['referenceId'] as String?,
+      serviceCode: json['serviceCode'] as String?,
+      auditDetails: json['auditDetails'] == null
+          ? null
+          : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
+      additional: json['additionalDetails'] == null
+          ? null
+          : MusterRollAdditionalDetails.fromJson(
+              json['additionalDetails'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$_MusterRollToJson(_$_MusterRoll instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'tenantId': instance.tenantId,
+      'musterRollNumber': instance.musterRollNumber,
+      'registerId': instance.registerId,
+      'status': instance.status,
+      'musterRollStatus': instance.musterRollStatus,
+      'startDate': instance.startDate,
+      'endDate': instance.endDate,
+      'referenceId': instance.referenceId,
+      'serviceCode': instance.serviceCode,
+      'auditDetails': instance.auditDetails,
+      'additionalDetails': instance.additional,
+    };
+
+_$_MusterRollAdditionalDetails _$$_MusterRollAdditionalDetailsFromJson(
+        Map<String, dynamic> json) =>
+    _$_MusterRollAdditionalDetails(
+      ward: json['ward'] as String?,
+      orgId: json['orgId'] as String?,
+      amount: (json['amount'] as num?)?.toDouble(),
+      orgName: json['orgName'] as String?,
+      locality: json['locality'] as String?,
+      projectId: json['projectId'] as String?,
+      contractId: json['contractId'] as String?,
+      projectDesc: json['projectDesc'] as String?,
+      projectName: json['projectName'] as String?,
+      projectType: json['projectType'] as String?,
+      executingAuthority: json['executingAuthority'] as String?,
+      attendanceRegisterNo: json['attendanceRegisterNo'] as String?,
+      attendanceRegisterName: json['attendanceRegisterName'] as String?,
+    );
+
+Map<String, dynamic> _$$_MusterRollAdditionalDetailsToJson(
+        _$_MusterRollAdditionalDetails instance) =>
+    <String, dynamic>{
+      'ward': instance.ward,
+      'orgId': instance.orgId,
+      'amount': instance.amount,
+      'orgName': instance.orgName,
+      'locality': instance.locality,
+      'projectId': instance.projectId,
+      'contractId': instance.contractId,
+      'projectDesc': instance.projectDesc,
+      'projectName': instance.projectName,
+      'projectType': instance.projectType,
+      'executingAuthority': instance.executingAuthority,
+      'attendanceRegisterNo': instance.attendanceRegisterNo,
+      'attendanceRegisterName': instance.attendanceRegisterName,
     };
 
 _$_Measurement _$$_MeasurementFromJson(Map<String, dynamic> json) =>
@@ -52,6 +129,9 @@ _$_Measurement _$$_MeasurementFromJson(Map<String, dynamic> json) =>
           ? null
           : MeasurementAdditionalDetail.fromJson(
               json['additionalDetails'] as Map<String, dynamic>),
+      measures: (json['measures'] as List<dynamic>?)
+          ?.map((e) => Measure.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_MeasurementToJson(_$_Measurement instance) =>
@@ -67,6 +147,7 @@ Map<String, dynamic> _$$_MeasurementToJson(_$_Measurement instance) =>
       'workflow': instance.workflow,
       'auditDetails': instance.auditDetails,
       'additionalDetails': instance.additionalDetail,
+      'measures': instance.measures,
     };
 
 _$_MeasurementAdditionalDetail _$$_MeasurementAdditionalDetailFromJson(

@@ -30,6 +30,8 @@ mixin _$MBDetailResponse {
   List<Measurement>? get allMeasurements => throw _privateConstructorUsedError;
   @JsonKey(name: 'measurement')
   Measurement? get measurement => throw _privateConstructorUsedError;
+  @JsonKey(name: 'musterRolls')
+  List<MusterRoll>? get musterRolls => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,7 +50,8 @@ abstract class $MBDetailResponseCopyWith<$Res> {
       @JsonKey(name: 'estimate') Estimate? estimate,
       @JsonKey(name: 'period') Period? period,
       @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
-      @JsonKey(name: 'measurement') Measurement? measurement});
+      @JsonKey(name: 'measurement') Measurement? measurement,
+      @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls});
 
   $ContractCopyWith<$Res>? get contract;
   $EstimateCopyWith<$Res>? get estimate;
@@ -74,6 +77,7 @@ class _$MBDetailResponseCopyWithImpl<$Res, $Val extends MBDetailResponse>
     Object? period = freezed,
     Object? allMeasurements = freezed,
     Object? measurement = freezed,
+    Object? musterRolls = freezed,
   }) {
     return _then(_value.copyWith(
       contract: freezed == contract
@@ -96,6 +100,10 @@ class _$MBDetailResponseCopyWithImpl<$Res, $Val extends MBDetailResponse>
           ? _value.measurement
           : measurement // ignore: cast_nullable_to_non_nullable
               as Measurement?,
+      musterRolls: freezed == musterRolls
+          ? _value.musterRolls
+          : musterRolls // ignore: cast_nullable_to_non_nullable
+              as List<MusterRoll>?,
     ) as $Val);
   }
 
@@ -161,7 +169,8 @@ abstract class _$$_MBDetailResponseCopyWith<$Res>
       @JsonKey(name: 'estimate') Estimate? estimate,
       @JsonKey(name: 'period') Period? period,
       @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
-      @JsonKey(name: 'measurement') Measurement? measurement});
+      @JsonKey(name: 'measurement') Measurement? measurement,
+      @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls});
 
   @override
   $ContractCopyWith<$Res>? get contract;
@@ -189,6 +198,7 @@ class __$$_MBDetailResponseCopyWithImpl<$Res>
     Object? period = freezed,
     Object? allMeasurements = freezed,
     Object? measurement = freezed,
+    Object? musterRolls = freezed,
   }) {
     return _then(_$_MBDetailResponse(
       contract: freezed == contract
@@ -211,6 +221,10 @@ class __$$_MBDetailResponseCopyWithImpl<$Res>
           ? _value.measurement
           : measurement // ignore: cast_nullable_to_non_nullable
               as Measurement?,
+      musterRolls: freezed == musterRolls
+          ? _value._musterRolls
+          : musterRolls // ignore: cast_nullable_to_non_nullable
+              as List<MusterRoll>?,
     ));
   }
 }
@@ -228,8 +242,11 @@ class _$_MBDetailResponse implements _MBDetailResponse {
       @JsonKey(name: 'allMeasurements')
           final List<Measurement>? allMeasurements,
       @JsonKey(name: 'measurement')
-          this.measurement})
-      : _allMeasurements = allMeasurements;
+          this.measurement,
+      @JsonKey(name: 'musterRolls')
+          final List<MusterRoll>? musterRolls})
+      : _allMeasurements = allMeasurements,
+        _musterRolls = musterRolls;
 
   factory _$_MBDetailResponse.fromJson(Map<String, dynamic> json) =>
       _$$_MBDetailResponseFromJson(json);
@@ -257,10 +274,20 @@ class _$_MBDetailResponse implements _MBDetailResponse {
   @override
   @JsonKey(name: 'measurement')
   final Measurement? measurement;
+  final List<MusterRoll>? _musterRolls;
+  @override
+  @JsonKey(name: 'musterRolls')
+  List<MusterRoll>? get musterRolls {
+    final value = _musterRolls;
+    if (value == null) return null;
+    if (_musterRolls is EqualUnmodifiableListView) return _musterRolls;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'MBDetailResponse(contract: $contract, estimate: $estimate, period: $period, allMeasurements: $allMeasurements, measurement: $measurement)';
+    return 'MBDetailResponse(contract: $contract, estimate: $estimate, period: $period, allMeasurements: $allMeasurements, measurement: $measurement, musterRolls: $musterRolls)';
   }
 
   @override
@@ -276,13 +303,21 @@ class _$_MBDetailResponse implements _MBDetailResponse {
             const DeepCollectionEquality()
                 .equals(other._allMeasurements, _allMeasurements) &&
             (identical(other.measurement, measurement) ||
-                other.measurement == measurement));
+                other.measurement == measurement) &&
+            const DeepCollectionEquality()
+                .equals(other._musterRolls, _musterRolls));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, contract, estimate, period,
-      const DeepCollectionEquality().hash(_allMeasurements), measurement);
+  int get hashCode => Object.hash(
+      runtimeType,
+      contract,
+      estimate,
+      period,
+      const DeepCollectionEquality().hash(_allMeasurements),
+      measurement,
+      const DeepCollectionEquality().hash(_musterRolls));
 
   @JsonKey(ignore: true)
   @override
@@ -309,7 +344,9 @@ abstract class _MBDetailResponse implements MBDetailResponse {
       @JsonKey(name: 'allMeasurements')
           final List<Measurement>? allMeasurements,
       @JsonKey(name: 'measurement')
-          final Measurement? measurement}) = _$_MBDetailResponse;
+          final Measurement? measurement,
+      @JsonKey(name: 'musterRolls')
+          final List<MusterRoll>? musterRolls}) = _$_MBDetailResponse;
 
   factory _MBDetailResponse.fromJson(Map<String, dynamic> json) =
       _$_MBDetailResponse.fromJson;
@@ -330,9 +367,965 @@ abstract class _MBDetailResponse implements MBDetailResponse {
   @JsonKey(name: 'measurement')
   Measurement? get measurement;
   @override
+  @JsonKey(name: 'musterRolls')
+  List<MusterRoll>? get musterRolls;
+  @override
   @JsonKey(ignore: true)
   _$$_MBDetailResponseCopyWith<_$_MBDetailResponse> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+MusterRoll _$MusterRollFromJson(Map<String, dynamic> json) {
+  return _MusterRoll.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MusterRoll {
+  @JsonKey(name: 'id')
+  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tenantId')
+  String? get tenantId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'musterRollNumber')
+  String? get musterRollNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'registerId')
+  String? get registerId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'status')
+  String? get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'musterRollStatus')
+  String? get musterRollStatus => throw _privateConstructorUsedError;
+  @JsonKey(name: 'startDate')
+  int? get startDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'endDate')
+  int? get endDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'referenceId')
+  String? get referenceId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'serviceCode')
+  String? get serviceCode => throw _privateConstructorUsedError;
+  @JsonKey(name: 'auditDetails')
+  AuditDetails? get auditDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: 'additionalDetails')
+  MusterRollAdditionalDetails? get additional =>
+      throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $MusterRollCopyWith<MusterRoll> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MusterRollCopyWith<$Res> {
+  factory $MusterRollCopyWith(
+          MusterRoll value, $Res Function(MusterRoll) then) =
+      _$MusterRollCopyWithImpl<$Res, MusterRoll>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'musterRollNumber')
+          String? musterRollNumber,
+      @JsonKey(name: 'registerId')
+          String? registerId,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'musterRollStatus')
+          String? musterRollStatus,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'serviceCode')
+          String? serviceCode,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
+      @JsonKey(name: 'additionalDetails')
+          MusterRollAdditionalDetails? additional});
+
+  $AuditDetailsCopyWith<$Res>? get auditDetails;
+  $MusterRollAdditionalDetailsCopyWith<$Res>? get additional;
+}
+
+/// @nodoc
+class _$MusterRollCopyWithImpl<$Res, $Val extends MusterRoll>
+    implements $MusterRollCopyWith<$Res> {
+  _$MusterRollCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? tenantId = freezed,
+    Object? musterRollNumber = freezed,
+    Object? registerId = freezed,
+    Object? status = freezed,
+    Object? musterRollStatus = freezed,
+    Object? startDate = freezed,
+    Object? endDate = freezed,
+    Object? referenceId = freezed,
+    Object? serviceCode = freezed,
+    Object? auditDetails = freezed,
+    Object? additional = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      musterRollNumber: freezed == musterRollNumber
+          ? _value.musterRollNumber
+          : musterRollNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      registerId: freezed == registerId
+          ? _value.registerId
+          : registerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      musterRollStatus: freezed == musterRollStatus
+          ? _value.musterRollStatus
+          : musterRollStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startDate: freezed == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      referenceId: freezed == referenceId
+          ? _value.referenceId
+          : referenceId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serviceCode: freezed == serviceCode
+          ? _value.serviceCode
+          : serviceCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      auditDetails: freezed == auditDetails
+          ? _value.auditDetails
+          : auditDetails // ignore: cast_nullable_to_non_nullable
+              as AuditDetails?,
+      additional: freezed == additional
+          ? _value.additional
+          : additional // ignore: cast_nullable_to_non_nullable
+              as MusterRollAdditionalDetails?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AuditDetailsCopyWith<$Res>? get auditDetails {
+    if (_value.auditDetails == null) {
+      return null;
+    }
+
+    return $AuditDetailsCopyWith<$Res>(_value.auditDetails!, (value) {
+      return _then(_value.copyWith(auditDetails: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MusterRollAdditionalDetailsCopyWith<$Res>? get additional {
+    if (_value.additional == null) {
+      return null;
+    }
+
+    return $MusterRollAdditionalDetailsCopyWith<$Res>(_value.additional!,
+        (value) {
+      return _then(_value.copyWith(additional: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$_MusterRollCopyWith<$Res>
+    implements $MusterRollCopyWith<$Res> {
+  factory _$$_MusterRollCopyWith(
+          _$_MusterRoll value, $Res Function(_$_MusterRoll) then) =
+      __$$_MusterRollCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'musterRollNumber')
+          String? musterRollNumber,
+      @JsonKey(name: 'registerId')
+          String? registerId,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'musterRollStatus')
+          String? musterRollStatus,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'serviceCode')
+          String? serviceCode,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
+      @JsonKey(name: 'additionalDetails')
+          MusterRollAdditionalDetails? additional});
+
+  @override
+  $AuditDetailsCopyWith<$Res>? get auditDetails;
+  @override
+  $MusterRollAdditionalDetailsCopyWith<$Res>? get additional;
+}
+
+/// @nodoc
+class __$$_MusterRollCopyWithImpl<$Res>
+    extends _$MusterRollCopyWithImpl<$Res, _$_MusterRoll>
+    implements _$$_MusterRollCopyWith<$Res> {
+  __$$_MusterRollCopyWithImpl(
+      _$_MusterRoll _value, $Res Function(_$_MusterRoll) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? tenantId = freezed,
+    Object? musterRollNumber = freezed,
+    Object? registerId = freezed,
+    Object? status = freezed,
+    Object? musterRollStatus = freezed,
+    Object? startDate = freezed,
+    Object? endDate = freezed,
+    Object? referenceId = freezed,
+    Object? serviceCode = freezed,
+    Object? auditDetails = freezed,
+    Object? additional = freezed,
+  }) {
+    return _then(_$_MusterRoll(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      musterRollNumber: freezed == musterRollNumber
+          ? _value.musterRollNumber
+          : musterRollNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      registerId: freezed == registerId
+          ? _value.registerId
+          : registerId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as String?,
+      musterRollStatus: freezed == musterRollStatus
+          ? _value.musterRollStatus
+          : musterRollStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
+      startDate: freezed == startDate
+          ? _value.startDate
+          : startDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
+              as int?,
+      referenceId: freezed == referenceId
+          ? _value.referenceId
+          : referenceId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serviceCode: freezed == serviceCode
+          ? _value.serviceCode
+          : serviceCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      auditDetails: freezed == auditDetails
+          ? _value.auditDetails
+          : auditDetails // ignore: cast_nullable_to_non_nullable
+              as AuditDetails?,
+      additional: freezed == additional
+          ? _value.additional
+          : additional // ignore: cast_nullable_to_non_nullable
+              as MusterRollAdditionalDetails?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_MusterRoll implements _MusterRoll {
+  const _$_MusterRoll(
+      {@JsonKey(name: 'id') this.id,
+      @JsonKey(name: 'tenantId') this.tenantId,
+      @JsonKey(name: 'musterRollNumber') this.musterRollNumber,
+      @JsonKey(name: 'registerId') this.registerId,
+      @JsonKey(name: 'status') this.status,
+      @JsonKey(name: 'musterRollStatus') this.musterRollStatus,
+      @JsonKey(name: 'startDate') this.startDate,
+      @JsonKey(name: 'endDate') this.endDate,
+      @JsonKey(name: 'referenceId') this.referenceId,
+      @JsonKey(name: 'serviceCode') this.serviceCode,
+      @JsonKey(name: 'auditDetails') this.auditDetails,
+      @JsonKey(name: 'additionalDetails') this.additional});
+
+  factory _$_MusterRoll.fromJson(Map<String, dynamic> json) =>
+      _$$_MusterRollFromJson(json);
+
+  @override
+  @JsonKey(name: 'id')
+  final String? id;
+  @override
+  @JsonKey(name: 'tenantId')
+  final String? tenantId;
+  @override
+  @JsonKey(name: 'musterRollNumber')
+  final String? musterRollNumber;
+  @override
+  @JsonKey(name: 'registerId')
+  final String? registerId;
+  @override
+  @JsonKey(name: 'status')
+  final String? status;
+  @override
+  @JsonKey(name: 'musterRollStatus')
+  final String? musterRollStatus;
+  @override
+  @JsonKey(name: 'startDate')
+  final int? startDate;
+  @override
+  @JsonKey(name: 'endDate')
+  final int? endDate;
+  @override
+  @JsonKey(name: 'referenceId')
+  final String? referenceId;
+  @override
+  @JsonKey(name: 'serviceCode')
+  final String? serviceCode;
+  @override
+  @JsonKey(name: 'auditDetails')
+  final AuditDetails? auditDetails;
+  @override
+  @JsonKey(name: 'additionalDetails')
+  final MusterRollAdditionalDetails? additional;
+
+  @override
+  String toString() {
+    return 'MusterRoll(id: $id, tenantId: $tenantId, musterRollNumber: $musterRollNumber, registerId: $registerId, status: $status, musterRollStatus: $musterRollStatus, startDate: $startDate, endDate: $endDate, referenceId: $referenceId, serviceCode: $serviceCode, auditDetails: $auditDetails, additional: $additional)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_MusterRoll &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.musterRollNumber, musterRollNumber) ||
+                other.musterRollNumber == musterRollNumber) &&
+            (identical(other.registerId, registerId) ||
+                other.registerId == registerId) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.musterRollStatus, musterRollStatus) ||
+                other.musterRollStatus == musterRollStatus) &&
+            (identical(other.startDate, startDate) ||
+                other.startDate == startDate) &&
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.referenceId, referenceId) ||
+                other.referenceId == referenceId) &&
+            (identical(other.serviceCode, serviceCode) ||
+                other.serviceCode == serviceCode) &&
+            (identical(other.auditDetails, auditDetails) ||
+                other.auditDetails == auditDetails) &&
+            (identical(other.additional, additional) ||
+                other.additional == additional));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      tenantId,
+      musterRollNumber,
+      registerId,
+      status,
+      musterRollStatus,
+      startDate,
+      endDate,
+      referenceId,
+      serviceCode,
+      auditDetails,
+      additional);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_MusterRollCopyWith<_$_MusterRoll> get copyWith =>
+      __$$_MusterRollCopyWithImpl<_$_MusterRoll>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MusterRollToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MusterRoll implements MusterRoll {
+  const factory _MusterRoll(
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'musterRollNumber')
+          final String? musterRollNumber,
+      @JsonKey(name: 'registerId')
+          final String? registerId,
+      @JsonKey(name: 'status')
+          final String? status,
+      @JsonKey(name: 'musterRollStatus')
+          final String? musterRollStatus,
+      @JsonKey(name: 'startDate')
+          final int? startDate,
+      @JsonKey(name: 'endDate')
+          final int? endDate,
+      @JsonKey(name: 'referenceId')
+          final String? referenceId,
+      @JsonKey(name: 'serviceCode')
+          final String? serviceCode,
+      @JsonKey(name: 'auditDetails')
+          final AuditDetails? auditDetails,
+      @JsonKey(name: 'additionalDetails')
+          final MusterRollAdditionalDetails? additional}) = _$_MusterRoll;
+
+  factory _MusterRoll.fromJson(Map<String, dynamic> json) =
+      _$_MusterRoll.fromJson;
+
+  @override
+  @JsonKey(name: 'id')
+  String? get id;
+  @override
+  @JsonKey(name: 'tenantId')
+  String? get tenantId;
+  @override
+  @JsonKey(name: 'musterRollNumber')
+  String? get musterRollNumber;
+  @override
+  @JsonKey(name: 'registerId')
+  String? get registerId;
+  @override
+  @JsonKey(name: 'status')
+  String? get status;
+  @override
+  @JsonKey(name: 'musterRollStatus')
+  String? get musterRollStatus;
+  @override
+  @JsonKey(name: 'startDate')
+  int? get startDate;
+  @override
+  @JsonKey(name: 'endDate')
+  int? get endDate;
+  @override
+  @JsonKey(name: 'referenceId')
+  String? get referenceId;
+  @override
+  @JsonKey(name: 'serviceCode')
+  String? get serviceCode;
+  @override
+  @JsonKey(name: 'auditDetails')
+  AuditDetails? get auditDetails;
+  @override
+  @JsonKey(name: 'additionalDetails')
+  MusterRollAdditionalDetails? get additional;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MusterRollCopyWith<_$_MusterRoll> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+MusterRollAdditionalDetails _$MusterRollAdditionalDetailsFromJson(
+    Map<String, dynamic> json) {
+  return _MusterRollAdditionalDetails.fromJson(json);
+}
+
+/// @nodoc
+mixin _$MusterRollAdditionalDetails {
+  @JsonKey(name: 'ward')
+  String? get ward => throw _privateConstructorUsedError;
+  @JsonKey(name: 'orgId')
+  String? get orgId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'amount')
+  double? get amount => throw _privateConstructorUsedError;
+  @JsonKey(name: 'orgName')
+  String? get orgName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'locality')
+  String? get locality => throw _privateConstructorUsedError;
+  @JsonKey(name: 'projectId')
+  String? get projectId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'contractId')
+  String? get contractId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'projectDesc')
+  String? get projectDesc => throw _privateConstructorUsedError;
+  @JsonKey(name: 'projectName')
+  String? get projectName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'projectType')
+  String? get projectType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'executingAuthority')
+  String? get executingAuthority => throw _privateConstructorUsedError;
+  @JsonKey(name: 'attendanceRegisterNo')
+  String? get attendanceRegisterNo => throw _privateConstructorUsedError;
+  @JsonKey(name: 'attendanceRegisterName')
+  String? get attendanceRegisterName => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $MusterRollAdditionalDetailsCopyWith<MusterRollAdditionalDetails>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MusterRollAdditionalDetailsCopyWith<$Res> {
+  factory $MusterRollAdditionalDetailsCopyWith(
+          MusterRollAdditionalDetails value,
+          $Res Function(MusterRollAdditionalDetails) then) =
+      _$MusterRollAdditionalDetailsCopyWithImpl<$Res,
+          MusterRollAdditionalDetails>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'ward') String? ward,
+      @JsonKey(name: 'orgId') String? orgId,
+      @JsonKey(name: 'amount') double? amount,
+      @JsonKey(name: 'orgName') String? orgName,
+      @JsonKey(name: 'locality') String? locality,
+      @JsonKey(name: 'projectId') String? projectId,
+      @JsonKey(name: 'contractId') String? contractId,
+      @JsonKey(name: 'projectDesc') String? projectDesc,
+      @JsonKey(name: 'projectName') String? projectName,
+      @JsonKey(name: 'projectType') String? projectType,
+      @JsonKey(name: 'executingAuthority') String? executingAuthority,
+      @JsonKey(name: 'attendanceRegisterNo') String? attendanceRegisterNo,
+      @JsonKey(name: 'attendanceRegisterName') String? attendanceRegisterName});
+}
+
+/// @nodoc
+class _$MusterRollAdditionalDetailsCopyWithImpl<$Res,
+        $Val extends MusterRollAdditionalDetails>
+    implements $MusterRollAdditionalDetailsCopyWith<$Res> {
+  _$MusterRollAdditionalDetailsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? ward = freezed,
+    Object? orgId = freezed,
+    Object? amount = freezed,
+    Object? orgName = freezed,
+    Object? locality = freezed,
+    Object? projectId = freezed,
+    Object? contractId = freezed,
+    Object? projectDesc = freezed,
+    Object? projectName = freezed,
+    Object? projectType = freezed,
+    Object? executingAuthority = freezed,
+    Object? attendanceRegisterNo = freezed,
+    Object? attendanceRegisterName = freezed,
+  }) {
+    return _then(_value.copyWith(
+      ward: freezed == ward
+          ? _value.ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orgId: freezed == orgId
+          ? _value.orgId
+          : orgId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      orgName: freezed == orgName
+          ? _value.orgName
+          : orgName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      locality: freezed == locality
+          ? _value.locality
+          : locality // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractId: freezed == contractId
+          ? _value.contractId
+          : contractId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectDesc: freezed == projectDesc
+          ? _value.projectDesc
+          : projectDesc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectName: freezed == projectName
+          ? _value.projectName
+          : projectName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectType: freezed == projectType
+          ? _value.projectType
+          : projectType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      executingAuthority: freezed == executingAuthority
+          ? _value.executingAuthority
+          : executingAuthority // ignore: cast_nullable_to_non_nullable
+              as String?,
+      attendanceRegisterNo: freezed == attendanceRegisterNo
+          ? _value.attendanceRegisterNo
+          : attendanceRegisterNo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      attendanceRegisterName: freezed == attendanceRegisterName
+          ? _value.attendanceRegisterName
+          : attendanceRegisterName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_MusterRollAdditionalDetailsCopyWith<$Res>
+    implements $MusterRollAdditionalDetailsCopyWith<$Res> {
+  factory _$$_MusterRollAdditionalDetailsCopyWith(
+          _$_MusterRollAdditionalDetails value,
+          $Res Function(_$_MusterRollAdditionalDetails) then) =
+      __$$_MusterRollAdditionalDetailsCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'ward') String? ward,
+      @JsonKey(name: 'orgId') String? orgId,
+      @JsonKey(name: 'amount') double? amount,
+      @JsonKey(name: 'orgName') String? orgName,
+      @JsonKey(name: 'locality') String? locality,
+      @JsonKey(name: 'projectId') String? projectId,
+      @JsonKey(name: 'contractId') String? contractId,
+      @JsonKey(name: 'projectDesc') String? projectDesc,
+      @JsonKey(name: 'projectName') String? projectName,
+      @JsonKey(name: 'projectType') String? projectType,
+      @JsonKey(name: 'executingAuthority') String? executingAuthority,
+      @JsonKey(name: 'attendanceRegisterNo') String? attendanceRegisterNo,
+      @JsonKey(name: 'attendanceRegisterName') String? attendanceRegisterName});
+}
+
+/// @nodoc
+class __$$_MusterRollAdditionalDetailsCopyWithImpl<$Res>
+    extends _$MusterRollAdditionalDetailsCopyWithImpl<$Res,
+        _$_MusterRollAdditionalDetails>
+    implements _$$_MusterRollAdditionalDetailsCopyWith<$Res> {
+  __$$_MusterRollAdditionalDetailsCopyWithImpl(
+      _$_MusterRollAdditionalDetails _value,
+      $Res Function(_$_MusterRollAdditionalDetails) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? ward = freezed,
+    Object? orgId = freezed,
+    Object? amount = freezed,
+    Object? orgName = freezed,
+    Object? locality = freezed,
+    Object? projectId = freezed,
+    Object? contractId = freezed,
+    Object? projectDesc = freezed,
+    Object? projectName = freezed,
+    Object? projectType = freezed,
+    Object? executingAuthority = freezed,
+    Object? attendanceRegisterNo = freezed,
+    Object? attendanceRegisterName = freezed,
+  }) {
+    return _then(_$_MusterRollAdditionalDetails(
+      ward: freezed == ward
+          ? _value.ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as String?,
+      orgId: freezed == orgId
+          ? _value.orgId
+          : orgId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      orgName: freezed == orgName
+          ? _value.orgName
+          : orgName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      locality: freezed == locality
+          ? _value.locality
+          : locality // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractId: freezed == contractId
+          ? _value.contractId
+          : contractId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectDesc: freezed == projectDesc
+          ? _value.projectDesc
+          : projectDesc // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectName: freezed == projectName
+          ? _value.projectName
+          : projectName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectType: freezed == projectType
+          ? _value.projectType
+          : projectType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      executingAuthority: freezed == executingAuthority
+          ? _value.executingAuthority
+          : executingAuthority // ignore: cast_nullable_to_non_nullable
+              as String?,
+      attendanceRegisterNo: freezed == attendanceRegisterNo
+          ? _value.attendanceRegisterNo
+          : attendanceRegisterNo // ignore: cast_nullable_to_non_nullable
+              as String?,
+      attendanceRegisterName: freezed == attendanceRegisterName
+          ? _value.attendanceRegisterName
+          : attendanceRegisterName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_MusterRollAdditionalDetails implements _MusterRollAdditionalDetails {
+  const _$_MusterRollAdditionalDetails(
+      {@JsonKey(name: 'ward') this.ward,
+      @JsonKey(name: 'orgId') this.orgId,
+      @JsonKey(name: 'amount') this.amount,
+      @JsonKey(name: 'orgName') this.orgName,
+      @JsonKey(name: 'locality') this.locality,
+      @JsonKey(name: 'projectId') this.projectId,
+      @JsonKey(name: 'contractId') this.contractId,
+      @JsonKey(name: 'projectDesc') this.projectDesc,
+      @JsonKey(name: 'projectName') this.projectName,
+      @JsonKey(name: 'projectType') this.projectType,
+      @JsonKey(name: 'executingAuthority') this.executingAuthority,
+      @JsonKey(name: 'attendanceRegisterNo') this.attendanceRegisterNo,
+      @JsonKey(name: 'attendanceRegisterName') this.attendanceRegisterName});
+
+  factory _$_MusterRollAdditionalDetails.fromJson(Map<String, dynamic> json) =>
+      _$$_MusterRollAdditionalDetailsFromJson(json);
+
+  @override
+  @JsonKey(name: 'ward')
+  final String? ward;
+  @override
+  @JsonKey(name: 'orgId')
+  final String? orgId;
+  @override
+  @JsonKey(name: 'amount')
+  final double? amount;
+  @override
+  @JsonKey(name: 'orgName')
+  final String? orgName;
+  @override
+  @JsonKey(name: 'locality')
+  final String? locality;
+  @override
+  @JsonKey(name: 'projectId')
+  final String? projectId;
+  @override
+  @JsonKey(name: 'contractId')
+  final String? contractId;
+  @override
+  @JsonKey(name: 'projectDesc')
+  final String? projectDesc;
+  @override
+  @JsonKey(name: 'projectName')
+  final String? projectName;
+  @override
+  @JsonKey(name: 'projectType')
+  final String? projectType;
+  @override
+  @JsonKey(name: 'executingAuthority')
+  final String? executingAuthority;
+  @override
+  @JsonKey(name: 'attendanceRegisterNo')
+  final String? attendanceRegisterNo;
+  @override
+  @JsonKey(name: 'attendanceRegisterName')
+  final String? attendanceRegisterName;
+
+  @override
+  String toString() {
+    return 'MusterRollAdditionalDetails(ward: $ward, orgId: $orgId, amount: $amount, orgName: $orgName, locality: $locality, projectId: $projectId, contractId: $contractId, projectDesc: $projectDesc, projectName: $projectName, projectType: $projectType, executingAuthority: $executingAuthority, attendanceRegisterNo: $attendanceRegisterNo, attendanceRegisterName: $attendanceRegisterName)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_MusterRollAdditionalDetails &&
+            (identical(other.ward, ward) || other.ward == ward) &&
+            (identical(other.orgId, orgId) || other.orgId == orgId) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.orgName, orgName) || other.orgName == orgName) &&
+            (identical(other.locality, locality) ||
+                other.locality == locality) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId) &&
+            (identical(other.contractId, contractId) ||
+                other.contractId == contractId) &&
+            (identical(other.projectDesc, projectDesc) ||
+                other.projectDesc == projectDesc) &&
+            (identical(other.projectName, projectName) ||
+                other.projectName == projectName) &&
+            (identical(other.projectType, projectType) ||
+                other.projectType == projectType) &&
+            (identical(other.executingAuthority, executingAuthority) ||
+                other.executingAuthority == executingAuthority) &&
+            (identical(other.attendanceRegisterNo, attendanceRegisterNo) ||
+                other.attendanceRegisterNo == attendanceRegisterNo) &&
+            (identical(other.attendanceRegisterName, attendanceRegisterName) ||
+                other.attendanceRegisterName == attendanceRegisterName));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      ward,
+      orgId,
+      amount,
+      orgName,
+      locality,
+      projectId,
+      contractId,
+      projectDesc,
+      projectName,
+      projectType,
+      executingAuthority,
+      attendanceRegisterNo,
+      attendanceRegisterName);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_MusterRollAdditionalDetailsCopyWith<_$_MusterRollAdditionalDetails>
+      get copyWith => __$$_MusterRollAdditionalDetailsCopyWithImpl<
+          _$_MusterRollAdditionalDetails>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_MusterRollAdditionalDetailsToJson(
+      this,
+    );
+  }
+}
+
+abstract class _MusterRollAdditionalDetails
+    implements MusterRollAdditionalDetails {
+  const factory _MusterRollAdditionalDetails(
+          {@JsonKey(name: 'ward')
+              final String? ward,
+          @JsonKey(name: 'orgId')
+              final String? orgId,
+          @JsonKey(name: 'amount')
+              final double? amount,
+          @JsonKey(name: 'orgName')
+              final String? orgName,
+          @JsonKey(name: 'locality')
+              final String? locality,
+          @JsonKey(name: 'projectId')
+              final String? projectId,
+          @JsonKey(name: 'contractId')
+              final String? contractId,
+          @JsonKey(name: 'projectDesc')
+              final String? projectDesc,
+          @JsonKey(name: 'projectName')
+              final String? projectName,
+          @JsonKey(name: 'projectType')
+              final String? projectType,
+          @JsonKey(name: 'executingAuthority')
+              final String? executingAuthority,
+          @JsonKey(name: 'attendanceRegisterNo')
+              final String? attendanceRegisterNo,
+          @JsonKey(name: 'attendanceRegisterName')
+              final String? attendanceRegisterName}) =
+      _$_MusterRollAdditionalDetails;
+
+  factory _MusterRollAdditionalDetails.fromJson(Map<String, dynamic> json) =
+      _$_MusterRollAdditionalDetails.fromJson;
+
+  @override
+  @JsonKey(name: 'ward')
+  String? get ward;
+  @override
+  @JsonKey(name: 'orgId')
+  String? get orgId;
+  @override
+  @JsonKey(name: 'amount')
+  double? get amount;
+  @override
+  @JsonKey(name: 'orgName')
+  String? get orgName;
+  @override
+  @JsonKey(name: 'locality')
+  String? get locality;
+  @override
+  @JsonKey(name: 'projectId')
+  String? get projectId;
+  @override
+  @JsonKey(name: 'contractId')
+  String? get contractId;
+  @override
+  @JsonKey(name: 'projectDesc')
+  String? get projectDesc;
+  @override
+  @JsonKey(name: 'projectName')
+  String? get projectName;
+  @override
+  @JsonKey(name: 'projectType')
+  String? get projectType;
+  @override
+  @JsonKey(name: 'executingAuthority')
+  String? get executingAuthority;
+  @override
+  @JsonKey(name: 'attendanceRegisterNo')
+  String? get attendanceRegisterNo;
+  @override
+  @JsonKey(name: 'attendanceRegisterName')
+  String? get attendanceRegisterName;
+  @override
+  @JsonKey(ignore: true)
+  _$$_MusterRollAdditionalDetailsCopyWith<_$_MusterRollAdditionalDetails>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 Measurement _$MeasurementFromJson(Map<String, dynamic> json) {
@@ -364,6 +1357,8 @@ mixin _$Measurement {
   @JsonKey(name: 'additionalDetails')
   MeasurementAdditionalDetail? get additionalDetail =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'measures')
+  List<Measure>? get measures => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -399,7 +1394,9 @@ abstract class $MeasurementCopyWith<$Res> {
       @JsonKey(name: 'auditDetails')
           AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-          MeasurementAdditionalDetail? additionalDetail});
+          MeasurementAdditionalDetail? additionalDetail,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $MeasurementAdditionalDetailCopyWith<$Res>? get additionalDetail;
@@ -429,6 +1426,7 @@ class _$MeasurementCopyWithImpl<$Res, $Val extends Measurement>
     Object? workflow = freezed,
     Object? auditDetails = freezed,
     Object? additionalDetail = freezed,
+    Object? measures = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -475,6 +1473,10 @@ class _$MeasurementCopyWithImpl<$Res, $Val extends Measurement>
           ? _value.additionalDetail
           : additionalDetail // ignore: cast_nullable_to_non_nullable
               as MeasurementAdditionalDetail?,
+      measures: freezed == measures
+          ? _value.measures
+          : measures // ignore: cast_nullable_to_non_nullable
+              as List<Measure>?,
     ) as $Val);
   }
 
@@ -534,7 +1536,9 @@ abstract class _$$_MeasurementCopyWith<$Res>
       @JsonKey(name: 'auditDetails')
           AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-          MeasurementAdditionalDetail? additionalDetail});
+          MeasurementAdditionalDetail? additionalDetail,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures});
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -564,6 +1568,7 @@ class __$$_MeasurementCopyWithImpl<$Res>
     Object? workflow = freezed,
     Object? auditDetails = freezed,
     Object? additionalDetail = freezed,
+    Object? measures = freezed,
   }) {
     return _then(_$_Measurement(
       id: freezed == id
@@ -610,6 +1615,10 @@ class __$$_MeasurementCopyWithImpl<$Res>
           ? _value.additionalDetail
           : additionalDetail // ignore: cast_nullable_to_non_nullable
               as MeasurementAdditionalDetail?,
+      measures: freezed == measures
+          ? _value._measures
+          : measures // ignore: cast_nullable_to_non_nullable
+              as List<Measure>?,
     ));
   }
 }
@@ -628,7 +1637,9 @@ class _$_Measurement implements _Measurement {
       @JsonKey(name: 'wfStatus') this.wfStatus,
       @JsonKey(name: 'workflow') this.workflow,
       @JsonKey(name: 'auditDetails') this.auditDetails,
-      @JsonKey(name: 'additionalDetails') this.additionalDetail});
+      @JsonKey(name: 'additionalDetails') this.additionalDetail,
+      @JsonKey(name: 'measures') final List<Measure>? measures})
+      : _measures = measures;
 
   factory _$_Measurement.fromJson(Map<String, dynamic> json) =>
       _$$_MeasurementFromJson(json);
@@ -666,10 +1677,20 @@ class _$_Measurement implements _Measurement {
   @override
   @JsonKey(name: 'additionalDetails')
   final MeasurementAdditionalDetail? additionalDetail;
+  final List<Measure>? _measures;
+  @override
+  @JsonKey(name: 'measures')
+  List<Measure>? get measures {
+    final value = _measures;
+    if (value == null) return null;
+    if (_measures is EqualUnmodifiableListView) return _measures;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Measurement(id: $id, tenantId: $tenantId, measurementNumber: $measurementNumber, physicalRefNumber: $physicalRefNumber, referenceId: $referenceId, entryDate: $entryDate, isActive: $isActive, wfStatus: $wfStatus, workflow: $workflow, auditDetails: $auditDetails, additionalDetail: $additionalDetail)';
+    return 'Measurement(id: $id, tenantId: $tenantId, measurementNumber: $measurementNumber, physicalRefNumber: $physicalRefNumber, referenceId: $referenceId, entryDate: $entryDate, isActive: $isActive, wfStatus: $wfStatus, workflow: $workflow, auditDetails: $auditDetails, additionalDetail: $additionalDetail, measures: $measures)';
   }
 
   @override
@@ -697,7 +1718,8 @@ class _$_Measurement implements _Measurement {
             (identical(other.auditDetails, auditDetails) ||
                 other.auditDetails == auditDetails) &&
             (identical(other.additionalDetail, additionalDetail) ||
-                other.additionalDetail == additionalDetail));
+                other.additionalDetail == additionalDetail) &&
+            const DeepCollectionEquality().equals(other._measures, _measures));
   }
 
   @JsonKey(ignore: true)
@@ -714,7 +1736,8 @@ class _$_Measurement implements _Measurement {
       wfStatus,
       workflow,
       auditDetails,
-      additionalDetail);
+      additionalDetail,
+      const DeepCollectionEquality().hash(_measures));
 
   @JsonKey(ignore: true)
   @override
@@ -732,29 +1755,30 @@ class _$_Measurement implements _Measurement {
 
 abstract class _Measurement implements Measurement {
   const factory _Measurement(
-          {@JsonKey(name: 'id')
-              final String? id,
-          @JsonKey(name: 'tenantId')
-              final String? tenantId,
-          @JsonKey(name: 'measurementNumber')
-              final String? measurementNumber,
-          @JsonKey(name: 'physicalRefNumber')
-              final String? physicalRefNumber,
-          @JsonKey(name: 'referenceId')
-              final String? referenceId,
-          @JsonKey(name: 'entryDate')
-              final int? entryDate,
-          @JsonKey(name: 'isActive')
-              final bool? isActive,
-          @JsonKey(name: 'wfStatus')
-              final String? wfStatus,
-          @JsonKey(name: 'workflow')
-              final String? workflow,
-          @JsonKey(name: 'auditDetails')
-              final AuditDetails? auditDetails,
-          @JsonKey(name: 'additionalDetails')
-              final MeasurementAdditionalDetail? additionalDetail}) =
-      _$_Measurement;
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'measurementNumber')
+          final String? measurementNumber,
+      @JsonKey(name: 'physicalRefNumber')
+          final String? physicalRefNumber,
+      @JsonKey(name: 'referenceId')
+          final String? referenceId,
+      @JsonKey(name: 'entryDate')
+          final int? entryDate,
+      @JsonKey(name: 'isActive')
+          final bool? isActive,
+      @JsonKey(name: 'wfStatus')
+          final String? wfStatus,
+      @JsonKey(name: 'workflow')
+          final String? workflow,
+      @JsonKey(name: 'auditDetails')
+          final AuditDetails? auditDetails,
+      @JsonKey(name: 'additionalDetails')
+          final MeasurementAdditionalDetail? additionalDetail,
+      @JsonKey(name: 'measures')
+          final List<Measure>? measures}) = _$_Measurement;
 
   factory _Measurement.fromJson(Map<String, dynamic> json) =
       _$_Measurement.fromJson;
@@ -792,6 +1816,9 @@ abstract class _Measurement implements Measurement {
   @override
   @JsonKey(name: 'additionalDetails')
   MeasurementAdditionalDetail? get additionalDetail;
+  @override
+  @JsonKey(name: 'measures')
+  List<Measure>? get measures;
   @override
   @JsonKey(ignore: true)
   _$$_MeasurementCopyWith<_$_Measurement> get copyWith =>

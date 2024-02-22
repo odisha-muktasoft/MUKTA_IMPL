@@ -10,6 +10,7 @@ import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../services/urls.dart';
+import '../../../utils/employee/mb/mb_logic.dart';
 
 part 'mb_detail_view.freezed.dart';
 
@@ -26,6 +27,10 @@ class MeasurementDetailBloc
   ) async {
     Client client = Client();
     try {
+      emit(const MeasurementDetailState.initial());
+      emit(
+       const  MeasurementDetailState.loading()
+      );
       final MBDetailResponse res = await MBRepository(client.init())
           .fetchMbDetail(url: Urls.measurementService.measurementDetail, body: {
         "contractNumber": "WO/2023-24/001379",
@@ -33,10 +38,13 @@ class MeasurementDetailBloc
         "measurementNumber": "MB/2023-24/000214",
         "key": "View",
       });
-      print(res);
+
+     final data= MBLogic.getMeasureList(mbDetailResponse: res);
+    final Map<String, List<Map<String, dynamic>>> ok= MBLogic.getSors(data);
+     emit(MeasurementDetailState.loaded(ok));
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
-      print(e);
+    emit(MeasurementDetailState.error(e.toString()));
     }
   }
 }

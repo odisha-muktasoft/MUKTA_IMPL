@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
+import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../utils/common_methods.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
@@ -29,6 +31,13 @@ class _MBDetailPageState extends State<MBDetailPage>
   int phots = 0;
   @override
   void initState() {
+    context.read<MeasurementDetailBloc>().add(
+        const MeasurementDetailBookBlocEvent(
+            businessService: "",
+            limit: 0,
+            moduleName: '',
+            offset: 10,
+            tenantId: ''));
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
@@ -49,14 +58,64 @@ class _MBDetailPageState extends State<MBDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    // return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+    //   builder: (context, state) {
+    //     return state.maybeMap(
+    //       orElse: () {
+    //         return const SizedBox.shrink();
+    //       },
+    //       loaded: (value) {
+    //         return testing(context);
+    //       },
+    //     );
+    //   },
+    // );
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        bottomNavigationBar: FloatActionCard(actions: () { 
-           context.router.push(const MBTypeConfirmationRoute());
-         }, amount: '10000000', openButtonSheet: () {
-          _openBottomSheet(context);
-          }, totalAmountText: 'Total MB Amount',subtext: '(For Current Entry)',),
+        bottomNavigationBar:
+            BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+          builder: (context, state) {
+            return state.maybeMap(
+              orElse: () {
+                return const SizedBox.shrink();
+              },
+              loaded: (value) {
+                double sorprice = 0.0;
+
+                for (int i = 0; i < value.data.length; i++) {
+                  final key = value.data.keys.elementAt(i);
+                  List<dynamic> line = value.data[key]!.map(
+                    (e) {
+                      return e['contract'][0]['estimate'][0];
+                    },
+                  ).toList();
+                  int consumed = value.data[key]!.fold(0, (sum, obj) {
+                    double m = obj['currentValue'];
+                    return sum + m.toInt();
+                  });
+                  sorprice += (line[0]['unitRate'] * consumed);
+                }
+
+                return FloatActionCard(
+                  actions: () {
+                    context.router.push(const MBTypeConfirmationRoute());
+                  },
+                  amount: sorprice.toString(),
+                  openButtonSheet: () {
+                    _openBottomSheet(context, sorprice);
+                  },
+                  totalAmountText: 'Total MB Amount',
+                  subtext: '(For Current Entry)',
+                );
+              },
+              loading: (value) {
+                return const SizedBox.shrink();
+              },
+            );
+          },
+        ),
         backgroundColor: const DigitColors().seaShellGray,
         appBar: AppBar(
           titleSpacing: 0,
@@ -69,154 +128,355 @@ class _MBDetailPageState extends State<MBDetailPage>
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Back(),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  "Measurement Book",
-                  style:
-                      DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
-                ),
-              ),
-              DigitCard(
-                // margin: EdgeInsets.zero,
-                padding: EdgeInsets.zero,
-                child: ExpansionTile(
-                  expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                  expandedAlignment: Alignment.topLeft,
-                  title: Text(
-                    "Primary Details",
-                    style:
-                        DigitTheme.instance.mobileTheme.textTheme.headlineSmall,
+        body: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+          builder: (context, state) {
+            return state.maybeMap(
+              orElse: () {
+                return const SizedBox.shrink();
+              },
+              loaded: (value) {
+                return SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Back(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          "Measurement Book",
+                          style: DigitTheme
+                              .instance.mobileTheme.textTheme.headlineLarge,
+                        ),
+                      ),
+                      DigitCard(
+                        // margin: EdgeInsets.zero,
+                        padding: EdgeInsets.zero,
+                        child: ExpansionTile(
+                          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                          expandedAlignment: Alignment.topLeft,
+                          title: Text(
+                            "Primary Details",
+                            style: DigitTheme
+                                .instance.mobileTheme.textTheme.headlineSmall,
+                          ),
+                          children: [
+                            CommonMBCard(
+                              items: const {
+                                "MB number": "MB-233",
+                                "Project Description":
+                                    "Wall Painting in Ward 1",
+                                "Assignee": "SHG group-C#1",
+                                "Workflow State": "Pending for verification",
+                                "MB Account": "240000",
+                                "SLA Days remaining": 2,
+                              },
+                              widget: CommonTextButtonUnderline(
+                                label: 'View MB History',
+                                onPressed: () {
+                                  context.router
+                                      .push(const MBHistoryBookRoute());
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // tab
+
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 8.0, left: 8.0, right: 8.0, bottom: 0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // padding: EdgeInsets.zero,
+                          // controller: _tabController,
+                          children: [
+                            Expanded(
+                              child: CustomTab(
+                                text: 'SORs',
+                                isSelected: _selectedIndex == 0,
+                                onTap: () {
+                                  _tabController.animateTo(0);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: CustomTab(
+                                text: 'Non SORs',
+                                isSelected: _selectedIndex == 1,
+                                onTap: () {
+                                  _tabController.animateTo(1);
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              child: CustomTab(
+                                text: 'Site Photos',
+                                isSelected: _selectedIndex == 2,
+                                onTap: () {
+                                  _tabController.animateTo(2);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: tabViewHeight(
+                            value.data.length, value.data.length, 0),
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            value.data.length == 0
+                                ? const Card(
+                                    child: Center(child: Text("No Data Found")),
+                                  )
+                                : ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final key =
+                                          value.data.keys.elementAt(index);
+                                      final valuel = value.data[key]!;
+                                      return sorCard(index, magic: valuel);
+                                    },
+                                    itemCount: value.data.length,
+                                  ),
+                            nsor == 0
+                                ? const Card(
+                                    child: Center(child: Text("No Data Found")),
+                                  )
+                                : ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return sorCard(index);
+                                    },
+                                    itemCount: nsor,
+                                  ),
+                            phots == 0
+                                ? const Card(
+                                    child: Center(child: Text("No Data Found")),
+                                  )
+                                : ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return sorCard(index);
+                                    },
+                                    itemCount: phots,
+                                  ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  children: [
-                    CommonMBCard(
-                      items: const {
-                        "MB number": "MB-233",
-                        "Project Description": "Wall Painting in Ward 1",
-                        "Assignee": "SHG group-C#1",
-                        "Workflow State": "Pending for verification",
-                        "MB Account": "240000",
-                        "SLA Days remaining": 2,
-                      },
-                      widget: CommonTextButtonUnderline(
-                        label: 'View MB History',
-                        onPressed: () {
-                          context.router.push(const MBHistoryBookRoute());
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // tab
-
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 8.0, left: 8.0, right: 8.0, bottom: 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // padding: EdgeInsets.zero,
-                  // controller: _tabController,
-                  children: [
-                    Expanded(
-                      child: CustomTab(
-                        text: 'SORs',
-                        isSelected: _selectedIndex == 0,
-                        onTap: () {
-                          _tabController.animateTo(0);
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: CustomTab(
-                        text: 'Non SORs',
-                        isSelected: _selectedIndex == 1,
-                        onTap: () {
-                          _tabController.animateTo(1);
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: CustomTab(
-                        text: 'Site Photos',
-                        isSelected: _selectedIndex == 2,
-                        onTap: () {
-                          _tabController.animateTo(2);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: tabViewHeight(),
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    sor == 0
-                        ? const Card(
-                            child: Center(child: Text("No Data Found")),
-                          )
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return sorCard(index);
-                            },
-                            itemCount: sor,
-                          ),
-                    nsor == 0
-                        ? const Card(
-                            child: Center(child: Text("No Data Found")),
-                          )
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return sorCard(index);
-                            },
-                            itemCount: nsor,
-                          ),
-                    phots == 0
-                        ? const Card(
-                            child: Center(child: Text("No Data Found")),
-                          )
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return sorCard(index);
-                            },
-                            itemCount: phots,
-                          ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+                );
+              },
+              loading: (value) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
 
-  double tabViewHeight() {
+  // DefaultTabController testing(BuildContext context) {
+  //   return DefaultTabController(
+  //     length: 3,
+  //     child: Scaffold(
+  //       bottomNavigationBar: FloatActionCard(
+  //         actions: () {
+  //           context.router.push(const MBTypeConfirmationRoute());
+  //         },
+  //         amount: '10000000',
+  //         openButtonSheet: () {
+  //           _openBottomSheet(context);
+  //         },
+  //         totalAmountText: 'Total MB Amount',
+  //         subtext: '(For Current Entry)',
+  //       ),
+  //       backgroundColor: const DigitColors().seaShellGray,
+  //       appBar: AppBar(
+  //         titleSpacing: 0,
+  //         title: const AppBarLogo(),
+  //       ),
+  //       drawer: DrawerWrapper(
+  //         Drawer(
+  //           child: SideBar(
+  //             module: CommonMethods.getLocaleModules(),
+  //           ),
+  //         ),
+  //       ),
+  //       body: SingleChildScrollView(
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           children: [
+  //             const Back(),
+  //             Padding(
+  //               padding: const EdgeInsets.only(left: 20.0),
+  //               child: Text(
+  //                 "Measurement Book",
+  //                 style:
+  //                     DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+  //               ),
+  //             ),
+  //             DigitCard(
+  //               // margin: EdgeInsets.zero,
+  //               padding: EdgeInsets.zero,
+  //               child: ExpansionTile(
+  //                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
+  //                 expandedAlignment: Alignment.topLeft,
+  //                 title: Text(
+  //                   "Primary Details",
+  //                   style:
+  //                       DigitTheme.instance.mobileTheme.textTheme.headlineSmall,
+  //                 ),
+  //                 children: [
+  //                   CommonMBCard(
+  //                     items: const {
+  //                       "MB number": "MB-233",
+  //                       "Project Description": "Wall Painting in Ward 1",
+  //                       "Assignee": "SHG group-C#1",
+  //                       "Workflow State": "Pending for verification",
+  //                       "MB Account": "240000",
+  //                       "SLA Days remaining": 2,
+  //                     },
+  //                     widget: CommonTextButtonUnderline(
+  //                       label: 'View MB History',
+  //                       onPressed: () {
+  //                         context.router.push(const MBHistoryBookRoute());
+  //                       },
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+
+  //             // tab
+
+  //             Padding(
+  //               padding: const EdgeInsets.only(
+  //                   top: 8.0, left: 8.0, right: 8.0, bottom: 0.0),
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 // padding: EdgeInsets.zero,
+  //                 // controller: _tabController,
+  //                 children: [
+  //                   Expanded(
+  //                     child: CustomTab(
+  //                       text: 'SORs',
+  //                       isSelected: _selectedIndex == 0,
+  //                       onTap: () {
+  //                         _tabController.animateTo(0);
+  //                       },
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: CustomTab(
+  //                       text: 'Non SORs',
+  //                       isSelected: _selectedIndex == 1,
+  //                       onTap: () {
+  //                         _tabController.animateTo(1);
+  //                       },
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: CustomTab(
+  //                       text: 'Site Photos',
+  //                       isSelected: _selectedIndex == 2,
+  //                       onTap: () {
+  //                         _tabController.animateTo(2);
+  //                       },
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             SizedBox(
+  //               height: tabViewHeight(value.data.length, value.data.length, 0),
+  //               child: TabBarView(
+  //                 controller: _tabController,
+  //                 children: [
+  //                   sor == 0
+  //                       ? const Card(
+  //                           child: Center(child: Text("No Data Found")),
+  //                         )
+  //                       : ListView.builder(
+  //                           physics: const NeverScrollableScrollPhysics(),
+  //                           itemBuilder: (BuildContext context, int index) {
+  //                             final key = value.data.keys.elementAt(index);
+  //                             final valuel = value.data[key]!;
+  //                             return sorCard(index);
+  //                           },
+  //                           itemCount: value.data.length,
+  //                         ),
+  //                   nsor == 0
+  //                       ? const Card(
+  //                           child: Center(child: Text("No Data Found")),
+  //                         )
+  //                       : ListView.builder(
+  //                           physics: const NeverScrollableScrollPhysics(),
+  //                           itemBuilder: (BuildContext context, int index) {
+  //                             return sorCard(index);
+  //                           },
+  //                           itemCount: nsor,
+  //                         ),
+  //                   phots == 0
+  //                       ? const Card(
+  //                           child: Center(child: Text("No Data Found")),
+  //                         )
+  //                       : ListView.builder(
+  //                           physics: const NeverScrollableScrollPhysics(),
+  //                           itemBuilder: (BuildContext context, int index) {
+  //                             return sorCard(index);
+  //                           },
+  //                           itemCount: phots,
+  //                         ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  double tabViewHeight(int sork, int nonSork, int photo) {
     switch (_tabController.index) {
       case 0:
-        return sor == 0 ? 300 : sor * 500;
+        return sork == 0 ? 300 : sork * 500;
       case 1:
-        return nsor == 0 ? 300 : nsor * 500;
+        return nonSork == 0 ? 300 : nonSork * 500;
       case 2:
-        return phots == 0 ? 300 : phots * 500;
+        return photo == 0 ? 300 : photo * 500;
       default:
         return 300.0;
     }
   }
 
-  Card sorCard(int index) {
+  Card sorCard(int index, {List<dynamic>? magic}) {
+    List<dynamic> line = magic!.map(
+      (e) {
+        return e['contract'][0]['estimate'][0];
+      },
+    ).toList();
+
+    int consumed = magic.fold(0, (sum, obj) {
+      double m = obj['currentValue'];
+      return sum + m.toInt();
+    });
     return Card(
       child: SizedBox(
         height: 480,
@@ -233,14 +493,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
               ),
-              const SORTableCard(
+              SORTableCard(
                 element: {
-                  "Description":
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-                  "Unit": "10",
-                  "Rate(rs)": "2400000",
-                  "Approved Quantity": "240",
-                  "Consumed Quantity\n(Upto previous entry)": "20",
+                  "Description": line[0]['name'],
+                  "Unit": line[0]['uom'],
+                  "Rate(rs)": line[0]['unitRate'],
+                  "Approved Quantity": line.fold(0, (sum, obj) {
+                    int m = obj['quantity'];
+                    return sum + m;
+                  }),
+                  "Consumed Quantity\n(Upto previous entry)": consumed,
                 },
               ),
               DigitTextField(
@@ -266,7 +528,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                   ),
                 ),
               ),
-              const DigitTextField(
+              DigitTextField(
+                controller: TextEditingController()
+                  ..value
+                  ..text = (line[0]['unitRate'] * consumed).toString(),
                 label: "Amount for Current Entry",
                 isDisabled: true,
               ),
@@ -277,78 +542,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 
-  // Card floatActionMethod(BuildContext context) {
-  //   return Card(
-  //       // color: Colors.grey,
-  //       shape: const RoundedRectangleBorder(
-  //         borderRadius: BorderRadius.only(
-  //           topLeft: Radius.circular(20),
-  //           topRight: Radius.circular(20),
-  //         ),
-  //       ),
-
-  //       //  margin: const EdgeInsets.symmetric(horizontal: 8),
-  //       child: SizedBox(
-  //           height: 160,
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(8.0),
-  //             child: Column(
-  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //               children: [
-  //                 const Center(
-  //                   child: SizedBox(
-  //                     width: 100,
-  //                     child: Divider(
-  //                       thickness: 5,
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 GestureDetector(
-  //                   onTap: () {
-  //                     _openBottomSheet(context);
-  //                   },
-  //                   child: Container(
-  //                     height: 80,
-  //                     width: MediaQuery.sizeOf(context).width,
-  //                     padding: const EdgeInsets.symmetric(
-  //                         horizontal: 16, vertical: 0.0),
-  //                     // decoration: BoxDecoration(
-  //                     //   border: Border.all(color: Colors.grey),
-  //                     //   borderRadius: BorderRadius.circular(8),
-  //                     // ),
-  //                     child: Row(
-  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                       children: [
-  //                         RichText(
-  //                           text: TextSpan(
-  //                               text: 'Total MB Amount \n',
-  //                               style: DigitTheme.instance.mobileTheme.textTheme
-  //                                   .headlineMedium,
-  //                               children: <TextSpan>[
-  //                                 TextSpan(
-  //                                   text: '(For current entry)',
-  //                                   style: DigitTheme.instance.mobileTheme
-  //                                       .textTheme.bodySmall,
-  //                                 )
-  //                               ]),
-  //                         ),
-  //                         Text(
-  //                           '10000000.00',
-  //                           style: DigitTheme
-  //                               .instance.mobileTheme.textTheme.headlineMedium,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 DigitElevatedButton(
-  //                     child: const Text("Actions"), onPressed: () {}),
-  //               ],
-  //             ),
-  //           )));
-  // }
-
-  void _openBottomSheet(BuildContext context) {
+  void _openBottomSheet(BuildContext context, double totalSorAmount) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -380,7 +574,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      "78765873456",
+                      totalSorAmount.toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -400,7 +594,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      "Total SOR Amount",
+                      "Total Non SOR Amount",
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
