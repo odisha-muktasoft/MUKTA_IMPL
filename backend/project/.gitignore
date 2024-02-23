@@ -1,7 +1,0 @@
-.DS_Store
-frontend/micro-ui-internals/node_modules/*
-.idea
-index.lock
-/project.iml
-/target/
-/.idea/
