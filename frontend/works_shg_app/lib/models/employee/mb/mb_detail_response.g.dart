@@ -23,9 +23,7 @@ _$_MBDetailResponse _$$_MBDetailResponseFromJson(Map<String, dynamic> json) =>
       measurement: json['measurement'] == null
           ? null
           : Measurement.fromJson(json['measurement'] as Map<String, dynamic>),
-      musterRolls: (json['musterRolls'] as List<dynamic>?)
-          ?.map((e) => MusterRoll.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      musterRolls: json['musterRolls'],
     );
 
 Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>
@@ -42,7 +40,7 @@ _$_MusterRoll _$$_MusterRollFromJson(Map<String, dynamic> json) =>
     _$_MusterRoll(
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
-      musterRollNumber: json['musterRollNumber'] as String?,
+      musterRollNumber: json['musterRollNumber'],
       registerId: json['registerId'] as String?,
       status: json['status'] as String?,
       musterRollStatus: json['musterRollStatus'] as String?,
@@ -158,7 +156,7 @@ _$_MeasurementAdditionalDetail _$$_MeasurementAdditionalDetailFromJson(
       startDate: json['startDate'] as int?,
       totalAmount: (json['totalAmount'] as num?)?.toDouble(),
       nonSorAmount: (json['nonSorAmount'] as num?)?.toDouble(),
-      musterRollNumber: json['musterRollNumber'] as String?,
+      musterRollNumber: json['musterRollNumber'],
     );
 
 Map<String, dynamic> _$$_MeasurementAdditionalDetailToJson(

@@ -31,7 +31,7 @@ mixin _$MBDetailResponse {
   @JsonKey(name: 'measurement')
   Measurement? get measurement => throw _privateConstructorUsedError;
   @JsonKey(name: 'musterRolls')
-  List<MusterRoll>? get musterRolls => throw _privateConstructorUsedError;
+  dynamic get musterRolls => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +51,7 @@ abstract class $MBDetailResponseCopyWith<$Res> {
       @JsonKey(name: 'period') Period? period,
       @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
       @JsonKey(name: 'measurement') Measurement? measurement,
-      @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls});
+      @JsonKey(name: 'musterRolls') dynamic musterRolls});
 
   $ContractCopyWith<$Res>? get contract;
   $EstimateCopyWith<$Res>? get estimate;
@@ -103,7 +103,7 @@ class _$MBDetailResponseCopyWithImpl<$Res, $Val extends MBDetailResponse>
       musterRolls: freezed == musterRolls
           ? _value.musterRolls
           : musterRolls // ignore: cast_nullable_to_non_nullable
-              as List<MusterRoll>?,
+              as dynamic,
     ) as $Val);
   }
 
@@ -170,7 +170,7 @@ abstract class _$$_MBDetailResponseCopyWith<$Res>
       @JsonKey(name: 'period') Period? period,
       @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
       @JsonKey(name: 'measurement') Measurement? measurement,
-      @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls});
+      @JsonKey(name: 'musterRolls') dynamic musterRolls});
 
   @override
   $ContractCopyWith<$Res>? get contract;
@@ -222,9 +222,9 @@ class __$$_MBDetailResponseCopyWithImpl<$Res>
           : measurement // ignore: cast_nullable_to_non_nullable
               as Measurement?,
       musterRolls: freezed == musterRolls
-          ? _value._musterRolls
+          ? _value.musterRolls
           : musterRolls // ignore: cast_nullable_to_non_nullable
-              as List<MusterRoll>?,
+              as dynamic,
     ));
   }
 }
@@ -244,9 +244,8 @@ class _$_MBDetailResponse implements _MBDetailResponse {
       @JsonKey(name: 'measurement')
           this.measurement,
       @JsonKey(name: 'musterRolls')
-          final List<MusterRoll>? musterRolls})
-      : _allMeasurements = allMeasurements,
-        _musterRolls = musterRolls;
+          this.musterRolls})
+      : _allMeasurements = allMeasurements;
 
   factory _$_MBDetailResponse.fromJson(Map<String, dynamic> json) =>
       _$$_MBDetailResponseFromJson(json);
@@ -274,16 +273,9 @@ class _$_MBDetailResponse implements _MBDetailResponse {
   @override
   @JsonKey(name: 'measurement')
   final Measurement? measurement;
-  final List<MusterRoll>? _musterRolls;
   @override
   @JsonKey(name: 'musterRolls')
-  List<MusterRoll>? get musterRolls {
-    final value = _musterRolls;
-    if (value == null) return null;
-    if (_musterRolls is EqualUnmodifiableListView) return _musterRolls;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
+  final dynamic musterRolls;
 
   @override
   String toString() {
@@ -305,7 +297,7 @@ class _$_MBDetailResponse implements _MBDetailResponse {
             (identical(other.measurement, measurement) ||
                 other.measurement == measurement) &&
             const DeepCollectionEquality()
-                .equals(other._musterRolls, _musterRolls));
+                .equals(other.musterRolls, musterRolls));
   }
 
   @JsonKey(ignore: true)
@@ -317,7 +309,7 @@ class _$_MBDetailResponse implements _MBDetailResponse {
       period,
       const DeepCollectionEquality().hash(_allMeasurements),
       measurement,
-      const DeepCollectionEquality().hash(_musterRolls));
+      const DeepCollectionEquality().hash(musterRolls));
 
   @JsonKey(ignore: true)
   @override
@@ -346,7 +338,7 @@ abstract class _MBDetailResponse implements MBDetailResponse {
       @JsonKey(name: 'measurement')
           final Measurement? measurement,
       @JsonKey(name: 'musterRolls')
-          final List<MusterRoll>? musterRolls}) = _$_MBDetailResponse;
+          final dynamic musterRolls}) = _$_MBDetailResponse;
 
   factory _MBDetailResponse.fromJson(Map<String, dynamic> json) =
       _$_MBDetailResponse.fromJson;
@@ -368,7 +360,7 @@ abstract class _MBDetailResponse implements MBDetailResponse {
   Measurement? get measurement;
   @override
   @JsonKey(name: 'musterRolls')
-  List<MusterRoll>? get musterRolls;
+  dynamic get musterRolls;
   @override
   @JsonKey(ignore: true)
   _$$_MBDetailResponseCopyWith<_$_MBDetailResponse> get copyWith =>
@@ -386,7 +378,7 @@ mixin _$MusterRoll {
   @JsonKey(name: 'tenantId')
   String? get tenantId => throw _privateConstructorUsedError;
   @JsonKey(name: 'musterRollNumber')
-  String? get musterRollNumber => throw _privateConstructorUsedError;
+  dynamic get musterRollNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'registerId')
   String? get registerId => throw _privateConstructorUsedError;
   @JsonKey(name: 'status')
@@ -425,7 +417,7 @@ abstract class $MusterRollCopyWith<$Res> {
       @JsonKey(name: 'tenantId')
           String? tenantId,
       @JsonKey(name: 'musterRollNumber')
-          String? musterRollNumber,
+          dynamic musterRollNumber,
       @JsonKey(name: 'registerId')
           String? registerId,
       @JsonKey(name: 'status')
@@ -487,7 +479,7 @@ class _$MusterRollCopyWithImpl<$Res, $Val extends MusterRoll>
       musterRollNumber: freezed == musterRollNumber
           ? _value.musterRollNumber
           : musterRollNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
       registerId: freezed == registerId
           ? _value.registerId
           : registerId // ignore: cast_nullable_to_non_nullable
@@ -567,7 +559,7 @@ abstract class _$$_MusterRollCopyWith<$Res>
       @JsonKey(name: 'tenantId')
           String? tenantId,
       @JsonKey(name: 'musterRollNumber')
-          String? musterRollNumber,
+          dynamic musterRollNumber,
       @JsonKey(name: 'registerId')
           String? registerId,
       @JsonKey(name: 'status')
@@ -629,7 +621,7 @@ class __$$_MusterRollCopyWithImpl<$Res>
       musterRollNumber: freezed == musterRollNumber
           ? _value.musterRollNumber
           : musterRollNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
       registerId: freezed == registerId
           ? _value.registerId
           : registerId // ignore: cast_nullable_to_non_nullable
@@ -698,7 +690,7 @@ class _$_MusterRoll implements _MusterRoll {
   final String? tenantId;
   @override
   @JsonKey(name: 'musterRollNumber')
-  final String? musterRollNumber;
+  final dynamic musterRollNumber;
   @override
   @JsonKey(name: 'registerId')
   final String? registerId;
@@ -740,8 +732,8 @@ class _$_MusterRoll implements _MusterRoll {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
-            (identical(other.musterRollNumber, musterRollNumber) ||
-                other.musterRollNumber == musterRollNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.musterRollNumber, musterRollNumber) &&
             (identical(other.registerId, registerId) ||
                 other.registerId == registerId) &&
             (identical(other.status, status) || other.status == status) &&
@@ -766,7 +758,7 @@ class _$_MusterRoll implements _MusterRoll {
       runtimeType,
       id,
       tenantId,
-      musterRollNumber,
+      const DeepCollectionEquality().hash(musterRollNumber),
       registerId,
       status,
       musterRollStatus,
@@ -798,7 +790,7 @@ abstract class _MusterRoll implements MusterRoll {
       @JsonKey(name: 'tenantId')
           final String? tenantId,
       @JsonKey(name: 'musterRollNumber')
-          final String? musterRollNumber,
+          final dynamic musterRollNumber,
       @JsonKey(name: 'registerId')
           final String? registerId,
       @JsonKey(name: 'status')
@@ -829,7 +821,7 @@ abstract class _MusterRoll implements MusterRoll {
   String? get tenantId;
   @override
   @JsonKey(name: 'musterRollNumber')
-  String? get musterRollNumber;
+  dynamic get musterRollNumber;
   @override
   @JsonKey(name: 'registerId')
   String? get registerId;
@@ -1843,7 +1835,7 @@ mixin _$MeasurementAdditionalDetail {
   @JsonKey(name: 'nonSorAmount')
   double? get nonSorAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'musterRollNumber')
-  String? get musterRollNumber => throw _privateConstructorUsedError;
+  dynamic get musterRollNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1865,7 +1857,7 @@ abstract class $MeasurementAdditionalDetailCopyWith<$Res> {
       @JsonKey(name: 'startDate') int? startDate,
       @JsonKey(name: 'totalAmount') double? totalAmount,
       @JsonKey(name: 'nonSorAmount') double? nonSorAmount,
-      @JsonKey(name: 'musterRollNumber') String? musterRollNumber});
+      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber});
 }
 
 /// @nodoc
@@ -1913,7 +1905,7 @@ class _$MeasurementAdditionalDetailCopyWithImpl<$Res,
       musterRollNumber: freezed == musterRollNumber
           ? _value.musterRollNumber
           : musterRollNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
     ) as $Val);
   }
 }
@@ -1933,7 +1925,7 @@ abstract class _$$_MeasurementAdditionalDetailCopyWith<$Res>
       @JsonKey(name: 'startDate') int? startDate,
       @JsonKey(name: 'totalAmount') double? totalAmount,
       @JsonKey(name: 'nonSorAmount') double? nonSorAmount,
-      @JsonKey(name: 'musterRollNumber') String? musterRollNumber});
+      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber});
 }
 
 /// @nodoc
@@ -1980,7 +1972,7 @@ class __$$_MeasurementAdditionalDetailCopyWithImpl<$Res>
       musterRollNumber: freezed == musterRollNumber
           ? _value.musterRollNumber
           : musterRollNumber // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as dynamic,
     ));
   }
 }
@@ -2016,7 +2008,7 @@ class _$_MeasurementAdditionalDetail implements _MeasurementAdditionalDetail {
   final double? nonSorAmount;
   @override
   @JsonKey(name: 'musterRollNumber')
-  final String? musterRollNumber;
+  final dynamic musterRollNumber;
 
   @override
   String toString() {
@@ -2037,14 +2029,20 @@ class _$_MeasurementAdditionalDetail implements _MeasurementAdditionalDetail {
                 other.totalAmount == totalAmount) &&
             (identical(other.nonSorAmount, nonSorAmount) ||
                 other.nonSorAmount == nonSorAmount) &&
-            (identical(other.musterRollNumber, musterRollNumber) ||
-                other.musterRollNumber == musterRollNumber));
+            const DeepCollectionEquality()
+                .equals(other.musterRollNumber, musterRollNumber));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, endDate, sorAmount, startDate,
-      totalAmount, nonSorAmount, musterRollNumber);
+  int get hashCode => Object.hash(
+      runtimeType,
+      endDate,
+      sorAmount,
+      startDate,
+      totalAmount,
+      nonSorAmount,
+      const DeepCollectionEquality().hash(musterRollNumber));
 
   @JsonKey(ignore: true)
   @override
@@ -2069,7 +2067,7 @@ abstract class _MeasurementAdditionalDetail
           @JsonKey(name: 'startDate') final int? startDate,
           @JsonKey(name: 'totalAmount') final double? totalAmount,
           @JsonKey(name: 'nonSorAmount') final double? nonSorAmount,
-          @JsonKey(name: 'musterRollNumber') final String? musterRollNumber}) =
+          @JsonKey(name: 'musterRollNumber') final dynamic musterRollNumber}) =
       _$_MeasurementAdditionalDetail;
 
   factory _MeasurementAdditionalDetail.fromJson(Map<String, dynamic> json) =
@@ -2092,7 +2090,7 @@ abstract class _MeasurementAdditionalDetail
   double? get nonSorAmount;
   @override
   @JsonKey(name: 'musterRollNumber')
-  String? get musterRollNumber;
+  dynamic get musterRollNumber;
   @override
   @JsonKey(ignore: true)
   _$$_MeasurementAdditionalDetailCopyWith<_$_MeasurementAdditionalDetail>

@@ -224,9 +224,15 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     MBDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<MBDetailRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const MBDetailPage(),
+        child: MBDetailPage(
+          key: args.key,
+          contractNumber: args.contractNumber,
+          mbNumber: args.mbNumber,
+          tenantId: args.tenantId,
+        ),
       );
     },
     MBHistoryBookRoute.name: (routeData) {
@@ -939,14 +945,46 @@ class MBFilterRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [MBDetailPage]
-class MBDetailRoute extends PageRouteInfo<void> {
-  const MBDetailRoute()
-      : super(
+class MBDetailRoute extends PageRouteInfo<MBDetailRouteArgs> {
+  MBDetailRoute({
+    Key? key,
+    required String contractNumber,
+    required String mbNumber,
+    String? tenantId,
+  }) : super(
           MBDetailRoute.name,
           path: 'mb-detail',
+          args: MBDetailRouteArgs(
+            key: key,
+            contractNumber: contractNumber,
+            mbNumber: mbNumber,
+            tenantId: tenantId,
+          ),
         );
 
   static const String name = 'MBDetailRoute';
+}
+
+class MBDetailRouteArgs {
+  const MBDetailRouteArgs({
+    this.key,
+    required this.contractNumber,
+    required this.mbNumber,
+    this.tenantId,
+  });
+
+  final Key? key;
+
+  final String contractNumber;
+
+  final String mbNumber;
+
+  final String? tenantId;
+
+  @override
+  String toString() {
+    return 'MBDetailRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId}';
+  }
 }
 
 /// generated route for

@@ -158,6 +158,15 @@ class _CardWidgetState extends State<CardWidget> {
     // TODO: implement initState
     super.initState();
   }
+  @override
+  void dispose() {
+    number.dispose();
+    length.dispose();
+    width.dispose();
+    height.dispose();
+    quantity.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

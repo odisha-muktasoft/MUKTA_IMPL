@@ -38,16 +38,16 @@ class MeasurementDetailBloc
         // "tenantId": "od.testing",
         // "measurementNumber": "MB/2023-24/000214",
         // "key": "View",
-         "contractNumber": "WO/2023-24/001370",
+         "contractNumber": event.contractNumber,
         "tenantId": "od.testing",
-        "measurementNumber": "MB/2023-24/000204",
+        "measurementNumber": event.measurementNumber,
         "key": "View",
       });
 
      final List<FilteredMeasurements> data= MBLogic.getMeasureList(mbDetailResponse: res);
     final Map<String, List<Map<String, dynamic>>> ok= {};
-     List<SorObject> mm=MBLogic.getSors(data);
-     emit(MeasurementDetailState.loaded(ok,mm));
+     List<List<SorObject>> sorList=MBLogic.getSors(data);
+     emit(MeasurementDetailState.loaded(data,sorList.first,sorList.last));
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
     emit(MeasurementDetailState.error(e.toString()));
@@ -59,10 +59,9 @@ class MeasurementDetailBloc
 class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
   const factory MeasurementDetailBlocEvent.create({
     required String tenantId,
-    required String businessService,
-    required String moduleName,
-    required int limit,
-    required int offset,
+    required String contractNumber,
+    required String measurementNumber,
+    
   }) = MeasurementDetailBookBlocEvent;
 
   const factory MeasurementDetailBlocEvent.clear() =
@@ -75,8 +74,9 @@ class MeasurementDetailState with _$MeasurementDetailState {
 
   const factory MeasurementDetailState.initial() = _Initial;
   const factory MeasurementDetailState.loading() = _Loading;
-  const factory MeasurementDetailState.loaded(dynamic data,
+  const factory MeasurementDetailState.loaded(List<FilteredMeasurements> data,
   List<SorObject>? sor,
+  List<SorObject>? nonSor,
   ) = _Loaded;
   const factory MeasurementDetailState.error(String? error) = _Error;
 }

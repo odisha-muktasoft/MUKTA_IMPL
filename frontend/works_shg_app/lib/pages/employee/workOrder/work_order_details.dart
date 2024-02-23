@@ -38,7 +38,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
             child: DigitElevatedButton(
               child: const Text("Create Measurement Book"),
               onPressed: () {
-                context.router.push(const MBDetailRoute());
+                context.router.push( MBDetailRoute(contractNumber: '', mbNumber: ''));
               },
             ),
           ),

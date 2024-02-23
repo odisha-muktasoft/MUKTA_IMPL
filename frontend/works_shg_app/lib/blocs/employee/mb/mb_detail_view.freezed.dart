@@ -18,24 +18,24 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MeasurementDetailBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String tenantId, String businessService,
-            String moduleName, int limit, int offset)
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String tenantId, String businessService,
-            String moduleName, int limit, int offset)?
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String tenantId, String businessService, String moduleName,
-            int limit, int offset)?
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult Function()? clear,
     required TResult orElse(),
@@ -89,12 +89,7 @@ abstract class _$$MeasurementDetailBookBlocEventCopyWith<$Res> {
           $Res Function(_$MeasurementDetailBookBlocEvent) then) =
       __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {String tenantId,
-      String businessService,
-      String moduleName,
-      int limit,
-      int offset});
+  $Res call({String tenantId, String contractNumber, String measurementNumber});
 }
 
 /// @nodoc
@@ -111,32 +106,22 @@ class __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? tenantId = null,
-    Object? businessService = null,
-    Object? moduleName = null,
-    Object? limit = null,
-    Object? offset = null,
+    Object? contractNumber = null,
+    Object? measurementNumber = null,
   }) {
     return _then(_$MeasurementDetailBookBlocEvent(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
               as String,
-      businessService: null == businessService
-          ? _value.businessService
-          : businessService // ignore: cast_nullable_to_non_nullable
+      contractNumber: null == contractNumber
+          ? _value.contractNumber
+          : contractNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      moduleName: null == moduleName
-          ? _value.moduleName
-          : moduleName // ignore: cast_nullable_to_non_nullable
+      measurementNumber: null == measurementNumber
+          ? _value.measurementNumber
+          : measurementNumber // ignore: cast_nullable_to_non_nullable
               as String,
-      limit: null == limit
-          ? _value.limit
-          : limit // ignore: cast_nullable_to_non_nullable
-              as int,
-      offset: null == offset
-          ? _value.offset
-          : offset // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -147,25 +132,19 @@ class _$MeasurementDetailBookBlocEvent
     implements MeasurementDetailBookBlocEvent {
   const _$MeasurementDetailBookBlocEvent(
       {required this.tenantId,
-      required this.businessService,
-      required this.moduleName,
-      required this.limit,
-      required this.offset});
+      required this.contractNumber,
+      required this.measurementNumber});
 
   @override
   final String tenantId;
   @override
-  final String businessService;
+  final String contractNumber;
   @override
-  final String moduleName;
-  @override
-  final int limit;
-  @override
-  final int offset;
+  final String measurementNumber;
 
   @override
   String toString() {
-    return 'MeasurementDetailBlocEvent.create(tenantId: $tenantId, businessService: $businessService, moduleName: $moduleName, limit: $limit, offset: $offset)';
+    return 'MeasurementDetailBlocEvent.create(tenantId: $tenantId, contractNumber: $contractNumber, measurementNumber: $measurementNumber)';
   }
 
   @override
@@ -175,17 +154,15 @@ class _$MeasurementDetailBookBlocEvent
             other is _$MeasurementDetailBookBlocEvent &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
-            (identical(other.businessService, businessService) ||
-                other.businessService == businessService) &&
-            (identical(other.moduleName, moduleName) ||
-                other.moduleName == moduleName) &&
-            (identical(other.limit, limit) || other.limit == limit) &&
-            (identical(other.offset, offset) || other.offset == offset));
+            (identical(other.contractNumber, contractNumber) ||
+                other.contractNumber == contractNumber) &&
+            (identical(other.measurementNumber, measurementNumber) ||
+                other.measurementNumber == measurementNumber));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, tenantId, businessService, moduleName, limit, offset);
+  int get hashCode =>
+      Object.hash(runtimeType, tenantId, contractNumber, measurementNumber);
 
   @JsonKey(ignore: true)
   @override
@@ -197,36 +174,36 @@ class _$MeasurementDetailBookBlocEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String tenantId, String businessService,
-            String moduleName, int limit, int offset)
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
   }) {
-    return create(tenantId, businessService, moduleName, limit, offset);
+    return create(tenantId, contractNumber, measurementNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String tenantId, String businessService,
-            String moduleName, int limit, int offset)?
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult? Function()? clear,
   }) {
-    return create?.call(tenantId, businessService, moduleName, limit, offset);
+    return create?.call(tenantId, contractNumber, measurementNumber);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String tenantId, String businessService, String moduleName,
-            int limit, int offset)?
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
     if (create != null) {
-      return create(tenantId, businessService, moduleName, limit, offset);
+      return create(tenantId, contractNumber, measurementNumber);
     }
     return orElse();
   }
@@ -266,17 +243,14 @@ class _$MeasurementDetailBookBlocEvent
 abstract class MeasurementDetailBookBlocEvent
     implements MeasurementDetailBlocEvent {
   const factory MeasurementDetailBookBlocEvent(
-      {required final String tenantId,
-      required final String businessService,
-      required final String moduleName,
-      required final int limit,
-      required final int offset}) = _$MeasurementDetailBookBlocEvent;
+          {required final String tenantId,
+          required final String contractNumber,
+          required final String measurementNumber}) =
+      _$MeasurementDetailBookBlocEvent;
 
   String get tenantId;
-  String get businessService;
-  String get moduleName;
-  int get limit;
-  int get offset;
+  String get contractNumber;
+  String get measurementNumber;
   @JsonKey(ignore: true)
   _$$MeasurementDetailBookBlocEventCopyWith<_$MeasurementDetailBookBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
@@ -325,8 +299,8 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String tenantId, String businessService,
-            String moduleName, int limit, int offset)
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
   }) {
@@ -336,8 +310,8 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String tenantId, String businessService,
-            String moduleName, int limit, int offset)?
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult? Function()? clear,
   }) {
@@ -347,8 +321,8 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String tenantId, String businessService, String moduleName,
-            int limit, int offset)?
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult Function()? clear,
     required TResult orElse(),
@@ -403,7 +377,9 @@ mixin _$MeasurementDetailState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
+    required TResult Function(List<FilteredMeasurements> data,
+            List<SorObject>? sor, List<SorObject>? nonSor)
+        loaded,
     required TResult Function(String? error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -411,7 +387,9 @@ mixin _$MeasurementDetailState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult? Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -419,7 +397,9 @@ mixin _$MeasurementDetailState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -509,7 +489,9 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
+    required TResult Function(List<FilteredMeasurements> data,
+            List<SorObject>? sor, List<SorObject>? nonSor)
+        loaded,
     required TResult Function(String? error) error,
   }) {
     return initial();
@@ -520,7 +502,9 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult? Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -531,7 +515,9 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -623,7 +609,9 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
+    required TResult Function(List<FilteredMeasurements> data,
+            List<SorObject>? sor, List<SorObject>? nonSor)
+        loaded,
     required TResult Function(String? error) error,
   }) {
     return loading();
@@ -634,7 +622,9 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult? Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -645,7 +635,9 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -703,7 +695,10 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({dynamic data, List<SorObject>? sor});
+  $Res call(
+      {List<FilteredMeasurements> data,
+      List<SorObject>? sor,
+      List<SorObject>? nonSor});
 }
 
 /// @nodoc
@@ -716,17 +711,22 @@ class __$$_LoadedCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? data = freezed,
+    Object? data = null,
     Object? sor = freezed,
+    Object? nonSor = freezed,
   }) {
     return _then(_$_Loaded(
-      freezed == data
-          ? _value.data
+      null == data
+          ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as List<FilteredMeasurements>,
       freezed == sor
           ? _value._sor
           : sor // ignore: cast_nullable_to_non_nullable
+              as List<SorObject>?,
+      freezed == nonSor
+          ? _value._nonSor
+          : nonSor // ignore: cast_nullable_to_non_nullable
               as List<SorObject>?,
     ));
   }
@@ -735,12 +735,21 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.data, final List<SorObject>? sor)
-      : _sor = sor,
+  const _$_Loaded(final List<FilteredMeasurements> data,
+      final List<SorObject>? sor, final List<SorObject>? nonSor)
+      : _data = data,
+        _sor = sor,
+        _nonSor = nonSor,
         super._();
 
+  final List<FilteredMeasurements> _data;
   @override
-  final dynamic data;
+  List<FilteredMeasurements> get data {
+    if (_data is EqualUnmodifiableListView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_data);
+  }
+
   final List<SorObject>? _sor;
   @override
   List<SorObject>? get sor {
@@ -751,9 +760,19 @@ class _$_Loaded extends _Loaded {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<SorObject>? _nonSor;
+  @override
+  List<SorObject>? get nonSor {
+    final value = _nonSor;
+    if (value == null) return null;
+    if (_nonSor is EqualUnmodifiableListView) return _nonSor;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'MeasurementDetailState.loaded(data: $data, sor: $sor)';
+    return 'MeasurementDetailState.loaded(data: $data, sor: $sor, nonSor: $nonSor)';
   }
 
   @override
@@ -761,15 +780,17 @@ class _$_Loaded extends _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
-            const DeepCollectionEquality().equals(other.data, data) &&
-            const DeepCollectionEquality().equals(other._sor, _sor));
+            const DeepCollectionEquality().equals(other._data, _data) &&
+            const DeepCollectionEquality().equals(other._sor, _sor) &&
+            const DeepCollectionEquality().equals(other._nonSor, _nonSor));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(data),
-      const DeepCollectionEquality().hash(_sor));
+      const DeepCollectionEquality().hash(_data),
+      const DeepCollectionEquality().hash(_sor),
+      const DeepCollectionEquality().hash(_nonSor));
 
   @JsonKey(ignore: true)
   @override
@@ -782,10 +803,12 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
+    required TResult Function(List<FilteredMeasurements> data,
+            List<SorObject>? sor, List<SorObject>? nonSor)
+        loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(data, sor);
+    return loaded(data, sor, nonSor);
   }
 
   @override
@@ -793,10 +816,12 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult? Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(data, sor);
+    return loaded?.call(data, sor, nonSor);
   }
 
   @override
@@ -804,12 +829,14 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(data, sor);
+      return loaded(data, sor, nonSor);
     }
     return orElse();
   }
@@ -853,12 +880,13 @@ class _$_Loaded extends _Loaded {
 }
 
 abstract class _Loaded extends MeasurementDetailState {
-  const factory _Loaded(final dynamic data, final List<SorObject>? sor) =
-      _$_Loaded;
+  const factory _Loaded(final List<FilteredMeasurements> data,
+      final List<SorObject>? sor, final List<SorObject>? nonSor) = _$_Loaded;
   const _Loaded._() : super._();
 
-  dynamic get data;
+  List<FilteredMeasurements> get data;
   List<SorObject>? get sor;
+  List<SorObject>? get nonSor;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -928,7 +956,9 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
+    required TResult Function(List<FilteredMeasurements> data,
+            List<SorObject>? sor, List<SorObject>? nonSor)
+        loaded,
     required TResult Function(String? error) error,
   }) {
     return error(this.error);
@@ -939,7 +969,9 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult? Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -950,7 +982,9 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
+    TResult Function(List<FilteredMeasurements> data, List<SorObject>? sor,
+            List<SorObject>? nonSor)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {

@@ -17,7 +17,14 @@ import '../../widgets/mb/sor_item_add_mb.dart';
 import '../../widgets/mb/text_button_underline.dart';
 
 class MBDetailPage extends StatefulWidget {
-  const MBDetailPage({super.key});
+  final String contractNumber;
+  final String mbNumber;
+  final String? tenantId;
+  const MBDetailPage(
+      {super.key,
+      required this.contractNumber,
+      required this.mbNumber,
+      this.tenantId});
 
   @override
   State<MBDetailPage> createState() => _MBDetailPageState();
@@ -33,12 +40,12 @@ class _MBDetailPageState extends State<MBDetailPage>
   @override
   void initState() {
     context.read<MeasurementDetailBloc>().add(
-        const MeasurementDetailBookBlocEvent(
-            businessService: "",
-            limit: 0,
-            moduleName: '',
-            offset: 10,
-            tenantId: ''));
+          MeasurementDetailBookBlocEvent(
+            tenantId: '',
+            contractNumber: widget.contractNumber,
+            measurementNumber: widget.mbNumber,
+          ),
+        );
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
@@ -84,7 +91,8 @@ class _MBDetailPageState extends State<MBDetailPage>
               },
               loaded: (value) {
                 double sorprice = 0.0;
-
+                
+                
                 // for (int i = 0; i < value.data.length; i++) {
                 //   final key = value.data.keys.elementAt(i);
                 //   List<dynamic> line = value.data[key]!.map(
@@ -118,9 +126,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                   actions: () {
                     context.router.push(const MBTypeConfirmationRoute());
                   },
-                  amount: sorprice.toString(),
+                 // amount: sorprice.toString(),
+                 amount: value.data.first.totalAmount.toString()
+                 ,
                   openButtonSheet: () {
-                    _openBottomSheet(context, sorprice);
+                    _openBottomSheet(context, value.data.first.totalSorAmount!, value.data.first.totalNorSorAmount!, value.data.first.totalAmount!,);
                   },
                   totalAmountText: 'Total MB Amount',
                   subtext: '(For Current Entry)',
@@ -241,7 +251,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                       ),
                       SizedBox(
                         height: tabViewHeight(
-                            value.sor!.length, value.data.length, 0),
+                            value.sor!.length, value.nonSor!.length, 0),
                         child: TabBarView(
                           controller: _tabController,
                           children: [
@@ -263,7 +273,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     },
                                     itemCount: value.sor!.length,
                                   ),
-                            nsor == 0
+                            value.nonSor!.isEmpty
                                 ? const Card(
                                     child: Center(child: Text("No Data Found")),
                                   )
@@ -272,9 +282,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         const NeverScrollableScrollPhysics(),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return sorCard(index);
+                                      return sorCard(index,
+                                          magic: value.nonSor![index]
+                                              .filteredMeasurementsMeasure);
                                     },
-                                    itemCount: nsor,
+                                    itemCount: value.nonSor!.length,
                                   ),
                             phots == 0
                                 ? const Card(
@@ -513,7 +525,8 @@ class _MBDetailPageState extends State<MBDetailPage>
               ),
               SORTableCard(
                 element: {
-                  "Description": magic.first.contracts!.first.estimates!.first.name,
+                  "Description":
+                      magic.first.contracts!.first.estimates!.first.name,
                   "Unit": line[0].uom,
                   "Rate(rs)": line[0].unitRate,
                   "Approved Quantity": line.fold(0, (sum, obj) {
@@ -527,12 +540,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                 label: "Current Measurement Book Entry",
                 suffixIcon: GestureDetector(
                   onTap: () {
-                    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("data")));
-
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return  HorizontalCardListDialog(
+                        return HorizontalCardListDialog(
                           lineItems: magic,
                         );
                       },
@@ -562,7 +573,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 
-  void _openBottomSheet(BuildContext context, double totalSorAmount) {
+  void _openBottomSheet(BuildContext context, double totalSorAmount,double totalNonSorAmount, double mbAmount) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -624,7 +635,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      "78765873456",
+                      totalNonSorAmount.toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -673,7 +684,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                "1232445777",
+                               mbAmount.toString(),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),

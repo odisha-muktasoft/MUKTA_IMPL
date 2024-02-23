@@ -30,7 +30,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
   @override
   void initState() {
-    context.read<MeasurementDetailBloc>().add(const MeasurementDetailBookBlocEvent(businessService: "", limit: 0, moduleName: '', offset: 10, tenantId: ''));
+    context.read<MeasurementDetailBloc>().add(const MeasurementDetailBookBlocEvent( tenantId: '', contractNumber: '', measurementNumber: ''));
     super.initState();
     _scrollController.addListener(_scrollListener);
     // Initial data
@@ -184,7 +184,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 child: const Text("Create Measurement Book"),
                                 onPressed: () {
 
-                                   context.router.push(const MBDetailRoute());
+                                   context.router.push( MBDetailRoute(contractNumber: '', mbNumber: ''));
                                 },
                               ),
                             ),

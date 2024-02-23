@@ -286,7 +286,18 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 child: DigitOutLineButton(
                                   label: "Open Measurement Book",
                                   onPressed: () {
-                                    context.router.push(const MBDetailRoute());
+                                    final contract=mbInboxResponse
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.contract?.contractNumber??"";
+                                   final mbNumber=    mbInboxResponse
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.measurementNumber ??
+                                    "";
+                                    context.router.push( MBDetailRoute(contractNumber: contract, mbNumber: mbNumber));
                                   },
                                 ),
                               ),

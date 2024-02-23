@@ -12,7 +12,7 @@ class MBDetailResponse with _$MBDetailResponse {
     @JsonKey(name: 'period') Period? period,
     @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
     @JsonKey(name: 'measurement') Measurement? measurement,
-    @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls
+    @JsonKey(name: 'musterRolls') dynamic musterRolls
   }) = _MBDetailResponse;
 
   factory MBDetailResponse.fromJson(
@@ -21,9 +21,14 @@ class MBDetailResponse with _$MBDetailResponse {
       _$MBDetailResponseFromJson(json);
 }
 
+
+
+
 /// estimate
 ///
 ///
+///
+
 
 
 @freezed
@@ -31,7 +36,7 @@ class MusterRoll with _$MusterRoll {
   const factory MusterRoll({
     @JsonKey(name: 'id') String? id,
     @JsonKey(name: 'tenantId') String? tenantId,
-    @JsonKey(name: 'musterRollNumber')String? musterRollNumber,
+    @JsonKey(name: 'musterRollNumber')dynamic musterRollNumber,
     @JsonKey(name: 'registerId')String? registerId,
     @JsonKey(name: 'status') String? status,
     @JsonKey(name: 'musterRollStatus') String? musterRollStatus,
@@ -124,7 +129,7 @@ class MeasurementAdditionalDetail with _$MeasurementAdditionalDetail {
     @JsonKey(name: 'startDate') int? startDate,
     @JsonKey(name: 'totalAmount') double? totalAmount,
     @JsonKey(name: 'nonSorAmount') double? nonSorAmount,
-    @JsonKey(name: 'musterRollNumber') String? musterRollNumber,
+    @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber,
   }) = _MeasurementAdditionalDetail;
 
   factory MeasurementAdditionalDetail.fromJson(

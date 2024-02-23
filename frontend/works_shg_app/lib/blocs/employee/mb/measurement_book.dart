@@ -74,7 +74,7 @@ class MeasurementInboxBloc
             emit(MeasurementInboxState.loaded(
                 value.mbInboxResponse.copyWith(items: data),
                 res.items!.length<10?false:true
-                ));
+                ),);
           },
         );
       }
