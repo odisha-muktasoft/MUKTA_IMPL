@@ -1,2 +1,0 @@
-ALTER TABLE ADDRESS ADD COLUMN IF NOT EXISTS clientReferenceId character varying(64) UNIQUE;
-ALTER TABLE TASK_RESOURCE ADD COLUMN IF NOT EXISTS clientReferenceId character varying(64) UNIQUE;

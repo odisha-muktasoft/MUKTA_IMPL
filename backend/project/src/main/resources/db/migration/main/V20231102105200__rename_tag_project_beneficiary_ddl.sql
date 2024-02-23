@@ -1,1 +1,0 @@
-ALTER TABLE project_beneficiary RENAME COLUMN voucherTag TO tag;

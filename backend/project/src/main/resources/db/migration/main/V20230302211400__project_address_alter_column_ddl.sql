@@ -1,1 +1,0 @@
-ALTER TABLE project_address RENAME COLUMN boundary_type TO boundaryType;
