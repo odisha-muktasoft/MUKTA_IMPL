@@ -217,3 +217,23 @@ config:
         image-name: "mukta-works-pdf"
       - work-dir: "utilities/works-pdf/migration"
         image-name: "mukta-works-pdf-db"    
+
+  - name: "builds/mukta_impl/mukta/mukta-egov-hrms"
+    build:
+      - work-dir: "backend/egov-hrms"
+        image-name: "mukta-egov-hrms"
+        dockerfile: "build/maven/Dockerfile"
+      - work-dir: "backend/egov-hrms/src/main/resources/db"
+        image-name: "mukta-egov-hrms-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-user-otp"
+    build:
+      - work-dir: "backend/user-otp"
+        image-name: "mukta-user-otp"
+        dockerfile: "build/maven/Dockerfile"   
+
+  - name: "builds/mukta_impl/mukta/mukta-egov-notification-sms"
+    build:
+      - work-dir: "backend/egov-notification-sms"
+        image-name: "mukta-egov-notification-sms"
+        dockerfile: "build/maven/Dockerfile"         
