@@ -165,22 +165,6 @@ config:
         dockerfile: "utilities/expense-cronjob/Dockerfile"
 
 # mukta
-  - name: "builds/mukta_impl/mukta/mukta-attendance"
-    build:
-      - work-dir: "backend/attendance"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-attendance"
-      - work-dir: "backend/attendance/src/main/resources/db"
-        image-name: "mukta-attendance-db"
-
-  - name: "builds/mukta_impl/mukta/mukta-bankaccounts"
-    build:
-      - work-dir: "backend/bankaccounts"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-bankaccounts"
-      - work-dir: "backend/bankaccounts/src/main/resources/db"
-        image-name: "mukta-bankaccounts-db"
-
   - name: "builds/mukta_impl/mukta/mukta-contracts"
     build:
       - work-dir: "backend/contracts"
@@ -211,15 +195,7 @@ config:
         dockerfile: "build/maven/Dockerfile"
         image-name: "mukta-expense-calculator"
       - work-dir: "backend/expense-calculator/src/main/resources/db"
-        image-name: "mukta-expense-calculator-db"   
-
-  - name: "builds/mukta_impl/mukta/mukta-reference-adapters/mukta-ifms-adapter"
-    build:
-      - work-dir: "reference-adapters/ifms-adapter"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-ifms-adapter"
-      - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
-        image-name: "mukta-ifms-adapter-db"      
+        image-name: "mukta-expense-calculator-db"     
 
   - name: "builds/mukta_impl/mukta/mukta-individual"
     build:
@@ -227,63 +203,17 @@ config:
         dockerfile: "build/maven/Dockerfile"
         image-name: "mukta-individual"
       - work-dir: "backend/individual/src/main/resources/db"
-        image-name: "mukta-individual-db"       
+        image-name: "mukta-individual-db"   
 
-  - name: "builds/mukta_impl/mukta/mukta-measurement-registry"
-    build:
-      - work-dir: "backend/measurement-registry"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-measurement-registry"
-      - work-dir: "backend/measurement-registry/src/main/resources/db"
-        image-name: "mukta-measurement-registry-db"             
-
-  - name: "builds/mukta_impl/mukta/mukta-measurement-service"
-    build:
-      - work-dir: "backend/measurement-service"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-measurement-service"
-      - work-dir: "backend/measurement-service/src/main/resources/db"
-        image-name: "mukta-measurement-service-db"    
-
-  - name: "builds/mukta_impl/mukta/mukta-service"
+  - name: "builds/mukta_impl/mukta/mukta-mukta-service"
     build:
       - work-dir: "utilities/mukta-service"
         dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-service"       
-
-  - name: "builds/mukta_impl/mukta/mukta-muster-roll"
-    build:
-      - work-dir: "backend/muster-roll"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-muster-roll"
-      - work-dir: "backend/muster-roll/src/main/resources/db"
-        image-name: "mukta-muster-roll-db"      
-
-  - name: "builds/mukta_impl/mukta/mukta-organisation"
-    build:
-      - work-dir: "backend/organisation"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-organisation"
-      - work-dir: "backend/organisation/src/main/resources/db"
-        image-name: "mukta-organisation-db"  
-
-  - name: "builds/mukta_impl/mukta/mukta-project"
-    build:
-      - work-dir: "backend/project"
-        image-name: "mukta-project"
-        dockerfile: "build/maven/Dockerfile"
-      - work-dir: "backend/project/src/main/resources/db"
-        image-name: "mukta-project-db"
-
-  - name: "builds/mukta_impl/mukta/mukta-works-management-service"
-    build:
-      - work-dir: "backend/wms"
-        dockerfile: "build/maven/Dockerfile"
-        image-name: "mukta-works-management-service"      
+        image-name: "mukta-mukta-service" 
 
   - name: "builds/mukta_impl/mukta/mukta-works-pdf"
     build:
       - work-dir: "utilities/works-pdf"
         image-name: "mukta-works-pdf"
       - work-dir: "utilities/works-pdf/migration"
-        image-name: "mukta-works-pdf-db"        
+        image-name: "mukta-works-pdf-db"    
