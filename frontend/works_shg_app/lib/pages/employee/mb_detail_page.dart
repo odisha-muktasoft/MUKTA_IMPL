@@ -6,6 +6,7 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
+import '../../models/employee/mb/filtered_Measures.dart';
 import '../../utils/common_methods.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
@@ -84,18 +85,33 @@ class _MBDetailPageState extends State<MBDetailPage>
               loaded: (value) {
                 double sorprice = 0.0;
 
-                for (int i = 0; i < value.data.length; i++) {
-                  final key = value.data.keys.elementAt(i);
-                  List<dynamic> line = value.data[key]!.map(
+                // for (int i = 0; i < value.data.length; i++) {
+                //   final key = value.data.keys.elementAt(i);
+                //   List<dynamic> line = value.data[key]!.map(
+                //     (e) {
+                //       return e['contract'][0]['estimate'][0];
+                //     },
+                //   ).toList();
+                //   int consumed = value.data[key]!.fold(0, (sum, obj) {
+                //     double m = obj['currentValue'];
+                //     return sum + m.toInt();
+                //   });
+                //   sorprice += (line[0]['unitRate'] * consumed);
+                // }
+                for (int i = 0; i < value.sor!.length; i++) {
+                  final key = value.sor![i];
+                  List<FilteredMeasurementsEstimate> line =
+                      value.sor![i].filteredMeasurementsMeasure.map(
                     (e) {
-                      return e['contract'][0]['estimate'][0];
+                      return e.contracts!.first.estimates!.first;
                     },
                   ).toList();
-                  int consumed = value.data[key]!.fold(0, (sum, obj) {
-                    double m = obj['currentValue'];
+                  int consumed = value.sor![i].filteredMeasurementsMeasure
+                      .fold(0, (sum, obj) {
+                    double m = obj!.currentValue!;
                     return sum + m.toInt();
                   });
-                  sorprice += (line[0]['unitRate'] * consumed);
+                  sorprice += (line.first.unitRate! * consumed);
                 }
 
                 return FloatActionCard(
@@ -225,11 +241,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                       ),
                       SizedBox(
                         height: tabViewHeight(
-                            value.data.length, value.data.length, 0),
+                            value.sor!.length, value.data.length, 0),
                         child: TabBarView(
                           controller: _tabController,
                           children: [
-                            value.data.length == 0
+                            value.sor!.isEmpty
                                 ? const Card(
                                     child: Center(child: Text("No Data Found")),
                                   )
@@ -238,12 +254,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         const NeverScrollableScrollPhysics(),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      final key =
-                                          value.data.keys.elementAt(index);
-                                      final valuel = value.data[key]!;
-                                      return sorCard(index, magic: valuel);
+                                      // final key =
+                                      //     value.data.keys.elementAt(index);
+                                      // final valuel = value.data[key]!;
+                                      return sorCard(index,
+                                          magic: value.sor![index]
+                                              .filteredMeasurementsMeasure);
                                     },
-                                    itemCount: value.data.length,
+                                    itemCount: value.sor!.length,
                                   ),
                             nsor == 0
                                 ? const Card(
@@ -466,15 +484,15 @@ class _MBDetailPageState extends State<MBDetailPage>
     }
   }
 
-  Card sorCard(int index, {List<dynamic>? magic}) {
-    List<dynamic> line = magic!.map(
+  Card sorCard(int index, {List<FilteredMeasurementsMeasure>? magic}) {
+    List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
-        return e['contract'][0]['estimate'][0];
+        return e.contracts!.first.estimates!.first;
       },
     ).toList();
 
     int consumed = magic.fold(0, (sum, obj) {
-      double m = obj['currentValue'];
+      double m = obj.currentValue!;
       return sum + m.toInt();
     });
     return Card(
@@ -495,11 +513,11 @@ class _MBDetailPageState extends State<MBDetailPage>
               ),
               SORTableCard(
                 element: {
-                  "Description": line[0]['name'],
-                  "Unit": line[0]['uom'],
-                  "Rate(rs)": line[0]['unitRate'],
+                  "Description": magic.first.contracts!.first.estimates!.first.name,
+                  "Unit": line[0].uom,
+                  "Rate(rs)": line[0].unitRate,
                   "Approved Quantity": line.fold(0, (sum, obj) {
-                    int m = obj['quantity'];
+                    int m = obj.quantity!;
                     return sum + m;
                   }),
                   "Consumed Quantity\n(Upto previous entry)": consumed,
@@ -514,7 +532,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return const HorizontalCardListDialog();
+                        return  HorizontalCardListDialog(
+                          lineItems: magic,
+                        );
                       },
                     );
                   },
@@ -531,7 +551,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               DigitTextField(
                 controller: TextEditingController()
                   ..value
-                  ..text = (line[0]['unitRate'] * consumed).toString(),
+                  ..text = (line[0].unitRate! * consumed).toString(),
                 label: "Amount for Current Entry",
                 isDisabled: true,
               ),

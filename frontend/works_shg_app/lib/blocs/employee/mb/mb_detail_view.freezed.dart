@@ -403,7 +403,7 @@ mixin _$MeasurementDetailState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data) loaded,
+    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
     required TResult Function(String? error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -411,7 +411,7 @@ mixin _$MeasurementDetailState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data)? loaded,
+    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -419,7 +419,7 @@ mixin _$MeasurementDetailState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data)? loaded,
+    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -509,7 +509,7 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data) loaded,
+    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
     required TResult Function(String? error) error,
   }) {
     return initial();
@@ -520,7 +520,7 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data)? loaded,
+    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -531,7 +531,7 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data)? loaded,
+    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -623,7 +623,7 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data) loaded,
+    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
     required TResult Function(String? error) error,
   }) {
     return loading();
@@ -634,7 +634,7 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data)? loaded,
+    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -645,7 +645,7 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data)? loaded,
+    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -703,7 +703,7 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({dynamic data});
+  $Res call({dynamic data, List<SorObject>? sor});
 }
 
 /// @nodoc
@@ -717,12 +717,17 @@ class __$$_LoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? data = freezed,
+    Object? sor = freezed,
   }) {
     return _then(_$_Loaded(
       freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      freezed == sor
+          ? _value._sor
+          : sor // ignore: cast_nullable_to_non_nullable
+              as List<SorObject>?,
     ));
   }
 }
@@ -730,14 +735,25 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.data) : super._();
+  const _$_Loaded(this.data, final List<SorObject>? sor)
+      : _sor = sor,
+        super._();
 
   @override
   final dynamic data;
+  final List<SorObject>? _sor;
+  @override
+  List<SorObject>? get sor {
+    final value = _sor;
+    if (value == null) return null;
+    if (_sor is EqualUnmodifiableListView) return _sor;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'MeasurementDetailState.loaded(data: $data)';
+    return 'MeasurementDetailState.loaded(data: $data, sor: $sor)';
   }
 
   @override
@@ -745,12 +761,15 @@ class _$_Loaded extends _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
-            const DeepCollectionEquality().equals(other.data, data));
+            const DeepCollectionEquality().equals(other.data, data) &&
+            const DeepCollectionEquality().equals(other._sor, _sor));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(data),
+      const DeepCollectionEquality().hash(_sor));
 
   @JsonKey(ignore: true)
   @override
@@ -763,10 +782,10 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data) loaded,
+    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(data);
+    return loaded(data, sor);
   }
 
   @override
@@ -774,10 +793,10 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data)? loaded,
+    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(data);
+    return loaded?.call(data, sor);
   }
 
   @override
@@ -785,12 +804,12 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data)? loaded,
+    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(data);
+      return loaded(data, sor);
     }
     return orElse();
   }
@@ -834,10 +853,12 @@ class _$_Loaded extends _Loaded {
 }
 
 abstract class _Loaded extends MeasurementDetailState {
-  const factory _Loaded(final dynamic data) = _$_Loaded;
+  const factory _Loaded(final dynamic data, final List<SorObject>? sor) =
+      _$_Loaded;
   const _Loaded._() : super._();
 
   dynamic get data;
+  List<SorObject>? get sor;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -907,7 +928,7 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(dynamic data) loaded,
+    required TResult Function(dynamic data, List<SorObject>? sor) loaded,
     required TResult Function(String? error) error,
   }) {
     return error(this.error);
@@ -918,7 +939,7 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(dynamic data)? loaded,
+    TResult? Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -929,7 +950,7 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(dynamic data)? loaded,
+    TResult Function(dynamic data, List<SorObject>? sor)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {

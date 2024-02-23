@@ -2,8 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/employee/mb/filtered_Measures.dart';
+
 class HorizontalCardListDialog extends StatefulWidget {
-  const HorizontalCardListDialog({super.key});
+  final List<FilteredMeasurementsMeasure>? lineItems;
+  const HorizontalCardListDialog({super.key, this.lineItems});
 
   @override
   State<HorizontalCardListDialog> createState() =>
@@ -83,9 +86,10 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                     forward: () {
                       _scrollForward();
                     },
+                    filteredMeasurementsMeasure: widget.lineItems![index],
                   );
                 },
-                itemCount: 4,
+                itemCount: widget.lineItems?.length,
               ),
             ),
             const SizedBox(height: 20),
@@ -131,14 +135,30 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
 class CardWidget extends StatefulWidget {
   final VoidCallback backward;
   final VoidCallback forward;
+  final FilteredMeasurementsMeasure? filteredMeasurementsMeasure;
 
-  const CardWidget({super.key, required this.backward, required this.forward});
+  const CardWidget(
+      {super.key,
+      required this.backward,
+      required this.forward,
+      this.filteredMeasurementsMeasure});
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CardWidget> {
+  final TextEditingController number = TextEditingController();
+  final TextEditingController length = TextEditingController();
+  final TextEditingController width = TextEditingController();
+  final TextEditingController height = TextEditingController();
+  final TextEditingController quantity = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -172,11 +192,19 @@ class _CardWidgetState extends State<CardWidget> {
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
-                const DigitTableCard(element: {
+                DigitTableCard(element: {
                   "Type": "Plus",
-                  "Description": "LHS Wall",
+                  "Description": widget.filteredMeasurementsMeasure!.contracts!
+                      .first.estimates!.first.description,
                 }),
-                const DigitTextField(label: "Number"),
+                DigitTextField(
+                  label: "Number",
+                  controller: number
+                    ..value
+                    ..text =
+                        widget.filteredMeasurementsMeasure!.numItems.toString(),
+                  isDisabled: true,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -184,9 +212,15 @@ class _CardWidgetState extends State<CardWidget> {
                       padding: const EdgeInsets.only(left: 0.0),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8 / 3,
-                        child: const DigitTextField(
+                        child: DigitTextField(
                           label: "Length",
                           textInputType: TextInputType.number,
+                          controller: length
+                            ..value
+                            ..text =
+                                (widget.filteredMeasurementsMeasure!.length ??
+                                        0.0)
+                                    .toString(),
                         ),
                       ),
                     ),
@@ -194,9 +228,15 @@ class _CardWidgetState extends State<CardWidget> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8 / 3,
-                        child: const DigitTextField(
+                        child: DigitTextField(
                           label: "Width",
                           textInputType: TextInputType.number,
+                          controller: width
+                            ..value
+                            ..text =
+                                (widget.filteredMeasurementsMeasure!.breath ??
+                                        0.0)
+                                    .toString(),
                         ),
                       ),
                     ),
@@ -204,17 +244,28 @@ class _CardWidgetState extends State<CardWidget> {
                       padding: const EdgeInsets.only(left: 8.0, right: 0.0),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8 / 3,
-                        child: const DigitTextField(
+                        child: DigitTextField(
                           label: "Height",
                           textInputType: TextInputType.number,
+                          controller: height
+                            ..value
+                            ..text =
+                                (widget.filteredMeasurementsMeasure!.height ??
+                                        0.0)
+                                    .toString(),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const DigitTextField(
+                DigitTextField(
                   label: "Quantity",
                   isDisabled: true,
+                  controller: quantity
+                    ..value
+                    ..text =
+                        (widget.filteredMeasurementsMeasure!.numItems ?? 0.0)
+                            .toString(),
                 ),
               ],
             ),
