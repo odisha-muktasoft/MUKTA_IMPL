@@ -208,7 +208,7 @@ config:
   - name: "builds/mukta_impl/mukta/mukta-mukta-service"
     build:
       - work-dir: "utilities/mukta-services"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "utilities/mukta-services/Dockerfile"
         image-name: "mukta-mukta-service" 
 
   - name: "builds/mukta_impl/mukta/mukta-works-pdf"
