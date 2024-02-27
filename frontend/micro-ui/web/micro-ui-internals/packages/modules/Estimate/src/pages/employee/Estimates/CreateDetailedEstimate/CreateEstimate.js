@@ -312,6 +312,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     for (const item of items) {
       if (!item.description || !item.uom || item.unitRate === undefined || item.unitRate <= 0 || item.currentMBEntry === undefined || !item.currentMBEntry) {
         setShowToast({ error: true, label: `${t("ERR_NONSOR_ITEM_IS_MISSING")} ${ item?.sNo}` });
+        setIsButtonDisabled(false);
         setShowModal(false);
         return false;
       }
@@ -321,6 +322,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           for (const measure of item.measures) {
               if (!measure.description) {
                   setShowToast({ error: true, label: `${t("ERR_ENTER_DESCRIPTION_IN_NONSOR")} ${ item?.sNo}` });
+                  setIsButtonDisabled(false);
                   setShowModal(false);
                   return false;
               }
@@ -336,6 +338,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if((!(data?.SORtable) && !(data?.NONSORtable)) || (data?.SORtable?.length <= 0 && data?.NONSORtable?.length <= 0) || (data?.SORtable?.length ===1 && data?.SORtable?.[0]?.category === "NON-SOR"))
     {  
       setShowToast({ error: true, label: "ERR_ATLEAST_SOR_OR_NON_SOR_PRESENT" });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -343,6 +346,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(data?.SORtable?.filter((ob) => ob?.sorCode && (!(ob?.currentMBEntry)))?.length > 0)
     {
       setShowToast({ error: true, label: "ERR_MB_AMOUNT_IS_NOT_RIGHT_FOR_SOR" });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -351,6 +355,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(descriptionpresent)
     {
       setShowToast({ error: true, label: `${t("ERR_ENTER_DESCRIPTION_IN_SOR")} ${descriptionpresent?.sorId || descriptionpresent?.sorCode}` });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -363,6 +368,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(negativeValuedObject)
     {
       setShowToast({ error: true, label: `${t("ERR_NEGATIVE_VALUE_IS_NOT_ALLOWED")} ${negativeValuedObject?.category}` });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -400,6 +406,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     //here check totalEst amount should be less than material+labour
     if (_data.totalEstimateAmount < totalLabourAndMaterial && action !== "DRAFT") {
       setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_MISMATCH" });
+      setIsButtonDisabled(false);
       closeToast();
       return;
     } 
@@ -487,7 +494,6 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           };
           if(action === "DRAFT")
           {
-            setIsButtonDisabled(false);
             setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
             if(isCreateRevisionEstimate || isEditRevisionEstimate)
               setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
@@ -508,7 +514,6 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           }, 5000);
         },
         onSuccess: async (responseData, variables) => {
-          setIsButtonDisabled(false);
           clearSessionFormData();
           const state = {
             header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
