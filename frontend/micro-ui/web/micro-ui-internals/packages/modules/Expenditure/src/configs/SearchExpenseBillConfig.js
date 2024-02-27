@@ -9,7 +9,7 @@ export const SearchExpenseBillConfig = {
             actionRole: "BILL_CREATOR",
             actionLink: "expenditure/download-bill",
             apiDetails: {
-                serviceName: "/expense/bill/v1/_search",
+                serviceName: "/mukta-expense/bill/v1/_search",
                 requestParam: {},
                 requestBody: {
                     billCriteria: {}
