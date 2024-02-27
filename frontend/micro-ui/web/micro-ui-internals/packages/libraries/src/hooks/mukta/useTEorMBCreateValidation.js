@@ -25,7 +25,7 @@ const useTEorMBCreateValidation=({estimateNumber, tenantId, t})=>{
                   type : ["TIME_EXTENSTION","CREATE_MEASUREMENT"],
                   error : true,
                   label : `WORKS_REVISION_ESTIMATE_IN_WORKFLOW`,
-                  applicationNo : inworkflowEstimates?.[0]?.revisionNumber || inWorkflowContract?.[0]?.estimateNumber
+                  applicationNo : inworkflowEstimates?.[0]?.revisionNumber
               }
     }
 
