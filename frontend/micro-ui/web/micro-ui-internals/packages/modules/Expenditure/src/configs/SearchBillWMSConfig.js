@@ -9,7 +9,7 @@ export const SearchBillWMSConfig = {
             actionRole: "BILL_CREATOR",
             actionLink: "expenditure/download-bill",
             apiDetails: {
-                serviceName: "/wms/expense/_search",
+                serviceName: "/wms/mukta-expense/_search",
                 requestParam: {},
                 requestBody: {
                     inbox: {

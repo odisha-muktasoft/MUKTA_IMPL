@@ -36,13 +36,13 @@ class ORGServices {
 class BillServices {
   const BillServices();
 
-  String get searchMyBills => '/expense-calculator/v1/_search';
+  String get searchMyBills => '/mukta-expense-calculator/v1/_search';
 }
 
 class WageSeekerServices {
   const WageSeekerServices();
 
-  String get individualCreate => 'individual/v1/_create';
+  String get individualCreate => 'mukta-individual/v1/_create';
   String get bankCreate => '/bankaccount-service/bankaccount/v1/_create';
 
   String get adharVerifyUrl=>'http://164.100.141.79/authekycv4/api/authenticate';
@@ -58,19 +58,19 @@ class UserServices {
   const UserServices();
   String get authenticate => 'user/oauth/token';
   String get resetPassword => 'user/password/nologin/_update';
-  String get otpResetPassword => 'user-otp/v1/_send';
+  String get otpResetPassword => 'mukta-user-otp/v1/_send';
   String get userSearchProfile => 'user/_search';
   String get editProfile => 'user/profile/_update';
   String get changePassword => 'user/password/_update';
-  String get sendOtp => 'user-otp/v1/_send';
+  String get sendOtp => 'mukta-user-otp/v1/_send';
   String get logOut => 'user/_logout';
 }
 
 class WorkServices {
   const WorkServices();
-  String get myWorks => 'contract/v1/_search';
-  String get updateWorkOrder => 'contract/v1/_update';
-  String get createWorkOrder => 'contract/v1/_create';
+  String get myWorks => 'mukta-contract/v1/_search';
+  String get updateWorkOrder => 'mukta-contract/v1/_update';
+  String get createWorkOrder => 'mukta-contract/v1/_create';
 }
 
 class EmpHrms {
@@ -95,8 +95,8 @@ class AttendanceRegisterServices {
   String get createAttendanceLog => 'attendance/log/v1/_create';
   String get updateAttendanceLog => 'attendance/log/v1/_update';
   String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
-  String get individualSearch => 'individual/v1/_search';
-  String get wmsIndividualSearch => 'wms/individual/_search';
+  String get individualSearch => 'mukta-individual/v1/_search';
+  String get wmsIndividualSearch => 'wms/mukta-individual/_search';
 }
 
 

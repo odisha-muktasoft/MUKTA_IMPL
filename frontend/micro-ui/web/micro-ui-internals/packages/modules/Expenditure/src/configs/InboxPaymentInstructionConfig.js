@@ -7,7 +7,7 @@ export const InboxPaymentInstructionConfig = {
       "postProcessResult": false,
       "type": "inbox",
       "apiDetails": {
-        "serviceName": "/expense/payment/v1/_search",
+        "serviceName": "/mukta-expense/payment/v1/_search",
         "requestParam": {},
         "requestBody": {
           "paymentCriteria": {

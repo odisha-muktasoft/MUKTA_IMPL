@@ -3,7 +3,7 @@
         label: "ACTION_TEST_ESTIMATE_INBOX",
         type: 'inbox',
         apiDetails: {
-            serviceName: "/estimate/v1/_search",
+            serviceName: "/mukta-estimate/v1/_search",
             requestParam: {
 
             },

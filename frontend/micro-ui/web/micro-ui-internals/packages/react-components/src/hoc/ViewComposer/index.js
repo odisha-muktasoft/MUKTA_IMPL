@@ -96,7 +96,7 @@ import { useTranslation } from "react-i18next";
 //           applicationNo: "ES/2023-24/000828",
 //           tenantId: "pg.citya",
 //           applicationDetails: {},
-//           url: "/estimate/v1/_update",
+//           url: "/mukta-estimate/v1/_update",
 //           moduleCode: "Estimate",
 //           editApplicationNumber: undefined,
 //         },
