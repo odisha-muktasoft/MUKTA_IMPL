@@ -33,7 +33,7 @@ class AppLocalizations {
       localLabelResponse = await storage.read(
           key: '${locale?.languageCode}_${locale?.countryCode}');
     }
-    await Future.delayed(const Duration(seconds: 1));
+   // await Future.delayed(const Duration(seconds: 1));
     if (localLabelResponse != null && localLabelResponse.trim().isNotEmpty) {
       return localizedStrings = jsonDecode(localLabelResponse)
           .map<LocalizationMessageModel>(
