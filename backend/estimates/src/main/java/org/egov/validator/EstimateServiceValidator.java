@@ -210,6 +210,9 @@ public class EstimateServiceValidator {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
         for(Object value:cummulativeValue){
+            if(value instanceof  Integer){
+                measurementCumulativeValue.add(new Double(String.valueOf(value)));
+            }
             measurementCumulativeValue.add((Double) value);
         }
 
@@ -254,6 +257,9 @@ public class EstimateServiceValidator {
         }
 
         for(Object value:currentValue){
+            if(value instanceof  Integer){
+                measurementCurrentValue.add(new Double(String.valueOf(value)));
+            }
             measurementCurrentValue.add((Double) value);
         }
 
