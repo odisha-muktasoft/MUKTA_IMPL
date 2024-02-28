@@ -15,6 +15,11 @@ class FilteredMeasurements with _$FilteredMeasurements {
     String? mbNumber,
     String? wfStatus,
     String? tenantId,
+    int? endDate,
+    int? startDate,
+    int? entryDate,
+    String? referenceId,
+    String? id,
 
     List<FilteredMeasurementsMeasure>? measures
   }) = _FilteredMeasurements;
@@ -38,6 +43,9 @@ class FilteredMeasurementsMeasure with _$FilteredMeasurementsMeasure {
     double? currentValue,
     double? cumulativeValue,
     String? tenantId,
+    double? mbAmount,
+    String? type,
+    
 
     List<FilteredMeasurementsContract>? contracts
   }) = _FilteredMeasurementsMeasure;

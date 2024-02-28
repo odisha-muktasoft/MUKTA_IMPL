@@ -99,4 +99,5 @@ class MeasurementService{
 
    String get measurementInbox=>'inbox/v2/_search';
    String get measurementDetail=>"mukta-services/measurement/_search";
+   String get updateMeasurement => "measurement-service/v1/_update";
 }

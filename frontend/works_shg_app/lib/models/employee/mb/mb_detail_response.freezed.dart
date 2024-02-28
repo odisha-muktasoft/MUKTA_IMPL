@@ -367,6 +367,202 @@ abstract class _MBDetailResponse implements MBDetailResponse {
       throw _privateConstructorUsedError;
 }
 
+WorkFlow _$WorkFlowFromJson(Map<String, dynamic> json) {
+  return _WorkFlow.fromJson(json);
+}
+
+/// @nodoc
+mixin _$WorkFlow {
+  @JsonKey(name: 'action')
+  String? get action => throw _privateConstructorUsedError;
+  @JsonKey(name: 'comment')
+  String? get comment => throw _privateConstructorUsedError;
+  @JsonKey(name: 'assignees')
+  List<String>? get assignees => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $WorkFlowCopyWith<WorkFlow> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $WorkFlowCopyWith<$Res> {
+  factory $WorkFlowCopyWith(WorkFlow value, $Res Function(WorkFlow) then) =
+      _$WorkFlowCopyWithImpl<$Res, WorkFlow>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'action') String? action,
+      @JsonKey(name: 'comment') String? comment,
+      @JsonKey(name: 'assignees') List<String>? assignees});
+}
+
+/// @nodoc
+class _$WorkFlowCopyWithImpl<$Res, $Val extends WorkFlow>
+    implements $WorkFlowCopyWith<$Res> {
+  _$WorkFlowCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? action = freezed,
+    Object? comment = freezed,
+    Object? assignees = freezed,
+  }) {
+    return _then(_value.copyWith(
+      action: freezed == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as String?,
+      comment: freezed == comment
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      assignees: freezed == assignees
+          ? _value.assignees
+          : assignees // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_WorkFlowCopyWith<$Res> implements $WorkFlowCopyWith<$Res> {
+  factory _$$_WorkFlowCopyWith(
+          _$_WorkFlow value, $Res Function(_$_WorkFlow) then) =
+      __$$_WorkFlowCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'action') String? action,
+      @JsonKey(name: 'comment') String? comment,
+      @JsonKey(name: 'assignees') List<String>? assignees});
+}
+
+/// @nodoc
+class __$$_WorkFlowCopyWithImpl<$Res>
+    extends _$WorkFlowCopyWithImpl<$Res, _$_WorkFlow>
+    implements _$$_WorkFlowCopyWith<$Res> {
+  __$$_WorkFlowCopyWithImpl(
+      _$_WorkFlow _value, $Res Function(_$_WorkFlow) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? action = freezed,
+    Object? comment = freezed,
+    Object? assignees = freezed,
+  }) {
+    return _then(_$_WorkFlow(
+      action: freezed == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as String?,
+      comment: freezed == comment
+          ? _value.comment
+          : comment // ignore: cast_nullable_to_non_nullable
+              as String?,
+      assignees: freezed == assignees
+          ? _value._assignees
+          : assignees // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_WorkFlow implements _WorkFlow {
+  const _$_WorkFlow(
+      {@JsonKey(name: 'action') this.action,
+      @JsonKey(name: 'comment') this.comment,
+      @JsonKey(name: 'assignees') final List<String>? assignees})
+      : _assignees = assignees;
+
+  factory _$_WorkFlow.fromJson(Map<String, dynamic> json) =>
+      _$$_WorkFlowFromJson(json);
+
+  @override
+  @JsonKey(name: 'action')
+  final String? action;
+  @override
+  @JsonKey(name: 'comment')
+  final String? comment;
+  final List<String>? _assignees;
+  @override
+  @JsonKey(name: 'assignees')
+  List<String>? get assignees {
+    final value = _assignees;
+    if (value == null) return null;
+    if (_assignees is EqualUnmodifiableListView) return _assignees;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'WorkFlow(action: $action, comment: $comment, assignees: $assignees)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_WorkFlow &&
+            (identical(other.action, action) || other.action == action) &&
+            (identical(other.comment, comment) || other.comment == comment) &&
+            const DeepCollectionEquality()
+                .equals(other._assignees, _assignees));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, action, comment,
+      const DeepCollectionEquality().hash(_assignees));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_WorkFlowCopyWith<_$_WorkFlow> get copyWith =>
+      __$$_WorkFlowCopyWithImpl<_$_WorkFlow>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_WorkFlowToJson(
+      this,
+    );
+  }
+}
+
+abstract class _WorkFlow implements WorkFlow {
+  const factory _WorkFlow(
+      {@JsonKey(name: 'action') final String? action,
+      @JsonKey(name: 'comment') final String? comment,
+      @JsonKey(name: 'assignees') final List<String>? assignees}) = _$_WorkFlow;
+
+  factory _WorkFlow.fromJson(Map<String, dynamic> json) = _$_WorkFlow.fromJson;
+
+  @override
+  @JsonKey(name: 'action')
+  String? get action;
+  @override
+  @JsonKey(name: 'comment')
+  String? get comment;
+  @override
+  @JsonKey(name: 'assignees')
+  List<String>? get assignees;
+  @override
+  @JsonKey(ignore: true)
+  _$$_WorkFlowCopyWith<_$_WorkFlow> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 MusterRoll _$MusterRollFromJson(Map<String, dynamic> json) {
   return _MusterRoll.fromJson(json);
 }
@@ -1343,7 +1539,7 @@ mixin _$Measurement {
   @JsonKey(name: 'wfStatus')
   String? get wfStatus => throw _privateConstructorUsedError;
   @JsonKey(name: 'workflow')
-  String? get workflow => throw _privateConstructorUsedError;
+  WorkFlow? get workflow => throw _privateConstructorUsedError;
   @JsonKey(name: 'auditDetails')
   AuditDetails? get auditDetails => throw _privateConstructorUsedError;
   @JsonKey(name: 'additionalDetails')
@@ -1382,7 +1578,7 @@ abstract class $MeasurementCopyWith<$Res> {
       @JsonKey(name: 'wfStatus')
           String? wfStatus,
       @JsonKey(name: 'workflow')
-          String? workflow,
+          WorkFlow? workflow,
       @JsonKey(name: 'auditDetails')
           AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
@@ -1390,6 +1586,7 @@ abstract class $MeasurementCopyWith<$Res> {
       @JsonKey(name: 'measures')
           List<Measure>? measures});
 
+  $WorkFlowCopyWith<$Res>? get workflow;
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $MeasurementAdditionalDetailCopyWith<$Res>? get additionalDetail;
 }
@@ -1456,7 +1653,7 @@ class _$MeasurementCopyWithImpl<$Res, $Val extends Measurement>
       workflow: freezed == workflow
           ? _value.workflow
           : workflow // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as WorkFlow?,
       auditDetails: freezed == auditDetails
           ? _value.auditDetails
           : auditDetails // ignore: cast_nullable_to_non_nullable
@@ -1470,6 +1667,18 @@ class _$MeasurementCopyWithImpl<$Res, $Val extends Measurement>
           : measures // ignore: cast_nullable_to_non_nullable
               as List<Measure>?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $WorkFlowCopyWith<$Res>? get workflow {
+    if (_value.workflow == null) {
+      return null;
+    }
+
+    return $WorkFlowCopyWith<$Res>(_value.workflow!, (value) {
+      return _then(_value.copyWith(workflow: value) as $Val);
+    });
   }
 
   @override
@@ -1524,7 +1733,7 @@ abstract class _$$_MeasurementCopyWith<$Res>
       @JsonKey(name: 'wfStatus')
           String? wfStatus,
       @JsonKey(name: 'workflow')
-          String? workflow,
+          WorkFlow? workflow,
       @JsonKey(name: 'auditDetails')
           AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
@@ -1532,6 +1741,8 @@ abstract class _$$_MeasurementCopyWith<$Res>
       @JsonKey(name: 'measures')
           List<Measure>? measures});
 
+  @override
+  $WorkFlowCopyWith<$Res>? get workflow;
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   @override
@@ -1598,7 +1809,7 @@ class __$$_MeasurementCopyWithImpl<$Res>
       workflow: freezed == workflow
           ? _value.workflow
           : workflow // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as WorkFlow?,
       auditDetails: freezed == auditDetails
           ? _value.auditDetails
           : auditDetails // ignore: cast_nullable_to_non_nullable
@@ -1662,7 +1873,7 @@ class _$_Measurement implements _Measurement {
   final String? wfStatus;
   @override
   @JsonKey(name: 'workflow')
-  final String? workflow;
+  final WorkFlow? workflow;
   @override
   @JsonKey(name: 'auditDetails')
   final AuditDetails? auditDetails;
@@ -1764,7 +1975,7 @@ abstract class _Measurement implements Measurement {
       @JsonKey(name: 'wfStatus')
           final String? wfStatus,
       @JsonKey(name: 'workflow')
-          final String? workflow,
+          final WorkFlow? workflow,
       @JsonKey(name: 'auditDetails')
           final AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
@@ -1801,7 +2012,7 @@ abstract class _Measurement implements Measurement {
   String? get wfStatus;
   @override
   @JsonKey(name: 'workflow')
-  String? get workflow;
+  WorkFlow? get workflow;
   @override
   @JsonKey(name: 'auditDetails')
   AuditDetails? get auditDetails;

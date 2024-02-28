@@ -36,6 +36,21 @@ Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>
       'musterRolls': instance.musterRolls,
     };
 
+_$_WorkFlow _$$_WorkFlowFromJson(Map<String, dynamic> json) => _$_WorkFlow(
+      action: json['action'] as String?,
+      comment: json['comment'] as String?,
+      assignees: (json['assignees'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$$_WorkFlowToJson(_$_WorkFlow instance) =>
+    <String, dynamic>{
+      'action': instance.action,
+      'comment': instance.comment,
+      'assignees': instance.assignees,
+    };
+
 _$_MusterRoll _$$_MusterRollFromJson(Map<String, dynamic> json) =>
     _$_MusterRoll(
       id: json['id'] as String?,
@@ -119,7 +134,9 @@ _$_Measurement _$$_MeasurementFromJson(Map<String, dynamic> json) =>
       entryDate: json['entryDate'] as int?,
       isActive: json['isActive'] as bool?,
       wfStatus: json['wfStatus'] as String?,
-      workflow: json['workflow'] as String?,
+      workflow: json['workflow'] == null
+          ? null
+          : WorkFlow.fromJson(json['workflow'] as Map<String, dynamic>),
       auditDetails: json['auditDetails'] == null
           ? null
           : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),

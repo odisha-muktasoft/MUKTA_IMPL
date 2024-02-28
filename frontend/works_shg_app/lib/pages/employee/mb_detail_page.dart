@@ -1,11 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
+import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../models/employee/mb/filtered_Measures.dart';
 import '../../utils/common_methods.dart';
 import '../../widgets/Back.dart';
@@ -13,6 +14,7 @@ import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
+import '../../widgets/mb/workFlowButtonList.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
 import '../../widgets/mb/text_button_underline.dart';
 
@@ -39,6 +41,12 @@ class _MBDetailPageState extends State<MBDetailPage>
   int phots = 0;
   @override
   void initState() {
+    context.read<MusterGetWorkflowBloc>().add(
+          //hard coded
+          FetchMBWorkFlowEvent(
+              tenantId: 'od.testing', mbNumber: widget.mbNumber),
+        );
+
     context.read<MeasurementDetailBloc>().add(
           MeasurementDetailBookBlocEvent(
             tenantId: '',
@@ -91,8 +99,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               },
               loaded: (value) {
                 double sorprice = 0.0;
-                
-                
+
                 // for (int i = 0; i < value.data.length; i++) {
                 //   final key = value.data.keys.elementAt(i);
                 //   List<dynamic> line = value.data[key]!.map(
@@ -122,18 +129,43 @@ class _MBDetailPageState extends State<MBDetailPage>
                   sorprice += (line.first.unitRate! * consumed);
                 }
 
-                return FloatActionCard(
-                  actions: () {
-                    context.router.push(const MBTypeConfirmationRoute());
+                return BlocBuilder<MusterGetWorkflowBloc,
+                    MusterGetWorkflowState>(
+                  builder: (context, state) {
+                    return state.maybeMap(
+                      orElse: () => const SizedBox.shrink(),
+                      loaded: (mbWorkFlow) {
+                        final g =
+                            mbWorkFlow.musterWorkFlowModel?.processInstances;
+
+                        return FloatActionCard(
+                          actions: () {
+                            DigitActionDialog.show(
+                              context,
+                              widget: CommonButtonCard(g: g),
+                            );
+
+                            
+                          },
+                          // amount: sorprice.toString(),
+                          amount: value.data.first.totalAmount!
+                              .toDouble()
+                              .roundToDouble()
+                              .toString(),
+                          openButtonSheet: () {
+                            _openBottomSheet(
+                              context,
+                              value.data.first.totalSorAmount!,
+                              value.data.first.totalNorSorAmount!,
+                              value.data.first.totalAmount!,
+                            );
+                          },
+                          totalAmountText: 'Total MB Amount',
+                          subtext: '(For Current Entry)',
+                        );
+                      },
+                    );
                   },
-                 // amount: sorprice.toString(),
-                 amount: value.data.first.totalAmount.toString()
-                 ,
-                  openButtonSheet: () {
-                    _openBottomSheet(context, value.data.first.totalSorAmount!, value.data.first.totalNorSorAmount!, value.data.first.totalAmount!,);
-                  },
-                  totalAmountText: 'Total MB Amount',
-                  subtext: '(For Current Entry)',
                 );
               },
               loading: (value) {
@@ -562,7 +594,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               DigitTextField(
                 controller: TextEditingController()
                   ..value
-                  ..text = (line[0].unitRate! * consumed).toString(),
+                  ..text = (magic[0].mbAmount).toString(),
                 label: "Amount for Current Entry",
                 isDisabled: true,
               ),
@@ -573,7 +605,8 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 
-  void _openBottomSheet(BuildContext context, double totalSorAmount,double totalNonSorAmount, double mbAmount) {
+  void _openBottomSheet(BuildContext context, double totalSorAmount,
+      double totalNonSorAmount, double mbAmount) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -605,7 +638,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount.toString(),
+                      totalSorAmount!.toDouble().roundToDouble().toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -635,7 +668,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount.toString(),
+                      totalNonSorAmount!.toDouble().roundToDouble().toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -684,7 +717,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                               mbAmount.toString(),
+                                mbAmount!.toDouble().roundToDouble().toString(),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),
@@ -710,6 +743,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 }
+
 
 class CustomTab extends StatelessWidget {
   final String text;

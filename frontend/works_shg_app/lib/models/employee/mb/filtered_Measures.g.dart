@@ -16,6 +16,11 @@ _$_FilteredMeasurements _$$_FilteredMeasurementsFromJson(
       mbNumber: json['mbNumber'] as String?,
       wfStatus: json['wfStatus'] as String?,
       tenantId: json['tenantId'] as String?,
+      endDate: json['endDate'] as int?,
+      startDate: json['startDate'] as int?,
+      entryDate: json['entryDate'] as int?,
+      referenceId: json['referenceId'] as String?,
+      id: json['id'] as String?,
       measures: (json['measures'] as List<dynamic>?)
           ?.map((e) =>
               FilteredMeasurementsMeasure.fromJson(e as Map<String, dynamic>))
@@ -32,6 +37,11 @@ Map<String, dynamic> _$$_FilteredMeasurementsToJson(
       'mbNumber': instance.mbNumber,
       'wfStatus': instance.wfStatus,
       'tenantId': instance.tenantId,
+      'endDate': instance.endDate,
+      'startDate': instance.startDate,
+      'entryDate': instance.entryDate,
+      'referenceId': instance.referenceId,
+      'id': instance.id,
       'measures': instance.measures,
     };
 
@@ -45,6 +55,8 @@ _$_FilteredMeasurementsMeasure _$$_FilteredMeasurementsMeasureFromJson(
       currentValue: (json['currentValue'] as num?)?.toDouble(),
       cumulativeValue: (json['cumulativeValue'] as num?)?.toDouble(),
       tenantId: json['tenantId'] as String?,
+      mbAmount: (json['mbAmount'] as num?)?.toDouble(),
+      type: json['type'] as String?,
       contracts: (json['contracts'] as List<dynamic>?)
           ?.map((e) =>
               FilteredMeasurementsContract.fromJson(e as Map<String, dynamic>))
@@ -61,6 +73,8 @@ Map<String, dynamic> _$$_FilteredMeasurementsMeasureToJson(
       'currentValue': instance.currentValue,
       'cumulativeValue': instance.cumulativeValue,
       'tenantId': instance.tenantId,
+      'mbAmount': instance.mbAmount,
+      'type': instance.type,
       'contracts': instance.contracts,
     };
 

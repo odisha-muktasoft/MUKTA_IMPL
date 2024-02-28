@@ -48,6 +48,7 @@ import 'blocs/attendance/search_projects/search_individual_project.dart';
 import 'blocs/auth/auth.dart';
 import 'blocs/employee/mb/mb_detail_view.dart';
 import 'blocs/employee/mb/measurement_book.dart';
+import 'blocs/employee/work_order/workorder_book.dart';
 import 'blocs/localization/app_localization.dart';
 import 'blocs/localization/localization.dart';
 import 'blocs/muster_rolls/from_to_date_search_muster_roll.dart';
@@ -180,12 +181,14 @@ class _MainApplicationState extends State<MainApplication> {
 
     return MultiBlocProvider(
       providers: [
-         BlocProvider(
-      create: (context) => MeasurementDetailBloc(),
-        ),
-
         BlocProvider(
-      create: (context) => MeasurementInboxBloc(),
+          create: (context) => WorkOrderInboxBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MeasurementDetailBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MeasurementInboxBloc(),
         ),
         BlocProvider(
           create: (context) => AppInitializationBloc(
@@ -344,7 +347,7 @@ class _MainApplicationState extends State<MainApplication> {
                               initial: () =>
                                   const UnauthenticatedRouteWrapper(),
                               loaded: (UserDetailsModel? userDetailsModel,
-                                      String? accessToken,roleType) =>
+                                      String? accessToken, roleType) =>
                                   const AuthenticatedRouteWrapper(),
                               orElse: () => const UnauthenticatedRouteWrapper())
                         ],

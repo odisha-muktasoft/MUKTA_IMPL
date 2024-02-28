@@ -42,6 +42,10 @@ class ProcessInstances with _$ProcessInstances {
 class NextActions with _$NextActions {
   const factory NextActions({
     String? action,
+    String? uuid,
+    String? currentState,
+    String? nextState,
+    String? tenantId,
   }) = _NextActions;
 
   factory NextActions.fromJson(

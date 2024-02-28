@@ -1,6 +1,7 @@
 //mb_detail_view
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,28 +30,35 @@ class MeasurementDetailBloc
     Client client = Client();
     try {
       emit(const MeasurementDetailState.initial());
-      emit(
-       const  MeasurementDetailState.loading()
-      );
+      emit(const MeasurementDetailState.loading());
       final MBDetailResponse res = await MBRepository(client.init())
           .fetchMbDetail(url: Urls.measurementService.measurementDetail, body: {
         // "contractNumber": "WO/2023-24/001379",
         // "tenantId": "od.testing",
         // "measurementNumber": "MB/2023-24/000214",
         // "key": "View",
-         "contractNumber": event.contractNumber,
+        "contractNumber": event.contractNumber,
         "tenantId": "od.testing",
         "measurementNumber": event.measurementNumber,
         "key": "View",
       });
 
-     final List<FilteredMeasurements> data= MBLogic.getMeasureList(mbDetailResponse: res);
-    final Map<String, List<Map<String, dynamic>>> ok= {};
-     List<List<SorObject>> sorList=MBLogic.getSors(data);
-     emit(MeasurementDetailState.loaded(data,sorList.first,sorList.last));
+      final kk = jsonEncode(res.allMeasurements!.first!.copyWith(
+          workflow: const WorkFlow(
+        action: "Submit",
+        assignees: ["NESK"],
+        comment: "loading",
+      )));
+      print(kk);
+      final List<FilteredMeasurements> data =
+          MBLogic.getMeasureList(mbDetailResponse: res);
+
+      List<List<SorObject>> sorList = MBLogic.getSors(data);
+      emit(MeasurementDetailState.loaded(
+          res.allMeasurements!.first!, data, sorList.first, sorList.last));
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
-    emit(MeasurementDetailState.error(e.toString()));
+      emit(MeasurementDetailState.error(e.toString()));
     }
   }
 }
@@ -61,7 +69,6 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     required String tenantId,
     required String contractNumber,
     required String measurementNumber,
-    
   }) = MeasurementDetailBookBlocEvent;
 
   const factory MeasurementDetailBlocEvent.clear() =
@@ -74,9 +81,11 @@ class MeasurementDetailState with _$MeasurementDetailState {
 
   const factory MeasurementDetailState.initial() = _Initial;
   const factory MeasurementDetailState.loading() = _Loading;
-  const factory MeasurementDetailState.loaded(List<FilteredMeasurements> data,
-  List<SorObject>? sor,
-  List<SorObject>? nonSor,
+  const factory MeasurementDetailState.loaded(
+    Measurement rawData,
+    List<FilteredMeasurements> data,
+    List<SorObject>? sor,
+    List<SorObject>? nonSor,
   ) = _Loaded;
   const factory MeasurementDetailState.error(String? error) = _Error;
 }

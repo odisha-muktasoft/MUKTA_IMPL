@@ -604,6 +604,10 @@ NextActions _$NextActionsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$NextActions {
   String? get action => throw _privateConstructorUsedError;
+  String? get uuid => throw _privateConstructorUsedError;
+  String? get currentState => throw _privateConstructorUsedError;
+  String? get nextState => throw _privateConstructorUsedError;
+  String? get tenantId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -617,7 +621,12 @@ abstract class $NextActionsCopyWith<$Res> {
           NextActions value, $Res Function(NextActions) then) =
       _$NextActionsCopyWithImpl<$Res, NextActions>;
   @useResult
-  $Res call({String? action});
+  $Res call(
+      {String? action,
+      String? uuid,
+      String? currentState,
+      String? nextState,
+      String? tenantId});
 }
 
 /// @nodoc
@@ -634,11 +643,31 @@ class _$NextActionsCopyWithImpl<$Res, $Val extends NextActions>
   @override
   $Res call({
     Object? action = freezed,
+    Object? uuid = freezed,
+    Object? currentState = freezed,
+    Object? nextState = freezed,
+    Object? tenantId = freezed,
   }) {
     return _then(_value.copyWith(
       action: freezed == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currentState: freezed == currentState
+          ? _value.currentState
+          : currentState // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nextState: freezed == nextState
+          ? _value.nextState
+          : nextState // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -652,7 +681,12 @@ abstract class _$$_NextActionsCopyWith<$Res>
       __$$_NextActionsCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? action});
+  $Res call(
+      {String? action,
+      String? uuid,
+      String? currentState,
+      String? nextState,
+      String? tenantId});
 }
 
 /// @nodoc
@@ -667,11 +701,31 @@ class __$$_NextActionsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? action = freezed,
+    Object? uuid = freezed,
+    Object? currentState = freezed,
+    Object? nextState = freezed,
+    Object? tenantId = freezed,
   }) {
     return _then(_$_NextActions(
       action: freezed == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      currentState: freezed == currentState
+          ? _value.currentState
+          : currentState // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nextState: freezed == nextState
+          ? _value.nextState
+          : nextState // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -680,17 +734,30 @@ class __$$_NextActionsCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_NextActions implements _NextActions {
-  const _$_NextActions({this.action});
+  const _$_NextActions(
+      {this.action,
+      this.uuid,
+      this.currentState,
+      this.nextState,
+      this.tenantId});
 
   factory _$_NextActions.fromJson(Map<String, dynamic> json) =>
       _$$_NextActionsFromJson(json);
 
   @override
   final String? action;
+  @override
+  final String? uuid;
+  @override
+  final String? currentState;
+  @override
+  final String? nextState;
+  @override
+  final String? tenantId;
 
   @override
   String toString() {
-    return 'NextActions(action: $action)';
+    return 'NextActions(action: $action, uuid: $uuid, currentState: $currentState, nextState: $nextState, tenantId: $tenantId)';
   }
 
   @override
@@ -698,12 +765,20 @@ class _$_NextActions implements _NextActions {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_NextActions &&
-            (identical(other.action, action) || other.action == action));
+            (identical(other.action, action) || other.action == action) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.currentState, currentState) ||
+                other.currentState == currentState) &&
+            (identical(other.nextState, nextState) ||
+                other.nextState == nextState) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, action);
+  int get hashCode =>
+      Object.hash(runtimeType, action, uuid, currentState, nextState, tenantId);
 
   @JsonKey(ignore: true)
   @override
@@ -720,13 +795,26 @@ class _$_NextActions implements _NextActions {
 }
 
 abstract class _NextActions implements NextActions {
-  const factory _NextActions({final String? action}) = _$_NextActions;
+  const factory _NextActions(
+      {final String? action,
+      final String? uuid,
+      final String? currentState,
+      final String? nextState,
+      final String? tenantId}) = _$_NextActions;
 
   factory _NextActions.fromJson(Map<String, dynamic> json) =
       _$_NextActions.fromJson;
 
   @override
   String? get action;
+  @override
+  String? get uuid;
+  @override
+  String? get currentState;
+  @override
+  String? get nextState;
+  @override
+  String? get tenantId;
   @override
   @JsonKey(ignore: true)
   _$$_NextActionsCopyWith<_$_NextActions> get copyWith =>

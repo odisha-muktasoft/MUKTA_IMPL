@@ -14,6 +14,9 @@ class MBLogic {
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
+          endDate: e.additionalDetail?.endDate,
+          startDate: e.additionalDetail?.startDate,
+          entryDate: e.entryDate,
           // to be chnaged
           //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
           musterRollNumber: "",
@@ -23,6 +26,8 @@ class MBLogic {
           measures: e.measures?.map((e) {
             FilteredMeasurementsMeasure filteredMeasurementsMeasure =
                 FilteredMeasurementsMeasure(
+                  mbAmount: e.measureAdditionalDetails?.mbAmount,
+                  type: e.measureAdditionalDetails?.type,
                     length: e.length,
                     breath: e.breadth,
                     height: e.height,

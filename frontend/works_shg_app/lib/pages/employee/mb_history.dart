@@ -3,7 +3,9 @@ import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
+import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../utils/common_methods.dart';
@@ -36,78 +38,98 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
     var t = AppLocalizations.of(context);
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, state) {
-        return Scaffold(
-          bottomNavigationBar:  FloatActionCard(actions: () {  }, amount: '10000000', openButtonSheet: () {
-          _openBottomSheet(context);
-          }, totalAmountText: 'Total MB Amount',),
-          backgroundColor: const DigitColors().seaShellGray,
-          appBar: AppBar(
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
-          drawer: DrawerWrapper(
-            Drawer(
-              child: SideBar(
-                module: CommonMethods.getLocaleModules(),
-              ),
-            ),
-          ),
-          body: CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: MyHeaderDelegate(
-                  child: Container(
-                    color: const DigitColors().seaShellGray,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Back(
-                          widget: null,
-                          callback: () {
-                            //context.router.pop();
-
-                            //Navigator.of(context).pop();
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "MB History",
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.headlineLarge,
-                          ),
-                        ),
-                      ],
+        return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+          builder: (context, state) {
+            return state.maybeMap(
+              orElse: () {
+                return const SizedBox.shrink();
+              },
+              loaded: (value) {
+                final k = value.data;
+                return Scaffold(
+                  bottomNavigationBar: FloatActionCard(
+                    actions: () {},
+                    amount: '10000000',
+                    openButtonSheet: () {
+                      _openBottomSheet(context);
+                    },
+                    totalAmountText: 'Total MB Amount',
+                  ),
+                  backgroundColor: const DigitColors().seaShellGray,
+                  appBar: AppBar(
+                    titleSpacing: 0,
+                    title: const AppBarLogo(),
+                  ),
+                  drawer: DrawerWrapper(
+                    Drawer(
+                      child: SideBar(
+                        module: CommonMethods.getLocaleModules(),
+                      ),
                     ),
                   ),
-                  height: 100,
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return CommonMBCard(
-                      headLabel: '12 Feb 2023-13 Feb 2023',
-                      items: const {
-                        "MB number": "MB-233",
-                        "Date": "11/02/24",
-                        "MB Account": "240000",
-                        "Status": "Approved",
-                      },
-                      widget: CommonTextButtonUnderline(
-                        label: 'View Muster Roll',
-                        onPressed: () {},
+                  body: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: MyHeaderDelegate(
+                          child: Container(
+                            color: const DigitColors().seaShellGray,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Back(
+                                  widget: null,
+                                  callback: () {
+                                    //context.router.pop();
+
+                                    //Navigator.of(context).pop();
+                                  },
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    "MB History",
+                                    style: DigitTheme.instance.mobileTheme
+                                        .textTheme.headlineLarge,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          height: 100,
+                        ),
                       ),
-                    );
-                  },
-                  childCount: 4,
-                ),
-              ),
-            ],
-          ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return CommonMBCard(
+                              headLabel:
+                                  "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[index].startDate!))}-${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[index].endDate!))}",
+                              items: {
+                                "MB number": k[index].mbNumber,
+                                "Date": DateFormat('dd/MM/yyyy').format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        k[index].entryDate!)),
+                                "MB Account": k[index].totalAmount,
+                                "Status": k[index].wfStatus,
+                              },
+                              widget: CommonTextButtonUnderline(
+                                label: 'View Muster Roll',
+                                onPressed: () {},
+                              ),
+                            );
+                          },
+                          childCount: k.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         );
       },
     );
@@ -234,8 +256,6 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                   ),
                 ),
               ),
-             
-             
             ],
           ),
         );

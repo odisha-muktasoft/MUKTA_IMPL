@@ -7,6 +7,8 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
+import '../../../blocs/employee/mb/measurement_book.dart';
+import '../../../blocs/employee/work_order/workorder_book.dart';
 import '../../../blocs/localization/app_localization.dart';
 import '../../../utils/common_methods.dart';
 import '../../../widgets/Back.dart';
@@ -25,16 +27,22 @@ class WorkOderInboxPage extends StatefulWidget {
 class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
   final ScrollController _scrollController = ScrollController();
   List<String> items = []; // List to hold items
-  int pageCount = 1; // Initial page count
+  int pageCount = 0; // Initial page count
   bool isLoading = false; // Loading indicator
 
   @override
   void initState() {
-    context.read<MeasurementDetailBloc>().add(const MeasurementDetailBookBlocEvent( tenantId: '', contractNumber: '', measurementNumber: ''));
+    context.read<WorkOrderInboxBloc>().add(
+          WorkOrderInboxBlocCreateEvent(
+            businessService: "MB",
+            limit: 10,
+            moduleName: 'contract-service',
+            offset: pageCount,
+            tenantId: 'od.testing',
+          ),
+        );
     super.initState();
     _scrollController.addListener(_scrollListener);
-    // Initial data
-    _addInitialData();
   }
 
   @override
@@ -47,40 +55,24 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
   void _scrollListener() {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      // Reach the end of the list
       _addRandomData();
     }
   }
 
-  void _addInitialData() {
-    // Generate initial data
-    List<String> initialData =
-        List.generate(20, (index) => "Initial Item ${index + 1}");
-    setState(() {
-      items.addAll(initialData); // Add initial data to the list
-    });
-  }
-
   void _addRandomData() {
-    // Simulate loading
-    setState(() {
-      isLoading = true;
-    });
+    int s = pageCount + 10;
+    context.read<WorkOrderInboxBloc>().add(
+          WorkOrderInboxBlocCreateEvent(
+            businessService: "MB",
+            limit: 10,
+            moduleName: 'measurement-module',
+            offset: s,
+            tenantId: 'od.testing',
+          ),
+        );
 
-    // Simulate delay
-    Future.delayed(const Duration(seconds: 2), () {
-      if (items.length >= 27) {
-        isLoading = false;
-        return;
-      }
-      // Generate random data
-      List<String> newData = List.generate(items.length == 20 ? 7 : 10,
-          (index) => "Item ${items.length + index + 1}");
-      setState(() {
-        items.addAll(newData); // Add generated data to the list
-        isLoading = false;
-        pageCount++; // Increment page count
-      });
+    setState(() {
+      pageCount = s;
     });
   }
 
@@ -90,6 +82,32 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, state) {
         return Scaffold(
+          floatingActionButton:
+              BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
+            builder: (context, state) {
+              return state.maybeMap(
+                orElse: () {
+                  return const SizedBox.shrink();
+                },
+                loaded: (value) {
+                  if (value.mbInboxResponse.items!.length > 19) {
+                    return DigitIconButton(
+                      iconText: "Back to top",
+                      onPressed: () {
+                        _scrollController.animateTo(
+                          0.0,
+                          duration: const Duration(milliseconds: 800),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
+              );
+            },
+          ),
           backgroundColor: const DigitColors().seaShellGray,
           appBar: AppBar(
             titleSpacing: 0,
@@ -102,111 +120,142 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
               ),
             ),
           ),
-          body: false
-              ? Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
-              : CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: MyHeaderDelegate(
-                        child: Container(
-                          color: const DigitColors().seaShellGray,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Back(
-                                // widget: null,
-                                callback: () {
-                                  context.router.navigateBack();
-                                  // Navigator.of(context).pop();
-                                  //context.router.push(const HomeRoute());
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: Text(
-                                  "WorkOrder Inbox(2)",
-                                  style: DigitTheme.instance.mobileTheme
-                                      .textTheme.headlineLarge,
+          body: BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
+            builder: (context, state) {
+              return state.maybeMap(
+                orElse: () => const SizedBox.shrink(),
+                loaded: (value) {
+                  return CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverPersistentHeader(
+                        pinned: true,
+                        floating: true,
+                        delegate: MyHeaderDelegate(
+                          child: Container(
+                            color: const DigitColors().seaShellGray,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Back(
+                                  // widget: null,
+                                  callback: () {
+                                    context.router.navigateBack();
+                                    // Navigator.of(context).pop();
+                                    //context.router.push(const HomeRoute());
+                                  },
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0, right: 8.0, top: 10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          Icons.filter_alt,
-                                        )),
-                                    IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.sort_outlined)),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    "Work Order Inbox (${value.mbInboxResponse.items?.length ?? 0})",
+                                    style: DigitTheme.instance.mobileTheme
+                                        .textTheme.headlineLarge,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, right: 8.0, top: 10.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.filter_alt,
+                                          )),
+                                      IconButton(
+                                          onPressed: () {},
+                                          icon:
+                                              const Icon(Icons.sort_outlined)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                          height: 150,
                         ),
-                        height: 150,
                       ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          // Display items
-                          if (index == items.length && index < 27) {
-                            // Display loading indicator
-                            return Container(
-                              padding: const EdgeInsets.all(16.0),
-                              alignment: Alignment.center,
-                              child: const CircularProgressIndicator(),
-                            );
-                          }
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            if (index ==
+                                    (value.isLoading
+                                        ? value.mbInboxResponse!.items!.length
+                                        : value.mbInboxResponse!.items!.length -
+                                            1) &&
+                                value.isLoading) {
+                              return Container(
+                                padding: const EdgeInsets.all(16.0),
+                                alignment: Alignment.center,
+                                child: const CircularProgressIndicator(),
+                              );
+                            }
 
-                          return WorkOrderCard(
-                            widget1: CommonTextButtonUnderline(
-                              label: 'View Details',
-                              onPressed: () {
-                                context.router.push(const WorkOrderDetailRoute());
-                              },
-                            ),
-                            widget2: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: DigitElevatedButton(
-                                child: const Text("Create Measurement Book"),
+                            return WorkOrderCard(
+                              widget1: CommonTextButtonUnderline(
+                                label: 'View Details',
                                 onPressed: () {
-
-                                   context.router.push( MBDetailRoute(contractNumber: '', mbNumber: ''));
+                                  context.router
+                                      .push(const WorkOrderDetailRoute());
                                 },
                               ),
-                            ),
-                            items: {
-                              "Work Order Number": "MB-233",
-                              "Project Description": "Wall Painting in Ward 1",
-                              "CBO Name": "SHG group-C#1",
-                              "CBO Role": "Pending for verification",
-                              "Officer In-charge name": "240000",
-                              "Start Date": index + 1,
-                              "End Date": index + 1,
-                              "Work value(Rs)": 240000,
-                              "Status": "Approved"
-                            },
-                          );
-                        },
-                        childCount: items.length +
-                            1, // Number of items in the list + 1 for loading indicator
+                              widget2: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: DigitElevatedButton(
+                                  child: const Text("Create Measurement Book"),
+                                  onPressed: () {
+                                    final contract=value
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.contract?.contractNumber??"";
+                                   final mbNumber=    value
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.measurementNumber ??
+                                    "";
+                                    context.router.push(MBDetailRoute(
+                                        contractNumber: contract, mbNumber: mbNumber));
+                                  },
+                                ),
+                              ),
+                              items: {
+                                "Work Order Number": value
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .businessObject
+                                        ?.measurementNumber ??
+                                    "",
+                                "Project Description":
+                                    "Wall Painting in Ward 1",
+                                "CBO Name": "SHG group-C#1",
+                                "CBO Role": "Pending for verification",
+                                "Officer In-charge name": "240000",
+                                "Start Date": index + 1,
+                                "End Date": index + 1,
+                                "Work value(Rs)": 240000,
+                                "Status": "Approved"
+                              },
+                            );
+                          },
+                          childCount: value.isLoading
+                              ? value!.mbInboxResponse.items!.length + 1
+                              : value!.mbInboxResponse.items!.length,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  );
+                },
+                loading: (value) =>
+                    const Center(child: CircularProgressIndicator.adaptive()),
+              );
+            },
+          ),
         );
       },
     );

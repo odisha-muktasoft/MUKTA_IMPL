@@ -23,6 +23,21 @@ class MBDetailResponse with _$MBDetailResponse {
 
 
 
+@freezed
+class WorkFlow with _$WorkFlow {
+  const factory WorkFlow({
+    @JsonKey(name: 'action') String? action,
+    @JsonKey(name: 'comment') String? comment,
+    @JsonKey(name: 'assignees') List<String>? assignees,
+  }) = _WorkFlow;
+
+  factory WorkFlow.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$WorkFlowFromJson(json);
+}
+
+
 
 /// estimate
 ///
@@ -104,7 +119,7 @@ class Measurement with _$Measurement {
     @JsonKey(name: 'wfStatus')
         String? wfStatus,
     @JsonKey(name: 'workflow')
-        String? workflow,
+        WorkFlow? workflow,
     @JsonKey(name: 'auditDetails')
         AuditDetails? auditDetails,
     @JsonKey(name: 'additionalDetails')

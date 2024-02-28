@@ -63,11 +63,19 @@ Map<String, dynamic> _$$_ProcessInstancesToJson(_$_ProcessInstances instance) =>
 _$_NextActions _$$_NextActionsFromJson(Map<String, dynamic> json) =>
     _$_NextActions(
       action: json['action'] as String?,
+      uuid: json['uuid'] as String?,
+      currentState: json['currentState'] as String?,
+      nextState: json['nextState'] as String?,
+      tenantId: json['tenantId'] as String?,
     );
 
 Map<String, dynamic> _$$_NextActionsToJson(_$_NextActions instance) =>
     <String, dynamic>{
       'action': instance.action,
+      'uuid': instance.uuid,
+      'currentState': instance.currentState,
+      'nextState': instance.nextState,
+      'tenantId': instance.tenantId,
     };
 
 _$_WorkflowDocument _$$_WorkflowDocumentFromJson(Map<String, dynamic> json) =>
