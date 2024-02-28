@@ -201,7 +201,7 @@ public class EstimateServiceValidator {
     }
 
     private List<Double> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
-        List<Double> measurementCumulativeValue;
+        List<Double> measurementCumulativeValue= new ArrayList<Double>();
 
         try {
             measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
@@ -216,12 +216,12 @@ public class EstimateServiceValidator {
         String jsonPathForMeasurementWfStatus = "$.measurements[*].wfStatus";
         List<String> wfStatus = getMeasurementWfStatus(measurementResponse, jsonPathForMeasurementWfStatus);
 
-        Double cumulativeValue = measurementCumulativeValue.get(0).doubleValue();
+        Double cumulativeValue = measurementCumulativeValue.get(0);
         if (!wfStatus.isEmpty() && !wfStatus.get(0).equalsIgnoreCase(ESTIMATE_APPROVED_STATUS)) {
             String jsonPathForMeasurementCurrentValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].currentValue";
             List<Double> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
 
-            cumulativeValue = cumulativeValue -measurementCurrentValue.get(0).doubleValue();
+            cumulativeValue = cumulativeValue -measurementCurrentValue.get(0);
         }
 
         if (estimateDetail1.getNoOfunit() < cumulativeValue) {
@@ -240,7 +240,7 @@ public class EstimateServiceValidator {
     }
 
     private List<Double> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
-        List<Double> measurementCurrentValue;
+        List<Double> measurementCurrentValue= new ArrayList<Double>();
 
         try {
             measurementCurrentValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
