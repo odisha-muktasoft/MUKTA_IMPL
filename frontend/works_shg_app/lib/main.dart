@@ -266,6 +266,7 @@ class _MainApplicationState extends State<MainApplication> {
       ],
       child: BlocBuilder<AppInitializationBloc, AppInitializationState>(
           builder: (context, appInitState) {
+            
         return appInitState.isInitializationCompleted &&
                 appInitState.initMdmsModel != null
             ? BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {

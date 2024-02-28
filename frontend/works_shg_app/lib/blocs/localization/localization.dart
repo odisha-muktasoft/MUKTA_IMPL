@@ -10,6 +10,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:works_shg_app/services/urls.dart';
 
 import '../../data/repositories/remote/localization.dart';
+import '../../models/localization/localization_label.dart';
 import '../../models/localization/localization_model.dart';
 import '../../services/local_storage.dart';
 import '../../utils/global_variables.dart';
@@ -53,11 +54,37 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           Locale(event.locale.split('_').first, event.locale.split('_').last),
         ).load();
       } else {
+        List<LocalizationLabel>? messages;
+        List<String> modules = event.module.contains(',')
+            ? event.module.split(',').map((m) => m.trim()).toList()
+            : [event.module];
+        if (kIsWeb) {
+          messages = html.window.sessionStorage.keys.contains(event.locale)
+              ? jsonDecode(html.window.sessionStorage[event.locale].toString())
+                  .map<LocalizationLabel>((e) => LocalizationLabel.fromJson(e))
+                  .toList()
+              : [];
+        } else {
+          if (await storage.containsKey(key: event.locale)) {
+            var localMessages = await storage.read(key: event.locale);
+            messages = jsonDecode(localMessages.toString())
+                .map<LocalizationLabel>((e) => LocalizationLabel.fromJson(e))
+                .toList();
+          } else {
+            messages = [];
+          }
+        }
+
+        List<String> filteredList = modules
+            .where((filterString) =>
+                !(messages ?? []).any((obj) => obj.module == filterString))
+            .toList();
+
         emit(const LocalizationState.loading());
         LocalizationModel result = await localizationRepository.search(
           url: Urls.initServices.localizationSearch,
           queryParameters: {
-            "module": event.module,
+            "module": filteredList.join(',').toString(),
             "locale": event.locale,
             "tenantId": event.tenantId,
           },
@@ -123,13 +150,15 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                   (e) => LocalizationMessageModel.fromJson(e))
               .toList();
         }
+        // TODO: temp
         await AppLocalizations(Locale(
                 event.locale.split('_').first, event.locale.split('_').last))
             .load();
         emit(LocalizationState.loaded(localizationMessages));
-        await AppLocalizations(
-          Locale(event.locale.split('_').first, event.locale.split('_').last),
-        ).load();
+        // TODO: temp
+        // await AppLocalizations(
+        //   Locale(event.locale.split('_').first, event.locale.split('_').last),
+        // ).load();
       }
     } on DioError catch (e) {
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
