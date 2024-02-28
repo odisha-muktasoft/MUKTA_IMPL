@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:isar/isar.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:works_shg_app/blocs/app_initilization/home_screen_bloc.dart';
@@ -31,6 +32,7 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/utils/isar_config.dart';
 
 import 'Env/app_config.dart';
 import 'Env/env_config.dart';
@@ -78,6 +80,7 @@ import 'data/repositories/remote/mdms.dart';
 import 'models/user_details/user_details_model.dart';
 
 void main() async {
+  final Isar _isar = await ISARConfig().isar;
   HttpOverrides.global = MyHttpOverrides();
   setPathUrlStrategy();
   if (kIsWeb && !kDebugMode) {
@@ -266,7 +269,6 @@ class _MainApplicationState extends State<MainApplication> {
       ],
       child: BlocBuilder<AppInitializationBloc, AppInitializationState>(
           builder: (context, appInitState) {
-            
         return appInitState.isInitializationCompleted &&
                 appInitState.initMdmsModel != null
             ? BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
