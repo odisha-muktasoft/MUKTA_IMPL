@@ -1259,6 +1259,7 @@ class _MBDetailPageState extends State<MBDetailPage>
   }
 }
 
+
 class CustomTab extends StatelessWidget {
   final String text;
   final bool isSelected;
