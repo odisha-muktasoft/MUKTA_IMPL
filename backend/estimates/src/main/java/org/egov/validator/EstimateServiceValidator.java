@@ -211,9 +211,11 @@ public class EstimateServiceValidator {
         }
         for(Object value:cummulativeValue){
             if(value instanceof  Integer){
-                measurementCumulativeValue.add(new Double(String.valueOf(value)));
+                measurementCumulativeValue.add(new Double(value.toString()));
+            }else{
+                measurementCumulativeValue.add((Double) value);
             }
-            measurementCumulativeValue.add((Double) value);
+
         }
 
         return measurementCumulativeValue;
@@ -258,9 +260,11 @@ public class EstimateServiceValidator {
 
         for(Object value:currentValue){
             if(value instanceof  Integer){
-                measurementCurrentValue.add(new Double(String.valueOf(value)));
+                measurementCurrentValue.add(new Double(value.toString()));
+            }else{
+                measurementCurrentValue.add((Double) value);
             }
-            measurementCurrentValue.add((Double) value);
+
         }
 
         return measurementCurrentValue;
