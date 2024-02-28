@@ -179,7 +179,6 @@ const CreateMeasurement = ({ props }) => {
       setShowToast({display:true, error:true});
     };
     const onSuccess = (resp) => {
-      setIsButtonDisabled(false);
       if(action?.name === "SAVE_AS_DRAFT")
       {
         setErrorMessage(t("MB_APPLICATION_IS_SUCCESSFULLY_DRAFTED"));
