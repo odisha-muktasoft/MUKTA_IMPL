@@ -1,7 +1,16 @@
 const { all } = require("axios");
 const { pdf } = require("../config");
 
-const transformEstimateData = (lineItems, contract, measurement, allMeasurements, estimateDetails) => {
+const transformEstimateData = (lineItems, contract, measurement, allMeasurements, estimateDetails, measurementNumber) => {
+
+  var count = 100;
+  // apply loop on lineItems and check if category is NON-SOR and sorId is 45 then change it to count++
+  for(let i = 0; i < estimateDetails.length; i++) {
+    count++;
+    if(estimateDetails[i].category === "NON-SOR" && estimateDetails[i].sorId === "45") {
+      estimateDetails[i].sorId = count;
+    }
+  }
 
   const idEstimateDetailsMap = {};
   for (let i = 0; i < estimateDetails.length; i++) {
@@ -131,9 +140,13 @@ for(const sorId of Object.keys(sorIdMeasuresMap)){
 
     if (matchingLineItem) {
         const contractLineItemId = matchingLineItem.contractLineItemRef;
-
+        var ismatch = false;
         for(let i = 0;i< allMeasurements.length;i++){
-          if(allMeasurements[i].wfStatus == 'APPROVED'){
+          if(measurementNumber == allMeasurements[i].measurementNumber){
+            ismatch = true;
+            continue;
+          }
+          if(allMeasurements[i].wfStatus == 'APPROVED' && ismatch){
             // Find the measure with matching targetId
             const matchingMeasure = allMeasurements[i].measures.find(measure => measure.targetId === contractLineItemId);
 

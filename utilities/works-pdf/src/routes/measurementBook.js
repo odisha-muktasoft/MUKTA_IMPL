@@ -113,7 +113,7 @@ router.post(
 
             var transformedData;
             if(measurementBookDetails){
-                transformedData = transformEstimateData(lineItems, contract, measurement, allMeasurements, estimateDetails);
+                transformedData = transformEstimateData(lineItems, contract, measurement, allMeasurements, estimateDetails, measurementNumber);
             }
 
             // make an array of all the values from the transformedData without keys
