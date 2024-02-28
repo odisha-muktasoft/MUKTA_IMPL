@@ -10,7 +10,7 @@ const ViewMeasurement = () => {
   const [thumbnails, setThumbnails] = useState("")
 
   const requestCriteria = {
-    url: "/mukta-services/measurement/_search",
+    url: "/mukta-mukta-services/measurement/_search",
 
     body: {
       contractNumber: workOrderNumber,

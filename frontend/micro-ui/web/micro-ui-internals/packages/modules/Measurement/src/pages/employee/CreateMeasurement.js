@@ -55,7 +55,7 @@ const CreateMeasurement = ({ props }) => {
 
   // for BFF service
   const requestCriteria = {
-    url: "/mukta-services/measurement/_search",
+    url: "/mukta-mukta-services/measurement/_search",
     body: {
       contractNumber: contractNumber,
       tenantId: tenantId,

@@ -59,7 +59,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
   }, [approvers]);
 
   const reqCriteriaUpdate = {
-    url: isEdit ? `/contract/v1/_update` : `/contract/v1/_create`,
+    url: isEdit ? `/mukta-contract/v1/_update` : `/mukta-contract/v1/_create`,
     params: {},
     body: {},
     config: {
