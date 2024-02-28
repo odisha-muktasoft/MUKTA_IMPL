@@ -202,15 +202,15 @@ public class EstimateServiceValidator {
 
     private List<Double> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
         List<Double> measurementCumulativeValue= new ArrayList<Double>();
-        List<Integer> cummulativeValue;
+        List<Object> cummulativeValue;
 
         try {
             cummulativeValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
-        for(Integer value:cummulativeValue){
-            measurementCumulativeValue.add(new Double(value));
+        for(Object value:cummulativeValue){
+            measurementCumulativeValue.add((Double) value);
         }
 
         return measurementCumulativeValue;
@@ -245,7 +245,7 @@ public class EstimateServiceValidator {
 
     private List<Double> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
         List<Double> measurementCurrentValue= new ArrayList<Double>();
-        List<Integer> currentValue;
+        List<Object> currentValue;
 
         try {
             currentValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
@@ -253,8 +253,8 @@ public class EstimateServiceValidator {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
 
-        for(Integer value:currentValue){
-            measurementCurrentValue.add(new Double(value));
+        for(Object value:currentValue){
+            measurementCurrentValue.add((Double) value);
         }
 
         return measurementCurrentValue;
