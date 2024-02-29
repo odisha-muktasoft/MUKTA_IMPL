@@ -142,10 +142,11 @@ class _SideBar extends State<SideBar> {
                             context.read<AppInitializationBloc>().add(
                                 AppInitializationSetupEvent(
                                     selectedLang: data.value));
-                            await AppLocalizations(
-                              Locale(data.value.split('_').first,
-                                  data.value.split('_').last),
-                            ).load();
+                                    //TODO: test
+                            // await AppLocalizations(
+                            //   Locale(data.value.split('_').first,
+                            //       data.value.split('_').last),
+                            // ).load();
                           },
                           rowItems: state.digitRowCardItems
                                   ?.map((e) =>

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isar/isar.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/data/init_client.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -11,7 +12,8 @@ import '../data/remote_client.dart';
 import '../data/repositories/remote/localization.dart';
 
 class AuthenticatedPageWrapper extends StatefulWidget {
-  const AuthenticatedPageWrapper({Key? key}) : super(key: key);
+  final Isar isar;
+  const AuthenticatedPageWrapper({Key? key, required this.isar}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -48,6 +50,7 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
           create: (context) => LocalizationBloc(
             const LocalizationState.initial(),
             LocalizationRepository(initClient.init()),
+            widget.isar,
           )..add(LocalizationEvent.onLoadLocalization(
               module: 'rainmaker-attendencemgmt',
               tenantId: GlobalVariables

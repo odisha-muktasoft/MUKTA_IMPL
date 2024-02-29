@@ -18,15 +18,23 @@ class _$AppRouter extends RootStackRouter {
   @override
   final Map<String, PageFactory> pagesMap = {
     UnauthenticatedRouteWrapper.name: (routeData) {
+      final args = routeData.argsAs<UnauthenticatedRouteWrapperArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const UnauthenticatedPageWrapper(),
+        child: UnauthenticatedPageWrapper(
+          key: args.key,
+          isar: args.isar,
+        ),
       );
     },
     AuthenticatedRouteWrapper.name: (routeData) {
+      final args = routeData.argsAs<AuthenticatedRouteWrapperArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const AuthenticatedPageWrapper(),
+        child: AuthenticatedPageWrapper(
+          key: args.key,
+          isar: args.isar,
+        ),
       );
     },
     LanguageSelectionRoute.name: (routeData) {
@@ -331,28 +339,76 @@ class _$AppRouter extends RootStackRouter {
 
 /// generated route for
 /// [UnauthenticatedPageWrapper]
-class UnauthenticatedRouteWrapper extends PageRouteInfo<void> {
-  const UnauthenticatedRouteWrapper({List<PageRouteInfo>? children})
-      : super(
+class UnauthenticatedRouteWrapper
+    extends PageRouteInfo<UnauthenticatedRouteWrapperArgs> {
+  UnauthenticatedRouteWrapper({
+    Key? key,
+    required Isar isar,
+    List<PageRouteInfo>? children,
+  }) : super(
           UnauthenticatedRouteWrapper.name,
           path: '/',
+          args: UnauthenticatedRouteWrapperArgs(
+            key: key,
+            isar: isar,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'UnauthenticatedRouteWrapper';
 }
 
+class UnauthenticatedRouteWrapperArgs {
+  const UnauthenticatedRouteWrapperArgs({
+    this.key,
+    required this.isar,
+  });
+
+  final Key? key;
+
+  final Isar isar;
+
+  @override
+  String toString() {
+    return 'UnauthenticatedRouteWrapperArgs{key: $key, isar: $isar}';
+  }
+}
+
 /// generated route for
 /// [AuthenticatedPageWrapper]
-class AuthenticatedRouteWrapper extends PageRouteInfo<void> {
-  const AuthenticatedRouteWrapper({List<PageRouteInfo>? children})
-      : super(
+class AuthenticatedRouteWrapper
+    extends PageRouteInfo<AuthenticatedRouteWrapperArgs> {
+  AuthenticatedRouteWrapper({
+    Key? key,
+    required Isar isar,
+    List<PageRouteInfo>? children,
+  }) : super(
           AuthenticatedRouteWrapper.name,
           path: '/',
+          args: AuthenticatedRouteWrapperArgs(
+            key: key,
+            isar: isar,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'AuthenticatedRouteWrapper';
+}
+
+class AuthenticatedRouteWrapperArgs {
+  const AuthenticatedRouteWrapperArgs({
+    this.key,
+    required this.isar,
+  });
+
+  final Key? key;
+
+  final Isar isar;
+
+  @override
+  String toString() {
+    return 'AuthenticatedRouteWrapperArgs{key: $key, isar: $isar}';
+  }
 }
 
 /// generated route for

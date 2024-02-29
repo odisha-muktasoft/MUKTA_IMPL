@@ -23,34 +23,46 @@ mixin _$LocalizationEvent {
   TResult when<TResult extends Object?>({
     required TResult Function(String module, String tenantId, String locale)
         onLoadLocalization,
+    required TResult Function(String module, String tenantId, String locale)
+        onSpecificLoadLocalization,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String module, String tenantId, String locale)?
         onLoadLocalization,
+    TResult? Function(String module, String tenantId, String locale)?
+        onSpecificLoadLocalization,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String module, String tenantId, String locale)?
         onLoadLocalization,
+    TResult Function(String module, String tenantId, String locale)?
+        onSpecificLoadLocalization,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
+    required TResult Function(OnSpecificLoadLocalizationEvent value)
+        onSpecificLoadLocalization,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
+    TResult? Function(OnSpecificLoadLocalizationEvent value)?
+        onSpecificLoadLocalization,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
+    TResult Function(OnSpecificLoadLocalizationEvent value)?
+        onSpecificLoadLocalization,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -202,6 +214,8 @@ class _$OnLoadLocalizationEvent
   TResult when<TResult extends Object?>({
     required TResult Function(String module, String tenantId, String locale)
         onLoadLocalization,
+    required TResult Function(String module, String tenantId, String locale)
+        onSpecificLoadLocalization,
   }) {
     return onLoadLocalization(module, tenantId, locale);
   }
@@ -211,6 +225,8 @@ class _$OnLoadLocalizationEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String module, String tenantId, String locale)?
         onLoadLocalization,
+    TResult? Function(String module, String tenantId, String locale)?
+        onSpecificLoadLocalization,
   }) {
     return onLoadLocalization?.call(module, tenantId, locale);
   }
@@ -220,6 +236,8 @@ class _$OnLoadLocalizationEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String module, String tenantId, String locale)?
         onLoadLocalization,
+    TResult Function(String module, String tenantId, String locale)?
+        onSpecificLoadLocalization,
     required TResult orElse(),
   }) {
     if (onLoadLocalization != null) {
@@ -232,6 +250,8 @@ class _$OnLoadLocalizationEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
+    required TResult Function(OnSpecificLoadLocalizationEvent value)
+        onSpecificLoadLocalization,
   }) {
     return onLoadLocalization(this);
   }
@@ -240,6 +260,8 @@ class _$OnLoadLocalizationEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
+    TResult? Function(OnSpecificLoadLocalizationEvent value)?
+        onSpecificLoadLocalization,
   }) {
     return onLoadLocalization?.call(this);
   }
@@ -248,6 +270,8 @@ class _$OnLoadLocalizationEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
+    TResult Function(OnSpecificLoadLocalizationEvent value)?
+        onSpecificLoadLocalization,
     required TResult orElse(),
   }) {
     if (onLoadLocalization != null) {
@@ -273,6 +297,194 @@ abstract class OnLoadLocalizationEvent implements LocalizationEvent {
   @JsonKey(ignore: true)
   _$$OnLoadLocalizationEventCopyWith<_$OnLoadLocalizationEvent> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OnSpecificLoadLocalizationEventCopyWith<$Res>
+    implements $LocalizationEventCopyWith<$Res> {
+  factory _$$OnSpecificLoadLocalizationEventCopyWith(
+          _$OnSpecificLoadLocalizationEvent value,
+          $Res Function(_$OnSpecificLoadLocalizationEvent) then) =
+      __$$OnSpecificLoadLocalizationEventCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String module, String tenantId, String locale});
+}
+
+/// @nodoc
+class __$$OnSpecificLoadLocalizationEventCopyWithImpl<$Res>
+    extends _$LocalizationEventCopyWithImpl<$Res,
+        _$OnSpecificLoadLocalizationEvent>
+    implements _$$OnSpecificLoadLocalizationEventCopyWith<$Res> {
+  __$$OnSpecificLoadLocalizationEventCopyWithImpl(
+      _$OnSpecificLoadLocalizationEvent _value,
+      $Res Function(_$OnSpecificLoadLocalizationEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? module = null,
+    Object? tenantId = null,
+    Object? locale = null,
+  }) {
+    return _then(_$OnSpecificLoadLocalizationEvent(
+      module: null == module
+          ? _value.module
+          : module // ignore: cast_nullable_to_non_nullable
+              as String,
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$OnSpecificLoadLocalizationEvent
+    with DiagnosticableTreeMixin
+    implements OnSpecificLoadLocalizationEvent {
+  const _$OnSpecificLoadLocalizationEvent(
+      {required this.module, required this.tenantId, required this.locale});
+
+  @override
+  final String module;
+  @override
+  final String tenantId;
+  @override
+  final String locale;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'LocalizationEvent.onSpecificLoadLocalization(module: $module, tenantId: $tenantId, locale: $locale)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'LocalizationEvent.onSpecificLoadLocalization'))
+      ..add(DiagnosticsProperty('module', module))
+      ..add(DiagnosticsProperty('tenantId', tenantId))
+      ..add(DiagnosticsProperty('locale', locale));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OnSpecificLoadLocalizationEvent &&
+            (identical(other.module, module) || other.module == module) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.locale, locale) || other.locale == locale));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, module, tenantId, locale);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OnSpecificLoadLocalizationEventCopyWith<_$OnSpecificLoadLocalizationEvent>
+      get copyWith => __$$OnSpecificLoadLocalizationEventCopyWithImpl<
+          _$OnSpecificLoadLocalizationEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String module, String tenantId, String locale)
+        onLoadLocalization,
+    required TResult Function(String module, String tenantId, String locale)
+        onSpecificLoadLocalization,
+  }) {
+    return onSpecificLoadLocalization(module, tenantId, locale);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String module, String tenantId, String locale)?
+        onLoadLocalization,
+    TResult? Function(String module, String tenantId, String locale)?
+        onSpecificLoadLocalization,
+  }) {
+    return onSpecificLoadLocalization?.call(module, tenantId, locale);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String module, String tenantId, String locale)?
+        onLoadLocalization,
+    TResult Function(String module, String tenantId, String locale)?
+        onSpecificLoadLocalization,
+    required TResult orElse(),
+  }) {
+    if (onSpecificLoadLocalization != null) {
+      return onSpecificLoadLocalization(module, tenantId, locale);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
+    required TResult Function(OnSpecificLoadLocalizationEvent value)
+        onSpecificLoadLocalization,
+  }) {
+    return onSpecificLoadLocalization(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
+    TResult? Function(OnSpecificLoadLocalizationEvent value)?
+        onSpecificLoadLocalization,
+  }) {
+    return onSpecificLoadLocalization?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
+    TResult Function(OnSpecificLoadLocalizationEvent value)?
+        onSpecificLoadLocalization,
+    required TResult orElse(),
+  }) {
+    if (onSpecificLoadLocalization != null) {
+      return onSpecificLoadLocalization(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OnSpecificLoadLocalizationEvent implements LocalizationEvent {
+  const factory OnSpecificLoadLocalizationEvent(
+      {required final String module,
+      required final String tenantId,
+      required final String locale}) = _$OnSpecificLoadLocalizationEvent;
+
+  @override
+  String get module;
+  @override
+  String get tenantId;
+  @override
+  String get locale;
+  @override
+  @JsonKey(ignore: true)
+  _$$OnSpecificLoadLocalizationEventCopyWith<_$OnSpecificLoadLocalizationEvent>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc

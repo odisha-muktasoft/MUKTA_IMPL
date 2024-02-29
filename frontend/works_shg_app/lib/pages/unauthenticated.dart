@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isar/isar.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/data/init_client.dart';
 
@@ -12,7 +13,8 @@ import '../models/localization/localization_model.dart';
 import '../widgets/loaders.dart';
 
 class UnauthenticatedPageWrapper extends StatelessWidget {
-  const UnauthenticatedPageWrapper({Key? key}) : super(key: key);
+  final Isar isar;
+  const UnauthenticatedPageWrapper({Key? key, required this.isar}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,9 @@ class UnauthenticatedPageWrapper extends StatelessWidget {
                         null)
                 ? (context) => LocalizationBloc(
                       const LocalizationState.initial(),
-                      LocalizationRepository(initClient.init()),
+                      LocalizationRepository(initClient.init(),
+                      ),
+                      isar
                     )..add(LocalizationEvent.onLoadLocalization(
                         module:
                             'rainmaker-common,rainmaker-common-masters,rainmaker-${appInitState.stateInfoListModel?.code}',
@@ -50,6 +54,7 @@ class UnauthenticatedPageWrapper extends StatelessWidget {
                 : (context) => LocalizationBloc(
                       const LocalizationState.initial(),
                       LocalizationRepository(initClient.init()),
+                      isar
                     ),
             child: (appInitState.isInitializationCompleted &&
                     appInitState.digitRowCardItems != null &&

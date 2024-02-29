@@ -92,20 +92,20 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                               context.router.push(const LoginRoute());
                             },
                             onLanguageChange: (data) async {
-                              context.read<AppInitializationBloc>().add(
-                                  AppInitializationSetupEvent(
-                                      selectedLang: data.value));
+                              // context.read<AppInitializationBloc>().add(
+                              //     AppInitializationSetupEvent(
+                              //         selectedLang: data.value));
 
                               context.read<LocalizationBloc>().add(
-                                  OnLoadLocalizationEvent(
+                                  OnSpecificLoadLocalizationEvent(
                                       module:
                                           'rainmaker-common,rainmaker-common-masters,rainmaker-${GlobalVariables.stateInfoListModel?.code}',
                                       tenantId: state.stateInfoListModel!.code
                                           .toString(),
                                       locale: data.value));
-                              context.read<AppInitializationBloc>().add(
-                                  AppInitializationSetupEvent(
-                                      selectedLang: data.value));
+                              // context.read<AppInitializationBloc>().add(
+                              //     AppInitializationSetupEvent(
+                              //         selectedLang: data.value));
                             },
                             languageSubmitLabel: AppLocalizations.of(context)
                                 .translate(i18.common.continueLabel),

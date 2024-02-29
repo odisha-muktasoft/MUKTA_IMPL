@@ -3,64 +3,45 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isar/isar.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:works_shg_app/blocs/localization/localization.dart';
 
+import '../../data/schema/localization.dart';
 import '../../models/localization/localization_model.dart';
 import '../../services/local_storage.dart';
 import '../../utils/constants.dart';
 import 'app_localizations_delegate.dart';
 
 class AppLocalizations {
-  final Locale? locale;
+  final Locale locale;
+  final Isar isar;
 
-  AppLocalizations(this.locale);
+  AppLocalizations(this.locale, this.isar);
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static List<LocalizationMessageModel> localizedStrings =
-      <LocalizationMessageModel>[];
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      AppLocalizationsDelegate();
+  static List<Localization> localizedStrings = <Localization>[];
 
-  Future<List<LocalizationMessageModel>?> getLocalizationLabels() async {
-    dynamic localLabelResponse;
-    if (kIsWeb) {
-      localLabelResponse = html.window.sessionStorage[
-          '${locale?.languageCode}_${locale?.countryCode}' ?? ''];
-    } else {
-      localLabelResponse = await storage.read(
-          key: '${locale?.languageCode}_${locale?.countryCode}');
-    }
-   // await Future.delayed(const Duration(seconds: 1));
-    if (localLabelResponse != null && localLabelResponse.trim().isNotEmpty) {
-      return localizedStrings = jsonDecode(localLabelResponse)
-          .map<LocalizationMessageModel>(
-              (e) => LocalizationMessageModel.fromJson(e))
-          .toList();
-    } else {
-      localizedStrings = BlocProvider.of<LocalizationBloc>(
-                  scaffoldMessengerKey.currentContext!)
-              .state
-              .maybeWhen(
-                  orElse: () => [],
-                  loaded: (List<LocalizationMessageModel>? localization) {
-                    return localization;
-                  }) ??
-          [];
-
-      return localizedStrings;
-    }
-  }
+  static LocalizationsDelegate<AppLocalizations> getDelegate(
+    Isar isar,
+  ) =>
+      AppLocalizationsDelegate(isar);
 
   Future<bool> load() async {
-    if (scaffoldMessengerKey.currentContext != null) {
-      await getLocalizationLabels();
-      return true;
-    } else {
-      return false;
+    localizedStrings.clear();
+    final List<LocalizationWrapper> localizationList = await isar
+        .localizationWrappers
+        .filter()
+        .localeEqualTo('${locale.languageCode}_${locale.countryCode}')
+        .findAll();
+
+    if (localizationList.isNotEmpty) {
+      localizedStrings.addAll(localizationList.first.localization!);
     }
+
+    return true;
   }
 
   translate(

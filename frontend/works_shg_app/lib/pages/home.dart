@@ -95,10 +95,11 @@ class _HomePage extends State<HomePage> {
                     context.read<AppInitializationBloc>().add(
                         AppInitializationSetupEvent(
                             selectedLang: currLoc.toString()));
-                    await AppLocalizations(
-                      Locale(currLoc.toString().split('_').first,
-                          currLoc.toString().split('_').last),
-                    ).load();
+                            //TODO: test
+                    // await AppLocalizations(
+                    //   Locale(currLoc.toString().split('_').first,
+                    //       currLoc.toString().split('_').last),
+                    // ).load();
                   }
                 });
           }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
@@ -198,10 +199,11 @@ class _HomePage extends State<HomePage> {
         );
     context.read<AppInitializationBloc>().add(
         AppInitializationSetupEvent(selectedLang: currentLocale.toString()));
-    await AppLocalizations(
-      Locale(currentLocale.toString().split('_').first,
-          currentLocale.toString().split('_').last),
-    ).load();
+        //TODO: test
+    // await AppLocalizations(
+    //   Locale(currentLocale.toString().split('_').first,
+    //       currentLocale.toString().split('_').last),
+    // ).load();
   }
 
   void Function()? getRoute(String key, BuildContext context) {
