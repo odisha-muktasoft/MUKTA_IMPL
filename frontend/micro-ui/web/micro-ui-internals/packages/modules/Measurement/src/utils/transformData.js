@@ -116,8 +116,11 @@ const measurement= {
       // sumSor += sorItem.measures?.[0]?.rowAmount;
       measurement.measures.push(...getMeasurementFromMeasures(sorItem, "SOR"));
       sorItem.measures.forEach((measure) => {
-        if (measure.rowAmount) {
+        if ( measure?.isDeduction == false && measure?.rowAmount) {
           sumSor += measure.rowAmount;
+        }
+        else if( measure?.isDeduction == true && measure?.rowAmount) {
+          sumSor -= measure?.rowAmount;
         }
       });
     });
@@ -129,8 +132,11 @@ const measurement= {
       //sumNonSor += nonsorItem.measures?.[0]?.rowAmount;
       measurement.measures.push(...getMeasurementFromMeasures(nonsorItem, "NONSOR"));
       nonsorItem.measures?.forEach((measure) => {
-        if (measure.rowAmount) {
-          sumNonSor += measure.rowAmount;
+        if (measure?.isDeduction == false && measure?.rowAmount) {
+          sumNonSor += measure?.rowAmount;
+        }
+        else if(measure?.isDeduction == true && measure?.rowAmount) {
+          sumNonSor -= measure?.rowAmount;
         }
       });
     });
