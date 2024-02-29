@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 
 import 'app_localization.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
-  const AppLocalizationsDelegate();
+  final Isar isar;
+  const AppLocalizationsDelegate(this.isar);
   @override
   bool isSupported(Locale locale) {
     return ['en', 'hi', 'pn'].contains(locale.languageCode);
@@ -13,7 +15,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   Future<AppLocalizations> load(
     Locale locale,
   ) async {
-    AppLocalizations appLocalizations = AppLocalizations(locale);
+    AppLocalizations appLocalizations = AppLocalizations(locale,isar);
     await appLocalizations.load();
 
     return appLocalizations;

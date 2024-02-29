@@ -268,10 +268,11 @@ class _HomePage extends State<HomePage> {
         );
     context.read<AppInitializationBloc>().add(
         AppInitializationSetupEvent(selectedLang: currentLocale.toString()));
-    await AppLocalizations(
-      Locale(currentLocale.toString().split('_').first,
-          currentLocale.toString().split('_').last),
-    ).load();
+        //TODO: test
+    // await AppLocalizations(
+    //   Locale(currentLocale.toString().split('_').first,
+    //       currentLocale.toString().split('_').last),
+    // ).load();
   }
 
   void Function()? getRoute(String key, BuildContext context) {

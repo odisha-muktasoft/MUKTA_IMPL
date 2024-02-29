@@ -86,7 +86,6 @@ import 'data/repositories/remote/mdms.dart';
 import 'models/user_details/user_details_model.dart';
 
 void main() async {
-  
   HttpOverrides.global = MyHttpOverrides();
   setPathUrlStrategy();
   if (kIsWeb && !kDebugMode) {
@@ -113,7 +112,10 @@ void main() async {
     }
 
     await CommonMethods.fetchPackageInfo();
-    runApp(MainApplication(appRouter: AppRouter()));
+    runApp(MainApplication(
+      appRouter: AppRouter(),
+      isar: _isar,
+    ));
   }, (Object error, StackTrace stack) {
     if (kDebugMode) {
       print(error.toString());
@@ -123,7 +125,9 @@ void main() async {
 }
 
 class MainApplication extends StatefulWidget {
-  const MainApplication({super.key, required AppRouter appRouter});
+  final Isar isar;
+  const MainApplication(
+      {super.key, required AppRouter appRouter, required this.isar});
 
   @override
   State<StatefulWidget> createState() {
@@ -304,6 +308,7 @@ class _MainApplicationState extends State<MainApplication> {
                         ? (context) => LocalizationBloc(
                               const LocalizationState.initial(),
                               LocalizationRepository(initClient.init()),
+                              widget.isar,
                             )..add(LocalizationEvent.onLoadLocalization(
                                 module:
                                     'rainmaker-common,rainmaker-common-masters,rainmaker-${appInitState.stateInfoListModel?.code}',
@@ -321,6 +326,7 @@ class _MainApplicationState extends State<MainApplication> {
                         : (context) => LocalizationBloc(
                               const LocalizationState.initial(),
                               LocalizationRepository(initClient.init()),
+                              widget.isar,
                             ),
                     child: MaterialApp.router(
                       title: 'MUKTA CBO App',
@@ -334,8 +340,8 @@ class _MainApplicationState extends State<MainApplication> {
                             })
                           : [],
                       locale: const Locale('en', 'IN'),
-                      localizationsDelegates: const [
-                        AppLocalizations.delegate,
+                      localizationsDelegates:  [
+                        AppLocalizations.getDelegate(widget.isar),
                         GlobalWidgetsLocalizations.delegate,
                         GlobalCupertinoLocalizations.delegate,
                         GlobalMaterialLocalizations.delegate,
@@ -360,7 +366,7 @@ class _MainApplicationState extends State<MainApplication> {
                         routes: (handler) => [
                           authState.maybeWhen(
                               initial: () =>
-                                  const UnauthenticatedRouteWrapper(),
+                                   UnauthenticatedRouteWrapper(isar: widget.isar),
                               loaded: (UserDetailsModel? userDetailsModel,
                                       String? accessToken, roleType) =>
                                   const AuthenticatedRouteWrapper(),

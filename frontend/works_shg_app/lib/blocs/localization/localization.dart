@@ -6,10 +6,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:isar/isar.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:works_shg_app/data/local/isar_logic.dart';
 import 'package:works_shg_app/services/urls.dart';
 
 import '../../data/repositories/remote/localization.dart';
+import '../../data/schema/localization.dart';
 import '../../models/localization/localization_label.dart';
 import '../../models/localization/localization_model.dart';
 import '../../services/local_storage.dart';
@@ -22,9 +25,11 @@ typedef LocalizationEmitter = Emitter<LocalizationState>;
 List<LocalizationMessageModel>? localizationMessages;
 
 class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
+  final Isar isar;
   final LocalizationRepository localizationRepository;
-  LocalizationBloc(super.initialState, this.localizationRepository) {
+  LocalizationBloc(super.initialState, this.localizationRepository, this.isar) {
     on<OnLoadLocalizationEvent>(_onLoadLocalization);
+    on<OnSpecificLoadLocalizationEvent>(_onSpecificLoadLocalization);
   }
 
   FutureOr<void> _onLoadLocalization(
@@ -32,137 +37,86 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
     LocalizationEmitter emit,
   ) async {
     try {
-      if (await GlobalVariables.isLocaleSelect(event.locale, event.module)) {
-        dynamic localLabelResponse;
-        if (kIsWeb) {
-          localLabelResponse = html.window.sessionStorage[event.locale ?? ''];
-        } else {
-          localLabelResponse = await storage.read(key: event.locale ?? '');
-        }
+      LocalizationModel result = await localizationRepository.search(
+        url: Urls.initServices.localizationSearch,
+        queryParameters: {
+          "module": event.module.toString(),
+          "locale": event.locale,
+          "tenantId": event.tenantId,
+        },
+      );
 
-        if (localLabelResponse != null) {
-          localizationMessages = jsonDecode(localLabelResponse)
-              .map<LocalizationMessageModel>(
-                  (e) => LocalizationMessageModel.fromJson(e))
-              .toList();
-        }
-        await AppLocalizations(
-          Locale(event.locale.split('_').first, event.locale.split('_').last),
-        ).load();
-        emit(LocalizationState.loaded(localizationMessages));
-        await AppLocalizations(
-          Locale(event.locale.split('_').first, event.locale.split('_').last),
-        ).load();
-      } else {
-        List<LocalizationLabel>? messages;
-        List<String> modules = event.module.contains(',')
-            ? event.module.split(',').map((m) => m.trim()).toList()
-            : [event.module];
-        if (kIsWeb) {
-          messages = html.window.sessionStorage.keys.contains(event.locale)
-              ? jsonDecode(html.window.sessionStorage[event.locale].toString())
-                  .map<LocalizationLabel>((e) => LocalizationLabel.fromJson(e))
-                  .toList()
-              : [];
-        } else {
-          if (await storage.containsKey(key: event.locale)) {
-            var localMessages = await storage.read(key: event.locale);
-            messages = jsonDecode(localMessages.toString())
-                .map<LocalizationLabel>((e) => LocalizationLabel.fromJson(e))
-                .toList();
-          } else {
-            messages = [];
-          }
-        }
+      final List<Localization> newLocalizationList = result.messages
+          .map((e) => Localization()
+            ..message = e.message
+            ..code = e.code
+            ..locale = e.locale
+            ..module = e.module)
+          .toList();
 
-        List<String> filteredList = modules
-            .where((filterString) =>
-                !(messages ?? []).any((obj) => obj.module == filterString))
-            .toList();
+      final localizationWrapper = LocalizationWrapper()
+        ..locale = event.locale
+        ..localization = newLocalizationList;
 
-        emit(const LocalizationState.loading());
-        LocalizationModel result = await localizationRepository.search(
-          url: Urls.initServices.localizationSearch,
-          queryParameters: {
-            "module": filteredList.join(',').toString(),
-            "locale": event.locale,
-            "tenantId": event.tenantId,
-          },
-        );
-
-        if (kIsWeb) {
-          var existing = html.window.sessionStorage[event.locale ?? ''];
-          if (existing != null) {
-            var existingObject = json.decode(existing);
-            existingObject
-                .addAll(result.messages.map((e) => e.toJson()).toList());
-            html.window.sessionStorage[event.locale ?? ''] =
-                jsonEncode(existingObject);
-          } else {
-            if (event.locale != null && event.locale.isNotEmpty) {
-              // Condition: event.locale is set in the SHG app
-
-              // Delete session storage parameters with names containing "_IN"
-              final storage = html.window.sessionStorage;
-              List<String> keysToDelete = [];
-
-              for (var key in storage.keys) {
-                if (key.contains('_IN')) {
-                  keysToDelete.add(key);
-                }
-              }
-
-              // Delete keys
-              for (var key in keysToDelete) {
-                storage.remove(key);
-              }
-            }
-
-            html.window.sessionStorage[event.locale ?? ''] =
-                jsonEncode(result.messages.map((e) => e.toJson()).toList());
-          }
-        } else {
-          var existing = await storage.read(key: event.locale);
-          if (existing != null) {
-            var existingObject = json.decode(existing);
-            existingObject
-                .addAll(result.messages.map((e) => e.toJson()).toList());
-            await storage.write(
-                key: event.locale ?? '', value: jsonEncode(existingObject));
-          } else {
-            await storage.write(
-                key: event.locale ?? '',
-                value: jsonEncode(
-                    result.messages.map((e) => e.toJson()).toList()));
-          }
-        }
-
-        dynamic localLabelResponse;
-        if (kIsWeb) {
-          localLabelResponse = html.window.sessionStorage[event.locale ?? ''];
-        } else {
-          localLabelResponse = await storage.read(key: event.locale ?? '');
-        }
-
-        if (localLabelResponse != null) {
-          localizationMessages = jsonDecode(localLabelResponse)
-              .map<LocalizationMessageModel>(
-                  (e) => LocalizationMessageModel.fromJson(e))
-              .toList();
-        }
-        // TODO: temp
-        await AppLocalizations(Locale(
-                event.locale.split('_').first, event.locale.split('_').last))
-            .load();
-        emit(LocalizationState.loaded(localizationMessages));
-        // TODO: temp
-        // await AppLocalizations(
-        //   Locale(event.locale.split('_').first, event.locale.split('_').last),
-        // ).load();
-      }
+      final check = await IsarLogic(isar).loadLocalizationToIsar(
+        locale: "locale",
+        module: "module",
+        tenantId: "tenantId",
+        localizationWrapper: localizationWrapper,
+      );
+      final List codes = event.locale.split('_');
+      bool k = await _loadLocale(codes);
+      dynamic s;
+      emit(LocalizationState.loaded(s));
     } on DioError catch (e) {
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
     }
+  }
+
+  FutureOr<void> _onSpecificLoadLocalization(
+    OnSpecificLoadLocalizationEvent event,
+    LocalizationEmitter emit,
+  ) async {
+    try {
+      print(event.module);
+      // LocalizationModel result = await localizationRepository.search(
+      //   url: Urls.initServices.localizationSearch,
+      //   queryParameters: {
+      //     "module": event.module.toString(),
+      //     "locale": event.locale,
+      //     "tenantId": event.tenantId,
+      //   },
+      // );
+
+      // final List<Localization> newLocalizationList = result.messages
+      //     .map((e) => Localization()
+      //       ..message = e.message
+      //       ..code = e.code
+      //       ..locale = e.locale
+      //       ..module = e.module)
+      //     .toList();
+
+      // final localizationWrapper = LocalizationWrapper()
+      //   ..locale = event.locale
+      //   ..localization = newLocalizationList;
+
+      // final check = await IsarLogic(isar).loadLocalizationToIsar(
+      //   locale: "locale",
+      //   module: "module",
+      //   tenantId: "tenantId",
+      //   localizationWrapper: localizationWrapper,
+      // );
+      // final List codes = event.locale.split('_');
+      // bool k = await _loadLocale(codes);
+      // dynamic s;
+      // emit(LocalizationState.loaded(s));
+    } on DioError catch (e) {
+      LocalizationState.error(e.response?.data['Errors'][0]['code']);
+    }
+  }
+
+  FutureOr<bool> _loadLocale(List codes) async {
+    return await AppLocalizations(Locale(codes.first, codes.last), isar).load();
   }
 }
 
@@ -173,6 +127,12 @@ class LocalizationEvent with _$LocalizationEvent {
     required String tenantId,
     required String locale,
   }) = OnLoadLocalizationEvent;
+
+  const factory LocalizationEvent.onSpecificLoadLocalization({
+    required String module,
+    required String tenantId,
+    required String locale,
+  }) = OnSpecificLoadLocalizationEvent;
 }
 
 @freezed
