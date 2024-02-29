@@ -24,10 +24,17 @@ const transformDeviationData = (data) => {
         return Nformatter1.format(value);
     }
 
+    var count = 100;
     for (const estimateDetail of data.estimates[0].estimateDetails) {
         if (estimateDetail.category === "OVERHEAD") {
             continue;
         }
+
+        if(estimateDetail.category === 'NON-SOR' && estimateDetail.sorId === '45'){
+            estimateDetail.sorId = count;
+            count++;
+        }
+
         // if in the end of name there is a square bracket then convert that square bracket into round bracket
         if(estimateDetail.name.includes('[')){
             estimateDetail.name = estimateDetail.name.replace('[', '(');
@@ -39,7 +46,7 @@ const transformDeviationData = (data) => {
         if(estimateDetail.height == null)estimateDetail.height=1;
         if(estimateDetail.quantity == null)estimateDetail.quantity=1;
 
-        var estQ = estimateDetail.length*estimateDetail.width*estimateDetail.height*estimateDetail.quantity;
+        var estQ = estimateDetail.noOfunit;
         estimateDetail.estimatedQuantity = estQ;
     
         const { sorId, isDeduction, category, name, description, uom, unitRate, estimatedQuantity, amountDetail } = estimateDetail;
@@ -70,11 +77,17 @@ const transformDeviationData = (data) => {
         }
     }
 
-    // iterate over estimateDetails of last estimate and check if sorId is present in sorIdMap then check if isDeduction is true then subtract the amount from originalAmount and quantity from originalQuantity and if isDeduction is false then add the amount to originalAmount and quantity to originalQuantity
-
     const lastIndex = data.estimates.length - 1;
 const originalEstimateDetails = data.estimates[lastIndex].estimateDetails;
 
+for(const estimateDetail of data.estimates[0].estimateDetails) {
+    // iterate over originalEstimateDetails and check if id of originalEstimateDetail.id is matching with previousLineItemId of estimateDetail then set sorId as estimateDetail.sorId
+    for(const originalEstimateDetail of originalEstimateDetails) {
+        if(estimateDetail.previousLineItemId === originalEstimateDetail.id) {
+            originalEstimateDetail.sorId = estimateDetail.sorId;
+        }
+    }
+}
 
 for (const estimateDetail of originalEstimateDetails) {
     if (estimateDetail.category === "OVERHEAD") {
@@ -86,7 +99,7 @@ for (const estimateDetail of originalEstimateDetails) {
     if(estimateDetail.height == null)estimateDetail.height=1;
     if(estimateDetail.quantity == null)estimateDetail.quantity=1;
 
-    var estQ = estimateDetail.length*estimateDetail.width*estimateDetail.height*estimateDetail.quantity;
+    var estQ = estimateDetail.noOfunit;
     estimateDetail.estimatedQuantity = estQ;
 
     const { sorId, isDeduction, amountDetail, estimatedQuantity } = estimateDetail;
