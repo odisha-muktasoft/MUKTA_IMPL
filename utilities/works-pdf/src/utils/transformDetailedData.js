@@ -36,8 +36,13 @@ const transformDetailedData = (data) => {
     const sorIdMap = {};
 
     var count = -1;
-
+    var count1 = 100;
     for (const estimateDetail of data.estimates[lastIndex].estimateDetails) {
+
+        if(estimateDetail.category === 'NON-SOR' && estimateDetail.sorId === '45'){
+            estimateDetail.sorId = count1;
+            count1++;
+        }
 
         if(estimateDetail.category === 'NON-SOR' && estimateDetail.sorId === null){
             estimateDetail.sorId = '0';
@@ -59,7 +64,7 @@ const transformDetailedData = (data) => {
         if(estimateDetail.height == null)estimateDetail.height=1;
         if(estimateDetail.quantity == null)estimateDetail.quantity=1;
 
-        var estQ = estimateDetail.length*estimateDetail.width*estimateDetail.height*estimateDetail.quantity;
+        var estQ = estimateDetail.noOfunit;
         estimateDetail.estimatedQuantity = estQ;
 
         estimateDetail.unitRate = formatNumberWithCommas1(estimateDetail.unitRate);
