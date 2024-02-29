@@ -86,7 +86,7 @@ import 'data/repositories/remote/mdms.dart';
 import 'models/user_details/user_details_model.dart';
 
 void main() async {
-  final Isar _isar = await ISARConfig().isar;
+  
   HttpOverrides.global = MyHttpOverrides();
   setPathUrlStrategy();
   if (kIsWeb && !kDebugMode) {
@@ -105,6 +105,7 @@ void main() async {
     };
 
     WidgetsFlutterBinding.ensureInitialized();
+    final Isar _isar = await ISARConfig().isar;
     if (!kIsWeb) {
       await FlutterDownloader.initialize(
           debug: true // optional: set false to disable printing logs to console
