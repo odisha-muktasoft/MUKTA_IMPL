@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,13 +22,17 @@ import 'app_localization.dart';
 
 part 'localization.freezed.dart';
 
+
+// List<DigitRowCardModel>?
+
 typedef LocalizationEmitter = Emitter<LocalizationState>;
 List<LocalizationMessageModel>? localizationMessages;
 
 class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
+  
   final Isar isar;
   final LocalizationRepository localizationRepository;
-  LocalizationBloc(super.initialState, this.localizationRepository, this.isar) {
+  LocalizationBloc(super.initialState, this.localizationRepository, this.isar, ) {
     on<OnLoadLocalizationEvent>(_onLoadLocalization);
     on<OnSpecificLoadLocalizationEvent>(_onSpecificLoadLocalization);
   }
@@ -37,6 +42,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
     LocalizationEmitter emit,
   ) async {
     try {
+      emit(const LocalizationState.loading());
       LocalizationModel result = await localizationRepository.search(
         url: Urls.initServices.localizationSearch,
         queryParameters: {
@@ -78,6 +84,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
     LocalizationEmitter emit,
   ) async {
     try {
+     
       print(event.module);
       // LocalizationModel result = await localizationRepository.search(
       //   url: Urls.initServices.localizationSearch,
@@ -108,8 +115,8 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
       // );
       // final List codes = event.locale.split('_');
       // bool k = await _loadLocale(codes);
-      // dynamic s;
-      // emit(LocalizationState.loaded(s));
+      dynamic s;
+      emit(LocalizationState.loaded(s));
     } on DioError catch (e) {
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
     }

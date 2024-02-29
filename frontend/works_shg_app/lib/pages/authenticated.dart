@@ -13,7 +13,8 @@ import '../data/repositories/remote/localization.dart';
 
 class AuthenticatedPageWrapper extends StatefulWidget {
   final Isar isar;
-  const AuthenticatedPageWrapper({Key? key, required this.isar}) : super(key: key);
+  const AuthenticatedPageWrapper({Key? key, required this.isar})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -32,40 +33,55 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
 
   afterViewBuild() async {
     selectedLocale = await GlobalVariables.selectedLocale();
+    // ignore: use_build_context_synchronously
+    context.read<LocalizationBloc>().add(LocalizationEvent.onLoadLocalization(
+          module: 'rainmaker-attendencemgmt',
+          tenantId: GlobalVariables
+              .globalConfigObject!.globalConfigs!.stateTenantId
+              .toString(),
+          locale: selectedLocale.toString(),
+        ));
+
+    // ignore: use_build_context_synchronously
+    context
+        .read<ORGSearchBloc>()
+        .add(SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber']));
   }
 
   @override
   Widget build(BuildContext context) {
-    Client client = Client();
-    InitClient initClient = InitClient();
-    return Scaffold(
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) =>
-                MusterRollSearchBloc()..add(const SearchMusterRollEvent()),
-          )
-        ],
-        child: BlocProvider(
-          create: (context) => LocalizationBloc(
-            const LocalizationState.initial(),
-            LocalizationRepository(initClient.init()),
-            widget.isar,
-          )..add(LocalizationEvent.onLoadLocalization(
-              module: 'rainmaker-attendencemgmt',
-              tenantId: GlobalVariables
-                  .globalConfigObject!.globalConfigs!.stateTenantId
-                  .toString(),
-              locale: selectedLocale.toString(),
-            )),
-          child: BlocProvider(
-            create: (_) => ORGSearchBloc()
-              ..add(SearchORGEvent(
-                  GlobalVariables.userRequestModel!['mobileNumber'])),
-            child: const AutoRouter(),
-          ),
-        ),
-      ),
-    );
+    // Client client = Client();
+    // InitClient initClient = InitClient();
+    // return Scaffold(
+    //   body: MultiBlocProvider(
+    //     providers: [
+    //       BlocProvider(
+    //         create: (_) =>
+    //             MusterRollSearchBloc()..add(const SearchMusterRollEvent()),
+    //       )
+    //     ],
+    //     child: BlocProvider(
+    //       create: (context) => LocalizationBloc(
+    //         const LocalizationState.initial(),
+    //         LocalizationRepository(initClient.init()),
+    //         widget.isar,
+    //       )..add(LocalizationEvent.onLoadLocalization(
+    //           module: 'rainmaker-attendencemgmt',
+    //           tenantId: GlobalVariables
+    //               .globalConfigObject!.globalConfigs!.stateTenantId
+    //               .toString(),
+    //           locale: selectedLocale.toString(),
+    //         )),
+    //       child: BlocProvider(
+    //         create: (_) => ORGSearchBloc()
+    //           ..add(SearchORGEvent(
+    //               GlobalVariables.userRequestModel!['mobileNumber'])),
+    //         child: const AutoRouter(),
+    //       ),
+    //     ),
+    //   ),
+    // );
+
+    return const AutoRouter();
   }
 }

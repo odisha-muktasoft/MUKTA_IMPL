@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
+import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:universal_html/html.dart' as html;
@@ -17,6 +19,7 @@ import '../../data/repositories/remote/mdms.dart';
 import '../../models/init_mdms/global_config_model.dart';
 import '../../services/local_storage.dart';
 import '../localization/app_localization.dart';
+import '../localization/localization.dart';
 
 part 'app_initilization.freezed.dart';
 
@@ -27,8 +30,10 @@ List<DigitRowCardModel>? digitRowCardItems;
 
 class AppInitializationBloc
     extends Bloc<AppInitializationEvent, AppInitializationState> {
+  final LocalizationBloc localizationBloc;
   final MdmsRepository mdmsRepository;
-  AppInitializationBloc(super.initialState, this.mdmsRepository) {
+  AppInitializationBloc(
+      super.initialState, this.mdmsRepository, this.localizationBloc) {
     on<AppInitializationSetupEvent>(_onAppInitializeSetup);
   }
 
@@ -131,7 +136,14 @@ class AppInitializationBloc
       //           .split('_')
       //           .last),
       // ).load();
-
+      localizationBloc.add(LocalizationEvent.onLoadLocalization(
+        module:
+            'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+        tenantId: initMdmsModelData
+            .commonMastersModel!.stateInfoListModel!.first.code
+            .toString(),
+        locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
+      ));
       emit(state.copyWith(
           isInitializationCompleted: true,
           initMdmsModel: initMdmsModelData,
@@ -206,6 +218,15 @@ class AppInitializationBloc
       //           .last),
       // ).load();
 
+      localizationBloc.add(LocalizationEvent.onLoadLocalization(
+        module:
+            'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+        tenantId: initMdmsModelData
+            .commonMastersModel!.stateInfoListModel!.first.code
+            .toString(),
+        locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
+      ));
+
       emit(state.copyWith(
           isInitializationCompleted: true,
           initMdmsModel: initMdmsModelData,
@@ -243,4 +264,6 @@ class AppInitializationState with _$AppInitializationState {
       InitMdmsModel? initMdmsModel,
       StateInfoListModel? stateInfoListModel,
       List<DigitRowCardModel>? digitRowCardItems}) = _AppInitializationState;
+
+  
 }
