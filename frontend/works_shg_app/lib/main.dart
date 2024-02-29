@@ -4,6 +4,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:digit_components/theme/digit_theme.dart';
+import 'package:digit_components/widgets/molecules/digit_loader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -210,9 +211,16 @@ class _MainApplicationState extends State<MainApplication> {
           create: (context) => MeasurementInboxBloc(),
         ),
         BlocProvider(
+            create: (context) => LocalizationBloc(
+                  const LocalizationState.initial(),
+                  LocalizationRepository(initClient.init()),
+                  widget.isar,
+                )),
+        BlocProvider(
           create: (context) => AppInitializationBloc(
             const AppInitializationState(),
             MdmsRepository(initClient.init()),
+            BlocProvider.of<LocalizationBloc>(context),
           )..add(const AppInitializationSetupEvent(selectedLang: 'en_IN')),
           lazy: false,
         ),
@@ -296,43 +304,14 @@ class _MainApplicationState extends State<MainApplication> {
                 MdmsRepository(client.init()))),
       ],
       child: BlocBuilder<AppInitializationBloc, AppInitializationState>(
-          builder: (context, appInitState) {
-        return appInitState.isInitializationCompleted &&
-                appInitState.initMdmsModel != null
-            ? BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-                return BlocProvider(
-                    create: (appInitState.initMdmsModel != null &&
-                            appInitState
-                                    .stateInfoListModel?.localizationModules !=
-                                null)
-                        ? (context) => LocalizationBloc(
-                              const LocalizationState.initial(),
-                              LocalizationRepository(initClient.init()),
-                              widget.isar,
-                            )..add(LocalizationEvent.onLoadLocalization(
-                                module:
-                                    'rainmaker-common,rainmaker-common-masters,rainmaker-${appInitState.stateInfoListModel?.code}',
-                                tenantId: appInitState
-                                    .initMdmsModel!
-                                    .commonMastersModel!
-                                    .stateInfoListModel!
-                                    .first
-                                    .code
-                                    .toString(),
-                                locale: appInitState.digitRowCardItems!
-                                    .firstWhere((e) => e.isSelected)
-                                    .value,
-                              ))
-                        : (context) => LocalizationBloc(
-                              const LocalizationState.initial(),
-                              LocalizationRepository(initClient.init()),
-                              widget.isar,
-                            ),
-                    child: MaterialApp.router(
-                      title: 'MUKTA CBO App',
-                      supportedLocales: appInitState.initMdmsModel != null
-                          ? appInitState.digitRowCardItems!.map((e) {
-                              final results = e.value.split('_');
+        builder: (context, appInitState) {
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, authState) {
+              return MaterialApp.router(
+                title: 'MUKTA CBO App',
+                supportedLocales: appInitState.initMdmsModel != null
+                    ? appInitState.digitRowCardItems!.map((e) {
+                        final results = e.value.split('_');
 
                               return results.isNotEmpty
                                   ? Locale(results.first, results.last)

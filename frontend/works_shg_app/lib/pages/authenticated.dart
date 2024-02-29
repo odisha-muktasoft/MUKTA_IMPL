@@ -13,7 +13,8 @@ import '../data/repositories/remote/localization.dart';
 
 class AuthenticatedPageWrapper extends StatefulWidget {
   final Isar isar;
-  const AuthenticatedPageWrapper({Key? key, required this.isar}) : super(key: key);
+  const AuthenticatedPageWrapper({Key? key, required this.isar})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -32,6 +33,19 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
 
   afterViewBuild() async {
     selectedLocale = await GlobalVariables.selectedLocale();
+    // ignore: use_build_context_synchronously
+    context.read<LocalizationBloc>().add(LocalizationEvent.onLoadLocalization(
+          module: 'rainmaker-attendencemgmt',
+          tenantId: GlobalVariables
+              .globalConfigObject!.globalConfigs!.stateTenantId
+              .toString(),
+          locale: selectedLocale.toString(),
+        ));
+
+    // ignore: use_build_context_synchronously
+    context
+        .read<ORGSearchBloc>()
+        .add(SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber']));
   }
 
   @override
