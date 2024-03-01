@@ -835,13 +835,15 @@ public class ContractServiceValidator {
 
         contractRequest.getContract().getLineItems().forEach(lineItems -> {
             if (lineItems.getContractLineItemRef() != null) {
-                List<Double> measurementCumulativeValue = null;
+                List<Double> measurementCumulativeValue = new ArrayList<Double>();
+                List<Object> cummulativeValue=null;
 
                 try {
-                    measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCumulativeValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
+                    cummulativeValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCumulativeValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                 } catch (Exception e) {
                     throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                 }
+                convertValueToDouble(measurementCumulativeValue,cummulativeValue);
 
                 if(measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()){
                     log.info("No measurement found for the given estimate");
@@ -849,13 +851,15 @@ public class ContractServiceValidator {
                 else {
                     Double cumulativeValue = measurementCumulativeValue.get(0);
                     if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")){
-                        List<Double> measurementCurrentValue;
+                        List<Double> measurementCurrentValue=new ArrayList<Double>();
+                        List<Object> currentValue=null;
 
                         try {
-                            measurementCurrentValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCurrentValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
+                            currentValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCurrentValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                         } catch (Exception e) {
                             throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                         }
+                        convertValueToDouble(measurementCurrentValue,currentValue);
 
                         cumulativeValue = cumulativeValue - measurementCurrentValue.get(0);
                     }
@@ -880,6 +884,20 @@ public class ContractServiceValidator {
             throw new CustomException("CONTRACT_REVISION_MAX_LIMIT_REACHED",
                     "Contract cannot be revised more than max limit :: " + config.getContractRevisionMaxLimit());
         }
+    }
+
+    private void convertValueToDouble( List<Double> convertedValue,List<Object> measurementValue){
+        if(measurementValue!=null){
+            for(Object value: measurementValue ){
+                if(value instanceof  Integer) {
+                    convertedValue.add(new Double(value.toString()));
+                }else{
+                    convertedValue.add((Double) value);
+                }
+
+            }
+        }
+
     }
 
 }
