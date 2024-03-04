@@ -407,7 +407,45 @@ public class BulkUploadService {
         }
     }
 
+    //    Code for bulk update of SOR Definitions
+    private List<Map<String, Object>> updateSorDescriptions(MdmsCriteriaReqV2 mdmsSearchCriteriaReqV2, List<Map<String, Object>> fileData) {
 
+        // Create a HashMap to store sorId-description pairs
+        Map<Object, String> sorIdDescriptionMap = new HashMap<>();
+        for (Map<String, Object> details : fileData) {
+            sorIdDescriptionMap.put(details.get("sorId"), (String) details.get("description"));
+        }
+
+        List<Mdms> mdmsDataList = getMdmsV2Data(mdmsSearchCriteriaReqV2);
+
+        for (Mdms mdms : mdmsDataList) {
+            ObjectNode data = (ObjectNode) mdms.getData();
+            Object uniqueIdentifier = mdms.getUniqueIdentifier();
+
+            // Check if the sorId exists in the HashMap
+            if (sorIdDescriptionMap.containsKey(uniqueIdentifier)) {
+                String description = sorIdDescriptionMap.get(uniqueIdentifier);
+                data.put("description", description);
+                MdmsRequest mdmsRequest = MdmsRequest.builder().requestInfo(mdmsSearchCriteriaReqV2.getRequestInfo()).mdms(mdms).build();
+                MdmsResponseV2 mdmsResponseV2 = bulkUploadUtil.update(mdmsRequest);
+            }
+        }
+
+        return fileData;
+    }
+
+
+    public List<Map<String, Object>> sorBulkUpdate(MultipartFile file, String mdmsSearchCriteria) throws IOException{
+
+        //        Reading new SOR Definitions File
+        List<Map<String, Object>> fileData = readFile(file);
+
+        //        Parsing mdmsSearchCriteria to MdmsSearchCrtiteria of MDMS-V2
+        MdmsCriteriaReqV2 mdmsSearchCriteriaReqV2 = bulkUploadUtil.getMdmsV2Request(mdmsSearchCriteria);
+
+
+        return updateSorDescriptions(mdmsSearchCriteriaReqV2, fileData);
+    }
 
 
 
