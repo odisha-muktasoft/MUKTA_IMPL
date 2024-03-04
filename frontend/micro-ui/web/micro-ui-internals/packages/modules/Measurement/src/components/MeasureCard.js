@@ -96,7 +96,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         if(mode === "CREATE")
           calculatedValue = element?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
             state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
-            return sum + (validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height));
+            return sum + (row?.quantity);
           },0);
         if (initialValue(element)) {
           calculatedValue = 0;
@@ -122,9 +122,9 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
           if (!row.additionalDetails || !row.additionalDetails.measureLineItems) return [];
           const filteredMeasureLineItems = row.additionalDetails.measureLineItems.filter(ob => ob?.measurelineitemNo !== measurelineitemNo);
           // Reorder measureLineItems to ensure they are in sequence
-          const reorderedMeasureLineItems = filteredMeasureLineItems.map((item, index) => ({ ...item, measurelineitemNo: index + 1 }));
-          return reorderedMeasureLineItems;
-        })?.[0]
+          //const reorderedMeasureLineItems = filteredMeasureLineItems.map((item, index) => ({ ...item, measurelineitemNo: index + 1 }));
+          return filteredMeasureLineItems;
+        })?.[0];
         if(updatedmeasureLineItems)
         state[findIndexofMeasure]["additionalDetails"]["measureLineItems"] = updatedmeasureLineItems;
 
@@ -132,7 +132,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         const ele = state[findIndexofMeasure];
         let calculatedvalue = ele?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
           state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
-          return sum + (validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height));
+          return sum + (row?.quantity);
         },0);
 
         //let calculatedValue = validate(element.number) * validate(element.length) * validate(element.width) * validate(element.height);
