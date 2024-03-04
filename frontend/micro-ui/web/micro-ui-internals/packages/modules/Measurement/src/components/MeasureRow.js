@@ -25,7 +25,8 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         let updatedMeasureLineItems = []
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
-          updatedMeasureLineItems[measurelineitemNo][fieldKey] = newValue?.target?.value;
+          let findMeasureIndex = updatedMeasureLineItems?.findIndex((ob) => ob?.measurelineitemNo === measurelineitemNo);
+          updatedMeasureLineItems[findMeasureIndex][fieldKey] = newValue?.target?.value;
         }
         //on addition of multimeasure updating its value inside additional details
         if(InputDecimalValidation?.active){
@@ -141,10 +142,10 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
         </>
       )}
 
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={firstMeasurelineitem?.["number"] || rowState?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={firstMeasurelineitem?.["length"] || rowState?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo}/>
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={firstMeasurelineitem?.["width"] || rowState?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"height"} id={index + 1} value={firstMeasurelineitem?.["height"] || rowState?.["height"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["number"] : rowState?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["length"] : rowState?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo}/>
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["width"] : rowState?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"height"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["height"] : rowState?.["height"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
       <td><div style={{marginBottom:"21px"}}>{firstMeasurelineitem?.["quantity"] || rowState?.noOfunit}</div></td>
       {(mode == "CREATEALL" || mode == "CREATERE") && fields?.length > 1 && (
         <td>
@@ -178,7 +179,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
               <Button
                 className={"outline-btn"}
                 label={t("MB_ADD_MORE_MBS")}
-                style={{width:"95%",borderRadius:"revert"}}
+                style={{width:"100%",borderRadius:"revert", marginLeft:"0px", marginRight:"0px"}}
                 onButtonClick={() => {
                   dispatch({
                     type: "ADD_MEASURE",

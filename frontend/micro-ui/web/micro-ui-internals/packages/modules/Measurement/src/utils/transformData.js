@@ -64,7 +64,7 @@ const getMeasurementFromMeasures = (item, type) => {
       additionalDetails: {
         mbAmount: measure?.rowAmount || 0,
         type: type,
-        measureLineItems : measure?.additionalDetails?.measureLineItems?.length == 1 && measure?.additionalDetails?.measureLineItems?.[0]?.quantity <= 0? []  : measure?.additionalDetails?.measureLineItems,
+        measureLineItems : measure?.additionalDetails?.measureLineItems?.length == 1 && measure?.additionalDetails?.measureLineItems?.[0]?.quantity <= 0? []  : measure?.additionalDetails?.measureLineItems?.filter(item => item.quantity !== null && item.quantity !== 0).sort((a, b) => a.measurelineitemNo - b.measurelineitemNo).map((item, index) => ({ ...item, measurelineitemNo: index })),
       },
     };
     measurements.push(measurement);
