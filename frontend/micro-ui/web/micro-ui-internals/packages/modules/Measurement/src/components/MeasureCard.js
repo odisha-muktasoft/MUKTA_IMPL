@@ -34,12 +34,23 @@ const validate = (value) => {
     return value;
   }
 };
-const initialValue = (element) => {
-  if (element.number !== "" && element.number !== "0" && element.number !== 0) return false;
-  if (element.width !== "" && element.width !== "0" && element.width !== 0) return false;
-  if (element.length !== "" && element.length !== "0" && element.length !== 0) return false;
-  if (element.height !== "" && element.height !== "0" && element.height !== 0) return false;
-  return true;
+const initialValue = (element, li) => {
+  let valid = true;
+  if(element?.additionalDetails?.measureLineItems?.length > 0)
+  {
+      if (li?.number !== "" && li?.number !== "0" && li?.number !== 0) valid = false;
+      if (li?.width !== "" && li?.width !== "0" && li?.width !== 0) valid = false;
+      if (li?.length !== "" && li?.length !== "0" && li?.length !== 0) valid = false;
+      if (li?.height !== "" && li?.height !== "0" && li?.height !== 0) valid = false;
+    
+  }
+  else{
+    if (element.number !== "" && element.number !== "0" && element.number !== 0) valid = false;
+    if (element.width !== "" && element.width !== "0" && element.width !== 0) valid = false;
+    if (element.length !== "" && element.length !== "0" && element.length !== 0) valid = false;
+    if (element.height !== "" && element.height !== "0" && element.height !== 0) valid = false;
+  }
+  return valid;
 };
 
 {
@@ -55,28 +66,83 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
       case "ADD_ROW":
         const { state: newRow } = action;
         return [...state, newRow];
+      case "ADD_MEASURE":
+        const {
+          state: { id : idMeasure, additionalDetails : additionaldetails },
+        } = action;
+        let findIndexMeasure = state.findIndex((row, index) => {
+          return index + 1 === idMeasure;
+        });
+        state[findIndexMeasure]["additionalDetails"] = additionaldetails;
+        return [...state];
       case "UPDATE_ROW":
         setError({message:"",enable:false});
         const {
-          state: { id, value, row, type },
+          state: { id, value, row, type, additionalDetails },
         } = action;
         let findIndex = state.findIndex((row, index) => {
           return index + 1 === id;
         });
         state[findIndex][type] = value;
+        //added condition for measurement create that for multimeasure l,b,h will be 0 and num of items is equal to total of multi measure
+        if(mode === "CREATE"){
+          state[findIndex][type] = 0;
+          state[findIndex]["additionalDetails"] = additionalDetails;
+        }
 
         const element = state[findIndex];
-        let calculatedValue = validate(element.number) * validate(element.length) * validate(element.width) * validate(element.height);
+        let calculatedValue = validate(element?.number) * validate(element?.length) * validate(element?.width) * validate(element?.height);
+        //calculating current value according to multimeasure present inside additional details
+        if(mode === "CREATE")
+          calculatedValue = element?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
+            state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
+            return sum + (validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height));
+          },0);
         if (initialValue(element)) {
           calculatedValue = 0;
         }
         state[findIndex].noOfunit = calculatedValue ? calculatedValue?.toFixed(4) : 0;
+        if(mode === "CREATE") state[findIndex]["numItems"] = calculatedValue;
         state[findIndex].rowAmount = unitRate * calculatedValue || 0;
         return [...state];
       case "REMOVE_ROW":
         const { id: rowIdToRemove } = action;
         const updatedTableState = state.filter((row, index) => index + 1 !== rowIdToRemove);
         return [...updatedTableState];
+      case "REMOVE_MEASURE_ROW":
+        const { id: measureId, measurelineitemNo } = action;
+        let findIndexofMeasure = state.findIndex((row, index) => {
+          return index + 1 === measureId;
+        });
+
+        //removing the multi measure which is deleted and updating the multimeasurelineitems no in sequence order
+        let updatedmeasureLineItems = state
+        .filter((row, index) => index + 1 === measureId)
+        ?.map(row => {
+          if (!row.additionalDetails || !row.additionalDetails.measureLineItems) return [];
+          const filteredMeasureLineItems = row.additionalDetails.measureLineItems.filter(ob => ob?.measurelineitemNo !== measurelineitemNo);
+          // Reorder measureLineItems to ensure they are in sequence
+          const reorderedMeasureLineItems = filteredMeasureLineItems.map((item, index) => ({ ...item, measurelineitemNo: index + 1 }));
+          return reorderedMeasureLineItems;
+        })?.[0]
+        if(updatedmeasureLineItems)
+        state[findIndexofMeasure]["additionalDetails"]["measureLineItems"] = updatedmeasureLineItems;
+
+        //calculating the new total value and setting to the noofunits
+        const ele = state[findIndexofMeasure];
+        let calculatedvalue = ele?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
+          state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
+          return sum + (validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height));
+        },0);
+
+        //let calculatedValue = validate(element.number) * validate(element.length) * validate(element.width) * validate(element.height);
+        if (initialValue(ele)) {
+          calculatedvalue = 0;
+        }
+        state[findIndexofMeasure].noOfunit = calculatedvalue ? calculatedvalue?.toFixed(4) : 0;
+        state[findIndexofMeasure].rowAmount = unitRate * calculatedvalue || 0;
+
+        return [...state];
       case "CLEAR_STATE":
         setError({message:"",enable:false});
         const clearedTableState = state.map((item) => ({
