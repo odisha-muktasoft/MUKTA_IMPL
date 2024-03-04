@@ -127,31 +127,44 @@ class _SideBar extends State<SideBar> {
                           state.isInitializationCompleted
                       ? DigitRowCard(
                           onChanged: (data) async {
-                            context.read<AppInitializationBloc>().add(
-                                AppInitializationSetupEvent(
-                                    selectedLang: data.value));
-                            context.read<LocalizationBloc>().add(
-                                OnLoadLocalizationEvent(
-                                    module: widget.module,
-                                    tenantId: GlobalVariables
-                                        .globalConfigObject!
-                                        .globalConfigs!
-                                        .stateTenantId
-                                        .toString(),
-                                    locale: data.value));
-                            context.read<AppInitializationBloc>().add(
-                                AppInitializationSetupEvent(
-                                    selectedLang: data.value));
-                                    //TODO: test
+                            // context.read<AppInitializationBloc>().add(
+                            //     AppInitializationSetupEvent(
+                            //         selectedLang: data.value));
+                            // context.read<LocalizationBloc>().add(
+                            //     OnLoadLocalizationEvent(
+                            //         module: widget.module,
+                            //         tenantId: GlobalVariables
+                            //             .globalConfigObject!
+                            //             .globalConfigs!
+                            //             .stateTenantId
+                            //             .toString(),
+                            //         locale: data.value));
+                            // context.read<AppInitializationBloc>().add(
+                            //     AppInitializationSetupEvent(
+                            //         selectedLang: data.value));
+                            //         //TODO: test
                             // await AppLocalizations(
                             //   Locale(data.value.split('_').first,
                             //       data.value.split('_').last),
                             // ).load();
+
+                            context.read<LocalizationBloc>().add(
+                                  LanguageChangeEvent(
+                                    selectedLang: data.value,
+                                    tenantId: state
+                                        .initMdmsModel!
+                                        .commonMastersModel!
+                                        .stateInfoListModel!
+                                        .first
+                                        .code
+                                        .toString(),
+                                  ),
+                                );
                           },
                           rowItems: state.digitRowCardItems
-                                  ?.map((e) =>
-                                      DigitRowCardModel.fromJson(e.toJson()))
-                                  .toList() as List<DigitRowCardModel>,
+                              ?.map(
+                                  (e) => DigitRowCardModel.fromJson(e.toJson()))
+                              .toList() as List<DigitRowCardModel>,
                           width: 80)
                       : const Text('');
                 },

@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:isar/isar.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:works_shg_app/blocs/app_initilization/home_screen_bloc.dart';
 import 'package:works_shg_app/blocs/attendance/attendance_user_search.dart';
@@ -28,6 +30,7 @@ import 'package:works_shg_app/blocs/work_orders/decline_work_order.dart';
 import 'package:works_shg_app/data/init_client.dart';
 import 'package:works_shg_app/data/repositories/attendance_mdms.dart';
 import 'package:works_shg_app/data/repositories/common_repository/common_repository.dart';
+import 'package:works_shg_app/data/schema/localization.dart';
 import 'package:works_shg_app/router/app_navigator_observer.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
@@ -81,6 +84,7 @@ import 'data/repositories/remote/mdms.dart';
 import 'models/user_details/user_details_model.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   setPathUrlStrategy();
   if (kIsWeb && !kDebugMode) {
@@ -98,8 +102,18 @@ void main() async {
       // exit(1); /// to close the app smoothly
     };
 
-    WidgetsFlutterBinding.ensureInitialized();
-    final Isar _isar = await ISARConfig().isar;
+    //final Isar _isar = await ISARConfig().isar;
+
+    //Directory directory = await getApplicationDocumentsDirectory();
+
+    await Hive.initFlutter();
+
+    Hive.registerAdapter(EnglishLocalizationAdapter());
+    Hive.registerAdapter(OdiaLocalizationAdapter());
+    await Hive.openBox<EnglishLocalization>("englishLocalization");
+    await Hive.openBox<OdiaLocalization>("odiaLocalization");
+    //EnglishLocalizationAdapter
+
     if (!kIsWeb) {
       await FlutterDownloader.initialize(
           debug: true // optional: set false to disable printing logs to console
@@ -109,7 +123,7 @@ void main() async {
     await CommonMethods.fetchPackageInfo();
     runApp(MainApplication(
       appRouter: AppRouter(),
-      isar: _isar,
+      // isar: _isar,
     ));
   }, (Object error, StackTrace stack) {
     if (kDebugMode) {
@@ -120,9 +134,11 @@ void main() async {
 }
 
 class MainApplication extends StatefulWidget {
-  final Isar isar;
-  const MainApplication(
-      {super.key, required AppRouter appRouter, required this.isar});
+  //final Isar isar;
+  const MainApplication({
+    super.key,
+    required AppRouter appRouter,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -191,7 +207,6 @@ class _MainApplicationState extends State<MainApplication> {
             create: (context) => LocalizationBloc(
                   const LocalizationState.initial(),
                   LocalizationRepository(initClient.init()),
-                  widget.isar,
                 )),
         BlocProvider(
           create: (context) => AppInitializationBloc(
@@ -297,7 +312,7 @@ class _MainApplicationState extends State<MainApplication> {
                     : [const Locale('en', 'IN')],
                 locale: const Locale('en', 'IN'),
                 localizationsDelegates: [
-                  AppLocalizations.getDelegate(widget.isar),
+                  AppLocalizations.getDelegate(),
                   GlobalWidgetsLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -321,13 +336,11 @@ class _MainApplicationState extends State<MainApplication> {
                   navigatorObservers: () => [AppRouterObserver()],
                   routes: (handler) => [
                     authState.maybeWhen(
-                        initial: () =>
-                            UnauthenticatedRouteWrapper(isar: widget.isar),
+                        initial: () => const UnauthenticatedRouteWrapper(),
                         loaded: (UserDetailsModel? userDetailsModel,
                                 String? accessToken) =>
-                            AuthenticatedRouteWrapper(isar: widget.isar),
-                        orElse: () =>
-                            UnauthenticatedRouteWrapper(isar: widget.isar))
+                           const AuthenticatedRouteWrapper(),
+                        orElse: () => const UnauthenticatedRouteWrapper())
                   ],
                 ),
               );

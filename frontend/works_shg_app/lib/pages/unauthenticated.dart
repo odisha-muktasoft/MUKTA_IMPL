@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isar/isar.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/models/app_config/app_config_model.dart';
 
 import '../models/localization/localization_model.dart';
 import '../widgets/loaders.dart';
 
 class UnauthenticatedPageWrapper extends StatelessWidget {
-  final Isar isar;
-  const UnauthenticatedPageWrapper({Key? key, required this.isar})
+  
+  const UnauthenticatedPageWrapper({Key? key,})
       : super(key: key);
 
   @override
@@ -89,7 +90,7 @@ class UnauthenticatedPageWrapper extends StatelessWidget {
       return localeState.maybeWhen(
           orElse: () => Loaders.circularLoader(context),
           loading: () => Loaders.circularLoader(context),
-          loaded: (List<LocalizationMessageModel>? localization) {
+          loaded: (List<LocalizationMessageModel>? localization,languages,moduleList) {
             return const AutoRouter();
           },
           error: (String? error) {
