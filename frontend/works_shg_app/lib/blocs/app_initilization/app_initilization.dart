@@ -143,6 +143,8 @@ class AppInitializationBloc
             .commonMastersModel!.stateInfoListModel!.first.code
             .toString(),
         locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
+        languages: ss.languages,
+        localizationModules: ss.localizationModules,
       ));
       emit(state.copyWith(
           isInitializationCompleted: true,
@@ -225,6 +227,8 @@ class AppInitializationBloc
             .commonMastersModel!.stateInfoListModel!.first.code
             .toString(),
         locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
+        languages: ss.languages,
+        localizationModules: ss.localizationModules,
       ));
 
       emit(state.copyWith(

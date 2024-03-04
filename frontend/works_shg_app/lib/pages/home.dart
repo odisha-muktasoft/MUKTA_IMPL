@@ -259,15 +259,15 @@ class _HomePage extends State<HomePage> {
   Future<void> localeLoad() async {
     var currentLocale = await GlobalVariables.selectedLocale();
     context.read<LocalizationBloc>().add(
-          LocalizationEvent.onLoadLocalization(
+          LocalizationEvent.onSpecificLoadLocalization(
               module: CommonMethods.getLocaleModules(),
               tenantId: GlobalVariables
                   .globalConfigObject!.globalConfigs!.stateTenantId
                   .toString(),
               locale: currentLocale.toString()),
         );
-    context.read<AppInitializationBloc>().add(
-        AppInitializationSetupEvent(selectedLang: currentLocale.toString()));
+    // context.read<AppInitializationBloc>().add(
+    //     AppInitializationSetupEvent(selectedLang: currentLocale.toString()));
         //TODO: test
     // await AppLocalizations(
     //   Locale(currentLocale.toString().split('_').first,
