@@ -208,7 +208,7 @@ const CreateMeasurement = ({ props }) => {
   };
   //remove Toast after 3s
   useEffect(() => {
-    if (showToast) {
+    if (showToast && showToast?.display === true) {
       setTimeout(() => {
         closeToast();
       }, 3000);
