@@ -112,10 +112,12 @@ public class MeasurementServiceUtil {
         return response;
     }
 
-    public void validateDimensions(Measure measure) {
-        if (measure.getLength().compareTo(BigDecimal.ZERO) == 0 && measure.getHeight().compareTo(BigDecimal.ZERO) == 0 &&
-                measure.getBreadth().compareTo(BigDecimal.ZERO) == 0 && measure.getNumItems().compareTo(BigDecimal.ZERO) == 0)
-            return;
+    public void validateDimensions(Measure measure, Boolean isUpdate) {
+        if(!isUpdate){
+            if (measure.getLength().compareTo(BigDecimal.ZERO) == 0 && measure.getHeight().compareTo(BigDecimal.ZERO) == 0 &&
+                    measure.getBreadth().compareTo(BigDecimal.ZERO) == 0 && measure.getNumItems().compareTo(BigDecimal.ZERO) == 0)
+                return;
+        }
         if (measure.getLength() == null || measure.getLength().compareTo(BigDecimal.ZERO) == 0) {
             measure.setLength(BigDecimal.ONE);
         }

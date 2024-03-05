@@ -305,7 +305,7 @@ public class ContractUtil {
             } else {
                 prevCumulativeValue = BigDecimal.ZERO;
             }
-            measurementServiceUtil.validateDimensions(measure);
+            measurementServiceUtil.validateDimensions(measure,isUpdate);
             BigDecimal currValue = measure.getBreadth().multiply(measure.getHeight()).multiply(measure.getLength()).multiply(measure.getNumItems());
 
             totalValue = totalValue!=null ?totalValue.add(currValue.add(prevCumulativeValue)): new BigDecimal(0);
