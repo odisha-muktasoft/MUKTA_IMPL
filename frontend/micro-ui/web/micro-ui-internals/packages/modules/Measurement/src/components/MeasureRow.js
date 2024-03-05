@@ -26,7 +26,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
           let findMeasureIndex = updatedMeasureLineItems?.findIndex((ob) => ob?.measurelineitemNo === measurelineitemNo);
-          updatedMeasureLineItems[findMeasureIndex][fieldKey] = newValue?.target?.value;
+          updatedMeasureLineItems[findMeasureIndex][fieldKey] = newValue?.target?.value === "" ? 0 : newValue?.target?.value;
         }
         //on addition of multimeasure updating its value inside additional details
         if(InputDecimalValidation?.active){
