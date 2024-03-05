@@ -1,4 +1,3 @@
-
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
@@ -61,92 +60,90 @@ class WorkDetailsCard extends StatelessWidget {
       this.musterBackToCBOCode,
       super.key});
 
-
-      int getConditionValue() {
-  if (isManageAttendance || isTrackAttendance) {
-    return 1;
-  } else if (isWorkOrderInbox || viewWorkOrder) {
-    return 2;
-  } else if (isSHGInbox) {
-    return 3;
-  } else {
-    return 0;
+  int getConditionValue() {
+    if (isManageAttendance || isTrackAttendance) {
+      return 1;
+    } else if (isWorkOrderInbox || viewWorkOrder) {
+      return 2;
+    } else if (isSHGInbox) {
+      return 3;
+    } else {
+      return 0;
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
     int conditionValue = getConditionValue();
-    
+
     switch (conditionValue) {
-  case 1:
-    return Column(
-      children: detailsList.mapIndexed((index, e) {
-        return GestureDetector(
-          child: DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: getCardDetails(
-              context,
-              e,
-              attendanceRegisterId: attendanceRegistersModel![index].id,
-              attendanceRegister: attendanceRegistersModel![index],
-            ),
-          ),
+      case 1:
+        return Column(
+          children: detailsList.mapIndexed((index, e) {
+            return GestureDetector(
+              child: DigitCard(
+                padding: const EdgeInsets.all(8.0),
+                child: getCardDetails(
+                  context,
+                  e,
+                  attendanceRegisterId: attendanceRegistersModel![index].id,
+                  attendanceRegister: attendanceRegistersModel![index],
+                ),
+              ),
+            );
+          }).toList(),
         );
-      }).toList(),
-    );
-    break;
+        break;
 
-  case 2:
-    return Column(
-      children: detailsList.mapIndexed((index, e) {
-        return GestureDetector(
-          child: DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: getCardDetails(
-              context,
-              e['cardDetails'],
-              payload: e['payload'],
-              isAccept: acceptWorkOrderCode != null &&
-                  e['cardDetails'][Constants.activeInboxStatus] == 'true'
-                  ? false
-                  : true,
-              contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
-            ),
-          ),
+      case 2:
+        return Column(
+          children: detailsList.mapIndexed((index, e) {
+            return GestureDetector(
+              child: DigitCard(
+                padding: const EdgeInsets.all(8.0),
+                child: getCardDetails(
+                  context,
+                  e['cardDetails'],
+                  payload: e['payload'],
+                  isAccept: acceptWorkOrderCode != null &&
+                          e['cardDetails'][Constants.activeInboxStatus] ==
+                              'true'
+                      ? false
+                      : true,
+                  contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
+                ),
+              ),
+            );
+          }).toList(),
         );
-      }).toList(),
-    );
-    break;
+        break;
 
-  case 3:
-    return Column(
-      children: detailsList.mapIndexed((index, e) {
-        return GestureDetector(
-          child: DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: getCardDetails(context, e,
-                musterRoll: musterRollsModel![index]),
-          ),
+      case 3:
+        return Column(
+          children: detailsList.mapIndexed((index, e) {
+            return GestureDetector(
+              child: DigitCard(
+                padding: const EdgeInsets.all(8.0),
+                child: getCardDetails(context, e,
+                    musterRoll: musterRollsModel![index]),
+              ),
+            );
+          }).toList(),
         );
-      }).toList(),
-    );
-    break;
+        break;
 
-  default:
-    return Column(
-      children: detailsList.mapIndexed((index, e) {
-        return GestureDetector(
-          child: DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: getCardDetails(context, e),
-          ),
+      default:
+        return Column(
+          children: detailsList.mapIndexed((index, e) {
+            return GestureDetector(
+              child: DigitCard(
+                padding: const EdgeInsets.all(8.0),
+                child: getCardDetails(context, e),
+              ),
+            );
+          }).toList(),
         );
-      }).toList(),
-    );
-}
-
-   
+    }
   }
 
   Widget getCardDetails(BuildContext context, Map<String, dynamic> cardDetails,
@@ -214,8 +211,12 @@ class WorkDetailsCard extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: ButtonLink(
               AppLocalizations.of(context).translate(i18.common.viewDetails),
-              () => context.router.push(ViewWorkDetailsRoute(
-                  contractNumber: contractNumber.toString())),
+              () => context.router.push(
+                ViewWorkDetailsRoute(
+                  contractNumber: contractNumber.toString(),
+                  wfStatus: payload!['wfStatus'].toString(),
+                ),
+              ),
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -277,8 +278,11 @@ class WorkDetailsCard extends StatelessWidget {
             padding: const EdgeInsets.all(2.0),
             child: ButtonLink(
               AppLocalizations.of(context).translate(i18.common.viewDetails),
-              () => context.router.push(ViewWorkDetailsRoute(
-                  contractNumber: contractNumber.toString())),
+              () => context.router.push(
+                ViewWorkDetailsRoute(
+                    contractNumber: contractNumber.toString(),
+                    wfStatus: payload!['wfStatus'].toString()),
+              ),
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
