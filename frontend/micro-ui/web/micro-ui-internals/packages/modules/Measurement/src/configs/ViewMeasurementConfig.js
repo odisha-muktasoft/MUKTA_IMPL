@@ -46,7 +46,7 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
               },
               {
                 key: "MB_PROJECT_DATE",
-                value: Digit.DateUtils.ConvertEpochToDate(contract?.issueDate),
+                value: contract?.issueDate ? Digit.DateUtils.ConvertEpochToDate(contract?.issueDate) : Digit.DateUtils.ConvertEpochToDate(estimateDetails?.proposalDate),
               },
               {
                 key: "MB_PROJECT_NAME",
