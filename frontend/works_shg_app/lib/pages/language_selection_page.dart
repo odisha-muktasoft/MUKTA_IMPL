@@ -84,35 +84,40 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                             state.isInitializationCompleted
                         ? BlocBuilder<LocalizationBloc, LocalizationState>(
                             builder: (context, statek) {
-                              return DigitLanguageCard(
-                                appLogo: const AppLogo(),
-                                digitRowCardItems: state.digitRowCardItems
-                                    ?.map((e) =>
-                                        DigitRowCardModel.fromJson(e.toJson()))
-                                    .toList() as List<DigitRowCardModel>,
-                                onLanguageSubmit: () async {
-                                  context.router.push(const LoginRoute());
-                                },
-                                onLanguageChange: (data) async {
-                                  // context.read<AppInitializationBloc>().add(
-                                  //     AppInitializationSetupEvent(
-                                  //         selectedLang: data.value));
+                              return statek.maybeMap(
+                                orElse: () => const SizedBox.shrink(),
+                                loaded: (value) {
+                                  return DigitLanguageCard(
+                                    appLogo: const AppLogo(),
+                                    digitRowCardItems: value.languages
+                                        ?.map((e) => DigitRowCardModel.fromJson(
+                                            e.toJson()))
+                                        .toList() as List<DigitRowCardModel>,
+                                    onLanguageSubmit: () async {
+                                      context.router.push(const LoginRoute());
+                                    },
+                                    onLanguageChange: (data) async {
+                                      // context.read<AppInitializationBloc>().add(
+                                      //     AppInitializationSetupEvent(
+                                      //         selectedLang: data.value));
 
-                                  context.read<LocalizationBloc>().add(
-                                      OnSpecificLoadLocalizationEvent(
-                                          module:
-                                              'rainmaker-common,rainmaker-common-masters,rainmaker-${GlobalVariables.stateInfoListModel?.code}',
-                                          tenantId: state
-                                              .stateInfoListModel!.code
-                                              .toString(),
-                                          locale: data.value));
-                                  // context.read<AppInitializationBloc>().add(
-                                  //     AppInitializationSetupEvent(
-                                  //         selectedLang: data.value));
+                                      context.read<LocalizationBloc>().add(
+                                          OnSpecificLoadLocalizationEvent(
+                                              module:
+                                                  'rainmaker-common,rainmaker-common-masters,rainmaker-${GlobalVariables.stateInfoListModel?.code}',
+                                              tenantId: state
+                                                  .stateInfoListModel!.code
+                                                  .toString(),
+                                              locale: data.value,),);
+                                      // context.read<AppInitializationBloc>().add(
+                                      //     AppInitializationSetupEvent(
+                                      //         selectedLang: data.value));
+                                    },
+                                    languageSubmitLabel:
+                                        AppLocalizations.of(context).translate(
+                                            i18.common.continueLabel),
+                                  );
                                 },
-                                languageSubmitLabel:
-                                    AppLocalizations.of(context)
-                                        .translate(i18.common.continueLabel),
                               );
                             },
                           )

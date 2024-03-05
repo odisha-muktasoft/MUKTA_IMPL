@@ -1,3 +1,5 @@
+
+import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +11,6 @@ import 'package:works_shg_app/widgets/ButtonLink.dart';
 import 'package:works_shg_app/widgets/atoms/button_group.dart';
 
 import '../blocs/localization/app_localization.dart';
-import '../blocs/localization/localization.dart';
 import '../blocs/time_extension_request/valid_time_extension.dart';
 import '../blocs/work_orders/accept_work_order.dart';
 import '../blocs/work_orders/decline_work_order.dart';
@@ -60,60 +61,92 @@ class WorkDetailsCard extends StatelessWidget {
       this.musterBackToCBOCode,
       super.key});
 
+
+      int getConditionValue() {
+  if (isManageAttendance || isTrackAttendance) {
+    return 1;
+  } else if (isWorkOrderInbox || viewWorkOrder) {
+    return 2;
+  } else if (isSHGInbox) {
+    return 3;
+  } else {
+    return 0;
+  }
+}
+
   @override
   Widget build(BuildContext context) {
-    var list = <Widget>[];
-    if (isManageAttendance || isTrackAttendance) {
-      for (int i = 0; i < detailsList.length; i++) {
-        list.add(GestureDetector(
+    int conditionValue = getConditionValue();
+    
+    switch (conditionValue) {
+  case 1:
+    return Column(
+      children: detailsList.mapIndexed((index, e) {
+        return GestureDetector(
           child: DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(context, detailsList[i],
-                  attendanceRegisterId: attendanceRegistersModel![i].id,
-                  attendanceRegister: attendanceRegistersModel![i])),
-        ));
-      }
-    } else if (isWorkOrderInbox || viewWorkOrder) {
-      for (int i = 0; i < detailsList.length; i++) {
-        list.add(GestureDetector(
+            padding: const EdgeInsets.all(8.0),
+            child: getCardDetails(
+              context,
+              e,
+              attendanceRegisterId: attendanceRegistersModel![index].id,
+              attendanceRegister: attendanceRegistersModel![index],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+    break;
+
+  case 2:
+    return Column(
+      children: detailsList.mapIndexed((index, e) {
+        return GestureDetector(
           child: DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(context, detailsList[i]['cardDetails'],
-                  payload: detailsList[i]['payload'],
-                  isAccept: acceptWorkOrderCode != null &&
-                          detailsList[i]['cardDetails']
-                                  [Constants.activeInboxStatus] ==
-                              'true'
-                      ? false
-                      : true,
-                  contractNumber: detailsList[i]['cardDetails']
-                      [i18.workOrder.workOrderNo])),
-        ));
-      }
-    } else if (isSHGInbox) {
-      for (int i = 0; i < detailsList.length; i++) {
-        list.add(GestureDetector(
+            padding: const EdgeInsets.all(8.0),
+            child: getCardDetails(
+              context,
+              e['cardDetails'],
+              payload: e['payload'],
+              isAccept: acceptWorkOrderCode != null &&
+                  e['cardDetails'][Constants.activeInboxStatus] == 'true'
+                  ? false
+                  : true,
+              contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
+            ),
+          ),
+        );
+      }).toList(),
+    );
+    break;
+
+  case 3:
+    return Column(
+      children: detailsList.mapIndexed((index, e) {
+        return GestureDetector(
           child: DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(context, detailsList[i],
-                  musterRoll: musterRollsModel![i])),
-        ));
-      }
-    } else {
-      for (int i = 0; i < detailsList.length; i++) {
-        list.add(GestureDetector(
+            padding: const EdgeInsets.all(8.0),
+            child: getCardDetails(context, e,
+                musterRoll: musterRollsModel![index]),
+          ),
+        );
+      }).toList(),
+    );
+    break;
+
+  default:
+    return Column(
+      children: detailsList.mapIndexed((index, e) {
+        return GestureDetector(
           child: DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(context, detailsList[i])),
-        ));
-      }
-    }
-    return BlocBuilder<LocalizationBloc, LocalizationState>(
-        builder: (context, localState) {
-      return Column(
-        children: list,
-      );
-    });
+            padding: const EdgeInsets.all(8.0),
+            child: getCardDetails(context, e),
+          ),
+        );
+      }).toList(),
+    );
+}
+
+   
   }
 
   Widget getCardDetails(BuildContext context, Map<String, dynamic> cardDetails,
@@ -182,7 +215,7 @@ class WorkDetailsCard extends StatelessWidget {
             child: ButtonLink(
               AppLocalizations.of(context).translate(i18.common.viewDetails),
               () => context.router.push(ViewWorkDetailsRoute(
-                  contractNumber: contractNumber.toString(), wfStatus: payload!['wfStatus'].toString())),
+                  contractNumber: contractNumber.toString())),
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -245,7 +278,7 @@ class WorkDetailsCard extends StatelessWidget {
             child: ButtonLink(
               AppLocalizations.of(context).translate(i18.common.viewDetails),
               () => context.router.push(ViewWorkDetailsRoute(
-                  contractNumber: contractNumber.toString(), wfStatus: payload!['wfStatus'].toString())),
+                  contractNumber: contractNumber.toString())),
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -373,28 +406,30 @@ class WorkDetailsCard extends StatelessWidget {
         ),
       ));
     } else if (isSHGInbox) {
-      labelList.add(Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: DigitElevatedButton(
-          onPressed: () {
-            context.router.push(SHGInboxRoute(
-                tenantId: musterRoll.tenantId.toString(),
-                musterRollNo: musterRoll.musterRollNumber.toString(),
-                sentBackCode: musterBackToCBOCode ?? Constants.sentBack));
-          },
-          child: Center(
-            child: Text(
-                musterRoll!.musterRollStatus == musterBackToCBOCode
-                    ? AppLocalizations.of(context)
-                        .translate(i18.attendanceMgmt.editMusterRoll)
-                    : elevatedButtonLabel,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .apply(color: Colors.white)),
+      labelList.add(
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: DigitElevatedButton(
+            onPressed: () {
+              context.router.push(SHGInboxRoute(
+                  tenantId: musterRoll.tenantId.toString(),
+                  musterRollNo: musterRoll.musterRollNumber.toString(),
+                  sentBackCode: musterBackToCBOCode ?? Constants.sentBack));
+            },
+            child: Center(
+              child: Text(
+                  musterRoll!.musterRollStatus == musterBackToCBOCode
+                      ? AppLocalizations.of(context)
+                          .translate(i18.attendanceMgmt.editMusterRoll)
+                      : elevatedButtonLabel,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .apply(color: Colors.white)),
+            ),
           ),
         ),
-      ));
+      );
     }
     if (showButtonLink! && linkLabel!.isNotEmpty) {
       labelList.add(Padding(

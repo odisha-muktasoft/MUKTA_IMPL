@@ -4,16 +4,13 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:digit_components/theme/digit_theme.dart';
-import 'package:digit_components/widgets/molecules/digit_loader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:isar/isar.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:works_shg_app/blocs/app_initilization/home_screen_bloc.dart';
 import 'package:works_shg_app/blocs/attendance/attendance_user_search.dart';
@@ -36,7 +33,6 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
-import 'package:works_shg_app/utils/isar_config.dart';
 
 import 'Env/app_config.dart';
 import 'Env/env_config.dart';
@@ -102,17 +98,17 @@ void main() async {
       // exit(1); /// to close the app smoothly
     };
 
-    //final Isar _isar = await ISARConfig().isar;
-
-    //Directory directory = await getApplicationDocumentsDirectory();
-
+    
     await Hive.initFlutter();
 
     Hive.registerAdapter(EnglishLocalizationAdapter());
     Hive.registerAdapter(OdiaLocalizationAdapter());
     await Hive.openBox<EnglishLocalization>("englishLocalization");
     await Hive.openBox<OdiaLocalization>("odiaLocalization");
+    await Hive.box<EnglishLocalization>('englishLocalization').clear();
+    await Hive.box<OdiaLocalization>('odiaLocalization').clear();
     //EnglishLocalizationAdapter
+    //OdiaLocalizationAdapter
 
     if (!kIsWeb) {
       await FlutterDownloader.initialize(
@@ -339,7 +335,7 @@ class _MainApplicationState extends State<MainApplication> {
                         initial: () => const UnauthenticatedRouteWrapper(),
                         loaded: (UserDetailsModel? userDetailsModel,
                                 String? accessToken) =>
-                           const AuthenticatedRouteWrapper(),
+                            const AuthenticatedRouteWrapper(),
                         orElse: () => const UnauthenticatedRouteWrapper())
                   ],
                 ),

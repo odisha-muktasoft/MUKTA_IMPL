@@ -1,26 +1,18 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:ui';
 
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:isar/isar.dart';
-import 'package:universal_html/html.dart' as html;
-import 'package:works_shg_app/data/local/isar_logic.dart';
 import 'package:works_shg_app/models/localization/module_status.dart';
 import 'package:works_shg_app/services/urls.dart';
 
 import '../../data/repositories/remote/localization.dart';
 import '../../data/schema/localization.dart';
 import '../../models/app_config/app_config_model.dart';
-import '../../models/localization/localization_label.dart';
 import '../../models/localization/localization_model.dart';
-import '../../services/local_storage.dart';
-import '../../utils/global_variables.dart';
 import 'app_localization.dart';
 
 part 'localization.freezed.dart';
@@ -39,7 +31,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
     on<OnLoadLocalizationEvent>(_onLoadLocalization);
     on<OnSpecificLoadLocalizationEvent>(_onSpecificLoadLocalization);
 
-    on<LanguageChangeEvent>(_onLanguageChange);
+   
   }
 
   FutureOr<void> _onLoadLocalization(
@@ -87,16 +79,6 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             .toList();
         await box.addAll(newLocalizationList);
 
-        // final localizationWrapper = LocalizationWrapper()
-        //   ..locale = event.locale
-        //   ..localization = newLocalizationList;
-
-        // final check = await IsarLogic(isar).loadLocalizationToIsar(
-        //   locale: "locale",
-        //   module: "module",
-        //   tenantId: "tenantId",
-        //   localizationWrapper: localizationWrapper,
-        // );
         final List codes = event.locale.split('_');
         bool k = await _loadLocale(codes, event.locale);
         dynamic s;
@@ -121,6 +103,17 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         orElse: () => null,
         loaded: (value) async {
           emit(const LocalizationState.loading());
+          final List<Languages> sd = List.from(value.languages!).map((e) {
+            if (e.value == event.locale) {
+              final data =
+                  Languages(label: e.label, value: e.value, isSelected: true);
+              return data;
+            } else {
+              final data =
+                  Languages(label: e.label, value: e.value, isSelected: false);
+              return data;
+            }
+          }).toList();
 
           final List<String> selectedModule = event.module!.split(',');
           List<ModuleStatus> ss = List.from(value.moduleStatus!);
@@ -146,7 +139,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
               }
             }
           } else {
-            for (final itemB in selectedModule) {
+            for (final itemB in loopingData) {
               final itemAIndex =
                   ss!.indexWhere((element) => element.value == itemB);
               if (itemAIndex != -1) {
@@ -169,8 +162,6 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
 
           final box = Hive.box<EnglishLocalization>('englishLocalization');
           var odiaBox = Hive.box<OdiaLocalization>('odiaLocalization');
-          // final List<EnglishLocalization> localizationList =
-          //     box.values.toList();
 
           if (selectedModule.isNotEmpty) {
             LocalizationModel result = await localizationRepository.search(
@@ -206,12 +197,12 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             final List codes = event.locale.split('_');
             bool k = await _loadLocale(codes, event.locale);
 
-            emit(value.copyWith(moduleStatus: ss));
+            emit(value.copyWith(moduleStatus: ss, languages: sd));
           } else {
             final List codes = event.locale.split('_');
             bool k = await _loadLocale(codes, event.locale!);
 
-            emit(value.copyWith(moduleStatus: ss));
+            emit(value.copyWith(moduleStatus: ss, languages: sd));
           }
         },
       );
@@ -220,73 +211,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
     }
   }
 
-  FutureOr<void> _onLanguageChange(
-    LanguageChangeEvent event,
-    LocalizationEmitter emit,
-  ) async {
-    try {
-      print(event.selectedLang);
-
-      LocalizationModel result = await localizationRepository.search(
-        url: Urls.initServices.localizationSearch,
-        queryParameters: {
-          "module": 'rainmaker-common,rainmaker-common-masters,rainmaker-od'
-              .toString(),
-          "locale": event.selectedLang,
-          "tenantId": event.tenantId,
-        },
-      );
-
-      var box = Hive.box<OdiaLocalization>('odiaLocalization');
-      final List<OdiaLocalization> newLocalizationList = result.messages
-          .map((e) => OdiaLocalization()
-            ..message = e.message
-            ..code = e.code
-            ..locale = e.locale
-            ..module = e.module)
-          .toList();
-      await box.addAll(newLocalizationList);
-
-      // LocalizationModel result = await localizationRepository.search(
-      //   url: Urls.initServices.localizationSearch,
-      //   queryParameters: {
-      //     "module": event.module.toString(),
-      //     "locale": event.locale,
-      //     "tenantId": event.tenantId,
-      //   },
-      // );
-
-      // final List<Localization> newLocalizationList = result.messages
-      //     .map((e) => Localization()
-      //       ..message = e.message
-      //       ..code = e.code
-      //       ..locale = e.locale
-      //       ..module = e.module)
-      //     .toList();
-
-      // final localizationWrapper = LocalizationWrapper()
-      //   ..locale = event.locale
-      //   ..localization = newLocalizationList;
-
-      // final check = await IsarLogic(isar).loadLocalizationToIsar(
-      //   locale: "locale",
-      //   module: "module",
-      //   tenantId: "tenantId",
-      //   localizationWrapper: localizationWrapper,
-      // );
-      // final List codes = event.locale.split('_');
-      // bool k = await _loadLocale(codes);
-
-      state.maybeMap(
-        orElse: () => null,
-        loaded: (value) {
-          emit(value.copyWith(languages: value.languages));
-        },
-      );
-    } on DioError catch (e) {
-      LocalizationState.error(e.response?.data['Errors'][0]['code']);
-    }
-  }
+  
 
   FutureOr<bool> _loadLocale(List codes, String locale) async {
     return await AppLocalizations(Locale(codes.first, codes.last))
@@ -310,10 +235,7 @@ class LocalizationEvent with _$LocalizationEvent {
     required String locale,
   }) = OnSpecificLoadLocalizationEvent;
 
-  const factory LocalizationEvent.languageChange({
-    required String selectedLang,
-    required String tenantId,
-  }) = LanguageChangeEvent;
+  
 }
 
 @freezed

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:isar/isar.dart';
 
 import 'app_localization.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
-  //final Isar isar;
   const AppLocalizationsDelegate();
   @override
   bool isSupported(Locale locale) {

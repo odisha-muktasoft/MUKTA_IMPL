@@ -1,32 +1,6 @@
- import 'package:isar/isar.dart';
- import 'package:hive/hive.dart';
+import 'package:hive/hive.dart';
 
 part 'localization.g.dart';
-
-// part 'localization.g.dart';
-
-// @Collection()
-// class LocalizationWrapper {
-//   Id id = Isar.autoIncrement;
-
-//   late String locale;
-
-//   late List<Localization>? localization;
-// }
-
-// @embedded
-// class Localization {
-//   late String code;
-
-//   late String message;
-
-//   late String module;
-
-//   late String locale;
-// }
-
-
-
 
 @HiveType(typeId: 0)
 class EnglishLocalization {
@@ -42,21 +16,6 @@ class EnglishLocalization {
   @HiveField(3)
   String? locale;
 }
-
-
-
- //class Localization {
-//   late String code;
-
-//   late String message;
-
-//   late String module;
-
-//   late String locale;
-// }
-
-
-
 
 @HiveType(typeId: 1)
 class OdiaLocalization {

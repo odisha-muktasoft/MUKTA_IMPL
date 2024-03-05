@@ -249,10 +249,10 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                 shg_loader.Loaders.circularLoader(context),
                             loaded: (AttendanceRegistersModel?
                                     individualAttendanceRegisterModel) =>
-                                WorkDetailsCard(registerDetails));
-                      }),
+                                WorkDetailsCard(registerDetails),);
+                      },),
                     ),
-                  ])),
+                  ],),),
                   SliverToBoxAdapter(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -612,10 +612,10 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                           child: PoweredByDigit(),
                         ),
                       ]))
-                ]),
+                ],),
               ),
-            ]));
-      }),
+            ],),);
+      },),
     );
   }
 
