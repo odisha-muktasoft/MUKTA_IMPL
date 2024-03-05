@@ -1,4 +1,4 @@
-import { TextInput, Dropdown, DeleteIcon, Button } from "@egovernments/digit-ui-react-components";
+import { TextInput, Dropdown, DeleteIcon, Button, AddIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Fragment } from "react";
@@ -13,9 +13,9 @@ function has4DecimalPlaces(number, decimalPlaces) {
   return regex.test(numStr);
 }
 
-const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dispatch, InputDecimalValidation, measurelineitemNo }) => {
+const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dispatch, InputDecimalValidation, measurelineitemNo, style }) => {
   return(
-  <td>
+  <td style={style ? style : {}}>
     <TextInput
       value={fieldKey === "description" ? value : (value > 0 && value)}
       //value={value}
@@ -64,16 +64,17 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
   return (
     <>
     <tr key={index}>
-      <td><div style={{marginBottom:"21px"}}>{index + 1}</div></td>
+      <td style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}}><div style={{marginBottom:"21px"}}>{index + 1}</div></td>
       {mode != "CREATEALL" && mode != "CREATERE" ? (
         <>
-          <td>{rowState?.isDeduction ? t("MB_YES") : t("MB_NO")}</td>
+          <td style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} >{rowState?.isDeduction ? t("MB_YES") : t("MB_NO")}</td>
           <td>
             {rowState?.description}
             {rowState?.additionalDetails?.measureLineItems?.length == 1 && mode === "CREATE" && (
               <Button
                 className={"outline-btn"}
-                label={t("MB_ADD_MORE_MBS")}
+                label={<div><AddIcon className="addIcon" fill={`#F47738`} styles={{margin:"revert"}}/> {t("MB_ADD_MORE_MBS")}</div>}
+                variation="secondary"
                 style={{width:"100%",borderRadius:"revert", marginLeft:"0px", marginRight:"0px"}}
                 onButtonClick={() => {
                   dispatch({
@@ -142,11 +143,11 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
         </>
       )}
 
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["number"] : rowState?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["length"] : rowState?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo}/>
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["width"] : rowState?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
-      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"height"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["height"] : rowState?.["height"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} />
-      <td><div style={{marginBottom:"21px"}}>{firstMeasurelineitem?.["quantity"] || rowState?.noOfunit}</div></td>
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"number"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["number"] : rowState?.["number"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["length"] : rowState?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}}/>
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["width"] : rowState?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
+      <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"height"} id={index + 1} value={value?.additionalDetails?.measureLineItems?.length > 0 ? firstMeasurelineitem?.["height"] : rowState?.["height"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={firstMeasurelineitem?.measurelineitemNo} style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} />
+      <td style={value?.additionalDetails?.measureLineItems?.length == 1 ? {verticalAlign:"top"} : {}}><div style={mode === "CREATE" || mode === "VIEW"? {} : {marginBottom:"21px"}}>{firstMeasurelineitem?.["quantity"] || rowState?.noOfunit}</div></td>
       {(mode == "CREATEALL" || mode == "CREATERE") && fields?.length > 1 && (
         <td>
           <span
@@ -178,7 +179,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
             {(
               <Button
                 className={"outline-btn"}
-                label={t("MB_ADD_MORE_MBS")}
+                label={<><AddIcon className="addIcon" fill={`#F47738`} styles={{margin:"revert"}}/> {t("MB_ADD_MORE_MBS")}</>}
                 style={{width:"100%",borderRadius:"revert", marginLeft:"0px", marginRight:"0px"}}
                 onButtonClick={() => {
                   dispatch({
@@ -210,7 +211,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
               <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"length"} id={index + 1} value={ob?.["length"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={ob?.measurelineitemNo}/>
               <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"width"} id={index + 1} value={ob?.["width"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={ob?.measurelineitemNo} />
               <MeasureInputAtom dispatch={dispatch} row={value} disable={mode.includes("VIEW")} fieldKey={"height"} id={index + 1} value={ob?.["height"]} mode={mode} InputDecimalValidation={InputDecimalValidation} measurelineitemNo={ob?.measurelineitemNo} />
-              <td><div style={{marginBottom:"21px"}}>{ob?.["quantity"]}</div></td>
+              <td><div style={mode === "CREATE" || mode === "VIEW" ? {}:{marginBottom:"21px"}}>{ob?.["quantity"]}</div></td>
               {(mode == "CREATE") && value?.additionalDetails?.measureLineItems?.length > 1 && (
                 <td>
                   <span
