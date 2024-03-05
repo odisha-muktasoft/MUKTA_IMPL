@@ -278,6 +278,8 @@ public class ContractUtil {
         Map<String, EstimateDetail> estimateLineItemIdToEstimateDetail = estimateResponse.getEstimates().get(0).getEstimateDetails().stream().collect(Collectors.toMap(EstimateDetail::getId, estimateDetail -> estimateDetail));
 
         Map<String, BigDecimal> targetIdToCumulativeValue = new HashMap<>();
+        BigDecimal totalValue= null;
+        BigDecimal estimateNoOfUnit= null;
 
         if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty()) {
             for (Measure measure : measurementFromDB.getMeasures()) {
@@ -305,11 +307,19 @@ public class ContractUtil {
             }
             measurementServiceUtil.validateDimensions(measure);
             BigDecimal currValue = measure.getBreadth().multiply(measure.getHeight()).multiply(measure.getLength()).multiply(measure.getNumItems());
-            BigDecimal totalValue = currValue.add(prevCumulativeValue);
 
-            if (totalValue.compareTo(BigDecimal.valueOf(estimateDetail.getNoOfunit())) > 0) {
-                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, measure.getTargetId(), BigDecimal.valueOf(estimateDetail.getNoOfunit())));
-            }
+            totalValue = totalValue!=null ?totalValue.add(currValue.add(prevCumulativeValue)): new BigDecimal(0);
+            estimateNoOfUnit = estimateNoOfUnit!=null?BigDecimal.valueOf(estimateDetail.getNoOfunit()):new BigDecimal(0);
+
+//            if (totalValue.compareTo(BigDecimal.valueOf(estimateDetail.getNoOfunit())) > 0) {
+//                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, measure.getTargetId(), BigDecimal.valueOf(estimateDetail.getNoOfunit())));
+//            }
         }
+    }
+    private void checkQuantity(BigDecimal totalValue, BigDecimal estimateNoOfUnit, String estimateLineItemId){
+        if (totalValue.compareTo(estimateNoOfUnit) > 0) {
+            throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, estimateLineItemId, estimateNoOfUnit));
+        }
+
     }
 }
