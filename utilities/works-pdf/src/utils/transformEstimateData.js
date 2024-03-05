@@ -5,9 +5,9 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
 
   var count = 100;
   // apply loop on lineItems and check if category is NON-SOR and sorId is 45 then change it to count++
-  for(let i = 0; i < estimateDetails.length; i++) {
+  for (let i = 0; i < estimateDetails.length; i++) {
     count++;
-    if(estimateDetails[i].category === "NON-SOR" && estimateDetails[i].sorId === "45") {
+    if (estimateDetails[i].category === "NON-SOR" && estimateDetails[i].sorId === "45") {
       estimateDetails[i].sorId = count;
     }
   }
@@ -22,7 +22,7 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
     estimateDetails[i].currentQuantity = 0;
 
     if (estimateDetails[i].category === "OVERHEAD") {
-        continue;
+      continue;
     }
 
     const sorId = estimateDetails[i].sorId || "null";
@@ -30,7 +30,7 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
 
     updatedArray.push(estimateDetails[i]);
     idEstimateDetailsMap[sorId] = updatedArray;
-    
+
   }
 
   const sorIdMeasuresMap = {};
@@ -51,22 +51,73 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
       const length = estimateDetailsArray[j].length ?? 1;
       const width = estimateDetailsArray[j].width ?? 1;
       const height = estimateDetailsArray[j].height ?? 1;
-      const estQ = numItems*length*width*height;
-    
+      const estQ = numItems * length * width * height;
+
       // if isDeduction is true then subtract quantity from estimatedQuantity and if isDeduction is false then add quantity to estimatedQuantity
       if (estimateDetailsArray[j].isDeduction) {
         estimateDetailsArray[0].estimatedQuantity -= estQ;
       } else {
         estimateDetailsArray[0].estimatedQuantity += estQ;
       }
+
+      const id = estimateDetailsArray[j].id;
+      // Find the line item with matching estimateLineItemId
+      const matchingLineItem = lineItems.find(item => item.estimateLineItemId === id);
+      if (matchingLineItem) {
+        const contractLineItemId = matchingLineItem.contractLineItemRef;
+        // Find the measure with matching targetId
+        const matchingMeasure = measurement.measures.find(measure => measure.targetId === contractLineItemId);
+        if (matchingMeasure) {
+          const numItems = matchingMeasure.numItems ?? 1;
+          const length = matchingMeasure.length ?? 1;
+          const width = matchingMeasure.breadth ?? 1;
+          const height = matchingMeasure.height ?? 1;
+          const q = numItems * length * width * height;
+
+          if (estimateDetailsArray[j].isDeduction) {
+            estimateDetailsArray[0].currentQuantity -= q;
+          }
+          else {
+            estimateDetailsArray[0].currentQuantity += q;
+          }
+        }
+      }
+
+      const matchingLineItem1 = lineItems.find(item => item.estimateLineItemId === id);
+
+      if (matchingLineItem1) {
+        const contractLineItemId = matchingLineItem1.contractLineItemRef;
+        var ismatch = false;
+        for (let i = 0; i < allMeasurements.length; i++) {
+          if (measurementNumber == allMeasurements[i].measurementNumber) {
+            ismatch = true;
+            continue;
+          }
+          if (allMeasurements[i].wfStatus == 'APPROVED' && ismatch) {
+            // Find the measure with matching targetId
+            const matchingMeasure = allMeasurements[i].measures.find(measure => measure.targetId === contractLineItemId);
+            if (matchingMeasure) {
+              // Update consumedQuantity in sorIdMeasuresMap
+              if (estimateDetailsArray[j].isDeduction) {
+                estimateDetailsArray[0].consumedQuantity -= matchingMeasure.cumulativeValue;
+              }
+              else {
+                estimateDetailsArray[0].consumedQuantity += matchingMeasure.cumulativeValue;
+              }
+            }
+            break;
+          }
+        }
+      }
+
     }
 
     // if there is any square bracket in name of estimateDetail then replace it with round bracket because square bracket in the end of string is not supported in pdf
-    if(estimateDetailsArray[0].name.includes("[")){
-      estimateDetailsArray[0].name=estimateDetailsArray[0].name.replace("[","(")
-      estimateDetailsArray[0].name=estimateDetailsArray[0].name.replace("]",")")
+    if (estimateDetailsArray[0].name.includes("[")) {
+      estimateDetailsArray[0].name = estimateDetailsArray[0].name.replace("[", "(")
+      estimateDetailsArray[0].name = estimateDetailsArray[0].name.replace("]", ")")
     }
-    
+
     const {
       id,
       name: description,
@@ -80,7 +131,7 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
       isDeduction,
       quantity,
     } = estimateDetailsArray[0];
-  
+
     var sorIdMeasuresMapKey = {
       id,
       sorId,
@@ -100,71 +151,13 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
 
   // iterate over sorIdMeasuresMap
   for (const sorId of Object.keys(sorIdMeasuresMap)) {
-    const id = sorIdMeasuresMap[sorId].id;
-
-    // Find the line item with matching estimateLineItemId
-    const matchingLineItem = lineItems.find(item => item.estimateLineItemId === id);
-
-    if (matchingLineItem) {
-        const contractLineItemId = matchingLineItem.contractLineItemRef;
-
-        // Find the measure with matching targetId
-        const matchingMeasure = measurement.measures.find(measure => measure.targetId === contractLineItemId);
-
-        if (matchingMeasure) {
-
-          const numItems = matchingMeasure.numItems ?? 1;
-          const length = matchingMeasure.length ?? 1;
-          const width = matchingMeasure.breadth ?? 1;
-          const height = matchingMeasure.height ?? 1;
-          const q = numItems*length*width*height;
-
-          if(sorIdMeasuresMap[sorId].isDeduction){
-            sorIdMeasuresMap[sorId].currentQuantity -= q;
-          }
-          else{
-            sorIdMeasuresMap[sorId].currentQuantity += q;
-          }
-
-          const mbAmount = sorIdMeasuresMap[sorId].unitRate * sorIdMeasuresMap[sorId].currentQuantity;
-          sorIdMeasuresMap[sorId].mbAmount = mbAmount;
-        }
-    }
-}
-
-for(const sorId of Object.keys(sorIdMeasuresMap)){
-  const id = sorIdMeasuresMap[sorId].id;
-
-    // Find the line item with matching estimateLineItemId
-    const matchingLineItem = lineItems.find(item => item.estimateLineItemId === id);
-
-    if (matchingLineItem) {
-        const contractLineItemId = matchingLineItem.contractLineItemRef;
-        var ismatch = false;
-        for(let i = 0;i< allMeasurements.length;i++){
-          if(measurementNumber == allMeasurements[i].measurementNumber){
-            ismatch = true;
-            continue;
-          }
-          if(allMeasurements[i].wfStatus == 'APPROVED' && ismatch){
-            // Find the measure with matching targetId
-            const matchingMeasure = allMeasurements[i].measures.find(measure => measure.targetId === contractLineItemId);
-
-            if(matchingMeasure){
-            // Update consumedQuantity in sorIdMeasuresMap
-            sorIdMeasuresMap[sorId].consumedQuantity = matchingMeasure.cumulativeValue;
-            break;
-            }
-          }
-        }
-        
-        
-    }
-  } 
+        const mbAmount = sorIdMeasuresMap[sorId].unitRate * sorIdMeasuresMap[sorId].currentQuantity;
+        sorIdMeasuresMap[sorId].mbAmount = mbAmount;
+  }
 
   return sorIdMeasuresMap;
 };
 
 module.exports = {
   transformEstimateData
-  };
+};
