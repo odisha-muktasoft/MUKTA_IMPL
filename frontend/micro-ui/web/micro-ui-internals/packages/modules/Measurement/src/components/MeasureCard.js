@@ -104,6 +104,14 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         state[findIndex].noOfunit = calculatedValue ? calculatedValue?.toFixed(4) : 0;
         if(mode === "CREATE") state[findIndex]["numItems"] = calculatedValue;
         state[findIndex].rowAmount = unitRate * calculatedValue || 0;
+        
+        if(element?.additionalDetails?.measureLineItems?.length == 1 && element?.additionalDetails?.measureLineItems?.[0]?.quantity == 0)
+        {
+          state[findIndex].number = 0;
+          state[findIndex].length = 0;
+          state[findIndex].width = 0;
+          state[findIndex].height = 0;
+        } 
         return [...state];
       case "REMOVE_ROW":
         const { id: rowIdToRemove } = action;
@@ -147,6 +155,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         setError({message:"",enable:false});
         const clearedTableState = state.map((item) => ({
           ...item,
+          additionalDetails : { ...item?.additionalDetails, measureLineItems: [{number:0,width:0,length:0,height:0, quantity:0, measurelineitemNo:0}]},
           height: 0,
           description : mode === "CREATE" ? item?.description : "",
           width: 0,
