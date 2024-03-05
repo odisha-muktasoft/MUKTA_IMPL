@@ -419,11 +419,12 @@ public class NotificationService {
      */
     public String getMessage(ContractRequest request, String msgCode) {
         String locale = "en_IN";
+        String rootTenantId = request.getContract().getTenantId().split("\\.")[0];
         if(request.getRequestInfo().getMsgId().split("\\|").length > 1)
             locale = request.getRequestInfo().getMsgId().split("\\|")[1];
-        Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), request.getContract().getTenantId(),
+        Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), rootTenantId,
                 locale, ContractServiceConstants.CONTRACTS_MODULE_CODE);
-        return localizedMessageMap.get(locale + "|" + request.getContract().getTenantId()).get(msgCode);
+        return localizedMessageMap.get(locale + "|" + rootTenantId).get(msgCode);
     }
     private String buildMessageForRevisedContract(Map<String, String> userDetailsForSMS, String message, Boolean isSendBack) {
         if (Boolean.FALSE.equals(isSendBack)) {

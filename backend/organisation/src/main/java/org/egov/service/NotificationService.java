@@ -233,7 +233,7 @@ public class NotificationService {
      * @return
      */
     public String getMessage(OrgRequest request, String msgCode) {
-        String tenantId = request.getOrganisations().get(0).getTenantId();
+        String tenantId = request.getOrganisations().get(0).getTenantId().split("\\.")[0];
         RequestInfo requestInfo = request.getRequestInfo();
         String locale = "en_IN";
         if(requestInfo.getMsgId().split("\\|").length > 1)
