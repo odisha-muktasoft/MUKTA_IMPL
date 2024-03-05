@@ -1,20 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:isar/isar.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
-import 'package:works_shg_app/data/init_client.dart';
+import 'package:works_shg_app/data/remote_client.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../blocs/localization/localization.dart';
 import '../blocs/muster_rolls/search_muster_roll.dart';
-import '../data/remote_client.dart';
-import '../data/repositories/remote/localization.dart';
+import '../data/init_client.dart';
 
 class AuthenticatedPageWrapper extends StatefulWidget {
-  
-  const AuthenticatedPageWrapper({Key? key, })
-      : super(key: key);
+  const AuthenticatedPageWrapper({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -32,14 +30,23 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
   }
 
   afterViewBuild() async {
-    selectedLocale = await GlobalVariables.selectedLocale();
+    // selectedLocale = await GlobalVariables.selectedLocale();
+    final data = BlocProvider.of<LocalizationBloc>(context).state;
+    final selectedLocale = data.maybeMap(
+      orElse: () => null,
+      loaded: (value) {
+        return value.languages!.firstWhere((element) => element.isSelected);
+      },
+    );
     // ignore: use_build_context_synchronously
-    context.read<LocalizationBloc>().add(LocalizationEvent.onSpecificLoadLocalization(
+    context
+        .read<LocalizationBloc>()
+        .add(LocalizationEvent.onSpecificLoadLocalization(
           module: 'rainmaker-attendencemgmt',
           tenantId: GlobalVariables
               .globalConfigObject!.globalConfigs!.stateTenantId
               .toString(),
-          locale: selectedLocale.toString(),
+          locale: selectedLocale!.value.toString() ?? "",
         ));
 
     // ignore: use_build_context_synchronously

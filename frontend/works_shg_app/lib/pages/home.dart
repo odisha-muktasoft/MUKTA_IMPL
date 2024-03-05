@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:works_shg_app/blocs/app_initilization/app_initilization.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
@@ -11,11 +12,11 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/ButtonLink.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 
-import '../blocs/app_initilization/app_initilization.dart';
 import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/organisation/org_search_bloc.dart';
+import '../models/app_config/app_config_model.dart';
 import '../models/organisation/organisation_model.dart';
 import '../models/screen_config/home_screen_config.dart';
 import '../utils/constants.dart';
@@ -264,47 +265,41 @@ class _HomePage extends State<HomePage> {
               tenantId: GlobalVariables
                   .globalConfigObject!.globalConfigs!.stateTenantId
                   .toString(),
-              locale: currentLocale.toString()),
+              locale: data.value.toString()),
         );
-    // context.read<AppInitializationBloc>().add(
-    //     AppInitializationSetupEvent(selectedLang: currentLocale.toString()));
-        //TODO: test
-    // await AppLocalizations(
-    //   Locale(currentLocale.toString().split('_').first,
-    //       currentLocale.toString().split('_').last),
-    // ).load();
-  }
+      }
 
-  void Function()? getRoute(String key, BuildContext context) {
+  void Function()? getRoute(
+      String key, BuildContext context, Languages data) {
     switch (key) {
       case Constants.homeMyWorks:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const WorkOrderRoute());
         };
       case Constants.homeTrackAttendance:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const TrackAttendanceInboxRoute());
         };
       case Constants.homeMusterRolls:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const ViewMusterRollsRoute());
         };
       case Constants.homeMyBills:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const MyBillsRoute());
         };
       case Constants.homeRegisterWageSeeker:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const RegisterIndividualRoute());
         };
       case Constants.homeMyServiceRequests:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const MyServiceRequestsRoute());
         };
       default:

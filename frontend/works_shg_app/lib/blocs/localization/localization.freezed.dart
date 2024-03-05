@@ -16,7 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LocalizationEvent {
+  String get module => throw _privateConstructorUsedError;
   String get tenantId => throw _privateConstructorUsedError;
+  String get locale => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
@@ -28,8 +30,6 @@ mixin _$LocalizationEvent {
         onLoadLocalization,
     required TResult Function(String module, String tenantId, String locale)
         onSpecificLoadLocalization,
-    required TResult Function(String selectedLang, String tenantId)
-        languageChange,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -43,7 +43,6 @@ mixin _$LocalizationEvent {
         onLoadLocalization,
     TResult? Function(String module, String tenantId, String locale)?
         onSpecificLoadLocalization,
-    TResult? Function(String selectedLang, String tenantId)? languageChange,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,7 +56,6 @@ mixin _$LocalizationEvent {
         onLoadLocalization,
     TResult Function(String module, String tenantId, String locale)?
         onSpecificLoadLocalization,
-    TResult Function(String selectedLang, String tenantId)? languageChange,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -66,7 +64,6 @@ mixin _$LocalizationEvent {
     required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
     required TResult Function(OnSpecificLoadLocalizationEvent value)
         onSpecificLoadLocalization,
-    required TResult Function(LanguageChangeEvent value) languageChange,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -74,7 +71,6 @@ mixin _$LocalizationEvent {
     TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
     TResult? Function(OnSpecificLoadLocalizationEvent value)?
         onSpecificLoadLocalization,
-    TResult? Function(LanguageChangeEvent value)? languageChange,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -82,7 +78,6 @@ mixin _$LocalizationEvent {
     TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
     TResult Function(OnSpecificLoadLocalizationEvent value)?
         onSpecificLoadLocalization,
-    TResult Function(LanguageChangeEvent value)? languageChange,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -98,7 +93,7 @@ abstract class $LocalizationEventCopyWith<$Res> {
           LocalizationEvent value, $Res Function(LocalizationEvent) then) =
       _$LocalizationEventCopyWithImpl<$Res, LocalizationEvent>;
   @useResult
-  $Res call({String tenantId});
+  $Res call({String module, String tenantId, String locale});
 }
 
 /// @nodoc
@@ -114,12 +109,22 @@ class _$LocalizationEventCopyWithImpl<$Res, $Val extends LocalizationEvent>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? module = null,
     Object? tenantId = null,
+    Object? locale = null,
   }) {
     return _then(_value.copyWith(
+      module: null == module
+          ? _value.module
+          : module // ignore: cast_nullable_to_non_nullable
+              as String,
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -284,8 +289,6 @@ class _$OnLoadLocalizationEvent
         onLoadLocalization,
     required TResult Function(String module, String tenantId, String locale)
         onSpecificLoadLocalization,
-    required TResult Function(String selectedLang, String tenantId)
-        languageChange,
   }) {
     return onLoadLocalization(
         module, tenantId, locale, languages, localizationModules);
@@ -303,7 +306,6 @@ class _$OnLoadLocalizationEvent
         onLoadLocalization,
     TResult? Function(String module, String tenantId, String locale)?
         onSpecificLoadLocalization,
-    TResult? Function(String selectedLang, String tenantId)? languageChange,
   }) {
     return onLoadLocalization?.call(
         module, tenantId, locale, languages, localizationModules);
@@ -321,7 +323,6 @@ class _$OnLoadLocalizationEvent
         onLoadLocalization,
     TResult Function(String module, String tenantId, String locale)?
         onSpecificLoadLocalization,
-    TResult Function(String selectedLang, String tenantId)? languageChange,
     required TResult orElse(),
   }) {
     if (onLoadLocalization != null) {
@@ -337,7 +338,6 @@ class _$OnLoadLocalizationEvent
     required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
     required TResult Function(OnSpecificLoadLocalizationEvent value)
         onSpecificLoadLocalization,
-    required TResult Function(LanguageChangeEvent value) languageChange,
   }) {
     return onLoadLocalization(this);
   }
@@ -348,7 +348,6 @@ class _$OnLoadLocalizationEvent
     TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
     TResult? Function(OnSpecificLoadLocalizationEvent value)?
         onSpecificLoadLocalization,
-    TResult? Function(LanguageChangeEvent value)? languageChange,
   }) {
     return onLoadLocalization?.call(this);
   }
@@ -359,7 +358,6 @@ class _$OnLoadLocalizationEvent
     TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
     TResult Function(OnSpecificLoadLocalizationEvent value)?
         onSpecificLoadLocalization,
-    TResult Function(LanguageChangeEvent value)? languageChange,
     required TResult orElse(),
   }) {
     if (onLoadLocalization != null) {
@@ -378,9 +376,11 @@ abstract class OnLoadLocalizationEvent implements LocalizationEvent {
           final List<LocalizationModules>? localizationModules}) =
       _$OnLoadLocalizationEvent;
 
+  @override
   String get module;
   @override
   String get tenantId;
+  @override
   String get locale;
   List<Languages>? get languages;
   List<LocalizationModules>? get localizationModules;
@@ -500,8 +500,6 @@ class _$OnSpecificLoadLocalizationEvent
         onLoadLocalization,
     required TResult Function(String module, String tenantId, String locale)
         onSpecificLoadLocalization,
-    required TResult Function(String selectedLang, String tenantId)
-        languageChange,
   }) {
     return onSpecificLoadLocalization(module, tenantId, locale);
   }
@@ -518,7 +516,6 @@ class _$OnSpecificLoadLocalizationEvent
         onLoadLocalization,
     TResult? Function(String module, String tenantId, String locale)?
         onSpecificLoadLocalization,
-    TResult? Function(String selectedLang, String tenantId)? languageChange,
   }) {
     return onSpecificLoadLocalization?.call(module, tenantId, locale);
   }
@@ -535,7 +532,6 @@ class _$OnSpecificLoadLocalizationEvent
         onLoadLocalization,
     TResult Function(String module, String tenantId, String locale)?
         onSpecificLoadLocalization,
-    TResult Function(String selectedLang, String tenantId)? languageChange,
     required TResult orElse(),
   }) {
     if (onSpecificLoadLocalization != null) {
@@ -550,7 +546,6 @@ class _$OnSpecificLoadLocalizationEvent
     required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
     required TResult Function(OnSpecificLoadLocalizationEvent value)
         onSpecificLoadLocalization,
-    required TResult Function(LanguageChangeEvent value) languageChange,
   }) {
     return onSpecificLoadLocalization(this);
   }
@@ -561,7 +556,6 @@ class _$OnSpecificLoadLocalizationEvent
     TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
     TResult? Function(OnSpecificLoadLocalizationEvent value)?
         onSpecificLoadLocalization,
-    TResult? Function(LanguageChangeEvent value)? languageChange,
   }) {
     return onSpecificLoadLocalization?.call(this);
   }
@@ -572,7 +566,6 @@ class _$OnSpecificLoadLocalizationEvent
     TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
     TResult Function(OnSpecificLoadLocalizationEvent value)?
         onSpecificLoadLocalization,
-    TResult Function(LanguageChangeEvent value)? languageChange,
     required TResult orElse(),
   }) {
     if (onSpecificLoadLocalization != null) {
@@ -588,208 +581,16 @@ abstract class OnSpecificLoadLocalizationEvent implements LocalizationEvent {
       required final String tenantId,
       required final String locale}) = _$OnSpecificLoadLocalizationEvent;
 
+  @override
   String get module;
   @override
   String get tenantId;
+  @override
   String get locale;
   @override
   @JsonKey(ignore: true)
   _$$OnSpecificLoadLocalizationEventCopyWith<_$OnSpecificLoadLocalizationEvent>
       get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$LanguageChangeEventCopyWith<$Res>
-    implements $LocalizationEventCopyWith<$Res> {
-  factory _$$LanguageChangeEventCopyWith(_$LanguageChangeEvent value,
-          $Res Function(_$LanguageChangeEvent) then) =
-      __$$LanguageChangeEventCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String selectedLang, String tenantId});
-}
-
-/// @nodoc
-class __$$LanguageChangeEventCopyWithImpl<$Res>
-    extends _$LocalizationEventCopyWithImpl<$Res, _$LanguageChangeEvent>
-    implements _$$LanguageChangeEventCopyWith<$Res> {
-  __$$LanguageChangeEventCopyWithImpl(
-      _$LanguageChangeEvent _value, $Res Function(_$LanguageChangeEvent) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? selectedLang = null,
-    Object? tenantId = null,
-  }) {
-    return _then(_$LanguageChangeEvent(
-      selectedLang: null == selectedLang
-          ? _value.selectedLang
-          : selectedLang // ignore: cast_nullable_to_non_nullable
-              as String,
-      tenantId: null == tenantId
-          ? _value.tenantId
-          : tenantId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$LanguageChangeEvent
-    with DiagnosticableTreeMixin
-    implements LanguageChangeEvent {
-  const _$LanguageChangeEvent(
-      {required this.selectedLang, required this.tenantId});
-
-  @override
-  final String selectedLang;
-  @override
-  final String tenantId;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LocalizationEvent.languageChange(selectedLang: $selectedLang, tenantId: $tenantId)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'LocalizationEvent.languageChange'))
-      ..add(DiagnosticsProperty('selectedLang', selectedLang))
-      ..add(DiagnosticsProperty('tenantId', tenantId));
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LanguageChangeEvent &&
-            (identical(other.selectedLang, selectedLang) ||
-                other.selectedLang == selectedLang) &&
-            (identical(other.tenantId, tenantId) ||
-                other.tenantId == tenantId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, selectedLang, tenantId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LanguageChangeEventCopyWith<_$LanguageChangeEvent> get copyWith =>
-      __$$LanguageChangeEventCopyWithImpl<_$LanguageChangeEvent>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            String module,
-            String tenantId,
-            String locale,
-            List<Languages>? languages,
-            List<LocalizationModules>? localizationModules)
-        onLoadLocalization,
-    required TResult Function(String module, String tenantId, String locale)
-        onSpecificLoadLocalization,
-    required TResult Function(String selectedLang, String tenantId)
-        languageChange,
-  }) {
-    return languageChange(selectedLang, tenantId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            String module,
-            String tenantId,
-            String locale,
-            List<Languages>? languages,
-            List<LocalizationModules>? localizationModules)?
-        onLoadLocalization,
-    TResult? Function(String module, String tenantId, String locale)?
-        onSpecificLoadLocalization,
-    TResult? Function(String selectedLang, String tenantId)? languageChange,
-  }) {
-    return languageChange?.call(selectedLang, tenantId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            String module,
-            String tenantId,
-            String locale,
-            List<Languages>? languages,
-            List<LocalizationModules>? localizationModules)?
-        onLoadLocalization,
-    TResult Function(String module, String tenantId, String locale)?
-        onSpecificLoadLocalization,
-    TResult Function(String selectedLang, String tenantId)? languageChange,
-    required TResult orElse(),
-  }) {
-    if (languageChange != null) {
-      return languageChange(selectedLang, tenantId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadLocalizationEvent value) onLoadLocalization,
-    required TResult Function(OnSpecificLoadLocalizationEvent value)
-        onSpecificLoadLocalization,
-    required TResult Function(LanguageChangeEvent value) languageChange,
-  }) {
-    return languageChange(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadLocalizationEvent value)? onLoadLocalization,
-    TResult? Function(OnSpecificLoadLocalizationEvent value)?
-        onSpecificLoadLocalization,
-    TResult? Function(LanguageChangeEvent value)? languageChange,
-  }) {
-    return languageChange?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadLocalizationEvent value)? onLoadLocalization,
-    TResult Function(OnSpecificLoadLocalizationEvent value)?
-        onSpecificLoadLocalization,
-    TResult Function(LanguageChangeEvent value)? languageChange,
-    required TResult orElse(),
-  }) {
-    if (languageChange != null) {
-      return languageChange(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class LanguageChangeEvent implements LocalizationEvent {
-  const factory LanguageChangeEvent(
-      {required final String selectedLang,
-      required final String tenantId}) = _$LanguageChangeEvent;
-
-  String get selectedLang;
-  @override
-  String get tenantId;
-  @override
-  @JsonKey(ignore: true)
-  _$$LanguageChangeEventCopyWith<_$LanguageChangeEvent> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
