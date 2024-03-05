@@ -105,7 +105,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
                           width: 0,
                           height: 0,
                           quantity : 0,
-                          measurelineitemNo: value?.additionalDetails?.measureLineItems.length,
+                          measurelineitemNo: value?.additionalDetails?.measureLineItems[value?.additionalDetails?.measureLineItems.length-1]?.measurelineitemNo+1,
                         }]
                       }
                     },
@@ -197,7 +197,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
                           width: 0,
                           height: 0,
                           quantity : 0,
-                          measurelineitemNo: value?.additionalDetails?.measureLineItems.length,
+                          measurelineitemNo: value?.additionalDetails?.measureLineItems[value?.additionalDetails?.measureLineItems.length-1]?.measurelineitemNo+1,
                         }]
                       }
                     },
