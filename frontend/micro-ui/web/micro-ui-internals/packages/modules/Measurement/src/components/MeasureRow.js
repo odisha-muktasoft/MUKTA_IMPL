@@ -68,7 +68,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
       {mode != "CREATEALL" && mode != "CREATERE" ? (
         <>
           <td style={mode === "CREATE" || mode === "VIEW" ? {verticalAlign:"top"}:{}} >{rowState?.isDeduction ? t("MB_YES") : t("MB_NO")}</td>
-          <td>
+          <td style={mode === "VIEW" ? {verticalAlign:"top"}:{}}>
             {rowState?.description}
             {rowState?.additionalDetails?.measureLineItems?.length == 1 && mode === "CREATE" && (
               <Button
