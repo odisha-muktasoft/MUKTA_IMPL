@@ -125,7 +125,7 @@ void main() async {
     await CommonMethods.fetchPackageInfo();
     runApp(MainApplication(
       appRouter: AppRouter(),
-      // isar: _isar,
+      
     ));
   }, (Object error, StackTrace stack) {
     if (kDebugMode) {
@@ -136,7 +136,7 @@ void main() async {
 }
 
 class MainApplication extends StatefulWidget {
-  //final Isar isar;
+  
   const MainApplication({
     super.key,
     required AppRouter appRouter,
@@ -232,7 +232,7 @@ class _MainApplicationState extends State<MainApplication> {
             const AppInitializationState(),
             MdmsRepository(initClient.init()),
             BlocProvider.of<LocalizationBloc>(context),
-          )..add(const AppInitializationSetupEvent(selectedLang: 'en_IN')),
+          )..add(  AppInitializationSetupEvent(selectedLang: LanguageEnum.en_IN.name)),
           lazy: false,
         ),
         BlocProvider(create: (context) => AuthBloc()),
