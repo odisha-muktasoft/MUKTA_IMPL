@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+
+
+enum LanguageEnum { en_IN, od_IN }
 class Constants {
   static const String mdmsApiEndPoint = 'egov-mdms-service/v1/_search';
   static final navKey = GlobalKey<NavigatorState>();

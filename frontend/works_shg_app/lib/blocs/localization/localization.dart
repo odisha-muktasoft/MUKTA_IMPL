@@ -8,6 +8,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:works_shg_app/models/localization/module_status.dart';
 import 'package:works_shg_app/services/urls.dart';
+import 'package:works_shg_app/utils/constants.dart';
 
 import '../../data/repositories/remote/localization.dart';
 import '../../data/schema/localization.dart';
@@ -16,8 +17,6 @@ import '../../models/localization/localization_model.dart';
 import 'app_localization.dart';
 
 part 'localization.freezed.dart';
-
-// List<DigitRowCardModel>?
 
 typedef LocalizationEmitter = Emitter<LocalizationState>;
 List<LocalizationMessageModel>? localizationMessages;
@@ -30,8 +29,6 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
   ) {
     on<OnLoadLocalizationEvent>(_onLoadLocalization);
     on<OnSpecificLoadLocalizationEvent>(_onSpecificLoadLocalization);
-
-   
   }
 
   FutureOr<void> _onLoadLocalization(
@@ -40,13 +37,16 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
   ) async {
     try {
       emit(const LocalizationState.loading());
+      // Create ModuleStatus list based on localization modules
       List<ModuleStatus> module = event.localizationModules!.map((e) {
         return ModuleStatus(
             isEng: false, label: e.label, value: e.value, isOdia: false);
       }).toList();
+      // Extract selected modules
       final List<String> selectedModule = event.module!.split(',');
 
-      if (event.locale == "en_IN") {
+// Check if locale is English
+      if (event.locale == LanguageEnum.en_IN.name) {
         for (final itemB in selectedModule) {
           final itemAIndex =
               module.indexWhere((element) => element.value == itemB);
@@ -55,10 +55,10 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           }
         }
       } else {}
-
+      // Access Hive box for English localization
       final box = Hive.box<EnglishLocalization>('englishLocalization');
       final List<EnglishLocalization> localizationList = box.values.toList();
-
+      // Fetch localization data from remote API
       if (localizationList.isEmpty) {
         LocalizationModel result = await localizationRepository.search(
           url: Urls.initServices.localizationSearch,
@@ -77,33 +77,38 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
               ..locale = e.locale
               ..module = e.module)
             .toList();
+        // Add fetched data to Hive box
         await box.addAll(newLocalizationList);
 
         final List codes = event.locale.split('_');
-        bool k = await _loadLocale(codes, event.locale);
-        dynamic s;
-        emit(LocalizationState.loaded(s, event.languages, module));
+        await _loadLocale(codes, event.locale);
+        // Emit loaded state
+        emit(LocalizationState.loaded(event.languages, module));
       } else {
         final List codes = event.locale.split('_');
-        bool k = await _loadLocale(codes, event.locale!);
-        dynamic s;
-        emit(LocalizationState.loaded(s, event.languages, module));
+        await _loadLocale(codes, event.locale!);
+        // Emit loaded state
+        emit(LocalizationState.loaded(event.languages, module));
       }
     } on DioError catch (e) {
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
     }
   }
 
+// Handler for loading specific localization data
   FutureOr<void> _onSpecificLoadLocalization(
     OnSpecificLoadLocalizationEvent event,
     LocalizationEmitter emit,
   ) async {
     try {
+      // Check the current state and proceed only if it's in the 'loaded' state
       await state.maybeMap(
         orElse: () => null,
         loaded: (value) async {
           emit(const LocalizationState.loading());
-          final List<Languages> sd = List.from(value.languages!).map((e) {
+          // Generate a list of configured languages with updated selected status
+          final List<Languages> configLanguage =
+              List.from(value.languages!).map((e) {
             if (e.value == event.locale) {
               final data =
                   Languages(label: e.label, value: e.value, isSelected: true);
@@ -114,11 +119,14 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
               return data;
             }
           }).toList();
-
+// Extract selected modules from the event
           final List<String> selectedModule = event.module!.split(',');
+          // Clone the existing module status list
           List<ModuleStatus> ss = List.from(value.moduleStatus!);
+          // Create a copy of selected modules list
           List<String> loopingData = List.from(selectedModule);
-          if (event.locale == "en_IN") {
+          // Update module status based on locale
+          if (event.locale == LanguageEnum.en_IN.name) {
             for (final itemB in loopingData) {
               final itemAIndex =
                   ss!.indexWhere((element) => element.value == itemB);
@@ -133,19 +141,20 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                       isOdia: value.moduleStatus![itemAIndex].isOdia);
                   ss.removeAt(itemAIndex);
                   ss.insert(itemAIndex, data);
-
-                  // value.moduleStatus![itemAIndex].copyWith(isEng: true);
                 }
               }
             }
           } else {
+            // Handle non-English locale scenarios
             for (final itemB in loopingData) {
               final itemAIndex =
                   ss!.indexWhere((element) => element.value == itemB);
               if (itemAIndex != -1) {
                 if (ss![itemAIndex].isOdia == true) {
+                  // Remove already selected Odia modules
                   selectedModule.remove(itemB);
                 } else {
+                  // Update module status for Odia modules
                   final data = ModuleStatus(
                       isEng: value.moduleStatus![itemAIndex].isEng,
                       label: value.moduleStatus![itemAIndex].label,
@@ -153,16 +162,14 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                       isOdia: true);
                   ss.removeAt(itemAIndex);
                   ss.insert(itemAIndex, data);
-
-                  // value.moduleStatus![itemAIndex].copyWith(isEng: true);
                 }
               }
             }
           }
-
+          // Access Hive box for English and Odia localizations
           final box = Hive.box<EnglishLocalization>('englishLocalization');
           var odiaBox = Hive.box<OdiaLocalization>('odiaLocalization');
-
+          // Fetch localization data from remote API for selected modules
           if (selectedModule.isNotEmpty) {
             LocalizationModel result = await localizationRepository.search(
               url: Urls.initServices.localizationSearch,
@@ -172,8 +179,8 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                 "tenantId": event.tenantId,
               },
             );
-
-            if (event.locale == "en_IN") {
+            // Update Hive box with fetched localization data
+            if (event.locale == LanguageEnum.en_IN.name) {
               final List<EnglishLocalization> newLocalizationList =
                   result.messages
                       .map((e) => EnglishLocalization()
@@ -182,6 +189,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                         ..locale = e.locale
                         ..module = e.module)
                       .toList();
+              // Add English localizations to box
               await box.addAll(newLocalizationList);
             } else {
               final List<OdiaLocalization> newLocalizationList = result.messages
@@ -191,30 +199,31 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                     ..locale = e.locale
                     ..module = e.module)
                   .toList();
+              // Add Odia localizations to box
               await odiaBox.addAll(newLocalizationList);
             }
 
             final List codes = event.locale.split('_');
-            bool k = await _loadLocale(codes, event.locale);
+            await _loadLocale(codes, event.locale);
 
-            emit(value.copyWith(moduleStatus: ss, languages: sd));
+            emit(value.copyWith(moduleStatus: ss, languages: configLanguage));
           } else {
+            // If no modules are selected, emit updated state without fetching new data
             final List codes = event.locale.split('_');
-            bool k = await _loadLocale(codes, event.locale!);
+            await _loadLocale(codes, event.locale!);
 
-            emit(value.copyWith(moduleStatus: ss, languages: sd));
+            emit(value.copyWith(moduleStatus: ss, languages: configLanguage));
           }
         },
       );
     } on DioError catch (e) {
+      // Handle Dio errors and emit error state
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
     }
   }
 
-  
-
-  FutureOr<bool> _loadLocale(List codes, String locale) async {
-    return await AppLocalizations(Locale(codes.first, codes.last))
+  FutureOr<void> _loadLocale(List codes, String locale) async {
+    await AppLocalizations(Locale(codes.first, codes.last))
         .load(locale: codes.first);
   }
 }
@@ -234,8 +243,6 @@ class LocalizationEvent with _$LocalizationEvent {
     required String tenantId,
     required String locale,
   }) = OnSpecificLoadLocalizationEvent;
-
-  
 }
 
 @freezed
@@ -244,7 +251,6 @@ class LocalizationState with _$LocalizationState {
   const factory LocalizationState.initial() = _Initial;
   const factory LocalizationState.loading() = _Loading;
   factory LocalizationState.loaded(
-    List<LocalizationMessageModel>? localization,
     List<Languages>? languages,
     List<ModuleStatus>? moduleStatus,
   ) = _Loaded;

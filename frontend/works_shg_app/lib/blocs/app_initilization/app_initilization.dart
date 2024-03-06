@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,7 +16,6 @@ import '../../data/repositories/remote/getGlobalConfig_repo.dart';
 import '../../data/repositories/remote/mdms.dart';
 import '../../models/init_mdms/global_config_model.dart';
 import '../../services/local_storage.dart';
-import '../localization/app_localization.dart';
 import '../localization/localization.dart';
 
 part 'app_initilization.freezed.dart';
@@ -37,15 +34,19 @@ class AppInitializationBloc
     on<AppInitializationSetupEvent>(_onAppInitializeSetup);
   }
 
+  // Event handler for initializing the application
   FutureOr<void> _onAppInitializeSetup(
     AppInitializationSetupEvent event,
     AppInitializationEmitter emit,
   ) async {
+    // Check if global configuration and state info are not yet fetched
+
     if (GlobalVariables.globalConfigObject == null ||
         GlobalVariables.stateInfoListModel == null) {
       GlobalConfigModel globalConfigModel =
           await GetGlobalConfig().getGlobalConfig();
 
+      // Initialize MDMS registry
       InitMdmsModel result = await mdmsRepository.initMdmsRegistry(
           apiEndPoint: Urls.initServices.mdms,
           tenantId: globalConfigModel.globalConfigs!.stateTenantId.toString(),
@@ -85,6 +86,9 @@ class AppInitializationBloc
           }
         })
       ].toList());
+
+      // Store fetched data locally
+      // Session storage for web, local storage for other platforms
       if (kIsWeb) {
         html.window.sessionStorage['initData'] = jsonEncode(result.toJson());
         html.window.sessionStorage['StateInfo'] = jsonEncode(ss);
@@ -111,6 +115,9 @@ class AppInitializationBloc
         localLanguageData = await storage.read(key: 'languages');
       }
 
+      // Update local variables with fetched data
+      // Initialize digitRowCardItems with languages
+
       if (localInitData != null &&
           localInitData.trim().isNotEmpty &&
           localStateData != null &&
@@ -123,48 +130,30 @@ class AppInitializationBloc
             .toList();
       } else {}
 
-      // await AppLocalizations(
-      //   Locale(
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .first,
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .last),
-      // ).load();
-      localizationBloc.add(LocalizationEvent.onLoadLocalization(
-        module:
-            'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
-        tenantId: initMdmsModelData
-            .commonMastersModel!.stateInfoListModel!.first.code
-            .toString(),
-        locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
-        languages: ss.languages,
-        localizationModules: ss.localizationModules,
-      ));
-      emit(state.copyWith(
+      // Dispatch LocalizationEvent for loading localization data
+      localizationBloc.add(
+        LocalizationEvent.onLoadLocalization(
+          module:
+              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+          tenantId: initMdmsModelData
+              .commonMastersModel!.stateInfoListModel!.first.code
+              .toString(),
+          locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
+          languages: ss.languages,
+          localizationModules: ss.localizationModules,
+        ),
+      );
+      // Emit updated state
+      emit(
+        state.copyWith(
           isInitializationCompleted: true,
           initMdmsModel: initMdmsModelData,
           stateInfoListModel: stateInfoListModel,
-          digitRowCardItems: digitRowCardItems));
-      // await AppLocalizations(
-      //   Locale(
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .first,
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .last),
-      // ).load();
+          digitRowCardItems: digitRowCardItems,
+        ),
+      );
     } else {
+      // State info is already fetched, update language selection
       StateInfoListModel ss = GlobalVariables.stateInfoListModel!.copyWith(
           languages: [
         ...GlobalVariables.stateInfoListModel!.languages!
@@ -176,11 +165,15 @@ class AppInitializationBloc
           }
         })
       ].toList());
+
+      // Store updated language selection
       if (kIsWeb) {
         html.window.sessionStorage['languages'] = jsonEncode(ss.languages);
       } else {
         await storage.write(key: 'languages', value: jsonEncode(ss.languages));
       }
+
+      // Fetch locally stored data
       dynamic localInitData;
       dynamic localStateData;
       dynamic localLanguageData;
@@ -198,6 +191,7 @@ class AppInitializationBloc
           localInitData.trim().isNotEmpty &&
           localStateData != null &&
           localLanguageData != null) {
+        // Update local variables with fetched data
         initMdmsModelData = InitMdmsModel.fromJson(jsonDecode(localInitData));
         stateInfoListModel =
             StateInfoListModel.fromJson(jsonDecode(localStateData));
@@ -206,49 +200,28 @@ class AppInitializationBloc
             .toList();
       } else {}
 
-      // await AppLocalizations(
-      //   Locale(
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .first,
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .last),
-      // ).load();
-
-      localizationBloc.add(LocalizationEvent.onLoadLocalization(
-        module:
-            'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
-        tenantId: initMdmsModelData
-            .commonMastersModel!.stateInfoListModel!.first.code
-            .toString(),
-        locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
-        languages: ss.languages,
-        localizationModules: ss.localizationModules,
-      ));
-
-      emit(state.copyWith(
+      // Dispatch LocalizationEvent for loading localization data
+      localizationBloc.add(
+        LocalizationEvent.onLoadLocalization(
+          module:
+              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+          tenantId: initMdmsModelData
+              .commonMastersModel!.stateInfoListModel!.first.code
+              .toString(),
+          locale: digitRowCardItems!.firstWhere((e) => e.isSelected).value,
+          languages: ss.languages,
+          localizationModules: ss.localizationModules,
+        ),
+      );
+      // Emit updated state
+      emit(
+        state.copyWith(
           isInitializationCompleted: true,
           initMdmsModel: initMdmsModelData,
           stateInfoListModel: stateInfoListModel,
-          digitRowCardItems: digitRowCardItems));
-      // await AppLocalizations(
-      //   Locale(
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .first,
-      //       digitRowCardItems!
-      //           .firstWhere((e) => e.isSelected)
-      //           .value
-      //           .split('_')
-      //           .last),
-      // ).load();
+          digitRowCardItems: digitRowCardItems,
+        ),
+      );
     }
   }
 }
@@ -268,6 +241,4 @@ class AppInitializationState with _$AppInitializationState {
       InitMdmsModel? initMdmsModel,
       StateInfoListModel? stateInfoListModel,
       List<DigitRowCardModel>? digitRowCardItems}) = _AppInitializationState;
-
-  
 }

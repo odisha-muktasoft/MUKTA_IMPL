@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 
-import '../models/localization/localization_model.dart';
 import '../widgets/loaders.dart';
 
 class UnauthenticatedPageWrapper extends StatelessWidget {
@@ -19,7 +18,7 @@ class UnauthenticatedPageWrapper extends StatelessWidget {
           return localeState.maybeWhen(
             orElse: () => Loaders.circularLoader(context),
             loading: () => Loaders.circularLoader(context),
-            loaded: (List<LocalizationMessageModel>? localization, languages,
+            loaded: ( languages,
                 moduleList) {
               return const AutoRouter();
             },

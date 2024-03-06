@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/icons/shg_icons.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -193,8 +194,8 @@ class _SideBar extends State<SideBar> {
                   icon: Icons.logout,
                   onPressed: () {
                     context.read<AppInitializationBloc>().add(
-                        const AppInitializationSetupEvent(
-                            selectedLang: 'en_IN'));
+                         AppInitializationSetupEvent(
+                            selectedLang: LanguageEnum.en_IN.name));
                     context.read<AuthBloc>().add(const AuthLogoutEvent());
                   }),
             ],

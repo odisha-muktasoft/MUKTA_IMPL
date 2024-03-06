@@ -599,7 +599,7 @@ mixin _$LocalizationState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<LocalizationMessageModel>? localization,
+    required TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)
         loaded,
     required TResult Function(String? error) error,
@@ -609,7 +609,7 @@ mixin _$LocalizationState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<LocalizationMessageModel>? localization,
+    TResult? Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult? Function(String? error)? error,
@@ -619,7 +619,7 @@ mixin _$LocalizationState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<LocalizationMessageModel>? localization,
+    TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult Function(String? error)? error,
@@ -716,7 +716,7 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<LocalizationMessageModel>? localization,
+    required TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)
         loaded,
     required TResult Function(String? error) error,
@@ -729,7 +729,7 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<LocalizationMessageModel>? localization,
+    TResult? Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult? Function(String? error)? error,
@@ -742,7 +742,7 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<LocalizationMessageModel>? localization,
+    TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult Function(String? error)? error,
@@ -842,7 +842,7 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<LocalizationMessageModel>? localization,
+    required TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)
         loaded,
     required TResult Function(String? error) error,
@@ -855,7 +855,7 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<LocalizationMessageModel>? localization,
+    TResult? Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult? Function(String? error)? error,
@@ -868,7 +868,7 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<LocalizationMessageModel>? localization,
+    TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult Function(String? error)? error,
@@ -928,10 +928,7 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {List<LocalizationMessageModel>? localization,
-      List<Languages>? languages,
-      List<ModuleStatus>? moduleStatus});
+  $Res call({List<Languages>? languages, List<ModuleStatus>? moduleStatus});
 }
 
 /// @nodoc
@@ -944,15 +941,10 @@ class __$$_LoadedCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? localization = freezed,
     Object? languages = freezed,
     Object? moduleStatus = freezed,
   }) {
     return _then(_$_Loaded(
-      freezed == localization
-          ? _value._localization
-          : localization // ignore: cast_nullable_to_non_nullable
-              as List<LocalizationMessageModel>?,
       freezed == languages
           ? _value._languages
           : languages // ignore: cast_nullable_to_non_nullable
@@ -968,22 +960,11 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  _$_Loaded(final List<LocalizationMessageModel>? localization,
+  _$_Loaded(
       final List<Languages>? languages, final List<ModuleStatus>? moduleStatus)
-      : _localization = localization,
-        _languages = languages,
+      : _languages = languages,
         _moduleStatus = moduleStatus,
         super._();
-
-  final List<LocalizationMessageModel>? _localization;
-  @override
-  List<LocalizationMessageModel>? get localization {
-    final value = _localization;
-    if (value == null) return null;
-    if (_localization is EqualUnmodifiableListView) return _localization;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
 
   final List<Languages>? _languages;
   @override
@@ -1007,7 +988,7 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LocalizationState.loaded(localization: $localization, languages: $languages, moduleStatus: $moduleStatus)';
+    return 'LocalizationState.loaded(languages: $languages, moduleStatus: $moduleStatus)';
   }
 
   @override
@@ -1015,7 +996,6 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LocalizationState.loaded'))
-      ..add(DiagnosticsProperty('localization', localization))
       ..add(DiagnosticsProperty('languages', languages))
       ..add(DiagnosticsProperty('moduleStatus', moduleStatus));
   }
@@ -1026,8 +1006,6 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
             const DeepCollectionEquality()
-                .equals(other._localization, _localization) &&
-            const DeepCollectionEquality()
                 .equals(other._languages, _languages) &&
             const DeepCollectionEquality()
                 .equals(other._moduleStatus, _moduleStatus));
@@ -1036,7 +1014,6 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(_localization),
       const DeepCollectionEquality().hash(_languages),
       const DeepCollectionEquality().hash(_moduleStatus));
 
@@ -1051,12 +1028,12 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<LocalizationMessageModel>? localization,
+    required TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)
         loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(localization, languages, moduleStatus);
+    return loaded(languages, moduleStatus);
   }
 
   @override
@@ -1064,12 +1041,12 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<LocalizationMessageModel>? localization,
+    TResult? Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(localization, languages, moduleStatus);
+    return loaded?.call(languages, moduleStatus);
   }
 
   @override
@@ -1077,14 +1054,14 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<LocalizationMessageModel>? localization,
+    TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(localization, languages, moduleStatus);
+      return loaded(languages, moduleStatus);
     }
     return orElse();
   }
@@ -1128,13 +1105,10 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 }
 
 abstract class _Loaded extends LocalizationState {
-  factory _Loaded(
-      final List<LocalizationMessageModel>? localization,
-      final List<Languages>? languages,
+  factory _Loaded(final List<Languages>? languages,
       final List<ModuleStatus>? moduleStatus) = _$_Loaded;
   _Loaded._() : super._();
 
-  List<LocalizationMessageModel>? get localization;
   List<Languages>? get languages;
   List<ModuleStatus>? get moduleStatus;
   @JsonKey(ignore: true)
@@ -1214,7 +1188,7 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<LocalizationMessageModel>? localization,
+    required TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)
         loaded,
     required TResult Function(String? error) error,
@@ -1227,7 +1201,7 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<LocalizationMessageModel>? localization,
+    TResult? Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult? Function(String? error)? error,
@@ -1240,7 +1214,7 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<LocalizationMessageModel>? localization,
+    TResult Function(
             List<Languages>? languages, List<ModuleStatus>? moduleStatus)?
         loaded,
     TResult Function(String? error)? error,
