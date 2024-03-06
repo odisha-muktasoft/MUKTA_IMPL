@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
@@ -8,10 +10,13 @@ import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../models/employee/mb/filtered_Measures.dart';
+import '../../models/file_store/file_store_model.dart';
 import '../../utils/common_methods.dart';
+import '../../utils/date_formats.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
+import '../../widgets/atoms/digit_timeline.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/workFlowButtonList.dart';
@@ -39,6 +44,7 @@ class _MBDetailPageState extends State<MBDetailPage>
   int sor = 5;
   int nsor = 20;
   int phots = 0;
+  List<DigitTimelineOptions> timeLineAttributes = [];
   @override
   void initState() {
     context.read<MusterGetWorkflowBloc>().add(
@@ -74,6 +80,7 @@ class _MBDetailPageState extends State<MBDetailPage>
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     // return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
     //   builder: (context, state) {
     //     return state.maybeMap(
@@ -144,8 +151,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                               context,
                               widget: CommonButtonCard(g: g),
                             );
-
-                            
                           },
                           // amount: sorprice.toString(),
                           amount: value.data.first.totalAmount!
@@ -335,6 +340,46 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   ),
                           ],
                         ),
+                      ),
+                     
+                      //workflow
+                      BlocBuilder<MusterGetWorkflowBloc,
+                          MusterGetWorkflowState>(
+                        builder: (context, state) {
+                          return state.maybeMap(
+                            orElse: SizedBox.shrink,
+                            loaded: (value) {
+                              final timeLineAttributes = value
+                                  .musterWorkFlowModel!.processInstances!
+                                  .mapIndexed((i, e) => DigitTimelineOptions(
+                                       title: t.translate('CBO_MUSTER_${e.workflowState?.state}'),
+                                        subTitle: DateFormats.getTimeLineDate(
+                                            e.auditDetails?.lastModifiedTime ??
+                                                0),
+                                        isCurrentState: i == 0,
+                                        comments: e.comment,
+                                        documents: e.documents != null
+                                            ? e.documents
+                                                ?.map((d) => FileStoreModel(
+                                                    name: '',
+                                                    fileStoreId: d.documentUid))
+                                                .toList()
+                                            : null,
+                                        assignee: e.assignes?.first.name,
+                                        mobileNumber: e.assignes != null
+                                            ? '+91-${e.assignes?.first.mobileNumber}'
+                                            : null,
+                                      ))
+                                  .toList();
+                              return DigitCard(
+                                child: DigitTimeline(
+                                  timelineOptions: timeLineAttributes,
+                                ),
+                              );
+                              //
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -743,7 +788,6 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 }
-
 
 class CustomTab extends StatelessWidget {
   final String text;

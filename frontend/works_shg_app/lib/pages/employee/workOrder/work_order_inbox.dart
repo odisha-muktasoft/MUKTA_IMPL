@@ -1,19 +1,16 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
-import '../../../blocs/employee/mb/measurement_book.dart';
 import '../../../blocs/employee/work_order/workorder_book.dart';
 import '../../../blocs/localization/app_localization.dart';
 import '../../../utils/common_methods.dart';
 import '../../../widgets/Back.dart';
 import '../../../widgets/SideBar.dart';
-import '../../../widgets/mb/mb_detail_card.dart';
 import '../../../widgets/mb/text_button_underline.dart';
 import '../../../widgets/work_order/work_order_card.dart';
 
