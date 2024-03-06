@@ -3143,7 +3143,7 @@ mixin _$EstimateDetail {
   @JsonKey(name: 'height')
   num? get height => throw _privateConstructorUsedError;
   @JsonKey(name: 'quantity')
-  int? get quantity => throw _privateConstructorUsedError;
+  num? get quantity => throw _privateConstructorUsedError;
   @JsonKey(name: 'isDeduction')
   bool? get isDeduction => throw _privateConstructorUsedError;
   @JsonKey(name: 'isActive')
@@ -3177,7 +3177,7 @@ abstract class $EstimateDetailCopyWith<$Res> {
       @JsonKey(name: 'length') num? length,
       @JsonKey(name: 'width') num? width,
       @JsonKey(name: 'height') num? height,
-      @JsonKey(name: 'quantity') int? quantity,
+      @JsonKey(name: 'quantity') num? quantity,
       @JsonKey(name: 'isDeduction') bool? isDeduction,
       @JsonKey(name: 'isActive') bool? isActive,
       @JsonKey(name: 'amountDetail') List<AmoutDetail>? amountDetails});
@@ -3270,7 +3270,7 @@ class _$EstimateDetailCopyWithImpl<$Res, $Val extends EstimateDetail>
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       isDeduction: freezed == isDeduction
           ? _value.isDeduction
           : isDeduction // ignore: cast_nullable_to_non_nullable
@@ -3309,7 +3309,7 @@ abstract class _$$_EstimateDetailCopyWith<$Res>
       @JsonKey(name: 'length') num? length,
       @JsonKey(name: 'width') num? width,
       @JsonKey(name: 'height') num? height,
-      @JsonKey(name: 'quantity') int? quantity,
+      @JsonKey(name: 'quantity') num? quantity,
       @JsonKey(name: 'isDeduction') bool? isDeduction,
       @JsonKey(name: 'isActive') bool? isActive,
       @JsonKey(name: 'amountDetail') List<AmoutDetail>? amountDetails});
@@ -3400,7 +3400,7 @@ class __$$_EstimateDetailCopyWithImpl<$Res>
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       isDeduction: freezed == isDeduction
           ? _value.isDeduction
           : isDeduction // ignore: cast_nullable_to_non_nullable
@@ -3484,7 +3484,7 @@ class _$_EstimateDetail implements _EstimateDetail {
   final num? height;
   @override
   @JsonKey(name: 'quantity')
-  final int? quantity;
+  final num? quantity;
   @override
   @JsonKey(name: 'isDeduction')
   final bool? isDeduction;
@@ -3606,7 +3606,7 @@ abstract class _EstimateDetail implements EstimateDetail {
       @JsonKey(name: 'height')
           final num? height,
       @JsonKey(name: 'quantity')
-          final int? quantity,
+          final num? quantity,
       @JsonKey(name: 'isDeduction')
           final bool? isDeduction,
       @JsonKey(name: 'isActive')
@@ -3658,7 +3658,7 @@ abstract class _EstimateDetail implements EstimateDetail {
   num? get height;
   @override
   @JsonKey(name: 'quantity')
-  int? get quantity;
+  num? get quantity;
   @override
   @JsonKey(name: 'isDeduction')
   bool? get isDeduction;

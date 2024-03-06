@@ -458,7 +458,7 @@ _$_LineItem _$$_LineItemFromJson(Map<String, dynamic> json) => _$_LineItem(
       tenantId: json['tenantId'] as String?,
       unitRate: (json['unitRate'] as num?)?.toDouble(),
       category: json['category'] as String?,
-      noOfunit: json['noOfunit'] as int?,
+      noOfunit: json['noOfunit'] as num?,
       name: json['name'] as String?,
       status: json['status'] as String?,
       amountBreakups: (json['amountBreakups'] as List<dynamic>?)

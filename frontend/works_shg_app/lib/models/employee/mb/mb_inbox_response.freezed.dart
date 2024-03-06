@@ -5774,7 +5774,7 @@ mixin _$LineItem {
   @JsonKey(name: 'category')
   String? get category => throw _privateConstructorUsedError;
   @JsonKey(name: 'noOfunit')
-  int? get noOfunit => throw _privateConstructorUsedError;
+  num? get noOfunit => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String? get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'status')
@@ -5803,7 +5803,7 @@ abstract class $LineItemCopyWith<$Res> {
       @JsonKey(name: 'tenantId') String? tenantId,
       @JsonKey(name: 'unitRate') double? unitRate,
       @JsonKey(name: 'category') String? category,
-      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'noOfunit') num? noOfunit,
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'amountBreakups') List<AmountBreakup>? amountBreakups,
@@ -5870,7 +5870,7 @@ class _$LineItemCopyWithImpl<$Res, $Val extends LineItem>
       noOfunit: freezed == noOfunit
           ? _value.noOfunit
           : noOfunit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -5918,7 +5918,7 @@ abstract class _$$_LineItemCopyWith<$Res> implements $LineItemCopyWith<$Res> {
       @JsonKey(name: 'tenantId') String? tenantId,
       @JsonKey(name: 'unitRate') double? unitRate,
       @JsonKey(name: 'category') String? category,
-      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'noOfunit') num? noOfunit,
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'amountBreakups') List<AmountBreakup>? amountBreakups,
@@ -5984,7 +5984,7 @@ class __$$_LineItemCopyWithImpl<$Res>
       noOfunit: freezed == noOfunit
           ? _value.noOfunit
           : noOfunit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -6061,7 +6061,7 @@ class _$_LineItem implements _LineItem {
   final String? category;
   @override
   @JsonKey(name: 'noOfunit')
-  final int? noOfunit;
+  final num? noOfunit;
   @override
   @JsonKey(name: 'name')
   final String? name;
@@ -6164,7 +6164,7 @@ abstract class _LineItem implements LineItem {
       @JsonKey(name: 'category')
           final String? category,
       @JsonKey(name: 'noOfunit')
-          final int? noOfunit,
+          final num? noOfunit,
       @JsonKey(name: 'name')
           final String? name,
       @JsonKey(name: 'status')
@@ -6199,7 +6199,7 @@ abstract class _LineItem implements LineItem {
   String? get category;
   @override
   @JsonKey(name: 'noOfunit')
-  int? get noOfunit;
+  num? get noOfunit;
   @override
   @JsonKey(name: 'name')
   String? get name;

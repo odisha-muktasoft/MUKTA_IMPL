@@ -211,7 +211,7 @@ class EstimateDetail with _$EstimateDetail {
           @JsonKey(name: 'length') num? length,
           @JsonKey(name: 'width') num? width,
           @JsonKey(name: 'height') num? height,
-          @JsonKey(name: 'quantity') int? quantity,
+          @JsonKey(name: 'quantity') num? quantity,
           @JsonKey(name: 'isDeduction') bool? isDeduction,
           @JsonKey(name: 'isActive') bool? isActive,
           @JsonKey(name: 'amountDetail') List<AmoutDetail>? amountDetails}) =

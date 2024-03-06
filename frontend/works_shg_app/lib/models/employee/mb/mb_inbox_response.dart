@@ -384,7 +384,7 @@ class LineItem with _$LineItem {
       @JsonKey(name: 'tenantId') String? tenantId,
       @JsonKey(name: 'unitRate') double? unitRate,
       @JsonKey(name: 'category') String? category,
-      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'noOfunit') num? noOfunit,
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'status') String? status,
       @JsonKey(name: 'amountBreakups') List<AmountBreakup>? amountBreakups,

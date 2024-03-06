@@ -261,7 +261,7 @@ _$_EstimateDetail _$$_EstimateDetailFromJson(Map<String, dynamic> json) =>
       length: json['length'] as num?,
       width: json['width'] as num?,
       height: json['height'] as num?,
-      quantity: json['quantity'] as int?,
+      quantity: json['quantity'] as num?,
       isDeduction: json['isDeduction'] as bool?,
       isActive: json['isActive'] as bool?,
       amountDetails: (json['amountDetail'] as List<dynamic>?)

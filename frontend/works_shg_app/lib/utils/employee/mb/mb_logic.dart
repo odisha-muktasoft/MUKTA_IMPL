@@ -85,7 +85,7 @@ class MBLogic {
           length: e.length!=null?e.length!.toInt():0,
           width: e.width!=null?e.width!.toInt():0,
           height: e.height!=null?e.height!.toInt():0,
-          quantity: e.quantity,
+          quantity: e.quantity!=null?e.quantity!.toInt():0,
           isDeduction: e.isDeduction,
         );
 
