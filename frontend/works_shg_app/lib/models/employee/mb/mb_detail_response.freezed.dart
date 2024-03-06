@@ -3131,17 +3131,17 @@ mixin _$EstimateDetail {
   @JsonKey(name: 'unitRate')
   double? get unitRate => throw _privateConstructorUsedError;
   @JsonKey(name: 'noOfunit')
-  int? get noOfunit => throw _privateConstructorUsedError;
+  num? get noOfunit => throw _privateConstructorUsedError;
   @JsonKey(name: 'uom')
   String? get uom => throw _privateConstructorUsedError;
   @JsonKey(name: 'uomValue')
   double? get uomValue => throw _privateConstructorUsedError;
   @JsonKey(name: 'length')
-  int? get length => throw _privateConstructorUsedError;
+  num? get length => throw _privateConstructorUsedError;
   @JsonKey(name: 'width')
-  int? get width => throw _privateConstructorUsedError;
+  num? get width => throw _privateConstructorUsedError;
   @JsonKey(name: 'height')
-  int? get height => throw _privateConstructorUsedError;
+  num? get height => throw _privateConstructorUsedError;
   @JsonKey(name: 'quantity')
   int? get quantity => throw _privateConstructorUsedError;
   @JsonKey(name: 'isDeduction')
@@ -3171,12 +3171,12 @@ abstract class $EstimateDetailCopyWith<$Res> {
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'unitRate') double? unitRate,
-      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'noOfunit') num? noOfunit,
       @JsonKey(name: 'uom') String? uom,
       @JsonKey(name: 'uomValue') double? uomValue,
-      @JsonKey(name: 'length') int? length,
-      @JsonKey(name: 'width') int? width,
-      @JsonKey(name: 'height') int? height,
+      @JsonKey(name: 'length') num? length,
+      @JsonKey(name: 'width') num? width,
+      @JsonKey(name: 'height') num? height,
       @JsonKey(name: 'quantity') int? quantity,
       @JsonKey(name: 'isDeduction') bool? isDeduction,
       @JsonKey(name: 'isActive') bool? isActive,
@@ -3246,7 +3246,7 @@ class _$EstimateDetailCopyWithImpl<$Res, $Val extends EstimateDetail>
       noOfunit: freezed == noOfunit
           ? _value.noOfunit
           : noOfunit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       uom: freezed == uom
           ? _value.uom
           : uom // ignore: cast_nullable_to_non_nullable
@@ -3258,15 +3258,15 @@ class _$EstimateDetailCopyWithImpl<$Res, $Val extends EstimateDetail>
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       width: freezed == width
           ? _value.width
           : width // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -3303,12 +3303,12 @@ abstract class _$$_EstimateDetailCopyWith<$Res>
       @JsonKey(name: 'name') String? name,
       @JsonKey(name: 'description') String? description,
       @JsonKey(name: 'unitRate') double? unitRate,
-      @JsonKey(name: 'noOfunit') int? noOfunit,
+      @JsonKey(name: 'noOfunit') num? noOfunit,
       @JsonKey(name: 'uom') String? uom,
       @JsonKey(name: 'uomValue') double? uomValue,
-      @JsonKey(name: 'length') int? length,
-      @JsonKey(name: 'width') int? width,
-      @JsonKey(name: 'height') int? height,
+      @JsonKey(name: 'length') num? length,
+      @JsonKey(name: 'width') num? width,
+      @JsonKey(name: 'height') num? height,
       @JsonKey(name: 'quantity') int? quantity,
       @JsonKey(name: 'isDeduction') bool? isDeduction,
       @JsonKey(name: 'isActive') bool? isActive,
@@ -3376,7 +3376,7 @@ class __$$_EstimateDetailCopyWithImpl<$Res>
       noOfunit: freezed == noOfunit
           ? _value.noOfunit
           : noOfunit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       uom: freezed == uom
           ? _value.uom
           : uom // ignore: cast_nullable_to_non_nullable
@@ -3388,15 +3388,15 @@ class __$$_EstimateDetailCopyWithImpl<$Res>
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       width: freezed == width
           ? _value.width
           : width // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -3466,7 +3466,7 @@ class _$_EstimateDetail implements _EstimateDetail {
   final double? unitRate;
   @override
   @JsonKey(name: 'noOfunit')
-  final int? noOfunit;
+  final num? noOfunit;
   @override
   @JsonKey(name: 'uom')
   final String? uom;
@@ -3475,13 +3475,13 @@ class _$_EstimateDetail implements _EstimateDetail {
   final double? uomValue;
   @override
   @JsonKey(name: 'length')
-  final int? length;
+  final num? length;
   @override
   @JsonKey(name: 'width')
-  final int? width;
+  final num? width;
   @override
   @JsonKey(name: 'height')
-  final int? height;
+  final num? height;
   @override
   @JsonKey(name: 'quantity')
   final int? quantity;
@@ -3594,17 +3594,17 @@ abstract class _EstimateDetail implements EstimateDetail {
       @JsonKey(name: 'unitRate')
           final double? unitRate,
       @JsonKey(name: 'noOfunit')
-          final int? noOfunit,
+          final num? noOfunit,
       @JsonKey(name: 'uom')
           final String? uom,
       @JsonKey(name: 'uomValue')
           final double? uomValue,
       @JsonKey(name: 'length')
-          final int? length,
+          final num? length,
       @JsonKey(name: 'width')
-          final int? width,
+          final num? width,
       @JsonKey(name: 'height')
-          final int? height,
+          final num? height,
       @JsonKey(name: 'quantity')
           final int? quantity,
       @JsonKey(name: 'isDeduction')
@@ -3640,7 +3640,7 @@ abstract class _EstimateDetail implements EstimateDetail {
   double? get unitRate;
   @override
   @JsonKey(name: 'noOfunit')
-  int? get noOfunit;
+  num? get noOfunit;
   @override
   @JsonKey(name: 'uom')
   String? get uom;
@@ -3649,13 +3649,13 @@ abstract class _EstimateDetail implements EstimateDetail {
   double? get uomValue;
   @override
   @JsonKey(name: 'length')
-  int? get length;
+  num? get length;
   @override
   @JsonKey(name: 'width')
-  int? get width;
+  num? get width;
   @override
   @JsonKey(name: 'height')
-  int? get height;
+  num? get height;
   @override
   @JsonKey(name: 'quantity')
   int? get quantity;
