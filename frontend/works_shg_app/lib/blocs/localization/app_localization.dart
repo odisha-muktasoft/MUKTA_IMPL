@@ -28,31 +28,16 @@ class AppLocalizations {
     // Clear the list before loading localized strings
     localizedStrings.clear();
 
-    // Check if locale is English
-    if (locale == "en") {
-      // Get box for English localization
-      final box = Hive.box<KeyValueModel>('keyValueModel');
-      // Convert values to list
-      final List<KeyValueModel> ll = box.values.toList();
-      if (ll.isNotEmpty) {
-        final localizationList =
-            ll.firstWhere((element) => element.locale == "en_IN");
-        // Add English localized strings to list
-        if (localizationList.localizationsList != null) {
-          localizedStrings.addAll(localizationList.localizationsList!);
-        }
-      }
-    } else {
-      final box = Hive.box<KeyValueModel>('keyValueModel');
-      // Convert values to list
-      final List<KeyValueModel> ll = box.values.toList();
-      if (ll.isNotEmpty) {
-        final localizationList =
-            ll.firstWhere((element) => element.locale == "or_IN");
-        // Add English localized strings to list
-        if (localizationList.localizationsList != null) {
-          localizedStrings.addAll(localizationList.localizationsList!);
-        }
+    // Get box for  localization
+    final box = Hive.box<KeyValueModel>('keyValueModel');
+    // Convert values to list
+    final List<KeyValueModel> ll = box.values.toList();
+    if (ll.isNotEmpty) {
+      final localizationList =
+          ll.firstWhere((element) => element.locale == locale);
+
+      if (localizationList.localizationsList != null) {
+        localizedStrings.addAll(localizationList.localizationsList!);
       }
     }
 
