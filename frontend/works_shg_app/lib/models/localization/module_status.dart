@@ -9,7 +9,7 @@ part 'module_status.g.dart';
 class ModuleStatus with _$ModuleStatus {
 
    factory ModuleStatus({
-    
+    required Map<String,bool> status,
     required bool isEng,
     required String label,
     required String value,
