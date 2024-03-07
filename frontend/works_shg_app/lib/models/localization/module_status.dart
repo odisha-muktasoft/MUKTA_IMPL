@@ -9,10 +9,11 @@ part 'module_status.g.dart';
 class ModuleStatus with _$ModuleStatus {
 
    factory ModuleStatus({
+    
     required bool isEng,
     required String label,
     required String value,
-    required bool isOdia,
+    required bool isOdia,  
   }) = _ModuleStatus;
 
   factory ModuleStatus.fromJson(Map<String, dynamic> json) =>
