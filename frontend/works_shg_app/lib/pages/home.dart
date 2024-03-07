@@ -93,23 +93,7 @@ class _HomePage extends State<HomePage> {
                               'ERROR');
                           context.read<AuthBloc>().add(const AuthLogoutEvent());
                         } else {
-                          // var currLoc = await GlobalVariables.selectedLocale();
-                          // context.read<LocalizationBloc>().add(
-                          //       LocalizationEvent.onLoadLocalization(
-                          //           module: CommonMethods.getLocaleModules(),
-                          //           tenantId: GlobalVariables.globalConfigObject!
-                          //               .globalConfigs!.stateTenantId
-                          //               .toString(),
-                          //           locale: currLoc.toString()),
-                          //  );
-                          // context.read<AppInitializationBloc>().add(
-                          //     AppInitializationSetupEvent(
-                          //         selectedLang: currLoc.toString()));
-                          //TODO: test
-                          // await AppLocalizations(
-                          //   Locale(currLoc.toString().split('_').first,
-                          //       currLoc.toString().split('_').last),
-                          // ).load();
+                          
                         }
                       });
                 },

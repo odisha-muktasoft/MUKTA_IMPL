@@ -9,7 +9,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:works_shg_app/models/localization/module_status.dart';
 import 'package:works_shg_app/services/urls.dart';
-import 'package:works_shg_app/utils/constants.dart';
 
 import '../../data/repositories/remote/localization.dart';
 import '../../data/schema/localization.dart';
@@ -55,7 +54,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
       // Extract selected modules
       final List<String> selectedModule = event.module!.split(',');
 
-// Check if locale is English
+// filter the selected module for fetching the localization data
 
       for (final itemB in selectedModule) {
         final itemAIndex =
@@ -70,12 +69,9 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         }
       }
 
-      // Access Hive box for English localization
+      // Access Hive box for  localization
       final box = Hive.box<KeyValueModel>('keyValueModel');
-      final List<KeyValueModel> localizationList = box.values.toList();
-      // final ll =
-      //       localizationList.firstWhere((element) => element.locale == "en_IN");
-      // Fetch localization data from remote API
+      //final List<KeyValueModel> localizationList = box.values.toList();
 
       LocalizationModel result = await localizationRepository.search(
         url: Urls.initServices.localizationSearch,
@@ -165,7 +161,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             }
           }
 
-          // Access Hive box for English and Odia localizations
+          // Access Hive box for localizations
           final box = Hive.box<KeyValueModel>('keyValueModel');
 
           // Fetch localization data from remote API for selected modules
@@ -179,43 +175,41 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
               },
             );
             // Update Hive box with fetched localization data
-            
-              final List<Localization> newLocalizationList = result.messages
-                  .map((e) => Localization()
-                    ..message = e.message
-                    ..code = e.code
-                    ..locale = e.locale
-                    ..module = e.module)
-                  .toList();
-              final List<KeyValueModel> localizationList = box.values.toList();
-              final ll = localizationList
-                  .firstWhereOrNull((element) => element.locale == event.locale);
 
-              if (ll == null) {
-                KeyValueModel keyValueModel = KeyValueModel()
-                  ..locale = event.locale
-                  ..localizationsList = newLocalizationList;
-                await box.add(keyValueModel);
-              } else {
-                // Add Odia localizations to box
-                //  await odiaBox.addAll(newLocalizationList);
-                for (int i = 0; i < localizationList.length; i++) {
-                  if (localizationList[i].locale == event.locale) {
-                    // Update the desired fields of the object
+            final List<Localization> newLocalizationList = result.messages
+                .map((e) => Localization()
+                  ..message = e.message
+                  ..code = e.code
+                  ..locale = e.locale
+                  ..module = e.module)
+                .toList();
+            final List<KeyValueModel> localizationList = box.values.toList();
+            final ll = localizationList
+                .firstWhereOrNull((element) => element.locale == event.locale);
 
-                    localizationList[i]
-                        .localizationsList!
-                        .addAll(newLocalizationList);
+            if (ll == null) {
+              KeyValueModel keyValueModel = KeyValueModel()
+                ..locale = event.locale
+                ..localizationsList = newLocalizationList;
+              await box.add(keyValueModel);
+            } else {
+              // Add Odia localizations to box
 
-                    // Put the updated list back into the Hive box
-                    box.putAll(
-                        {for (var obj in localizationList) obj.key: obj});
+              for (int i = 0; i < localizationList.length; i++) {
+                if (localizationList[i].locale == event.locale) {
+                  // Update the desired fields of the object
 
-                    break; // Exit the loop since we found and updated the object
-                  }
+                  localizationList[i]
+                      .localizationsList!
+                      .addAll(newLocalizationList);
+
+                  // Put the updated list back into the Hive box
+                  box.putAll({for (var obj in localizationList) obj.key: obj});
+
+                  break; // Exit the loop since we found and updated the object
                 }
               }
-            
+            }
 
             final List codes = event.locale.split('_');
             await _loadLocale(codes, event.locale);
@@ -238,7 +232,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
 
   FutureOr<void> _loadLocale(List codes, String locale) async {
     await AppLocalizations(Locale(codes.first, codes.last))
-        .load(locale: codes.first);
+        .load(locale: "${codes.first}_${codes.last}");
   }
 }
 
