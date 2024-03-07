@@ -155,7 +155,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         setError({message:"",enable:false});
         const clearedTableState = state.map((item) => ({
           ...item,
-          additionalDetails : { ...item?.additionalDetails, measureLineItems: [{number:0,width:0,length:0,height:0, quantity:0, measurelineitemNo:0}]},
+          additionalDetails : mode === "CREATE" && item?.additionalDetails ? { ...item?.additionalDetails, measureLineItems: [{number:0,width:0,length:0,height:0, quantity:0, measurelineitemNo:0}]} : (item?.additionalDetails ? {...item?.additionalDetails} : {}),
           height: 0,
           description : mode === "CREATE" ? item?.description : "",
           width: 0,
