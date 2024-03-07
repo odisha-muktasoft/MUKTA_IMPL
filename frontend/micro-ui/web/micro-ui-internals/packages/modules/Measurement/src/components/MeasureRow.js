@@ -166,7 +166,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
         </td>
       )}
     </tr>
-     {value && value?.additionalDetails?.measureLineItems.length > 0 && value?.additionalDetails?.measureLineItems?.map((ob, idx) => {
+     {value && value?.additionalDetails?.measureLineItems?.length > 0 && value?.additionalDetails?.measureLineItems?.map((ob, idx) => {
       if (idx > 0) {
         return (
           <tr key={`additional_${idx}`}>
