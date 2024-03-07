@@ -124,6 +124,9 @@ class _CreateTimeExtensionRequestPage
                                             .add(Duration(days: int.parse(form
                                             .value[extensionDaysKey].toString())))
                                             .millisecondsSinceEpoch;
+                                    // sorting contracts list based on last modified time 
+                                    // to send the latest conract data for time extention
+                                      contracts?.contracts!.sort((a, b) => b.auditDetails!.lastModifiedTime!.compareTo(a.auditDetails!.lastModifiedTime!)); ;    
                                         context.read<
                                             CreateTimeExtensionRequestBloc>().add(
                                             TimeExtensionRequestEvent(
