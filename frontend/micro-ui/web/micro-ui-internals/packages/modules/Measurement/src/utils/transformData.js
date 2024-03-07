@@ -55,7 +55,7 @@ const getMeasurementFromMeasures = (item, type) => {
       length: parseFloat(measure?.length),
       breadth:parseFloat(measure?.width),
       height: parseFloat(measure?.height),
-      numItems: measure?.number || measure?.noOfunit,
+      numItems: measure?.noOfunit,
       currentValue: measure?.noOfunit,
       description : measure?.description,
       cumulativeValue: 0,
