@@ -98,17 +98,10 @@ void main() async {
       // exit(1); /// to close the app smoothly
     };
 
+    // initialize the hiveBox database
+    await CommonMethods.initilizeHiveBox();
     
-    await Hive.initFlutter();
-
-    Hive.registerAdapter(KeyValueModelAdapter());
-    Hive.registerAdapter(LocalizationAdapter());
-    await Hive.openBox<KeyValueModel>("keyValueModel");
-    await Hive.openBox<Localization>("localization");
-    await Hive.box<KeyValueModel>('keyValueModel').clear();
-    await Hive.box<Localization>('localization').clear();
-    //EnglishLocalizationAdapter
-    //OdiaLocalizationAdapter
+   
 
     if (!kIsWeb) {
       await FlutterDownloader.initialize(
@@ -313,17 +306,7 @@ class _MainApplicationState extends State<MainApplication> {
                   GlobalCupertinoLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
                 ],
-                // localeResolutionCallback: (locale, supportedLocales) {
-                //   for (var supportedLocaleLanguage in supportedLocales) {
-                //     if (supportedLocaleLanguage.languageCode ==
-                //             locale?.languageCode &&
-                //         supportedLocaleLanguage.countryCode ==
-                //             locale?.countryCode) {
-                //       return supportedLocaleLanguage;
-                //     }
-                //   }
-                //   return supportedLocales.first;
-                // },
+               
                 theme: DigitTheme.instance.mobileTheme,
                 scaffoldMessengerKey: scaffoldMessengerKey,
                 routeInformationParser: appRouter.defaultRouteParser(),

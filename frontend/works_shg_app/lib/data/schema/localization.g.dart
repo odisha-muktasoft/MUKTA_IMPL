@@ -6,23 +6,23 @@ part of 'localization.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class KeyValueModelAdapter extends TypeAdapter<KeyValueModel> {
+class KeyLocaleModelAdapter extends TypeAdapter<KeyLocaleModel> {
   @override
   final int typeId = 0;
 
   @override
-  KeyValueModel read(BinaryReader reader) {
+  KeyLocaleModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return KeyValueModel()
+    return KeyLocaleModel()
       ..locale = fields[0] as String?
       ..localizationsList = (fields[1] as List?)?.cast<Localization>();
   }
 
   @override
-  void write(BinaryWriter writer, KeyValueModel obj) {
+  void write(BinaryWriter writer, KeyLocaleModel obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -37,7 +37,7 @@ class KeyValueModelAdapter extends TypeAdapter<KeyValueModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is KeyValueModelAdapter &&
+      other is KeyLocaleModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
