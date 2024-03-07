@@ -42,11 +42,11 @@ class AppLocalizations {
           localizedStrings.addAll(localizationList.localizationsList!);
         }
       }
-      } else {
-        final box = Hive.box<KeyValueModel>('keyValueModel');
+    } else {
+      final box = Hive.box<KeyValueModel>('keyValueModel');
       // Convert values to list
       final List<KeyValueModel> ll = box.values.toList();
-       if (ll.isNotEmpty) {
+      if (ll.isNotEmpty) {
         final localizationList =
             ll.firstWhere((element) => element.locale == "or_IN");
         // Add English localized strings to list
@@ -54,7 +54,6 @@ class AppLocalizations {
           localizedStrings.addAll(localizationList.localizationsList!);
         }
       }
-      
     }
 
     return true;

@@ -40,22 +40,36 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
       emit(const LocalizationState.loading());
       // Create ModuleStatus list based on localization modules
       List<ModuleStatus> module = event.localizationModules!.map((e) {
+        Map<String, bool> languageMap = {};
+        event.languages!.asMap().forEach((index, lang) {
+          languageMap[lang.value] = false;
+        });
         return ModuleStatus(
-            isEng: false, label: e.label, value: e.value, isOdia: false);
+          isEng: false,
+          label: e.label,
+          value: e.value,
+          isOdia: false,
+          status: languageMap,
+        );
       }).toList();
       // Extract selected modules
       final List<String> selectedModule = event.module!.split(',');
 
 // Check if locale is English
-      if (event.locale == LanguageEnum.en_IN.name) {
-        for (final itemB in selectedModule) {
-          final itemAIndex =
-              module.indexWhere((element) => element.value == itemB);
-          if (itemAIndex != -1) {
-            module[itemAIndex] = module[itemAIndex].copyWith(isEng: true);
-          }
+
+      for (final itemB in selectedModule) {
+        final itemAIndex =
+            module.indexWhere((element) => element.value == itemB);
+        if (itemAIndex != -1) {
+          final Map<String, bool> updatedStatus = Map.from(module[itemAIndex]
+              .status); // Make a copy of the existing status map
+          updatedStatus[event.locale] =
+              true; // Update the value for the desired key
+          module[itemAIndex] =
+              module[itemAIndex].copyWith(status: updatedStatus);
         }
-      } else {}
+      }
+
       // Access Hive box for English localization
       final box = Hive.box<KeyValueModel>('keyValueModel');
       final List<KeyValueModel> localizationList = box.values.toList();
@@ -82,7 +96,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           .toList();
       // Add fetched data to Hive box
       KeyValueModel keyValueModel = KeyValueModel()
-        ..locale = "en_IN"
+        ..locale = event.locale
         ..localizationsList = newLocalizationList;
       await box.add(keyValueModel);
 
@@ -126,46 +140,31 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           // Create a copy of selected modules list
           List<String> loopingData = List.from(selectedModule);
           // Update module status based on locale
-          if (event.locale == LanguageEnum.en_IN.name) {
-            for (final itemB in loopingData) {
-              final itemAIndex =
-                  ss!.indexWhere((element) => element.value == itemB);
-              if (itemAIndex != -1) {
-                if (ss![itemAIndex].isEng == true) {
-                  selectedModule.remove(itemB);
-                } else {
-                  final data = ModuleStatus(
-                      isEng: true,
-                      label: value.moduleStatus![itemAIndex].label,
-                      value: value.moduleStatus![itemAIndex].value,
-                      isOdia: value.moduleStatus![itemAIndex].isOdia);
-                  ss.removeAt(itemAIndex);
-                  ss.insert(itemAIndex, data);
-                }
-              }
-            }
-          } else {
-            // Handle non-English locale scenarios
-            for (final itemB in loopingData) {
-              final itemAIndex =
-                  ss!.indexWhere((element) => element.value == itemB);
-              if (itemAIndex != -1) {
-                if (ss![itemAIndex].isOdia == true) {
-                  // Remove already selected Odia modules
-                  selectedModule.remove(itemB);
-                } else {
-                  // Update module status for Odia modules
-                  final data = ModuleStatus(
-                      isEng: value.moduleStatus![itemAIndex].isEng,
-                      label: value.moduleStatus![itemAIndex].label,
-                      value: value.moduleStatus![itemAIndex].value,
-                      isOdia: true);
-                  ss.removeAt(itemAIndex);
-                  ss.insert(itemAIndex, data);
-                }
+          // if (event.locale == LanguageEnum.en_IN.name) {
+          for (final itemB in loopingData) {
+            final itemAIndex =
+                ss!.indexWhere((element) => element.value == itemB);
+            if (itemAIndex != -1) {
+              if (ss![itemAIndex].status[event.locale] == true) {
+                selectedModule.remove(itemB);
+              } else {
+                final Map<String, bool> updatedStatus = Map.from(ss[itemAIndex]
+                    .status); // Make a copy of the existing status map
+                updatedStatus[event.locale] = true;
+
+                final data = ModuleStatus(
+                  isEng: true,
+                  label: value.moduleStatus![itemAIndex].label,
+                  value: value.moduleStatus![itemAIndex].value,
+                  isOdia: value.moduleStatus![itemAIndex].isOdia,
+                  status: updatedStatus,
+                );
+                ss.removeAt(itemAIndex);
+                ss.insert(itemAIndex, data);
               }
             }
           }
+
           // Access Hive box for English and Odia localizations
           final box = Hive.box<KeyValueModel>('keyValueModel');
 
@@ -180,40 +179,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
               },
             );
             // Update Hive box with fetched localization data
-            if (event.locale == LanguageEnum.en_IN.name) {
-              if (result.messages.isNotEmpty) {
-                final List<Localization> newLocalizationList = result.messages
-                    .map((e) => Localization()
-                      ..message = e.message
-                      ..code = e.code
-                      ..locale = e.locale
-                      ..module = e.module)
-                    .toList();
-                // Add English localizations to box
-                final List<KeyValueModel> localizationList =
-                    box.values.toList();
-                final ll = localizationList
-                    .firstWhere((element) => element.locale == "en_IN");
-
-                //await box.addAll(newLocalizationList);
-
-                for (int i = 0; i < localizationList.length; i++) {
-                  if (localizationList[i].locale == "en_IN") {
-                    // Update the desired fields of the object
-
-                    localizationList[i]
-                        .localizationsList!
-                        .addAll(newLocalizationList);
-
-                    // Put the updated list back into the Hive box
-                    box.putAll(
-                        {for (var obj in localizationList) obj.key: obj});
-
-                    break; // Exit the loop since we found and updated the object
-                  }
-                }
-              }
-            } else {
+            
               final List<Localization> newLocalizationList = result.messages
                   .map((e) => Localization()
                     ..message = e.message
@@ -223,18 +189,18 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                   .toList();
               final List<KeyValueModel> localizationList = box.values.toList();
               final ll = localizationList
-                  .firstWhereOrNull((element) => element.locale == "or_IN");
+                  .firstWhereOrNull((element) => element.locale == event.locale);
 
               if (ll == null) {
                 KeyValueModel keyValueModel = KeyValueModel()
-                  ..locale = "or_IN"
+                  ..locale = event.locale
                   ..localizationsList = newLocalizationList;
                 await box.add(keyValueModel);
               } else {
                 // Add Odia localizations to box
                 //  await odiaBox.addAll(newLocalizationList);
                 for (int i = 0; i < localizationList.length; i++) {
-                  if (localizationList[i].locale == "or_IN") {
+                  if (localizationList[i].locale == event.locale) {
                     // Update the desired fields of the object
 
                     localizationList[i]
@@ -249,7 +215,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                   }
                 }
               }
-            }
+            
 
             final List codes = event.locale.split('_');
             await _loadLocale(codes, event.locale);
