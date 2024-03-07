@@ -29,9 +29,9 @@ class AppLocalizations {
     localizedStrings.clear();
 
     // Get box for  localization
-    final box = Hive.box<KeyValueModel>('keyValueModel');
+    final box = Hive.box<KeyLocaleModel>('keyValueModel');
     // Convert values to list
-    final List<KeyValueModel> ll = box.values.toList();
+    final List<KeyLocaleModel> ll = box.values.toList();
     if (ll.isNotEmpty) {
       final localizationList =
           ll.firstWhere((element) => element.locale == locale);

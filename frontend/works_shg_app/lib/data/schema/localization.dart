@@ -2,48 +2,14 @@ import 'package:hive/hive.dart';
 
 part 'localization.g.dart';
 
-// @HiveType(typeId: 0)
-// class EnglishLocalization {
-//   @HiveField(0)
-//   String? code;
-
-//   @HiveField(1)
-//   String? message;
-
-//   @HiveField(2)
-//   String? module;
-
-//   @HiveField(3)
-//   String? locale;
-// }
-
-// @HiveType(typeId: 1)
-// class OdiaLocalization {
-//   @HiveField(0)
-//   String? code;
-
-//   @HiveField(1)
-//   String? message;
-
-//   @HiveField(2)
-//   String? module;
-
-//   @HiveField(3)
-//   String? locale;
-// }
-
-
 @HiveType(typeId: 0)
-class KeyValueModel extends HiveObject {
+class KeyLocaleModel extends HiveObject {
   @HiveField(0)
-   String? locale;
+  String? locale;
 
   @HiveField(1)
-   List<Localization>? localizationsList;
-
-  
+  List<Localization>? localizationsList;
 }
-
 
 @HiveType(typeId: 1)
 class Localization {

@@ -104,17 +104,10 @@ void main() async {
       // exit(1); /// to close the app smoothly
     };
 
+    // initialize the hiveBox database
+    await CommonMethods.initilizeHiveBox();
     
-    await Hive.initFlutter();
-
-    Hive.registerAdapter(KeyValueModelAdapter());
-    Hive.registerAdapter(LocalizationAdapter());
-    await Hive.openBox<KeyValueModel>("keyValueModel");
-    await Hive.openBox<Localization>("localization");
-    await Hive.box<KeyValueModel>('keyValueModel').clear();
-    await Hive.box<Localization>('localization').clear();
-    //EnglishLocalizationAdapter
-    //OdiaLocalizationAdapter
+   
 
     if (!kIsWeb) {
       await FlutterDownloader.initialize(
@@ -324,49 +317,39 @@ class _MainApplicationState extends State<MainApplication> {
                     ? appInitState.digitRowCardItems!.map((e) {
                         final results = e.value.split('_');
 
-                              return results.isNotEmpty
-                                  ? Locale(results.first, results.last)
-                                  : const Locale('en', 'IN');
-                            })
-                          : [],
-                      locale: const Locale('en', 'IN'),
-                      localizationsDelegates:  [
-                        AppLocalizations.getDelegate(widget.isar),
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                      ],
-                      localeResolutionCallback: (locale, supportedLocales) {
-                        for (var supportedLocaleLanguage in supportedLocales) {
-                          if (supportedLocaleLanguage.languageCode ==
-                                  locale?.languageCode &&
-                              supportedLocaleLanguage.countryCode ==
-                                  locale?.countryCode) {
-                            return supportedLocaleLanguage;
-                          }
-                        }
-                        return supportedLocales.first;
-                      },
-                      theme: DigitTheme.instance.mobileTheme,
-                      scaffoldMessengerKey: scaffoldMessengerKey,
-                      routeInformationParser: appRouter.defaultRouteParser(),
-                      routerDelegate: AutoRouterDelegate.declarative(
-                        appRouter,
-                        navigatorObservers: () => [AppRouterObserver()],
-                        routes: (handler) => [
-                          authState.maybeWhen(
-                              initial: () =>
-                                   UnauthenticatedRouteWrapper(isar: widget.isar),
-                              loaded: (UserDetailsModel? userDetailsModel,
-                                      String? accessToken, roleType) =>
-                                  const AuthenticatedRouteWrapper(),
-                              orElse: () => const UnauthenticatedRouteWrapper())
-                        ],
-                      ),
-                    ));
-              })
-            : Container();
-      }),
+                        return results.isNotEmpty
+                            ? Locale(results.first, results.last)
+                            : const Locale('en', 'IN');
+                      })
+                    : [const Locale('en', 'IN')],
+                locale: const Locale('en', 'IN'),
+                localizationsDelegates: [
+                  AppLocalizations.getDelegate(),
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                ],
+               
+                theme: DigitTheme.instance.mobileTheme,
+                scaffoldMessengerKey: scaffoldMessengerKey,
+                routeInformationParser: appRouter.defaultRouteParser(),
+                routerDelegate: AutoRouterDelegate.declarative(
+                  appRouter,
+                  navigatorObservers: () => [AppRouterObserver()],
+                  routes: (handler) => [
+                    authState.maybeWhen(
+                        initial: () => const UnauthenticatedRouteWrapper(),
+                        loaded: (UserDetailsModel? userDetailsModel,
+                                String? accessToken) =>
+                            const AuthenticatedRouteWrapper(),
+                        orElse: () => const UnauthenticatedRouteWrapper())
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

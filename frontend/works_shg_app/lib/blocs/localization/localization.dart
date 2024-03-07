@@ -52,26 +52,24 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         );
       }).toList();
       // Extract selected modules
-      final List<String> selectedModule = event.module!.split(',');
+      final List<String> selectedModules = event.module!.split(',');
 
 // filter the selected module for fetching the localization data
 
-      for (final itemB in selectedModule) {
-        final itemAIndex =
-            module.indexWhere((element) => element.value == itemB);
-        if (itemAIndex != -1) {
-          final Map<String, bool> updatedStatus = Map.from(module[itemAIndex]
-              .status); // Make a copy of the existing status map
+      for (final selectedModule in selectedModules) {
+        final index =
+            module.indexWhere((element) => element.value == selectedModule);
+        if (index != -1) {
+          final Map<String, bool> updatedStatus = Map.from(
+              module[index].status); // Make a copy of the existing status map
           updatedStatus[event.locale] =
               true; // Update the value for the desired key
-          module[itemAIndex] =
-              module[itemAIndex].copyWith(status: updatedStatus);
+          module[index] = module[index].copyWith(status: updatedStatus);
         }
       }
 
       // Access Hive box for  localization
-      final box = Hive.box<KeyValueModel>('keyValueModel');
-      //final List<KeyValueModel> localizationList = box.values.toList();
+      final box = Hive.box<KeyLocaleModel>('keyValueModel');
 
       LocalizationModel result = await localizationRepository.search(
         url: Urls.initServices.localizationSearch,
@@ -82,7 +80,6 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         },
       );
 
-      // var box = Hive.box<KeyValueModel>('keyValueModel');
       final List<Localization> newLocalizationList = result.messages
           .map((e) => Localization()
             ..message = e.message
@@ -91,7 +88,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             ..module = e.module)
           .toList();
       // Add fetched data to Hive box
-      KeyValueModel keyValueModel = KeyValueModel()
+      KeyLocaleModel keyValueModel = KeyLocaleModel()
         ..locale = event.locale
         ..localizationsList = newLocalizationList;
       await box.add(keyValueModel);
@@ -162,44 +159,44 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             }
           }).toList();
 // Extract selected modules from the event
-          final List<String> selectedModule = event.module!.split(',');
+          final List<String> selectedModules = event.module!.split(',');
           // Clone the existing module status list
           List<ModuleStatus> ss = List.from(value.moduleStatus!);
           // Create a copy of selected modules list
-          List<String> loopingData = List.from(selectedModule);
+          List<String> loopingData = List.from(selectedModules);
           // Update module status based on locale
 
-          for (final itemB in loopingData) {
-            final itemAIndex =
-                ss!.indexWhere((element) => element.value == itemB);
-            if (itemAIndex != -1) {
-              if (ss![itemAIndex].status[event.locale] == true) {
-                selectedModule.remove(itemB);
+          for (final selectedModule in loopingData) {
+            final index =
+                ss!.indexWhere((element) => element.value == selectedModule);
+            if (index != -1) {
+              if (ss![index].status[event.locale] == true) {
+                selectedModules.remove(selectedModule);
               } else {
-                final Map<String, bool> updatedStatus = Map.from(ss[itemAIndex]
-                    .status); // Make a copy of the existing status map
+                final Map<String, bool> updatedStatus = Map.from(
+                    ss[index].status); // Make a copy of the existing status map
                 updatedStatus[event.locale] = true;
 
                 final data = ModuleStatus(
-                  label: value.moduleStatus![itemAIndex].label,
-                  value: value.moduleStatus![itemAIndex].value,
+                  label: value.moduleStatus![index].label,
+                  value: value.moduleStatus![index].value,
                   status: updatedStatus,
                 );
-                ss.removeAt(itemAIndex);
-                ss.insert(itemAIndex, data);
+                ss.removeAt(index);
+                ss.insert(index, data);
               }
             }
           }
 
           // Access Hive box for localizations
-          final box = Hive.box<KeyValueModel>('keyValueModel');
+          final box = Hive.box<KeyLocaleModel>('keyValueModel');
 
           // Fetch localization data from remote API for selected modules
-          if (selectedModule.isNotEmpty) {
+          if (selectedModules.isNotEmpty) {
             LocalizationModel result = await localizationRepository.search(
               url: Urls.initServices.localizationSearch,
               queryParameters: {
-                "module": selectedModule.join(",").toString(),
+                "module": selectedModules.join(",").toString(),
                 "locale": event.locale,
                 "tenantId": event.tenantId,
               },
@@ -213,12 +210,12 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                   ..locale = e.locale
                   ..module = e.module)
                 .toList();
-            final List<KeyValueModel> localizationList = box.values.toList();
+            final List<KeyLocaleModel> localizationList = box.values.toList();
             final ll = localizationList
                 .firstWhereOrNull((element) => element.locale == event.locale);
 
             if (ll == null) {
-              KeyValueModel keyValueModel = KeyValueModel()
+              KeyLocaleModel keyValueModel = KeyLocaleModel()
                 ..locale = event.locale
                 ..localizationsList = newLocalizationList;
               await box.add(keyValueModel);

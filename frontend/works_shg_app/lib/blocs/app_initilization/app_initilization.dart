@@ -79,7 +79,7 @@ class AppInitializationBloc
               languages: [
         ...result.commonMastersModel!.stateInfoListModel![0].languages!
             .mapIndexed((i, element) {
-          if (element.value == result.commonMastersModel!.stateInfoListModel![0].languages!.first.value) {
+          if (element.value == result.commonMastersModel!.stateInfoListModel!.first.languages!.first.value) {
             return element.copyWith(isSelected: true);
           } else {
             return element;
