@@ -101,12 +101,12 @@ void main() async {
     
     await Hive.initFlutter();
 
-    Hive.registerAdapter(EnglishLocalizationAdapter());
-    Hive.registerAdapter(OdiaLocalizationAdapter());
-    await Hive.openBox<EnglishLocalization>("englishLocalization");
-    await Hive.openBox<OdiaLocalization>("odiaLocalization");
-    await Hive.box<EnglishLocalization>('englishLocalization').clear();
-    await Hive.box<OdiaLocalization>('odiaLocalization').clear();
+    Hive.registerAdapter(KeyValueModelAdapter());
+    Hive.registerAdapter(LocalizationAdapter());
+    await Hive.openBox<KeyValueModel>("keyValueModel");
+    await Hive.openBox<Localization>("localization");
+    await Hive.box<KeyValueModel>('keyValueModel').clear();
+    await Hive.box<Localization>('localization').clear();
     //EnglishLocalizationAdapter
     //OdiaLocalizationAdapter
 
