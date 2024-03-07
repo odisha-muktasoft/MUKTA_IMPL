@@ -7,16 +7,12 @@ part 'module_status.g.dart';
 
 @freezed
 class ModuleStatus with _$ModuleStatus {
-
-   factory ModuleStatus({
-    required Map<String,bool> status,
-    required bool isEng,
+  factory ModuleStatus({
+    required Map<String, bool> status,
     required String label,
     required String value,
-    required bool isOdia,  
   }) = _ModuleStatus;
 
   factory ModuleStatus.fromJson(Map<String, dynamic> json) =>
       _$ModuleStatusFromJson(json);
 }
-

@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
-
+import '../../services/local_storage.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -9,10 +10,11 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:works_shg_app/models/localization/module_status.dart';
 import 'package:works_shg_app/services/urls.dart';
-
+import 'package:universal_html/html.dart' as html;
 import '../../data/repositories/remote/localization.dart';
 import '../../data/schema/localization.dart';
 import '../../models/app_config/app_config_model.dart';
+import '../../models/init_mdms/init_mdms_model.dart';
 import '../../models/localization/localization_model.dart';
 import 'app_localization.dart';
 
@@ -44,10 +46,8 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           languageMap[lang.value] = false;
         });
         return ModuleStatus(
-          isEng: false,
           label: e.label,
           value: e.value,
-          isOdia: false,
           status: languageMap,
         );
       }).toList();
@@ -116,6 +116,38 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         orElse: () => null,
         loaded: (value) async {
           emit(const LocalizationState.loading());
+          // update the selected locale
+          if (kIsWeb) {
+            List<Languages> languagesList =
+                jsonDecode(html.window.sessionStorage['languages'].toString())
+                    .map<Languages>((e) => Languages.fromJson(e))
+                    .toList();
+
+            html.window.sessionStorage['languages'] =
+                jsonEncode(languagesList.mapIndexed((i, element) {
+              if (element.value == event.locale) {
+                return element.copyWith(isSelected: true);
+              } else {
+                return element.copyWith(isSelected: false);
+              }
+            }).toList());
+          } else {
+            var langStorage = await storage.read(key: 'languages');
+            List<Languages> languagesList = jsonDecode(langStorage.toString())
+                .map<Languages>((e) => Languages.fromJson(e))
+                .toList();
+
+            await storage.write(
+                key: 'languages',
+                value: jsonEncode(languagesList.mapIndexed((i, element) {
+                  if (element.value == event.locale) {
+                    return element.copyWith(isSelected: true);
+                  } else {
+                    return element.copyWith(isSelected: false);
+                  }
+                }).toList()));
+          }
+
           // Generate a list of configured languages with updated selected status
           final List<Languages> configLanguage =
               List.from(value.languages!).map((e) {
@@ -136,7 +168,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           // Create a copy of selected modules list
           List<String> loopingData = List.from(selectedModule);
           // Update module status based on locale
-          // if (event.locale == LanguageEnum.en_IN.name) {
+
           for (final itemB in loopingData) {
             final itemAIndex =
                 ss!.indexWhere((element) => element.value == itemB);
@@ -149,10 +181,8 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
                 updatedStatus[event.locale] = true;
 
                 final data = ModuleStatus(
-                  isEng: true,
                   label: value.moduleStatus![itemAIndex].label,
                   value: value.moduleStatus![itemAIndex].value,
-                  isOdia: value.moduleStatus![itemAIndex].isOdia,
                   status: updatedStatus,
                 );
                 ss.removeAt(itemAIndex);

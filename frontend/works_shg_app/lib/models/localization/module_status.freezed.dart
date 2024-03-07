@@ -21,10 +21,8 @@ ModuleStatus _$ModuleStatusFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ModuleStatus {
   Map<String, bool> get status => throw _privateConstructorUsedError;
-  bool get isEng => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
   String get value => throw _privateConstructorUsedError;
-  bool get isOdia => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,12 +36,7 @@ abstract class $ModuleStatusCopyWith<$Res> {
           ModuleStatus value, $Res Function(ModuleStatus) then) =
       _$ModuleStatusCopyWithImpl<$Res, ModuleStatus>;
   @useResult
-  $Res call(
-      {Map<String, bool> status,
-      bool isEng,
-      String label,
-      String value,
-      bool isOdia});
+  $Res call({Map<String, bool> status, String label, String value});
 }
 
 /// @nodoc
@@ -60,20 +53,14 @@ class _$ModuleStatusCopyWithImpl<$Res, $Val extends ModuleStatus>
   @override
   $Res call({
     Object? status = null,
-    Object? isEng = null,
     Object? label = null,
     Object? value = null,
-    Object? isOdia = null,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as Map<String, bool>,
-      isEng: null == isEng
-          ? _value.isEng
-          : isEng // ignore: cast_nullable_to_non_nullable
-              as bool,
       label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -82,10 +69,6 @@ class _$ModuleStatusCopyWithImpl<$Res, $Val extends ModuleStatus>
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
-      isOdia: null == isOdia
-          ? _value.isOdia
-          : isOdia // ignore: cast_nullable_to_non_nullable
-              as bool,
     ) as $Val);
   }
 }
@@ -98,12 +81,7 @@ abstract class _$$_ModuleStatusCopyWith<$Res>
       __$$_ModuleStatusCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {Map<String, bool> status,
-      bool isEng,
-      String label,
-      String value,
-      bool isOdia});
+  $Res call({Map<String, bool> status, String label, String value});
 }
 
 /// @nodoc
@@ -118,20 +96,14 @@ class __$$_ModuleStatusCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
-    Object? isEng = null,
     Object? label = null,
     Object? value = null,
-    Object? isOdia = null,
   }) {
     return _then(_$_ModuleStatus(
       status: null == status
           ? _value._status
           : status // ignore: cast_nullable_to_non_nullable
               as Map<String, bool>,
-      isEng: null == isEng
-          ? _value.isEng
-          : isEng // ignore: cast_nullable_to_non_nullable
-              as bool,
       label: null == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -140,10 +112,6 @@ class __$$_ModuleStatusCopyWithImpl<$Res>
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as String,
-      isOdia: null == isOdia
-          ? _value.isOdia
-          : isOdia // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
@@ -153,10 +121,8 @@ class __$$_ModuleStatusCopyWithImpl<$Res>
 class _$_ModuleStatus implements _ModuleStatus {
   _$_ModuleStatus(
       {required final Map<String, bool> status,
-      required this.isEng,
       required this.label,
-      required this.value,
-      required this.isOdia})
+      required this.value})
       : _status = status;
 
   factory _$_ModuleStatus.fromJson(Map<String, dynamic> json) =>
@@ -171,17 +137,13 @@ class _$_ModuleStatus implements _ModuleStatus {
   }
 
   @override
-  final bool isEng;
-  @override
   final String label;
   @override
   final String value;
-  @override
-  final bool isOdia;
 
   @override
   String toString() {
-    return 'ModuleStatus(status: $status, isEng: $isEng, label: $label, value: $value, isOdia: $isOdia)';
+    return 'ModuleStatus(status: $status, label: $label, value: $value)';
   }
 
   @override
@@ -190,21 +152,14 @@ class _$_ModuleStatus implements _ModuleStatus {
         (other.runtimeType == runtimeType &&
             other is _$_ModuleStatus &&
             const DeepCollectionEquality().equals(other._status, _status) &&
-            (identical(other.isEng, isEng) || other.isEng == isEng) &&
             (identical(other.label, label) || other.label == label) &&
-            (identical(other.value, value) || other.value == value) &&
-            (identical(other.isOdia, isOdia) || other.isOdia == isOdia));
+            (identical(other.value, value) || other.value == value));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_status),
-      isEng,
-      label,
-      value,
-      isOdia);
+      runtimeType, const DeepCollectionEquality().hash(_status), label, value);
 
   @JsonKey(ignore: true)
   @override
@@ -223,10 +178,8 @@ class _$_ModuleStatus implements _ModuleStatus {
 abstract class _ModuleStatus implements ModuleStatus {
   factory _ModuleStatus(
       {required final Map<String, bool> status,
-      required final bool isEng,
       required final String label,
-      required final String value,
-      required final bool isOdia}) = _$_ModuleStatus;
+      required final String value}) = _$_ModuleStatus;
 
   factory _ModuleStatus.fromJson(Map<String, dynamic> json) =
       _$_ModuleStatus.fromJson;
@@ -234,13 +187,9 @@ abstract class _ModuleStatus implements ModuleStatus {
   @override
   Map<String, bool> get status;
   @override
-  bool get isEng;
-  @override
   String get label;
   @override
   String get value;
-  @override
-  bool get isOdia;
   @override
   @JsonKey(ignore: true)
   _$$_ModuleStatusCopyWith<_$_ModuleStatus> get copyWith =>
