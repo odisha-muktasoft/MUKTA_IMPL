@@ -65,8 +65,7 @@ class SearchIndividualWorkBloc
         await Future.delayed(const Duration(seconds: 1));
         emit(SearchIndividualWorkState.loaded(ContractsModel(
             contracts: contractsModel.contracts
-                ?.where((e) => e.status != Constants.inActive)
-                .toList())));
+                )));
       }
     } on DioError catch (e) {
       emit(SearchIndividualWorkState.error(
