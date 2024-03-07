@@ -103,8 +103,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           html.window.sessionStorage.remove(e.value);
         } else {
           //await storage.delete(key: e.value);
-          await Hive.box<EnglishLocalization>('englishLocalization').clear();
-          await Hive.box<OdiaLocalization>('odiaLocalization').clear();
+          await Hive.box<KeyValueModel>('keyValueModel').clear();
+          await Hive.box<Localization>('localization').clear();
         }
       });
       await AuthRepository(client.init()).logOutUser(

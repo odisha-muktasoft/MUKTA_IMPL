@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:works_shg_app/data/schema/localization.dart';
 
-import '../../data/schema/localization.dart';
 import 'app_localizations_delegate.dart';
 
 class AppLocalizations {
@@ -31,19 +31,30 @@ class AppLocalizations {
     // Check if locale is English
     if (locale == "en") {
       // Get box for English localization
-      final box = Hive.box<EnglishLocalization>('englishLocalization');
+      final box = Hive.box<KeyValueModel>('keyValueModel');
       // Convert values to list
-      final List<EnglishLocalization> localizationList = box.values.toList();
-      // Add English localized strings to list
-      if (localizationList.isNotEmpty) {
-        localizedStrings.addAll(localizationList);
+      final List<KeyValueModel> ll = box.values.toList();
+      if (ll.isNotEmpty) {
+        final localizationList =
+            ll.firstWhere((element) => element.locale == "en_IN");
+        // Add English localized strings to list
+        if (localizationList.localizationsList != null) {
+          localizedStrings.addAll(localizationList.localizationsList!);
+        }
       }
-    } else {
-      final odiaBox = Hive.box<OdiaLocalization>('odiaLocalization');
-      final List<OdiaLocalization> localizationList = odiaBox.values.toList();
-      if (localizationList.isNotEmpty) {
-        localizedStrings.addAll(localizationList);
+      } else {
+        final box = Hive.box<KeyValueModel>('keyValueModel');
+      // Convert values to list
+      final List<KeyValueModel> ll = box.values.toList();
+       if (ll.isNotEmpty) {
+        final localizationList =
+            ll.firstWhere((element) => element.locale == "or_IN");
+        // Add English localized strings to list
+        if (localizationList.localizationsList != null) {
+          localizedStrings.addAll(localizationList.localizationsList!);
+        }
       }
+      
     }
 
     return true;
