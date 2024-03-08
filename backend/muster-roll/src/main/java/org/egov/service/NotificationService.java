@@ -9,9 +9,11 @@ import org.egov.kafka.MusterRollProducer;
 import org.egov.util.LocalizationUtil;
 import org.egov.util.NotificationUtil;
 import org.egov.web.models.MusterRollRequest;
+import org.egov.web.models.WorksSmsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.egov.util.MusterRollServiceConstants.*;
@@ -46,18 +48,50 @@ public class NotificationService {
                 Map<String, String> cboDetails = notificationUtil.getCBOContactPersonDetails(musterRollRequest);
                 String amount = notificationUtil.getExpenseAmount(musterRollRequest);
 
-                String message = null;
+                String localisationCode = null;
                 String contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
             if (musterRollRequest.getWorkflow().getAction().equalsIgnoreCase(WF_SEND_BACK_TO_CBO_CODE)) {
-                message = getMessage(musterRollRequest, CBO_NOTIFICATION_FOR_CORRECTION_LOCALIZATION_CODE);
+                localisationCode = CBO_NOTIFICATION_FOR_CORRECTION_LOCALIZATION_CODE;
             } else if (musterRollRequest.getWorkflow().getAction().equalsIgnoreCase(WF_APPROVE_CODE)) {
-                message = getMessage(musterRollRequest, CBO_NOTIFICATION_OF_APPROVAL_LOCALIZATION_CODE);
+                localisationCode = CBO_NOTIFICATION_OF_APPROVAL_LOCALIZATION_CODE;
             }
-            musterRollRequest.getMusterRoll().getMusterRollNumber();
 
-            String customizedMessage = buildMessageReplaceVariables(message, musterRollRequest.getMusterRoll().getMusterRollNumber(), amount);
-            SMSRequest smsRequest = SMSRequest.builder().mobileNumber(contactMobileNumber).message(customizedMessage).build();
+            String message = getMessage(musterRollRequest, localisationCode);
 
+            message = buildMessageReplaceVariables(message, musterRollRequest.getMusterRoll().getMusterRollNumber(), amount);
+
+            Map<String, Object> additionalField=new HashMap<>();
+
+//        Set additional field if required
+            if(config.isAdditonalFieldRequired()){
+                setAdditionalFields(musterRollRequest,localisationCode, additionalField);
+            }
+            Map<String, String> smsDetails = new HashMap<>();
+            smsDetails.put("mobileNumber", contactMobileNumber);
+
+//      Create Sms request and push to the kafka topic based on additional field
+            checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        }
+    }
+
+    private void setAdditionalFields(MusterRollRequest request, String localizationCode,Map<String, Object> additionalField ){
+        additionalField.put("templateCode",localizationCode);
+        additionalField.put("requestInfo",request.getRequestInfo());
+        additionalField.put("tenantId",request.getMusterRoll().getTenantId());
+
+    }
+
+    private void checkAdditionalFieldAndPushONSmsTopic( String customizedMessage , Map<String, Object> additionalField,Map<String,String> smsDetails){
+
+        if(!additionalField.isEmpty()){
+            WorksSmsRequest smsRequest=WorksSmsRequest.builder().message(customizedMessage).additionalFields(additionalField)
+                    .mobileNumber(smsDetails.get("mobileNumber")).build();
+            log.info("SMS message with additonal fields:::::" + smsRequest.toString());
+            musterRollProducer.push(config.getMuktaNotificationTopic(), smsRequest);
+
+        }else{
+            SMSRequest smsRequest = SMSRequest.builder().mobileNumber(smsDetails.get("mobileNumber")).message(customizedMessage).build();
+            log.info("SMS message without Additonal Fields:::::" + smsRequest.toString());
             musterRollProducer.push(config.getSmsNotificationTopic(), smsRequest);
         }
     }
