@@ -26,16 +26,25 @@ class MBLogic {
           measures: e.measures?.map((e) {
             FilteredMeasurementsMeasure filteredMeasurementsMeasure =
                 FilteredMeasurementsMeasure(
-                  mbAmount: e.measureAdditionalDetails?.mbAmount,
-                  type: e.measureAdditionalDetails?.type,
-                    length: e.length,
-                    breath: e.breadth,
-                    height: e.height,
-                    numItems: e.numItems,
-                    currentValue: e.currentValue,
-                    cumulativeValue: e.cumulativeValue,
-                    tenantId: e.targetId,
-                    contracts: getContract(e.targetId!, mbDetailResponse));
+              mbAmount: e.measureAdditionalDetails?.mbAmount,
+              type: e.measureAdditionalDetails?.type,
+              length: e.length,
+              breath: e.breadth,
+              height: e.height,
+              numItems: e.numItems,
+              currentValue: e.currentValue,
+              cumulativeValue: e.cumulativeValue,
+              tenantId: e.targetId,
+              contracts: getContract(
+                e.targetId!,
+                mbDetailResponse,
+              ),
+              measureLineItems: e.measureAdditionalDetails != null
+                  ? e.measureAdditionalDetails!.measureLineItems != null
+                      ? e.measureAdditionalDetails!.measureLineItems!
+                      : null
+                  : null,
+            );
 
             return filteredMeasurementsMeasure;
           }).toList());
@@ -80,12 +89,12 @@ class MBLogic {
           name: e.name,
           description: e.description,
           unitRate: e.unitRate,
-          noOfunit: e.noOfunit!=null?e.noOfunit!.toInt():0,
+          noOfunit: e.noOfunit != null ? e.noOfunit!.toInt() : 0,
           uom: e.uom,
-          length: e.length!=null?e.length!.toInt():0,
-          width: e.width!=null?e.width!.toInt():0,
-          height: e.height!=null?e.height!.toInt():0,
-          quantity: e.quantity!=null?e.quantity!.toInt():0,
+          length: e.length != null ? e.length!.toInt() : 0,
+          width: e.width != null ? e.width!.toInt() : 0,
+          height: e.height != null ? e.height!.toInt() : 0,
+          quantity: e.quantity != null ? e.quantity!.toInt() : 0,
           isDeduction: e.isDeduction,
         );
 
@@ -111,7 +120,7 @@ class MBLogic {
     }
 
     List<SorObject> listSors = [];
-     List<SorObject> listNonSors = [];
+    List<SorObject> listNonSors = [];
 
     bool isObjectExists(String objectId) {
       return listSors.any((obj) => obj.sorId == objectId);
@@ -120,7 +129,6 @@ class MBLogic {
     void addObjectOrModify(
         String objectId, FilteredMeasurementsMeasure newobj, String type) {
       if (type == "NonSOR") {
-
         if (isObjectExists(objectId)) {
           SorObject existingObject =
               listNonSors.firstWhere((obj) => obj.sorId == objectId);
@@ -135,7 +143,6 @@ class MBLogic {
             ),
           );
         }
-
       } else {
         if (isObjectExists(objectId)) {
           SorObject existingObject =
@@ -160,16 +167,15 @@ class MBLogic {
       addObjectOrModify(mValue, obj, "SOR");
     }
 //get nonSors
-   
 
-     for (var obj in nonSor) {
+    for (var obj in nonSor) {
       String mValue = obj!.contracts!.first.estimates!.first.sorId!;
 
       addObjectOrModify(mValue, obj, "NonSOR");
     }
 
 //
-    return [listSors,listNonSors];
+    return [listSors, listNonSors];
   }
 }
 

@@ -1,6 +1,7 @@
 //filtered_Measures
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
 
 part 'filtered_Measures.freezed.dart';
 part 'filtered_Measures.g.dart';
@@ -45,7 +46,7 @@ class FilteredMeasurementsMeasure with _$FilteredMeasurementsMeasure {
     String? tenantId,
     double? mbAmount,
     String? type,
-    
+     List<MeasureLineItem>? measureLineItems,
 
     List<FilteredMeasurementsContract>? contracts
   }) = _FilteredMeasurementsMeasure;

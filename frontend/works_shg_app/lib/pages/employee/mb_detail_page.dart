@@ -352,7 +352,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               final timeLineAttributes = value
                                   .musterWorkFlowModel!.processInstances!
                                   .mapIndexed((i, e) => DigitTimelineOptions(
-                                       title: t.translate('CBO_MUSTER_${e.workflowState?.state}'),
+                                       title: t.translate('${e.workflowState?.state}'),
                                         subTitle: DateFormats.getTimeLineDate(
                                             e.auditDetails?.lastModifiedTime ??
                                                 0),

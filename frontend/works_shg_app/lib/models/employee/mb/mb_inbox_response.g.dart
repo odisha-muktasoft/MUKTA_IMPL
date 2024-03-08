@@ -302,6 +302,9 @@ _$_MeasureAdditionalDetails _$$_MeasureAdditionalDetailsFromJson(
     _$_MeasureAdditionalDetails(
       type: json['type'] as String?,
       mbAmount: (json['mbAmount'] as num?)?.toDouble(),
+      measureLineItems: (json['measureLineItems'] as List<dynamic>?)
+          ?.map((e) => MeasureLineItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_MeasureAdditionalDetailsToJson(
@@ -309,6 +312,27 @@ Map<String, dynamic> _$$_MeasureAdditionalDetailsToJson(
     <String, dynamic>{
       'type': instance.type,
       'mbAmount': instance.mbAmount,
+      'measureLineItems': instance.measureLineItems,
+    };
+
+_$_MeasureLineItem _$$_MeasureLineItemFromJson(Map<String, dynamic> json) =>
+    _$_MeasureLineItem(
+      type: json['width'] as num?,
+      mbAmount: json['height'] as num?,
+      length: json['length'] as num?,
+      number: json['number'],
+      quantity: json['quantity'] as num?,
+      measurelineitemNo: json['measurelineitemNo'] as num?,
+    );
+
+Map<String, dynamic> _$$_MeasureLineItemToJson(_$_MeasureLineItem instance) =>
+    <String, dynamic>{
+      'width': instance.type,
+      'height': instance.mbAmount,
+      'length': instance.length,
+      'number': instance.number,
+      'quantity': instance.quantity,
+      'measurelineitemNo': instance.measurelineitemNo,
     };
 
 _$_Contract _$$_ContractFromJson(Map<String, dynamic> json) => _$_Contract(

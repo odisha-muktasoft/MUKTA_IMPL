@@ -234,12 +234,30 @@ class MeasureAdditionalDetails with _$MeasureAdditionalDetails {
   const factory MeasureAdditionalDetails({
     @JsonKey(name: 'type') String? type,
     @JsonKey(name: 'mbAmount') double? mbAmount,
+    @JsonKey(name: "measureLineItems") List<MeasureLineItem>? measureLineItems,
   }) = _MeasureAdditionalDetails;
 
   factory MeasureAdditionalDetails.fromJson(
     Map<String, dynamic> json,
   ) =>
       _$MeasureAdditionalDetailsFromJson(json);
+}
+
+@freezed
+class MeasureLineItem with _$MeasureLineItem {
+  const factory MeasureLineItem({
+    @JsonKey(name: 'width') num? type,
+    @JsonKey(name: 'height') num? mbAmount,
+    @JsonKey(name: "length") num? length,
+    @JsonKey(name:'number') dynamic number,
+    @JsonKey(name: 'quantity') num? quantity,
+    @JsonKey(name:'measurelineitemNo') num? measurelineitemNo,
+  }) = _MeasureLineItem;
+
+  factory MeasureLineItem.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$MeasureLineItemFromJson(json);
 }
 
 @freezed

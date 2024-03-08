@@ -57,6 +57,9 @@ _$_FilteredMeasurementsMeasure _$$_FilteredMeasurementsMeasureFromJson(
       tenantId: json['tenantId'] as String?,
       mbAmount: (json['mbAmount'] as num?)?.toDouble(),
       type: json['type'] as String?,
+      measureLineItems: (json['measureLineItems'] as List<dynamic>?)
+          ?.map((e) => MeasureLineItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
       contracts: (json['contracts'] as List<dynamic>?)
           ?.map((e) =>
               FilteredMeasurementsContract.fromJson(e as Map<String, dynamic>))
@@ -75,6 +78,7 @@ Map<String, dynamic> _$$_FilteredMeasurementsMeasureToJson(
       'tenantId': instance.tenantId,
       'mbAmount': instance.mbAmount,
       'type': instance.type,
+      'measureLineItems': instance.measureLineItems,
       'contracts': instance.contracts,
     };
 

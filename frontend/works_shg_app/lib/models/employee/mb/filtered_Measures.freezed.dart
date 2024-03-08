@@ -446,6 +446,8 @@ mixin _$FilteredMeasurementsMeasure {
   String? get tenantId => throw _privateConstructorUsedError;
   double? get mbAmount => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
+  List<MeasureLineItem>? get measureLineItems =>
+      throw _privateConstructorUsedError;
   List<FilteredMeasurementsContract>? get contracts =>
       throw _privateConstructorUsedError;
 
@@ -473,6 +475,7 @@ abstract class $FilteredMeasurementsMeasureCopyWith<$Res> {
       String? tenantId,
       double? mbAmount,
       String? type,
+      List<MeasureLineItem>? measureLineItems,
       List<FilteredMeasurementsContract>? contracts});
 }
 
@@ -499,6 +502,7 @@ class _$FilteredMeasurementsMeasureCopyWithImpl<$Res,
     Object? tenantId = freezed,
     Object? mbAmount = freezed,
     Object? type = freezed,
+    Object? measureLineItems = freezed,
     Object? contracts = freezed,
   }) {
     return _then(_value.copyWith(
@@ -538,6 +542,10 @@ class _$FilteredMeasurementsMeasureCopyWithImpl<$Res,
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
+      measureLineItems: freezed == measureLineItems
+          ? _value.measureLineItems
+          : measureLineItems // ignore: cast_nullable_to_non_nullable
+              as List<MeasureLineItem>?,
       contracts: freezed == contracts
           ? _value.contracts
           : contracts // ignore: cast_nullable_to_non_nullable
@@ -565,6 +573,7 @@ abstract class _$$_FilteredMeasurementsMeasureCopyWith<$Res>
       String? tenantId,
       double? mbAmount,
       String? type,
+      List<MeasureLineItem>? measureLineItems,
       List<FilteredMeasurementsContract>? contracts});
 }
 
@@ -590,6 +599,7 @@ class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
     Object? tenantId = freezed,
     Object? mbAmount = freezed,
     Object? type = freezed,
+    Object? measureLineItems = freezed,
     Object? contracts = freezed,
   }) {
     return _then(_$_FilteredMeasurementsMeasure(
@@ -629,6 +639,10 @@ class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
+      measureLineItems: freezed == measureLineItems
+          ? _value._measureLineItems
+          : measureLineItems // ignore: cast_nullable_to_non_nullable
+              as List<MeasureLineItem>?,
       contracts: freezed == contracts
           ? _value._contracts
           : contracts // ignore: cast_nullable_to_non_nullable
@@ -650,8 +664,10 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
       this.tenantId,
       this.mbAmount,
       this.type,
+      final List<MeasureLineItem>? measureLineItems,
       final List<FilteredMeasurementsContract>? contracts})
-      : _contracts = contracts;
+      : _measureLineItems = measureLineItems,
+        _contracts = contracts;
 
   factory _$_FilteredMeasurementsMeasure.fromJson(Map<String, dynamic> json) =>
       _$$_FilteredMeasurementsMeasureFromJson(json);
@@ -674,6 +690,17 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
   final double? mbAmount;
   @override
   final String? type;
+  final List<MeasureLineItem>? _measureLineItems;
+  @override
+  List<MeasureLineItem>? get measureLineItems {
+    final value = _measureLineItems;
+    if (value == null) return null;
+    if (_measureLineItems is EqualUnmodifiableListView)
+      return _measureLineItems;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   final List<FilteredMeasurementsContract>? _contracts;
   @override
   List<FilteredMeasurementsContract>? get contracts {
@@ -686,7 +713,7 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
 
   @override
   String toString() {
-    return 'FilteredMeasurementsMeasure(length: $length, breath: $breath, height: $height, numItems: $numItems, currentValue: $currentValue, cumulativeValue: $cumulativeValue, tenantId: $tenantId, mbAmount: $mbAmount, type: $type, contracts: $contracts)';
+    return 'FilteredMeasurementsMeasure(length: $length, breath: $breath, height: $height, numItems: $numItems, currentValue: $currentValue, cumulativeValue: $cumulativeValue, tenantId: $tenantId, mbAmount: $mbAmount, type: $type, measureLineItems: $measureLineItems, contracts: $contracts)';
   }
 
   @override
@@ -709,6 +736,8 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
                 other.mbAmount == mbAmount) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality()
+                .equals(other._measureLineItems, _measureLineItems) &&
+            const DeepCollectionEquality()
                 .equals(other._contracts, _contracts));
   }
 
@@ -725,6 +754,7 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
       tenantId,
       mbAmount,
       type,
+      const DeepCollectionEquality().hash(_measureLineItems),
       const DeepCollectionEquality().hash(_contracts));
 
   @JsonKey(ignore: true)
@@ -754,6 +784,7 @@ abstract class _FilteredMeasurementsMeasure
           final String? tenantId,
           final double? mbAmount,
           final String? type,
+          final List<MeasureLineItem>? measureLineItems,
           final List<FilteredMeasurementsContract>? contracts}) =
       _$_FilteredMeasurementsMeasure;
 
@@ -778,6 +809,8 @@ abstract class _FilteredMeasurementsMeasure
   double? get mbAmount;
   @override
   String? get type;
+  @override
+  List<MeasureLineItem>? get measureLineItems;
   @override
   List<FilteredMeasurementsContract>? get contracts;
   @override
