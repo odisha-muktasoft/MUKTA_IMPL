@@ -157,7 +157,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
     projectName,
     projectDesc,
     projectLocation,
-    sanctionDate: Digit.DateUtils.ConvertEpochToDate(issueDate),
+    sanctionDate:issueDate ?  Digit.DateUtils.ConvertEpochToDate(issueDate) : Digit.DateUtils.ConvertEpochToDate(estimate?.proposalDate),
     musterRollNo: musterRoll,
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
