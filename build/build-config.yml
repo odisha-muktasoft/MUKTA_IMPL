@@ -151,6 +151,12 @@ config:
         dockerfile: frontend/works_shg_app/docker/Dockerfile
         image-name: works-shg-app
 
+  - name: builds/mukta_impl/frontend/micro-ui/works-ui
+    build:
+      - work-dir: frontend/micro-ui/
+        dockerfile: frontend/micro-ui/web/docker/Dockerfile
+        image-name: mukta-works-ui      
+
 # utilities
   - name: "builds/mukta_impl/utilities/works-pdf"
     build:
@@ -213,5 +219,7 @@ config:
         image-name: "ifms-adapter"
       - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
         image-name: "ifms-adapter-db"      
+
+        
 
         
