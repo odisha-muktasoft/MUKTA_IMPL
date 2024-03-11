@@ -57,61 +57,46 @@ class MeasurementDetailBloc
       List<List<SorObject>> sorList = MBLogic.getSors(data);
 
       // experiment
-MBDetailResponse sa=MBDetailResponse(
-  measurement: Measurement(
-    id: data.first.id,
-    tenantId: data.first.tenantId,
-    measurementNumber: data.first.mbNumber,
-    physicalRefNumber: data.first.physicalRefNumber,
-    referenceId: data.first.referenceId,
-    entryDate: data.first.endDate,
-    isActive: true,
-    wfStatus: data.first.wfStatus,
-    workflow: const WorkFlow(
-      action: "SAVE_AS_DRAFT",
-    ),
-additionalDetail: MeasurementAdditionalDetail(
-  endDate: data.first.endDate,
-  sorAmount: data.first.totalSorAmount,
-  nonSorAmount: data.first.totalNorSorAmount,
-  startDate: data.first.startDate,
-  musterRollNumber: [data.first.musterRollNumber.toString()],
-  totalAmount: data.first.totalAmount,
-),
-// measures: data.first.measures?.map((e) {
+      // MBDetailResponse sa = MBDetailResponse(
+      //   measurement: Measurement(
+      //     id: data.first.id,
+      //     tenantId: data.first.tenantId,
+      //     measurementNumber: data.first.mbNumber,
+      //     physicalRefNumber: data.first.physicalRefNumber,
+      //     referenceId: data.first.referenceId,
+      //     entryDate: data.first.endDate,
+      //     isActive: true,
+      //     wfStatus: data.first.wfStatus,
+      //     workflow: const WorkFlow(
+      //       action: "SAVE_AS_DRAFT",
+      //     ),
+      //     additionalDetail: MeasurementAdditionalDetail(
+      //       endDate: data.first.endDate,
+      //       sorAmount: data.first.totalSorAmount,
+      //       nonSorAmount: data.first.totalNorSorAmount,
+      //       startDate: data.first.startDate,
+      //       musterRollNumber: [data.first.musterRollNumber.toString()],
+      //       totalAmount: data.first.totalAmount,
+      //     ),
+      //     measures: MBLogic.getList(
+      //       sorList.expand((element) => element).toList(),
+      //     ),
+      //   ),
+      // );
 
-//   return Measure(
-//     description: e.contracts?.first.estimates?.first.description,
-//     comments: null,
-//     targetId: e.targetId,
-//     breadth: e.breath,
-//     length: e.length,
-//     height: e.height,
-//     isActive: e.isActive,
-//     referenceId: data.first.referenceId,
-//     numItems: e.numItems,
-//     id: e.id,
-//     cumulativeValue: e.cumulativeValue,
-//     currentValue: e.currentValue,
-//     measureAdditionalDetails: MeasureAdditionalDetails(
-//       type: e.type,
-//       mbAmount: e.mbAmount,
-//       measureLineItems: e.measureLineItems,
-//     )
-
-//   );
-// }).toList()
-
-measures: MBLogic.getList(sorList.expand((element) => element).toList())
-  )
-);
-
-print(sa.measurement.toString());
-
+      MBDetailResponse kkk =
+          MBLogic.getMbPayloadUpdate(data: data, sorList: sorList);
+      print(kkk.measurement.toString());
 
       //
-      emit(MeasurementDetailState.loaded(
-          res.allMeasurements!.first!, data, sorList.first, sorList.last));
+      emit(
+        MeasurementDetailState.loaded(
+          res.allMeasurements!.first!,
+          data,
+          sorList.first,
+          sorList.last,
+        ),
+      );
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));

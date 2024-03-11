@@ -12,7 +12,7 @@ class MBLogic {
 
     final data = allMeasurements.map((e) {
       FilteredMeasurements datak = FilteredMeasurements(
-        id: e.id,
+          id: e.id,
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
@@ -186,36 +186,72 @@ class MBLogic {
 
   // to get
 
-  static List<Measure> getList(List<SorObject> sorObjects){
+  static List<Measure> getList(List<SorObject> sorObjects) {
+    List<Measure> measureList = [];
 
- List<Measure> measureList = [];
-
-  for (SorObject sorObject in sorObjects) {
-    for (FilteredMeasurementsMeasure measure in sorObject.filteredMeasurementsMeasure) {
-      measureList.add(Measure(
-        description: measure.contracts?.first.estimates?.first.description,
-        comments: null, // You can set comments to the appropriate value if available
-        targetId: measure.targetId,
-        breadth: measure.breath,
-        length: measure.length,
-        height: measure.height,
-        isActive: measure.isActive,
-        referenceId: measure.referenceId,
-        numItems: measure.numItems,
-        id: measure.id,
-        cumulativeValue: measure.cumulativeValue,
-        currentValue: measure.currentValue,
-        measureAdditionalDetails: MeasureAdditionalDetails(
-          type: measure.type,
-          mbAmount: measure.mbAmount,
-          measureLineItems: measure.measureLineItems,
-        ),
-      ));
+    for (SorObject sorObject in sorObjects) {
+      for (FilteredMeasurementsMeasure measure
+          in sorObject.filteredMeasurementsMeasure) {
+        measureList.add(Measure(
+          description: measure.contracts?.first.estimates?.first.description,
+          comments:
+              null, // You can set comments to the appropriate value if available
+          targetId: measure.targetId,
+          breadth: measure.breath,
+          length: measure.length,
+          height: measure.height,
+          isActive: measure.isActive,
+          referenceId: measure.referenceId,
+          numItems: measure.numItems,
+          id: measure.id,
+          cumulativeValue: measure.cumulativeValue,
+          currentValue: measure.currentValue,
+          measureAdditionalDetails: MeasureAdditionalDetails(
+            type: measure.type,
+            mbAmount: measure.mbAmount,
+            measureLineItems: measure.measureLineItems,
+          ),
+        ));
+      }
     }
+
+    return measureList;
   }
 
-  return measureList;
+// form payload for update MB
 
+  static MBDetailResponse getMbPayloadUpdate({
+    required List<FilteredMeasurements> data,
+    required List<List<SorObject>> sorList,
+  }) {
+    MBDetailResponse sa = MBDetailResponse(
+      measurement: Measurement(
+        id: data.first.id,
+        tenantId: data.first.tenantId,
+        measurementNumber: data.first.mbNumber,
+        physicalRefNumber: data.first.physicalRefNumber,
+        referenceId: data.first.referenceId,
+        entryDate: data.first.endDate,
+        isActive: true,
+        wfStatus: data.first.wfStatus,
+        workflow: const WorkFlow(
+          action: "SAVE_AS_DRAFT",
+        ),
+        additionalDetail: MeasurementAdditionalDetail(
+          endDate: data.first.endDate,
+          sorAmount: data.first.totalSorAmount,
+          nonSorAmount: data.first.totalNorSorAmount,
+          startDate: data.first.startDate,
+          musterRollNumber: [data.first.musterRollNumber.toString()],
+          totalAmount: data.first.totalAmount,
+        ),
+        measures: MBLogic.getList(
+          sorList.expand((element) => element).toList(),
+        ),
+      ),
+    );
+
+    return sa;
   }
 }
 
