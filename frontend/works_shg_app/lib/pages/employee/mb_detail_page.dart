@@ -301,9 +301,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         const NeverScrollableScrollPhysics(),
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      // final key =
-                                      //     value.data.keys.elementAt(index);
-                                      // final valuel = value.data[key]!;
                                       return sorCard(index,
                                           magic: value.sor![index]
                                               .filteredMeasurementsMeasure);
@@ -341,7 +338,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           ],
                         ),
                       ),
-                     
+
                       //workflow
                       BlocBuilder<MusterGetWorkflowBloc,
                           MusterGetWorkflowState>(
@@ -352,7 +349,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                               final timeLineAttributes = value
                                   .musterWorkFlowModel!.processInstances!
                                   .mapIndexed((i, e) => DigitTimelineOptions(
-                                       title: t.translate('${e.workflowState?.state}'),
+                                        title: t.translate(
+                                            '${e.workflowState?.state}'),
                                         subTitle: DateFormats.getTimeLineDate(
                                             e.auditDetails?.lastModifiedTime ??
                                                 0),

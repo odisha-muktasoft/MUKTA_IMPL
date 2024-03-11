@@ -21,6 +21,7 @@ class FilteredMeasurements with _$FilteredMeasurements {
     int? entryDate,
     String? referenceId,
     String? id,
+    String? physicalRefNumber,
 
     List<FilteredMeasurementsMeasure>? measures
   }) = _FilteredMeasurements;
@@ -46,6 +47,10 @@ class FilteredMeasurementsMeasure with _$FilteredMeasurementsMeasure {
     String? tenantId,
     double? mbAmount,
     String? type,
+    String? targetId,
+    bool? isActive,
+    String? id,
+    String? referenceId,
      List<MeasureLineItem>? measureLineItems,
 
     List<FilteredMeasurementsContract>? contracts

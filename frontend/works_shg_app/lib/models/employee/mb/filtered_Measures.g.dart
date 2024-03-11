@@ -21,6 +21,7 @@ _$_FilteredMeasurements _$$_FilteredMeasurementsFromJson(
       entryDate: json['entryDate'] as int?,
       referenceId: json['referenceId'] as String?,
       id: json['id'] as String?,
+      physicalRefNumber: json['physicalRefNumber'] as String?,
       measures: (json['measures'] as List<dynamic>?)
           ?.map((e) =>
               FilteredMeasurementsMeasure.fromJson(e as Map<String, dynamic>))
@@ -42,6 +43,7 @@ Map<String, dynamic> _$$_FilteredMeasurementsToJson(
       'entryDate': instance.entryDate,
       'referenceId': instance.referenceId,
       'id': instance.id,
+      'physicalRefNumber': instance.physicalRefNumber,
       'measures': instance.measures,
     };
 
@@ -57,6 +59,10 @@ _$_FilteredMeasurementsMeasure _$$_FilteredMeasurementsMeasureFromJson(
       tenantId: json['tenantId'] as String?,
       mbAmount: (json['mbAmount'] as num?)?.toDouble(),
       type: json['type'] as String?,
+      targetId: json['targetId'] as String?,
+      isActive: json['isActive'] as bool?,
+      id: json['id'] as String?,
+      referenceId: json['referenceId'] as String?,
       measureLineItems: (json['measureLineItems'] as List<dynamic>?)
           ?.map((e) => MeasureLineItem.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -78,6 +84,10 @@ Map<String, dynamic> _$$_FilteredMeasurementsMeasureToJson(
       'tenantId': instance.tenantId,
       'mbAmount': instance.mbAmount,
       'type': instance.type,
+      'targetId': instance.targetId,
+      'isActive': instance.isActive,
+      'id': instance.id,
+      'referenceId': instance.referenceId,
       'measureLineItems': instance.measureLineItems,
       'contracts': instance.contracts,
     };

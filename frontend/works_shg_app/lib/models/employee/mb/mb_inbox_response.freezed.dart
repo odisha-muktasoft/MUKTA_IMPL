@@ -3279,6 +3279,8 @@ Measure _$MeasureFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Measure {
+  @JsonKey(name: 'description')
+  String? get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'comments')
   String? get comments => throw _privateConstructorUsedError;
   @JsonKey(name: 'targetId')
@@ -3316,7 +3318,9 @@ abstract class $MeasureCopyWith<$Res> {
       _$MeasureCopyWithImpl<$Res, Measure>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'comments')
+      {@JsonKey(name: 'description')
+          String? description,
+      @JsonKey(name: 'comments')
           String? comments,
       @JsonKey(name: 'targetId')
           String? targetId,
@@ -3357,6 +3361,7 @@ class _$MeasureCopyWithImpl<$Res, $Val extends Measure>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? description = freezed,
     Object? comments = freezed,
     Object? targetId = freezed,
     Object? breadth = freezed,
@@ -3371,6 +3376,10 @@ class _$MeasureCopyWithImpl<$Res, $Val extends Measure>
     Object? measureAdditionalDetails = freezed,
   }) {
     return _then(_value.copyWith(
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       comments: freezed == comments
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -3444,7 +3453,9 @@ abstract class _$$_MeasureCopyWith<$Res> implements $MeasureCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'comments')
+      {@JsonKey(name: 'description')
+          String? description,
+      @JsonKey(name: 'comments')
           String? comments,
       @JsonKey(name: 'targetId')
           String? targetId,
@@ -3483,6 +3494,7 @@ class __$$_MeasureCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? description = freezed,
     Object? comments = freezed,
     Object? targetId = freezed,
     Object? breadth = freezed,
@@ -3497,6 +3509,10 @@ class __$$_MeasureCopyWithImpl<$Res>
     Object? measureAdditionalDetails = freezed,
   }) {
     return _then(_$_Measure(
+      description: freezed == description
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       comments: freezed == comments
           ? _value.comments
           : comments // ignore: cast_nullable_to_non_nullable
@@ -3553,7 +3569,8 @@ class __$$_MeasureCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Measure implements _Measure {
   const _$_Measure(
-      {@JsonKey(name: 'comments') this.comments,
+      {@JsonKey(name: 'description') this.description,
+      @JsonKey(name: 'comments') this.comments,
       @JsonKey(name: 'targetId') this.targetId,
       @JsonKey(name: 'breadth') this.breadth,
       @JsonKey(name: 'length') this.length,
@@ -3569,6 +3586,9 @@ class _$_Measure implements _Measure {
   factory _$_Measure.fromJson(Map<String, dynamic> json) =>
       _$$_MeasureFromJson(json);
 
+  @override
+  @JsonKey(name: 'description')
+  final String? description;
   @override
   @JsonKey(name: 'comments')
   final String? comments;
@@ -3608,7 +3628,7 @@ class _$_Measure implements _Measure {
 
   @override
   String toString() {
-    return 'Measure(comments: $comments, targetId: $targetId, breadth: $breadth, length: $length, isActive: $isActive, referenceId: $referenceId, numItems: $numItems, id: $id, currentValue: $currentValue, cumulativeValue: $cumulativeValue, height: $height, measureAdditionalDetails: $measureAdditionalDetails)';
+    return 'Measure(description: $description, comments: $comments, targetId: $targetId, breadth: $breadth, length: $length, isActive: $isActive, referenceId: $referenceId, numItems: $numItems, id: $id, currentValue: $currentValue, cumulativeValue: $cumulativeValue, height: $height, measureAdditionalDetails: $measureAdditionalDetails)';
   }
 
   @override
@@ -3616,6 +3636,8 @@ class _$_Measure implements _Measure {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Measure &&
+            (identical(other.description, description) ||
+                other.description == description) &&
             (identical(other.comments, comments) ||
                 other.comments == comments) &&
             (identical(other.targetId, targetId) ||
@@ -3643,6 +3665,7 @@ class _$_Measure implements _Measure {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      description,
       comments,
       targetId,
       breadth,
@@ -3672,7 +3695,9 @@ class _$_Measure implements _Measure {
 
 abstract class _Measure implements Measure {
   const factory _Measure(
-          {@JsonKey(name: 'comments')
+          {@JsonKey(name: 'description')
+              final String? description,
+          @JsonKey(name: 'comments')
               final String? comments,
           @JsonKey(name: 'targetId')
               final String? targetId,
@@ -3700,6 +3725,9 @@ abstract class _Measure implements Measure {
 
   factory _Measure.fromJson(Map<String, dynamic> json) = _$_Measure.fromJson;
 
+  @override
+  @JsonKey(name: 'description')
+  String? get description;
   @override
   @JsonKey(name: 'comments')
   String? get comments;
@@ -3969,17 +3997,17 @@ MeasureLineItem _$MeasureLineItemFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$MeasureLineItem {
   @JsonKey(name: 'width')
-  num? get type => throw _privateConstructorUsedError;
+  dynamic get width => throw _privateConstructorUsedError;
   @JsonKey(name: 'height')
-  num? get mbAmount => throw _privateConstructorUsedError;
+  dynamic get height => throw _privateConstructorUsedError;
   @JsonKey(name: "length")
-  num? get length => throw _privateConstructorUsedError;
+  dynamic get length => throw _privateConstructorUsedError;
   @JsonKey(name: 'number')
   dynamic get number => throw _privateConstructorUsedError;
   @JsonKey(name: 'quantity')
-  num? get quantity => throw _privateConstructorUsedError;
+  dynamic get quantity => throw _privateConstructorUsedError;
   @JsonKey(name: 'measurelineitemNo')
-  num? get measurelineitemNo => throw _privateConstructorUsedError;
+  dynamic get measurelineitemNo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -3994,12 +4022,12 @@ abstract class $MeasureLineItemCopyWith<$Res> {
       _$MeasureLineItemCopyWithImpl<$Res, MeasureLineItem>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'width') num? type,
-      @JsonKey(name: 'height') num? mbAmount,
-      @JsonKey(name: "length") num? length,
+      {@JsonKey(name: 'width') dynamic width,
+      @JsonKey(name: 'height') dynamic height,
+      @JsonKey(name: "length") dynamic length,
       @JsonKey(name: 'number') dynamic number,
-      @JsonKey(name: 'quantity') num? quantity,
-      @JsonKey(name: 'measurelineitemNo') num? measurelineitemNo});
+      @JsonKey(name: 'quantity') dynamic quantity,
+      @JsonKey(name: 'measurelineitemNo') dynamic measurelineitemNo});
 }
 
 /// @nodoc
@@ -4015,26 +4043,26 @@ class _$MeasureLineItemCopyWithImpl<$Res, $Val extends MeasureLineItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
-    Object? mbAmount = freezed,
+    Object? width = freezed,
+    Object? height = freezed,
     Object? length = freezed,
     Object? number = freezed,
     Object? quantity = freezed,
     Object? measurelineitemNo = freezed,
   }) {
     return _then(_value.copyWith(
-      type: freezed == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as num?,
-      mbAmount: freezed == mbAmount
-          ? _value.mbAmount
-          : mbAmount // ignore: cast_nullable_to_non_nullable
-              as num?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as dynamic,
       number: freezed == number
           ? _value.number
           : number // ignore: cast_nullable_to_non_nullable
@@ -4042,11 +4070,11 @@ class _$MeasureLineItemCopyWithImpl<$Res, $Val extends MeasureLineItem>
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as dynamic,
       measurelineitemNo: freezed == measurelineitemNo
           ? _value.measurelineitemNo
           : measurelineitemNo // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as dynamic,
     ) as $Val);
   }
 }
@@ -4060,12 +4088,12 @@ abstract class _$$_MeasureLineItemCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'width') num? type,
-      @JsonKey(name: 'height') num? mbAmount,
-      @JsonKey(name: "length") num? length,
+      {@JsonKey(name: 'width') dynamic width,
+      @JsonKey(name: 'height') dynamic height,
+      @JsonKey(name: "length") dynamic length,
       @JsonKey(name: 'number') dynamic number,
-      @JsonKey(name: 'quantity') num? quantity,
-      @JsonKey(name: 'measurelineitemNo') num? measurelineitemNo});
+      @JsonKey(name: 'quantity') dynamic quantity,
+      @JsonKey(name: 'measurelineitemNo') dynamic measurelineitemNo});
 }
 
 /// @nodoc
@@ -4079,26 +4107,26 @@ class __$$_MeasureLineItemCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
-    Object? mbAmount = freezed,
+    Object? width = freezed,
+    Object? height = freezed,
     Object? length = freezed,
     Object? number = freezed,
     Object? quantity = freezed,
     Object? measurelineitemNo = freezed,
   }) {
     return _then(_$_MeasureLineItem(
-      type: freezed == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as num?,
-      mbAmount: freezed == mbAmount
-          ? _value.mbAmount
-          : mbAmount // ignore: cast_nullable_to_non_nullable
-              as num?,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as dynamic,
       number: freezed == number
           ? _value.number
           : number // ignore: cast_nullable_to_non_nullable
@@ -4106,11 +4134,11 @@ class __$$_MeasureLineItemCopyWithImpl<$Res>
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as dynamic,
       measurelineitemNo: freezed == measurelineitemNo
           ? _value.measurelineitemNo
           : measurelineitemNo // ignore: cast_nullable_to_non_nullable
-              as num?,
+              as dynamic,
     ));
   }
 }
@@ -4119,8 +4147,8 @@ class __$$_MeasureLineItemCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MeasureLineItem implements _MeasureLineItem {
   const _$_MeasureLineItem(
-      {@JsonKey(name: 'width') this.type,
-      @JsonKey(name: 'height') this.mbAmount,
+      {@JsonKey(name: 'width') this.width,
+      @JsonKey(name: 'height') this.height,
       @JsonKey(name: "length") this.length,
       @JsonKey(name: 'number') this.number,
       @JsonKey(name: 'quantity') this.quantity,
@@ -4131,26 +4159,26 @@ class _$_MeasureLineItem implements _MeasureLineItem {
 
   @override
   @JsonKey(name: 'width')
-  final num? type;
+  final dynamic width;
   @override
   @JsonKey(name: 'height')
-  final num? mbAmount;
+  final dynamic height;
   @override
   @JsonKey(name: "length")
-  final num? length;
+  final dynamic length;
   @override
   @JsonKey(name: 'number')
   final dynamic number;
   @override
   @JsonKey(name: 'quantity')
-  final num? quantity;
+  final dynamic quantity;
   @override
   @JsonKey(name: 'measurelineitemNo')
-  final num? measurelineitemNo;
+  final dynamic measurelineitemNo;
 
   @override
   String toString() {
-    return 'MeasureLineItem(type: $type, mbAmount: $mbAmount, length: $length, number: $number, quantity: $quantity, measurelineitemNo: $measurelineitemNo)';
+    return 'MeasureLineItem(width: $width, height: $height, length: $length, number: $number, quantity: $quantity, measurelineitemNo: $measurelineitemNo)';
   }
 
   @override
@@ -4158,21 +4186,25 @@ class _$_MeasureLineItem implements _MeasureLineItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MeasureLineItem &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.mbAmount, mbAmount) ||
-                other.mbAmount == mbAmount) &&
-            (identical(other.length, length) || other.length == length) &&
+            const DeepCollectionEquality().equals(other.width, width) &&
+            const DeepCollectionEquality().equals(other.height, height) &&
+            const DeepCollectionEquality().equals(other.length, length) &&
             const DeepCollectionEquality().equals(other.number, number) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
-            (identical(other.measurelineitemNo, measurelineitemNo) ||
-                other.measurelineitemNo == measurelineitemNo));
+            const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality()
+                .equals(other.measurelineitemNo, measurelineitemNo));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, type, mbAmount, length,
-      const DeepCollectionEquality().hash(number), quantity, measurelineitemNo);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(width),
+      const DeepCollectionEquality().hash(height),
+      const DeepCollectionEquality().hash(length),
+      const DeepCollectionEquality().hash(number),
+      const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(measurelineitemNo));
 
   @JsonKey(ignore: true)
   @override
@@ -4190,35 +4222,40 @@ class _$_MeasureLineItem implements _MeasureLineItem {
 
 abstract class _MeasureLineItem implements MeasureLineItem {
   const factory _MeasureLineItem(
-          {@JsonKey(name: 'width') final num? type,
-          @JsonKey(name: 'height') final num? mbAmount,
-          @JsonKey(name: "length") final num? length,
-          @JsonKey(name: 'number') final dynamic number,
-          @JsonKey(name: 'quantity') final num? quantity,
-          @JsonKey(name: 'measurelineitemNo') final num? measurelineitemNo}) =
-      _$_MeasureLineItem;
+      {@JsonKey(name: 'width')
+          final dynamic width,
+      @JsonKey(name: 'height')
+          final dynamic height,
+      @JsonKey(name: "length")
+          final dynamic length,
+      @JsonKey(name: 'number')
+          final dynamic number,
+      @JsonKey(name: 'quantity')
+          final dynamic quantity,
+      @JsonKey(name: 'measurelineitemNo')
+          final dynamic measurelineitemNo}) = _$_MeasureLineItem;
 
   factory _MeasureLineItem.fromJson(Map<String, dynamic> json) =
       _$_MeasureLineItem.fromJson;
 
   @override
   @JsonKey(name: 'width')
-  num? get type;
+  dynamic get width;
   @override
   @JsonKey(name: 'height')
-  num? get mbAmount;
+  dynamic get height;
   @override
   @JsonKey(name: "length")
-  num? get length;
+  dynamic get length;
   @override
   @JsonKey(name: 'number')
   dynamic get number;
   @override
   @JsonKey(name: 'quantity')
-  num? get quantity;
+  dynamic get quantity;
   @override
   @JsonKey(name: 'measurelineitemNo')
-  num? get measurelineitemNo;
+  dynamic get measurelineitemNo;
   @override
   @JsonKey(ignore: true)
   _$$_MeasureLineItemCopyWith<_$_MeasureLineItem> get copyWith =>

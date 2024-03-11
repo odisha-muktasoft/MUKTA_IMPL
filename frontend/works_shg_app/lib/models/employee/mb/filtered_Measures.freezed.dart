@@ -32,6 +32,7 @@ mixin _$FilteredMeasurements {
   int? get entryDate => throw _privateConstructorUsedError;
   String? get referenceId => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
+  String? get physicalRefNumber => throw _privateConstructorUsedError;
   List<FilteredMeasurementsMeasure>? get measures =>
       throw _privateConstructorUsedError;
 
@@ -60,6 +61,7 @@ abstract class $FilteredMeasurementsCopyWith<$Res> {
       int? entryDate,
       String? referenceId,
       String? id,
+      String? physicalRefNumber,
       List<FilteredMeasurementsMeasure>? measures});
 }
 
@@ -89,6 +91,7 @@ class _$FilteredMeasurementsCopyWithImpl<$Res,
     Object? entryDate = freezed,
     Object? referenceId = freezed,
     Object? id = freezed,
+    Object? physicalRefNumber = freezed,
     Object? measures = freezed,
   }) {
     return _then(_value.copyWith(
@@ -140,6 +143,10 @@ class _$FilteredMeasurementsCopyWithImpl<$Res,
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      physicalRefNumber: freezed == physicalRefNumber
+          ? _value.physicalRefNumber
+          : physicalRefNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       measures: freezed == measures
           ? _value.measures
           : measures // ignore: cast_nullable_to_non_nullable
@@ -169,6 +176,7 @@ abstract class _$$_FilteredMeasurementsCopyWith<$Res>
       int? entryDate,
       String? referenceId,
       String? id,
+      String? physicalRefNumber,
       List<FilteredMeasurementsMeasure>? measures});
 }
 
@@ -195,6 +203,7 @@ class __$$_FilteredMeasurementsCopyWithImpl<$Res>
     Object? entryDate = freezed,
     Object? referenceId = freezed,
     Object? id = freezed,
+    Object? physicalRefNumber = freezed,
     Object? measures = freezed,
   }) {
     return _then(_$_FilteredMeasurements(
@@ -246,6 +255,10 @@ class __$$_FilteredMeasurementsCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
+      physicalRefNumber: freezed == physicalRefNumber
+          ? _value.physicalRefNumber
+          : physicalRefNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       measures: freezed == measures
           ? _value._measures
           : measures // ignore: cast_nullable_to_non_nullable
@@ -270,6 +283,7 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
       this.entryDate,
       this.referenceId,
       this.id,
+      this.physicalRefNumber,
       final List<FilteredMeasurementsMeasure>? measures})
       : _measures = measures;
 
@@ -300,6 +314,8 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
   final String? referenceId;
   @override
   final String? id;
+  @override
+  final String? physicalRefNumber;
   final List<FilteredMeasurementsMeasure>? _measures;
   @override
   List<FilteredMeasurementsMeasure>? get measures {
@@ -312,7 +328,7 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
 
   @override
   String toString() {
-    return 'FilteredMeasurements(totalSorAmount: $totalSorAmount, totalNorSorAmount: $totalNorSorAmount, totalAmount: $totalAmount, musterRollNumber: $musterRollNumber, mbNumber: $mbNumber, wfStatus: $wfStatus, tenantId: $tenantId, endDate: $endDate, startDate: $startDate, entryDate: $entryDate, referenceId: $referenceId, id: $id, measures: $measures)';
+    return 'FilteredMeasurements(totalSorAmount: $totalSorAmount, totalNorSorAmount: $totalNorSorAmount, totalAmount: $totalAmount, musterRollNumber: $musterRollNumber, mbNumber: $mbNumber, wfStatus: $wfStatus, tenantId: $tenantId, endDate: $endDate, startDate: $startDate, entryDate: $entryDate, referenceId: $referenceId, id: $id, physicalRefNumber: $physicalRefNumber, measures: $measures)';
   }
 
   @override
@@ -342,6 +358,8 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
             (identical(other.referenceId, referenceId) ||
                 other.referenceId == referenceId) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.physicalRefNumber, physicalRefNumber) ||
+                other.physicalRefNumber == physicalRefNumber) &&
             const DeepCollectionEquality().equals(other._measures, _measures));
   }
 
@@ -361,6 +379,7 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
       entryDate,
       referenceId,
       id,
+      physicalRefNumber,
       const DeepCollectionEquality().hash(_measures));
 
   @JsonKey(ignore: true)
@@ -392,6 +411,7 @@ abstract class _FilteredMeasurements implements FilteredMeasurements {
           final int? entryDate,
           final String? referenceId,
           final String? id,
+          final String? physicalRefNumber,
           final List<FilteredMeasurementsMeasure>? measures}) =
       _$_FilteredMeasurements;
 
@@ -423,6 +443,8 @@ abstract class _FilteredMeasurements implements FilteredMeasurements {
   @override
   String? get id;
   @override
+  String? get physicalRefNumber;
+  @override
   List<FilteredMeasurementsMeasure>? get measures;
   @override
   @JsonKey(ignore: true)
@@ -446,6 +468,10 @@ mixin _$FilteredMeasurementsMeasure {
   String? get tenantId => throw _privateConstructorUsedError;
   double? get mbAmount => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
+  String? get targetId => throw _privateConstructorUsedError;
+  bool? get isActive => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get referenceId => throw _privateConstructorUsedError;
   List<MeasureLineItem>? get measureLineItems =>
       throw _privateConstructorUsedError;
   List<FilteredMeasurementsContract>? get contracts =>
@@ -475,6 +501,10 @@ abstract class $FilteredMeasurementsMeasureCopyWith<$Res> {
       String? tenantId,
       double? mbAmount,
       String? type,
+      String? targetId,
+      bool? isActive,
+      String? id,
+      String? referenceId,
       List<MeasureLineItem>? measureLineItems,
       List<FilteredMeasurementsContract>? contracts});
 }
@@ -502,6 +532,10 @@ class _$FilteredMeasurementsMeasureCopyWithImpl<$Res,
     Object? tenantId = freezed,
     Object? mbAmount = freezed,
     Object? type = freezed,
+    Object? targetId = freezed,
+    Object? isActive = freezed,
+    Object? id = freezed,
+    Object? referenceId = freezed,
     Object? measureLineItems = freezed,
     Object? contracts = freezed,
   }) {
@@ -542,6 +576,22 @@ class _$FilteredMeasurementsMeasureCopyWithImpl<$Res,
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
+      targetId: freezed == targetId
+          ? _value.targetId
+          : targetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referenceId: freezed == referenceId
+          ? _value.referenceId
+          : referenceId // ignore: cast_nullable_to_non_nullable
+              as String?,
       measureLineItems: freezed == measureLineItems
           ? _value.measureLineItems
           : measureLineItems // ignore: cast_nullable_to_non_nullable
@@ -573,6 +623,10 @@ abstract class _$$_FilteredMeasurementsMeasureCopyWith<$Res>
       String? tenantId,
       double? mbAmount,
       String? type,
+      String? targetId,
+      bool? isActive,
+      String? id,
+      String? referenceId,
       List<MeasureLineItem>? measureLineItems,
       List<FilteredMeasurementsContract>? contracts});
 }
@@ -599,6 +653,10 @@ class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
     Object? tenantId = freezed,
     Object? mbAmount = freezed,
     Object? type = freezed,
+    Object? targetId = freezed,
+    Object? isActive = freezed,
+    Object? id = freezed,
+    Object? referenceId = freezed,
     Object? measureLineItems = freezed,
     Object? contracts = freezed,
   }) {
@@ -639,6 +697,22 @@ class __$$_FilteredMeasurementsMeasureCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
+      targetId: freezed == targetId
+          ? _value.targetId
+          : targetId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referenceId: freezed == referenceId
+          ? _value.referenceId
+          : referenceId // ignore: cast_nullable_to_non_nullable
+              as String?,
       measureLineItems: freezed == measureLineItems
           ? _value._measureLineItems
           : measureLineItems // ignore: cast_nullable_to_non_nullable
@@ -664,6 +738,10 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
       this.tenantId,
       this.mbAmount,
       this.type,
+      this.targetId,
+      this.isActive,
+      this.id,
+      this.referenceId,
       final List<MeasureLineItem>? measureLineItems,
       final List<FilteredMeasurementsContract>? contracts})
       : _measureLineItems = measureLineItems,
@@ -690,6 +768,14 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
   final double? mbAmount;
   @override
   final String? type;
+  @override
+  final String? targetId;
+  @override
+  final bool? isActive;
+  @override
+  final String? id;
+  @override
+  final String? referenceId;
   final List<MeasureLineItem>? _measureLineItems;
   @override
   List<MeasureLineItem>? get measureLineItems {
@@ -713,7 +799,7 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
 
   @override
   String toString() {
-    return 'FilteredMeasurementsMeasure(length: $length, breath: $breath, height: $height, numItems: $numItems, currentValue: $currentValue, cumulativeValue: $cumulativeValue, tenantId: $tenantId, mbAmount: $mbAmount, type: $type, measureLineItems: $measureLineItems, contracts: $contracts)';
+    return 'FilteredMeasurementsMeasure(length: $length, breath: $breath, height: $height, numItems: $numItems, currentValue: $currentValue, cumulativeValue: $cumulativeValue, tenantId: $tenantId, mbAmount: $mbAmount, type: $type, targetId: $targetId, isActive: $isActive, id: $id, referenceId: $referenceId, measureLineItems: $measureLineItems, contracts: $contracts)';
   }
 
   @override
@@ -735,6 +821,13 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
             (identical(other.mbAmount, mbAmount) ||
                 other.mbAmount == mbAmount) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.targetId, targetId) ||
+                other.targetId == targetId) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.referenceId, referenceId) ||
+                other.referenceId == referenceId) &&
             const DeepCollectionEquality()
                 .equals(other._measureLineItems, _measureLineItems) &&
             const DeepCollectionEquality()
@@ -754,6 +847,10 @@ class _$_FilteredMeasurementsMeasure implements _FilteredMeasurementsMeasure {
       tenantId,
       mbAmount,
       type,
+      targetId,
+      isActive,
+      id,
+      referenceId,
       const DeepCollectionEquality().hash(_measureLineItems),
       const DeepCollectionEquality().hash(_contracts));
 
@@ -784,6 +881,10 @@ abstract class _FilteredMeasurementsMeasure
           final String? tenantId,
           final double? mbAmount,
           final String? type,
+          final String? targetId,
+          final bool? isActive,
+          final String? id,
+          final String? referenceId,
           final List<MeasureLineItem>? measureLineItems,
           final List<FilteredMeasurementsContract>? contracts}) =
       _$_FilteredMeasurementsMeasure;
@@ -809,6 +910,14 @@ abstract class _FilteredMeasurementsMeasure
   double? get mbAmount;
   @override
   String? get type;
+  @override
+  String? get targetId;
+  @override
+  bool? get isActive;
+  @override
+  String? get id;
+  @override
+  String? get referenceId;
   @override
   List<MeasureLineItem>? get measureLineItems;
   @override

@@ -197,6 +197,8 @@ class BusinessObject with _$BusinessObject {
 @freezed
 class Measure with _$Measure {
   const factory Measure({
+     @JsonKey(name: 'description')
+        String? description,
     @JsonKey(name: 'comments')
         String? comments,
     @JsonKey(name: 'targetId')
@@ -246,12 +248,12 @@ class MeasureAdditionalDetails with _$MeasureAdditionalDetails {
 @freezed
 class MeasureLineItem with _$MeasureLineItem {
   const factory MeasureLineItem({
-    @JsonKey(name: 'width') num? type,
-    @JsonKey(name: 'height') num? mbAmount,
-    @JsonKey(name: "length") num? length,
+    @JsonKey(name: 'width') dynamic width,
+    @JsonKey(name: 'height') dynamic height,
+    @JsonKey(name: "length") dynamic length,
     @JsonKey(name:'number') dynamic number,
-    @JsonKey(name: 'quantity') num? quantity,
-    @JsonKey(name:'measurelineitemNo') num? measurelineitemNo,
+    @JsonKey(name: 'quantity') dynamic quantity,
+    @JsonKey(name:'measurelineitemNo') dynamic measurelineitemNo,
   }) = _MeasureLineItem;
 
   factory MeasureLineItem.fromJson(

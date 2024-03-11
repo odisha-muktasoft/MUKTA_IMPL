@@ -264,6 +264,7 @@ Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
     };
 
 _$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(
+      description: json['description'] as String?,
       comments: json['comments'] as String?,
       targetId: json['targetId'] as String?,
       breadth: (json['breadth'] as num?)?.toDouble(),
@@ -283,6 +284,7 @@ _$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(
 
 Map<String, dynamic> _$$_MeasureToJson(_$_Measure instance) =>
     <String, dynamic>{
+      'description': instance.description,
       'comments': instance.comments,
       'targetId': instance.targetId,
       'breadth': instance.breadth,
@@ -317,18 +319,18 @@ Map<String, dynamic> _$$_MeasureAdditionalDetailsToJson(
 
 _$_MeasureLineItem _$$_MeasureLineItemFromJson(Map<String, dynamic> json) =>
     _$_MeasureLineItem(
-      type: json['width'] as num?,
-      mbAmount: json['height'] as num?,
-      length: json['length'] as num?,
+      width: json['width'],
+      height: json['height'],
+      length: json['length'],
       number: json['number'],
-      quantity: json['quantity'] as num?,
-      measurelineitemNo: json['measurelineitemNo'] as num?,
+      quantity: json['quantity'],
+      measurelineitemNo: json['measurelineitemNo'],
     );
 
 Map<String, dynamic> _$$_MeasureLineItemToJson(_$_MeasureLineItem instance) =>
     <String, dynamic>{
-      'width': instance.type,
-      'height': instance.mbAmount,
+      'width': instance.width,
+      'height': instance.height,
       'length': instance.length,
       'number': instance.number,
       'quantity': instance.quantity,

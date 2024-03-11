@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/widgets/mb/multi_line_items.dart';
 
 import '../../models/employee/mb/filtered_Measures.dart';
 
@@ -52,7 +53,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
       elevation: 0,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height * 2,
         child: Column(
           // mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,7 +75,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
             ),
             const SizedBox(height: 10),
             SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.58,
+              height: MediaQuery.sizeOf(context).height * 0.70,
               child: PageView.builder(
                 controller: _scrollController,
                 scrollDirection: Axis.horizontal,
@@ -158,6 +159,7 @@ class _CardWidgetState extends State<CardWidget> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   void dispose() {
     number.dispose();
@@ -179,7 +181,7 @@ class _CardWidgetState extends State<CardWidget> {
       padding: const EdgeInsets.only(
           left: 10.0, right: 10.0, bottom: 10.0, top: 16.0),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             width: MediaQuery.sizeOf(context).width,
@@ -206,75 +208,44 @@ class _CardWidgetState extends State<CardWidget> {
                   "Description": widget.filteredMeasurementsMeasure!.contracts!
                       .first.estimates!.first.description,
                 }),
-                DigitTextField(
-                  label: "Number",
-                  controller: number
-                    ..value
-                    ..text =
-                        widget.filteredMeasurementsMeasure!.numItems.toString(),
-                  isDisabled: true,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 0.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8 / 3,
-                        child: DigitTextField(
-                          label: "Length",
-                          textInputType: TextInputType.number,
-                          controller: length
-                            ..value
-                            ..text =
-                                (widget.filteredMeasurementsMeasure!.length ??
-                                        0.0)
-                                    .toString(),
-                        ),
-                      ),
+                SingleChildScrollView(
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.40,
+                    child: ListView.builder(
+                      itemCount: widget.filteredMeasurementsMeasure
+                              ?.measureLineItems?.length ??
+                          1, // Use the length of your list here
+                      itemBuilder: (context, index) {
+                        final data = widget.filteredMeasurementsMeasure
+                            ?.measureLineItems?[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: MultiLineItems(
+                            height: data == null
+                                ? widget.filteredMeasurementsMeasure?.height
+                                    .toString()
+                                : data?.height.toString(),
+                            width: data == null
+                                ? widget.filteredMeasurementsMeasure?.breath
+                                    .toString()
+                                : data?.width.toString(),
+                            number: data == null
+                                ? widget.filteredMeasurementsMeasure?.numItems
+                                    .toString()
+                                : data?.number.toString(),
+                            quantity: data == null
+                                ? widget.filteredMeasurementsMeasure?.height
+                                    .toString()
+                                : data?.quantity.toString(),
+                            length: data == null
+                                ? widget.filteredMeasurementsMeasure?.numItems
+                                    .toString()
+                                : data?.length.toString(),
+                          ),
+                        ); // Render your item here
+                      },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8 / 3,
-                        child: DigitTextField(
-                          label: "Width",
-                          textInputType: TextInputType.number,
-                          controller: width
-                            ..value
-                            ..text =
-                                (widget.filteredMeasurementsMeasure!.breath ??
-                                        0.0)
-                                    .toString(),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 0.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8 / 3,
-                        child: DigitTextField(
-                          label: "Height",
-                          textInputType: TextInputType.number,
-                          controller: height
-                            ..value
-                            ..text =
-                                (widget.filteredMeasurementsMeasure!.height ??
-                                        0.0)
-                                    .toString(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                DigitTextField(
-                  label: "Quantity",
-                  isDisabled: true,
-                  controller: quantity
-                    ..value
-                    ..text =
-                        (widget.filteredMeasurementsMeasure!.numItems ?? 0.0)
-                            .toString(),
+                  ),
                 ),
               ],
             ),

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 
 import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
+import '../../../models/employee/mb/mb_inbox_response.dart';
 
 class MBLogic {
   static List<FilteredMeasurements> getMeasureList(
@@ -11,12 +12,14 @@ class MBLogic {
 
     final data = allMeasurements.map((e) {
       FilteredMeasurements datak = FilteredMeasurements(
+        id: e.id,
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
           endDate: e.additionalDetail?.endDate,
           startDate: e.additionalDetail?.startDate,
           entryDate: e.entryDate,
+          physicalRefNumber: e.physicalRefNumber,
           // to be chnaged
           //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
           musterRollNumber: "",
@@ -34,7 +37,10 @@ class MBLogic {
               numItems: e.numItems,
               currentValue: e.currentValue,
               cumulativeValue: e.cumulativeValue,
-              tenantId: e.targetId,
+              tenantId: null,
+              targetId: e.targetId,
+              isActive: e.isActive,
+              id: e.id,
               contracts: getContract(
                 e.targetId!,
                 mbDetailResponse,
@@ -176,6 +182,40 @@ class MBLogic {
 
 //
     return [listSors, listNonSors];
+  }
+
+  // to get
+
+  static List<Measure> getList(List<SorObject> sorObjects){
+
+ List<Measure> measureList = [];
+
+  for (SorObject sorObject in sorObjects) {
+    for (FilteredMeasurementsMeasure measure in sorObject.filteredMeasurementsMeasure) {
+      measureList.add(Measure(
+        description: measure.contracts?.first.estimates?.first.description,
+        comments: null, // You can set comments to the appropriate value if available
+        targetId: measure.targetId,
+        breadth: measure.breath,
+        length: measure.length,
+        height: measure.height,
+        isActive: measure.isActive,
+        referenceId: measure.referenceId,
+        numItems: measure.numItems,
+        id: measure.id,
+        cumulativeValue: measure.cumulativeValue,
+        currentValue: measure.currentValue,
+        measureAdditionalDetails: MeasureAdditionalDetails(
+          type: measure.type,
+          mbAmount: measure.mbAmount,
+          measureLineItems: measure.measureLineItems,
+        ),
+      ));
+    }
+  }
+
+  return measureList;
+
   }
 }
 
