@@ -156,7 +156,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                             actions: () {
                               DigitActionDialog.show(
                                 context,
-                                widget: CommonButtonCard(g: g,contractNumber: widget.contractNumber,mbNumber: widget.mbNumber,),
+                                widget: CommonButtonCard(
+                                  g: g,
+                                  contractNumber: widget.contractNumber,
+                                  mbNumber: widget.mbNumber,
+                                ),
                               );
                             },
                             // amount: sorprice.toString(),
@@ -244,13 +248,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
                             children: [
                               CommonMBCard(
-                                items: const {
-                                  "MB number": "MB-233",
+                                items:  {
+                                  "MB number": value.data.first.mbNumber,
                                   "Project Description":
-                                      "Wall Painting in Ward 1",
-                                  "Assignee": "SHG group-C#1",
-                                  "Workflow State": "Pending for verification",
-                                  "MB Account": "240000",
+                                      value.data.first.measures!.first.contracts!.first.contractAdditionalDetails?.projectDesc?? "NA",
+                                  "Assignee":  value.data.first.measures!.first.contracts!.first.contractAdditionalDetails?.officerInChargeDesgn?? "NA",
+                                  "Workflow State": value.data.first.wfStatus,
+                                  "MB Account": value.data.first.totalAmount,
                                   "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
@@ -558,7 +562,6 @@ class _MBDetailPageState extends State<MBDetailPage>
     double totalSorAmount,
     double totalNonSorAmount,
     double mbAmount,
-    
     List<ProcessInstances>? processInstances,
     String contractNumber,
     String mbNumber,
@@ -692,7 +695,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                     Navigator.of(context).pop();
                     DigitActionDialog.show(
                       context,
-                      widget: CommonButtonCard(g: processInstances,contractNumber: contractNumber,mbNumber: mbNumber,),
+                      widget: CommonButtonCard(
+                        g: processInstances,
+                        contractNumber: contractNumber,
+                        mbNumber: mbNumber,
+                      ),
                     );
                   }),
             ],

@@ -73,6 +73,7 @@ class FilteredMeasurementsContract with _$FilteredMeasurementsContract {
       String ?   contractLineItemRef,
        double?   unitRate,
         String?  status,
+        ContractAdditionalDetails? contractAdditionalDetails,
          List<FilteredMeasurementsEstimate>? estimates 
   }) = _FilteredMeasurementsContract;
 

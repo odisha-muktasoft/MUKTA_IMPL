@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
@@ -45,6 +46,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
+     var t = AppLocalizations.of(context);
     return BlocListener<MeasurementCrudBloc, MeasurementCrudState>(
       listener: (context, state) {
         state.maybeMap(
@@ -131,7 +133,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               child: Text(
                                 widget.nextActions.action == "EDIT/RE-SUBMIT"
                                     ? "Forward"
-                                    : widget.nextActions.action!,
+                                    :t.translate( "WF_MODAL_SUBMIT_MB_${widget.nextActions.action!}"),
                               ),
                               onPressed: () {
                                 List<List<SorObject>> sorList = [
@@ -205,12 +207,13 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 value: selectedAssignee == ""
                                     ? value.hrmsEmployee!.first.code
                                     : selectedAssignee,
-                                label: "Assignee name",
+                                label: t.translate("WF_MODAL_APPROVER"),
                                 menuItems: value.hrmsEmployee!
                                     .map((e) => e.code)
                                     .toList(),
                                 valueMapper: (value) {
-                                  return value.toString();
+                                  return t.translate(value.toString());
+                                 // return value.toString();
                                 },
                               );
                             },
@@ -220,8 +223,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           );
                         },
                       ),
-                      const DigitTextField(
-                        label: "Comments",
+                       DigitTextField(
+                        label: t.translate("WF_MODAL_COMMENTS"),
                         maxLines: 6,
                       ),
                       SizedBox(
@@ -240,7 +243,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           },
                           extensions: const ['jpg', 'png', 'jpeg'],
                           moduleName: 'works',
-                          label: "photo",
+                          label: t.translate("CLICK_TO_ADD_PHOTO"),
                         ),
                       ),
                     ],

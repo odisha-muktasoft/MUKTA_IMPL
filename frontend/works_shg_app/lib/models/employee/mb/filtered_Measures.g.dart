@@ -100,6 +100,10 @@ _$_FilteredMeasurementsContract _$$_FilteredMeasurementsContractFromJson(
       contractLineItemRef: json['contractLineItemRef'] as String?,
       unitRate: (json['unitRate'] as num?)?.toDouble(),
       status: json['status'] as String?,
+      contractAdditionalDetails: json['contractAdditionalDetails'] == null
+          ? null
+          : ContractAdditionalDetails.fromJson(
+              json['contractAdditionalDetails'] as Map<String, dynamic>),
       estimates: (json['estimates'] as List<dynamic>?)
           ?.map((e) =>
               FilteredMeasurementsEstimate.fromJson(e as Map<String, dynamic>))
@@ -114,6 +118,7 @@ Map<String, dynamic> _$$_FilteredMeasurementsContractToJson(
       'contractLineItemRef': instance.contractLineItemRef,
       'unitRate': instance.unitRate,
       'status': instance.status,
+      'contractAdditionalDetails': instance.contractAdditionalDetails,
       'estimates': instance.estimates,
     };
 

@@ -70,6 +70,7 @@ class MBLogic {
       if (e.contractLineItemRef == targetId) {
         FilteredMeasurementsContract filteredMeasurementsContract =
             FilteredMeasurementsContract(
+              contractAdditionalDetails: mb.contract?.additionalDetails,
                 estimateId: e.estimateId,
                 estimateLineItemId: e.estimateLineItemId,
                 contractLineItemRef: e.contractLineItemRef,
@@ -91,6 +92,7 @@ class MBLogic {
       if (e.id == contractLineItemRef) {
         FilteredMeasurementsEstimate filteredMeasurementsEstimate =
             FilteredMeasurementsEstimate(
+            
           id: e.id,
           sorId: e.sorId,
           category: e.category,

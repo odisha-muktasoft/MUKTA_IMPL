@@ -940,6 +940,8 @@ mixin _$FilteredMeasurementsContract {
   String? get contractLineItemRef => throw _privateConstructorUsedError;
   double? get unitRate => throw _privateConstructorUsedError;
   String? get status => throw _privateConstructorUsedError;
+  ContractAdditionalDetails? get contractAdditionalDetails =>
+      throw _privateConstructorUsedError;
   List<FilteredMeasurementsEstimate>? get estimates =>
       throw _privateConstructorUsedError;
 
@@ -963,7 +965,10 @@ abstract class $FilteredMeasurementsContractCopyWith<$Res> {
       String? contractLineItemRef,
       double? unitRate,
       String? status,
+      ContractAdditionalDetails? contractAdditionalDetails,
       List<FilteredMeasurementsEstimate>? estimates});
+
+  $ContractAdditionalDetailsCopyWith<$Res>? get contractAdditionalDetails;
 }
 
 /// @nodoc
@@ -985,6 +990,7 @@ class _$FilteredMeasurementsContractCopyWithImpl<$Res,
     Object? contractLineItemRef = freezed,
     Object? unitRate = freezed,
     Object? status = freezed,
+    Object? contractAdditionalDetails = freezed,
     Object? estimates = freezed,
   }) {
     return _then(_value.copyWith(
@@ -1008,11 +1014,28 @@ class _$FilteredMeasurementsContractCopyWithImpl<$Res,
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
+      contractAdditionalDetails: freezed == contractAdditionalDetails
+          ? _value.contractAdditionalDetails
+          : contractAdditionalDetails // ignore: cast_nullable_to_non_nullable
+              as ContractAdditionalDetails?,
       estimates: freezed == estimates
           ? _value.estimates
           : estimates // ignore: cast_nullable_to_non_nullable
               as List<FilteredMeasurementsEstimate>?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ContractAdditionalDetailsCopyWith<$Res>? get contractAdditionalDetails {
+    if (_value.contractAdditionalDetails == null) {
+      return null;
+    }
+
+    return $ContractAdditionalDetailsCopyWith<$Res>(
+        _value.contractAdditionalDetails!, (value) {
+      return _then(_value.copyWith(contractAdditionalDetails: value) as $Val);
+    });
   }
 }
 
@@ -1031,7 +1054,11 @@ abstract class _$$_FilteredMeasurementsContractCopyWith<$Res>
       String? contractLineItemRef,
       double? unitRate,
       String? status,
+      ContractAdditionalDetails? contractAdditionalDetails,
       List<FilteredMeasurementsEstimate>? estimates});
+
+  @override
+  $ContractAdditionalDetailsCopyWith<$Res>? get contractAdditionalDetails;
 }
 
 /// @nodoc
@@ -1052,6 +1079,7 @@ class __$$_FilteredMeasurementsContractCopyWithImpl<$Res>
     Object? contractLineItemRef = freezed,
     Object? unitRate = freezed,
     Object? status = freezed,
+    Object? contractAdditionalDetails = freezed,
     Object? estimates = freezed,
   }) {
     return _then(_$_FilteredMeasurementsContract(
@@ -1075,6 +1103,10 @@ class __$$_FilteredMeasurementsContractCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String?,
+      contractAdditionalDetails: freezed == contractAdditionalDetails
+          ? _value.contractAdditionalDetails
+          : contractAdditionalDetails // ignore: cast_nullable_to_non_nullable
+              as ContractAdditionalDetails?,
       estimates: freezed == estimates
           ? _value._estimates
           : estimates // ignore: cast_nullable_to_non_nullable
@@ -1092,6 +1124,7 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
       this.contractLineItemRef,
       this.unitRate,
       this.status,
+      this.contractAdditionalDetails,
       final List<FilteredMeasurementsEstimate>? estimates})
       : _estimates = estimates;
 
@@ -1108,6 +1141,8 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
   final double? unitRate;
   @override
   final String? status;
+  @override
+  final ContractAdditionalDetails? contractAdditionalDetails;
   final List<FilteredMeasurementsEstimate>? _estimates;
   @override
   List<FilteredMeasurementsEstimate>? get estimates {
@@ -1120,7 +1155,7 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
 
   @override
   String toString() {
-    return 'FilteredMeasurementsContract(estimateId: $estimateId, estimateLineItemId: $estimateLineItemId, contractLineItemRef: $contractLineItemRef, unitRate: $unitRate, status: $status, estimates: $estimates)';
+    return 'FilteredMeasurementsContract(estimateId: $estimateId, estimateLineItemId: $estimateLineItemId, contractLineItemRef: $contractLineItemRef, unitRate: $unitRate, status: $status, contractAdditionalDetails: $contractAdditionalDetails, estimates: $estimates)';
   }
 
   @override
@@ -1137,6 +1172,9 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
             (identical(other.unitRate, unitRate) ||
                 other.unitRate == unitRate) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.contractAdditionalDetails,
+                    contractAdditionalDetails) ||
+                other.contractAdditionalDetails == contractAdditionalDetails) &&
             const DeepCollectionEquality()
                 .equals(other._estimates, _estimates));
   }
@@ -1150,6 +1188,7 @@ class _$_FilteredMeasurementsContract implements _FilteredMeasurementsContract {
       contractLineItemRef,
       unitRate,
       status,
+      contractAdditionalDetails,
       const DeepCollectionEquality().hash(_estimates));
 
   @JsonKey(ignore: true)
@@ -1175,6 +1214,7 @@ abstract class _FilteredMeasurementsContract
           final String? contractLineItemRef,
           final double? unitRate,
           final String? status,
+          final ContractAdditionalDetails? contractAdditionalDetails,
           final List<FilteredMeasurementsEstimate>? estimates}) =
       _$_FilteredMeasurementsContract;
 
@@ -1191,6 +1231,8 @@ abstract class _FilteredMeasurementsContract
   double? get unitRate;
   @override
   String? get status;
+  @override
+  ContractAdditionalDetails? get contractAdditionalDetails;
   @override
   List<FilteredMeasurementsEstimate>? get estimates;
   @override
