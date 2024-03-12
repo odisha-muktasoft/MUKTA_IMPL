@@ -101,7 +101,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         if (initialValue(element)) {
           calculatedValue = 0;
         }
-        state[findIndex].noOfunit = calculatedValue ?  (Math.round(calculatedValue * 10000) / 10000).toFixed(4) : 0;
+        state[findIndex].noOfunit = calculatedValue ?  (Math.ceil(calculatedValue * 10000) / 10000).toFixed(4) : 0;
         if(mode === "CREATE") state[findIndex]["numItems"] = calculatedValue;
         state[findIndex].rowAmount = unitRate * calculatedValue || 0;
         
