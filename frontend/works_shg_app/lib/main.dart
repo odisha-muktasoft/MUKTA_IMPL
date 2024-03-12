@@ -340,7 +340,7 @@ class _MainApplicationState extends State<MainApplication> {
                     authState.maybeWhen(
                         initial: () => const UnauthenticatedRouteWrapper(),
                         loaded: (UserDetailsModel? userDetailsModel,
-                                String? accessToken) =>
+                                String? accessToken, RoleType? roleType) =>
                             const AuthenticatedRouteWrapper(),
                         orElse: () => const UnauthenticatedRouteWrapper())
                   ],
