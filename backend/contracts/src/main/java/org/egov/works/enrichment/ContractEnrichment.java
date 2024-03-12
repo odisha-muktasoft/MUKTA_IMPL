@@ -459,8 +459,7 @@ public class ContractEnrichment {
 
     public void enrichPreviousContractLineItems(ContractRequest contractRequest) {
         if (contractRequest.getContract().getBusinessService() != null && (contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)
-                || contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_REVISION_ESTIMATE))
-                && ACCEPT_ACTION.equalsIgnoreCase(contractRequest.getWorkflow().getAction())) {
+                && APPROVE_ACTION.equalsIgnoreCase(contractRequest.getWorkflow().getAction()))) {
             log.info("Setting previous contract statuses inactive");
             Contract previousActiveContract = contractServiceUtil.getActiveContractsFromDB(contractRequest).get(0);
 
