@@ -41,7 +41,7 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
               {
                 key: "MB_MUSTER_ROLL_ID",
                 isLink : musterrollNumber ? true : false,
-                to : `/works-ui/employee/attendencemgmt/view-attendance?tenantId=${measurement?.tenantId}&musterRollNumber=${musterrollNumber}`,
+                to : `/mukta-works-ui/employee/attendencemgmt/view-attendance?tenantId=${measurement?.tenantId}&musterRollNumber=${musterrollNumber}`,
                 value: (findMusterRollNumber(musterRolls,measurement?.measurementNumber, measurement?.additionalDetails?.startDate, measurement?.additionalDetails?.endDate)) || "NA",
               },
               {
