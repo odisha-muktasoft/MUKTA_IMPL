@@ -1,6 +1,8 @@
 import 'package:digit_components/widgets/digit_outline_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../models/muster_rolls/muster_workflow_model.dart';
 import '../../router/app_router.dart';
 
@@ -25,6 +27,15 @@ class CommonButtonCard extends StatelessWidget {
               return DigitOutLineButton(
                 label: g!.first.nextActions![index].action! ?? "",
                 onPressed: () {
+                   final data = g?.first.nextActions![index].roles?.join(',');
+
+            context.read<EmpHRMSBloc>().add(
+                  EmpHRMSLoadBlocEvent(
+                    isActive: true,
+                    roles: g!.first.nextActions![index].action!="EDIT/RE-SUBMIT" ? data??"MB_VERIFIER" : "MB_VERIFIER",
+                    tenantId: 'od.testing',
+                  ),
+                );
                   Navigator.of(
                     context,
                     rootNavigator: true,
@@ -32,7 +43,7 @@ class CommonButtonCard extends StatelessWidget {
                     (route) => route is! PopupRoute,
                   );
                   // Navigator.of(context).pop();
-                  context.router.push(const MBTypeConfirmationRoute());
+                  context.router.push( MBTypeConfirmationRoute(nextActions: g!.first.nextActions![index]));
                 },
               );
             },

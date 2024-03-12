@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
-
+import 'dart:async';
+import 'dart:convert';
 import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/employee/mb/mb_inbox_response.dart';
@@ -20,6 +21,7 @@ class MBLogic {
           startDate: e.additionalDetail?.startDate,
           entryDate: e.entryDate,
           physicalRefNumber: e.physicalRefNumber,
+          referenceId: e.referenceId,
           // to be chnaged
           //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
           musterRollNumber: "",
@@ -223,6 +225,7 @@ class MBLogic {
   static MBDetailResponse getMbPayloadUpdate({
     required List<FilteredMeasurements> data,
     required List<List<SorObject>> sorList,
+    required WorkFlow workFlow,
   }) {
     MBDetailResponse sa = MBDetailResponse(
       measurement: Measurement(
@@ -234,9 +237,7 @@ class MBLogic {
         entryDate: data.first.endDate,
         isActive: true,
         wfStatus: data.first.wfStatus,
-        workflow: const WorkFlow(
-          action: "SAVE_AS_DRAFT",
-        ),
+        workflow:  workFlow,
         additionalDetail: MeasurementAdditionalDetail(
           endDate: data.first.endDate,
           sorAmount: data.first.totalSorAmount,
@@ -253,6 +254,69 @@ class MBLogic {
 
     return sa;
   }
+
+// to map
+
+static Map<String, dynamic> measurementToMap(Measurement measurement) {
+  Map<String, dynamic> data= {
+    "documents": [],
+    'id': measurement.id,
+    'tenantId': measurement.tenantId,
+    'measurementNumber': measurement.measurementNumber,
+    'entryDate': measurement.entryDate,
+    'isActive': measurement.isActive,
+    'wfStatus': measurement.wfStatus,
+    'referenceId':measurement.referenceId,
+    'physicalRefNumber':measurement.physicalRefNumber,
+    'workflow': {
+      'action': measurement.workflow?.action,
+      // 'comment': measurement.workflow?.comment,
+      // 'assignees': measurement.workflow?.assignees,
+    },
+    'additionalDetail': {
+      'endDate': measurement.additionalDetail?.endDate,
+      'sorAmount': measurement.additionalDetail?.sorAmount,
+      'startDate': measurement.additionalDetail?.startDate,
+      'totalAmount': measurement.additionalDetail?.totalAmount,
+      'nonSorAmount': measurement.additionalDetail?.nonSorAmount,
+      'musterRollNumber': [measurement.additionalDetail?.musterRollNumber],
+    },
+    'measures': measurement.measures!.map((measure) {
+      return {
+        'description': measure.description,
+        'comments': measure.comments,
+        'targetId': measure.targetId,
+        'breadth': measure.breadth,
+        'length': measure.length,
+        'isActive': measure.isActive,
+        'referenceId': measure.referenceId??"WO/2023-24/001412",
+        'numItems': measure.numItems,
+        'id': measure.id,
+        'cumulativeValue': measure.cumulativeValue,
+        'currentValue': measure.currentValue,
+        'additionalDetails': {
+          'type': measure.measureAdditionalDetails?.type,
+          'mbAmount': measure.measureAdditionalDetails?.mbAmount,
+          'measureLineItems': measure.measureAdditionalDetails!.measureLineItems?.map((item) {
+            return {
+              'width': item.width,
+              'height': item.height,
+              'length': item.length,
+              'number': item.number,
+              'quantity': item.quantity,
+              'measurelineitemNo': item.measurelineitemNo,
+            };
+          }).toList(),
+        },
+      };
+    }).toList(),
+  };
+
+
+  return data;
+}
+
+
 }
 
 class SorObject {

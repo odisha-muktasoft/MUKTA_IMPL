@@ -46,6 +46,7 @@ class NextActions with _$NextActions {
     String? currentState,
     String? nextState,
     String? tenantId,
+    List<String>? roles,
   }) = _NextActions;
 
   factory NextActions.fromJson(
@@ -62,12 +63,29 @@ class WorkflowDocument with _$WorkflowDocument {
     String? fileStoreId,
     String? id,
     String? tenantId,
+    String? fileStore,
+    @JsonKey(name: 'additionalDetails')
+        DocumentAdditionalDetails? documentAdditionalDetails,
   }) = _WorkflowDocument;
 
   factory WorkflowDocument.fromJson(
     Map<String, dynamic> json,
   ) =>
       _$WorkflowDocumentFromJson(json);
+}
+
+@freezed
+class DocumentAdditionalDetails with _$DocumentAdditionalDetails {
+  const factory DocumentAdditionalDetails({
+    String? fileName,
+    String? fileType,
+    String? tenantId,
+  }) = _DocumentAdditionalDetails;
+
+  factory DocumentAdditionalDetails.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$DocumentAdditionalDetailsFromJson(json);
 }
 
 @freezed

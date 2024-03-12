@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
+import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 
 part 'mb_detail_response.freezed.dart';
 part 'mb_detail_response.g.dart';
@@ -127,6 +128,9 @@ class Measurement with _$Measurement {
 
     @JsonKey(name: 'measures')
     List<Measure>? measures,
+
+    @JsonKey(name: 'documents')
+    List<WorkflowDocument> ?documents,
 
   }) = _Measurement;
 

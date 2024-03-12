@@ -242,9 +242,13 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     MBTypeConfirmationRoute.name: (routeData) {
+      final args = routeData.argsAs<MBTypeConfirmationRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const MBTypeConfirmationPage(),
+        child: MBTypeConfirmationPage(
+          key: args.key,
+          nextActions: args.nextActions,
+        ),
       );
     },
     WorkOderInboxRoute.name: (routeData) {
@@ -1001,14 +1005,37 @@ class MBHistoryBookRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [MBTypeConfirmationPage]
-class MBTypeConfirmationRoute extends PageRouteInfo<void> {
-  const MBTypeConfirmationRoute()
-      : super(
+class MBTypeConfirmationRoute
+    extends PageRouteInfo<MBTypeConfirmationRouteArgs> {
+  MBTypeConfirmationRoute({
+    Key? key,
+    required NextActions nextActions,
+  }) : super(
           MBTypeConfirmationRoute.name,
           path: 'mb-type-confirmation',
+          args: MBTypeConfirmationRouteArgs(
+            key: key,
+            nextActions: nextActions,
+          ),
         );
 
   static const String name = 'MBTypeConfirmationRoute';
+}
+
+class MBTypeConfirmationRouteArgs {
+  const MBTypeConfirmationRouteArgs({
+    this.key,
+    required this.nextActions,
+  });
+
+  final Key? key;
+
+  final NextActions nextActions;
+
+  @override
+  String toString() {
+    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions}';
+  }
 }
 
 /// generated route for

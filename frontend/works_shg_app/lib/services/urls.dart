@@ -10,6 +10,7 @@ class Urls {
   static ORGServices orgServices = const ORGServices();
   static BillServices billServices = const BillServices();
   static MeasurementService measurementService= const MeasurementService();
+  static EmpHrms empHrms =const EmpHrms();
 }
 
 class CommonServices {
@@ -69,6 +70,12 @@ class WorkServices {
   String get myWorks => 'contract/v1/_search';
   String get updateWorkOrder => 'contract/v1/_update';
   String get createWorkOrder => 'contract/v1/_create';
+}
+
+class EmpHrms {
+  const EmpHrms();
+  String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+  
 }
 
 class MusterRollServices {

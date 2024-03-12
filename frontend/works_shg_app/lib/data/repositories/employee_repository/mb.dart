@@ -37,13 +37,12 @@ class MBRepository {
     }
   }
 
-FutureOr<MBDetailResponse> fetchMbDetail({
+  FutureOr<MBDetailResponse> fetchMbDetail({
     Map<String, String>? queryParameters,
     dynamic body,
     required String url,
-  }) async
-{
-try {
+  }) async {
+    try {
       //Dio http=Dio();
       final res = await _client.post(
         url,
@@ -55,24 +54,22 @@ try {
         }),
       );
 
-       //return res.data;
-     // return MBInboxResponse.fromJson(res.data);
+      //return res.data;
+      // return MBInboxResponse.fromJson(res.data);
 
-     return MBDetailResponse.fromJson(res.data);
+      return MBDetailResponse.fromJson(res.data);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
+  }
 
-}
-
-FutureOr<void> updateMeasurement({
-   Map<String, String>? queryParameters,
+  FutureOr<dynamic> updateMeasurement({
+    Map<String, String>? queryParameters,
     dynamic body,
     required String url,
-})async{
-
-try {
+  }) async {
+    try {
       //Dio http=Dio();
       final res = await _client.post(
         url,
@@ -84,14 +81,10 @@ try {
         }),
       );
 
-      // return res.data;
-     
+      return res.data;
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
-     // rethrow;
+      rethrow;
     }
-
-}
-
-
+  }
 }

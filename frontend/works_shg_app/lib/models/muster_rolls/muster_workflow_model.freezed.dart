@@ -608,6 +608,7 @@ mixin _$NextActions {
   String? get currentState => throw _privateConstructorUsedError;
   String? get nextState => throw _privateConstructorUsedError;
   String? get tenantId => throw _privateConstructorUsedError;
+  List<String>? get roles => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -626,7 +627,8 @@ abstract class $NextActionsCopyWith<$Res> {
       String? uuid,
       String? currentState,
       String? nextState,
-      String? tenantId});
+      String? tenantId,
+      List<String>? roles});
 }
 
 /// @nodoc
@@ -647,6 +649,7 @@ class _$NextActionsCopyWithImpl<$Res, $Val extends NextActions>
     Object? currentState = freezed,
     Object? nextState = freezed,
     Object? tenantId = freezed,
+    Object? roles = freezed,
   }) {
     return _then(_value.copyWith(
       action: freezed == action
@@ -669,6 +672,10 @@ class _$NextActionsCopyWithImpl<$Res, $Val extends NextActions>
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
               as String?,
+      roles: freezed == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -686,7 +693,8 @@ abstract class _$$_NextActionsCopyWith<$Res>
       String? uuid,
       String? currentState,
       String? nextState,
-      String? tenantId});
+      String? tenantId,
+      List<String>? roles});
 }
 
 /// @nodoc
@@ -705,6 +713,7 @@ class __$$_NextActionsCopyWithImpl<$Res>
     Object? currentState = freezed,
     Object? nextState = freezed,
     Object? tenantId = freezed,
+    Object? roles = freezed,
   }) {
     return _then(_$_NextActions(
       action: freezed == action
@@ -727,6 +736,10 @@ class __$$_NextActionsCopyWithImpl<$Res>
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
               as String?,
+      roles: freezed == roles
+          ? _value._roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -739,7 +752,9 @@ class _$_NextActions implements _NextActions {
       this.uuid,
       this.currentState,
       this.nextState,
-      this.tenantId});
+      this.tenantId,
+      final List<String>? roles})
+      : _roles = roles;
 
   factory _$_NextActions.fromJson(Map<String, dynamic> json) =>
       _$$_NextActionsFromJson(json);
@@ -754,10 +769,19 @@ class _$_NextActions implements _NextActions {
   final String? nextState;
   @override
   final String? tenantId;
+  final List<String>? _roles;
+  @override
+  List<String>? get roles {
+    final value = _roles;
+    if (value == null) return null;
+    if (_roles is EqualUnmodifiableListView) return _roles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'NextActions(action: $action, uuid: $uuid, currentState: $currentState, nextState: $nextState, tenantId: $tenantId)';
+    return 'NextActions(action: $action, uuid: $uuid, currentState: $currentState, nextState: $nextState, tenantId: $tenantId, roles: $roles)';
   }
 
   @override
@@ -772,13 +796,14 @@ class _$_NextActions implements _NextActions {
             (identical(other.nextState, nextState) ||
                 other.nextState == nextState) &&
             (identical(other.tenantId, tenantId) ||
-                other.tenantId == tenantId));
+                other.tenantId == tenantId) &&
+            const DeepCollectionEquality().equals(other._roles, _roles));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, action, uuid, currentState, nextState, tenantId);
+  int get hashCode => Object.hash(runtimeType, action, uuid, currentState,
+      nextState, tenantId, const DeepCollectionEquality().hash(_roles));
 
   @JsonKey(ignore: true)
   @override
@@ -800,7 +825,8 @@ abstract class _NextActions implements NextActions {
       final String? uuid,
       final String? currentState,
       final String? nextState,
-      final String? tenantId}) = _$_NextActions;
+      final String? tenantId,
+      final List<String>? roles}) = _$_NextActions;
 
   factory _NextActions.fromJson(Map<String, dynamic> json) =
       _$_NextActions.fromJson;
@@ -815,6 +841,8 @@ abstract class _NextActions implements NextActions {
   String? get nextState;
   @override
   String? get tenantId;
+  @override
+  List<String>? get roles;
   @override
   @JsonKey(ignore: true)
   _$$_NextActionsCopyWith<_$_NextActions> get copyWith =>
@@ -832,6 +860,10 @@ mixin _$WorkflowDocument {
   String? get fileStoreId => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String? get tenantId => throw _privateConstructorUsedError;
+  String? get fileStore => throw _privateConstructorUsedError;
+  @JsonKey(name: 'additionalDetails')
+  DocumentAdditionalDetails? get documentAdditionalDetails =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -850,7 +882,12 @@ abstract class $WorkflowDocumentCopyWith<$Res> {
       String? documentUid,
       String? fileStoreId,
       String? id,
-      String? tenantId});
+      String? tenantId,
+      String? fileStore,
+      @JsonKey(name: 'additionalDetails')
+          DocumentAdditionalDetails? documentAdditionalDetails});
+
+  $DocumentAdditionalDetailsCopyWith<$Res>? get documentAdditionalDetails;
 }
 
 /// @nodoc
@@ -871,6 +908,8 @@ class _$WorkflowDocumentCopyWithImpl<$Res, $Val extends WorkflowDocument>
     Object? fileStoreId = freezed,
     Object? id = freezed,
     Object? tenantId = freezed,
+    Object? fileStore = freezed,
+    Object? documentAdditionalDetails = freezed,
   }) {
     return _then(_value.copyWith(
       documentType: freezed == documentType
@@ -893,7 +932,28 @@ class _$WorkflowDocumentCopyWithImpl<$Res, $Val extends WorkflowDocument>
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
               as String?,
+      fileStore: freezed == fileStore
+          ? _value.fileStore
+          : fileStore // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentAdditionalDetails: freezed == documentAdditionalDetails
+          ? _value.documentAdditionalDetails
+          : documentAdditionalDetails // ignore: cast_nullable_to_non_nullable
+              as DocumentAdditionalDetails?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $DocumentAdditionalDetailsCopyWith<$Res>? get documentAdditionalDetails {
+    if (_value.documentAdditionalDetails == null) {
+      return null;
+    }
+
+    return $DocumentAdditionalDetailsCopyWith<$Res>(
+        _value.documentAdditionalDetails!, (value) {
+      return _then(_value.copyWith(documentAdditionalDetails: value) as $Val);
+    });
   }
 }
 
@@ -910,7 +970,13 @@ abstract class _$$_WorkflowDocumentCopyWith<$Res>
       String? documentUid,
       String? fileStoreId,
       String? id,
-      String? tenantId});
+      String? tenantId,
+      String? fileStore,
+      @JsonKey(name: 'additionalDetails')
+          DocumentAdditionalDetails? documentAdditionalDetails});
+
+  @override
+  $DocumentAdditionalDetailsCopyWith<$Res>? get documentAdditionalDetails;
 }
 
 /// @nodoc
@@ -929,6 +995,8 @@ class __$$_WorkflowDocumentCopyWithImpl<$Res>
     Object? fileStoreId = freezed,
     Object? id = freezed,
     Object? tenantId = freezed,
+    Object? fileStore = freezed,
+    Object? documentAdditionalDetails = freezed,
   }) {
     return _then(_$_WorkflowDocument(
       documentType: freezed == documentType
@@ -951,6 +1019,14 @@ class __$$_WorkflowDocumentCopyWithImpl<$Res>
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
               as String?,
+      fileStore: freezed == fileStore
+          ? _value.fileStore
+          : fileStore // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentAdditionalDetails: freezed == documentAdditionalDetails
+          ? _value.documentAdditionalDetails
+          : documentAdditionalDetails // ignore: cast_nullable_to_non_nullable
+              as DocumentAdditionalDetails?,
     ));
   }
 }
@@ -963,7 +1039,9 @@ class _$_WorkflowDocument implements _WorkflowDocument {
       this.documentUid,
       this.fileStoreId,
       this.id,
-      this.tenantId});
+      this.tenantId,
+      this.fileStore,
+      @JsonKey(name: 'additionalDetails') this.documentAdditionalDetails});
 
   factory _$_WorkflowDocument.fromJson(Map<String, dynamic> json) =>
       _$$_WorkflowDocumentFromJson(json);
@@ -978,10 +1056,15 @@ class _$_WorkflowDocument implements _WorkflowDocument {
   final String? id;
   @override
   final String? tenantId;
+  @override
+  final String? fileStore;
+  @override
+  @JsonKey(name: 'additionalDetails')
+  final DocumentAdditionalDetails? documentAdditionalDetails;
 
   @override
   String toString() {
-    return 'WorkflowDocument(documentType: $documentType, documentUid: $documentUid, fileStoreId: $fileStoreId, id: $id, tenantId: $tenantId)';
+    return 'WorkflowDocument(documentType: $documentType, documentUid: $documentUid, fileStoreId: $fileStoreId, id: $id, tenantId: $tenantId, fileStore: $fileStore, documentAdditionalDetails: $documentAdditionalDetails)';
   }
 
   @override
@@ -997,13 +1080,18 @@ class _$_WorkflowDocument implements _WorkflowDocument {
                 other.fileStoreId == fileStoreId) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.tenantId, tenantId) ||
-                other.tenantId == tenantId));
+                other.tenantId == tenantId) &&
+            (identical(other.fileStore, fileStore) ||
+                other.fileStore == fileStore) &&
+            (identical(other.documentAdditionalDetails,
+                    documentAdditionalDetails) ||
+                other.documentAdditionalDetails == documentAdditionalDetails));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, documentType, documentUid, fileStoreId, id, tenantId);
+  int get hashCode => Object.hash(runtimeType, documentType, documentUid,
+      fileStoreId, id, tenantId, fileStore, documentAdditionalDetails);
 
   @JsonKey(ignore: true)
   @override
@@ -1021,11 +1109,15 @@ class _$_WorkflowDocument implements _WorkflowDocument {
 
 abstract class _WorkflowDocument implements WorkflowDocument {
   const factory _WorkflowDocument(
-      {final String? documentType,
-      final String? documentUid,
-      final String? fileStoreId,
-      final String? id,
-      final String? tenantId}) = _$_WorkflowDocument;
+          {final String? documentType,
+          final String? documentUid,
+          final String? fileStoreId,
+          final String? id,
+          final String? tenantId,
+          final String? fileStore,
+          @JsonKey(name: 'additionalDetails')
+              final DocumentAdditionalDetails? documentAdditionalDetails}) =
+      _$_WorkflowDocument;
 
   factory _WorkflowDocument.fromJson(Map<String, dynamic> json) =
       _$_WorkflowDocument.fromJson;
@@ -1041,9 +1133,195 @@ abstract class _WorkflowDocument implements WorkflowDocument {
   @override
   String? get tenantId;
   @override
+  String? get fileStore;
+  @override
+  @JsonKey(name: 'additionalDetails')
+  DocumentAdditionalDetails? get documentAdditionalDetails;
+  @override
   @JsonKey(ignore: true)
   _$$_WorkflowDocumentCopyWith<_$_WorkflowDocument> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+DocumentAdditionalDetails _$DocumentAdditionalDetailsFromJson(
+    Map<String, dynamic> json) {
+  return _DocumentAdditionalDetails.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DocumentAdditionalDetails {
+  String? get fileName => throw _privateConstructorUsedError;
+  String? get fileType => throw _privateConstructorUsedError;
+  String? get tenantId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DocumentAdditionalDetailsCopyWith<DocumentAdditionalDetails> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DocumentAdditionalDetailsCopyWith<$Res> {
+  factory $DocumentAdditionalDetailsCopyWith(DocumentAdditionalDetails value,
+          $Res Function(DocumentAdditionalDetails) then) =
+      _$DocumentAdditionalDetailsCopyWithImpl<$Res, DocumentAdditionalDetails>;
+  @useResult
+  $Res call({String? fileName, String? fileType, String? tenantId});
+}
+
+/// @nodoc
+class _$DocumentAdditionalDetailsCopyWithImpl<$Res,
+        $Val extends DocumentAdditionalDetails>
+    implements $DocumentAdditionalDetailsCopyWith<$Res> {
+  _$DocumentAdditionalDetailsCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fileName = freezed,
+    Object? fileType = freezed,
+    Object? tenantId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileType: freezed == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_DocumentAdditionalDetailsCopyWith<$Res>
+    implements $DocumentAdditionalDetailsCopyWith<$Res> {
+  factory _$$_DocumentAdditionalDetailsCopyWith(
+          _$_DocumentAdditionalDetails value,
+          $Res Function(_$_DocumentAdditionalDetails) then) =
+      __$$_DocumentAdditionalDetailsCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String? fileName, String? fileType, String? tenantId});
+}
+
+/// @nodoc
+class __$$_DocumentAdditionalDetailsCopyWithImpl<$Res>
+    extends _$DocumentAdditionalDetailsCopyWithImpl<$Res,
+        _$_DocumentAdditionalDetails>
+    implements _$$_DocumentAdditionalDetailsCopyWith<$Res> {
+  __$$_DocumentAdditionalDetailsCopyWithImpl(
+      _$_DocumentAdditionalDetails _value,
+      $Res Function(_$_DocumentAdditionalDetails) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fileName = freezed,
+    Object? fileType = freezed,
+    Object? tenantId = freezed,
+  }) {
+    return _then(_$_DocumentAdditionalDetails(
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileType: freezed == fileType
+          ? _value.fileType
+          : fileType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_DocumentAdditionalDetails implements _DocumentAdditionalDetails {
+  const _$_DocumentAdditionalDetails(
+      {this.fileName, this.fileType, this.tenantId});
+
+  factory _$_DocumentAdditionalDetails.fromJson(Map<String, dynamic> json) =>
+      _$$_DocumentAdditionalDetailsFromJson(json);
+
+  @override
+  final String? fileName;
+  @override
+  final String? fileType;
+  @override
+  final String? tenantId;
+
+  @override
+  String toString() {
+    return 'DocumentAdditionalDetails(fileName: $fileName, fileType: $fileType, tenantId: $tenantId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_DocumentAdditionalDetails &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
+            (identical(other.fileType, fileType) ||
+                other.fileType == fileType) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, fileName, fileType, tenantId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_DocumentAdditionalDetailsCopyWith<_$_DocumentAdditionalDetails>
+      get copyWith => __$$_DocumentAdditionalDetailsCopyWithImpl<
+          _$_DocumentAdditionalDetails>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DocumentAdditionalDetailsToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DocumentAdditionalDetails implements DocumentAdditionalDetails {
+  const factory _DocumentAdditionalDetails(
+      {final String? fileName,
+      final String? fileType,
+      final String? tenantId}) = _$_DocumentAdditionalDetails;
+
+  factory _DocumentAdditionalDetails.fromJson(Map<String, dynamic> json) =
+      _$_DocumentAdditionalDetails.fromJson;
+
+  @override
+  String? get fileName;
+  @override
+  String? get fileType;
+  @override
+  String? get tenantId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_DocumentAdditionalDetailsCopyWith<_$_DocumentAdditionalDetails>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 Assignees _$AssigneesFromJson(Map<String, dynamic> json) {

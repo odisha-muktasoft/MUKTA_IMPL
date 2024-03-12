@@ -147,6 +147,9 @@ _$_Measurement _$$_MeasurementFromJson(Map<String, dynamic> json) =>
       measures: (json['measures'] as List<dynamic>?)
           ?.map((e) => Measure.fromJson(e as Map<String, dynamic>))
           .toList(),
+      documents: (json['documents'] as List<dynamic>?)
+          ?.map((e) => WorkflowDocument.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_MeasurementToJson(_$_Measurement instance) =>
@@ -163,6 +166,7 @@ Map<String, dynamic> _$$_MeasurementToJson(_$_Measurement instance) =>
       'auditDetails': instance.auditDetails,
       'additionalDetails': instance.additionalDetail,
       'measures': instance.measures,
+      'documents': instance.documents,
     };
 
 _$_MeasurementAdditionalDetail _$$_MeasurementAdditionalDetailFromJson(

@@ -1547,6 +1547,8 @@ mixin _$Measurement {
       throw _privateConstructorUsedError;
   @JsonKey(name: 'measures')
   List<Measure>? get measures => throw _privateConstructorUsedError;
+  @JsonKey(name: 'documents')
+  List<WorkflowDocument>? get documents => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1584,7 +1586,9 @@ abstract class $MeasurementCopyWith<$Res> {
       @JsonKey(name: 'additionalDetails')
           MeasurementAdditionalDetail? additionalDetail,
       @JsonKey(name: 'measures')
-          List<Measure>? measures});
+          List<Measure>? measures,
+      @JsonKey(name: 'documents')
+          List<WorkflowDocument>? documents});
 
   $WorkFlowCopyWith<$Res>? get workflow;
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -1616,6 +1620,7 @@ class _$MeasurementCopyWithImpl<$Res, $Val extends Measurement>
     Object? auditDetails = freezed,
     Object? additionalDetail = freezed,
     Object? measures = freezed,
+    Object? documents = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -1666,6 +1671,10 @@ class _$MeasurementCopyWithImpl<$Res, $Val extends Measurement>
           ? _value.measures
           : measures // ignore: cast_nullable_to_non_nullable
               as List<Measure>?,
+      documents: freezed == documents
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<WorkflowDocument>?,
     ) as $Val);
   }
 
@@ -1739,7 +1748,9 @@ abstract class _$$_MeasurementCopyWith<$Res>
       @JsonKey(name: 'additionalDetails')
           MeasurementAdditionalDetail? additionalDetail,
       @JsonKey(name: 'measures')
-          List<Measure>? measures});
+          List<Measure>? measures,
+      @JsonKey(name: 'documents')
+          List<WorkflowDocument>? documents});
 
   @override
   $WorkFlowCopyWith<$Res>? get workflow;
@@ -1772,6 +1783,7 @@ class __$$_MeasurementCopyWithImpl<$Res>
     Object? auditDetails = freezed,
     Object? additionalDetail = freezed,
     Object? measures = freezed,
+    Object? documents = freezed,
   }) {
     return _then(_$_Measurement(
       id: freezed == id
@@ -1822,6 +1834,10 @@ class __$$_MeasurementCopyWithImpl<$Res>
           ? _value._measures
           : measures // ignore: cast_nullable_to_non_nullable
               as List<Measure>?,
+      documents: freezed == documents
+          ? _value._documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<WorkflowDocument>?,
     ));
   }
 }
@@ -1841,8 +1857,10 @@ class _$_Measurement implements _Measurement {
       @JsonKey(name: 'workflow') this.workflow,
       @JsonKey(name: 'auditDetails') this.auditDetails,
       @JsonKey(name: 'additionalDetails') this.additionalDetail,
-      @JsonKey(name: 'measures') final List<Measure>? measures})
-      : _measures = measures;
+      @JsonKey(name: 'measures') final List<Measure>? measures,
+      @JsonKey(name: 'documents') final List<WorkflowDocument>? documents})
+      : _measures = measures,
+        _documents = documents;
 
   factory _$_Measurement.fromJson(Map<String, dynamic> json) =>
       _$$_MeasurementFromJson(json);
@@ -1891,9 +1909,20 @@ class _$_Measurement implements _Measurement {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<WorkflowDocument>? _documents;
+  @override
+  @JsonKey(name: 'documents')
+  List<WorkflowDocument>? get documents {
+    final value = _documents;
+    if (value == null) return null;
+    if (_documents is EqualUnmodifiableListView) return _documents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'Measurement(id: $id, tenantId: $tenantId, measurementNumber: $measurementNumber, physicalRefNumber: $physicalRefNumber, referenceId: $referenceId, entryDate: $entryDate, isActive: $isActive, wfStatus: $wfStatus, workflow: $workflow, auditDetails: $auditDetails, additionalDetail: $additionalDetail, measures: $measures)';
+    return 'Measurement(id: $id, tenantId: $tenantId, measurementNumber: $measurementNumber, physicalRefNumber: $physicalRefNumber, referenceId: $referenceId, entryDate: $entryDate, isActive: $isActive, wfStatus: $wfStatus, workflow: $workflow, auditDetails: $auditDetails, additionalDetail: $additionalDetail, measures: $measures, documents: $documents)';
   }
 
   @override
@@ -1922,7 +1951,9 @@ class _$_Measurement implements _Measurement {
                 other.auditDetails == auditDetails) &&
             (identical(other.additionalDetail, additionalDetail) ||
                 other.additionalDetail == additionalDetail) &&
-            const DeepCollectionEquality().equals(other._measures, _measures));
+            const DeepCollectionEquality().equals(other._measures, _measures) &&
+            const DeepCollectionEquality()
+                .equals(other._documents, _documents));
   }
 
   @JsonKey(ignore: true)
@@ -1940,7 +1971,8 @@ class _$_Measurement implements _Measurement {
       workflow,
       auditDetails,
       additionalDetail,
-      const DeepCollectionEquality().hash(_measures));
+      const DeepCollectionEquality().hash(_measures),
+      const DeepCollectionEquality().hash(_documents));
 
   @JsonKey(ignore: true)
   @override
@@ -1981,7 +2013,9 @@ abstract class _Measurement implements Measurement {
       @JsonKey(name: 'additionalDetails')
           final MeasurementAdditionalDetail? additionalDetail,
       @JsonKey(name: 'measures')
-          final List<Measure>? measures}) = _$_Measurement;
+          final List<Measure>? measures,
+      @JsonKey(name: 'documents')
+          final List<WorkflowDocument>? documents}) = _$_Measurement;
 
   factory _Measurement.fromJson(Map<String, dynamic> json) =
       _$_Measurement.fromJson;
@@ -2022,6 +2056,9 @@ abstract class _Measurement implements Measurement {
   @override
   @JsonKey(name: 'measures')
   List<Measure>? get measures;
+  @override
+  @JsonKey(name: 'documents')
+  List<WorkflowDocument>? get documents;
   @override
   @JsonKey(ignore: true)
   _$$_MeasurementCopyWith<_$_Measurement> get copyWith =>
