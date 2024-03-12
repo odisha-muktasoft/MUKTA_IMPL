@@ -288,4 +288,10 @@ config:
         image-name: "mukta-egov-notification-sms"
         dockerfile: "build/maven/Dockerfile"
 
+  - name: builds/mukta_impl/mukta/micro-ui/mukta-works-ui
+    build:
+      - work-dir: frontend/micro-ui/
+        dockerfile: frontend/micro-ui/web/docker/Dockerfile
+        image-name: mukta-works-ui
+
         
