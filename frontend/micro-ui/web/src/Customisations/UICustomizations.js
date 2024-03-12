@@ -347,7 +347,7 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link
-              to={`/works-ui/employee/attendencemgmt/view-attendance?tenantId=${row?.ProcessInstance.tenantId}&musterRollNumber=${value}`}
+              to={`/mukta-works-ui/employee/attendencemgmt/view-attendance?tenantId=${row?.ProcessInstance.tenantId}&musterRollNumber=${value}`}
             >
               {String(value ? value : t("ES_COMMON_NA"))}
             </Link>
@@ -693,7 +693,7 @@ export const UICustomizations = {
       if (key === "WORKS_BILL_NUMBER") {
         return (
           <span className="link">
-            <Link to={`/works-ui/employee/expenditure/view-bill?tenantId=${row?.ProcessInstance.tenantId}&billNumber=${value}`}>
+            <Link to={`/mukta-works-ui/employee/expenditure/view-bill?tenantId=${row?.ProcessInstance.tenantId}&billNumber=${value}`}>
             {String(value ? value : t("ES_COMMON_NA"))}
             </Link>
           </span>
