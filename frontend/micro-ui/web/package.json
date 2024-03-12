@@ -15,7 +15,7 @@
     "micro-ui-internals/packages/modules/Measurement",
     "micro-ui-internals/packages/Mukta"
   ],
-  "homepage": "/works-ui",
+  "homepage": "/mukta-works-ui",
   "dependencies": {
     "@egovernments/digit-ui-react-components": "^1.5.0",
     "@egovernments/digit-ui-libraries": "1.5.0",
