@@ -152,14 +152,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                           final g =
                               mbWorkFlow.musterWorkFlowModel?.processInstances;
 
-                          final data =
-                              g?.first.nextActions!.first.roles?.join(',');
-
                           return FloatActionCard(
                             actions: () {
                               DigitActionDialog.show(
                                 context,
-                                widget: CommonButtonCard(g: g),
+                                widget: CommonButtonCard(g: g,contractNumber: widget.contractNumber,mbNumber: widget.mbNumber,),
                               );
                             },
                             // amount: sorprice.toString(),
@@ -174,6 +171,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 value.data.first.totalNorSorAmount!,
                                 value.data.first.totalAmount!,
                                 g,
+                                widget.contractNumber,
+                                widget.mbNumber,
                               );
                             },
                             totalAmountText: 'Total MB Amount',
@@ -362,8 +361,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return InkWell(
-                                          onTap: () => CommonMethods()
-                                              .onTapOfAttachment(
+                                          onTap: () =>
+                                              CommonMethods().onTapOfAttachment(
                                             mm![index],
                                             mm![index].tenantId!,
                                             context,
@@ -380,20 +379,21 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                   spacing: 5,
                                                   children: [
                                                     Image.asset(
-                                                        'assets/png/attachment.png',
-                                                        height: 200,
-                                                        width: MediaQuery.sizeOf(context).width,
-                                                        ),
+                                                      'assets/png/attachment.png',
+                                                      height: 200,
+                                                      width: MediaQuery.sizeOf(
+                                                              context)
+                                                          .width,
+                                                    ),
                                                     Text(
                                                       AppLocalizations.of(
                                                               context)
-                                                          .translate(mm![
-                                                                  index]
+                                                          .translate(mm![index]
                                                               .name
                                                               .toString()),
                                                       maxLines: 2,
-                                                      overflow: TextOverflow
-                                                          .ellipsis,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     )
                                                   ])),
                                         );
@@ -558,7 +558,10 @@ class _MBDetailPageState extends State<MBDetailPage>
     double totalSorAmount,
     double totalNonSorAmount,
     double mbAmount,
+    
     List<ProcessInstances>? processInstances,
+    String contractNumber,
+    String mbNumber,
   ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -689,7 +692,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     Navigator.of(context).pop();
                     DigitActionDialog.show(
                       context,
-                      widget: CommonButtonCard(g: processInstances),
+                      widget: CommonButtonCard(g: processInstances,contractNumber: contractNumber,mbNumber: mbNumber,),
                     );
                   }),
             ],

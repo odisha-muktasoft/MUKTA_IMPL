@@ -234,7 +234,7 @@ class MBLogic {
         measurementNumber: data.first.mbNumber,
         physicalRefNumber: data.first.physicalRefNumber,
         referenceId: data.first.referenceId,
-        entryDate: data.first.endDate,
+        entryDate: data.first.entryDate,
         isActive: true,
         wfStatus: data.first.wfStatus,
         workflow:  workFlow,

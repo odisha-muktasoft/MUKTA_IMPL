@@ -32,7 +32,7 @@ class MeasurementCrudBloc
        
       emit(const MeasurementCrudState.loading());
 
-      final res = await MBRepository(client.init()).updateMeasurement(
+      final Measurement res = await MBRepository(client.init()).updateMeasurement(
         url: Urls.measurementService.updateMeasurement,
         body: {
           "measurements": [MBLogic.measurementToMap(event.measurement)]
@@ -129,8 +129,10 @@ class MeasurementCrudBloc
         },
       );
 
-      print(  [MBLogic.measurementToMap(event.measurement)]);
-    } on DioError catch (e) {}
+     emit(MeasurementCrudState.loaded(res));
+    } on DioError catch (e) {
+      emit(MeasurementCrudState.error(e.toString()));
+    }
   }
 }
 
@@ -153,7 +155,7 @@ class MeasurementCrudState with _$MeasurementCrudState {
   const factory MeasurementCrudState.initial() = _Initial;
   const factory MeasurementCrudState.loading() = _Loading;
   const factory MeasurementCrudState.loaded(
-    MBInboxResponse mbInboxResponse,
+    Measurement? measurement,
   ) = _Loaded;
   const factory MeasurementCrudState.error(String? error) = _Error;
 }

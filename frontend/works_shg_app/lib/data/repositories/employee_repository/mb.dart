@@ -64,7 +64,7 @@ class MBRepository {
     }
   }
 
-  FutureOr<dynamic> updateMeasurement({
+  FutureOr<Measurement> updateMeasurement({
     Map<String, String>? queryParameters,
     dynamic body,
     required String url,
@@ -81,7 +81,8 @@ class MBRepository {
         }),
       );
 
-      return res.data;
+      //return res.data;
+      return Measurement.fromJson(res.data);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;

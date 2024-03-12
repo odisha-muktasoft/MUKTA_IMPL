@@ -390,7 +390,7 @@ mixin _$MeasurementCrudState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
+    required TResult Function(Measurement? measurement) loaded,
     required TResult Function(String? error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -398,7 +398,7 @@ mixin _$MeasurementCrudState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult? Function(Measurement? measurement)? loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -406,7 +406,7 @@ mixin _$MeasurementCrudState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult Function(Measurement? measurement)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -496,7 +496,7 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
+    required TResult Function(Measurement? measurement) loaded,
     required TResult Function(String? error) error,
   }) {
     return initial();
@@ -507,7 +507,7 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult? Function(Measurement? measurement)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -518,7 +518,7 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult Function(Measurement? measurement)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -610,7 +610,7 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
+    required TResult Function(Measurement? measurement) loaded,
     required TResult Function(String? error) error,
   }) {
     return loading();
@@ -621,7 +621,7 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult? Function(Measurement? measurement)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -632,7 +632,7 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult Function(Measurement? measurement)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -690,9 +690,9 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({MBInboxResponse mbInboxResponse});
+  $Res call({Measurement? measurement});
 
-  $MBInboxResponseCopyWith<$Res> get mbInboxResponse;
+  $MeasurementCopyWith<$Res>? get measurement;
 }
 
 /// @nodoc
@@ -705,21 +705,25 @@ class __$$_LoadedCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? mbInboxResponse = null,
+    Object? measurement = freezed,
   }) {
     return _then(_$_Loaded(
-      null == mbInboxResponse
-          ? _value.mbInboxResponse
-          : mbInboxResponse // ignore: cast_nullable_to_non_nullable
-              as MBInboxResponse,
+      freezed == measurement
+          ? _value.measurement
+          : measurement // ignore: cast_nullable_to_non_nullable
+              as Measurement?,
     ));
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MBInboxResponseCopyWith<$Res> get mbInboxResponse {
-    return $MBInboxResponseCopyWith<$Res>(_value.mbInboxResponse, (value) {
-      return _then(_value.copyWith(mbInboxResponse: value));
+  $MeasurementCopyWith<$Res>? get measurement {
+    if (_value.measurement == null) {
+      return null;
+    }
+
+    return $MeasurementCopyWith<$Res>(_value.measurement!, (value) {
+      return _then(_value.copyWith(measurement: value));
     });
   }
 }
@@ -727,14 +731,14 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.mbInboxResponse) : super._();
+  const _$_Loaded(this.measurement) : super._();
 
   @override
-  final MBInboxResponse mbInboxResponse;
+  final Measurement? measurement;
 
   @override
   String toString() {
-    return 'MeasurementCrudState.loaded(mbInboxResponse: $mbInboxResponse)';
+    return 'MeasurementCrudState.loaded(measurement: $measurement)';
   }
 
   @override
@@ -742,12 +746,12 @@ class _$_Loaded extends _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
-            (identical(other.mbInboxResponse, mbInboxResponse) ||
-                other.mbInboxResponse == mbInboxResponse));
+            (identical(other.measurement, measurement) ||
+                other.measurement == measurement));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, mbInboxResponse);
+  int get hashCode => Object.hash(runtimeType, measurement);
 
   @JsonKey(ignore: true)
   @override
@@ -760,10 +764,10 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
+    required TResult Function(Measurement? measurement) loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(mbInboxResponse);
+    return loaded(measurement);
   }
 
   @override
@@ -771,10 +775,10 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult? Function(Measurement? measurement)? loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(mbInboxResponse);
+    return loaded?.call(measurement);
   }
 
   @override
@@ -782,12 +786,12 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult Function(Measurement? measurement)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(mbInboxResponse);
+      return loaded(measurement);
     }
     return orElse();
   }
@@ -831,10 +835,10 @@ class _$_Loaded extends _Loaded {
 }
 
 abstract class _Loaded extends MeasurementCrudState {
-  const factory _Loaded(final MBInboxResponse mbInboxResponse) = _$_Loaded;
+  const factory _Loaded(final Measurement? measurement) = _$_Loaded;
   const _Loaded._() : super._();
 
-  MBInboxResponse get mbInboxResponse;
+  Measurement? get measurement;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -904,7 +908,7 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse) loaded,
+    required TResult Function(Measurement? measurement) loaded,
     required TResult Function(String? error) error,
   }) {
     return error(this.error);
@@ -915,7 +919,7 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult? Function(Measurement? measurement)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -926,7 +930,7 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse)? loaded,
+    TResult Function(Measurement? measurement)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {

@@ -9,10 +9,12 @@ import '../../router/app_router.dart';
 class CommonButtonCard extends StatelessWidget {
   const CommonButtonCard({
     super.key,
-    required this.g,
+    required this.g, required this.contractNumber, required this.mbNumber,
   });
 
   final List<ProcessInstances>? g;
+  final String contractNumber;
+  final String mbNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,12 @@ class CommonButtonCard extends StatelessWidget {
                     (route) => route is! PopupRoute,
                   );
                   // Navigator.of(context).pop();
-                  context.router.push( MBTypeConfirmationRoute(nextActions: g!.first.nextActions![index]));
+                  context.router.push( MBTypeConfirmationRoute(nextActions: g!.first.nextActions![index],
+                  contractNumber: contractNumber,
+                  mbNumber: mbNumber,
+                  ),
+                  
+                  );
                 },
               );
             },

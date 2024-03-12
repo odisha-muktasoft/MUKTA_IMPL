@@ -248,6 +248,8 @@ class _$AppRouter extends RootStackRouter {
         child: MBTypeConfirmationPage(
           key: args.key,
           nextActions: args.nextActions,
+          contractNumber: args.contractNumber,
+          mbNumber: args.mbNumber,
         ),
       );
     },
@@ -1010,12 +1012,16 @@ class MBTypeConfirmationRoute
   MBTypeConfirmationRoute({
     Key? key,
     required NextActions nextActions,
+    String? contractNumber,
+    String? mbNumber,
   }) : super(
           MBTypeConfirmationRoute.name,
           path: 'mb-type-confirmation',
           args: MBTypeConfirmationRouteArgs(
             key: key,
             nextActions: nextActions,
+            contractNumber: contractNumber,
+            mbNumber: mbNumber,
           ),
         );
 
@@ -1026,15 +1032,21 @@ class MBTypeConfirmationRouteArgs {
   const MBTypeConfirmationRouteArgs({
     this.key,
     required this.nextActions,
+    this.contractNumber,
+    this.mbNumber,
   });
 
   final Key? key;
 
   final NextActions nextActions;
 
+  final String? contractNumber;
+
+  final String? mbNumber;
+
   @override
   String toString() {
-    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions}';
+    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions, contractNumber: $contractNumber, mbNumber: $mbNumber}';
   }
 }
 
