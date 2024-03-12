@@ -257,6 +257,7 @@ class MBLogic {
       if (e.id == contractLineItemRef) {
         FilteredMeasurementsEstimate filteredMeasurementsEstimate =
             FilteredMeasurementsEstimate(
+            
           id: e.id,
           sorId: e.sorId,
           category: e.category,
