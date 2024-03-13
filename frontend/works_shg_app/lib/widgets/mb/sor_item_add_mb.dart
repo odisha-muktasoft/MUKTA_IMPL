@@ -210,71 +210,94 @@ class _CardWidgetState extends State<CardWidget> {
                 }),
                 SingleChildScrollView(
                   child: SizedBox(
-                      height: MediaQuery.sizeOf(context).height * 0.40,
-                      child: widget.filteredMeasurementsMeasure
-                                      ?.measureLineItems !=
-                                  null &&
-                              (widget.filteredMeasurementsMeasure!
-                                      .measureLineItems!.isEmpty )
-                          ? Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: MultiLineItems(
-                                height: widget
-                                    .filteredMeasurementsMeasure?.height
-                                    .toString(),
-                                width: widget
-                                    .filteredMeasurementsMeasure?.breath
-                                    .toString(),
-                                number: widget
-                                    .filteredMeasurementsMeasure?.numItems
-                                    .toString(),
-                                quantity: widget
-                                    .filteredMeasurementsMeasure?.height
-                                    .toString(),
-                                length: widget
-                                    .filteredMeasurementsMeasure?.numItems
-                                    .toString(),
-                              ),
-                            )
-                          : ListView.builder(
-                              itemCount: widget.filteredMeasurementsMeasure!
-                                  .measureLineItems!.length,
-                              itemBuilder: (context, index) {
-                                final data = widget.filteredMeasurementsMeasure
-                                    ?.measureLineItems?[index];
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: MultiLineItems(
-                                    height: data == null
-                                        ? widget
-                                            .filteredMeasurementsMeasure?.height
-                                            .toString()
-                                        : data?.height.toString(),
-                                    width: data == null
-                                        ? widget
-                                            .filteredMeasurementsMeasure?.breath
-                                            .toString()
-                                        : data?.width.toString(),
-                                    number: data == null
-                                        ? widget.filteredMeasurementsMeasure
-                                            ?.numItems
-                                            .toString()
-                                        : data?.number.toString(),
-                                    quantity: data == null
-                                        ? widget
-                                            .filteredMeasurementsMeasure?.height
-                                            .toString()
-                                        : data?.quantity.toString(),
-                                    length: data == null
-                                        ? widget.filteredMeasurementsMeasure
-                                            ?.numItems
-                                            .toString()
-                                        : data?.length.toString(),
+                    height: MediaQuery.sizeOf(context).height * 0.40,
+                    child:
+                        (widget.filteredMeasurementsMeasure?.measureLineItems ==
+                                    null ||
+                                (widget.filteredMeasurementsMeasure!
+                                    .measureLineItems!.isEmpty))
+                            ? Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: MultiLineItems(
+                                      height: widget
+                                          .filteredMeasurementsMeasure?.height
+                                          .toString(),
+                                      width: widget
+                                          .filteredMeasurementsMeasure?.breath
+                                          .toString(),
+                                      number: widget
+                                          .filteredMeasurementsMeasure?.numItems
+                                          .toString(),
+                                      quantity: widget
+                                          .filteredMeasurementsMeasure?.height
+                                          .toString(),
+                                      length: widget
+                                          .filteredMeasurementsMeasure?.numItems
+                                          .toString(),
+                                    ),
                                   ),
-                                ); // Render your item here
-                              },
-                            )),
+                                  DigitIconButton(
+                                    icon: IconData(Icons.add.codePoint),
+                                    iconText: "Add Measurements",
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              )
+                            : ListView.builder(
+                                itemCount: widget.filteredMeasurementsMeasure!
+                                        .measureLineItems!.length +
+                                    1,
+                                itemBuilder: (context, index) {
+                                  if (index ==
+                                      widget.filteredMeasurementsMeasure!
+                                          .measureLineItems!.length) {
+                                    // TO add line items
+                                    return DigitIconButton(
+                                      icon: IconData(Icons.add.codePoint),
+                                      iconText: "Add Measurements",
+                                      onPressed: () {},
+                                    );
+                                  }
+
+                                  final data = widget
+                                      .filteredMeasurementsMeasure
+                                      ?.measureLineItems?[index];
+
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: MultiLineItems(
+                                      height: data == null
+                                          ? widget.filteredMeasurementsMeasure
+                                              ?.height
+                                              .toString()
+                                          : data?.height.toString(),
+                                      width: data == null
+                                          ? widget.filteredMeasurementsMeasure
+                                              ?.breath
+                                              .toString()
+                                          : data?.width.toString(),
+                                      number: data == null
+                                          ? widget.filteredMeasurementsMeasure
+                                              ?.numItems
+                                              .toString()
+                                          : data?.number.toString(),
+                                      quantity: data == null
+                                          ? widget.filteredMeasurementsMeasure
+                                              ?.height
+                                              .toString()
+                                          : data?.quantity.toString(),
+                                      length: data == null
+                                          ? widget.filteredMeasurementsMeasure
+                                              ?.numItems
+                                              .toString()
+                                          : data?.length.toString(),
+                                    ),
+                                  ); // Render your item here
+                                },
+                              ),
+                  ),
                 ),
               ],
             ),
