@@ -1,11 +1,13 @@
 package org.egov.works.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import digit.models.coremodels.RequestInfoWrapper;
 import digit.models.coremodels.SMSRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.tracer.model.CustomException;
 import org.egov.works.config.ContractServiceConfiguration;
 import org.egov.works.kafka.ContractProducer;
 import org.egov.works.repository.ServiceRequestRepository;
@@ -140,8 +142,18 @@ public class NotificationService {
         List<Contract> contractsFromDB = contractService.getContracts(contractCriteria);
         Contract originalContractFromDB = contractsFromDB.stream().filter(contract -> (contract.getBusinessService() != null && contract.getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE))).collect(Collectors.toList()).get(0);
         log.info("Getting officer-in-charge for contract :: " + originalContractFromDB.getContractNumber());
-        String officerInChargeUuid = originalContractFromDB.getAuditDetails().getCreatedBy();
-        Map<String,String> officerInChargeMobileNumberMap =hrmsUtils.getEmployeeDetailsByUuid(request.getRequestInfo(), request.getContract().getTenantId(),officerInChargeUuid);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String officerInchargeCode = null;
+        try{
+            Map<String, Object> addtionalDetailsMap = objectMapper.convertValue(originalContractFromDB.getAdditionalDetails(), Map.class);
+            if (addtionalDetailsMap.containsKey("officerInChargeName")) {
+                Map<String, String> officerInChargeNameMap = (Map<String, String>) addtionalDetailsMap.get("officerInChargeName");
+                officerInchargeCode = officerInChargeNameMap.get("code");
+            }
+        }catch (Exception e){
+            throw new CustomException("OFFICER_INCHARGE_NOT_FOUND","Failed tp fetch officerInCharge details");
+        }
+        Map<String,String> officerInChargeMobileNumberMap =hrmsUtils.getEmployeeDetailsByCode(request.getRequestInfo(), request.getContract().getTenantId(),officerInchargeCode);
         String officerInChargeMobileNumber = officerInChargeMobileNumberMap.get(MOBILE_NUMBER);
         Map<String, String> smsDetailsMap = new HashMap<>();
 
