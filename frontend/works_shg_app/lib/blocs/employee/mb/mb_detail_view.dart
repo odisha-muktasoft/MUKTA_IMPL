@@ -132,7 +132,7 @@ class MeasurementDetailBloc
             height: event.height,
             length: event.length,
             number: event.number,
-            quantity: (calulateQuantity(height: event.height,width: event.width,length: event.length,number: event.number)),
+            quantity: calulateQuantity(height: event.height,width: event.width,length: event.length,number: event.number),
             measurelineitemNo: event.measurementLineIndex,
           );
           // final measurementLineIndex = 0;

@@ -348,9 +348,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           const NeverScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return sorCard(index,
-                                            magic: value.sor![index]
-                                                .filteredMeasurementsMeasure);
+                                        return sorCard(
+                                          context,
+                                          index,
+                                          magic: value.sor![index]
+                                              .filteredMeasurementsMeasure,
+                                        );
                                       },
                                       itemCount: value.sor!.length,
                                     ),
@@ -364,7 +367,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           const NeverScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return sorCard(index,
+                                        return sorCard(context, index,
                                             magic: value.nonSor![index]
                                                 .filteredMeasurementsMeasure);
                                       },
@@ -497,16 +500,17 @@ class _MBDetailPageState extends State<MBDetailPage>
     }
   }
 
-  Card sorCard(int index, {List<FilteredMeasurementsMeasure>? magic}) {
+  Card sorCard(BuildContext ctx, int index,
+      {List<FilteredMeasurementsMeasure>? magic}) {
     List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
         return e.contracts!.first.estimates!.first;
       },
     ).toList();
 
-    int consumed = magic.fold(0, (sum, obj) {
-      double m = obj.currentValue!;
-      return sum + m.toInt();
+    double consumed = magic.fold(0, (sum, obj) {
+      double m = obj.cumulativeValue!;
+      return sum + m.toDouble();
     });
     return Card(
       child: SizedBox(
@@ -542,10 +546,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                 suffixIcon: GestureDetector(
                   onTap: () {
                     showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
+                      context: ctx,
+                      builder: (BuildContext ctx) {
                         return HorizontalCardListDialog(
                           lineItems: magic,
+                          index: index,
                         );
                       },
                     );
