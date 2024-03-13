@@ -23,6 +23,8 @@ class MeasurementDetailBloc
     extends Bloc<MeasurementDetailBlocEvent, MeasurementDetailState> {
   MeasurementDetailBloc() : super(const MeasurementDetailState.initial()) {
     on<MeasurementDetailBookBlocEvent>(getMBInbox);
+    on<AddToMeasurementLineEvent>(addMeasurementLine);
+    on<UpdateToMeasurementLineEvent>(updateMeasurementLine);
   }
   FutureOr<void> getMBInbox(
     MeasurementDetailBookBlocEvent event,
@@ -69,6 +71,120 @@ class MeasurementDetailBloc
       emit(MeasurementDetailState.error(e.toString()));
     }
   }
+
+  FutureOr<void> addMeasurementLine(
+    AddToMeasurementLineEvent event,
+    MeasurementDetailBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () => null,
+        loaded: (value) {
+          print(event.sorId);
+          print(event.type);
+          MeasureLineItem ml = MeasureLineItem(
+            width: event.width,
+            height: event.height,
+            length: event.length,
+            number: event.number,
+            quantity: (calulateQuantity(height: event.height,width: event.width,length: event.length,number: event.number)),
+            measurelineitemNo: event.measurementLineIndex,
+          );
+          // final measurementLineIndex = 0;
+          // final sorID = "SOR_000143";
+          // final filteredMeasurementsMeasureId =
+          //     "594d0557-9bc5-467b-9ff1-babf76e6a24e";
+// List<SorObject> sorObjects, String sorId,
+//       String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine
+          List<SorObject> data = MBLogic.addMeasurementLine(
+            value.sor!,
+            event.sorId,
+            event.filteredMeasurementMeasureId!,
+            event.measurementLineIndex!,
+            ml,
+          );
+
+          emit(value.copyWith(
+            sor: data,
+          ));
+        },
+      );
+    } catch (e) {
+      // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+     // emit(MeasurementDetailState.error(e.toString()));
+    }
+  }
+
+  // update mbline
+
+  FutureOr<void> updateMeasurementLine(
+    UpdateToMeasurementLineEvent event,
+    MeasurementDetailBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () => null,
+        loaded: (value) {
+          print(event.sorId);
+          print(event.type);
+          MeasureLineItem ml = MeasureLineItem(
+            width: event.width,
+            height: event.height,
+            length: event.length,
+            number: event.number,
+            quantity: (calulateQuantity(height: event.height,width: event.width,length: event.length,number: event.number)),
+            measurelineitemNo: event.measurementLineIndex,
+          );
+          // final measurementLineIndex = 0;
+          // final sorID = "SOR_000143";
+          // final filteredMeasurementsMeasureId =
+          //     "594d0557-9bc5-467b-9ff1-babf76e6a24e";
+// List<SorObject> sorObjects, String sorId,
+//       String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine
+          List<SorObject> data = MBLogic.updateMeasurementLine(
+            value.sor!,
+            event.sorId,
+            event.filteredMeasurementMeasureId!,
+            event.measurementLineIndex!,
+            ml,
+          );
+
+          emit(value.copyWith(
+            sor: data,
+          ));
+        },
+      );
+    } catch (e) {
+      // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+      emit(MeasurementDetailState.error(e.toString()));
+    }
+  }
+
+  dynamic calulateQuantity( {required dynamic height,required dynamic width,required dynamic length,required dynamic number,}){
+
+  //return  field==0?1:field;
+
+  if (height == 0 && width == 0 && length == 0 && number == 0) {
+   
+    return 0;
+  }
+else{
+  if (height == '0') {
+    height = 1;
+  }
+  if (width == '0') {
+    width = 1;
+  }
+  if (length == '0') {
+    length = 1;
+  }
+  if (number == '0') {
+    number = 1;
+  }
+
+  return ( double.parse(height.toString())  * double.parse(width.toString())* double.parse(length.toString())*double.parse(number.toString())).toString();
+}
+  }
 }
 
 @freezed
@@ -81,6 +197,31 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
 
   const factory MeasurementDetailBlocEvent.clear() =
       MeasurementDetailBlocClearEvent;
+  const factory MeasurementDetailBlocEvent.addToMeasurementLineList({
+    required String sorId,
+    required String type,
+    int? index,
+    int? measurementLineIndex,
+    String? filteredMeasurementMeasureId,
+    dynamic height,
+    dynamic width,
+    dynamic length,
+    dynamic number,
+    dynamic quantity,
+  }) = AddToMeasurementLineEvent;
+
+  const factory MeasurementDetailBlocEvent.updateToMeasurementLineList({
+    required String sorId,
+    required String type,
+    int? index,
+    int? measurementLineIndex,
+    String? filteredMeasurementMeasureId,
+    dynamic height,
+    dynamic width,
+    dynamic length,
+    dynamic number,
+    dynamic quantity,
+  }) = UpdateToMeasurementLineEvent;
 }
 
 @freezed

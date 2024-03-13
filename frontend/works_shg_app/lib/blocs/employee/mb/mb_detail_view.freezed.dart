@@ -22,6 +22,30 @@ mixin _$MeasurementDetailBlocEvent {
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        addToMeasurementLineList,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +54,30 @@ mixin _$MeasurementDetailBlocEvent {
             String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +86,30 @@ mixin _$MeasurementDetailBlocEvent {
             String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -45,18 +117,29 @@ mixin _$MeasurementDetailBlocEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -178,6 +261,30 @@ class _$MeasurementDetailBookBlocEvent
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        addToMeasurementLineList,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
   }) {
     return create(tenantId, contractNumber, measurementNumber);
   }
@@ -189,6 +296,30 @@ class _$MeasurementDetailBookBlocEvent
             String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
   }) {
     return create?.call(tenantId, contractNumber, measurementNumber);
   }
@@ -200,6 +331,30 @@ class _$MeasurementDetailBookBlocEvent
             String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
     required TResult orElse(),
   }) {
     if (create != null) {
@@ -213,6 +368,10 @@ class _$MeasurementDetailBookBlocEvent
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
   }) {
     return create(this);
   }
@@ -222,6 +381,10 @@ class _$MeasurementDetailBookBlocEvent
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
   }) {
     return create?.call(this);
   }
@@ -231,6 +394,9 @@ class _$MeasurementDetailBookBlocEvent
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
     required TResult orElse(),
   }) {
     if (create != null) {
@@ -303,6 +469,30 @@ class _$MeasurementDetailBlocClearEvent
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        addToMeasurementLineList,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
   }) {
     return clear();
   }
@@ -314,6 +504,30 @@ class _$MeasurementDetailBlocClearEvent
             String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
   }) {
     return clear?.call();
   }
@@ -325,6 +539,30 @@ class _$MeasurementDetailBlocClearEvent
             String tenantId, String contractNumber, String measurementNumber)?
         create,
     TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
     required TResult orElse(),
   }) {
     if (clear != null) {
@@ -338,6 +576,10 @@ class _$MeasurementDetailBlocClearEvent
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
   }) {
     return clear(this);
   }
@@ -347,6 +589,10 @@ class _$MeasurementDetailBlocClearEvent
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
   }) {
     return clear?.call(this);
   }
@@ -356,6 +602,9 @@ class _$MeasurementDetailBlocClearEvent
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
     required TResult orElse(),
   }) {
     if (clear != null) {
@@ -369,6 +618,752 @@ abstract class MeasurementDetailBlocClearEvent
     implements MeasurementDetailBlocEvent {
   const factory MeasurementDetailBlocClearEvent() =
       _$MeasurementDetailBlocClearEvent;
+}
+
+/// @nodoc
+abstract class _$$AddToMeasurementLineEventCopyWith<$Res> {
+  factory _$$AddToMeasurementLineEventCopyWith(
+          _$AddToMeasurementLineEvent value,
+          $Res Function(_$AddToMeasurementLineEvent) then) =
+      __$$AddToMeasurementLineEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String sorId,
+      String type,
+      int? index,
+      int? measurementLineIndex,
+      String? filteredMeasurementMeasureId,
+      dynamic height,
+      dynamic width,
+      dynamic length,
+      dynamic number,
+      dynamic quantity});
+}
+
+/// @nodoc
+class __$$AddToMeasurementLineEventCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$AddToMeasurementLineEvent>
+    implements _$$AddToMeasurementLineEventCopyWith<$Res> {
+  __$$AddToMeasurementLineEventCopyWithImpl(_$AddToMeasurementLineEvent _value,
+      $Res Function(_$AddToMeasurementLineEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sorId = null,
+    Object? type = null,
+    Object? index = freezed,
+    Object? measurementLineIndex = freezed,
+    Object? filteredMeasurementMeasureId = freezed,
+    Object? height = freezed,
+    Object? width = freezed,
+    Object? length = freezed,
+    Object? number = freezed,
+    Object? quantity = freezed,
+  }) {
+    return _then(_$AddToMeasurementLineEvent(
+      sorId: null == sorId
+          ? _value.sorId
+          : sorId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      index: freezed == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+      measurementLineIndex: freezed == measurementLineIndex
+          ? _value.measurementLineIndex
+          : measurementLineIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+      filteredMeasurementMeasureId: freezed == filteredMeasurementMeasureId
+          ? _value.filteredMeasurementMeasureId
+          : filteredMeasurementMeasureId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      length: freezed == length
+          ? _value.length
+          : length // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      number: freezed == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      quantity: freezed == quantity
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
+  const _$AddToMeasurementLineEvent(
+      {required this.sorId,
+      required this.type,
+      this.index,
+      this.measurementLineIndex,
+      this.filteredMeasurementMeasureId,
+      this.height,
+      this.width,
+      this.length,
+      this.number,
+      this.quantity});
+
+  @override
+  final String sorId;
+  @override
+  final String type;
+  @override
+  final int? index;
+  @override
+  final int? measurementLineIndex;
+  @override
+  final String? filteredMeasurementMeasureId;
+  @override
+  final dynamic height;
+  @override
+  final dynamic width;
+  @override
+  final dynamic length;
+  @override
+  final dynamic number;
+  @override
+  final dynamic quantity;
+
+  @override
+  String toString() {
+    return 'MeasurementDetailBlocEvent.addToMeasurementLineList(sorId: $sorId, type: $type, index: $index, measurementLineIndex: $measurementLineIndex, filteredMeasurementMeasureId: $filteredMeasurementMeasureId, height: $height, width: $width, length: $length, number: $number, quantity: $quantity)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddToMeasurementLineEvent &&
+            (identical(other.sorId, sorId) || other.sorId == sorId) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.measurementLineIndex, measurementLineIndex) ||
+                other.measurementLineIndex == measurementLineIndex) &&
+            (identical(other.filteredMeasurementMeasureId,
+                    filteredMeasurementMeasureId) ||
+                other.filteredMeasurementMeasureId ==
+                    filteredMeasurementMeasureId) &&
+            const DeepCollectionEquality().equals(other.height, height) &&
+            const DeepCollectionEquality().equals(other.width, width) &&
+            const DeepCollectionEquality().equals(other.length, length) &&
+            const DeepCollectionEquality().equals(other.number, number) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      sorId,
+      type,
+      index,
+      measurementLineIndex,
+      filteredMeasurementMeasureId,
+      const DeepCollectionEquality().hash(height),
+      const DeepCollectionEquality().hash(width),
+      const DeepCollectionEquality().hash(length),
+      const DeepCollectionEquality().hash(number),
+      const DeepCollectionEquality().hash(quantity));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AddToMeasurementLineEventCopyWith<_$AddToMeasurementLineEvent>
+      get copyWith => __$$AddToMeasurementLineEventCopyWithImpl<
+          _$AddToMeasurementLineEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
+        create,
+    required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        addToMeasurementLineList,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
+  }) {
+    return addToMeasurementLineList(sorId, type, index, measurementLineIndex,
+        filteredMeasurementMeasureId, height, width, length, number, quantity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+  }) {
+    return addToMeasurementLineList?.call(
+        sorId,
+        type,
+        index,
+        measurementLineIndex,
+        filteredMeasurementMeasureId,
+        height,
+        width,
+        length,
+        number,
+        quantity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+    required TResult orElse(),
+  }) {
+    if (addToMeasurementLineList != null) {
+      return addToMeasurementLineList(
+          sorId,
+          type,
+          index,
+          measurementLineIndex,
+          filteredMeasurementMeasureId,
+          height,
+          width,
+          length,
+          number,
+          quantity);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementDetailBookBlocEvent value) create,
+    required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
+  }) {
+    return addToMeasurementLineList(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+  }) {
+    return addToMeasurementLineList?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+    required TResult orElse(),
+  }) {
+    if (addToMeasurementLineList != null) {
+      return addToMeasurementLineList(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AddToMeasurementLineEvent implements MeasurementDetailBlocEvent {
+  const factory AddToMeasurementLineEvent(
+      {required final String sorId,
+      required final String type,
+      final int? index,
+      final int? measurementLineIndex,
+      final String? filteredMeasurementMeasureId,
+      final dynamic height,
+      final dynamic width,
+      final dynamic length,
+      final dynamic number,
+      final dynamic quantity}) = _$AddToMeasurementLineEvent;
+
+  String get sorId;
+  String get type;
+  int? get index;
+  int? get measurementLineIndex;
+  String? get filteredMeasurementMeasureId;
+  dynamic get height;
+  dynamic get width;
+  dynamic get length;
+  dynamic get number;
+  dynamic get quantity;
+  @JsonKey(ignore: true)
+  _$$AddToMeasurementLineEventCopyWith<_$AddToMeasurementLineEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateToMeasurementLineEventCopyWith<$Res> {
+  factory _$$UpdateToMeasurementLineEventCopyWith(
+          _$UpdateToMeasurementLineEvent value,
+          $Res Function(_$UpdateToMeasurementLineEvent) then) =
+      __$$UpdateToMeasurementLineEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String sorId,
+      String type,
+      int? index,
+      int? measurementLineIndex,
+      String? filteredMeasurementMeasureId,
+      dynamic height,
+      dynamic width,
+      dynamic length,
+      dynamic number,
+      dynamic quantity});
+}
+
+/// @nodoc
+class __$$UpdateToMeasurementLineEventCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$UpdateToMeasurementLineEvent>
+    implements _$$UpdateToMeasurementLineEventCopyWith<$Res> {
+  __$$UpdateToMeasurementLineEventCopyWithImpl(
+      _$UpdateToMeasurementLineEvent _value,
+      $Res Function(_$UpdateToMeasurementLineEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sorId = null,
+    Object? type = null,
+    Object? index = freezed,
+    Object? measurementLineIndex = freezed,
+    Object? filteredMeasurementMeasureId = freezed,
+    Object? height = freezed,
+    Object? width = freezed,
+    Object? length = freezed,
+    Object? number = freezed,
+    Object? quantity = freezed,
+  }) {
+    return _then(_$UpdateToMeasurementLineEvent(
+      sorId: null == sorId
+          ? _value.sorId
+          : sorId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      index: freezed == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int?,
+      measurementLineIndex: freezed == measurementLineIndex
+          ? _value.measurementLineIndex
+          : measurementLineIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+      filteredMeasurementMeasureId: freezed == filteredMeasurementMeasureId
+          ? _value.filteredMeasurementMeasureId
+          : filteredMeasurementMeasureId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      width: freezed == width
+          ? _value.width
+          : width // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      length: freezed == length
+          ? _value.length
+          : length // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      number: freezed == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      quantity: freezed == quantity
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
+  const _$UpdateToMeasurementLineEvent(
+      {required this.sorId,
+      required this.type,
+      this.index,
+      this.measurementLineIndex,
+      this.filteredMeasurementMeasureId,
+      this.height,
+      this.width,
+      this.length,
+      this.number,
+      this.quantity});
+
+  @override
+  final String sorId;
+  @override
+  final String type;
+  @override
+  final int? index;
+  @override
+  final int? measurementLineIndex;
+  @override
+  final String? filteredMeasurementMeasureId;
+  @override
+  final dynamic height;
+  @override
+  final dynamic width;
+  @override
+  final dynamic length;
+  @override
+  final dynamic number;
+  @override
+  final dynamic quantity;
+
+  @override
+  String toString() {
+    return 'MeasurementDetailBlocEvent.updateToMeasurementLineList(sorId: $sorId, type: $type, index: $index, measurementLineIndex: $measurementLineIndex, filteredMeasurementMeasureId: $filteredMeasurementMeasureId, height: $height, width: $width, length: $length, number: $number, quantity: $quantity)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateToMeasurementLineEvent &&
+            (identical(other.sorId, sorId) || other.sorId == sorId) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.index, index) || other.index == index) &&
+            (identical(other.measurementLineIndex, measurementLineIndex) ||
+                other.measurementLineIndex == measurementLineIndex) &&
+            (identical(other.filteredMeasurementMeasureId,
+                    filteredMeasurementMeasureId) ||
+                other.filteredMeasurementMeasureId ==
+                    filteredMeasurementMeasureId) &&
+            const DeepCollectionEquality().equals(other.height, height) &&
+            const DeepCollectionEquality().equals(other.width, width) &&
+            const DeepCollectionEquality().equals(other.length, length) &&
+            const DeepCollectionEquality().equals(other.number, number) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      sorId,
+      type,
+      index,
+      measurementLineIndex,
+      filteredMeasurementMeasureId,
+      const DeepCollectionEquality().hash(height),
+      const DeepCollectionEquality().hash(width),
+      const DeepCollectionEquality().hash(length),
+      const DeepCollectionEquality().hash(number),
+      const DeepCollectionEquality().hash(quantity));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateToMeasurementLineEventCopyWith<_$UpdateToMeasurementLineEvent>
+      get copyWith => __$$UpdateToMeasurementLineEventCopyWithImpl<
+          _$UpdateToMeasurementLineEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
+        create,
+    required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        addToMeasurementLineList,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
+  }) {
+    return updateToMeasurementLineList(sorId, type, index, measurementLineIndex,
+        filteredMeasurementMeasureId, height, width, length, number, quantity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+  }) {
+    return updateToMeasurementLineList?.call(
+        sorId,
+        type,
+        index,
+        measurementLineIndex,
+        filteredMeasurementMeasureId,
+        height,
+        width,
+        length,
+        number,
+        quantity);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+    required TResult orElse(),
+  }) {
+    if (updateToMeasurementLineList != null) {
+      return updateToMeasurementLineList(
+          sorId,
+          type,
+          index,
+          measurementLineIndex,
+          filteredMeasurementMeasureId,
+          height,
+          width,
+          length,
+          number,
+          quantity);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementDetailBookBlocEvent value) create,
+    required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
+  }) {
+    return updateToMeasurementLineList(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+  }) {
+    return updateToMeasurementLineList?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+    required TResult orElse(),
+  }) {
+    if (updateToMeasurementLineList != null) {
+      return updateToMeasurementLineList(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdateToMeasurementLineEvent
+    implements MeasurementDetailBlocEvent {
+  const factory UpdateToMeasurementLineEvent(
+      {required final String sorId,
+      required final String type,
+      final int? index,
+      final int? measurementLineIndex,
+      final String? filteredMeasurementMeasureId,
+      final dynamic height,
+      final dynamic width,
+      final dynamic length,
+      final dynamic number,
+      final dynamic quantity}) = _$UpdateToMeasurementLineEvent;
+
+  String get sorId;
+  String get type;
+  int? get index;
+  int? get measurementLineIndex;
+  String? get filteredMeasurementMeasureId;
+  dynamic get height;
+  dynamic get width;
+  dynamic get length;
+  dynamic get number;
+  dynamic get quantity;
+  @JsonKey(ignore: true)
+  _$$UpdateToMeasurementLineEventCopyWith<_$UpdateToMeasurementLineEvent>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc

@@ -341,3 +341,21 @@ Map<String, dynamic> _$$_EstimateAddressToJson(_$_EstimateAddress instance) =>
       'landmark': instance.landmark,
       'city': instance.city,
     };
+
+_$_SorObject _$$_SorObjectFromJson(Map<String, dynamic> json) => _$_SorObject(
+      sorId: json['sorId'] as String?,
+      id: json['id'] as String?,
+      filteredMeasurementsMeasure:
+          (json['filteredMeasurementsMeasure'] as List<dynamic>?)
+                  ?.map((e) => FilteredMeasurementsMeasure.fromJson(
+                      e as Map<String, dynamic>))
+                  .toList() ??
+              const [],
+    );
+
+Map<String, dynamic> _$$_SorObjectToJson(_$_SorObject instance) =>
+    <String, dynamic>{
+      'sorId': instance.sorId,
+      'id': instance.id,
+      'filteredMeasurementsMeasure': instance.filteredMeasurementsMeasure,
+    };

@@ -1,6 +1,10 @@
-import 'package:collection/collection.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:convert';
+
+import 'package:collection/collection.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/employee/mb/mb_inbox_response.dart';
@@ -70,7 +74,7 @@ class MBLogic {
       if (e.contractLineItemRef == targetId) {
         FilteredMeasurementsContract filteredMeasurementsContract =
             FilteredMeasurementsContract(
-              contractAdditionalDetails: mb.contract?.additionalDetails,
+                contractAdditionalDetails: mb.contract?.additionalDetails,
                 estimateId: e.estimateId,
                 estimateLineItemId: e.estimateLineItemId,
                 contractLineItemRef: e.contractLineItemRef,
@@ -92,7 +96,6 @@ class MBLogic {
       if (e.id == contractLineItemRef) {
         FilteredMeasurementsEstimate filteredMeasurementsEstimate =
             FilteredMeasurementsEstimate(
-            
           id: e.id,
           sorId: e.sorId,
           category: e.category,
@@ -239,7 +242,7 @@ class MBLogic {
         entryDate: data.first.entryDate,
         isActive: true,
         wfStatus: data.first.wfStatus,
-        workflow:  workFlow,
+        workflow: workFlow,
         additionalDetail: MeasurementAdditionalDetail(
           endDate: data.first.endDate,
           sorAmount: data.first.totalSorAmount,
@@ -259,72 +262,166 @@ class MBLogic {
 
 // to map
 
-static Map<String, dynamic> measurementToMap(Measurement measurement) {
-  Map<String, dynamic> data= {
-    "documents": [],
-    'id': measurement.id,
-    'tenantId': measurement.tenantId,
-    'measurementNumber': measurement.measurementNumber,
-    'entryDate': measurement.entryDate,
-    'isActive': measurement.isActive,
-    'wfStatus': measurement.wfStatus,
-    'referenceId':measurement.referenceId,
-    'physicalRefNumber':measurement.physicalRefNumber,
-    'workflow': {
-      'action': measurement.workflow?.action,
-      // 'comment': measurement.workflow?.comment,
-      // 'assignees': measurement.workflow?.assignees,
-    },
-    'additionalDetail': {
-      'endDate': measurement.additionalDetail?.endDate,
-      'sorAmount': measurement.additionalDetail?.sorAmount,
-      'startDate': measurement.additionalDetail?.startDate,
-      'totalAmount': measurement.additionalDetail?.totalAmount,
-      'nonSorAmount': measurement.additionalDetail?.nonSorAmount,
-      'musterRollNumber': [measurement.additionalDetail?.musterRollNumber],
-    },
-    'measures': measurement.measures!.map((measure) {
-      return {
-        'description': measure.description,
-        'comments': measure.comments,
-        'targetId': measure.targetId,
-        'breadth': measure.breadth,
-        'length': measure.length,
-        'isActive': measure.isActive,
-        'referenceId': measure.referenceId??"WO/2023-24/001412",
-        'numItems': measure.numItems,
-        'id': measure.id,
-        'cumulativeValue': measure.cumulativeValue,
-        'currentValue': measure.currentValue,
-        'additionalDetails': {
-          'type': measure.measureAdditionalDetails?.type,
-          'mbAmount': measure.measureAdditionalDetails?.mbAmount,
-          'measureLineItems': measure.measureAdditionalDetails!.measureLineItems?.map((item) {
-            return {
-              'width': item.width,
-              'height': item.height,
-              'length': item.length,
-              'number': item.number,
-              'quantity': item.quantity,
-              'measurelineitemNo': item.measurelineitemNo,
-            };
-          }).toList(),
-        },
-      };
-    }).toList(),
-  };
+  static Map<String, dynamic> measurementToMap(Measurement measurement) {
+    Map<String, dynamic> data = {
+      "documents": [],
+      'id': measurement.id,
+      'tenantId': measurement.tenantId,
+      'measurementNumber': measurement.measurementNumber,
+      'entryDate': measurement.entryDate,
+      'isActive': measurement.isActive,
+      'wfStatus': measurement.wfStatus,
+      'referenceId': measurement.referenceId,
+      'physicalRefNumber': measurement.physicalRefNumber,
+      'workflow': {
+        'action': measurement.workflow?.action,
+        // 'comment': measurement.workflow?.comment,
+        // 'assignees': measurement.workflow?.assignees,
+      },
+      'additionalDetail': {
+        'endDate': measurement.additionalDetail?.endDate,
+        'sorAmount': measurement.additionalDetail?.sorAmount,
+        'startDate': measurement.additionalDetail?.startDate,
+        'totalAmount': measurement.additionalDetail?.totalAmount,
+        'nonSorAmount': measurement.additionalDetail?.nonSorAmount,
+        'musterRollNumber': [measurement.additionalDetail?.musterRollNumber],
+      },
+      'measures': measurement.measures!.map((measure) {
+        return {
+          'description': measure.description,
+          'comments': measure.comments,
+          'targetId': measure.targetId,
+          'breadth': measure.breadth,
+          'length': measure.length,
+          'isActive': measure.isActive,
+          'referenceId': measure.referenceId ?? "WO/2023-24/001412",
+          'numItems': measure.numItems,
+          'id': measure.id,
+          'cumulativeValue': measure.cumulativeValue,
+          'currentValue': measure.currentValue,
+          'additionalDetails': {
+            'type': measure.measureAdditionalDetails?.type,
+            'mbAmount': measure.measureAdditionalDetails?.mbAmount,
+            'measureLineItems':
+                measure.measureAdditionalDetails!.measureLineItems?.map((item) {
+              return {
+                'width': item.width,
+                'height': item.height,
+                'length': item.length,
+                'number': item.number,
+                'quantity': item.quantity,
+                'measurelineitemNo': item.measurelineitemNo,
+              };
+            }).toList(),
+          },
+        };
+      }).toList(),
+    };
 
+    return data;
+  }
 
-  return data;
-}
+  // copywith
 
+  static List<SorObject> updateMeasurementLine(
+      List<SorObject> sorObjects,
+      String sorId,
+      String filteredMeasurementsMeasureId,
+      int measurementLineIndex,
+      MeasureLineItem updatedMeasurementLine) {
+    return sorObjects.map((sorObject) {
+      if (sorObject.sorId == sorId) {
+        final List<FilteredMeasurementsMeasure>
+            updatedFilteredMeasurementsMeasureList = sorObject
+                .filteredMeasurementsMeasure
+                .map((filteredMeasurementsMeasure) {
+          if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+            final List<MeasureLineItem> updatedMeasurementLineList =
+                filteredMeasurementsMeasure.measureLineItems!
+                    .map((measurementLine) {
+              if (measurementLine.measurelineitemNo == measurementLineIndex) {
+                // MeasureLineItem ml= MeasureLineItem(
+                //   width:
+                // );
 
-}
+                return updatedMeasurementLine;
+              }
+              return measurementLine;
+            }).toList();
 
-class SorObject {
-  String? sorId;
-  String? id;
-  List<FilteredMeasurementsMeasure> filteredMeasurementsMeasure = [];
+            return filteredMeasurementsMeasure.copyWith(
+              measureLineItems: updatedMeasurementLineList,
+            );
+          }
+          return filteredMeasurementsMeasure;
+        }).toList();
 
-  SorObject({this.id, this.sorId, required this.filteredMeasurementsMeasure});
+        return sorObject.copyWith(
+          filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
+        );
+      }
+      return sorObject;
+    }).toList();
+  }
+
+  // add
+
+  // static List<SorObject> addMeasurementLine(List<SorObject> sorObjects, String sorId,
+  //     String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine) {
+  //   return sorObjects.map((sorObject) {
+  //     if (sorObject.sorId == sorId) {
+  //       final List<FilteredMeasurementsMeasure> updatedFilteredMeasurementsMeasureList =
+  //           sorObject.filteredMeasurementsMeasure.map((filteredMeasurementsMeasure) {
+  //         if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+  //           final List<MeasureLineItem> updatedMeasurementLineItems = List.from(filteredMeasurementsMeasure.measureLineItems ?? []);
+  //           updatedMeasurementLineItems.add(updatedMeasurementLine);
+
+  //           return filteredMeasurementsMeasure.copyWith(
+  //             measureLineItems: updatedMeasurementLineItems,
+  //           );
+
+  //         }
+  //         return filteredMeasurementsMeasure;
+  //       }).toList();
+
+  //       return sorObject.copyWith(
+  //         filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
+  //       );
+  //     }
+  //     return sorObject;
+  //   }).toList();
+  // }
+
+  static List<SorObject> addMeasurementLine(
+    List<SorObject> sorObjects,
+    String sorId,
+    String filteredMeasurementsMeasureId,
+    int measurementLineIndex,
+    MeasureLineItem updatedMeasurementLine,
+  ) {
+    return sorObjects.map((sorObject) {
+      if (sorObject.sorId == sorId) {
+        final List<FilteredMeasurementsMeasure>
+            updatedFilteredMeasurementsMeasureList = sorObject
+                .filteredMeasurementsMeasure
+                .map((filteredMeasurementsMeasure) {
+          if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+            final List<MeasureLineItem> updatedMeasurementLineItems =
+                List.from(filteredMeasurementsMeasure.measureLineItems ?? [])
+                  ..add(updatedMeasurementLine);
+
+            return filteredMeasurementsMeasure.copyWith(
+              measureLineItems: updatedMeasurementLineItems,
+            );
+          }
+          return filteredMeasurementsMeasure;
+        }).toList();
+
+        return sorObject.copyWith(
+          filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
+        );
+      }
+      return sorObject;
+    }).toList();
+  }
 }

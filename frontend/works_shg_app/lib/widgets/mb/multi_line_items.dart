@@ -1,14 +1,17 @@
 import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 
 class MultiLineItems extends StatefulWidget {
+  final void Function(String?, dynamic)fieldValue;
   final String? number;
   final String? length;
   final String? width;
   final String? quantity;
   final String? height;
 
-   const MultiLineItems({super.key, this.height,this.length,this.number,this.quantity,this.width,});
+   const MultiLineItems({super.key, this.height,this.length,this.number,this.quantity,this.width, required this.fieldValue,});
 
   @override
   State<MultiLineItems> createState() => _MultiLineItemsState();
@@ -31,11 +34,35 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     widthController = TextEditingController(text: widget.width.toString());
     heightController = TextEditingController(text: widget.height.toString());
     quantityController = TextEditingController(text: widget.quantity.toString());
+
+    numberController.addListener(numberUpload);
+    lengthController.addListener(lengthUpload);
+    widthController.addListener(widthUpload);
+    heightController.addListener(heightUpload);
+
+  }
+
+  void numberUpload() { 
+   widget.fieldValue("Number",numberController.text=="" ?'0':numberController.text);
+  }
+  void lengthUpload() { 
+    widget.fieldValue("Length",lengthController.text==""?'0':lengthController.text);
+  }
+  void widthUpload() { 
+    widget.fieldValue("Width",widthController.text==""?'0':widthController.text);
+  }
+  void heightUpload() { 
+   widget.fieldValue("Height",heightController.text==""?'0':heightController.text);
   }
 
   @override
   void dispose() {
     // Dispose text controllers
+     numberController.removeListener(numberUpload);
+    lengthController.removeListener(lengthUpload);
+    widthController.removeListener(widthUpload);
+    heightController.removeListener(heightUpload);
+    
     numberController.dispose();
     lengthController.dispose();
     widthController.dispose();
@@ -63,7 +90,11 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             //   ..text =
             //       widget.filteredMeasurementsMeasure!.numItems.toString(),
             controller: numberController,
-            isDisabled: true,
+            isDisabled: false,
+            // onChange: (value) {
+            //  //  context.read<MeasurementDetailBloc>().add(UpdateToMeasurementLineEvent(sorId: sorId, type: type,),);
+            //   widget.fieldValue("Number",value);
+            // },
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,6 +114,10 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     //               )
                     //           .toString(),
                     controller: lengthController,
+            //         onChange: (value) {
+              
+            //   widget.fieldValue("Length",value);
+            // },
                   ),
                 ),
               ),
@@ -100,6 +135,10 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     //               0.0)
                     //           .toString(),
                     controller: widthController,
+            //         onChange: (value) {
+              
+            //   widget.fieldValue("Width",value);
+            // },
                   ),
                 ),
               ),
@@ -117,6 +156,10 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     //               0.0)
                     //           .toString(),
                     controller: heightController,
+            //         onChange: (value) {
+              
+            //   widget.fieldValue("Height",value);
+            // },
                   ),
                 ),
               ),
@@ -131,6 +174,10 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             //       (widget.filteredMeasurementsMeasure!.numItems ?? 0.0)
             //           .toString(),
             controller: quantityController,
+            // onChange: (value) {
+              
+            //   widget.fieldValue("Quantity",value);
+            // },
           ),
         ],
       ),

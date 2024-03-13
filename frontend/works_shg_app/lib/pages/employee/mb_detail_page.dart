@@ -248,11 +248,28 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
                             children: [
                               CommonMBCard(
-                                items:  {
+                                items: {
                                   "MB number": value.data.first.mbNumber,
-                                  "Project Description":
-                                      value.data.first.measures!.first.contracts!.first.contractAdditionalDetails?.projectDesc?? "NA",
-                                  "Assignee":  value.data.first.measures!.first.contracts!.first.contractAdditionalDetails?.officerInChargeDesgn?? "NA",
+                                  "Project Description": value
+                                          .data
+                                          .first
+                                          .measures!
+                                          .first
+                                          .contracts!
+                                          .first
+                                          .contractAdditionalDetails
+                                          ?.projectDesc ??
+                                      "NA",
+                                  "Assignee": value
+                                          .data
+                                          .first
+                                          .measures!
+                                          .first
+                                          .contracts!
+                                          .first
+                                          .contractAdditionalDetails
+                                          ?.officerInChargeDesgn ??
+                                      "NA",
                                   "Workflow State": value.data.first.wfStatus,
                                   "MB Account": value.data.first.totalAmount,
                                   "SLA Days remaining": 2,

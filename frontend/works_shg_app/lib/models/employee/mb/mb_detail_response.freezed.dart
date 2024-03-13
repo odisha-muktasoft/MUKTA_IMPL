@@ -4340,3 +4340,195 @@ abstract class _EstimateAddress implements EstimateAddress {
   _$$_EstimateAddressCopyWith<_$_EstimateAddress> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+SorObject _$SorObjectFromJson(Map<String, dynamic> json) {
+  return _SorObject.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SorObject {
+  String? get sorId => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  List<FilteredMeasurementsMeasure> get filteredMeasurementsMeasure =>
+      throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SorObjectCopyWith<SorObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SorObjectCopyWith<$Res> {
+  factory $SorObjectCopyWith(SorObject value, $Res Function(SorObject) then) =
+      _$SorObjectCopyWithImpl<$Res, SorObject>;
+  @useResult
+  $Res call(
+      {String? sorId,
+      String? id,
+      List<FilteredMeasurementsMeasure> filteredMeasurementsMeasure});
+}
+
+/// @nodoc
+class _$SorObjectCopyWithImpl<$Res, $Val extends SorObject>
+    implements $SorObjectCopyWith<$Res> {
+  _$SorObjectCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sorId = freezed,
+    Object? id = freezed,
+    Object? filteredMeasurementsMeasure = null,
+  }) {
+    return _then(_value.copyWith(
+      sorId: freezed == sorId
+          ? _value.sorId
+          : sorId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      filteredMeasurementsMeasure: null == filteredMeasurementsMeasure
+          ? _value.filteredMeasurementsMeasure
+          : filteredMeasurementsMeasure // ignore: cast_nullable_to_non_nullable
+              as List<FilteredMeasurementsMeasure>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_SorObjectCopyWith<$Res> implements $SorObjectCopyWith<$Res> {
+  factory _$$_SorObjectCopyWith(
+          _$_SorObject value, $Res Function(_$_SorObject) then) =
+      __$$_SorObjectCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? sorId,
+      String? id,
+      List<FilteredMeasurementsMeasure> filteredMeasurementsMeasure});
+}
+
+/// @nodoc
+class __$$_SorObjectCopyWithImpl<$Res>
+    extends _$SorObjectCopyWithImpl<$Res, _$_SorObject>
+    implements _$$_SorObjectCopyWith<$Res> {
+  __$$_SorObjectCopyWithImpl(
+      _$_SorObject _value, $Res Function(_$_SorObject) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sorId = freezed,
+    Object? id = freezed,
+    Object? filteredMeasurementsMeasure = null,
+  }) {
+    return _then(_$_SorObject(
+      sorId: freezed == sorId
+          ? _value.sorId
+          : sorId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      filteredMeasurementsMeasure: null == filteredMeasurementsMeasure
+          ? _value._filteredMeasurementsMeasure
+          : filteredMeasurementsMeasure // ignore: cast_nullable_to_non_nullable
+              as List<FilteredMeasurementsMeasure>,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_SorObject implements _SorObject {
+  const _$_SorObject(
+      {this.sorId,
+      this.id,
+      final List<FilteredMeasurementsMeasure> filteredMeasurementsMeasure =
+          const []})
+      : _filteredMeasurementsMeasure = filteredMeasurementsMeasure;
+
+  factory _$_SorObject.fromJson(Map<String, dynamic> json) =>
+      _$$_SorObjectFromJson(json);
+
+  @override
+  final String? sorId;
+  @override
+  final String? id;
+  final List<FilteredMeasurementsMeasure> _filteredMeasurementsMeasure;
+  @override
+  @JsonKey()
+  List<FilteredMeasurementsMeasure> get filteredMeasurementsMeasure {
+    if (_filteredMeasurementsMeasure is EqualUnmodifiableListView)
+      return _filteredMeasurementsMeasure;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredMeasurementsMeasure);
+  }
+
+  @override
+  String toString() {
+    return 'SorObject(sorId: $sorId, id: $id, filteredMeasurementsMeasure: $filteredMeasurementsMeasure)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_SorObject &&
+            (identical(other.sorId, sorId) || other.sorId == sorId) &&
+            (identical(other.id, id) || other.id == id) &&
+            const DeepCollectionEquality().equals(
+                other._filteredMeasurementsMeasure,
+                _filteredMeasurementsMeasure));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, sorId, id,
+      const DeepCollectionEquality().hash(_filteredMeasurementsMeasure));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_SorObjectCopyWith<_$_SorObject> get copyWith =>
+      __$$_SorObjectCopyWithImpl<_$_SorObject>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_SorObjectToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SorObject implements SorObject {
+  const factory _SorObject(
+      {final String? sorId,
+      final String? id,
+      final List<FilteredMeasurementsMeasure>
+          filteredMeasurementsMeasure}) = _$_SorObject;
+
+  factory _SorObject.fromJson(Map<String, dynamic> json) =
+      _$_SorObject.fromJson;
+
+  @override
+  String? get sorId;
+  @override
+  String? get id;
+  @override
+  List<FilteredMeasurementsMeasure> get filteredMeasurementsMeasure;
+  @override
+  @JsonKey(ignore: true)
+  _$$_SorObjectCopyWith<_$_SorObject> get copyWith =>
+      throw _privateConstructorUsedError;
+}
