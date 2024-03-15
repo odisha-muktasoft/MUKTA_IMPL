@@ -236,9 +236,15 @@ class _$AppRouter extends RootStackRouter {
       );
     },
     MBHistoryBookRoute.name: (routeData) {
+      final args = routeData.argsAs<MBHistoryBookRouteArgs>();
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const MBHistoryBookPage(),
+        child: MBHistoryBookPage(
+          key: args.key,
+          contractNumber: args.contractNumber,
+          mbNumber: args.mbNumber,
+          tenantId: args.tenantId,
+        ),
       );
     },
     MBTypeConfirmationRoute.name: (routeData) {
@@ -995,14 +1001,46 @@ class MBDetailRouteArgs {
 
 /// generated route for
 /// [MBHistoryBookPage]
-class MBHistoryBookRoute extends PageRouteInfo<void> {
-  const MBHistoryBookRoute()
-      : super(
+class MBHistoryBookRoute extends PageRouteInfo<MBHistoryBookRouteArgs> {
+  MBHistoryBookRoute({
+    Key? key,
+    required String contractNumber,
+    required String mbNumber,
+    String? tenantId,
+  }) : super(
           MBHistoryBookRoute.name,
           path: 'mb-history',
+          args: MBHistoryBookRouteArgs(
+            key: key,
+            contractNumber: contractNumber,
+            mbNumber: mbNumber,
+            tenantId: tenantId,
+          ),
         );
 
   static const String name = 'MBHistoryBookRoute';
+}
+
+class MBHistoryBookRouteArgs {
+  const MBHistoryBookRouteArgs({
+    this.key,
+    required this.contractNumber,
+    required this.mbNumber,
+    this.tenantId,
+  });
+
+  final Key? key;
+
+  final String contractNumber;
+
+  final String mbNumber;
+
+  final String? tenantId;
+
+  @override
+  String toString() {
+    return 'MBHistoryBookRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId}';
+  }
 }
 
 /// generated route for

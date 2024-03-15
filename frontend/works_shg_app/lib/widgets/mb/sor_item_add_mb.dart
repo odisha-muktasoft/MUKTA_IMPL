@@ -12,8 +12,10 @@ class HorizontalCardListDialog extends StatefulWidget {
   final List<FilteredMeasurementsMeasure>? lineItems;
   final int index;
   final String type;
+  final dynamic noOfUnit;
+  final dynamic cummulativePrevQty;
   const HorizontalCardListDialog(
-      {super.key, this.lineItems, required this.index, required this.type});
+      {super.key, this.lineItems, required this.index, required this.type, this.noOfUnit, this.cummulativePrevQty});
 
   @override
   State<HorizontalCardListDialog> createState() =>
@@ -59,7 +61,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
         return state.maybeMap(
           orElse: () => const SizedBox.shrink(),
           loaded: (value) {
-            lineItems = widget.type=="sor"?value.sor![widget.index].filteredMeasurementsMeasure:value.nonSor![widget.index].filteredMeasurementsMeasure;
+            lineItems = widget.type == "sor"
+                ? value.sor![widget.index].filteredMeasurementsMeasure
+                : value.nonSor![widget.index].filteredMeasurementsMeasure;
             return Material(
               type: MaterialType.card,
               color: Colors.transparent,
@@ -100,7 +104,11 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                             forward: () {
                               _scrollForward();
                             },
-                            filteredMeasurementsMeasure: lineItems![index], type: widget.type,
+                            filteredMeasurementsMeasure: lineItems![index],
+                            type: widget.type,
+                            viewMode: value.viewStatus,
+                            noOfUnit: widget.noOfUnit,
+                            cummulativePrevQty: widget.cummulativePrevQty,
                           );
                         },
                         itemCount: lineItems?.length,
@@ -131,7 +139,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                     Navigator.of(context).pop();
+                                    Navigator.of(context).pop();
                                   },
                                   child: const Text('Submit'),
                                 ),
@@ -156,20 +164,25 @@ class CardWidget extends StatefulWidget {
   final VoidCallback backward;
   final VoidCallback forward;
   final FilteredMeasurementsMeasure? filteredMeasurementsMeasure;
-  final  String type;
+  final String type;
+  final bool viewMode;
+  final dynamic noOfUnit;
+  final dynamic cummulativePrevQty; 
 
-  const CardWidget(
-      {super.key,
-      required this.backward,
-      required this.forward,
-      this.filteredMeasurementsMeasure, required this.type});
+  const CardWidget({
+    super.key,
+    required this.backward,
+    required this.forward,
+    this.filteredMeasurementsMeasure,
+    required this.type,
+    required this.viewMode, this.noOfUnit, this.cummulativePrevQty,
+  });
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
 }
 
 class _CardWidgetState extends State<CardWidget> {
-  
   @override
   void initState() {
     // TODO: implement initState
@@ -178,7 +191,6 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   void dispose() {
-    
     super.dispose();
   }
 
@@ -249,7 +261,7 @@ class _CardWidgetState extends State<CardWidget> {
                                       .toString(),
                                   length: widget
                                       .filteredMeasurementsMeasure?.numItems
-                                      .toString(),
+                                      .toString(), viewMode: widget.viewMode,
                                 ),
                               ),
                               DigitIconButton(
@@ -279,9 +291,8 @@ class _CardWidgetState extends State<CardWidget> {
                                           width: 0,
                                           number: 0,
                                           quantity: 0,
-                                          filteredMeasurementMeasureId:widget
+                                          filteredMeasurementMeasureId: widget
                                               .filteredMeasurementsMeasure!.id!,
-                                          
                                         ),
                                       );
                                 },
@@ -348,6 +359,8 @@ class _CardWidgetState extends State<CardWidget> {
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: MultiLineItems(
                                   fieldValue: (p0, p1) {
+                                    print(widget.noOfUnit);
+                                    print(widget.cummulativePrevQty);
                                     switch (p0) {
                                       case "Number":
                                         context
@@ -554,7 +567,7 @@ class _CardWidgetState extends State<CardWidget> {
                                       ? widget
                                           .filteredMeasurementsMeasure?.length
                                           .toString()
-                                      : data?.length.toString(),
+                                      : data?.length.toString(), viewMode: widget.viewMode,
                                 ),
                               ); // Render your item here
                             },

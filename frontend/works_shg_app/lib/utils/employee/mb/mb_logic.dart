@@ -23,8 +23,8 @@ class MBLogic {
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
-          endDate: mbDetailResponse.period?.endDate,
-          startDate: mbDetailResponse.period?.startDate,
+          endDate: mbDetailResponse.period?.endDate ?? (e.additionalDetail?.endDate ?? 00),
+          startDate: mbDetailResponse.period?.startDate ?? (e.additionalDetail?.startDate ?? 00),
           entryDate: e.entryDate,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
@@ -520,4 +520,35 @@ static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
       return sorObject;
     }).toList();
   }
+
+
+
+// Function to calculate total quantity and skip object at specified index
+static double calculateTotalQuantityAndSkip(
+  List<SorObject> sorObjects,
+  String sorId,
+  String filteredMeasurementsMeasureId,
+  int measurementLineIndex,
+) {
+  double totalQuantity = 0.0; // Initialize total quantity
+  
+  for (var sorObject in sorObjects) {
+    if (sorObject.sorId == sorId) {
+      for (var filteredMeasurementsMeasure in sorObject.filteredMeasurementsMeasure) {
+        if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+          for (var measurementLine in filteredMeasurementsMeasure.measureLineItems!) {
+            if (measurementLine.measurelineitemNo != measurementLineIndex) {
+              // Add quantity to totalQuantity
+              totalQuantity += double.parse( measurementLine.quantity.toString());
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Return totalQuantity
+  return totalQuantity.toDouble();
+}
+
 }

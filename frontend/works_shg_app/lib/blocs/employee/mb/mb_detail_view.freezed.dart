@@ -46,6 +46,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic number,
             dynamic quantity)
         updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -78,6 +79,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -110,6 +112,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -121,6 +124,7 @@ mixin _$MeasurementDetailBlocEvent {
         addToMeasurementLineList,
     required TResult Function(UpdateToMeasurementLineEvent value)
         updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -131,6 +135,7 @@ mixin _$MeasurementDetailBlocEvent {
         addToMeasurementLineList,
     TResult? Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -140,6 +145,7 @@ mixin _$MeasurementDetailBlocEvent {
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
     TResult Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -285,6 +291,7 @@ class _$MeasurementDetailBookBlocEvent
             dynamic number,
             dynamic quantity)
         updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
   }) {
     return create(tenantId, contractNumber, measurementNumber);
   }
@@ -320,6 +327,7 @@ class _$MeasurementDetailBookBlocEvent
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
   }) {
     return create?.call(tenantId, contractNumber, measurementNumber);
   }
@@ -355,6 +363,7 @@ class _$MeasurementDetailBookBlocEvent
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
     required TResult orElse(),
   }) {
     if (create != null) {
@@ -372,6 +381,7 @@ class _$MeasurementDetailBookBlocEvent
         addToMeasurementLineList,
     required TResult Function(UpdateToMeasurementLineEvent value)
         updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
   }) {
     return create(this);
   }
@@ -385,6 +395,7 @@ class _$MeasurementDetailBookBlocEvent
         addToMeasurementLineList,
     TResult? Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
   }) {
     return create?.call(this);
   }
@@ -397,6 +408,7 @@ class _$MeasurementDetailBookBlocEvent
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
     TResult Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
     required TResult orElse(),
   }) {
     if (create != null) {
@@ -493,6 +505,7 @@ class _$MeasurementDetailBlocClearEvent
             dynamic number,
             dynamic quantity)
         updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
   }) {
     return clear();
   }
@@ -528,6 +541,7 @@ class _$MeasurementDetailBlocClearEvent
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
   }) {
     return clear?.call();
   }
@@ -563,6 +577,7 @@ class _$MeasurementDetailBlocClearEvent
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
     required TResult orElse(),
   }) {
     if (clear != null) {
@@ -580,6 +595,7 @@ class _$MeasurementDetailBlocClearEvent
         addToMeasurementLineList,
     required TResult Function(UpdateToMeasurementLineEvent value)
         updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
   }) {
     return clear(this);
   }
@@ -593,6 +609,7 @@ class _$MeasurementDetailBlocClearEvent
         addToMeasurementLineList,
     TResult? Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
   }) {
     return clear?.call(this);
   }
@@ -605,6 +622,7 @@ class _$MeasurementDetailBlocClearEvent
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
     TResult Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
     required TResult orElse(),
   }) {
     if (clear != null) {
@@ -822,6 +840,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic number,
             dynamic quantity)
         updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
   }) {
     return addToMeasurementLineList(sorId, type, index, measurementLineIndex,
         filteredMeasurementMeasureId, height, width, length, number, quantity);
@@ -858,6 +877,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
   }) {
     return addToMeasurementLineList?.call(
         sorId,
@@ -903,6 +923,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
     required TResult orElse(),
   }) {
     if (addToMeasurementLineList != null) {
@@ -930,6 +951,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
         addToMeasurementLineList,
     required TResult Function(UpdateToMeasurementLineEvent value)
         updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
   }) {
     return addToMeasurementLineList(this);
   }
@@ -943,6 +965,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
         addToMeasurementLineList,
     TResult? Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
   }) {
     return addToMeasurementLineList?.call(this);
   }
@@ -955,6 +978,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
     TResult Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
     required TResult orElse(),
   }) {
     if (addToMeasurementLineList != null) {
@@ -1195,6 +1219,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic number,
             dynamic quantity)
         updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
   }) {
     return updateToMeasurementLineList(sorId, type, index, measurementLineIndex,
         filteredMeasurementMeasureId, height, width, length, number, quantity);
@@ -1231,6 +1256,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
   }) {
     return updateToMeasurementLineList?.call(
         sorId,
@@ -1276,6 +1302,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic number,
             dynamic quantity)?
         updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
     required TResult orElse(),
   }) {
     if (updateToMeasurementLineList != null) {
@@ -1303,6 +1330,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
         addToMeasurementLineList,
     required TResult Function(UpdateToMeasurementLineEvent value)
         updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
   }) {
     return updateToMeasurementLineList(this);
   }
@@ -1316,6 +1344,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
         addToMeasurementLineList,
     TResult? Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
   }) {
     return updateToMeasurementLineList?.call(this);
   }
@@ -1328,6 +1357,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
     TResult Function(UpdateToMeasurementLineEvent value)?
         updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
     required TResult orElse(),
   }) {
     if (updateToMeasurementLineList != null) {
@@ -1367,12 +1397,244 @@ abstract class UpdateToMeasurementLineEvent
 }
 
 /// @nodoc
+abstract class _$$UpdateViewModeEventCopyWith<$Res> {
+  factory _$$UpdateViewModeEventCopyWith(_$UpdateViewModeEvent value,
+          $Res Function(_$UpdateViewModeEvent) then) =
+      __$$UpdateViewModeEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool updateView});
+}
+
+/// @nodoc
+class __$$UpdateViewModeEventCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$UpdateViewModeEvent> implements _$$UpdateViewModeEventCopyWith<$Res> {
+  __$$UpdateViewModeEventCopyWithImpl(
+      _$UpdateViewModeEvent _value, $Res Function(_$UpdateViewModeEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? updateView = null,
+  }) {
+    return _then(_$UpdateViewModeEvent(
+      updateView: null == updateView
+          ? _value.updateView
+          : updateView // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateViewModeEvent implements UpdateViewModeEvent {
+  const _$UpdateViewModeEvent({required this.updateView});
+
+  @override
+  final bool updateView;
+
+  @override
+  String toString() {
+    return 'MeasurementDetailBlocEvent.updateViewMode(updateView: $updateView)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateViewModeEvent &&
+            (identical(other.updateView, updateView) ||
+                other.updateView == updateView));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, updateView);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateViewModeEventCopyWith<_$UpdateViewModeEvent> get copyWith =>
+      __$$UpdateViewModeEventCopyWithImpl<_$UpdateViewModeEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
+        create,
+    required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        addToMeasurementLineList,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
+  }) {
+    return updateViewMode(updateView);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
+  }) {
+    return updateViewMode?.call(updateView);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        addToMeasurementLineList,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
+    required TResult orElse(),
+  }) {
+    if (updateViewMode != null) {
+      return updateViewMode(updateView);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementDetailBookBlocEvent value) create,
+    required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
+  }) {
+    return updateViewMode(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
+  }) {
+    return updateViewMode?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
+    required TResult orElse(),
+  }) {
+    if (updateViewMode != null) {
+      return updateViewMode(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UpdateViewModeEvent implements MeasurementDetailBlocEvent {
+  const factory UpdateViewModeEvent({required final bool updateView}) =
+      _$UpdateViewModeEvent;
+
+  bool get updateView;
+  @JsonKey(ignore: true)
+  _$$UpdateViewModeEventCopyWith<_$UpdateViewModeEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$MeasurementDetailState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1388,6 +1650,7 @@ mixin _$MeasurementDetailState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1403,6 +1666,7 @@ mixin _$MeasurementDetailState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1500,6 +1764,7 @@ class _$_Initial extends _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1518,6 +1783,7 @@ class _$_Initial extends _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1536,6 +1802,7 @@ class _$_Initial extends _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1635,6 +1902,7 @@ class _$_Loading extends _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1653,6 +1921,7 @@ class _$_Loading extends _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1671,6 +1940,7 @@ class _$_Loading extends _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1736,7 +2006,8 @@ abstract class _$$_LoadedCopyWith<$Res> {
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {Measurement rawData,
+      {bool viewStatus,
+      Measurement rawData,
       List<FilteredMeasurements> data,
       List<SorObject>? sor,
       List<SorObject>? nonSor,
@@ -1756,6 +2027,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? viewStatus = null,
     Object? rawData = null,
     Object? data = null,
     Object? sor = freezed,
@@ -1764,6 +2036,10 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? preNonSor = freezed,
   }) {
     return _then(_$_Loaded(
+      null == viewStatus
+          ? _value.viewStatus
+          : viewStatus // ignore: cast_nullable_to_non_nullable
+              as bool,
       null == rawData
           ? _value.rawData
           : rawData // ignore: cast_nullable_to_non_nullable
@@ -1804,6 +2080,7 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 class _$_Loaded extends _Loaded {
   const _$_Loaded(
+      this.viewStatus,
       this.rawData,
       final List<FilteredMeasurements> data,
       final List<SorObject>? sor,
@@ -1817,6 +2094,8 @@ class _$_Loaded extends _Loaded {
         _preNonSor = preNonSor,
         super._();
 
+  @override
+  final bool viewStatus;
   @override
   final Measurement rawData;
   final List<FilteredMeasurements> _data;
@@ -1869,7 +2148,7 @@ class _$_Loaded extends _Loaded {
 
   @override
   String toString() {
-    return 'MeasurementDetailState.loaded(rawData: $rawData, data: $data, sor: $sor, nonSor: $nonSor, preSor: $preSor, preNonSor: $preNonSor)';
+    return 'MeasurementDetailState.loaded(viewStatus: $viewStatus, rawData: $rawData, data: $data, sor: $sor, nonSor: $nonSor, preSor: $preSor, preNonSor: $preNonSor)';
   }
 
   @override
@@ -1877,6 +2156,8 @@ class _$_Loaded extends _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
+            (identical(other.viewStatus, viewStatus) ||
+                other.viewStatus == viewStatus) &&
             (identical(other.rawData, rawData) || other.rawData == rawData) &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             const DeepCollectionEquality().equals(other._sor, _sor) &&
@@ -1889,6 +2170,7 @@ class _$_Loaded extends _Loaded {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      viewStatus,
       rawData,
       const DeepCollectionEquality().hash(_data),
       const DeepCollectionEquality().hash(_sor),
@@ -1908,6 +2190,7 @@ class _$_Loaded extends _Loaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1917,7 +2200,7 @@ class _$_Loaded extends _Loaded {
         loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(rawData, data, sor, nonSor, preSor, preNonSor);
+    return loaded(viewStatus, rawData, data, sor, nonSor, preSor, preNonSor);
   }
 
   @override
@@ -1926,6 +2209,7 @@ class _$_Loaded extends _Loaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1935,7 +2219,8 @@ class _$_Loaded extends _Loaded {
         loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(rawData, data, sor, nonSor, preSor, preNonSor);
+    return loaded?.call(
+        viewStatus, rawData, data, sor, nonSor, preSor, preNonSor);
   }
 
   @override
@@ -1944,6 +2229,7 @@ class _$_Loaded extends _Loaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -1955,7 +2241,7 @@ class _$_Loaded extends _Loaded {
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(rawData, data, sor, nonSor, preSor, preNonSor);
+      return loaded(viewStatus, rawData, data, sor, nonSor, preSor, preNonSor);
     }
     return orElse();
   }
@@ -2000,6 +2286,7 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends MeasurementDetailState {
   const factory _Loaded(
+      final bool viewStatus,
       final Measurement rawData,
       final List<FilteredMeasurements> data,
       final List<SorObject>? sor,
@@ -2008,6 +2295,7 @@ abstract class _Loaded extends MeasurementDetailState {
       final List<SorObject>? preNonSor) = _$_Loaded;
   const _Loaded._() : super._();
 
+  bool get viewStatus;
   Measurement get rawData;
   List<FilteredMeasurements> get data;
   List<SorObject>? get sor;
@@ -2084,6 +2372,7 @@ class _$_Error extends _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -2102,6 +2391,7 @@ class _$_Error extends _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
@@ -2120,6 +2410,7 @@ class _$_Error extends _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(
+            bool viewStatus,
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,

@@ -13,6 +13,7 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/molecules/file_picker.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
+import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../models/muster_rolls/muster_workflow_model.dart';
 import '../../utils/common_methods.dart';
@@ -25,7 +26,12 @@ class MBTypeConfirmationPage extends StatefulWidget {
   final NextActions nextActions;
   final String? contractNumber;
   final String? mbNumber;
-  const MBTypeConfirmationPage({super.key, required this.nextActions, this.contractNumber, this.mbNumber,});
+  const MBTypeConfirmationPage({
+    super.key,
+    required this.nextActions,
+    this.contractNumber,
+    this.mbNumber,
+  });
 
   @override
   State<MBTypeConfirmationPage> createState() => _MBTypeConfirmationPageState();
@@ -46,7 +52,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
 
   @override
   Widget build(BuildContext context) {
-     var t = AppLocalizations.of(context);
+    var t = AppLocalizations.of(context);
     return BlocListener<MeasurementCrudBloc, MeasurementCrudState>(
       listener: (context, state) {
         state.maybeMap(
@@ -58,11 +64,22 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
             ).popUntil(
               (route) => route is! PopupRoute,
             );
-            Navigator.of(context).popUntil((route) => route is HomeRoute);
-            
-           
-           //context.router.push(const HomeRoute());
-           context.router.push( MBDetailRoute(contractNumber: widget.contractNumber!, mbNumber: widget.mbNumber!));
+            // Navigator.of(context).popUntil((route) => route is HomeRoute);
+            context.read<MusterGetWorkflowBloc>().add(
+                  //hard coded
+                  FetchMBWorkFlowEvent(
+                      tenantId: 'od.testing', mbNumber: widget.mbNumber!),
+                );
+            context.read<MeasurementDetailBloc>().add(
+                  MeasurementDetailBookBlocEvent(
+                    contractNumber: widget.contractNumber!,
+                    measurementNumber: widget.mbNumber!,
+                    tenantId: '',
+                  ),
+                );
+            //context.router.push(const HomeRoute());
+            // context.router.push( MBDetailRoute(contractNumber: widget.contractNumber!, mbNumber: widget.mbNumber!));
+            Navigator.of(context).pop();
           },
           loading: (value) {
             Navigator.of(
@@ -133,7 +150,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               child: Text(
                                 widget.nextActions.action == "EDIT/RE-SUBMIT"
                                     ? "Forward"
-                                    :t.translate( "WF_MODAL_SUBMIT_MB_${widget.nextActions.action!}"),
+                                    : t.translate(
+                                        "WF_MODAL_SUBMIT_MB_${widget.nextActions.action!}"),
                               ),
                               onPressed: () {
                                 List<List<SorObject>> sorList = [
@@ -215,7 +233,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     .toList(),
                                 valueMapper: (value) {
                                   return t.translate(value.toString());
-                                 // return value.toString();
+                                  // return value.toString();
                                 },
                               );
                             },
@@ -225,7 +243,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           );
                         },
                       ),
-                       DigitTextField(
+                      DigitTextField(
                         label: t.translate("WF_MODAL_COMMENTS"),
                         maxLines: 6,
                       ),
@@ -235,12 +253,14 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           callBack: (List<FileStoreModel>? fileStore) {
                             if (fileStore != null && fileStore.isNotEmpty) {
                               // setState(() {
-                              photo = fileStore!.map((e) => e.fileStoreId!).toList();
+                              photo = fileStore!
+                                  .map((e) => e.fileStoreId!)
+                                  .toList();
                               // });
                             } else {
-                             setState(() {
-                              photo = [];
-                               });
+                              setState(() {
+                                photo = [];
+                              });
                             }
                           },
                           extensions: const ['jpg', 'png', 'jpeg'],

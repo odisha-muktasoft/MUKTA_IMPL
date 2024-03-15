@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 
 class MultiLineItems extends StatefulWidget {
   final void Function(String?, dynamic) fieldValue;
@@ -12,6 +10,7 @@ class MultiLineItems extends StatefulWidget {
   final String? width;
   final String? quantity;
   final String? height;
+  final bool viewMode;
 
   const MultiLineItems({
     super.key,
@@ -21,6 +20,7 @@ class MultiLineItems extends StatefulWidget {
     this.quantity,
     this.width,
     required this.fieldValue,
+    required this.viewMode,
   });
 
   @override
@@ -52,37 +52,36 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   }
 
   void numberUpload() {
-     final debouncer = Debouncer(milliseconds: 500);
+    final debouncer = Debouncer(milliseconds: 500);
 
-debouncer.run(() { 
-   widget.fieldValue(
-        "Number", numberController.text == "" ? '0' : numberController.text);
-});
-   
+    debouncer.run(() {
+      widget.fieldValue(
+          "Number", numberController.text == "" ? '0' : numberController.text);
+    });
   }
 
   void lengthUpload() {
-     final debouncer = Debouncer(milliseconds: 500);
-     debouncer.run(() { 
-    widget.fieldValue(
-        "Length", lengthController.text == "" ? '0' : lengthController.text);
-        });
+    final debouncer = Debouncer(milliseconds: 500);
+    debouncer.run(() {
+      widget.fieldValue(
+          "Length", lengthController.text == "" ? '0' : lengthController.text);
+    });
   }
 
   void widthUpload() {
     final debouncer = Debouncer(milliseconds: 500);
-     debouncer.run(() { 
-    widget.fieldValue(
-        "Width", widthController.text == "" ? '0' : widthController.text);
-   });
+    debouncer.run(() {
+      widget.fieldValue(
+          "Width", widthController.text == "" ? '0' : widthController.text);
+    });
   }
 
   void heightUpload() {
     final debouncer = Debouncer(milliseconds: 500);
-     debouncer.run(() { 
-    widget.fieldValue(
-        "Height", heightController.text == "" ? '0' : heightController.text);
-  });
+    debouncer.run(() {
+      widget.fieldValue(
+          "Height", heightController.text == "" ? '0' : heightController.text);
+    });
   }
 
   @override
@@ -116,7 +115,7 @@ debouncer.run(() {
           DigitTextField(
             label: "Number",
             controller: numberController,
-            isDisabled: false,
+            isDisabled: widget.viewMode,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,19 +126,9 @@ debouncer.run(() {
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
                     label: "Length",
+                    isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    // controller: length
-                    //   ..value
-                    //   ..text =
-                    //       (widget.filteredMeasurementsMeasure!.length ??
-                    //               0.0,
-                    //               )
-                    //           .toString(),
                     controller: lengthController,
-                    //         onChange: (value) {
-
-                    //   widget.fieldValue("Length",value);
-                    // },
                   ),
                 ),
               ),
@@ -149,18 +138,9 @@ debouncer.run(() {
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
                     label: "Width",
+                    isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    // controller: width
-                    //   ..value
-                    //   ..text =
-                    //       (widget.filteredMeasurementsMeasure!.breath ??
-                    //               0.0)
-                    //           .toString(),
                     controller: widthController,
-                    //         onChange: (value) {
-
-                    //   widget.fieldValue("Width",value);
-                    // },
                   ),
                 ),
               ),
@@ -170,18 +150,9 @@ debouncer.run(() {
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
                     label: "Height",
+                    isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    // controller: height
-                    //   ..value
-                    //   ..text =
-                    //       (widget.filteredMeasurementsMeasure!.height ??
-                    //               0.0)
-                    //           .toString(),
                     controller: heightController,
-                    //         onChange: (value) {
-
-                    //   widget.fieldValue("Height",value);
-                    // },
                   ),
                 ),
               ),
@@ -190,17 +161,13 @@ debouncer.run(() {
           DigitTextField(
             label: "Quantity",
             isDisabled: true,
-            controller: quantityController..text=widget.quantity!,
-            
-
+            controller: quantityController..text = widget.quantity!,
           ),
-          
         ],
       ),
     );
   }
 }
-
 
 class Debouncer {
   final int milliseconds;

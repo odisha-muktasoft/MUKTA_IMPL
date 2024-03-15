@@ -278,8 +278,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 widget: CommonTextButtonUnderline(
                                   label: 'View MB History',
                                   onPressed: () {
-                                    context.router
-                                        .push(const MBHistoryBookRoute());
+                                    context.router.push(
+                                      MBHistoryBookRoute(
+                                        contractNumber: widget.contractNumber,
+                                        mbNumber: widget.mbNumber,
+                                        tenantId: widget.tenantId,
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -582,6 +587,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                           lineItems: magic,
                           index: index,
                           type: type,
+                          noOfUnit:line[0].noOfunit ,
+                          cummulativePrevQty: preSor_NonSor == null
+                          ? 0
+                          : preSor_NonSor!.first.cumulativeValue
                         );
                       },
                     );
