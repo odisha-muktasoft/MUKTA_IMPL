@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/widgets/mb/multi_line_items.dart';
 
@@ -10,8 +11,9 @@ import '../../models/employee/mb/filtered_Measures.dart';
 class HorizontalCardListDialog extends StatefulWidget {
   final List<FilteredMeasurementsMeasure>? lineItems;
   final int index;
+  final String type;
   const HorizontalCardListDialog(
-      {super.key, this.lineItems, required this.index});
+      {super.key, this.lineItems, required this.index, required this.type});
 
   @override
   State<HorizontalCardListDialog> createState() =>
@@ -57,7 +59,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
         return state.maybeMap(
           orElse: () => const SizedBox.shrink(),
           loaded: (value) {
-            lineItems = value.sor![widget.index].filteredMeasurementsMeasure;
+            lineItems = widget.type=="sor"?value.sor![widget.index].filteredMeasurementsMeasure:value.nonSor![widget.index].filteredMeasurementsMeasure;
             return Material(
               type: MaterialType.card,
               color: Colors.transparent,
@@ -98,7 +100,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                             forward: () {
                               _scrollForward();
                             },
-                            filteredMeasurementsMeasure: lineItems![index],
+                            filteredMeasurementsMeasure: lineItems![index], type: widget.type,
                           );
                         },
                         itemCount: lineItems?.length,
@@ -129,7 +131,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    
+                                     Navigator.of(context).pop();
                                   },
                                   child: const Text('Submit'),
                                 ),
@@ -154,12 +156,13 @@ class CardWidget extends StatefulWidget {
   final VoidCallback backward;
   final VoidCallback forward;
   final FilteredMeasurementsMeasure? filteredMeasurementsMeasure;
+  final  String type;
 
   const CardWidget(
       {super.key,
       required this.backward,
       required this.forward,
-      this.filteredMeasurementsMeasure});
+      this.filteredMeasurementsMeasure, required this.type});
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -231,6 +234,7 @@ class _CardWidgetState extends State<CardWidget> {
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: MultiLineItems(
                                   fieldValue: (p0, p1) {},
+                                  //
                                   height: widget
                                       .filteredMeasurementsMeasure?.height
                                       .toString(),
@@ -275,6 +279,9 @@ class _CardWidgetState extends State<CardWidget> {
                                           width: 0,
                                           number: 0,
                                           quantity: 0,
+                                          filteredMeasurementMeasureId:widget
+                                              .filteredMeasurementsMeasure!.id!,
+                                          
                                         ),
                                       );
                                 },

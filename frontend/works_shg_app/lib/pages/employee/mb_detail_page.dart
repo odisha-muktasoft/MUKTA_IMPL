@@ -12,6 +12,7 @@ import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../models/employee/mb/filtered_Measures.dart';
+import '../../models/employee/mb/mb_detail_response.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
@@ -353,6 +354,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           index,
                                           magic: value.sor![index]
                                               .filteredMeasurementsMeasure,
+                                          // preSor_NonSor: value.preSor![index]
+                                          // .filteredMeasurementsMeasure,
+
+                                          preSor_NonSor: value.preSor == null
+                                              ? null
+                                              : value.preSor![index]
+                                                  .filteredMeasurementsMeasure,
+                                          type: "sor",
                                         );
                                       },
                                       itemCount: value.sor!.length,
@@ -367,9 +376,20 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           const NeverScrollableScrollPhysics(),
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return sorCard(context, index,
-                                            magic: value.nonSor![index]
-                                                .filteredMeasurementsMeasure);
+                                        return sorCard(
+                                          context, index,
+                                          magic: value.nonSor![index]
+                                              .filteredMeasurementsMeasure,
+
+                                          // preSor_NonSor: value.preNonSor![index]
+                                          // .filteredMeasurementsMeasure,
+
+                                          preSor_NonSor: value.preNonSor == null
+                                              ? null
+                                              : value.preNonSor![index]
+                                                  .filteredMeasurementsMeasure,
+                                          type: "NonSor",
+                                        );
                                       },
                                       itemCount: value.nonSor!.length,
                                     ),
@@ -500,8 +520,13 @@ class _MBDetailPageState extends State<MBDetailPage>
     }
   }
 
-  Card sorCard(BuildContext ctx, int index,
-      {List<FilteredMeasurementsMeasure>? magic}) {
+  Card sorCard(
+    BuildContext ctx,
+    int index, {
+    List<FilteredMeasurementsMeasure>? magic,
+    List<FilteredMeasurementsMeasure>? preSor_NonSor,
+    required String type,
+  }) {
     List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
         return e.contracts!.first.estimates!.first;
@@ -534,11 +559,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                       magic.first.contracts!.first.estimates!.first.name,
                   "Unit": line[0].uom,
                   "Rate(rs)": line[0].unitRate,
-                  "Approved Quantity": line.fold(0, (sum, obj) {
-                    int m = obj.quantity!;
-                    return sum + m;
-                  }),
-                  "Consumed Quantity\n(Upto previous entry)": consumed,
+                  // "Approved Quantity": line.fold(0, (sum, obj) {
+                  //   int m = obj.quantity!;
+                  //   return sum + m;
+                  // }),
+                  "Approved Quantity": line[0].noOfunit,
+                  "Consumed Quantity\n(Upto previous entry)":
+                      preSor_NonSor == null
+                          ? 0
+                          : preSor_NonSor!.first.cumulativeValue,
+                  // "Consumed Quantity\n(current entry)": magic[0].currentValue!.toDouble(),
                 },
               ),
               DigitTextField(
@@ -551,6 +581,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         return HorizontalCardListDialog(
                           lineItems: magic,
                           index: index,
+                          type: type,
                         );
                       },
                     );
@@ -568,7 +599,10 @@ class _MBDetailPageState extends State<MBDetailPage>
               DigitTextField(
                 controller: TextEditingController()
                   ..value
-                  ..text = (magic[0].mbAmount).toString(),
+                  ..text = double.parse(
+                          (magic[0].mbAmount!.toDouble()).toStringAsFixed(2))
+                      .toString(),
+                // (magic[0].mbAmount).toString(),
                 label: "Amount for Current Entry",
                 isDisabled: true,
               ),

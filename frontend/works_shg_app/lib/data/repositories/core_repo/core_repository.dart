@@ -53,9 +53,8 @@ class CoreRepository {
           request.files.add(multipartFile);
         }
       }
-      request.fields['tenantId'] = GlobalVariables
-          .organisationListModel!.organisations!.first.tenantId!
-          .toString();
+      // testing
+      request.fields['tenantId'] = "od.testing";
       request.fields['module'] = moduleName;
       await request.send().then((response) async {
         if (response.statusCode == 201) {

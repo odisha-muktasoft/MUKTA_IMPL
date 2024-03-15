@@ -282,4 +282,6 @@ class SorObject with _$SorObject {
     Map<String, dynamic> json,
   ) =>
       _$SorObjectFromJson(json);
+
+    
 }

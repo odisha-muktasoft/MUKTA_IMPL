@@ -35,6 +35,7 @@ mixin _$FilteredMeasurements {
   String? get physicalRefNumber => throw _privateConstructorUsedError;
   List<FilteredMeasurementsMeasure>? get measures =>
       throw _privateConstructorUsedError;
+  List<WorkflowDocument>? get documents => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,7 +63,8 @@ abstract class $FilteredMeasurementsCopyWith<$Res> {
       String? referenceId,
       String? id,
       String? physicalRefNumber,
-      List<FilteredMeasurementsMeasure>? measures});
+      List<FilteredMeasurementsMeasure>? measures,
+      List<WorkflowDocument>? documents});
 }
 
 /// @nodoc
@@ -93,6 +95,7 @@ class _$FilteredMeasurementsCopyWithImpl<$Res,
     Object? id = freezed,
     Object? physicalRefNumber = freezed,
     Object? measures = freezed,
+    Object? documents = freezed,
   }) {
     return _then(_value.copyWith(
       totalSorAmount: freezed == totalSorAmount
@@ -151,6 +154,10 @@ class _$FilteredMeasurementsCopyWithImpl<$Res,
           ? _value.measures
           : measures // ignore: cast_nullable_to_non_nullable
               as List<FilteredMeasurementsMeasure>?,
+      documents: freezed == documents
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<WorkflowDocument>?,
     ) as $Val);
   }
 }
@@ -177,7 +184,8 @@ abstract class _$$_FilteredMeasurementsCopyWith<$Res>
       String? referenceId,
       String? id,
       String? physicalRefNumber,
-      List<FilteredMeasurementsMeasure>? measures});
+      List<FilteredMeasurementsMeasure>? measures,
+      List<WorkflowDocument>? documents});
 }
 
 /// @nodoc
@@ -205,6 +213,7 @@ class __$$_FilteredMeasurementsCopyWithImpl<$Res>
     Object? id = freezed,
     Object? physicalRefNumber = freezed,
     Object? measures = freezed,
+    Object? documents = freezed,
   }) {
     return _then(_$_FilteredMeasurements(
       totalSorAmount: freezed == totalSorAmount
@@ -263,6 +272,10 @@ class __$$_FilteredMeasurementsCopyWithImpl<$Res>
           ? _value._measures
           : measures // ignore: cast_nullable_to_non_nullable
               as List<FilteredMeasurementsMeasure>?,
+      documents: freezed == documents
+          ? _value._documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<WorkflowDocument>?,
     ));
   }
 }
@@ -284,8 +297,10 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
       this.referenceId,
       this.id,
       this.physicalRefNumber,
-      final List<FilteredMeasurementsMeasure>? measures})
-      : _measures = measures;
+      final List<FilteredMeasurementsMeasure>? measures,
+      final List<WorkflowDocument>? documents})
+      : _measures = measures,
+        _documents = documents;
 
   factory _$_FilteredMeasurements.fromJson(Map<String, dynamic> json) =>
       _$$_FilteredMeasurementsFromJson(json);
@@ -326,9 +341,19 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<WorkflowDocument>? _documents;
+  @override
+  List<WorkflowDocument>? get documents {
+    final value = _documents;
+    if (value == null) return null;
+    if (_documents is EqualUnmodifiableListView) return _documents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'FilteredMeasurements(totalSorAmount: $totalSorAmount, totalNorSorAmount: $totalNorSorAmount, totalAmount: $totalAmount, musterRollNumber: $musterRollNumber, mbNumber: $mbNumber, wfStatus: $wfStatus, tenantId: $tenantId, endDate: $endDate, startDate: $startDate, entryDate: $entryDate, referenceId: $referenceId, id: $id, physicalRefNumber: $physicalRefNumber, measures: $measures)';
+    return 'FilteredMeasurements(totalSorAmount: $totalSorAmount, totalNorSorAmount: $totalNorSorAmount, totalAmount: $totalAmount, musterRollNumber: $musterRollNumber, mbNumber: $mbNumber, wfStatus: $wfStatus, tenantId: $tenantId, endDate: $endDate, startDate: $startDate, entryDate: $entryDate, referenceId: $referenceId, id: $id, physicalRefNumber: $physicalRefNumber, measures: $measures, documents: $documents)';
   }
 
   @override
@@ -360,7 +385,9 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.physicalRefNumber, physicalRefNumber) ||
                 other.physicalRefNumber == physicalRefNumber) &&
-            const DeepCollectionEquality().equals(other._measures, _measures));
+            const DeepCollectionEquality().equals(other._measures, _measures) &&
+            const DeepCollectionEquality()
+                .equals(other._documents, _documents));
   }
 
   @JsonKey(ignore: true)
@@ -380,7 +407,8 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
       referenceId,
       id,
       physicalRefNumber,
-      const DeepCollectionEquality().hash(_measures));
+      const DeepCollectionEquality().hash(_measures),
+      const DeepCollectionEquality().hash(_documents));
 
   @JsonKey(ignore: true)
   @override
@@ -399,21 +427,21 @@ class _$_FilteredMeasurements implements _FilteredMeasurements {
 
 abstract class _FilteredMeasurements implements FilteredMeasurements {
   const factory _FilteredMeasurements(
-          {final double? totalSorAmount,
-          final double? totalNorSorAmount,
-          final double? totalAmount,
-          final String? musterRollNumber,
-          final String? mbNumber,
-          final String? wfStatus,
-          final String? tenantId,
-          final int? endDate,
-          final int? startDate,
-          final int? entryDate,
-          final String? referenceId,
-          final String? id,
-          final String? physicalRefNumber,
-          final List<FilteredMeasurementsMeasure>? measures}) =
-      _$_FilteredMeasurements;
+      {final double? totalSorAmount,
+      final double? totalNorSorAmount,
+      final double? totalAmount,
+      final String? musterRollNumber,
+      final String? mbNumber,
+      final String? wfStatus,
+      final String? tenantId,
+      final int? endDate,
+      final int? startDate,
+      final int? entryDate,
+      final String? referenceId,
+      final String? id,
+      final String? physicalRefNumber,
+      final List<FilteredMeasurementsMeasure>? measures,
+      final List<WorkflowDocument>? documents}) = _$_FilteredMeasurements;
 
   factory _FilteredMeasurements.fromJson(Map<String, dynamic> json) =
       _$_FilteredMeasurements.fromJson;
@@ -446,6 +474,8 @@ abstract class _FilteredMeasurements implements FilteredMeasurements {
   String? get physicalRefNumber;
   @override
   List<FilteredMeasurementsMeasure>? get measures;
+  @override
+  List<WorkflowDocument>? get documents;
   @override
   @JsonKey(ignore: true)
   _$$_FilteredMeasurementsCopyWith<_$_FilteredMeasurements> get copyWith =>
@@ -1254,12 +1284,12 @@ mixin _$FilteredMeasurementsEstimate {
   String? get name => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   double? get unitRate => throw _privateConstructorUsedError;
-  int? get noOfunit => throw _privateConstructorUsedError;
+  dynamic get noOfunit => throw _privateConstructorUsedError;
   String? get uom => throw _privateConstructorUsedError;
-  int? get length => throw _privateConstructorUsedError;
-  int? get width => throw _privateConstructorUsedError;
-  int? get height => throw _privateConstructorUsedError;
-  int? get quantity => throw _privateConstructorUsedError;
+  dynamic get length => throw _privateConstructorUsedError;
+  dynamic get width => throw _privateConstructorUsedError;
+  dynamic get height => throw _privateConstructorUsedError;
+  dynamic get quantity => throw _privateConstructorUsedError;
   bool? get isDeduction => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1283,12 +1313,12 @@ abstract class $FilteredMeasurementsEstimateCopyWith<$Res> {
       String? name,
       String? description,
       double? unitRate,
-      int? noOfunit,
+      dynamic noOfunit,
       String? uom,
-      int? length,
-      int? width,
-      int? height,
-      int? quantity,
+      dynamic length,
+      dynamic width,
+      dynamic height,
+      dynamic quantity,
       bool? isDeduction});
 }
 
@@ -1348,7 +1378,7 @@ class _$FilteredMeasurementsEstimateCopyWithImpl<$Res,
       noOfunit: freezed == noOfunit
           ? _value.noOfunit
           : noOfunit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       uom: freezed == uom
           ? _value.uom
           : uom // ignore: cast_nullable_to_non_nullable
@@ -1356,19 +1386,19 @@ class _$FilteredMeasurementsEstimateCopyWithImpl<$Res,
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       width: freezed == width
           ? _value.width
           : width // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       isDeduction: freezed == isDeduction
           ? _value.isDeduction
           : isDeduction // ignore: cast_nullable_to_non_nullable
@@ -1393,12 +1423,12 @@ abstract class _$$_FilteredMeasurementsEstimateCopyWith<$Res>
       String? name,
       String? description,
       double? unitRate,
-      int? noOfunit,
+      dynamic noOfunit,
       String? uom,
-      int? length,
-      int? width,
-      int? height,
-      int? quantity,
+      dynamic length,
+      dynamic width,
+      dynamic height,
+      dynamic quantity,
       bool? isDeduction});
 }
 
@@ -1457,7 +1487,7 @@ class __$$_FilteredMeasurementsEstimateCopyWithImpl<$Res>
       noOfunit: freezed == noOfunit
           ? _value.noOfunit
           : noOfunit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       uom: freezed == uom
           ? _value.uom
           : uom // ignore: cast_nullable_to_non_nullable
@@ -1465,19 +1495,19 @@ class __$$_FilteredMeasurementsEstimateCopyWithImpl<$Res>
       length: freezed == length
           ? _value.length
           : length // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       width: freezed == width
           ? _value.width
           : width // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       quantity: freezed == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as dynamic,
       isDeduction: freezed == isDeduction
           ? _value.isDeduction
           : isDeduction // ignore: cast_nullable_to_non_nullable
@@ -1520,17 +1550,17 @@ class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
   @override
   final double? unitRate;
   @override
-  final int? noOfunit;
+  final dynamic noOfunit;
   @override
   final String? uom;
   @override
-  final int? length;
+  final dynamic length;
   @override
-  final int? width;
+  final dynamic width;
   @override
-  final int? height;
+  final dynamic height;
   @override
-  final int? quantity;
+  final dynamic quantity;
   @override
   final bool? isDeduction;
 
@@ -1553,14 +1583,12 @@ class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
                 other.description == description) &&
             (identical(other.unitRate, unitRate) ||
                 other.unitRate == unitRate) &&
-            (identical(other.noOfunit, noOfunit) ||
-                other.noOfunit == noOfunit) &&
+            const DeepCollectionEquality().equals(other.noOfunit, noOfunit) &&
             (identical(other.uom, uom) || other.uom == uom) &&
-            (identical(other.length, length) || other.length == length) &&
-            (identical(other.width, width) || other.width == width) &&
-            (identical(other.height, height) || other.height == height) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
+            const DeepCollectionEquality().equals(other.length, length) &&
+            const DeepCollectionEquality().equals(other.width, width) &&
+            const DeepCollectionEquality().equals(other.height, height) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity) &&
             (identical(other.isDeduction, isDeduction) ||
                 other.isDeduction == isDeduction));
   }
@@ -1575,12 +1603,12 @@ class _$_FilteredMeasurementsEstimate implements _FilteredMeasurementsEstimate {
       name,
       description,
       unitRate,
-      noOfunit,
+      const DeepCollectionEquality().hash(noOfunit),
       uom,
-      length,
-      width,
-      height,
-      quantity,
+      const DeepCollectionEquality().hash(length),
+      const DeepCollectionEquality().hash(width),
+      const DeepCollectionEquality().hash(height),
+      const DeepCollectionEquality().hash(quantity),
       isDeduction);
 
   @JsonKey(ignore: true)
@@ -1607,12 +1635,12 @@ abstract class _FilteredMeasurementsEstimate
       final String? name,
       final String? description,
       final double? unitRate,
-      final int? noOfunit,
+      final dynamic noOfunit,
       final String? uom,
-      final int? length,
-      final int? width,
-      final int? height,
-      final int? quantity,
+      final dynamic length,
+      final dynamic width,
+      final dynamic height,
+      final dynamic quantity,
       final bool? isDeduction}) = _$_FilteredMeasurementsEstimate;
 
   factory _FilteredMeasurementsEstimate.fromJson(Map<String, dynamic> json) =
@@ -1631,17 +1659,17 @@ abstract class _FilteredMeasurementsEstimate
   @override
   double? get unitRate;
   @override
-  int? get noOfunit;
+  dynamic get noOfunit;
   @override
   String? get uom;
   @override
-  int? get length;
+  dynamic get length;
   @override
-  int? get width;
+  dynamic get width;
   @override
-  int? get height;
+  dynamic get height;
   @override
-  int? get quantity;
+  dynamic get quantity;
   @override
   bool? get isDeduction;
   @override

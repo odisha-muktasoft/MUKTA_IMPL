@@ -90,8 +90,8 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                       onPressed: () {
                         context.read<WageSeekerBloc>().add(
                               WageSeekerPhotoCreateEvent(
-                                imageFile: FilePickerData.imageFile,
-                                bytes: FilePickerData.bytes,
+                                imageFile: FilePickerData.imageFile?.first,
+                                bytes: FilePickerData.bytes?.first,
                                 photo: photo,
                               ),
                             );

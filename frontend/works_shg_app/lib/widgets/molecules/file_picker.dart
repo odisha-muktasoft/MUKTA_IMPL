@@ -42,7 +42,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
   String? _directoryPath;
   String? _extension;
   bool _loadingPath = false;
-  bool multiPick = false;
+  bool multiPick = true;
   FileType pickingType = FileType.custom;
   TextEditingController controller = TextEditingController();
   final ImagePicker _picker = ImagePicker();
@@ -91,6 +91,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
           return;
         }
         if (multiPick) {
+          _selectedFiles.clear();
           _selectedFiles.addAll(paths);
         } else {
           _selectedFiles = paths;
@@ -100,13 +101,28 @@ class SHGFilePickerState extends State<SHGFilePicker> {
         if (!kIsWeb) {
           files = paths.map((e) => File(e.path ?? '')).toList();
           setState(() {
-            FilePickerData.imageFile = File(paths.single.path!);
+            // if (multiPick) {
+              FilePickerData.imageFile= paths.map((e) => File(e.path!)).toList();
+            // } else {
+            //   FilePickerData.imageFile = File(paths.single.path!);
+            // }
+            
+
           });
         }
 
-        setState(() {
-          FilePickerData.bytes = paths.single.bytes;
+     if (kIsWeb) {
+       setState(() {
+          // if (multiPick) {
+             FilePickerData.bytes = paths.map((e) => e.bytes!).toList();
+          // } else {
+          //   FilePickerData.bytes = paths.single.bytes;
+          // }
+          
         });
+       
+     }
+       
 
         uploadFiles(files);
       }
@@ -156,41 +172,53 @@ class SHGFilePickerState extends State<SHGFilePicker> {
         child: Align(
           alignment: Alignment.center,
           child: kIsWeb && FilePickerData.bytes != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                      Image.memory(
-                        FilePickerData.bytes!,
-                        fit: BoxFit.fitHeight,
-                        width: constraints.maxWidth > 760
-                            ? MediaQuery.of(context).size.width / 3
-                            : MediaQuery.of(context).size.width / 1.5,
-                        height: MediaQuery.of(context).size.width / 2.8,
-                      ),
-                      IconButton(
-                          padding: const EdgeInsets.all(2),
-                          onPressed: () => onClickOfClear(0),
-                          icon: const Icon(Icons.cancel))
-                    ])
+              ? ListView.builder(
+                itemCount: FilePickerData.bytes!.length ,
+                itemBuilder: (context, index) {
+                  return  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        Image.memory(
+                          FilePickerData.bytes![index]!,
+                          fit: BoxFit.fitHeight,
+                          width: constraints.maxWidth > 760
+                              ? MediaQuery.of(context).size.width / 3
+                              : MediaQuery.of(context).size.width / 1.5,
+                          height: MediaQuery.of(context).size.width / 2.8,
+                        ),
+                        IconButton(
+                            padding: const EdgeInsets.all(2),
+                            onPressed: () => onClickOfClear(index),
+                            icon: const Icon(Icons.cancel))
+                      ],);
+                },
+                
+              )
               : !kIsWeb && FilePickerData.imageFile != null
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          Image.file(
-                            FilePickerData.imageFile!,
-                            fit: BoxFit.fitHeight,
-                            width: constraints.maxWidth > 760
-                                ? MediaQuery.of(context).size.width / 3
-                                : MediaQuery.of(context).size.width / 1.5,
-                            height: MediaQuery.of(context).size.width / 2.8,
-                          ),
-                          IconButton(
-                              padding: const EdgeInsets.all(2),
-                              onPressed: () => onClickOfClear(0),
-                              icon: const Icon(Icons.cancel))
-                        ])
+                  ? ListView.builder(
+                    itemCount: FilePickerData.imageFile!.length,
+                    itemBuilder: (context, index) {
+                      return  Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            Image.file(
+                              FilePickerData.imageFile![index]!,
+                              fit: BoxFit.fitHeight,
+                              width: constraints.maxWidth > 760
+                                  ? MediaQuery.of(context).size.width / 3
+                                  : MediaQuery.of(context).size.width / 1.5,
+                              height: MediaQuery.of(context).size.width / 2.8,
+                            ),
+                            IconButton(
+                                padding: const EdgeInsets.all(2),
+                                onPressed: () => onClickOfClear(0),
+                                icon: const Icon(Icons.cancel))
+                          ]);
+                    },
+                    
+                  )
                   : GestureDetector(
                       onTap: () => selectDocumentOrImage(context),
                       child: Column(

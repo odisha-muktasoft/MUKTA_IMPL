@@ -188,7 +188,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           Align(
                             alignment: Alignment.center,
                             child: Image.memory(
-                              FilePickerData.bytes!,
+                              FilePickerData.bytes!.first,
                               fit: BoxFit.cover,
                               width: MediaQuery.of(context).size.width / 2,
                               height: MediaQuery.of(context).size.width / 2,
@@ -213,7 +213,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Image.file(
-                                  FilePickerData.imageFile!,
+                                  FilePickerData.imageFile!.first,
                                   fit: BoxFit.cover,
                                   width: MediaQuery.of(context).size.width / 2,
                                   height: MediaQuery.of(context).size.width / 2,

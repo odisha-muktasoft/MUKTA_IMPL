@@ -34,7 +34,7 @@ class MBTypeConfirmationPage extends StatefulWidget {
 class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
   String selectedAssignee = "";
 
-  String? photo;
+  List<String>? photo;
 
   @override
   void initState() {
@@ -146,7 +146,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         sorList: sorList,
                                         workFlow: WorkFlow(
                                           action: widget.nextActions.action,
-                                          comment: "comment",
+                                          comment: "",
                                           assignees: [],
                                         ));
 
@@ -156,6 +156,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         tenantId: '',
                                         workFlow: WorkFlow(
                                           action: widget.nextActions.action,
+                                          comment: "",
+                                          assignees: [],
                                         ),
                                       ),
                                     );
@@ -233,12 +235,12 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           callBack: (List<FileStoreModel>? fileStore) {
                             if (fileStore != null && fileStore.isNotEmpty) {
                               // setState(() {
-                              photo = fileStore.first.fileStoreId;
+                              photo = fileStore!.map((e) => e.fileStoreId!).toList();
                               // });
                             } else {
-                              // setState(() {
-                              photo = '';
-                              // });
+                             setState(() {
+                              photo = [];
+                               });
                             }
                           },
                           extensions: const ['jpg', 'png', 'jpeg'],

@@ -3,6 +3,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
 
+import '../../muster_rolls/muster_workflow_model.dart';
+
 part 'filtered_Measures.freezed.dart';
 part 'filtered_Measures.g.dart';
 
@@ -23,7 +25,9 @@ class FilteredMeasurements with _$FilteredMeasurements {
     String? id,
     String? physicalRefNumber,
 
-    List<FilteredMeasurementsMeasure>? measures
+    List<FilteredMeasurementsMeasure>? measures,
+    
+    List<WorkflowDocument> ?documents,
   }) = _FilteredMeasurements;
 
   factory FilteredMeasurements.fromJson(
@@ -95,12 +99,12 @@ class FilteredMeasurementsEstimate with _$FilteredMeasurementsEstimate {
     String? name,
     String? description,
     double? unitRate,
-    int? noOfunit,
+    dynamic noOfunit,
     String? uom,
-    int? length,
-    int? width,
-    int? height,
-    int? quantity,
+    dynamic length,
+    dynamic width,
+    dynamic height,
+    dynamic quantity,
     bool? isDeduction,
   }) = _FilteredMeasurementsEstimate;
 

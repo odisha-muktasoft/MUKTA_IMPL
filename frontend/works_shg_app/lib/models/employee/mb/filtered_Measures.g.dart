@@ -26,6 +26,9 @@ _$_FilteredMeasurements _$$_FilteredMeasurementsFromJson(
           ?.map((e) =>
               FilteredMeasurementsMeasure.fromJson(e as Map<String, dynamic>))
           .toList(),
+      documents: (json['documents'] as List<dynamic>?)
+          ?.map((e) => WorkflowDocument.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_FilteredMeasurementsToJson(
@@ -45,6 +48,7 @@ Map<String, dynamic> _$$_FilteredMeasurementsToJson(
       'id': instance.id,
       'physicalRefNumber': instance.physicalRefNumber,
       'measures': instance.measures,
+      'documents': instance.documents,
     };
 
 _$_FilteredMeasurementsMeasure _$$_FilteredMeasurementsMeasureFromJson(
@@ -131,12 +135,12 @@ _$_FilteredMeasurementsEstimate _$$_FilteredMeasurementsEstimateFromJson(
       name: json['name'] as String?,
       description: json['description'] as String?,
       unitRate: (json['unitRate'] as num?)?.toDouble(),
-      noOfunit: json['noOfunit'] as int?,
+      noOfunit: json['noOfunit'],
       uom: json['uom'] as String?,
-      length: json['length'] as int?,
-      width: json['width'] as int?,
-      height: json['height'] as int?,
-      quantity: json['quantity'] as int?,
+      length: json['length'],
+      width: json['width'],
+      height: json['height'],
+      quantity: json['quantity'],
       isDeduction: json['isDeduction'] as bool?,
     );
 

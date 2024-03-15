@@ -56,14 +56,18 @@ class MeasurementDetailBloc
       final List<FilteredMeasurements> data =
           MBLogic.getMeasureList(mbDetailResponse: res);
 
-      List<List<SorObject>> sorList = MBLogic.getSors(data);
+      List<List<List<SorObject>>> sorList = MBLogic.getSors(data);
 
       emit(
         MeasurementDetailState.loaded(
           res.allMeasurements!.first!,
           data,
-          sorList.first,
-          sorList.last,
+          sorList.first.first,
+          sorList.first.last,
+          sorList.length>2?
+          sorList[1].first:null,
+           sorList.length>2?
+           sorList[1].last:null,
         ),
       );
     } on DioError catch (e) {
@@ -96,6 +100,11 @@ class MeasurementDetailBloc
           //     "594d0557-9bc5-467b-9ff1-babf76e6a24e";
 // List<SorObject> sorObjects, String sorId,
 //       String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine
+        
+        if (event.type!="NON-SOR") {
+          
+        
+        
           List<SorObject> data = MBLogic.addMeasurementLine(
             value.sor!,
             event.sorId,
@@ -107,6 +116,19 @@ class MeasurementDetailBloc
           emit(value.copyWith(
             sor: data,
           ));
+          } else {
+          List<SorObject> data = MBLogic.addMeasurementLine(
+            value.sor!,
+            event.sorId,
+            event.filteredMeasurementMeasureId!,
+            event.measurementLineIndex!,
+            ml,
+          );
+
+          emit(value.copyWith(
+            nonSor: data,
+          ));
+        }
         },
       );
     } catch (e) {
@@ -235,6 +257,8 @@ class MeasurementDetailState with _$MeasurementDetailState {
     List<FilteredMeasurements> data,
     List<SorObject>? sor,
     List<SorObject>? nonSor,
+    List<SorObject>? preSor,
+    List<SorObject>? preNonSor,
   ) = _Loaded;
   const factory MeasurementDetailState.error(String? error) = _Error;
 }

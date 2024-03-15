@@ -1376,7 +1376,9 @@ mixin _$MeasurementDetailState {
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
-            List<SorObject>? nonSor)
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -1385,8 +1387,13 @@ mixin _$MeasurementDetailState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult? Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult? Function(String? error)? error,
   }) =>
@@ -1395,8 +1402,13 @@ mixin _$MeasurementDetailState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1491,7 +1503,9 @@ class _$_Initial extends _Initial {
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
-            List<SorObject>? nonSor)
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1503,8 +1517,13 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult? Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1516,8 +1535,13 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1614,7 +1638,9 @@ class _$_Loading extends _Loading {
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
-            List<SorObject>? nonSor)
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1626,8 +1652,13 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult? Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1639,8 +1670,13 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1703,7 +1739,9 @@ abstract class _$$_LoadedCopyWith<$Res> {
       {Measurement rawData,
       List<FilteredMeasurements> data,
       List<SorObject>? sor,
-      List<SorObject>? nonSor});
+      List<SorObject>? nonSor,
+      List<SorObject>? preSor,
+      List<SorObject>? preNonSor});
 
   $MeasurementCopyWith<$Res> get rawData;
 }
@@ -1722,6 +1760,8 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? data = null,
     Object? sor = freezed,
     Object? nonSor = freezed,
+    Object? preSor = freezed,
+    Object? preNonSor = freezed,
   }) {
     return _then(_$_Loaded(
       null == rawData
@@ -1740,6 +1780,14 @@ class __$$_LoadedCopyWithImpl<$Res>
           ? _value._nonSor
           : nonSor // ignore: cast_nullable_to_non_nullable
               as List<SorObject>?,
+      freezed == preSor
+          ? _value._preSor
+          : preSor // ignore: cast_nullable_to_non_nullable
+              as List<SorObject>?,
+      freezed == preNonSor
+          ? _value._preNonSor
+          : preNonSor // ignore: cast_nullable_to_non_nullable
+              as List<SorObject>?,
     ));
   }
 
@@ -1755,11 +1803,18 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.rawData, final List<FilteredMeasurements> data,
-      final List<SorObject>? sor, final List<SorObject>? nonSor)
+  const _$_Loaded(
+      this.rawData,
+      final List<FilteredMeasurements> data,
+      final List<SorObject>? sor,
+      final List<SorObject>? nonSor,
+      final List<SorObject>? preSor,
+      final List<SorObject>? preNonSor)
       : _data = data,
         _sor = sor,
         _nonSor = nonSor,
+        _preSor = preSor,
+        _preNonSor = preNonSor,
         super._();
 
   @override
@@ -1792,9 +1847,29 @@ class _$_Loaded extends _Loaded {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<SorObject>? _preSor;
+  @override
+  List<SorObject>? get preSor {
+    final value = _preSor;
+    if (value == null) return null;
+    if (_preSor is EqualUnmodifiableListView) return _preSor;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<SorObject>? _preNonSor;
+  @override
+  List<SorObject>? get preNonSor {
+    final value = _preNonSor;
+    if (value == null) return null;
+    if (_preNonSor is EqualUnmodifiableListView) return _preNonSor;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'MeasurementDetailState.loaded(rawData: $rawData, data: $data, sor: $sor, nonSor: $nonSor)';
+    return 'MeasurementDetailState.loaded(rawData: $rawData, data: $data, sor: $sor, nonSor: $nonSor, preSor: $preSor, preNonSor: $preNonSor)';
   }
 
   @override
@@ -1805,7 +1880,10 @@ class _$_Loaded extends _Loaded {
             (identical(other.rawData, rawData) || other.rawData == rawData) &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             const DeepCollectionEquality().equals(other._sor, _sor) &&
-            const DeepCollectionEquality().equals(other._nonSor, _nonSor));
+            const DeepCollectionEquality().equals(other._nonSor, _nonSor) &&
+            const DeepCollectionEquality().equals(other._preSor, _preSor) &&
+            const DeepCollectionEquality()
+                .equals(other._preNonSor, _preNonSor));
   }
 
   @override
@@ -1814,7 +1892,9 @@ class _$_Loaded extends _Loaded {
       rawData,
       const DeepCollectionEquality().hash(_data),
       const DeepCollectionEquality().hash(_sor),
-      const DeepCollectionEquality().hash(_nonSor));
+      const DeepCollectionEquality().hash(_nonSor),
+      const DeepCollectionEquality().hash(_preSor),
+      const DeepCollectionEquality().hash(_preNonSor));
 
   @JsonKey(ignore: true)
   @override
@@ -1831,11 +1911,13 @@ class _$_Loaded extends _Loaded {
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
-            List<SorObject>? nonSor)
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)
         loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(rawData, data, sor, nonSor);
+    return loaded(rawData, data, sor, nonSor, preSor, preNonSor);
   }
 
   @override
@@ -1843,12 +1925,17 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult? Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(rawData, data, sor, nonSor);
+    return loaded?.call(rawData, data, sor, nonSor, preSor, preNonSor);
   }
 
   @override
@@ -1856,14 +1943,19 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(rawData, data, sor, nonSor);
+      return loaded(rawData, data, sor, nonSor, preSor, preNonSor);
     }
     return orElse();
   }
@@ -1911,13 +2003,17 @@ abstract class _Loaded extends MeasurementDetailState {
       final Measurement rawData,
       final List<FilteredMeasurements> data,
       final List<SorObject>? sor,
-      final List<SorObject>? nonSor) = _$_Loaded;
+      final List<SorObject>? nonSor,
+      final List<SorObject>? preSor,
+      final List<SorObject>? preNonSor) = _$_Loaded;
   const _Loaded._() : super._();
 
   Measurement get rawData;
   List<FilteredMeasurements> get data;
   List<SorObject>? get sor;
   List<SorObject>? get nonSor;
+  List<SorObject>? get preSor;
+  List<SorObject>? get preNonSor;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1991,7 +2087,9 @@ class _$_Error extends _Error {
             Measurement rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
-            List<SorObject>? nonSor)
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -2003,8 +2101,13 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult? Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -2016,8 +2119,13 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement rawData, List<FilteredMeasurements> data,
-            List<SorObject>? sor, List<SorObject>? nonSor)?
+    TResult Function(
+            Measurement rawData,
+            List<FilteredMeasurements> data,
+            List<SorObject>? sor,
+            List<SorObject>? nonSor,
+            List<SorObject>? preSor,
+            List<SorObject>? preNonSor)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
