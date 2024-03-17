@@ -300,10 +300,16 @@ class _CardWidgetState extends State<CardWidget> {
                             ],
                           )
                         : ListView.builder(
-                            itemCount: widget.filteredMeasurementsMeasure!
+                            itemCount: !widget.viewMode?
+                            widget.filteredMeasurementsMeasure!
                                     .measureLineItems!.length +
-                                1,
+                                1:widget.filteredMeasurementsMeasure!
+                                    .measureLineItems!.length,
                             itemBuilder: (context, index) {
+
+                              if (!widget.viewMode) {
+                                
+                              
                               if (index ==
                                   widget.filteredMeasurementsMeasure!
                                       .measureLineItems!.length) {
@@ -350,6 +356,7 @@ class _CardWidgetState extends State<CardWidget> {
                                         );
                                   },
                                 );
+                              }
                               }
 
                               final data = widget.filteredMeasurementsMeasure
