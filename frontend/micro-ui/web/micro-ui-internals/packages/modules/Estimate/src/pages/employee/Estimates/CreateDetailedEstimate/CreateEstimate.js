@@ -449,8 +449,8 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     setIsButtonDisabled(true);
     _data = Digit.Utils.trimStringsInObject(_data);
     const completeFormData = {
-      ..._data,
       ...inputFormData,
+      ..._data,
       selectedApprover,
       workflowAction : actionSelected || action,
       // selectedDept,
