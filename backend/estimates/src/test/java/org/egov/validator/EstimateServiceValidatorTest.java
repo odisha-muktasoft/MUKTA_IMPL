@@ -122,7 +122,7 @@ class EstimateServiceValidatorTest {
         EstimateRequest estimateRequest = EstimateRequestBuilderTest.builder().withEstimateForCreateSuccess();
         estimateRequest.getEstimate().setEstimateDetails(null);
         CustomException exception = assertThrows(CustomException.class, ()-> serviceValidator.validateEstimateOnCreate(estimateRequest));
-        assertTrue(exception.getMessage().contentEquals("{ESTIMATE_DETAILS=Estimate detail is mandatory}"));
+        assertTrue(exception.getMessage().contentEquals("{ESTIMATE_DETAILS=Please ensure that the estimate has a SOR or Non SOR item added.}"));
     }
 
     @Test

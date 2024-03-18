@@ -346,6 +346,7 @@ public class EstimateServiceValidator {
         if(total == null || total.doubleValue() == estimateDetail.getNoOfunit()){
             log.info("No of unit is valid");
         } else {
+            log.error("No of unit is  not valid "+ "total:"+ total +"noOfUnit:"+ estimateDetail.getNoOfunit());
             throw new CustomException("NO_OF_UNIT", "Oops! It appears that the calculated quantity is causing an issue. " +
                     "Please contact the system administrator for assistance.");
         }
@@ -407,7 +408,7 @@ public class EstimateServiceValidator {
 
         List<EstimateDetail> estimateDetails = estimate.getEstimateDetails();
         if (estimateDetails == null || estimateDetails.isEmpty()) {
-            errorMap.put("ESTIMATE_DETAILS", "Estimate detail is mandatory");
+            errorMap.put("ESTIMATE_DETAILS", "Please ensure that the estimate has a SOR or Non SOR item added." );
         } else {
             validateEstimateDetails(estimateDetails, errorMap);
         }
