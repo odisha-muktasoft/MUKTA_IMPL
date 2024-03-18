@@ -212,7 +212,14 @@ config:
         dockerfile: "build/maven/Dockerfile"
         image-name: "ifms-adapter"
       - work-dir: "reference-adapters/ifms-adapter/src/main/resources/db"
-        image-name: "ifms-adapter-db"      
+        image-name: "ifms-adapter-db"
+
+  - name: "builds/mukta_impl/reference-adapters/sms-adapter"
+    build:
+      - work-dir: "reference-adapters/sms-adapter"
+        dockerfile: "build/maven/Dockerfile"
+        image-name: "sms-adapter"
+
 
 #mukta
   - name: "builds/mukta_impl/mukta/mukta-contracts"
