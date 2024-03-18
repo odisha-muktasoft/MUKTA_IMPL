@@ -44,7 +44,11 @@ const fetchData = (RatesData, sorid) => {
   };
 
   const fetchOriginalQtyAndAmount = (allDetailedEstimate,estimateData, type) => {
-    let lineItems = allDetailedEstimate?.estimates?.filter((ob) => ob?.versionNumber === 1)?.[0]?.estimateDetails;
+    //For old application version is coming as null for original estimates
+    let lineItems = allDetailedEstimate?.estimates?.filter((ob) => ob?.versionNumber === 0 || ob?.versionNumber === null)?.[0]?.estimateDetails;
+    //for new application version is coming as 1 for original estimates
+    if(!lineItems)
+      lineItems = allDetailedEstimate?.estimates?.filter((ob) => ob?.versionNumber === 1)?.[0]?.estimateDetails;
     lineItems?.filter(e => e.category === "NON-SOR")
     .forEach((item, index) => {
       // Check if the "sorId" is not null or undefined

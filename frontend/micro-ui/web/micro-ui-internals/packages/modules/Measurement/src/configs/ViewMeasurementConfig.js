@@ -157,6 +157,11 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
             tenantId: measurement?.tenantId,
             timelineStatusPrefix: "WF_MB_",
             breakLineRequired: false,
+            config : {
+              select: (data) => {
+                return {...data, timeline: data?.timeline.filter((ob) => ob?.performedAction !== "SAVE_AS_DRAFT")}
+              },
+            }
           },
           {
             type: "WFACTIONS",

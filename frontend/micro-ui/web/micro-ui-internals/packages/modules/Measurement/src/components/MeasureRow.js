@@ -13,6 +13,31 @@ function has4DecimalPlaces(number, decimalPlaces) {
   return regex.test(numStr);
 }
 
+function limitDecimalDigits(input) {
+
+  if(input == undefined || input === "")
+    return input;
+  // Remove non-digit characters and leading zeros
+  input = input.replace(/[^\d.]/g, '').replace(/^0+/, '');
+
+  // Split the value into integer and decimal parts
+  var parts = input.split('.');
+
+  // Limit the integer part to 6 digits
+  if (parts[0].length > 6) {
+      parts[0] = parts[0].slice(0, 6);
+  }
+
+  // Limit the decimal part to 4 digits
+  if (parts[1] && parts[1].length > 4) {
+      parts[1] = parts[1].slice(0, 4);
+  }
+
+  // Reconstruct the value
+  input = parts.join('.');
+  return input;
+}
+
 const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dispatch, InputDecimalValidation, measurelineitemNo, style }) => {
   return(
   <td style={style ? style : {}}>
@@ -22,6 +47,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
       style={mode === "CREATE" || mode === "VIEW" ? {marginBottom:"0px"}: {}}
       type={fieldKey == "description" ? "text" : "number"}
       onChange={(newValue) => {
+        newValue.target.value = limitDecimalDigits(newValue.target.value);
         let updatedMeasureLineItems = []
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
