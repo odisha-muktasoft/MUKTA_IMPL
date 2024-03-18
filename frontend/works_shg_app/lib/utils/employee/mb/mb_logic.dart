@@ -370,7 +370,7 @@ static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
         // 'comment': measurement.workflow?.comment,
         // 'assignees': measurement.workflow?.assignees,
       },
-      'additionalDetail': {
+      'additionalDetails': {
         'endDate': measurement.additionalDetail?.endDate,
         'sorAmount': measurement.additionalDetail?.sorAmount,
         'startDate': measurement.additionalDetail?.startDate,
