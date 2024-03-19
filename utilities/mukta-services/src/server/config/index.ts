@@ -55,8 +55,8 @@ const config = {
     ind_search: "/individual/v1/_search",
     mus_search: "/muster-roll/v1/_search",
     localization_search: "/localization/messages/v1/_search",
-    contract_search: "/contract/v1/_search",
-    estimate_search: "/estimate/v1/_search",
+    contract_search: process.env.CONTRACT_SEARCH || "/contract/v1/_search",
+    estimate_search: process.env.ESTIMATE_SEARCH ||"/estimate/v1/_search",
     measurement_search: "/measurement-service/v1/_search",
   },
 };
