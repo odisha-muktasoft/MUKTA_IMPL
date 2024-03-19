@@ -50,7 +50,9 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -96,7 +98,9 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -142,7 +146,9 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -340,7 +346,9 @@ class _$MeasurementDetailBookBlocEvent
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -389,7 +397,9 @@ class _$MeasurementDetailBookBlocEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -438,7 +448,9 @@ class _$MeasurementDetailBookBlocEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -599,7 +611,9 @@ class _$MeasurementDetailBlocClearEvent
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -648,7 +662,9 @@ class _$MeasurementDetailBlocClearEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -697,7 +713,9 @@ class _$MeasurementDetailBlocClearEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -990,7 +1008,9 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1050,7 +1070,9 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1110,7 +1132,9 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1451,7 +1475,9 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1512,7 +1538,9 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1573,7 +1601,9 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1786,7 +1816,9 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1835,7 +1867,9 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1884,7 +1918,9 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -1970,7 +2006,11 @@ abstract class _$$CancelUpdateEventCopyWith<$Res> {
           _$CancelUpdateEvent value, $Res Function(_$CancelUpdateEvent) then) =
       __$$CancelUpdateEventCopyWithImpl<$Res>;
   @useResult
-  $Res call({bool cancelUpdate});
+  $Res call(
+      {bool cancelUpdate,
+      String sorId,
+      dynamic filteredMeasurementsMeasureId,
+      String type});
 }
 
 /// @nodoc
@@ -1985,12 +2025,27 @@ class __$$CancelUpdateEventCopyWithImpl<$Res>
   @override
   $Res call({
     Object? cancelUpdate = null,
+    Object? sorId = null,
+    Object? filteredMeasurementsMeasureId = freezed,
+    Object? type = null,
   }) {
     return _then(_$CancelUpdateEvent(
       cancelUpdate: null == cancelUpdate
           ? _value.cancelUpdate
           : cancelUpdate // ignore: cast_nullable_to_non_nullable
               as bool,
+      sorId: null == sorId
+          ? _value.sorId
+          : sorId // ignore: cast_nullable_to_non_nullable
+              as String,
+      filteredMeasurementsMeasureId: freezed == filteredMeasurementsMeasureId
+          ? _value.filteredMeasurementsMeasureId
+          : filteredMeasurementsMeasureId // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1998,14 +2053,24 @@ class __$$CancelUpdateEventCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CancelUpdateEvent implements CancelUpdateEvent {
-  const _$CancelUpdateEvent({required this.cancelUpdate});
+  const _$CancelUpdateEvent(
+      {required this.cancelUpdate,
+      required this.sorId,
+      required this.filteredMeasurementsMeasureId,
+      required this.type});
 
   @override
   final bool cancelUpdate;
+  @override
+  final String sorId;
+  @override
+  final dynamic filteredMeasurementsMeasureId;
+  @override
+  final String type;
 
   @override
   String toString() {
-    return 'MeasurementDetailBlocEvent.cancelUpdate(cancelUpdate: $cancelUpdate)';
+    return 'MeasurementDetailBlocEvent.cancelUpdate(cancelUpdate: $cancelUpdate, sorId: $sorId, filteredMeasurementsMeasureId: $filteredMeasurementsMeasureId, type: $type)';
   }
 
   @override
@@ -2014,11 +2079,17 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
         (other.runtimeType == runtimeType &&
             other is _$CancelUpdateEvent &&
             (identical(other.cancelUpdate, cancelUpdate) ||
-                other.cancelUpdate == cancelUpdate));
+                other.cancelUpdate == cancelUpdate) &&
+            (identical(other.sorId, sorId) || other.sorId == sorId) &&
+            const DeepCollectionEquality().equals(
+                other.filteredMeasurementsMeasureId,
+                filteredMeasurementsMeasureId) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, cancelUpdate);
+  int get hashCode => Object.hash(runtimeType, cancelUpdate, sorId,
+      const DeepCollectionEquality().hash(filteredMeasurementsMeasureId), type);
 
   @JsonKey(ignore: true)
   @override
@@ -2061,7 +2132,9 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -2072,7 +2145,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
   }) {
-    return cancelUpdate(this.cancelUpdate);
+    return cancelUpdate(
+        this.cancelUpdate, sorId, filteredMeasurementsMeasureId, type);
   }
 
   @override
@@ -2110,7 +2184,9 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -2121,7 +2197,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             String? filteredMeasurementMeasureId)?
         submitLine,
   }) {
-    return cancelUpdate?.call(this.cancelUpdate);
+    return cancelUpdate?.call(
+        this.cancelUpdate, sorId, filteredMeasurementsMeasureId, type);
   }
 
   @override
@@ -2159,7 +2236,9 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -2172,7 +2251,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
     required TResult orElse(),
   }) {
     if (cancelUpdate != null) {
-      return cancelUpdate(this.cancelUpdate);
+      return cancelUpdate(
+          this.cancelUpdate, sorId, filteredMeasurementsMeasureId, type);
     }
     return orElse();
   }
@@ -2230,10 +2310,16 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
 }
 
 abstract class CancelUpdateEvent implements MeasurementDetailBlocEvent {
-  const factory CancelUpdateEvent({required final bool cancelUpdate}) =
-      _$CancelUpdateEvent;
+  const factory CancelUpdateEvent(
+      {required final bool cancelUpdate,
+      required final String sorId,
+      required final dynamic filteredMeasurementsMeasureId,
+      required final String type}) = _$CancelUpdateEvent;
 
   bool get cancelUpdate;
+  String get sorId;
+  dynamic get filteredMeasurementsMeasureId;
+  String get type;
   @JsonKey(ignore: true)
   _$$CancelUpdateEventCopyWith<_$CancelUpdateEvent> get copyWith =>
       throw _privateConstructorUsedError;
@@ -2410,7 +2496,9 @@ class _$SubmitLineEvent implements SubmitLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate) cancelUpdate,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -2460,7 +2548,9 @@ class _$SubmitLineEvent implements SubmitLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate)? cancelUpdate,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,
@@ -2510,7 +2600,9 @@ class _$SubmitLineEvent implements SubmitLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate)? cancelUpdate,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
             dynamic cummulativePrevQty,

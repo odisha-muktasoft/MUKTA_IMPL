@@ -14,13 +14,15 @@ class HorizontalCardListDialog extends StatefulWidget {
   final String type;
   final dynamic noOfUnit;
   final dynamic cummulativePrevQty;
+  final String sorId;
+  
   const HorizontalCardListDialog(
       {super.key,
       this.lineItems,
       required this.index,
       required this.type,
       this.noOfUnit,
-      this.cummulativePrevQty});
+      this.cummulativePrevQty, required this.sorId});
 
   @override
   State<HorizontalCardListDialog> createState() =>
@@ -99,7 +101,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              context.read<MeasurementDetailBloc>().add(const CancelUpdateEvent(cancelUpdate: true));
+                              context.read<MeasurementDetailBloc>().add( CancelUpdateEvent(cancelUpdate: true, filteredMeasurementsMeasureId: null, sorId: widget.sorId,type: widget.type,));
                               context.router.pop();
                             },
                             icon: Icon(
@@ -148,7 +150,8 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                   child: DigitOutLineButton(
                                     label: "Close",
                                     onPressed: () {
-                                      context.read<MeasurementDetailBloc>().add(const CancelUpdateEvent(cancelUpdate: true));
+                                      context.read<MeasurementDetailBloc>().add( CancelUpdateEvent(cancelUpdate: true, filteredMeasurementsMeasureId: null, sorId: widget.sorId, type: widget.type,
+                                      ));
                                       Navigator.of(context).pop();
                                     },
                                   ),

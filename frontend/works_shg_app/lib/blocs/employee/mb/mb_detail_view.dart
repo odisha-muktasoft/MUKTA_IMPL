@@ -22,14 +22,14 @@ typedef MeasurementDetailBlocEventEmitter = Emitter<MeasurementDetailState>;
 class MeasurementDetailBloc
     extends Bloc<MeasurementDetailBlocEvent, MeasurementDetailState> {
   MeasurementDetailBloc() : super(const MeasurementDetailState.initial()) {
-    on<MeasurementDetailBookBlocEvent>(getMBInbox);
+    on<MeasurementDetailBookBlocEvent>(getMBDetail);
     on<AddToMeasurementLineEvent>(addMeasurementLine);
     on<UpdateToMeasurementLineEvent>(updateMeasurementLine);
     on<UpdateViewModeEvent>(updateViewMode);
     on<CancelUpdateEvent>(cancelUpdate);
     on<SubmitLineEvent>(updatePriceSOR);
   }
-  FutureOr<void> getMBInbox(
+  FutureOr<void> getMBDetail(
     MeasurementDetailBookBlocEvent event,
     MeasurementDetailBlocEventEmitter emit,
   ) async {
@@ -261,7 +261,7 @@ class MeasurementDetailBloc
     }
   }
 
-// calcel view mode
+// calcel sor&non-sor mode
   FutureOr<void> cancelUpdate(
     CancelUpdateEvent event,
     MeasurementDetailBlocEventEmitter emit,
@@ -269,24 +269,85 @@ class MeasurementDetailBloc
     try {
       state.maybeMap(
         orElse: () => null,
-        loaded: (value) {
-          List<List<List<SorObject>>> sorList = MBLogic.getSors(value.data);
+        loaded: (value) async {
+          if (event.type == "sor") {
+            List<SorObject> s = await resetFilteredMeasure(
+                value.sor!, event.sorId, [value.data.first]);
 
-          emit(
-            value.copyWith(
-              warningMsg: null,
-              sor: sorList.first.first,
-              nonSor: sorList.first.last,
-              preSor: sorList.length > 2 ? sorList[1].first : null,
-              preNonSor: sorList.length > 2 ? sorList[1].last : null,
-            ),
-          );
+            List<SorObject> sorData = MBLogic.calculateTotalQuantity(
+                s, "sorId", "filteredMeasurementsMeasureId", 0);
+
+            emit(
+              value.copyWith(
+                warningMsg: null,
+                sor: sorData,
+              ),
+            );
+          } else {
+            List<SorObject> s = await resetFilteredMeasure(
+                value.nonSor!, event.sorId, [value.data.first]);
+
+            List<SorObject> nonSorData = MBLogic.calculateTotalQuantity(
+                s, "sorId", "filteredMeasurementsMeasureId", 0);
+            emit(
+              value.copyWith(
+                warningMsg: null,
+                nonSor: nonSorData,
+              ),
+            );
+          }
         },
       );
     } catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
-      // emit(MeasurementDetailState.error(e.toString()));
+      emit(MeasurementDetailState.error(e.toString()));
     }
+  }
+
+  Future<List<SorObject>> resetFilteredMeasure(List<SorObject> sorObjects,
+      String sorId, List<FilteredMeasurements> previousData) async {
+    // Find the index of the SorObject with the specified sorId
+    int sorIndex =
+        sorObjects.indexWhere((sorObject) => sorObject.sorId == sorId);
+    if (sorIndex != -1) {
+      // Find the previous SorObject from previousData based on sorId
+      SorObject? previousSor = findSorObjectById(previousData, sorId);
+
+      if (previousSor != null) {
+        // Create a copy of sorObjects
+        List<SorObject> copyOfSorObjects = List.of(sorObjects);
+
+        // Replace the existing SorObject with the previous one
+        copyOfSorObjects[sorIndex] = previousSor;
+
+        // Return the modified list instead of modifying sorObjects directly
+        return copyOfSorObjects;
+      }
+    }
+
+    // Return the original list if no modification is made
+    return sorObjects;
+  }
+
+  SorObject? findSorObjectById(
+      List<FilteredMeasurements> filteredMeasurementsList, String sorId) {
+    for (FilteredMeasurements filteredMeasurements
+        in filteredMeasurementsList) {
+      List<FilteredMeasurementsMeasure> mutableList = [];
+      for (FilteredMeasurementsMeasure measure
+          in filteredMeasurements.measures ?? []) {
+        if (measure.contracts!.first.estimates!.first.sorId == sorId) {
+          mutableList.add(measure);
+          return SorObject(
+              id: measure.contracts!.first.estimates!.first.id,
+              sorId: measure.contracts!.first.estimates!.first.sorId,
+              filteredMeasurementsMeasure: mutableList
+              // Fill in the properties of SorObject based on the found measure
+              );
+        }
+      }
+    }
+    return null; // If no SorObject with the given sorId is found
   }
 
 // calculate qty
@@ -337,7 +398,6 @@ class MeasurementDetailBloc
       state.maybeMap(
         orElse: () => null,
         loaded: (value) {
-         
           List<SorObject> sorData = MBLogic.calculateTotalQuantity(
               value.sor!, "sorId", "filteredMeasurementsMeasureId", 0);
 
@@ -408,6 +468,9 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
 
   const factory MeasurementDetailBlocEvent.cancelUpdate({
     required bool cancelUpdate,
+    required String sorId,
+    required dynamic filteredMeasurementsMeasureId,
+    required String type,
   }) = CancelUpdateEvent;
 
   // submit
