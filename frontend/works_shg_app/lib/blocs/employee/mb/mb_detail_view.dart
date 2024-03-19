@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -274,7 +275,7 @@ class MeasurementDetailBloc
             List<SorObject> s = await resetFilteredMeasure(
                 value.sor!, event.sorId, [value.data.first]);
 
-           TotalEstimate sorData = MBLogic.calculateTotalQuantity(
+            TotalEstimate sorData = MBLogic.calculateTotalQuantity(
                 s, "sorId", "filteredMeasurementsMeasureId", 0);
 
             emit(
@@ -401,13 +402,42 @@ class MeasurementDetailBloc
           TotalEstimate sorData = MBLogic.calculateTotalQuantity(
               value.sor!, "sorId", "filteredMeasurementsMeasureId", 0);
 
-         TotalEstimate nonSorData = MBLogic.calculateTotalQuantity(
+          TotalEstimate nonSorData = MBLogic.calculateTotalQuantity(
               value.nonSor!, "sorId", "filteredMeasurementsMeasureId", 0);
 
+//update data
 
+          List<FilteredMeasurements> newData = value.data.mapIndexed(
+            (index, e) {
+              if (index == 0) {
+                return FilteredMeasurements(
+                  tenantId: e.tenantId,
+                  id: e.id,
+                  wfStatus: e.wfStatus,
+                  mbNumber: e.mbNumber,
+                  totalAmount: (sorData.totalAmount + nonSorData.totalAmount),
+                  totalNorSorAmount: nonSorData.totalAmount,
+                  totalSorAmount: sorData.totalAmount,
+                  musterRollNumber: e.musterRollNumber,
+                  endDate: e.endDate,
+                  startDate: e.startDate,
+                  entryDate: e.endDate,
+                  referenceId: e.referenceId,
+                  physicalRefNumber: e.physicalRefNumber,
+                  measures: e.measures,
+                  documents: e.documents,
+                );
+              } else {
+                return e;
+              }
+            },
+          ).toList();
+
+//
 
           emit(
             value.copyWith(
+              data: newData,
               warningMsg: null,
               sor: sorData.sorObjectList,
               nonSor: nonSorData.sorObjectList,
