@@ -477,34 +477,6 @@ class MBLogic {
     }).toList();
   }
 
-  // add
-
-  // static List<SorObject> addMeasurementLine(List<SorObject> sorObjects, String sorId,
-  //     String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine) {
-  //   return sorObjects.map((sorObject) {
-  //     if (sorObject.sorId == sorId) {
-  //       final List<FilteredMeasurementsMeasure> updatedFilteredMeasurementsMeasureList =
-  //           sorObject.filteredMeasurementsMeasure.map((filteredMeasurementsMeasure) {
-  //         if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
-  //           final List<MeasureLineItem> updatedMeasurementLineItems = List.from(filteredMeasurementsMeasure.measureLineItems ?? []);
-  //           updatedMeasurementLineItems.add(updatedMeasurementLine);
-
-  //           return filteredMeasurementsMeasure.copyWith(
-  //             measureLineItems: updatedMeasurementLineItems,
-  //           );
-
-  //         }
-  //         return filteredMeasurementsMeasure;
-  //       }).toList();
-
-  //       return sorObject.copyWith(
-  //         filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
-  //       );
-  //     }
-  //     return sorObject;
-  //   }).toList();
-  // }
-
   static List<SorObject> addMeasurementLine(
     List<SorObject> sorObjects,
     String sorId,
@@ -570,13 +542,14 @@ class MBLogic {
   }
 
 // Function to calculate total quantity and  object at specified index
-  static List<SorObject> calculateTotalQuantity(
+  static TotalEstimate calculateTotalQuantity(
     List<SorObject> sorObjects,
     String sorId,
     String filteredMeasurementsMeasureId,
     int measurementLineIndex,
   ) {
     List<SorObject> updatedSorObjects = [];
+    double totalAmount=0.0;
   for (SorObject sorObject in sorObjects) {
     List<FilteredMeasurementsMeasure> updatedMeasures = [];
     for (FilteredMeasurementsMeasure measure in sorObject.filteredMeasurementsMeasure) {
@@ -593,7 +566,7 @@ class MBLogic {
         cumulativeValue: measure.cumulativeValue,
         currentValue: measure.currentValue,
         tenantId: measure.tenantId,
-        mbAmount: measure.mbAmount,
+        mbAmount: double.parse( (sum*measure.contracts!.first.unitRate!).toString()),
         type: measure.type,
         targetId: measure.targetId,
         isActive: measure.isActive,
@@ -602,6 +575,7 @@ class MBLogic {
         measureLineItems: measure.measureLineItems,
         contracts: measure.contracts,
       );
+      totalAmount=totalAmount+double.parse( (sum*measure.contracts!.first.unitRate!).toString());
       updatedMeasures.add(updatedMeasure);
     }
     // Create a new SorObject instance with the updated list
@@ -614,6 +588,17 @@ class MBLogic {
     );
     updatedSorObjects.add(updatedSorObject);
   }
-  return updatedSorObjects;
+ // return updatedSorObjects;
+
+  return TotalEstimate(totalAmount, updatedSorObjects);
+
   }
+
+}
+
+class TotalEstimate{
+
+  final double totalAmount;
+  final List<SorObject> sorObjectList; 
+ const TotalEstimate( this.totalAmount, this.sorObjectList);
 }

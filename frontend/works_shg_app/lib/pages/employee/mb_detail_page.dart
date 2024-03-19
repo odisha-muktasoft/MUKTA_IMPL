@@ -395,7 +395,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               : value.preNonSor![index]
                                                   .filteredMeasurementsMeasure,
                                           type: "NonSor",
-                                          sorNonSorId: value.nonSor![index].sorId!,
+                                          sorNonSorId:
+                                              value.nonSor![index].sorId!,
                                         );
                                       },
                                       itemCount: value.nonSor!.length,
@@ -583,8 +584,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 label: "Current Measurement Book Entry",
                 controller: TextEditingController()
                   ..value
-                  ..text = magic[0].numItems
-                      .toString(),
+                  ..text = magic[0].numItems.toString(),
                 suffixIcon: GestureDetector(
                   onTap: () {
                     showDialog(
@@ -594,10 +594,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                           lineItems: magic,
                           index: index,
                           type: type,
-                          noOfUnit:line[0].noOfunit ,
+                          noOfUnit: line[0].noOfunit,
                           cummulativePrevQty: preSor_NonSor == null
-                          ? 0
-                          : preSor_NonSor!.first.cumulativeValue,
+                              ? 0
+                              : preSor_NonSor!.first.cumulativeValue,
                           sorId: sorNonSorId,
                         );
                       },

@@ -172,7 +172,7 @@ class MeasurementDetailBloc
             event.filteredMeasurementMeasureId!,
             event.measurementLineIndex!,
           );
-          print("bubu$target");
+          print("bubul$target");
           print(event.sorId);
           print(event.type);
 
@@ -274,25 +274,25 @@ class MeasurementDetailBloc
             List<SorObject> s = await resetFilteredMeasure(
                 value.sor!, event.sorId, [value.data.first]);
 
-            List<SorObject> sorData = MBLogic.calculateTotalQuantity(
+           TotalEstimate sorData = MBLogic.calculateTotalQuantity(
                 s, "sorId", "filteredMeasurementsMeasureId", 0);
 
             emit(
               value.copyWith(
                 warningMsg: null,
-                sor: sorData,
+                sor: sorData.sorObjectList,
               ),
             );
           } else {
-            List<SorObject> s = await resetFilteredMeasure(
+            List<SorObject> ns = await resetFilteredMeasure(
                 value.nonSor!, event.sorId, [value.data.first]);
 
-            List<SorObject> nonSorData = MBLogic.calculateTotalQuantity(
-                s, "sorId", "filteredMeasurementsMeasureId", 0);
+            TotalEstimate nonSorData = MBLogic.calculateTotalQuantity(
+                ns, "sorId", "filteredMeasurementsMeasureId", 0);
             emit(
               value.copyWith(
                 warningMsg: null,
-                nonSor: nonSorData,
+                nonSor: nonSorData.sorObjectList,
               ),
             );
           }
@@ -398,17 +398,19 @@ class MeasurementDetailBloc
       state.maybeMap(
         orElse: () => null,
         loaded: (value) {
-          List<SorObject> sorData = MBLogic.calculateTotalQuantity(
+          TotalEstimate sorData = MBLogic.calculateTotalQuantity(
               value.sor!, "sorId", "filteredMeasurementsMeasureId", 0);
 
-          List<SorObject> nonSorData = MBLogic.calculateTotalQuantity(
+         TotalEstimate nonSorData = MBLogic.calculateTotalQuantity(
               value.nonSor!, "sorId", "filteredMeasurementsMeasureId", 0);
+
+
 
           emit(
             value.copyWith(
               warningMsg: null,
-              sor: sorData,
-              nonSor: nonSorData,
+              sor: sorData.sorObjectList,
+              nonSor: nonSorData.sorObjectList,
             ),
           );
         },
