@@ -341,6 +341,7 @@ const MeasureTable = (props) => {
                 <Button
                   className={"plus-button"}
                   onButtonClick={() => {
+                    if(mode === "CREATEALL" && (row?.category === "SOR" && row?.description || row?.category === "NON-SOR") || mode === "CREATE"){
                     const measure = {
                       sNo: 0,
                       targetId: 0,
@@ -358,6 +359,7 @@ const MeasureTable = (props) => {
                     const measures = fields?.[index]?.measures?.length > 0 ? fields?.[index]?.measures : [measure];
                     fields[index] = { ...fields[index], showMeasure: true, measures: measures };
                     setFormValue(fields);
+                  }
                   }}
                   label={"+"}
                 >

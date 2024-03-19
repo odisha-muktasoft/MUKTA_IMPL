@@ -47,7 +47,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
       style={mode === "CREATE" || mode === "VIEW" ? {marginBottom:"0px"}: {}}
       type={fieldKey == "description" ? "text" : "number"}
       onChange={(newValue) => {
-        newValue.target.value = limitDecimalDigits(newValue.target.value);
+        newValue.target.value = fieldKey == "description" ? newValue?.target?.value :  limitDecimalDigits(newValue.target.value);
         let updatedMeasureLineItems = []
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
