@@ -388,8 +388,8 @@ class MBLogic {
       'physicalRefNumber': measurement.physicalRefNumber,
       'workflow': {
         'action': measurement.workflow?.action,
-        // 'comment': measurement.workflow?.comment,
-        // 'assignees': measurement.workflow?.assignees,
+         'comment': measurement.workflow?.comment,
+         'assignees': measurement.workflow?.assignees,
       },
       'additionalDetails': {
         'endDate': measurement.additionalDetail?.endDate,

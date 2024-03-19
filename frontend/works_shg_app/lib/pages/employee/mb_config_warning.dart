@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -14,6 +15,7 @@ import 'package:works_shg_app/widgets/molecules/file_picker.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
+import '../../models/employee/mb/role_based_hrms.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../models/muster_rolls/muster_workflow_model.dart';
 import '../../utils/common_methods.dart';
@@ -38,9 +40,10 @@ class MBTypeConfirmationPage extends StatefulWidget {
 }
 
 class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
-  String selectedAssignee = "";
-
   List<String>? photo;
+
+  HRMSEmployee? selectedAssignee;
+  var comment = TextEditingController();
 
   @override
   void initState() {
@@ -164,8 +167,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         sorList: sorList,
                                         workFlow: WorkFlow(
                                           action: widget.nextActions.action,
-                                          comment: "",
-                                          assignees: [],
+                                          comment: comment.text,
+                                          assignees: [
+                                            selectedAssignee?.uuid ?? ""
+                                          ],
                                         ));
 
                                 context.read<MeasurementCrudBloc>().add(
@@ -218,21 +223,32 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           return state.maybeMap(
                             orElse: () => const SizedBox.shrink(),
                             loaded: (value) {
-                              return DigitDropdown(
+                              // HRMSEmployee selectedAssignee = HRMSEmployee(
+                              //   id: value.hrmsEmployee!.first.id,
+                              //   uuid: value.hrmsEmployee!.first.uuid,
+                              //   code: value.hrmsEmployee!.first.code,
+                              //   isActive: value.hrmsEmployee!.first.isActive,
+                              //   dateOfAppointment:
+                              //       value.hrmsEmployee!.first.dateOfAppointment,
+                              //   employeeType:
+                              //       value.hrmsEmployee!.first.employeeType,
+                              // );
+
+                              //    selectedAssignee=selectedAssignee;
+
+                              return DigitDropdown<HRMSEmployee>(
                                 onChanged: (value) {
                                   setState(() {
-                                    selectedAssignee = value.toString();
+                                    selectedAssignee = value!;
                                   });
                                 },
-                                value: selectedAssignee == ""
-                                    ? value.hrmsEmployee!.first.code
-                                    : selectedAssignee,
+                                value: selectedAssignee ??
+                                    value.hrmsEmployee!.first,
                                 label: t.translate("WF_MODAL_APPROVER"),
-                                menuItems: value.hrmsEmployee!
-                                    .map((e) => e.code)
-                                    .toList(),
+                                menuItems:
+                                    value.hrmsEmployee!.map((e) => e).toList(),
                                 valueMapper: (value) {
-                                  return t.translate(value.toString());
+                                  return t.translate(value.code.toString());
                                   // return value.toString();
                                 },
                               );
@@ -246,6 +262,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                       DigitTextField(
                         label: t.translate("WF_MODAL_COMMENTS"),
                         maxLines: 6,
+                        controller: comment,
                       ),
                       SizedBox(
                         height: 300,
