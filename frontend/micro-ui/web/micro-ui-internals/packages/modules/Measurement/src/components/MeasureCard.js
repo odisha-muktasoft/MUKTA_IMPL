@@ -96,7 +96,8 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         if(mode === "CREATE")
           calculatedValue = element?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
             state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
-            return sum + (row?.quantity);
+            state[findIndex].additionalDetails.measureLineItems[index].quantity = initialValue(element,row) ? 0 : ((state[findIndex]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(5).slice(-1) === '5') ? (Math.ceil(state[findIndex]?.additionalDetails?.measureLineItems[index]?.quantity * 10000) / 10000).toFixed(4) : state[findIndex]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(4));
+            return sum + parseFloat(row?.quantity);
           },0);
         if (initialValue(element)) {
           calculatedValue = 0;
@@ -140,7 +141,8 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
         const ele = state[findIndexofMeasure];
         let calculatedvalue = ele?.additionalDetails?.measureLineItems?.reduce((sum, row, index) => {
           state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : validate(row.number) * validate(row.length) * validate(row.width) * validate(row.height);
-          return sum + (row?.quantity);
+          state[findIndexofMeasure].additionalDetails.measureLineItems[index].quantity = initialValue(ele,row) ? 0 : ((state[findIndexofMeasure]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(5).slice(-1) === '5') ? (Math.ceil(state[findIndexofMeasure]?.additionalDetails?.measureLineItems[index]?.quantity * 10000) / 10000).toFixed(4) : state[findIndexofMeasure]?.additionalDetails?.measureLineItems[index]?.quantity.toFixed(4));
+          return sum + parseFloat(row?.quantity);
         },0);
 
         //let calculatedValue = validate(element.number) * validate(element.length) * validate(element.width) * validate(element.height);
