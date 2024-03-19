@@ -580,7 +580,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 label: "Current Measurement Book Entry",
                 controller: TextEditingController()
                   ..value
-                  ..text = magic[0].currentValue
+                  ..text = magic[0].numItems
                       .toString(),
                 suffixIcon: GestureDetector(
                   onTap: () {

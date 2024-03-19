@@ -26,6 +26,8 @@ class MeasurementDetailBloc
     on<AddToMeasurementLineEvent>(addMeasurementLine);
     on<UpdateToMeasurementLineEvent>(updateMeasurementLine);
     on<UpdateViewModeEvent>(updateViewMode);
+    on<CancelUpdateEvent>(cancelUpdate);
+    on<SubmitLineEvent>(updatePriceSOR);
   }
   FutureOr<void> getMBInbox(
     MeasurementDetailBookBlocEvent event,
@@ -47,13 +49,13 @@ class MeasurementDetailBloc
         "key": "View",
       });
 
-      final kk = jsonEncode(res.allMeasurements!.first!.copyWith(
-          workflow: const WorkFlow(
-        action: "Submit",
-        assignees: ["NESK"],
-        comment: "loading",
-      )));
-      print(kk);
+      // final kk = jsonEncode(res.allMeasurements!.first!.copyWith(
+      //     workflow: const WorkFlow(
+      //   action: "Submit",
+      //   assignees: ["NESK"],
+      //   comment: "loading",
+      // )));
+      // print(kk);
       final List<FilteredMeasurements> data =
           MBLogic.getMeasureList(mbDetailResponse: res);
 
@@ -61,8 +63,9 @@ class MeasurementDetailBloc
 
       emit(
         MeasurementDetailState.loaded(
+          null,
           true,
-          res.allMeasurements!.first!,
+          res.allMeasurements!.first,
           data,
           sorList.first.first,
           sorList.first.last,
@@ -86,18 +89,33 @@ class MeasurementDetailBloc
         loaded: (value) {
           print(event.sorId);
           print(event.type);
-          MeasureLineItem ml = MeasureLineItem(
-            width: event.width,
-            height: event.height,
-            length: event.length,
-            number: event.number,
-            quantity: (calulateQuantity(
-                height: event.height,
-                width: event.width,
-                length: event.length,
-                number: event.number)),
-            measurelineitemNo: event.measurementLineIndex,
+          List<MeasureLineItem> mk = [];
+          // MeasureLineItem ml = MeasureLineItem(
+          //   width: event.width,
+          //   height: event.height,
+          //   length: event.length,
+          //   number: event.number,
+          //   quantity: (calulateQuantity(
+          //       height: event.height,
+          //       width: event.width,
+          //       length: event.length,
+          //       number: event.number)),
+          //   measurelineitemNo: event.measurementLineIndex,
+          // );
+          MeasureLineItem mm = const MeasureLineItem(
+            width: 0,
+            height: 0,
+            length: 0,
+            number: 0,
+            quantity: 0,
+            measurelineitemNo: 1,
           );
+          if (event.single) {
+            mk = [mm];
+          } else {
+            mk = [mm];
+          }
+
           // final measurementLineIndex = 0;
           // final sorID = "SOR_000143";
           // final filteredMeasurementsMeasureId =
@@ -111,7 +129,7 @@ class MeasurementDetailBloc
               event.sorId,
               event.filteredMeasurementMeasureId!,
               event.measurementLineIndex!,
-              ml,
+              mk,
             );
 
             emit(value.copyWith(
@@ -119,11 +137,11 @@ class MeasurementDetailBloc
             ));
           } else {
             List<SorObject> data = MBLogic.addMeasurementLine(
-              value.sor!,
+              value.nonSor!,
               event.sorId,
               event.filteredMeasurementMeasureId!,
               event.measurementLineIndex!,
-              ml,
+              mk,
             );
 
             emit(value.copyWith(
@@ -148,46 +166,71 @@ class MeasurementDetailBloc
       state.maybeMap(
         orElse: () => null,
         loaded: (value) {
-
-          double target  = MBLogic.calculateTotalQuantityAndSkip(
-            value.sor!,
-            event.sorId,
-            event.filteredMeasurementMeasureId!,
-            event.measurementLineIndex!
-            
-          );
-          print(target);
-          print(event.sorId);
-          print(event.type);
-          MeasureLineItem ml = MeasureLineItem(
-            width: event.width,
-            height: event.height,
-            length: event.length,
-            number: event.number,
-            quantity: calulateQuantity(
-                height: event.height,
-                width: event.width,
-                length: event.length,
-                number: event.number),
-            measurelineitemNo: event.measurementLineIndex,
-          );
-          // final measurementLineIndex = 0;
-          // final sorID = "SOR_000143";
-          // final filteredMeasurementsMeasureId =
-          //     "594d0557-9bc5-467b-9ff1-babf76e6a24e";
-// List<SorObject> sorObjects, String sorId,
-//       String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine
-          List<SorObject> data = MBLogic.updateMeasurementLine(
+          double target = MBLogic.calculateTotalQuantityAndSkip(
             value.sor!,
             event.sorId,
             event.filteredMeasurementMeasureId!,
             event.measurementLineIndex!,
-            ml,
           );
+          print("bubu$target");
+          print(event.sorId);
+          print(event.type);
 
-          emit(value.copyWith(
-            sor: data,
-          ));
+          double currentLineQty = double.parse(calulateQuantity(
+                  height: event.height,
+                  width: event.width,
+                  length: event.length,
+                  number: event.number)
+              .toString());
+
+          if ((currentLineQty + target) <=
+              (double.parse(event.noOfUnit.toString()) -
+                  double.parse(event.cummulativePrevQty.toString()))) {
+            MeasureLineItem ml = MeasureLineItem(
+              width: event.width,
+              height: event.height,
+              length: event.length,
+              number: event.number,
+              quantity: calulateQuantity(
+                  height: event.height,
+                  width: event.width,
+                  length: event.length,
+                  number: event.number),
+              measurelineitemNo: event.measurementLineIndex,
+            );
+
+            if (event.type != "NON-SOR") {
+              List<SorObject> data = MBLogic.updateMeasurementLine(
+                value.sor!,
+                event.sorId,
+                event.filteredMeasurementMeasureId!,
+                event.measurementLineIndex!,
+                ml,
+              );
+
+              emit(value.copyWith(
+                sor: data,
+                warningMsg: null,
+              ));
+            } else {
+              List<SorObject> data = MBLogic.updateMeasurementLine(
+                value.nonSor!,
+                event.sorId,
+                event.filteredMeasurementMeasureId!,
+                event.measurementLineIndex!,
+                ml,
+              );
+
+              emit(value.copyWith(
+                nonSor: data,
+                warningMsg: null,
+              ));
+            }
+          } else {
+            emit(value.copyWith(
+              warningMsg: "please check the number",
+            ));
+          }
         },
       );
     } catch (e) {
@@ -218,6 +261,35 @@ class MeasurementDetailBloc
     }
   }
 
+// calcel view mode
+  FutureOr<void> cancelUpdate(
+    CancelUpdateEvent event,
+    MeasurementDetailBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () => null,
+        loaded: (value) {
+          List<List<List<SorObject>>> sorList = MBLogic.getSors(value.data);
+
+          emit(
+            value.copyWith(
+              warningMsg: null,
+              sor: sorList.first.first,
+              nonSor: sorList.first.last,
+              preSor: sorList.length > 2 ? sorList[1].first : null,
+              preNonSor: sorList.length > 2 ? sorList[1].last : null,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+      // emit(MeasurementDetailState.error(e.toString()));
+    }
+  }
+
+// calculate qty
   dynamic calulateQuantity({
     required dynamic height,
     required dynamic width,
@@ -226,19 +298,25 @@ class MeasurementDetailBloc
   }) {
     //return  field==0?1:field;
 
-    if (height == 0 && width == 0 && length == 0 && number == 0) {
+    if ((height == '0' && width == '0' && length == '0' && number == '0') ||
+        (height == '0.0' &&
+            width == '0.0' &&
+            length == '0.0' &&
+            number == '0.0') ||
+        (height == 0 && width == 0 && length == 0 && number == 0) ||
+        (height == 0.0 && width == 0.0 && length == 0.0 && number == 0.0)) {
       return 0;
     } else {
-      if (height == '0') {
+      if (height == '0' || height == '0.0') {
         height = 1;
       }
-      if (width == '0') {
+      if (width == '0' || width == '0.0') {
         width = 1;
       }
-      if (length == '0') {
+      if (length == '0' || length == '0.0') {
         length = 1;
       }
-      if (number == '0') {
+      if (number == '0' || number == '0.0') {
         number = 1;
       }
 
@@ -247,6 +325,37 @@ class MeasurementDetailBloc
               double.parse(length.toString()) *
               double.parse(number.toString()))
           .toString();
+    }
+  }
+
+// update price
+  FutureOr<void> updatePriceSOR(
+    SubmitLineEvent event,
+    MeasurementDetailBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () => null,
+        loaded: (value) {
+         
+          List<SorObject> sorData = MBLogic.calculateTotalQuantity(
+              value.sor!, "sorId", "filteredMeasurementsMeasureId", 0);
+
+          List<SorObject> nonSorData = MBLogic.calculateTotalQuantity(
+              value.nonSor!, "sorId", "filteredMeasurementsMeasureId", 0);
+
+          emit(
+            value.copyWith(
+              warningMsg: null,
+              sor: sorData,
+              nonSor: nonSorData,
+            ),
+          );
+        },
+      );
+    } on DioError catch (e) {
+      // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+      emit(MeasurementDetailState.error(e.toString()));
     }
   }
 }
@@ -272,9 +381,12 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     dynamic length,
     dynamic number,
     dynamic quantity,
+    required bool single,
   }) = AddToMeasurementLineEvent;
 
   const factory MeasurementDetailBlocEvent.updateToMeasurementLineList({
+    required dynamic noOfUnit,
+    required dynamic cummulativePrevQty,
     required String sorId,
     required String type,
     int? index,
@@ -291,6 +403,24 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
   const factory MeasurementDetailBlocEvent.updateViewMode({
     required bool updateView,
   }) = UpdateViewModeEvent;
+
+  // reset the sorlist
+
+  const factory MeasurementDetailBlocEvent.cancelUpdate({
+    required bool cancelUpdate,
+  }) = CancelUpdateEvent;
+
+  // submit
+
+  const factory MeasurementDetailBlocEvent.submitLine({
+    required dynamic noOfUnit,
+    required dynamic cummulativePrevQty,
+    required String sorId,
+    required String type,
+    int? index,
+    int? measurementLineIndex,
+    String? filteredMeasurementMeasureId,
+  }) = SubmitLineEvent;
 }
 
 @freezed
@@ -300,6 +430,7 @@ class MeasurementDetailState with _$MeasurementDetailState {
   const factory MeasurementDetailState.initial() = _Initial;
   const factory MeasurementDetailState.loading() = _Loading;
   const factory MeasurementDetailState.loaded(
+    String? warningMsg,
     bool viewStatus,
     Measurement rawData,
     List<FilteredMeasurements> data,

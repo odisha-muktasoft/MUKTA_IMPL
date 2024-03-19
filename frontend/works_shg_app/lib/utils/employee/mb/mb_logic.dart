@@ -14,13 +14,15 @@ class MBLogic {
 
     final data = allMeasurements.map((e) {
       FilteredMeasurements datak = FilteredMeasurements(
-         documents: e.documents?.map((e) => e).toList(),
+          documents: e.documents?.map((e) => e).toList(),
           id: e.id,
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
-          endDate: mbDetailResponse.period?.endDate ?? (e.additionalDetail?.endDate ?? 00),
-          startDate: mbDetailResponse.period?.startDate ?? (e.additionalDetail?.startDate ?? 00),
+          endDate: mbDetailResponse.period?.endDate ??
+              (e.additionalDetail?.endDate ?? 00),
+          startDate: mbDetailResponse.period?.startDate ??
+              (e.additionalDetail?.startDate ?? 00),
           entryDate: e.entryDate,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
@@ -50,9 +52,22 @@ class MBLogic {
                 mbDetailResponse,
               ),
               measureLineItems: e.measureAdditionalDetails != null
-                  ? e.measureAdditionalDetails!.measureLineItems != null
+                  ? (e.measureAdditionalDetails!.measureLineItems != null &&
+                          e.measureAdditionalDetails!.measureLineItems!
+                              .isNotEmpty)
                       ? e.measureAdditionalDetails!.measureLineItems!
-                      : null
+                      // testing null pre[null]
+                      : [
+                          MeasureLineItem(
+                            width: e.breadth,
+                            height: e.height,
+                            length: e.length,
+                            number: e.numItems,
+                            quantity: e.currentValue,
+                            measurelineitemNo: 0,
+                          ),
+                        ]
+                  // end
                   : null,
             );
 
@@ -204,70 +219,71 @@ class MBLogic {
 
 // //
 
-static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
-  List<List<List<SorObject>>> mark = [];
+  static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
+    List<List<List<SorObject>>> mark = [];
 
-  for (int a = 0; a < s.length; a++) {
-    List<FilteredMeasurementsMeasure> sor = [];
-    List<FilteredMeasurementsMeasure> nonSor = [];
+    for (int a = 0; a < s.length; a++) {
+      List<FilteredMeasurementsMeasure> sor = [];
+      List<FilteredMeasurementsMeasure> nonSor = [];
 
-    for (int i = 0; i < s[a].measures!.length; i++) {
-      if (s[a].measures![i].contracts!.first.estimates!.first.category == "SOR") {
-        sor.add(s[a].measures![i]);
-      } else {
-        nonSor.add(s[a].measures![i]);
+      for (int i = 0; i < s[a].measures!.length; i++) {
+        if (s[a].measures![i].contracts!.first.estimates!.first.category ==
+            "SOR") {
+          sor.add(s[a].measures![i]);
+        } else {
+          nonSor.add(s[a].measures![i]);
+        }
       }
+
+      List<SorObject> listSors = [];
+      List<SorObject> listNonSors = [];
+
+      bool isObjectExists(String objectId, String type) {
+        List<SorObject> list = type == "NonSOR" ? listNonSors : listSors;
+        return list.any((obj) => obj.sorId == objectId);
+      }
+
+      void addObjectOrModify(
+          String objectId, FilteredMeasurementsMeasure newobj, String type) {
+        List<SorObject> list = type == "NonSOR" ? listNonSors : listSors;
+        if (isObjectExists(objectId, type)) {
+          SorObject existingObject =
+              list.firstWhere((obj) => obj.sorId == objectId);
+          List<FilteredMeasurementsMeasure> mutableList =
+              List.from(existingObject.filteredMeasurementsMeasure);
+          mutableList.add(newobj);
+          int index = list.indexWhere((obj) => obj.sorId == objectId);
+          // list[index] = existingObject.updateFilteredMeasurementsMeasure(mutableList);
+          list[index] = SorObject(
+            sorId: existingObject.sorId,
+            id: existingObject.id,
+            filteredMeasurementsMeasure: mutableList,
+          );
+        } else {
+          list.add(
+            SorObject(
+              filteredMeasurementsMeasure: [newobj],
+              id: newobj.contracts!.first.estimates!.first.id,
+              sorId: newobj.contracts!.first.estimates!.first.sorId,
+            ),
+          );
+        }
+      }
+
+      for (var obj in sor) {
+        String mValue = obj.contracts!.first.estimates!.first.sorId!;
+        addObjectOrModify(mValue, obj, "SOR");
+      }
+
+      for (var obj in nonSor) {
+        String mValue = obj.contracts!.first.estimates!.first.sorId!;
+        addObjectOrModify(mValue, obj, "NonSOR");
+      }
+
+      mark.add([listSors, listNonSors]);
     }
-
-    List<SorObject> listSors = [];
-    List<SorObject> listNonSors = [];
-
-    bool isObjectExists(String objectId, String type) {
-      List<SorObject> list = type == "NonSOR" ? listNonSors : listSors;
-      return list.any((obj) => obj.sorId == objectId);
-    }
-
- void addObjectOrModify(String objectId, FilteredMeasurementsMeasure newobj, String type) {
-  List<SorObject> list = type == "NonSOR" ? listNonSors : listSors;
-  if (isObjectExists(objectId, type)) {
-    SorObject existingObject = list.firstWhere((obj) => obj.sorId == objectId);
-    List<FilteredMeasurementsMeasure> mutableList =
-        List.from(existingObject.filteredMeasurementsMeasure);
-    mutableList.add(newobj);
-    int index = list.indexWhere((obj) => obj.sorId == objectId);
-   // list[index] = existingObject.updateFilteredMeasurementsMeasure(mutableList); 
-    list[index] = SorObject(sorId: existingObject.sorId,
-    id: existingObject.id,
-    filteredMeasurementsMeasure: mutableList,
-    ); 
-  } else {
-    list.add(
-      SorObject(
-        filteredMeasurementsMeasure: [newobj],
-        id: newobj.contracts!.first.estimates!.first.id,
-        sorId: newobj.contracts!.first.estimates!.first.sorId,
-      ),
-    );
+    return mark;
   }
-}
-
-
-
-
-    for (var obj in sor) {
-      String mValue = obj.contracts!.first.estimates!.first.sorId!;
-      addObjectOrModify(mValue, obj, "SOR");
-    }
-
-    for (var obj in nonSor) {
-      String mValue = obj.contracts!.first.estimates!.first.sorId!;
-      addObjectOrModify(mValue, obj, "NonSOR");
-    }
-
-    mark.add([listSors, listNonSors]);
-  }
-  return mark;
-}
 
   // to get
 
@@ -345,18 +361,23 @@ static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
     Map<String, dynamic> data = {
       "documents": measurement.documents!.map((e) {
         return {
-          "fileStore":e.fileStore,
-          "id":e.id,
-          "documentUid":e.documentUid,
-          "documentType":e.documentType,
-          "additionalDetails":{
-            "fileName":e.documentAdditionalDetails!=null?e.documentAdditionalDetails!.fileName??'':'',
-            "fileType":e.documentAdditionalDetails!=null?e.documentAdditionalDetails!.fileType??'':'',
-            "tenantId":e.documentAdditionalDetails!=null?e.documentAdditionalDetails!.tenantId??'':''
+          "fileStore": e.fileStore,
+          "id": e.id,
+          "documentUid": e.documentUid,
+          "documentType": e.documentType,
+          "additionalDetails": {
+            "fileName": e.documentAdditionalDetails != null
+                ? e.documentAdditionalDetails!.fileName ?? ''
+                : '',
+            "fileType": e.documentAdditionalDetails != null
+                ? e.documentAdditionalDetails!.fileType ?? ''
+                : '',
+            "tenantId": e.documentAdditionalDetails != null
+                ? e.documentAdditionalDetails!.tenantId ?? ''
+                : ''
           }
         };
-      }
-      ).toList(),
+      }).toList(),
       'id': measurement.id,
       'tenantId': measurement.tenantId,
       'measurementNumber': measurement.measurementNumber,
@@ -489,7 +510,7 @@ static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
     String sorId,
     String filteredMeasurementsMeasureId,
     int measurementLineIndex,
-    MeasureLineItem updatedMeasurementLine,
+    List<MeasureLineItem> updatedMeasurementLine,
   ) {
     return sorObjects.map((sorObject) {
       if (sorObject.sorId == sorId) {
@@ -500,7 +521,7 @@ static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
           if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
             final List<MeasureLineItem> updatedMeasurementLineItems =
                 List.from(filteredMeasurementsMeasure.measureLineItems ?? [])
-                  ..add(updatedMeasurementLine);
+                  ..addAll(updatedMeasurementLine);
 
             return filteredMeasurementsMeasure.copyWith(
               measureLineItems: updatedMeasurementLineItems,
@@ -517,34 +538,82 @@ static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
     }).toList();
   }
 
-
-
 // Function to calculate total quantity and skip object at specified index
-static double calculateTotalQuantityAndSkip(
-  List<SorObject> sorObjects,
-  String sorId,
-  String filteredMeasurementsMeasureId,
-  int measurementLineIndex,
-) {
-  double totalQuantity = 0.0; // Initialize total quantity
-  
-  for (var sorObject in sorObjects) {
-    if (sorObject.sorId == sorId) {
-      for (var filteredMeasurementsMeasure in sorObject.filteredMeasurementsMeasure) {
-        if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
-          for (var measurementLine in filteredMeasurementsMeasure.measureLineItems!) {
-            if (measurementLine.measurelineitemNo != measurementLineIndex) {
-              // Add quantity to totalQuantity
-              totalQuantity += double.parse( measurementLine.quantity.toString());
+  static double calculateTotalQuantityAndSkip(
+    List<SorObject> sorObjects,
+    String sorId,
+    String filteredMeasurementsMeasureId,
+    int measurementLineIndex,
+  ) {
+    double totalQuantity = 0.0; // Initialize total quantity
+
+    for (var sorObject in sorObjects) {
+      if (sorObject.sorId == sorId) {
+        for (var filteredMeasurementsMeasure
+            in sorObject.filteredMeasurementsMeasure) {
+          if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+            for (var measurementLine
+                in filteredMeasurementsMeasure.measureLineItems!) {
+              if (measurementLine.measurelineitemNo != measurementLineIndex) {
+                // Add quantity to totalQuantity
+                totalQuantity +=
+                    double.parse(measurementLine.quantity.toString());
+              }
             }
           }
         }
       }
     }
+
+    // Return totalQuantity
+    return totalQuantity.toDouble();
   }
 
-  // Return totalQuantity
-  return totalQuantity.toDouble();
-}
-
+// Function to calculate total quantity and  object at specified index
+  static List<SorObject> calculateTotalQuantity(
+    List<SorObject> sorObjects,
+    String sorId,
+    String filteredMeasurementsMeasureId,
+    int measurementLineIndex,
+  ) {
+    List<SorObject> updatedSorObjects = [];
+  for (SorObject sorObject in sorObjects) {
+    List<FilteredMeasurementsMeasure> updatedMeasures = [];
+    for (FilteredMeasurementsMeasure measure in sorObject.filteredMeasurementsMeasure) {
+      double sum = 0.0;
+      for (int j = 0; j < measure.measureLineItems!.length; j++) {
+        sum += double.parse(measure.measureLineItems![j].quantity.toString());
+      }
+      // Create a new instance of FilteredMeasurementsMeasure with updated numItems
+      FilteredMeasurementsMeasure updatedMeasure = FilteredMeasurementsMeasure(
+        length: measure.length,
+        breath: measure.breath,
+        height: measure.height,
+        numItems: sum,
+        cumulativeValue: measure.cumulativeValue,
+        currentValue: measure.currentValue,
+        tenantId: measure.tenantId,
+        mbAmount: measure.mbAmount,
+        type: measure.type,
+        targetId: measure.targetId,
+        isActive: measure.isActive,
+        id: measure.id,
+        referenceId: measure.referenceId,
+        measureLineItems: measure.measureLineItems,
+        contracts: measure.contracts,
+      );
+      updatedMeasures.add(updatedMeasure);
+    }
+    // Create a new SorObject instance with the updated list
+    SorObject updatedSorObject = SorObject(
+      // Copy other properties from sorObject if necessary
+      id:sorObject.id ,
+      sorId: sorObject.sorId,
+      filteredMeasurementsMeasure: updatedMeasures,
+      // Add other properties from sorObject if necessary
+    );
+    updatedSorObjects.add(updatedSorObject);
+  }
+  return updatedSorObjects;
+  }
 }
