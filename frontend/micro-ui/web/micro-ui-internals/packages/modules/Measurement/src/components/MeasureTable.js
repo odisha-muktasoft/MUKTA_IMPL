@@ -341,7 +341,7 @@ const MeasureTable = (props) => {
                 <Button
                   className={"plus-button"}
                   onButtonClick={() => {
-                    if(mode === "CREATEALL" && (row?.category === "SOR" && row?.description || row?.category === "NON-SOR") || mode === "CREATE"){
+                    if(mode === "CREATEALL" && (row?.category === "SOR" && row?.description || row?.category === "NON-SOR") || true){
                     const measure = {
                       sNo: 0,
                       targetId: 0,
