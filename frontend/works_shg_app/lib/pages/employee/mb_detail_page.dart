@@ -489,8 +489,23 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ))
                                     .toList();
                                 return DigitCard(
-                                  child: DigitTimeline(
-                                    timelineOptions: timeLineAttributes,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8.0),
+                                        child: Text(
+                                          "Workflow Timeline",
+                                          style: DigitTheme.instance.mobileTheme
+                                              .textTheme.headlineLarge,
+                                        ),
+                                      ),
+                                      DigitTimeline(
+                                        timelineOptions: timeLineAttributes,
+                                      ),
+                                    ],
                                   ),
                                 );
                                 //
