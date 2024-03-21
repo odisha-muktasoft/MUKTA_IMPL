@@ -474,7 +474,12 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
             setShowToast(false);
           }, 3000);
           if(error?.toString().includes("not found in config for the businessId"))
-            setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+          {
+            if(isCreateRevisionEstimate || isEditRevisionEstimate)
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${revisionNumber}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+            else 
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+          }
         },
         onSuccess: async (responseData, variables) => {
           clearSessionFormData();
