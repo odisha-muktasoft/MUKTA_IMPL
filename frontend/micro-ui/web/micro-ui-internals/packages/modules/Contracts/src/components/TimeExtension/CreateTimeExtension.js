@@ -111,7 +111,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
   };
 
   const handleSubmit = () => {
-    if (!extensionRequested || !reasonForExtension || extensionRequested <= 0) {
+    if (!extensionRequested || !reasonForExtension || extensionRequested <= 0 || extensionRequested > 365) {
       setShowToast({
         label: "TE_SUBMIT_VALIDATION",
         isError: true,
