@@ -157,6 +157,12 @@ config:
         dockerfile: frontend/micro-ui/web/docker/Dockerfile
         image-name: mukta-works-ui      
 
+  - name: builds/mukta_impl/mukta/works-shg-app
+    build:
+      - work-dir: frontend/works_shg_app/
+        dockerfile: frontend/works_shg_app/docker/Dockerfile
+        image-name: mukta-works-shg-app  
+
 # utilities
   - name: "builds/mukta_impl/utilities/works-pdf"
     build:
