@@ -158,8 +158,8 @@ public class NotificationServiceConfiguration {
     @Value("${kafka.topics.notification.sms}")
     private String smsNotifTopic;
 
-    @Value("${kafka.topics.mukta.notification.sms.name}")
-    private String muktaSmsNotifTopic;
+//    @Value("${kafka.topics.mukta.notification.sms.name}")
+//    private String muktaSmsNotifTopic;
 
     @Value("${kafka.topics.works.notification.sms.name}")
     private String muktaNotificationTopic;
