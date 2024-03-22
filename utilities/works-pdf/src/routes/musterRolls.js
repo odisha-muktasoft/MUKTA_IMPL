@@ -122,8 +122,10 @@ router.post(
                     muster.musterRolls[0].projectId = 'NA'; 
                     muster.musterRolls[0].totalWageAmount= 'NA';                  
                 }
-                
-                var labourCharges = mdms.reduce((modified, actual) => {
+                const createdTime = muster.musterRolls[0].auditDetails.createdTime;
+                const filteredMdmsLabourCharges = mdms.filter(item => createdTime >= item.effectiveFrom && (createdTime <= item.effectiveTo || item.effectiveTo == null));
+
+                var labourCharges = filteredMdmsLabourCharges.reduce((modified, actual) => {
                     modified[actual.code] = actual.amount;
                     return modified;
                 }, {})
