@@ -1,9 +1,7 @@
 package org.egov.works.measurement.util;
 
 import org.egov.common.contract.response.ResponseInfo;
-import org.egov.works.measurement.config.MBServiceConfiguration;
 import org.egov.works.measurement.enrichment.MeasurementEnrichment;
-import org.egov.works.measurement.service.MeasurementRegistry;
 import org.egov.works.measurement.service.WorkflowService;
 import org.egov.works.measurement.web.models.*;
 import org.springframework.beans.BeanUtils;
@@ -17,12 +15,7 @@ import java.util.List;
 @Component
 public class MeasurementServiceUtil {
 
-    @Autowired
-    private MeasurementRegistry measurementRegistry;
-    @Autowired
-    private IdgenUtil idgenUtil;
-    @Autowired
-    private MBServiceConfiguration MBServiceConfiguration;
+
     @Autowired
     private WorkflowService workflowService;
     @Autowired
