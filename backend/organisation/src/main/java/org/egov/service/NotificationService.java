@@ -60,10 +60,16 @@ public class NotificationService {
      */
     public void sendNotification(OrgRequest request, boolean isCreateOperation) {
 
-        if (isCreateOperation) {
-            pushNotificationForCreate(request);
-        } else {
-            pushNotificationForUpdate(request);
+        if(config.getIsSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
+            if (isCreateOperation) {
+                pushNotificationForCreate(request);
+            } else {
+                pushNotificationForUpdate(request);
+            }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
     }
 
