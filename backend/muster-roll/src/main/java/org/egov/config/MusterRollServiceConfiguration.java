@@ -129,6 +129,9 @@ public class MusterRollServiceConfiguration {
     @Value("${sms.isAdditonalFieldRequired}")
     private boolean isAdditonalFieldRequired;
 
+    @Value("${notification.sms.enabled}")
+    private boolean isSMSEnabled;
+
     @PostConstruct
     public void initialize() {
         TimeZone.setDefault(TimeZone.getTimeZone(timeZone));
