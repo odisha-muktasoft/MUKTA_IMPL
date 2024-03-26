@@ -70,25 +70,32 @@ public class NotificationService {
      * @param request
      */
     public void sendNotification(ContractRequest request) {
-        Workflow workflow = request.getWorkflow();
 
-        if (request.getContract().getBusinessService() != null
-                && !request.getContract().getBusinessService().isEmpty()
-                && request.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)) {
-            pushNotificationForRevisedContract (request);
+        if(config.getIsSMSEnabled()){
+            log.info("Notification is enabled for this service");
 
-        }else {
-            if (REJECT_ACTION.equalsIgnoreCase(workflow.getAction())) {
-                pushNotificationToCreatorForRejectAction(request);
-            } else if (APPROVE_ACTION.equalsIgnoreCase(workflow.getAction())) {
-                //No template present for Creator Approve Action
-                pushNotificationToCreatorForApproveAction(request);
-                pushNotificationToCBOForApproveAction(request);
-            } else if (ACCEPT_ACTION.equalsIgnoreCase(workflow.getAction())) {
-                pushNotificationToCreatorForAcceptAction(request);
-            } else if ("DECLINE".equalsIgnoreCase(workflow.getAction())) {
-                pushNotificationToCreatorForDeclineAction(request);
+            Workflow workflow = request.getWorkflow();
+
+            if (request.getContract().getBusinessService() != null
+                    && !request.getContract().getBusinessService().isEmpty()
+                    && request.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)) {
+                pushNotificationForRevisedContract (request);
+
+            }else {
+                if (REJECT_ACTION.equalsIgnoreCase(workflow.getAction())) {
+                    pushNotificationToCreatorForRejectAction(request);
+                } else if (APPROVE_ACTION.equalsIgnoreCase(workflow.getAction())) {
+                    //No template present for Creator Approve Action
+                    pushNotificationToCreatorForApproveAction(request);
+                    pushNotificationToCBOForApproveAction(request);
+                } else if (ACCEPT_ACTION.equalsIgnoreCase(workflow.getAction())) {
+                    pushNotificationToCreatorForAcceptAction(request);
+                } else if ("DECLINE".equalsIgnoreCase(workflow.getAction())) {
+                    pushNotificationToCreatorForDeclineAction(request);
+                }
             }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
 
     }
