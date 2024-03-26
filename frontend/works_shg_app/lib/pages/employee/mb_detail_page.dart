@@ -22,6 +22,7 @@ import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/digit_timeline.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
+import '../../widgets/mb/multi_image.dart';
 import '../../widgets/mb/workFlowButtonList.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
 import '../../widgets/mb/text_button_underline.dart';
@@ -513,6 +514,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                             );
                           },
                         ),
+                    // image
+
+                    FilePickerDemo(callBack: (List<FileStoreModel>?g ) { 
+
+                      print(g);
+                      
+                     },
+                     extensions: const ['jpg', 'png', 'jpeg'],
+                          moduleName: 'works',
+                    ),
+                    
                       ],
                     ),
                   );

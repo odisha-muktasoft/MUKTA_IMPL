@@ -16,7 +16,9 @@ import '../../../Env/env_config.dart';
 import '../../../utils/common_methods.dart';
 import '../../../utils/models.dart';
 import '../../../utils/save_file_mobile.dart';
-
+enum FileUploadStatus {
+  NOT_ACTIVE,STARTED,COMPLETED
+}
 class CoreRepository {
   Future<List<FileStoreModel>> uploadFiles(
       List<dynamic>? paths, String moduleName) async {

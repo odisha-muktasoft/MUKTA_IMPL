@@ -262,7 +262,7 @@ class MeasurementDetailBloc
     }
   }
 
-// calcel sor&non-sor mode
+// cancel sor&non-sor mode
   FutureOr<void> cancelUpdate(
     CancelUpdateEvent event,
     MeasurementDetailBlocEventEmitter emit,
@@ -450,6 +450,9 @@ class MeasurementDetailBloc
       emit(MeasurementDetailState.error(e.toString()));
     }
   }
+
+
+
 }
 
 @freezed
