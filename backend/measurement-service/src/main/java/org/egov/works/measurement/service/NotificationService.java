@@ -32,51 +32,57 @@ public class NotificationService {
 
     public void sendNotification(MeasurementServiceRequest request) {
 
+        if(config.isSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
 //        Get RequestInfo and Workflow from request
-        RequestInfo requestInfo = request.getRequestInfo();
+            RequestInfo requestInfo = request.getRequestInfo();
 
-        Workflow workflow = request.getMeasurements().get(0).getWorkflow();
+            Workflow workflow = request.getMeasurements().get(0).getWorkflow();
 
-        String localisationCode = null;
+            String localisationCode = null;
 
 //        Set localization code based on the action
-        if (workflow.getAction().equalsIgnoreCase(APPROVE_ACTION)) {
-            localisationCode = APPROVE_LOCALISATION_CODE;
-        } else if (workflow.getAction().equalsIgnoreCase(REJECT_ACTION)) {
-            localisationCode = REJECT_LOCALISATION_CODE;
-        } else {
-            return;
-        }
+            if (workflow.getAction().equalsIgnoreCase(APPROVE_ACTION)) {
+                localisationCode = APPROVE_LOCALISATION_CODE;
+            } else if (workflow.getAction().equalsIgnoreCase(REJECT_ACTION)) {
+                localisationCode = REJECT_LOCALISATION_CODE;
+            } else {
+                return;
+            }
 
 //        Get message from localization based on the locale
-        String message = getMessage(request, localisationCode);
+            String message = getMessage(request, localisationCode);
 
-        if (StringUtils.isEmpty(message)) {
-            log.info("message not configured for this case");
-            return;
-        }
+            if (StringUtils.isEmpty(message)) {
+                log.info("message not configured for this case");
+                return;
+            }
 
 //        Get project number and mobile number
-        String projectNumber = notificationUtil.getProjectNumber(requestInfo, request.getMeasurements().get(0).getTenantId(),
-                request.getMeasurements().get(0).getReferenceId());
-        String mobileNumber = notificationUtil.getEmployeeMobileNumber(requestInfo, request.getMeasurements().get(0).getTenantId()
-                , request.getMeasurements().get(0).getAuditDetails().getCreatedBy());
+            String projectNumber = notificationUtil.getProjectNumber(requestInfo, request.getMeasurements().get(0).getTenantId(),
+                    request.getMeasurements().get(0).getReferenceId());
+            String mobileNumber = notificationUtil.getEmployeeMobileNumber(requestInfo, request.getMeasurements().get(0).getTenantId()
+                    , request.getMeasurements().get(0).getAuditDetails().getCreatedBy());
 
 //        Set reference number and proejct id in the message template
-        message = getCustomMessage(message, request.getMeasurements().get(0).getMeasurementNumber(),projectNumber);
+            message = getCustomMessage(message, request.getMeasurements().get(0).getMeasurementNumber(), projectNumber);
 
 
-        Map<String, Object> additionalField=new HashMap<>();
+            Map<String, Object> additionalField = new HashMap<>();
 
 //        Set additional field if required
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,localisationCode, additionalField);
-        }
-        Map<String, String> smsDetails = new HashMap<>();
-        smsDetails.put("mobileNumber", mobileNumber);
+            if (config.isAdditonalFieldRequired()) {
+                setAdditionalFields(request, localisationCode, additionalField);
+            }
+            Map<String, String> smsDetails = new HashMap<>();
+            smsDetails.put("mobileNumber", mobileNumber);
 
 //      Create Sms request and push to the kafka topic based on additional field
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+            checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetails);
+        }else{
+            log.info("Notification is not enabled for this service");
+        }
 
     }
 
