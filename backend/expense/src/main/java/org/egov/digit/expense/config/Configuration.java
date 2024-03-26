@@ -164,6 +164,7 @@ public class Configuration {
 
 	@Value("${kafka.topics.works.notification.sms.name}")
 	private String muktaNotificationTopic;
+
 	@Value("${sms.isAdditonalFieldRequired}")
 	private boolean isAdditonalFieldRequired;
 
@@ -173,4 +174,7 @@ public class Configuration {
 
 	@Value("${works.individual.endpoint}")
 	private String individualServiceEndpoint;
+
+	@Value("${notification.sms.enabled}")
+	private boolean isSMSEnabled;
 }
