@@ -278,20 +278,21 @@ public class ContractUtil {
         Map<String, EstimateDetail> estimateLineItemIdToEstimateDetail = estimateResponse.getEstimates().get(0).getEstimateDetails().stream().collect(Collectors.toMap(EstimateDetail::getId, estimateDetail -> estimateDetail));
 
         Map<String, BigDecimal> targetIdToCumulativeValue = new HashMap<>();
-        BigDecimal totalValue= null;
-        BigDecimal estimateNoOfUnit= null;
+
+        String estimateLineItemId;
 
         if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty()) {
             for (Measure measure : measurementFromDB.getMeasures()) {
                 BigDecimal cumulativeValue = measure.getCumulativeValue();
                 if (isUpdate)
+
                     cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
                 targetIdToCumulativeValue.put(measure.getTargetId(), cumulativeValue);
             }
         }
         for (Measure measure : measurement.getMeasures()) {
             // Get the lineItemId corresponding in targetId
-            String estimateLineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
+            estimateLineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
             if (estimateLineItemId == null)
                 throw new CustomException(ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_CODE, ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_MSG + measure.getTargetId());
             // Get the estimateDetail corresponding to estimateLineItemId
@@ -308,18 +309,14 @@ public class ContractUtil {
             measurementServiceUtil.validateDimensions(measure,isUpdate);
             BigDecimal currValue = measure.getBreadth().multiply(measure.getHeight()).multiply(measure.getLength()).multiply(measure.getNumItems());
 
-            totalValue = totalValue!=null ?totalValue.add(currValue.add(prevCumulativeValue)): new BigDecimal(0);
-            estimateNoOfUnit = estimateNoOfUnit!=null?BigDecimal.valueOf(estimateDetail.getNoOfunit()):new BigDecimal(0);
-            checkQuantity(totalValue,estimateNoOfUnit,estimateLineItemId);
-//            if (totalValue.compareTo(BigDecimal.valueOf(estimateDetail.getNoOfunit())) > 0) {
-//                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, measure.getTargetId(), BigDecimal.valueOf(estimateDetail.getNoOfunit())));
-//            }
-        }
-    }
-    private void checkQuantity(BigDecimal totalValue, BigDecimal estimateNoOfUnit, String estimateLineItemId){
-        if (totalValue.compareTo(estimateNoOfUnit) > 0) {
-            throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, estimateLineItemId, estimateNoOfUnit));
-        }
+            BigDecimal totalValue = currValue.add(prevCumulativeValue);
+            BigDecimal estimateNoOfUnit=  BigDecimal.valueOf(estimateDetail.getNoOfunit());
 
+
+            if (totalValue.compareTo(estimateNoOfUnit) > 0) {
+                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, measure.getTargetId(), estimateNoOfUnit));
+            }
+        }
     }
+
 }
