@@ -43,34 +43,41 @@ public class NotificationService {
      * @param musterRollRequest
      */
     public void sendNotificationToCBO(MusterRollRequest musterRollRequest){
-        String action = musterRollRequest.getWorkflow().getAction();
-        if(action.equalsIgnoreCase(WF_SEND_BACK_TO_CBO_CODE) || action.equalsIgnoreCase(WF_APPROVE_CODE)) {
+
+        if(config.isSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
+            String action = musterRollRequest.getWorkflow().getAction();
+            if (action.equalsIgnoreCase(WF_SEND_BACK_TO_CBO_CODE) || action.equalsIgnoreCase(WF_APPROVE_CODE)) {
                 Map<String, String> cboDetails = notificationUtil.getCBOContactPersonDetails(musterRollRequest);
                 String amount = notificationUtil.getExpenseAmount(musterRollRequest);
 
                 String localisationCode = null;
                 String contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
-            if (musterRollRequest.getWorkflow().getAction().equalsIgnoreCase(WF_SEND_BACK_TO_CBO_CODE)) {
-                localisationCode = CBO_NOTIFICATION_FOR_CORRECTION_LOCALIZATION_CODE;
-            } else if (musterRollRequest.getWorkflow().getAction().equalsIgnoreCase(WF_APPROVE_CODE)) {
-                localisationCode = CBO_NOTIFICATION_OF_APPROVAL_LOCALIZATION_CODE;
-            }
+                if (musterRollRequest.getWorkflow().getAction().equalsIgnoreCase(WF_SEND_BACK_TO_CBO_CODE)) {
+                    localisationCode = CBO_NOTIFICATION_FOR_CORRECTION_LOCALIZATION_CODE;
+                } else if (musterRollRequest.getWorkflow().getAction().equalsIgnoreCase(WF_APPROVE_CODE)) {
+                    localisationCode = CBO_NOTIFICATION_OF_APPROVAL_LOCALIZATION_CODE;
+                }
 
-            String message = getMessage(musterRollRequest, localisationCode);
+                String message = getMessage(musterRollRequest, localisationCode);
 
-            message = buildMessageReplaceVariables(message, musterRollRequest.getMusterRoll().getMusterRollNumber(), amount);
+                message = buildMessageReplaceVariables(message, musterRollRequest.getMusterRoll().getMusterRollNumber(), amount);
 
-            Map<String, Object> additionalField=new HashMap<>();
+                Map<String, Object> additionalField = new HashMap<>();
 
 //        Set additional field if required
-            if(config.isAdditonalFieldRequired()){
-                setAdditionalFields(musterRollRequest,localisationCode, additionalField);
-            }
-            Map<String, String> smsDetails = new HashMap<>();
-            smsDetails.put("mobileNumber", contactMobileNumber);
+                if (config.isAdditonalFieldRequired()) {
+                    setAdditionalFields(musterRollRequest, localisationCode, additionalField);
+                }
+                Map<String, String> smsDetails = new HashMap<>();
+                smsDetails.put("mobileNumber", contactMobileNumber);
 
 //      Create Sms request and push to the kafka topic based on additional field
-            checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+                checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetails);
+            }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
     }
 

@@ -39,42 +39,55 @@ public class NotificationService {
 
     public void sendNotificationForPurchaseBill(BillRequest billRequest){
 
-        String action = billRequest.getWorkflow().getAction();
-        if(action.equalsIgnoreCase(APPROVE_CODE) || action.equalsIgnoreCase(REJECT_CODE)) {
-            String amount = String.valueOf(billRequest.getBill().getTotalAmount());
-            String billNumber = billRequest.getBill().getBillNumber();
-            String message = null;
-            String contactMobileNumber = null;
-            Map<String,Object> addtionalFields= new HashMap<>();
-            if (action.equalsIgnoreCase(APPROVE_CODE)) {
-                Map<String, String> cboDetails = notificationUtil.getVendorContactPersonDetails(billRequest.getRequestInfo(),
-                        billRequest.getBill().getTenantId(),
-                        billRequest.getBill().getBillDetails().get(0).getPayee().getIdentifier());
-                message = getMessage(billRequest.getRequestInfo(), billRequest.getBill().getTenantId(), PURCHASE_BILL_APPROVE_TO_VENDOR_LOCALIZATION_CODE,addtionalFields);
-                contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
+        if(config.isSMSEnabled()) {
+            log.info("Notification is enabled for this service");
 
-            } else if (action.equalsIgnoreCase(REJECT_CODE)) {
+            String action = billRequest.getWorkflow().getAction();
+            if (action.equalsIgnoreCase(APPROVE_CODE) || action.equalsIgnoreCase(REJECT_CODE)) {
+                String amount = String.valueOf(billRequest.getBill().getTotalAmount());
+                String billNumber = billRequest.getBill().getBillNumber();
+                String message = null;
+                String contactMobileNumber = null;
+                Map<String, Object> addtionalFields = new HashMap<>();
+                if (action.equalsIgnoreCase(APPROVE_CODE)) {
+                    Map<String, String> cboDetails = notificationUtil.getVendorContactPersonDetails(billRequest.getRequestInfo(),
+                            billRequest.getBill().getTenantId(),
+                            billRequest.getBill().getBillDetails().get(0).getPayee().getIdentifier());
+                    message = getMessage(billRequest.getRequestInfo(), billRequest.getBill().getTenantId(), PURCHASE_BILL_APPROVE_TO_VENDOR_LOCALIZATION_CODE, addtionalFields);
+                    contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
 
-                Map<String , String> employeeDetails=hrmsUtils.getEmployeeDetailsByUuid(billRequest.getRequestInfo(),billRequest.getBill()
-                        .getTenantId(),billRequest.getBill().getAuditDetails().getCreatedBy());
-                contactMobileNumber = employeeDetails.get(MOBILE_NUMBER_CODE);
-                message = getMessage(billRequest.getRequestInfo(), billRequest.getBill().getTenantId(), PURCHASE_BILL_REJECT_TO_CREATOR_LOCALIZATION_CODE,addtionalFields);
+                } else if (action.equalsIgnoreCase(REJECT_CODE)) {
 
+                    Map<String, String> employeeDetails = hrmsUtils.getEmployeeDetailsByUuid(billRequest.getRequestInfo(), billRequest.getBill()
+                            .getTenantId(), billRequest.getBill().getAuditDetails().getCreatedBy());
+                    contactMobileNumber = employeeDetails.get(MOBILE_NUMBER_CODE);
+                    message = getMessage(billRequest.getRequestInfo(), billRequest.getBill().getTenantId(), PURCHASE_BILL_REJECT_TO_CREATOR_LOCALIZATION_CODE, addtionalFields);
+
+                }
+                String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
+                checkAdditionalFieldAndPushONSmsTopic(customizedMessage, addtionalFields, contactMobileNumber);
             }
-            String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
-            checkAdditionalFieldAndPushONSmsTopic(customizedMessage,addtionalFields,contactMobileNumber);
+        }else{
+            log.info("Notification is not enabled for this service");
         }
     }
 
     public void sendNotificationForSupervisionBill(BillRequest billRequest){
-        Map<String, String> cboDetails = notificationUtil.getCBOContactPersonDetails(billRequest);
-        String amount = String.valueOf(billRequest.getBill().getTotalAmount());
-        String billNumber = billRequest.getBill().getBillNumber();
-        Map<String,Object> addtionalFields= new HashMap<>();
-        String message = getMessage(billRequest.getRequestInfo(), billRequest.getBill().getTenantId(), SUPERVISION_BILL_APPROVE_ON_CREATE_TO_CBO_LOCALIZATION_CODE,addtionalFields);
-        String contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
-        String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
-        checkAdditionalFieldAndPushONSmsTopic(customizedMessage,addtionalFields,contactMobileNumber);
+
+        if(config.isSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
+            Map<String, String> cboDetails = notificationUtil.getCBOContactPersonDetails(billRequest);
+            String amount = String.valueOf(billRequest.getBill().getTotalAmount());
+            String billNumber = billRequest.getBill().getBillNumber();
+            Map<String, Object> addtionalFields = new HashMap<>();
+            String message = getMessage(billRequest.getRequestInfo(), billRequest.getBill().getTenantId(), SUPERVISION_BILL_APPROVE_ON_CREATE_TO_CBO_LOCALIZATION_CODE, addtionalFields);
+            String contactMobileNumber = cboDetails.get(CONTACT_MOBILE_NUMBER);
+            String customizedMessage = buildMessageReplaceVariables(message, billNumber, amount);
+            checkAdditionalFieldAndPushONSmsTopic(customizedMessage, addtionalFields, contactMobileNumber);
+        }else{
+            log.info("Notification is not enabled for this service");
+        }
     }
 
     public String getMessage(RequestInfo requestInfo, String tenantId, String msgCode, Map<String,Object> addtionalFields){

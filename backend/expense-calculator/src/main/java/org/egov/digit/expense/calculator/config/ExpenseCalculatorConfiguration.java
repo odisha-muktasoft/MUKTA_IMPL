@@ -135,6 +135,9 @@ public class ExpenseCalculatorConfiguration {
 	@Value("${egov.sms.notification.topic}")
 	private String smsNotificationTopic;
 
+	@Value("${notification.sms.enabled}")
+	private boolean isSMSEnabled;
+
 	//Expense calculator Service specific
 	@Value("${egov.works.expense.wage.head.code}")
 	private String wageHeadCode;

@@ -64,12 +64,19 @@ public class NotificationService {
      * @param request
      */
     public void sendNotification(EstimateRequest request) {
-        Workflow workflow = request.getWorkflow();
 
-        if ("REJECT".equalsIgnoreCase(workflow.getAction())) {
-            pushNotificationToCreatorForRejectAction(request);
-        } else if ("APPROVE".equalsIgnoreCase(workflow.getAction())) {
-            pushNotificationToCreatorForApproveAction(request);
+        if(config.getIsSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
+            Workflow workflow = request.getWorkflow();
+
+            if ("REJECT".equalsIgnoreCase(workflow.getAction())) {
+                pushNotificationToCreatorForRejectAction(request);
+            } else if ("APPROVE".equalsIgnoreCase(workflow.getAction())) {
+                pushNotificationToCreatorForApproveAction(request);
+            }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
     }
 
