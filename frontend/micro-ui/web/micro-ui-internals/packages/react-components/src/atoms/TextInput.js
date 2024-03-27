@@ -17,6 +17,20 @@ const TextInput = (props) => {
     setDate(getDDMMYYYY(value));
   };
 
+  useEffect(() => {
+    // Prevent scrolling on number inputs
+    const handleScroll = (event) => {
+      if (event.target.type === "number") {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("wheel", handleScroll, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", handleScroll);
+    };
+  }, []);
+
   return (
     <React.Fragment>
       <div className={`text-input ${user_type === "employee" ? "" : "text-input-width"} ${props.className}`} style={props?.textInputStyle ? { ...props.textInputStyle } : {}}>
