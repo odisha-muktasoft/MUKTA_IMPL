@@ -8,6 +8,8 @@ import org.egov.works.measurement.web.models.MeasurementService;
 import org.egov.works.measurement.web.models.MeasurementServiceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,15 +40,16 @@ public class MeasurementEnrichment {
         for(MeasurementService measurementService : measurementServiceList){
             List<Document> documents = measurementService.getDocuments();
             if(documents != null && !documents.isEmpty()){
-                for(Document document : documents){
+                Iterator<Document> iterator = documents.iterator();
+                while(iterator.hasNext()){
+                    Document document = iterator.next();
                     Map<String, Object> additionalDetailsMap = objectMapper.convertValue(document.getAdditionalDetails(), Map.class);
                     boolean isActive = (boolean) additionalDetailsMap.get("isActive");
                     if (!isActive) {
                         // Removing the inActive document
-                        documents.remove(document);
+                        iterator.remove();
                     }
                 }
-                measurementService.setDocuments(documents);
             }
         }
     }
