@@ -514,17 +514,23 @@ class _MBDetailPageState extends State<MBDetailPage>
                             );
                           },
                         ),
-                    // image
+                        // image
 
-                    FilePickerDemo(callBack: (List<FileStoreModel>?g ) { 
-
-                      print(g);
-                      
-                     },
-                     extensions: const ['jpg', 'png', 'jpeg'],
+                        FilePickerDemo(
+                          callBack: (List<FileStoreModel>? g,List<WorkflowDocument>?l) {
+                            
+                           
+                            context.read<MeasurementDetailBloc>().add(
+                                  MeasurementUploadDocumentBlocEvent(
+                                    tenantId: '',
+                                    workflowDocument: l!,
+                                  ),
+                                );
+                            print(g);
+                          },
+                          extensions: const ['jpg', 'png', 'jpeg'],
                           moduleName: 'works',
-                    ),
-                    
+                        ),
                       ],
                     ),
                   );

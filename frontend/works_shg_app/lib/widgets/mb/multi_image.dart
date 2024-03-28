@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -16,7 +17,7 @@ import '../../models/file_store/file_store_model.dart';
 import '../../utils/notifiers.dart';
 
 class FilePickerDemo extends StatefulWidget {
-  final Function(List<FileStoreModel>?) callBack;
+  final Function(List<FileStoreModel>?, List<WorkflowDocument>?) callBack;
   final String? moduleName;
   final List<String>? extensions;
   final GlobalKey? contextKey;
@@ -35,6 +36,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
   final TextEditingController _controller = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   FileUploadStatus fileUploading = FileUploadStatus.NOT_ACTIVE;
+  List<WorkflowDocument>ss=[];
 
   @override
   void initState() {
@@ -69,7 +71,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           _selectedFiles = paths;
         }
 
-        List<dynamic> files = paths;
+        List<File> files = [];
         if(!kIsWeb){
           files = paths.map((e) => File(e.path ?? '')).toList();
         }
@@ -86,7 +88,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     });
   }
 
-  uploadFiles(List<dynamic> files) async {
+  uploadFiles(List<File> files) async {
     try{
       setState(() {
         fileUploading = FileUploadStatus.STARTED;
@@ -97,7 +99,28 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       });
       _fileStoreList.addAll(response);
       if(_selectedFiles.isNotEmpty) {
-        widget.callBack(_fileStoreList);
+//List<WorkflowDocument>ss=[];
+ss.clear();
+      for(int i=0;i<files.length;i++){
+
+    ss.add(WorkflowDocument(
+      
+      tenantId: _fileStoreList[i].tenantId,
+      fileStore: _fileStoreList[i].fileStoreId,
+      documentType: path.extension(files[i].path),
+      documentUid: path.basename(files[i].path),
+      documentAdditionalDetails: DocumentAdditionalDetails(
+        fileName: path.basename(files[i].path),
+        
+        fileType: "img_measurement_book",
+        tenantId: _fileStoreList[i].tenantId,
+        
+      )
+    ));
+
+      }
+
+        widget.callBack(_fileStoreList,ss);
       }
     }catch(e){
       setState(() {
@@ -221,7 +244,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       fileUploading = FileUploadStatus.NOT_ACTIVE;
     if(index < _fileStoreList.length)  _fileStoreList.removeAt(index);
     });
-    widget.callBack(_fileStoreList);
+    widget.callBack(_fileStoreList,ss);
   }
 
   void reset(){
@@ -338,7 +361,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
             uploadFiles(<File>[file]);
             return;
           } else {
-            return null;
+            return;
           }
         } else {
           _openFileExplorer();

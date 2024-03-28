@@ -19,6 +19,9 @@ mixin _$MeasurementDetailBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -66,6 +69,8 @@ mixin _$MeasurementDetailBlocEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -114,6 +119,8 @@ mixin _$MeasurementDetailBlocEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -163,6 +170,8 @@ mixin _$MeasurementDetailBlocEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -176,6 +185,7 @@ mixin _$MeasurementDetailBlocEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -189,6 +199,7 @@ mixin _$MeasurementDetailBlocEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -220,6 +231,328 @@ class _$MeasurementDetailBlocEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+}
+
+/// @nodoc
+abstract class _$$MeasurementUploadDocumentBlocEventCopyWith<$Res> {
+  factory _$$MeasurementUploadDocumentBlocEventCopyWith(
+          _$MeasurementUploadDocumentBlocEvent value,
+          $Res Function(_$MeasurementUploadDocumentBlocEvent) then) =
+      __$$MeasurementUploadDocumentBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String tenantId, List<WorkflowDocument> workflowDocument});
+}
+
+/// @nodoc
+class __$$MeasurementUploadDocumentBlocEventCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$MeasurementUploadDocumentBlocEvent>
+    implements _$$MeasurementUploadDocumentBlocEventCopyWith<$Res> {
+  __$$MeasurementUploadDocumentBlocEventCopyWithImpl(
+      _$MeasurementUploadDocumentBlocEvent _value,
+      $Res Function(_$MeasurementUploadDocumentBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tenantId = null,
+    Object? workflowDocument = null,
+  }) {
+    return _then(_$MeasurementUploadDocumentBlocEvent(
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+      workflowDocument: null == workflowDocument
+          ? _value._workflowDocument
+          : workflowDocument // ignore: cast_nullable_to_non_nullable
+              as List<WorkflowDocument>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MeasurementUploadDocumentBlocEvent
+    implements MeasurementUploadDocumentBlocEvent {
+  const _$MeasurementUploadDocumentBlocEvent(
+      {required this.tenantId,
+      required final List<WorkflowDocument> workflowDocument})
+      : _workflowDocument = workflowDocument;
+
+  @override
+  final String tenantId;
+  final List<WorkflowDocument> _workflowDocument;
+  @override
+  List<WorkflowDocument> get workflowDocument {
+    if (_workflowDocument is EqualUnmodifiableListView)
+      return _workflowDocument;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_workflowDocument);
+  }
+
+  @override
+  String toString() {
+    return 'MeasurementDetailBlocEvent.uploadDocument(tenantId: $tenantId, workflowDocument: $workflowDocument)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MeasurementUploadDocumentBlocEvent &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            const DeepCollectionEquality()
+                .equals(other._workflowDocument, _workflowDocument));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, tenantId,
+      const DeepCollectionEquality().hash(_workflowDocument));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MeasurementUploadDocumentBlocEventCopyWith<
+          _$MeasurementUploadDocumentBlocEvent>
+      get copyWith => __$$MeasurementUploadDocumentBlocEventCopyWithImpl<
+          _$MeasurementUploadDocumentBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)
+        create,
+    required TResult Function() clear,
+    required TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity,
+            bool single)
+        addToMeasurementLineList,
+    required TResult Function(
+            dynamic noOfUnit,
+            dynamic cummulativePrevQty,
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)
+        updateToMeasurementLineList,
+    required TResult Function(bool updateView) updateViewMode,
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
+        cancelUpdate,
+    required TResult Function(
+            dynamic noOfUnit,
+            dynamic cummulativePrevQty,
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId)
+        submitLine,
+  }) {
+    return uploadDocument(tenantId, workflowDocument);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
+    TResult? Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult? Function()? clear,
+    TResult? Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity,
+            bool single)?
+        addToMeasurementLineList,
+    TResult? Function(
+            dynamic noOfUnit,
+            dynamic cummulativePrevQty,
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+    TResult? Function(bool updateView)? updateViewMode,
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
+    TResult? Function(
+            dynamic noOfUnit,
+            dynamic cummulativePrevQty,
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId)?
+        submitLine,
+  }) {
+    return uploadDocument?.call(tenantId, workflowDocument);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
+    TResult Function(
+            String tenantId, String contractNumber, String measurementNumber)?
+        create,
+    TResult Function()? clear,
+    TResult Function(
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity,
+            bool single)?
+        addToMeasurementLineList,
+    TResult Function(
+            dynamic noOfUnit,
+            dynamic cummulativePrevQty,
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId,
+            dynamic height,
+            dynamic width,
+            dynamic length,
+            dynamic number,
+            dynamic quantity)?
+        updateToMeasurementLineList,
+    TResult Function(bool updateView)? updateViewMode,
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
+        cancelUpdate,
+    TResult Function(
+            dynamic noOfUnit,
+            dynamic cummulativePrevQty,
+            String sorId,
+            String type,
+            int? index,
+            int? measurementLineIndex,
+            String? filteredMeasurementMeasureId)?
+        submitLine,
+    required TResult orElse(),
+  }) {
+    if (uploadDocument != null) {
+      return uploadDocument(tenantId, workflowDocument);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
+    required TResult Function(MeasurementDetailBookBlocEvent value) create,
+    required TResult Function(MeasurementDetailBlocClearEvent value) clear,
+    required TResult Function(AddToMeasurementLineEvent value)
+        addToMeasurementLineList,
+    required TResult Function(UpdateToMeasurementLineEvent value)
+        updateToMeasurementLineList,
+    required TResult Function(UpdateViewModeEvent value) updateViewMode,
+    required TResult Function(CancelUpdateEvent value) cancelUpdate,
+    required TResult Function(SubmitLineEvent value) submitLine,
+  }) {
+    return uploadDocument(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
+    TResult? Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult? Function(AddToMeasurementLineEvent value)?
+        addToMeasurementLineList,
+    TResult? Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+    TResult? Function(UpdateViewModeEvent value)? updateViewMode,
+    TResult? Function(CancelUpdateEvent value)? cancelUpdate,
+    TResult? Function(SubmitLineEvent value)? submitLine,
+  }) {
+    return uploadDocument?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
+    TResult Function(MeasurementDetailBookBlocEvent value)? create,
+    TResult Function(MeasurementDetailBlocClearEvent value)? clear,
+    TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
+    TResult Function(UpdateToMeasurementLineEvent value)?
+        updateToMeasurementLineList,
+    TResult Function(UpdateViewModeEvent value)? updateViewMode,
+    TResult Function(CancelUpdateEvent value)? cancelUpdate,
+    TResult Function(SubmitLineEvent value)? submitLine,
+    required TResult orElse(),
+  }) {
+    if (uploadDocument != null) {
+      return uploadDocument(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MeasurementUploadDocumentBlocEvent
+    implements MeasurementDetailBlocEvent {
+  const factory MeasurementUploadDocumentBlocEvent(
+          {required final String tenantId,
+          required final List<WorkflowDocument> workflowDocument}) =
+      _$MeasurementUploadDocumentBlocEvent;
+
+  String get tenantId;
+  List<WorkflowDocument> get workflowDocument;
+  @JsonKey(ignore: true)
+  _$$MeasurementUploadDocumentBlocEventCopyWith<
+          _$MeasurementUploadDocumentBlocEvent>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -315,6 +648,9 @@ class _$MeasurementDetailBookBlocEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -365,6 +701,8 @@ class _$MeasurementDetailBookBlocEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -416,6 +754,8 @@ class _$MeasurementDetailBookBlocEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -471,6 +811,8 @@ class _$MeasurementDetailBookBlocEvent
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -487,6 +829,7 @@ class _$MeasurementDetailBookBlocEvent
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -503,6 +846,7 @@ class _$MeasurementDetailBookBlocEvent
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -580,6 +924,9 @@ class _$MeasurementDetailBlocClearEvent
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -630,6 +977,8 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -681,6 +1030,8 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -736,6 +1087,8 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -752,6 +1105,7 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -768,6 +1122,7 @@ class _$MeasurementDetailBlocClearEvent
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -977,6 +1332,9 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -1038,6 +1396,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -1100,6 +1460,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -1166,6 +1528,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -1182,6 +1546,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -1198,6 +1563,7 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -1444,6 +1810,9 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -1506,6 +1875,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -1569,6 +1940,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -1636,6 +2009,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -1652,6 +2027,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -1668,6 +2044,7 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -1785,6 +2162,9 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -1835,6 +2215,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -1886,6 +2268,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -1941,6 +2325,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -1957,6 +2343,7 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -1973,6 +2360,7 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -2101,6 +2489,9 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -2152,6 +2543,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -2204,6 +2597,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -2260,6 +2655,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -2276,6 +2673,7 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -2292,6 +2690,7 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,
@@ -2465,6 +2864,9 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
+            String tenantId, List<WorkflowDocument> workflowDocument)
+        uploadDocument,
+    required TResult Function(
             String tenantId, String contractNumber, String measurementNumber)
         create,
     required TResult Function() clear,
@@ -2516,6 +2918,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult? Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -2568,6 +2972,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
+        uploadDocument,
     TResult Function(
             String tenantId, String contractNumber, String measurementNumber)?
         create,
@@ -2624,6 +3030,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementUploadDocumentBlocEvent value)
+        uploadDocument,
     required TResult Function(MeasurementDetailBookBlocEvent value) create,
     required TResult Function(MeasurementDetailBlocClearEvent value) clear,
     required TResult Function(AddToMeasurementLineEvent value)
@@ -2640,6 +3048,7 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult? Function(MeasurementDetailBookBlocEvent value)? create,
     TResult? Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult? Function(AddToMeasurementLineEvent value)?
@@ -2656,6 +3065,7 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementUploadDocumentBlocEvent value)? uploadDocument,
     TResult Function(MeasurementDetailBookBlocEvent value)? create,
     TResult Function(MeasurementDetailBlocClearEvent value)? clear,
     TResult Function(AddToMeasurementLineEvent value)? addToMeasurementLineList,

@@ -13,6 +13,7 @@ import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
 import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
+import '../../../models/muster_rolls/muster_workflow_model.dart';
 import '../../../services/urls.dart';
 import '../../../utils/employee/mb/mb_logic.dart';
 
@@ -29,6 +30,7 @@ class MeasurementDetailBloc
     on<UpdateViewModeEvent>(updateViewMode);
     on<CancelUpdateEvent>(cancelUpdate);
     on<SubmitLineEvent>(updatePriceSOR);
+    on<MeasurementUploadDocumentBlocEvent>(modifyDocument);
   }
   FutureOr<void> getMBDetail(
     MeasurementDetailBookBlocEvent event,
@@ -451,12 +453,92 @@ class MeasurementDetailBloc
     }
   }
 
+// modify document
+
+  FutureOr<void> modifyDocument(
+    MeasurementUploadDocumentBlocEvent event,
+    MeasurementDetailBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () => null,
+        loaded: (value) {
+//update data
+
+  List<WorkflowDocument> updatedDocuments = [...value.data.first.documents ?? []]; // Create a copy of existing documents
+
+// Add or update the new documents
+if (event.workflowDocument != null && event.workflowDocument.isNotEmpty) {
+  if (updatedDocuments.isEmpty) {
+    // If updatedDocuments is empty, assign event.workflowDocument directly
+    updatedDocuments = List.from(event.workflowDocument);
+  } else {
+    // Iterate over each new document
+    for (WorkflowDocument document in event.workflowDocument) {
+      // Find and replace the document with the same id, or add the new document
+      // int index = updatedDocuments.indexWhere((doc) => doc.id == document.id);
+      // if (index != -1) {
+      //   updatedDocuments[index] = document;
+      // } else {
+      //   updatedDocuments.add(document);
+      // }
+
+      updatedDocuments.add(document);
+    }
+  }
+}
 
 
+          List<FilteredMeasurements> newData = value.data.mapIndexed(
+            (index, e) {
+              if (index == 0) {
+                return FilteredMeasurements(
+                  tenantId: e.tenantId,
+                  id: e.id,
+                  wfStatus: e.wfStatus,
+                  mbNumber: e.mbNumber,
+                  totalAmount: e.totalAmount,
+                  totalNorSorAmount: e.totalNorSorAmount,
+                  totalSorAmount: e.totalSorAmount,
+                  musterRollNumber: e.musterRollNumber,
+                  endDate: e.endDate,
+                  startDate: e.startDate,
+                  entryDate: e.endDate,
+                  referenceId: e.referenceId,
+                  physicalRefNumber: e.physicalRefNumber,
+                  measures: e.measures,
+                  documents: updatedDocuments,
+                );
+              } else {
+                return e;
+              }
+            },
+          ).toList();
+
+//
+
+          emit(
+            value.copyWith(
+              data: newData,
+              warningMsg: null,
+            ),
+          );
+        },
+      );
+    } on DioError catch (e) {
+      // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+      emit(MeasurementDetailState.error(e.toString()));
+    }
+  }
 }
 
 @freezed
 class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
+  const factory MeasurementDetailBlocEvent.uploadDocument({
+    required String tenantId,
+    required List<WorkflowDocument> workflowDocument,
+  }) = MeasurementUploadDocumentBlocEvent;
+
   const factory MeasurementDetailBlocEvent.create({
     required String tenantId,
     required String contractNumber,
