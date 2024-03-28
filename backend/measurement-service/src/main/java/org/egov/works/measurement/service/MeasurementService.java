@@ -3,6 +3,7 @@ package org.egov.works.measurement.service;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.response.ResponseInfo;
 import org.egov.works.measurement.config.MBServiceConfiguration;
+import org.egov.works.measurement.enrichment.MeasurementEnrichment;
 import org.egov.works.measurement.kafka.MBServiceProducer;
 import org.egov.works.measurement.util.MeasurementRegistryUtil;
 import org.egov.works.measurement.util.MeasurementServiceUtil;
@@ -26,7 +27,6 @@ public class MeasurementService {
 
     @Autowired
     private WorkflowService workflowService;
-
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -43,6 +43,8 @@ public class MeasurementService {
     private MeasurementServiceUtil measurementServiceUtil;
     @Autowired
     private MeasurementRegistryUtil measurementRegistryUtil;
+    @Autowired
+    private MeasurementEnrichment measurementEnrichment;
     @Autowired
     private NotificationService notificationService;
 
@@ -94,6 +96,10 @@ public class MeasurementService {
         measurementServiceValidator.validateContractsOnUpdate(measurementServiceRequest);
         // validate workflow
         measurementServiceValidator.validateWorkflowForUpdate(measurementServiceRequest);
+
+        // Set isActive key in addtionalDetails of Document
+        measurementServiceUtil.setIsActiveInAddditonalDetails(measurementServiceRequest.getMeasurements());
+
         //Update Measurement via Measurement Registry update api
         ResponseEntity<MeasurementResponse> measurementResponse = measurementRegistryUtil.updateMeasurements(measurementServiceRequest);
 
@@ -128,6 +134,9 @@ public class MeasurementService {
 
         // Convert the measurements from Measurement objects to MeasurementService objects
         List<org.egov.works.measurement.web.models.MeasurementService> measurementServices = measurementRegistry.changeToMeasurementService(measurementResponse.getMeasurements());
+
+        // Filter Active Documents
+        measurementEnrichment.enrichMeasurementWithActiveDocuments(measurementServices);
 
         // Set the converted measurement services in the response
         measurementServiceResponse.setMeasurements(measurementServices);
