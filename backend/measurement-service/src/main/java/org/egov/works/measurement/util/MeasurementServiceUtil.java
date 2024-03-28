@@ -1,5 +1,6 @@
 package org.egov.works.measurement.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egov.common.contract.response.ResponseInfo;
 import org.egov.works.measurement.enrichment.MeasurementEnrichment;
 import org.egov.works.measurement.service.WorkflowService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class MeasurementServiceUtil {
@@ -20,6 +22,8 @@ public class MeasurementServiceUtil {
     private WorkflowService workflowService;
     @Autowired
     private MeasurementEnrichment measurementEnrichment;
+    @Autowired
+    private ObjectMapper objectMapper;
     public List<Measurement> convertToMeasurementList(List<MeasurementService> measurementServices) {
         List<Measurement> measurements = new ArrayList<>();
 
@@ -122,6 +126,22 @@ public class MeasurementServiceUtil {
         }
         if (measure.getNumItems() == null || measure.getNumItems().compareTo(BigDecimal.ZERO) == 0) {
             measure.setNumItems(BigDecimal.ONE);
+        }
+    }
+
+    public void setIsActiveInAddditonalDetails(List<MeasurementService> measurementServiceList){
+        for(MeasurementService measurementService : measurementServiceList){
+            List<Document> documents = measurementService.getDocuments();
+            if(documents != null && !documents.isEmpty()){
+                for(Document document : documents){
+                    Map<String, Object> addtitonalDetailsMap = objectMapper.convertValue(document.getAdditionalDetails(), Map.class);
+                    // Add isActive field to additionalDetailsMap and set its value
+                    addtitonalDetailsMap.put("isActive", document.getIsActive());
+
+                    // Update the additionalDetails in the document
+                    document.setAdditionalDetails(addtitonalDetailsMap);
+                }
+            }
         }
     }
 
