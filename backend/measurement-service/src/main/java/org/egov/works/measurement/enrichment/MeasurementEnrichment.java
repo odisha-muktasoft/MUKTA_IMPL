@@ -44,10 +44,12 @@ public class MeasurementEnrichment {
                 while(iterator.hasNext()){
                     Document document = iterator.next();
                     Map<String, Object> additionalDetailsMap = objectMapper.convertValue(document.getAdditionalDetails(), Map.class);
-                    boolean isActive = (boolean) additionalDetailsMap.get("isActive");
-                    if (!isActive) {
-                        // Removing the inActive document
-                        iterator.remove();
+                    if(additionalDetailsMap.containsKey("isActive")) {
+                        boolean isActive = (boolean) additionalDetailsMap.get("isActive");
+                        if (!isActive) {
+                            // Removing the inActive document
+                            iterator.remove();
+                        }
                     }
                 }
             }
