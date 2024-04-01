@@ -404,10 +404,38 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     ),
                               value.rawData.documents != null &&
                                       value.rawData.documents!.isEmpty
-                                  ? const Card(
-                                      child:
-                                          Center(child: Text("No Data Found")),
-                                    )
+                                  ? !value.viewStatus
+                                      ? Card(
+                                          child: Center(
+                                            child: FilePickerDemo(
+                                              callBack: (List<FileStoreModel>?
+                                                      g,
+                                                  List<WorkflowDocument>? l) {
+                                                context
+                                                    .read<
+                                                        MeasurementDetailBloc>()
+                                                    .add(
+                                                      MeasurementUploadDocumentBlocEvent(
+                                                        tenantId: '',
+                                                        workflowDocument: l!,
+                                                      ),
+                                                    );
+                                                print(g);
+                                              },
+                                              extensions: const [
+                                                'jpg',
+                                                'png',
+                                                'jpeg'
+                                              ],
+                                              moduleName: 'works',
+                                            ),
+                                          ),
+                                        )
+                                      : const Card(
+                                          child: Center(
+                                            child: Text("No Data Found"),
+                                          ),
+                                        )
                                   : ListView.builder(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -438,6 +466,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               context)
                                                           .width,
                                                     ),
+                                                    //         Image.network( CommonMethods().loadImg(mm![index].fileStoreId!,
+                                                    // mm![index].tenantId!,
+
+                                                    // roleType: RoleType.employee,),),
                                                     Text(
                                                       AppLocalizations.of(
                                                               context)
@@ -517,9 +549,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                         // image
 
                         FilePickerDemo(
-                          callBack: (List<FileStoreModel>? g,List<WorkflowDocument>?l) {
-                            
-                           
+                          callBack: (List<FileStoreModel>? g,
+                              List<WorkflowDocument>? l) {
                             context.read<MeasurementDetailBloc>().add(
                                   MeasurementUploadDocumentBlocEvent(
                                     tenantId: '',

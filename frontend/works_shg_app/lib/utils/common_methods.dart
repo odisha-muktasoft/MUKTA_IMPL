@@ -238,4 +238,17 @@ class CommonMethods {
     // For Sunday as endDay date.add(Duration(days: DateTime.daysPerWeek - currentDay + 1));
     return endDayOfWeek;
   }
+
+
+Future<String> loadImg(String storeId, String tenantId,{  RoleType roleType=RoleType.cbo})async {
+  List<FileStoreModel>? file = await CoreRepository().fetchFiles(
+        [storeId.toString()],
+       roleType== RoleType.cbo?
+         GlobalVariables.organisationListModel!.organisations!.first.tenantId
+             .toString():
+        tenantId,
+            );
+
+return file!=null? file.first.url! : "";
+}
 }

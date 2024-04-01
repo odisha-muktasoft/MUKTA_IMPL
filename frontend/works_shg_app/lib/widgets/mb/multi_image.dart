@@ -157,7 +157,9 @@ ss.clear();
           padding: const EdgeInsets.only(top: 18, bottom: 3),
           child: Align(
               alignment: Alignment.centerLeft,
-              child: Text("${AppLocalizations.of(context).translate(i18.common.aadhaarNumber)}",
+              child: Text(
+                //"${AppLocalizations.of(context).translate(i18.common.aadhaarNumber)}",
+                "Worksite photos",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
@@ -167,7 +169,7 @@ ss.clear();
           width: constraints.maxWidth > 760
               ? MediaQuery.of(context).size.width / 2.5
               : MediaQuery.of(context).size.width,
-          // height: 50,
+           height: 200,
           decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -189,7 +191,8 @@ ss.clear();
                         ),
                     onPressed: () => selectDocumentOrImage(),
                     child: Text(
-                      "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
+                      //"${AppLocalizations.of(context).translate(i18.common.accountNo)}",
+                      "Choose File",
                       style: TextStyle(color: Theme.of(context).primaryColorDark, fontSize: 16),
                     ),
                   )),
@@ -215,9 +218,10 @@ ss.clear();
                     )).toList()),
               ),
             )
-            : Text(
-                "${AppLocalizations.of(context).translate(i18.common.backToHome)}",
-                style: const TextStyle(color: Colors.black, fontSize: 16),
+            : const Text(
+               // "${AppLocalizations.of(context).translate(i18.common.backToHome)}",
+               "No File Selected",
+                style:  TextStyle(color: Colors.black, fontSize: 16),
               ),
               Row(
                 children: [
