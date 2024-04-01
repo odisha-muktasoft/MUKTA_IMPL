@@ -134,12 +134,19 @@ public class MeasurementServiceUtil {
             List<Document> documents = measurementService.getDocuments();
             if(documents != null && !documents.isEmpty()){
                 for(Document document : documents){
-                    Map<String, Object> addtitonalDetailsMap = objectMapper.convertValue(document.getAdditionalDetails(), Map.class);
-                    // Add isActive field to additionalDetailsMap and set its value
-                    addtitonalDetailsMap.put("isActive", document.getIsActive());
+                    Map<String, Object> additionalDetailsMap = objectMapper.convertValue(document.getAdditionalDetails(), Map.class);
+                    // Add isActive field to additionalDetailsMap and set its value if not present
+                    if(additionalDetailsMap.containsKey("isActive")) {
+                        boolean isActive = (boolean) additionalDetailsMap.get("isActive");
+                        if (isActive) {
+                            additionalDetailsMap.put("isActive", document.getIsActive());
+                        }
+                    }else{
+                        additionalDetailsMap.put("isActive", document.getIsActive());
+                    }
 
                     // Update the additionalDetails in the document
-                    document.setAdditionalDetails(addtitonalDetailsMap);
+                    document.setAdditionalDetails(additionalDetailsMap);
                 }
             }
         }
