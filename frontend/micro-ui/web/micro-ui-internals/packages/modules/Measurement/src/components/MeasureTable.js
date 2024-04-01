@@ -62,7 +62,7 @@ const MeasureTable = (props) => {
     remove = (index)=>{
       if(fields?.length == 1)
       {
-        fields = [{...defaultSOR}];
+        fields = JSON.parse(JSON.stringify([defaultSOR]));
         setFormValue([...fields]);
       }
       else
