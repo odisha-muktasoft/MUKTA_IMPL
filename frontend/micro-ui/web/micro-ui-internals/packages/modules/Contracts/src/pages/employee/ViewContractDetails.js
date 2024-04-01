@@ -56,6 +56,10 @@ const ViewContractDetails = () => {
     const CreateTimeExtension = Digit.ComponentRegistryService.getComponent("CreateTimeExtension");
     const TermsAndConditions = Digit.ComponentRegistryService.getComponent("TermsAndConditions");
     const {isLoading : isContractLoading, data, isError : isContractError, isSuccess, error} = Digit.Hooks.contracts.useViewContractDetails(payload?.tenantId, payload, {}, {cacheTime : 0},revisedWONumber)
+    let verifiedRolesForAction = {
+        CREATE_TE : ["WORK_ORDER_CREATOR"],
+        CREATE_MB : ["MB_CREATOR"]
+    }
     //const {isLoading : isContractLoading, data } = Digit.Hooks.contracts.useViewContractDetails(payload?.tenantId, payload, {})
 
     //mdms call for getting the allowed measurement validation date
@@ -122,7 +126,8 @@ const ViewContractDetails = () => {
     },[isProjectError]);
 
       useEffect(() => {
-        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "CREATE_TIME_EXTENSION_REQUEST")) {
+        let isCreeateTEUser = verifiedRolesForAction?.["CREATE_TE"].some(role => loggedInUserRoles.includes(role));
+        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "CREATE_TIME_EXTENSION_REQUEST") && isCreeateTEUser) {
             
             setActionsMenu((prevState => [...prevState,{
                 name:"CREATE_TIME_EXTENSION_REQUEST",
@@ -130,7 +135,8 @@ const ViewContractDetails = () => {
             }]))
         }
 
-        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST"))
+        let isCreeateMBUser = verifiedRolesForAction?.["CREATE_MB"].some(role => loggedInUserRoles.includes(role));
+        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
         setActionsMenu((prevState => [...prevState,{
             name:"CREATE_MEASUREMENT_REQUEST",
             action:"CREATE_MEASUREMENT"
