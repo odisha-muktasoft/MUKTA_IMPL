@@ -49,6 +49,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
       type={fieldKey == "description" ? "text" : "number"}
       onChange={(newValue) => {
         //newValue.target.value = fieldKey == "description" ? newValue?.target?.value :  limitDecimalDigits(newValue.target.value);
+        if(fieldKey === "description" || ((newValue?.target?.value && parseFloat(newValue?.target?.value) >= 0) || newValue?.target?.value === "" || newValue?.target?.value === null)){
         let updatedMeasureLineItems = []
         if(mode === "CREATE"){
           updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
@@ -71,6 +72,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
             state: mode === "CREATE" ? { id: id, value: newValue.target.value, row: row, type: fieldKey, additionalDetails : {...row?.additionalDetails, measureLineItems : updatedMeasureLineItems }} : { id: id, value: newValue.target.value, row: row, type: fieldKey },
           });
         }
+      }
       }}
       disable={disable}
     />
