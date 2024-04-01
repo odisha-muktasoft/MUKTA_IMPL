@@ -76,7 +76,7 @@ const SearchBar = (props) => {
   };
 
   return (
-    <div className={"search-bar-sor"}>
+    <div className={"search-bar-sor"} style={{marginLeft:"1.4rem"}}>
       <TextInput type="text" name={"Search"} placeholder={t("SEARCH_SOR_HINT")} value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
       {suggestions?.length > 0 && (
       <ul
