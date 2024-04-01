@@ -69,9 +69,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
           ),
         );
 
-         context.read<WageSeekerLocationBloc>().add(
-          const LocationEventWageSeeker(
-              tenantId: "od.testing"),
+    context.read<WageSeekerLocationBloc>().add(
+          const LocationEventWageSeeker(tenantId: "od.testing"),
         );
     _scrollController.addListener(_scrollListener);
 
@@ -90,10 +89,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
         _scrollController.position.maxScrollExtent) {
       _addRandomData();
     }
-   
   }
-
-  
 
   void _addRandomData() {
     int s = pageCount + 10;
@@ -283,22 +279,37 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
                             return CommonMBCard(
                               widget: Center(
-                                child: DigitOutLineButton(
-                                  label: "Open Measurement Book",
-                                  onPressed: () {
-                                    final contract=mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.contract?.contractNumber??"";
-                                   final mbNumber=    mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.measurementNumber ??
-                                    "";
-                                    context.router.push( MBDetailRoute(contractNumber: contract, mbNumber: mbNumber));
-                                  },
+                                child: SizedBox(
+                                  width: MediaQuery.sizeOf(context).width,
+                                  child: OutlinedButton(
+                                    style: OutlinedButton.styleFrom(
+                                      side: BorderSide(
+                                        width: 1.0,
+                                        color:
+                                            const DigitColors().burningOrange,
+                                        style: BorderStyle.solid,
+                                      ),
+                                    ),
+                                    child: const Text("Open Measurement Book"),
+                                    onPressed: () {
+                                      final contract = mbInboxResponse
+                                              .mbInboxResponse
+                                              .items?[index]
+                                              .businessObject
+                                              ?.contract
+                                              ?.contractNumber ??
+                                          "";
+                                      final mbNumber = mbInboxResponse
+                                              .mbInboxResponse
+                                              .items?[index]
+                                              .businessObject
+                                              ?.measurementNumber ??
+                                          "";
+                                      context.router.push(MBDetailRoute(
+                                          contractNumber: contract,
+                                          mbNumber: mbNumber));
+                                    },
+                                  ),
                                 ),
                               ),
                               items: {
@@ -319,7 +330,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 "Assignee": mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
-                                        .processInstance?.assignes?.first.name??"NA",
+                                        .processInstance
+                                        ?.assignes
+                                        ?.first
+                                        .name ??
+                                    "NA",
                                 "Workflow State": mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
@@ -337,12 +352,18 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ?.mbAmount
                                         ?.roundToDouble()
                                         .toString() ??
-                                    "0.0",
-                                "SLA Days remaining": mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject?.serviceSla??"NA"
+                                    "0.0"
+                                // "SLA Days remaining": mbInboxResponse
+                                //         .mbInboxResponse
+                                //         .items?[index]
+                                //         .businessObject
+                                //         ?.serviceSla ??
+                                //     "0"
                               },
+                              show: true,
+                              sla: mbInboxResponse.mbInboxResponse.items?[index]
+                                      .businessObject?.serviceSla ??
+                                  0,
                             );
                           },
                           childCount: mbInboxResponse.isLoading

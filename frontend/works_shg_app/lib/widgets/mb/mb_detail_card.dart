@@ -2,25 +2,75 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 
 class CommonMBCard extends StatelessWidget {
-  
   final String? headLabel;
   final Map<String, dynamic> items;
   final Widget? widget;
-  const CommonMBCard(
-      {super.key, this.headLabel, required this.items, this.widget});
+  final int? sla;
+  final bool show;
+  const CommonMBCard({
+    super.key,
+    this.headLabel,
+    required this.items,
+    this.widget,
+    this.sla,
+    required this.show,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return DigitCard(
       child: Column(
-        crossAxisAlignment:widget!=null? CrossAxisAlignment.start:CrossAxisAlignment.center,
+        crossAxisAlignment: widget != null
+            ? CrossAxisAlignment.start
+            : CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          headLabel!=null?Text(headLabel!):const SizedBox.shrink(),
+          headLabel != null ? Text(headLabel!) : const SizedBox.shrink(),
           DigitTableCard(
             element: items,
           ),
-         widget ?? const SizedBox.shrink()
+          show
+              ? Container(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: Text(
+                          "SLA Days remaining",
+                          style: theme.textTheme.headline5,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                      const SizedBox(width: 0),
+                      Flexible(
+                          child: Padding(
+                        padding: const EdgeInsets.only(top: 1.4),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 12, right: 12, top: 4, bottom: 4),
+                          color: sla! < 0
+                              ? Colors.red.shade100
+                              : const DigitColors().paleLeafGreen,
+                          child: Text(
+                            sla.toString(),
+                            style: DigitTheme
+                                .instance.mobileTheme.textTheme.bodySmall!
+                                .copyWith(
+                              color: sla! < 0
+                                  ? const DigitColors().lavaRed
+                                  : const DigitColors().darkSpringGreen,
+                            ),
+                          ),
+                        ),
+                      )),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+          widget ?? const SizedBox.shrink()
         ],
       ),
     );

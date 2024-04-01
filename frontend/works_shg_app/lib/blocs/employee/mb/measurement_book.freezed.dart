@@ -21,6 +21,16 @@ mixin _$MeasurementInboxBlocEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         create,
+    required TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)
+        search,
+    required TResult Function(bool reset) reset,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +39,16 @@ mixin _$MeasurementInboxBlocEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         create,
+    TResult? Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult? Function(bool reset)? reset,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +57,16 @@ mixin _$MeasurementInboxBlocEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         create,
+    TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult Function(bool reset)? reset,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
@@ -44,18 +74,24 @@ mixin _$MeasurementInboxBlocEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
+    required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
+    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) =>
@@ -198,6 +234,16 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         create,
+    required TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)
+        search,
+    required TResult Function(bool reset) reset,
     required TResult Function() clear,
   }) {
     return create(tenantId, businessService, moduleName, limit, offset);
@@ -209,6 +255,16 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         create,
+    TResult? Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult? Function(bool reset)? reset,
     TResult? Function()? clear,
   }) {
     return create?.call(tenantId, businessService, moduleName, limit, offset);
@@ -220,6 +276,16 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         create,
+    TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult Function(bool reset)? reset,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -233,6 +299,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
+    required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
+    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return create(this);
@@ -242,6 +310,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return create?.call(this);
@@ -251,6 +321,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -277,6 +349,480 @@ abstract class MeasurementBookInboxBlocEvent
   int get offset;
   @JsonKey(ignore: true)
   _$$MeasurementBookInboxBlocEventCopyWith<_$MeasurementBookInboxBlocEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
+  factory _$$MeasurementBookInboxSearchBlocEventCopyWith(
+          _$MeasurementBookInboxSearchBlocEvent value,
+          $Res Function(_$MeasurementBookInboxSearchBlocEvent) then) =
+      __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {List<String>? ward,
+      List<String>? status,
+      String? projectId,
+      String? mbNumber,
+      String? projectName,
+      int limit,
+      int offset});
+}
+
+/// @nodoc
+class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
+    extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
+        _$MeasurementBookInboxSearchBlocEvent>
+    implements _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
+  __$$MeasurementBookInboxSearchBlocEventCopyWithImpl(
+      _$MeasurementBookInboxSearchBlocEvent _value,
+      $Res Function(_$MeasurementBookInboxSearchBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? ward = freezed,
+    Object? status = freezed,
+    Object? projectId = freezed,
+    Object? mbNumber = freezed,
+    Object? projectName = freezed,
+    Object? limit = null,
+    Object? offset = null,
+  }) {
+    return _then(_$MeasurementBookInboxSearchBlocEvent(
+      ward: freezed == ward
+          ? _value._ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      status: freezed == status
+          ? _value._status
+          : status // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mbNumber: freezed == mbNumber
+          ? _value.mbNumber
+          : mbNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectName: freezed == projectName
+          ? _value.projectName
+          : projectName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      offset: null == offset
+          ? _value.offset
+          : offset // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MeasurementBookInboxSearchBlocEvent
+    implements MeasurementBookInboxSearchBlocEvent {
+  const _$MeasurementBookInboxSearchBlocEvent(
+      {final List<String>? ward,
+      final List<String>? status,
+      this.projectId,
+      this.mbNumber,
+      this.projectName,
+      required this.limit,
+      required this.offset})
+      : _ward = ward,
+        _status = status;
+
+  final List<String>? _ward;
+  @override
+  List<String>? get ward {
+    final value = _ward;
+    if (value == null) return null;
+    if (_ward is EqualUnmodifiableListView) return _ward;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String>? _status;
+  @override
+  List<String>? get status {
+    final value = _status;
+    if (value == null) return null;
+    if (_status is EqualUnmodifiableListView) return _status;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String? projectId;
+  @override
+  final String? mbNumber;
+  @override
+  final String? projectName;
+  @override
+  final int limit;
+  @override
+  final int offset;
+
+  @override
+  String toString() {
+    return 'MeasurementInboxBlocEvent.search(ward: $ward, status: $status, projectId: $projectId, mbNumber: $mbNumber, projectName: $projectName, limit: $limit, offset: $offset)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MeasurementBookInboxSearchBlocEvent &&
+            const DeepCollectionEquality().equals(other._ward, _ward) &&
+            const DeepCollectionEquality().equals(other._status, _status) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId) &&
+            (identical(other.mbNumber, mbNumber) ||
+                other.mbNumber == mbNumber) &&
+            (identical(other.projectName, projectName) ||
+                other.projectName == projectName) &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.offset, offset) || other.offset == offset));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_ward),
+      const DeepCollectionEquality().hash(_status),
+      projectId,
+      mbNumber,
+      projectName,
+      limit,
+      offset);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MeasurementBookInboxSearchBlocEventCopyWith<
+          _$MeasurementBookInboxSearchBlocEvent>
+      get copyWith => __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<
+          _$MeasurementBookInboxSearchBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        create,
+    required TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)
+        search,
+    required TResult Function(bool reset) reset,
+    required TResult Function() clear,
+  }) {
+    return search(
+        ward, status, projectId, mbNumber, projectName, limit, offset);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        create,
+    TResult? Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult? Function(bool reset)? reset,
+    TResult? Function()? clear,
+  }) {
+    return search?.call(
+        ward, status, projectId, mbNumber, projectName, limit, offset);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        create,
+    TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult Function(bool reset)? reset,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (search != null) {
+      return search(
+          ward, status, projectId, mbNumber, projectName, limit, offset);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementBookInboxBlocEvent value) create,
+    required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
+    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
+  }) {
+    return search(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
+  }) {
+    return search?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (search != null) {
+      return search(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MeasurementBookInboxSearchBlocEvent
+    implements MeasurementInboxBlocEvent {
+  const factory MeasurementBookInboxSearchBlocEvent(
+      {final List<String>? ward,
+      final List<String>? status,
+      final String? projectId,
+      final String? mbNumber,
+      final String? projectName,
+      required final int limit,
+      required final int offset}) = _$MeasurementBookInboxSearchBlocEvent;
+
+  List<String>? get ward;
+  List<String>? get status;
+  String? get projectId;
+  String? get mbNumber;
+  String? get projectName;
+  int get limit;
+  int get offset;
+  @JsonKey(ignore: true)
+  _$$MeasurementBookInboxSearchBlocEventCopyWith<
+          _$MeasurementBookInboxSearchBlocEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MeasurementBookInboxResetBlocEventCopyWith<$Res> {
+  factory _$$MeasurementBookInboxResetBlocEventCopyWith(
+          _$MeasurementBookInboxResetBlocEvent value,
+          $Res Function(_$MeasurementBookInboxResetBlocEvent) then) =
+      __$$MeasurementBookInboxResetBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool reset});
+}
+
+/// @nodoc
+class __$$MeasurementBookInboxResetBlocEventCopyWithImpl<$Res>
+    extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
+        _$MeasurementBookInboxResetBlocEvent>
+    implements _$$MeasurementBookInboxResetBlocEventCopyWith<$Res> {
+  __$$MeasurementBookInboxResetBlocEventCopyWithImpl(
+      _$MeasurementBookInboxResetBlocEvent _value,
+      $Res Function(_$MeasurementBookInboxResetBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reset = null,
+  }) {
+    return _then(_$MeasurementBookInboxResetBlocEvent(
+      reset: null == reset
+          ? _value.reset
+          : reset // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MeasurementBookInboxResetBlocEvent
+    implements MeasurementBookInboxResetBlocEvent {
+  const _$MeasurementBookInboxResetBlocEvent({required this.reset});
+
+  @override
+  final bool reset;
+
+  @override
+  String toString() {
+    return 'MeasurementInboxBlocEvent.reset(reset: $reset)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MeasurementBookInboxResetBlocEvent &&
+            (identical(other.reset, reset) || other.reset == reset));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reset);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MeasurementBookInboxResetBlocEventCopyWith<
+          _$MeasurementBookInboxResetBlocEvent>
+      get copyWith => __$$MeasurementBookInboxResetBlocEventCopyWithImpl<
+          _$MeasurementBookInboxResetBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        create,
+    required TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)
+        search,
+    required TResult Function(bool reset) reset,
+    required TResult Function() clear,
+  }) {
+    return reset(this.reset);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        create,
+    TResult? Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult? Function(bool reset)? reset,
+    TResult? Function()? clear,
+  }) {
+    return reset?.call(this.reset);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        create,
+    TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult Function(bool reset)? reset,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (reset != null) {
+      return reset(this.reset);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementBookInboxBlocEvent value) create,
+    required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
+    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
+  }) {
+    return reset(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
+  }) {
+    return reset?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (reset != null) {
+      return reset(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MeasurementBookInboxResetBlocEvent
+    implements MeasurementInboxBlocEvent {
+  const factory MeasurementBookInboxResetBlocEvent(
+      {required final bool reset}) = _$MeasurementBookInboxResetBlocEvent;
+
+  bool get reset;
+  @JsonKey(ignore: true)
+  _$$MeasurementBookInboxResetBlocEventCopyWith<
+          _$MeasurementBookInboxResetBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -326,6 +872,16 @@ class _$MeasurementBookInboxBlocClearEvent
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         create,
+    required TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)
+        search,
+    required TResult Function(bool reset) reset,
     required TResult Function() clear,
   }) {
     return clear();
@@ -337,6 +893,16 @@ class _$MeasurementBookInboxBlocClearEvent
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         create,
+    TResult? Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult? Function(bool reset)? reset,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -348,6 +914,16 @@ class _$MeasurementBookInboxBlocClearEvent
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         create,
+    TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset)?
+        search,
+    TResult Function(bool reset)? reset,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -361,6 +937,8 @@ class _$MeasurementBookInboxBlocClearEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
+    required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
+    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return clear(this);
@@ -370,6 +948,8 @@ class _$MeasurementBookInboxBlocClearEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return clear?.call(this);
@@ -379,6 +959,8 @@ class _$MeasurementBookInboxBlocClearEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -401,7 +983,15 @@ mixin _$MeasurementInboxState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -410,7 +1000,16 @@ mixin _$MeasurementInboxState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -418,7 +1017,16 @@ mixin _$MeasurementInboxState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -508,7 +1116,15 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -520,7 +1136,16 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -531,7 +1156,16 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -623,7 +1257,15 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -635,7 +1277,16 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -646,7 +1297,16 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -704,7 +1364,15 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({MBInboxResponse mbInboxResponse, bool isLoading});
+  $Res call(
+      {MBInboxResponse mbInboxResponse,
+      bool isLoading,
+      List<String>? ward,
+      List<String>? status,
+      String? projectId,
+      String? mbNumber,
+      String? projectName,
+      bool search});
 
   $MBInboxResponseCopyWith<$Res> get mbInboxResponse;
 }
@@ -721,6 +1389,12 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? mbInboxResponse = null,
     Object? isLoading = null,
+    Object? ward = freezed,
+    Object? status = freezed,
+    Object? projectId = freezed,
+    Object? mbNumber = freezed,
+    Object? projectName = freezed,
+    Object? search = null,
   }) {
     return _then(_$_Loaded(
       null == mbInboxResponse
@@ -730,6 +1404,30 @@ class __$$_LoadedCopyWithImpl<$Res>
       null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      freezed == ward
+          ? _value._ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      freezed == status
+          ? _value._status
+          : status // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      freezed == mbNumber
+          ? _value.mbNumber
+          : mbNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      freezed == projectName
+          ? _value.projectName
+          : projectName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      null == search
+          ? _value.search
+          : search // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -746,16 +1444,55 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.mbInboxResponse, this.isLoading) : super._();
+  const _$_Loaded(
+      this.mbInboxResponse,
+      this.isLoading,
+      final List<String>? ward,
+      final List<String>? status,
+      this.projectId,
+      this.mbNumber,
+      this.projectName,
+      this.search)
+      : _ward = ward,
+        _status = status,
+        super._();
 
   @override
   final MBInboxResponse mbInboxResponse;
   @override
   final bool isLoading;
+  final List<String>? _ward;
+  @override
+  List<String>? get ward {
+    final value = _ward;
+    if (value == null) return null;
+    if (_ward is EqualUnmodifiableListView) return _ward;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String>? _status;
+  @override
+  List<String>? get status {
+    final value = _status;
+    if (value == null) return null;
+    if (_status is EqualUnmodifiableListView) return _status;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String? projectId;
+  @override
+  final String? mbNumber;
+  @override
+  final String? projectName;
+  @override
+  final bool search;
 
   @override
   String toString() {
-    return 'MeasurementInboxState.loaded(mbInboxResponse: $mbInboxResponse, isLoading: $isLoading)';
+    return 'MeasurementInboxState.loaded(mbInboxResponse: $mbInboxResponse, isLoading: $isLoading, ward: $ward, status: $status, projectId: $projectId, mbNumber: $mbNumber, projectName: $projectName, search: $search)';
   }
 
   @override
@@ -766,11 +1503,29 @@ class _$_Loaded extends _Loaded {
             (identical(other.mbInboxResponse, mbInboxResponse) ||
                 other.mbInboxResponse == mbInboxResponse) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            const DeepCollectionEquality().equals(other._ward, _ward) &&
+            const DeepCollectionEquality().equals(other._status, _status) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId) &&
+            (identical(other.mbNumber, mbNumber) ||
+                other.mbNumber == mbNumber) &&
+            (identical(other.projectName, projectName) ||
+                other.projectName == projectName) &&
+            (identical(other.search, search) || other.search == search));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, mbInboxResponse, isLoading);
+  int get hashCode => Object.hash(
+      runtimeType,
+      mbInboxResponse,
+      isLoading,
+      const DeepCollectionEquality().hash(_ward),
+      const DeepCollectionEquality().hash(_status),
+      projectId,
+      mbNumber,
+      projectName,
+      search);
 
   @JsonKey(ignore: true)
   @override
@@ -783,11 +1538,20 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)
         loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(mbInboxResponse, isLoading);
+    return loaded(mbInboxResponse, isLoading, ward, status, projectId, mbNumber,
+        projectName, search);
   }
 
   @override
@@ -795,10 +1559,20 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(mbInboxResponse, isLoading);
+    return loaded?.call(mbInboxResponse, isLoading, ward, status, projectId,
+        mbNumber, projectName, search);
   }
 
   @override
@@ -806,12 +1580,22 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(mbInboxResponse, isLoading);
+      return loaded(mbInboxResponse, isLoading, ward, status, projectId,
+          mbNumber, projectName, search);
     }
     return orElse();
   }
@@ -856,11 +1640,24 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends MeasurementInboxState {
   const factory _Loaded(
-      final MBInboxResponse mbInboxResponse, final bool isLoading) = _$_Loaded;
+      final MBInboxResponse mbInboxResponse,
+      final bool isLoading,
+      final List<String>? ward,
+      final List<String>? status,
+      final String? projectId,
+      final String? mbNumber,
+      final String? projectName,
+      final bool search) = _$_Loaded;
   const _Loaded._() : super._();
 
   MBInboxResponse get mbInboxResponse;
   bool get isLoading;
+  List<String>? get ward;
+  List<String>? get status;
+  String? get projectId;
+  String? get mbNumber;
+  String? get projectName;
+  bool get search;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -930,7 +1727,15 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -942,7 +1747,16 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -953,7 +1767,16 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(
+            MBInboxResponse mbInboxResponse,
+            bool isLoading,
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            bool search)?
+        loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {

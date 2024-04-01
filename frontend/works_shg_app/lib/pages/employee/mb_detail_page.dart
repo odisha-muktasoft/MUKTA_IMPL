@@ -272,9 +272,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           .contractAdditionalDetails
                                           ?.officerInChargeDesgn ??
                                       "NA",
-                                  "Workflow State": value.data.first.wfStatus,
+                                  "Workflow State":t.translate( value.data.first.wfStatus!),
                                   "MB Account": value.data.first.totalAmount,
-                                  "SLA Days remaining": 2,
+                                 // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
                                   label: 'View MB History',
@@ -287,7 +287,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       ),
                                     );
                                   },
-                                ),
+                                ), show: true,
+                                sla: 1, 
                               ),
                             ],
                           ),

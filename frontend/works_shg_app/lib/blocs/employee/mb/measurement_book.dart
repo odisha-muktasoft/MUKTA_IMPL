@@ -16,6 +16,8 @@ class MeasurementInboxBloc
     extends Bloc<MeasurementInboxBlocEvent, MeasurementInboxState> {
   MeasurementInboxBloc() : super(const MeasurementInboxState.initial()) {
     on<MeasurementBookInboxBlocEvent>(getMBInbox);
+    on<MeasurementBookInboxSearchBlocEvent>(searchMb);
+    on<MeasurementBookInboxBlocClearEvent>(initialStage);
   }
   FutureOr<void> getMBInbox(
     MeasurementBookInboxBlocEvent event,
@@ -27,18 +29,26 @@ class MeasurementInboxBloc
         emit(const MeasurementInboxState.loading());
       }
 
-      final MBInboxResponse res = await MBRepository(client.init())
-          .fetchMbInbox(url: Urls.measurementService.measurementInbox, body: {
+      final s = {
         "inbox": {
           "tenantId": "od.testing",
-          "moduleSearchCriteria": {"tenantId": "od.testing"},
+          "moduleSearchCriteria": {
+            "tenantId": "od.testing",
+            // "status":["1f4fa87c-b299-4adf-8691-409bf0b8e164",],
+            //  "status":[],
+            // "ward":[],
+          },
           "processSearchCriteria": {
             "businessService": ["MB"],
             "moduleName": "measurement-service"
           },
           "limit": 10,
           "offset": event.offset
-        },
+        }
+      };
+      final MBInboxResponse res =
+          await MBRepository(client.init()).fetchMbInbox(
+        url: Urls.measurementService.measurementInbox, body: s,
         // "RequestInfo": {
         //   "apiId": "Rainmaker",
         //   "authToken": "db570c2b-950a-4084-87fc-6fa7482a22f7",
@@ -58,9 +68,18 @@ class MeasurementInboxBloc
         //   "msgId": "1708076019861|en_IN",
         //   "plainAccessRequest": {}
         // }
-      });
+      );
       if (event.offset == 0) {
-        emit(MeasurementInboxState.loaded(res,true));
+        emit(MeasurementInboxState.loaded(
+          res,
+          res.items!.length < 10 ? false : true,
+          null,
+          null,
+          null,
+          null,
+          null,
+          false,
+        ));
       } else {
         state.maybeMap(
           orElse: () {
@@ -71,10 +90,18 @@ class MeasurementInboxBloc
             data.addAll(value.mbInboxResponse.items ?? []);
             data.addAll(res.items!);
 
-            emit(MeasurementInboxState.loaded(
-                value.mbInboxResponse.copyWith(items: data),
-                res.items!.length<10?false:true
-                ),);
+            emit(
+              MeasurementInboxState.loaded(
+                  value.mbInboxResponse.copyWith(items: data),
+                  res.items!.length < 10 ? false : true,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  false
+                  ),
+            );
           },
         );
       }
@@ -82,7 +109,89 @@ class MeasurementInboxBloc
       emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
+//search
+
+  FutureOr<void> searchMb(
+    MeasurementBookInboxSearchBlocEvent event,
+    MeasurementInboxBlocEventEmitter emit,
+  ) async {
+    Client client = Client();
+    try {
+      if (event.offset == 0) {
+        emit(const MeasurementInboxState.loading());
+      }
+
+      final s = {
+        "inbox": {
+          "tenantId": "od.testing",
+          "moduleSearchCriteria": {
+            "tenantId": "od.testing",
+            "status": event.status,
+            "ward": event.ward,
+          },
+          "processSearchCriteria": {
+            "businessService": ["MB"],
+            "moduleName": "measurement-service"
+          },
+          "limit": 10,
+          "offset": event.offset
+        }
+      };
+      final MBInboxResponse res =
+          await MBRepository(client.init()).fetchMbInbox(
+        url: Urls.measurementService.measurementInbox,
+        body: s,
+      );
+      if (event.offset == 0) {
+        emit(MeasurementInboxState.loaded(
+          res,
+           res.items!.length < 10  ? false : true,
+          event.ward,
+          event.status,
+          event.projectId,
+          event.mbNumber,
+          event.projectName,
+          true
+        ));
+      } else {
+        state.maybeMap(
+          orElse: () {
+            return null;
+          },
+          loaded: (value) {
+            List<ItemData> data = [];
+            data.addAll(value.mbInboxResponse.items ?? []);
+            data.addAll(res.items!);
+
+            emit(
+              MeasurementInboxState.loaded(
+                value.mbInboxResponse.copyWith(items: data),
+                res.items!.length < 10 ? false : true,
+                event.ward,
+                event.status,
+                event.projectId,
+                event.mbNumber,
+                event.projectName,
+                true
+              ),
+            );
+          },
+        );
+      }
+    } on DioError catch (e) {
+      emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+    }
+  }
+
+FutureOr<void> initialStage(
+    MeasurementBookInboxBlocClearEvent event,
+    MeasurementInboxBlocEventEmitter emit,
+  )  {
+    emit(const MeasurementInboxState.initial());
+  }
+
 }
+
 
 @freezed
 class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
@@ -94,6 +203,19 @@ class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
     required int offset,
   }) = MeasurementBookInboxBlocEvent;
 
+  const factory MeasurementInboxBlocEvent.search({
+    List<String>? ward,
+    List<String>? status,
+    String? projectId,
+    String? mbNumber,
+    String? projectName,
+    required int limit,
+    required int offset,
+  }) = MeasurementBookInboxSearchBlocEvent;
+  const factory MeasurementInboxBlocEvent.reset({
+   required bool reset
+  }) = MeasurementBookInboxResetBlocEvent;
+
   const factory MeasurementInboxBlocEvent.clear() =
       MeasurementBookInboxBlocClearEvent;
 }
@@ -104,9 +226,15 @@ class MeasurementInboxState with _$MeasurementInboxState {
 
   const factory MeasurementInboxState.initial() = _Initial;
   const factory MeasurementInboxState.loading() = _Loading;
-  const factory MeasurementInboxState.loaded(MBInboxResponse mbInboxResponse,
-  bool isLoading
-  ) =
-      _Loaded;
+  const factory MeasurementInboxState.loaded(
+    MBInboxResponse mbInboxResponse,
+    bool isLoading,
+    List<String>? ward,
+    List<String>? status,
+    String? projectId,
+    String? mbNumber,
+    String? projectName,
+     bool search,
+  ) = _Loaded;
   const factory MeasurementInboxState.error(String? error) = _Error;
 }

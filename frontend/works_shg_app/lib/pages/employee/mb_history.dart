@@ -169,7 +169,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget: CommonTextButtonUnderline(
                                   label: 'View Muster Roll',
                                   onPressed: () {},
-                                ),
+                                ), show: false,
                               );
                             } else {
                               return null; // Return null for the skipped item
