@@ -67,7 +67,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                   flex: 2,
                                   child: DigitOutLineButton(
                                     label: "Clear",
-                                    onPressed: () {},
+                                    onPressed: () {
+                                       context.router.pop();
+                                    },
                                   ),
                                 ),
                                 Expanded(

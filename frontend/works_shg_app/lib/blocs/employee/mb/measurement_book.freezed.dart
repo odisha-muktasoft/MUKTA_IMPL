@@ -30,7 +30,9 @@ mixin _$MeasurementInboxBlocEvent {
             int limit,
             int offset)
         search,
-    required TResult Function(bool reset) reset,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -48,7 +50,9 @@ mixin _$MeasurementInboxBlocEvent {
             int limit,
             int offset)?
         search,
-    TResult? Function(bool reset)? reset,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -66,7 +70,9 @@ mixin _$MeasurementInboxBlocEvent {
             int limit,
             int offset)?
         search,
-    TResult Function(bool reset)? reset,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
@@ -75,7 +81,8 @@ mixin _$MeasurementInboxBlocEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
-    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -83,7 +90,8 @@ mixin _$MeasurementInboxBlocEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -91,7 +99,8 @@ mixin _$MeasurementInboxBlocEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) =>
@@ -243,7 +252,9 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             int limit,
             int offset)
         search,
-    required TResult Function(bool reset) reset,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
     return create(tenantId, businessService, moduleName, limit, offset);
@@ -264,7 +275,9 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             int limit,
             int offset)?
         search,
-    TResult? Function(bool reset)? reset,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
     return create?.call(tenantId, businessService, moduleName, limit, offset);
@@ -285,7 +298,9 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             int limit,
             int offset)?
         search,
-    TResult Function(bool reset)? reset,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -300,7 +315,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
-    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return create(this);
@@ -311,7 +327,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return create?.call(this);
@@ -322,7 +339,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -525,7 +543,9 @@ class _$MeasurementBookInboxSearchBlocEvent
             int limit,
             int offset)
         search,
-    required TResult Function(bool reset) reset,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
     return search(
@@ -547,7 +567,9 @@ class _$MeasurementBookInboxSearchBlocEvent
             int limit,
             int offset)?
         search,
-    TResult? Function(bool reset)? reset,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
     return search?.call(
@@ -569,7 +591,9 @@ class _$MeasurementBookInboxSearchBlocEvent
             int limit,
             int offset)?
         search,
-    TResult Function(bool reset)? reset,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -585,7 +609,8 @@ class _$MeasurementBookInboxSearchBlocEvent
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
-    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return search(this);
@@ -596,7 +621,8 @@ class _$MeasurementBookInboxSearchBlocEvent
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return search?.call(this);
@@ -607,7 +633,8 @@ class _$MeasurementBookInboxSearchBlocEvent
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -643,71 +670,117 @@ abstract class MeasurementBookInboxSearchBlocEvent
 }
 
 /// @nodoc
-abstract class _$$MeasurementBookInboxResetBlocEventCopyWith<$Res> {
-  factory _$$MeasurementBookInboxResetBlocEventCopyWith(
-          _$MeasurementBookInboxResetBlocEvent value,
-          $Res Function(_$MeasurementBookInboxResetBlocEvent) then) =
-      __$$MeasurementBookInboxResetBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<$Res> {
+  factory _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith(
+          _$MeasurementBookInboxSearchRepeatBlocEvent value,
+          $Res Function(_$MeasurementBookInboxSearchRepeatBlocEvent) then) =
+      __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<$Res>;
   @useResult
-  $Res call({bool reset});
+  $Res call(
+      {String tenantId,
+      String businessService,
+      String moduleName,
+      int limit,
+      int offset});
 }
 
 /// @nodoc
-class __$$MeasurementBookInboxResetBlocEventCopyWithImpl<$Res>
+class __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<$Res>
     extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
-        _$MeasurementBookInboxResetBlocEvent>
-    implements _$$MeasurementBookInboxResetBlocEventCopyWith<$Res> {
-  __$$MeasurementBookInboxResetBlocEventCopyWithImpl(
-      _$MeasurementBookInboxResetBlocEvent _value,
-      $Res Function(_$MeasurementBookInboxResetBlocEvent) _then)
+        _$MeasurementBookInboxSearchRepeatBlocEvent>
+    implements _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<$Res> {
+  __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl(
+      _$MeasurementBookInboxSearchRepeatBlocEvent _value,
+      $Res Function(_$MeasurementBookInboxSearchRepeatBlocEvent) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? reset = null,
+    Object? tenantId = null,
+    Object? businessService = null,
+    Object? moduleName = null,
+    Object? limit = null,
+    Object? offset = null,
   }) {
-    return _then(_$MeasurementBookInboxResetBlocEvent(
-      reset: null == reset
-          ? _value.reset
-          : reset // ignore: cast_nullable_to_non_nullable
-              as bool,
+    return _then(_$MeasurementBookInboxSearchRepeatBlocEvent(
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+      businessService: null == businessService
+          ? _value.businessService
+          : businessService // ignore: cast_nullable_to_non_nullable
+              as String,
+      moduleName: null == moduleName
+          ? _value.moduleName
+          : moduleName // ignore: cast_nullable_to_non_nullable
+              as String,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      offset: null == offset
+          ? _value.offset
+          : offset // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$MeasurementBookInboxResetBlocEvent
-    implements MeasurementBookInboxResetBlocEvent {
-  const _$MeasurementBookInboxResetBlocEvent({required this.reset});
+class _$MeasurementBookInboxSearchRepeatBlocEvent
+    implements MeasurementBookInboxSearchRepeatBlocEvent {
+  const _$MeasurementBookInboxSearchRepeatBlocEvent(
+      {required this.tenantId,
+      required this.businessService,
+      required this.moduleName,
+      required this.limit,
+      required this.offset});
 
   @override
-  final bool reset;
+  final String tenantId;
+  @override
+  final String businessService;
+  @override
+  final String moduleName;
+  @override
+  final int limit;
+  @override
+  final int offset;
 
   @override
   String toString() {
-    return 'MeasurementInboxBlocEvent.reset(reset: $reset)';
+    return 'MeasurementInboxBlocEvent.searchRepeat(tenantId: $tenantId, businessService: $businessService, moduleName: $moduleName, limit: $limit, offset: $offset)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementBookInboxResetBlocEvent &&
-            (identical(other.reset, reset) || other.reset == reset));
+            other is _$MeasurementBookInboxSearchRepeatBlocEvent &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.businessService, businessService) ||
+                other.businessService == businessService) &&
+            (identical(other.moduleName, moduleName) ||
+                other.moduleName == moduleName) &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.offset, offset) || other.offset == offset));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, reset);
+  int get hashCode => Object.hash(
+      runtimeType, tenantId, businessService, moduleName, limit, offset);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementBookInboxResetBlocEventCopyWith<
-          _$MeasurementBookInboxResetBlocEvent>
-      get copyWith => __$$MeasurementBookInboxResetBlocEventCopyWithImpl<
-          _$MeasurementBookInboxResetBlocEvent>(this, _$identity);
+  _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<
+          _$MeasurementBookInboxSearchRepeatBlocEvent>
+      get copyWith => __$$MeasurementBookInboxSearchRepeatBlocEventCopyWithImpl<
+          _$MeasurementBookInboxSearchRepeatBlocEvent>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -724,10 +797,12 @@ class _$MeasurementBookInboxResetBlocEvent
             int limit,
             int offset)
         search,
-    required TResult Function(bool reset) reset,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
-    return reset(this.reset);
+    return searchRepeat(tenantId, businessService, moduleName, limit, offset);
   }
 
   @override
@@ -745,10 +820,13 @@ class _$MeasurementBookInboxResetBlocEvent
             int limit,
             int offset)?
         search,
-    TResult? Function(bool reset)? reset,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
-    return reset?.call(this.reset);
+    return searchRepeat?.call(
+        tenantId, businessService, moduleName, limit, offset);
   }
 
   @override
@@ -766,12 +844,14 @@ class _$MeasurementBookInboxResetBlocEvent
             int limit,
             int offset)?
         search,
-    TResult Function(bool reset)? reset,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
-    if (reset != null) {
-      return reset(this.reset);
+    if (searchRepeat != null) {
+      return searchRepeat(tenantId, businessService, moduleName, limit, offset);
     }
     return orElse();
   }
@@ -781,10 +861,11 @@ class _$MeasurementBookInboxResetBlocEvent
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
-    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
-    return reset(this);
+    return searchRepeat(this);
   }
 
   @override
@@ -792,10 +873,11 @@ class _$MeasurementBookInboxResetBlocEvent
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
-    return reset?.call(this);
+    return searchRepeat?.call(this);
   }
 
   @override
@@ -803,26 +885,35 @@ class _$MeasurementBookInboxResetBlocEvent
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
-    if (reset != null) {
-      return reset(this);
+    if (searchRepeat != null) {
+      return searchRepeat(this);
     }
     return orElse();
   }
 }
 
-abstract class MeasurementBookInboxResetBlocEvent
+abstract class MeasurementBookInboxSearchRepeatBlocEvent
     implements MeasurementInboxBlocEvent {
-  const factory MeasurementBookInboxResetBlocEvent(
-      {required final bool reset}) = _$MeasurementBookInboxResetBlocEvent;
+  const factory MeasurementBookInboxSearchRepeatBlocEvent(
+      {required final String tenantId,
+      required final String businessService,
+      required final String moduleName,
+      required final int limit,
+      required final int offset}) = _$MeasurementBookInboxSearchRepeatBlocEvent;
 
-  bool get reset;
+  String get tenantId;
+  String get businessService;
+  String get moduleName;
+  int get limit;
+  int get offset;
   @JsonKey(ignore: true)
-  _$$MeasurementBookInboxResetBlocEventCopyWith<
-          _$MeasurementBookInboxResetBlocEvent>
+  _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<
+          _$MeasurementBookInboxSearchRepeatBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -881,7 +972,9 @@ class _$MeasurementBookInboxBlocClearEvent
             int limit,
             int offset)
         search,
-    required TResult Function(bool reset) reset,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
     return clear();
@@ -902,7 +995,9 @@ class _$MeasurementBookInboxBlocClearEvent
             int limit,
             int offset)?
         search,
-    TResult? Function(bool reset)? reset,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -923,7 +1018,9 @@ class _$MeasurementBookInboxBlocClearEvent
             int limit,
             int offset)?
         search,
-    TResult Function(bool reset)? reset,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -938,7 +1035,8 @@ class _$MeasurementBookInboxBlocClearEvent
   TResult map<TResult extends Object?>({
     required TResult Function(MeasurementBookInboxBlocEvent value) create,
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
-    required TResult Function(MeasurementBookInboxResetBlocEvent value) reset,
+    required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return clear(this);
@@ -949,7 +1047,8 @@ class _$MeasurementBookInboxBlocClearEvent
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(MeasurementBookInboxBlocEvent value)? create,
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult? Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return clear?.call(this);
@@ -960,7 +1059,8 @@ class _$MeasurementBookInboxBlocClearEvent
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MeasurementBookInboxBlocEvent value)? create,
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
-    TResult Function(MeasurementBookInboxResetBlocEvent value)? reset,
+    TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {

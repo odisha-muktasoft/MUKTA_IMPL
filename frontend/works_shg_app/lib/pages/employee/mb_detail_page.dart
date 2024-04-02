@@ -233,7 +233,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0),
                           child: Text(
-                            t.translate(i18.measurementBook.measurementBookTitle),
+                            t.translate(
+                                i18.measurementBook.measurementBookTitle),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.headlineLarge,
                           ),
@@ -246,25 +247,27 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 CrossAxisAlignment.start,
                             expandedAlignment: Alignment.topLeft,
                             title: Text(
-                             t.translate(i18.measurementBook.primaryDetails),
+                              t.translate(i18.measurementBook.primaryDetails),
                               style: DigitTheme
                                   .instance.mobileTheme.textTheme.headlineSmall,
                             ),
                             children: [
                               CommonMBCard(
                                 items: {
-                                  t.translate(i18.measurementBook.mbNumber): value.data.first.mbNumber,
-                                  t.translate(i18.attendanceMgmt.projectDesc): value
-                                          .data
-                                          .first
-                                          .measures!
-                                          .first
-                                          .contracts!
-                                          .first
-                                          .contractAdditionalDetails
-                                          ?.projectDesc ??
-                                      "NA",
-                                   t.translate(i18.common.assignee): value
+                                  t.translate(i18.measurementBook.mbNumber):
+                                      value.data.first.mbNumber,
+                                  t.translate(i18.attendanceMgmt.projectDesc):
+                                      value
+                                              .data
+                                              .first
+                                              .measures!
+                                              .first
+                                              .contracts!
+                                              .first
+                                              .contractAdditionalDetails
+                                              ?.projectDesc ??
+                                          "NA",
+                                  t.translate(i18.common.assignee): value
                                           .data
                                           .first
                                           .measures!
@@ -274,12 +277,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           .contractAdditionalDetails
                                           ?.officerInChargeDesgn ??
                                       "NA",
-                                  t.translate(i18.common.commonWorkflowStates):t.translate("MB_WFMB_STATE_${value.data.first.wfStatus!}"),
+                                  t.translate(
+                                      i18.common
+                                          .commonWorkflowStates): t.translate(
+                                      "MB_WFMB_STATE_${value.data.first.wfStatus!}"),
                                   "MB Account": value.data.first.totalAmount,
-                                 // "SLA Days remaining": 2,
+                                  // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
-                                  label: t.translate(i18.measurementBook.mbShowHistory),
+                                  label: t.translate(
+                                      i18.measurementBook.mbShowHistory),
                                   onPressed: () {
                                     context.router.push(
                                       MBHistoryBookRoute(
@@ -289,8 +296,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       ),
                                     );
                                   },
-                                ), show: true,
-                                sla: 1, 
+                                ),
+                                show: true,
+                                sla: 1,
                               ),
                             ],
                           ),
@@ -317,7 +325,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                               Expanded(
                                 child: CustomTab(
-                                  text: t.translate(i18.measurementBook.mbNonSor),
+                                  text:
+                                      t.translate(i18.measurementBook.mbNonSor),
                                   isSelected: _selectedIndex == 1,
                                   onTap: () {
                                     _tabController.animateTo(1);
@@ -326,7 +335,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                               Expanded(
                                 child: CustomTab(
-                                  text: t.translate(i18.measurementBook.mbWorksitePhotos),
+                                  text: t.translate(
+                                      i18.measurementBook.mbWorksitePhotos),
                                   isSelected: _selectedIndex == 2,
                                   onTap: () {
                                     _tabController.animateTo(2);
@@ -533,7 +543,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         padding:
                                             const EdgeInsets.only(bottom: 8.0),
                                         child: Text(
-                                          "Workflow Timeline",
+                                          t.translate(
+                                              i18.common.workflowTimeline),
                                           style: DigitTheme.instance.mobileTheme
                                               .textTheme.headlineLarge,
                                         ),
@@ -551,20 +562,20 @@ class _MBDetailPageState extends State<MBDetailPage>
                         ),
                         // image
 
-                        FilePickerDemo(
-                          callBack: (List<FileStoreModel>? g,
-                              List<WorkflowDocument>? l) {
-                            context.read<MeasurementDetailBloc>().add(
-                                  MeasurementUploadDocumentBlocEvent(
-                                    tenantId: '',
-                                    workflowDocument: l!,
-                                  ),
-                                );
-                            print(g);
-                          },
-                          extensions: const ['jpg', 'png', 'jpeg'],
-                          moduleName: 'works',
-                        ),
+                        // FilePickerDemo(
+                        //   callBack: (List<FileStoreModel>? g,
+                        //       List<WorkflowDocument>? l) {
+                        //     context.read<MeasurementDetailBloc>().add(
+                        //           MeasurementUploadDocumentBlocEvent(
+                        //             tenantId: '',
+                        //             workflowDocument: l!,
+                        //           ),
+                        //         );
+                        //     print(g);
+                        //   },
+                        //   extensions: const ['jpg', 'png', 'jpeg'],
+                        //   moduleName: 'works',
+                        // ),
                       ],
                     ),
                   );

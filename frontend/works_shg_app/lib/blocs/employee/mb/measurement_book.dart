@@ -18,6 +18,7 @@ class MeasurementInboxBloc
     on<MeasurementBookInboxBlocEvent>(getMBInbox);
     on<MeasurementBookInboxSearchBlocEvent>(searchMb);
     on<MeasurementBookInboxBlocClearEvent>(initialStage);
+    on<MeasurementBookInboxSearchRepeatBlocEvent>(repeatSearch);
   }
   FutureOr<void> getMBInbox(
     MeasurementBookInboxBlocEvent event,
@@ -99,8 +100,7 @@ class MeasurementInboxBloc
                   null,
                   null,
                   null,
-                  false
-                  ),
+                  false),
             );
           },
         );
@@ -144,15 +144,14 @@ class MeasurementInboxBloc
       );
       if (event.offset == 0) {
         emit(MeasurementInboxState.loaded(
-          res,
-           res.items!.length < 10  ? false : true,
-          event.ward,
-          event.status,
-          event.projectId,
-          event.mbNumber,
-          event.projectName,
-          true
-        ));
+            res,
+            res.items!.length < 10 ? false : true,
+            event.ward,
+            event.status,
+            event.projectId,
+            event.mbNumber,
+            event.projectName,
+            true));
       } else {
         state.maybeMap(
           orElse: () {
@@ -165,15 +164,14 @@ class MeasurementInboxBloc
 
             emit(
               MeasurementInboxState.loaded(
-                value.mbInboxResponse.copyWith(items: data),
-                res.items!.length < 10 ? false : true,
-                event.ward,
-                event.status,
-                event.projectId,
-                event.mbNumber,
-                event.projectName,
-                true
-              ),
+                  value.mbInboxResponse.copyWith(items: data),
+                  res.items!.length < 10 ? false : true,
+                  event.ward,
+                  event.status,
+                  event.projectId,
+                  event.mbNumber,
+                  event.projectName,
+                  true),
             );
           },
         );
@@ -183,15 +181,74 @@ class MeasurementInboxBloc
     }
   }
 
-FutureOr<void> initialStage(
+  FutureOr<void> initialStage(
     MeasurementBookInboxBlocClearEvent event,
     MeasurementInboxBlocEventEmitter emit,
-  )  {
+  ) {
     emit(const MeasurementInboxState.initial());
   }
 
-}
+  FutureOr<void> repeatSearch(
+    MeasurementBookInboxSearchRepeatBlocEvent event,
+    MeasurementInboxBlocEventEmitter emit,
+  ) async {
+    Client client = Client();
+    try {
+     await state.maybeMap(
+        orElse: () {
+          return null;
+        },
+        loaded: (value) async {
+          final s = {
+            "inbox": {
+              "tenantId": "od.testing",
+              "moduleSearchCriteria": {
+                "tenantId": "od.testing",
+                "status": value.status,
+                "ward": value.ward,
+              },
+              "processSearchCriteria": {
+                "businessService": ["MB"],
+                "moduleName": "measurement-service"
+              },
+              "limit": 10,
+              "offset": event.offset
+            }
+          };
+          final MBInboxResponse res =
+              await MBRepository(client.init()).fetchMbInbox(
+            url: Urls.measurementService.measurementInbox,
+            body: s,
+          );
+          List<ItemData> data = [];
+          data.addAll(value.mbInboxResponse.items ?? []);
+          data.addAll(res.items!);
 
+          emit(
+            MeasurementInboxState.loaded(
+                value.mbInboxResponse.copyWith(items: data),
+                res.items!.length < 10 ? false : true,
+                // event.ward,
+                value.ward,
+                // event.status,
+                value.status,
+                // event.projectId,
+                value.projectId,
+                // event.mbNumber,
+                value.mbNumber,
+
+                // event.projectName,
+                value.projectName,
+                true,
+                ),
+          );
+        },
+      );
+    } on DioError catch (e) {
+      emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+    }
+  }
+}
 
 @freezed
 class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
@@ -212,9 +269,14 @@ class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
     required int limit,
     required int offset,
   }) = MeasurementBookInboxSearchBlocEvent;
-  const factory MeasurementInboxBlocEvent.reset({
-   required bool reset
-  }) = MeasurementBookInboxResetBlocEvent;
+
+  const factory MeasurementInboxBlocEvent.searchRepeat({
+    required String tenantId,
+    required String businessService,
+    required String moduleName,
+    required int limit,
+    required int offset,
+  }) = MeasurementBookInboxSearchRepeatBlocEvent;
 
   const factory MeasurementInboxBlocEvent.clear() =
       MeasurementBookInboxBlocClearEvent;
@@ -234,7 +296,7 @@ class MeasurementInboxState with _$MeasurementInboxState {
     String? projectId,
     String? mbNumber,
     String? projectName,
-     bool search,
+    bool search,
   ) = _Loaded;
   const factory MeasurementInboxState.error(String? error) = _Error;
 }

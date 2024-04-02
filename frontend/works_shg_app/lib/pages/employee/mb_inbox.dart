@@ -93,15 +93,33 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
   void _addRandomData() {
     int s = pageCount + 10;
-    context.read<MeasurementInboxBloc>().add(
-          MeasurementBookInboxBlocEvent(
-            businessService: "MB",
-            limit: 10,
-            moduleName: 'measurement-module',
-            offset: s,
-            tenantId: 'od.testing',
-          ),
-        );
+    final state = context.read<MeasurementInboxBloc>().state;
+    state.maybeMap(
+      orElse: () => {},
+      loaded: (value) {
+        if (value.search) {
+          context.read<MeasurementInboxBloc>().add(
+                MeasurementBookInboxSearchRepeatBlocEvent(
+                  businessService: "MB",
+                  limit: 10,
+                  moduleName: 'measurement-module',
+                  offset: s,
+                  tenantId: 'od.testing',
+                ),
+              );
+        } else {
+          context.read<MeasurementInboxBloc>().add(
+                MeasurementBookInboxBlocEvent(
+                  businessService: "MB",
+                  limit: 10,
+                  moduleName: 'measurement-module',
+                  offset: s,
+                  tenantId: 'od.testing',
+                ),
+              );
+        }
+      },
+    );
 
     setState(() {
       pageCount = s;
@@ -175,7 +193,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 Back(
                                   // widget: null,
                                   callback: () {
-                                    context.router.navigateBack();
+                                    context.router.pop();
                                     // Navigator.of(context).pop();
                                     //context.router.push(const HomeRoute());
                                   },
@@ -195,36 +213,82 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                              onPressed: () {
-                                                context.router.push(
-                                                    const MBFilterRoute());
-                                                //  final result=   await filterDialog(context);
-                                              },
-                                              icon: const Icon(
-                                                Icons.filter_alt,
-                                              )),
-                                          Text(
-                                            "Filter",
-                                            style: DigitTheme
-                                                .instance
-                                                .mobileTheme
-                                                .textTheme
-                                                .labelLarge!
-                                                .copyWith(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                            ),
-                                          ),
-                                        ],
+                                      GestureDetector(
+                                        onTap: () {
+                                          context.router
+                                              .push(const MBFilterRoute());
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            TextButton.icon(
+                                                label: Text(
+                                                  'Filter',
+                                                  style: DigitTheme
+                                                      .instance
+                                                      .mobileTheme
+                                                      .textTheme
+                                                      .labelLarge!
+                                                      .copyWith(
+                                                    color: const DigitColors()
+                                                        .burningOrange,
+                                                  ),
+                                                ),
+
+                                                // color: const DigitColors()
+                                                //     .burningOrange,
+                                                onPressed: () {
+                                                  context.router.push(
+                                                      const MBFilterRoute());
+                                                  //  final result=   await filterDialog(context);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.filter_alt,
+                                                )),
+                                            // Text(
+                                            //   "Filter",
+                                            //   style: DigitTheme
+                                            //       .instance
+                                            //       .mobileTheme
+                                            //       .textTheme
+                                            //       .labelLarge!
+                                            //       .copyWith(
+                                            //     color: const DigitColors()
+                                            //         .burningOrange,
+                                            //   ),
+                                            // ),
+                                            mbInboxResponse.search
+                                                ? IconButton(
+                                                    onPressed: () {
+                                                      pageCount = 0;
+                                                      context
+                                                          .read<
+                                                              MeasurementInboxBloc>()
+                                                          .add(
+                                                            MeasurementBookInboxBlocEvent(
+                                                              businessService:
+                                                                  "MB",
+                                                              limit: 10,
+                                                              moduleName:
+                                                                  'measurement-module',
+                                                              offset: pageCount,
+                                                              tenantId:
+                                                                  'od.testing',
+                                                            ),
+                                                          );
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.restore_outlined,
+                                                      color: const DigitColors()
+                                                          .burningOrange,
+                                                    ),
+                                                  )
+                                                : const SizedBox.shrink(),
+                                          ],
+                                        ),
                                       ),
                                       Row(
                                         children: [

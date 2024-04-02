@@ -126,7 +126,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 Back(
                                   widget: null,
                                   callback: () {
-                                    //context.router.pop();
+                                    context.router.pop();
 
                                     //Navigator.of(context).pop();
                                   },

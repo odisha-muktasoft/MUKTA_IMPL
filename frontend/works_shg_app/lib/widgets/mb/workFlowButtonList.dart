@@ -1,11 +1,14 @@
 import 'package:digit_components/widgets/digit_outline_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../models/muster_rolls/muster_workflow_model.dart';
 import '../../router/app_router.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class CommonButtonCard extends StatelessWidget {
   const CommonButtonCard({
@@ -21,6 +24,7 @@ class CommonButtonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     var t = AppLocalizations.of(context);
     return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
       builder: (context, state) {
         return state.maybeMap(
@@ -35,7 +39,8 @@ class CommonButtonCard extends StatelessWidget {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       return DigitOutLineButton(
-                        label: g!.first.nextActions![index].action! ?? "",
+                         label: t.translate("WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
+                       // label: g!.first.nextActions![index].action! ?? "",
                         onPressed: () {
                           final data =
                               g?.first.nextActions![index].roles?.join(',');
