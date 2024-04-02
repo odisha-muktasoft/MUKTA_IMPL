@@ -382,30 +382,24 @@ public class ContractUtil {
 
             // Get the list of Measure objects corresponding to the SOR ID from sorIdToMeasuresMap
             List<Measure> measureList = sorIdToMeasuresMap.getOrDefault(sorId, Collections.emptyList());
+                BigDecimal totalCurrValue = BigDecimal.ZERO;
+                for (Measure measure : measureList) {
+                    BigDecimal totalBreadth = measure.getBreadth();
+                    BigDecimal totalHeight = measure.getHeight();
+                    BigDecimal totalLength = measure.getLength();
+                    BigDecimal totalNumItems = measure.getNumItems();
 
-            // Calculate totals
-            BigDecimal totalBreadth = measureList.stream()
-                    .map(Measure::getBreadth)
-                    .filter(Objects::nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal totalHeight = measureList.stream()
-                    .map(Measure::getHeight)
-                    .filter(Objects::nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal totalLength = measureList.stream()
-                    .map(Measure::getLength)
-                    .filter(Objects::nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal totalNumItems = measureList.stream()
-                    .map(Measure::getNumItems)
-                    .filter(Objects::nonNull)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+                    BigDecimal currValue = totalBreadth
+                            .multiply(totalHeight)
+                            .multiply(totalLength)
+                            .multiply(totalNumItems);
 
-            // Calculate the currValue for the whole list as a group
-            BigDecimal currValue = totalBreadth.multiply(totalHeight).multiply(totalLength).multiply(totalNumItems);
+                    totalCurrValue = totalCurrValue.add(currValue);
+                }
 
 
-            BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId)!=null ?currValue.add(sorIdToCumulativeValueMap.get(sorId)):currValue.add(BigDecimal.ZERO);
+
+            BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId)!=null ?totalCurrValue.add(sorIdToCumulativeValueMap.get(sorId)):totalCurrValue.add(BigDecimal.ZERO);
 
             // Get the list of EstimateDetail objects corresponding to the SOR ID from sorIdToEstimateDetailMap
             List<EstimateDetail> estimateDetailList = sorIdToEstimateDetailMap.getOrDefault(sorId, Collections.emptyList());
