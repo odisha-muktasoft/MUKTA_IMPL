@@ -336,12 +336,15 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         .name ??
                                     "NA",
                                 "Workflow State": mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .processInstance
-                                        ?.state
-                                        ?.state ??
-                                    "",
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .processInstance
+                                            ?.state
+                                            ?.state !=
+                                        null
+                                    ? t.translate(
+                                        "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
+                                    : "",
                                 "MB Account": mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]

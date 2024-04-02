@@ -8,6 +8,7 @@ WageSeeker wageSeeker = const WageSeeker();
 AttendanceMgmt attendanceMgmt = const AttendanceMgmt();
 MyBills myBills = const MyBills();
 MyServiceRequests myServiceRequests = const MyServiceRequests();
+MeasurementBook measurementBook= const MeasurementBook();
 
 class Login {
   const Login();
@@ -148,6 +149,8 @@ class Common {
   String get noValue => 'ES_COMMON_NA';
   String get noOrgLinkedWithMob => 'ES_COMMON_NO_ORG_LINKED_WITH_MOBILE_NUMBER';
   String get takeAction => 'ES_COMMON_TAKE_ACTION';
+  String get assignee => "COMMON_ASSIGNEE";
+  String get commonWorkflowStates=> "COMMON_WORKFLOW_STATES";
 }
 
 class Home {
@@ -359,4 +362,21 @@ class MyServiceRequests {
   String get revisedEndDate => 'WORKS_REVISED_END_DATE';
   String get editAction => 'WF_CONTRACT_ACTION_EDIT';
   String get noServiceRequests => 'SR_NO_SERVICE_REQUEST_FOUND';
+}
+
+
+class MeasurementBook{
+  const MeasurementBook();
+
+  String get measurementBookTitle=>"MEASUREMENT_BOOK_TITLE";
+  String get primaryDetails=> "PRIMARY_DETAILS";
+  String get mbNumber=>"MB_NUMBER";
+  String get mbSlaDaysRemaining=>"MB_SLA_DAYS_REMAINING";
+  String get mbShowHistory=> "MB_SHOW_HISTORY";
+  String get mbWorksitePhotos=>"MB_WORKSITE_PHOTOS";
+  String get mbNonSor=>"MB_NONSOR";
+  String get mbSor=>"MB_SORS";
+  String get projectName =>"MB_PROJECT_NAME";
+  String get workflowState=>"MB_WORKFLOW_STATE";
+
 }

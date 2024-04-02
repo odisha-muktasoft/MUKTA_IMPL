@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'as statusMap;
 import 'package:works_shg_app/router/app_router.dart';
 
@@ -10,6 +11,8 @@ import '../../utils/common_methods.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class MBFilterPage extends StatefulWidget {
   const MBFilterPage({super.key});
@@ -24,6 +27,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
   
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
       builder: (context, state) {
         return state.maybeMap(
@@ -118,7 +122,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                             ),
                             const DigitTextField(label: "MB number"),
                             const DigitTextField(label: "Project ID"),
-                            const DigitTextField(label: "Project Name"),
+                             DigitTextField(label: t.translate(i18.measurementBook.projectName)),
                             DigitDropdown(
                               onChanged: (value) {
                                 setState(() {
@@ -126,7 +130,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 });
                               },
                               value: ward.isNotEmpty ? ward.first : null,
-                              label: "Ward",
+                              label: t.translate(i18.common.ward),
                               menuItems: location!
                                   .tenantBoundaryList!.first.boundaryList!
                                   .map((e) => e.code.toString())
@@ -142,12 +146,12 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 // });
                               },
                               value: workflow.isNotEmpty ? workflow.first : null,
-                              label: "Workflow States",
+                              label: t.translate(i18.measurementBook.workflowState),
                               menuItems: value.mbInboxResponse.statusMap!
                                   .map((e) => e)
                                   .toList(),
                               valueMapper: (value) {
-                                return value.state.toString();
+                                return t.translate("MB_WFMB_STATE_${value.state.toString()}");
                               },
                             ),
                           ],

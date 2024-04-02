@@ -1,5 +1,8 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class CommonMBCard extends StatelessWidget {
   final String? headLabel;
@@ -19,6 +22,7 @@ class CommonMBCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+     var t = AppLocalizations.of(context);
     return DigitCard(
       child: Column(
         crossAxisAlignment: widget != null
@@ -32,14 +36,14 @@ class CommonMBCard extends StatelessWidget {
           ),
           show
               ? Container(
-                  padding: const EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 6),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 2,
                         child: Text(
-                          "SLA Days remaining",
+                          t.translate(i18.measurementBook.mbSlaDaysRemaining),
                           style: theme.textTheme.headline5,
                           textAlign: TextAlign.start,
                         ),

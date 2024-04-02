@@ -26,6 +26,8 @@ import '../../widgets/mb/multi_image.dart';
 import '../../widgets/mb/workFlowButtonList.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
 import '../../widgets/mb/text_button_underline.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class MBDetailPage extends StatefulWidget {
   final String contractNumber;
@@ -231,7 +233,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         Padding(
                           padding: const EdgeInsets.only(left: 20.0),
                           child: Text(
-                            "Measurement Book",
+                            t.translate(i18.measurementBook.measurementBookTitle),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.headlineLarge,
                           ),
@@ -244,15 +246,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 CrossAxisAlignment.start,
                             expandedAlignment: Alignment.topLeft,
                             title: Text(
-                              "Primary Details",
+                             t.translate(i18.measurementBook.primaryDetails),
                               style: DigitTheme
                                   .instance.mobileTheme.textTheme.headlineSmall,
                             ),
                             children: [
                               CommonMBCard(
                                 items: {
-                                  "MB number": value.data.first.mbNumber,
-                                  "Project Description": value
+                                  t.translate(i18.measurementBook.mbNumber): value.data.first.mbNumber,
+                                  t.translate(i18.attendanceMgmt.projectDesc): value
                                           .data
                                           .first
                                           .measures!
@@ -262,7 +264,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           .contractAdditionalDetails
                                           ?.projectDesc ??
                                       "NA",
-                                  "Assignee": value
+                                   t.translate(i18.common.assignee): value
                                           .data
                                           .first
                                           .measures!
@@ -272,12 +274,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           .contractAdditionalDetails
                                           ?.officerInChargeDesgn ??
                                       "NA",
-                                  "Workflow State":t.translate( value.data.first.wfStatus!),
+                                  t.translate(i18.common.commonWorkflowStates):t.translate("MB_WFMB_STATE_${value.data.first.wfStatus!}"),
                                   "MB Account": value.data.first.totalAmount,
                                  // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
-                                  label: 'View MB History',
+                                  label: t.translate(i18.measurementBook.mbShowHistory),
                                   onPressed: () {
                                     context.router.push(
                                       MBHistoryBookRoute(
@@ -306,7 +308,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             children: [
                               Expanded(
                                 child: CustomTab(
-                                  text: 'SORs',
+                                  text: t.translate(i18.measurementBook.mbSor),
                                   isSelected: _selectedIndex == 0,
                                   onTap: () {
                                     _tabController.animateTo(0);
@@ -315,7 +317,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                               Expanded(
                                 child: CustomTab(
-                                  text: 'Non SORs',
+                                  text: t.translate(i18.measurementBook.mbNonSor),
                                   isSelected: _selectedIndex == 1,
                                   onTap: () {
                                     _tabController.animateTo(1);
@@ -324,7 +326,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                               Expanded(
                                 child: CustomTab(
-                                  text: 'Site Photos',
+                                  text: t.translate(i18.measurementBook.mbWorksitePhotos),
                                   isSelected: _selectedIndex == 2,
                                   onTap: () {
                                     _tabController.animateTo(2);
