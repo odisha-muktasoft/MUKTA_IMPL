@@ -404,7 +404,8 @@ public class ContractUtil {
             // Calculate the currValue for the whole list as a group
             BigDecimal currValue = totalBreadth.multiply(totalHeight).multiply(totalLength).multiply(totalNumItems);
 
-            BigDecimal totalValue = currValue.add(sorIdToCumulativeValueMap.get(sorId));
+
+            BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId)!=null ?currValue.add(sorIdToCumulativeValueMap.get(sorId)):currValue.add(BigDecimal.ZERO);
 
             // Get the list of EstimateDetail objects corresponding to the SOR ID from sorIdToEstimateDetailMap
             List<EstimateDetail> estimateDetailList = sorIdToEstimateDetailMap.getOrDefault(sorId, Collections.emptyList());
