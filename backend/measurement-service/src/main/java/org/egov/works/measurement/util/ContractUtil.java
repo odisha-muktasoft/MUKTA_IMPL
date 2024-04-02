@@ -370,12 +370,13 @@ public class ContractUtil {
 
         }
 
-        if( !workflow.getAction().equals("SENT_BACK")|| !workflow.getAction().equals("SEND_BACK_TO_ORIGINATOR")){
+        if( !workflow.getAction().equals(SENT_BACK)|| !workflow.getAction().equals(SEND_BACK_TO_ORIGINATOR)){
 
 
         List<EstimateDetail> estimateDetails=estimateResponse.getEstimates().get(0).getEstimateDetails();
         // Iterate over the EstimateDetail objects
         estimateDetails.forEach(estimateDetail -> {
+            if(!estimateDetail.getCategory().equals(OVERHEAD)){
             // Get the SOR ID from the EstimateDetail
             String sorId = estimateDetail.getSorId();
 
@@ -419,7 +420,7 @@ public class ContractUtil {
                 throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, sorId,totalValue, totalNoOfUnit));
             }
             // Now you can use currValue as needed for the group of Measure objects corresponding to the SOR ID
-        });
+        }});
         }
 
 
