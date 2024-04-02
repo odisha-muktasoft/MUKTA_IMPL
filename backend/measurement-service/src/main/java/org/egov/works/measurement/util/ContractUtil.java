@@ -370,9 +370,9 @@ public class ContractUtil {
 
         }
 
-        if( !workflow.getAction().equals(SENT_BACK)|| !workflow.getAction().equals(SEND_BACK_TO_ORIGINATOR)){
-
-
+        if( (SENT_BACK).equals(workflow.getAction())|| (SEND_BACK_TO_ORIGINATOR).equals(workflow.getAction())){
+         log.info("For Sent Back or Send Back to Originator we don't need to implement the validation on dimensions");
+        }else{
         List<EstimateDetail> estimateDetails=estimateResponse.getEstimates().get(0).getEstimateDetails();
         // Iterate over the EstimateDetail objects
         estimateDetails.forEach(estimateDetail -> {
@@ -417,6 +417,7 @@ public class ContractUtil {
             // Now you can use currValue as needed for the group of Measure objects corresponding to the SOR ID
         }});
         }
+
 
 
 
