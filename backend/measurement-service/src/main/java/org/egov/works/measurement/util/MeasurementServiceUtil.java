@@ -1,6 +1,7 @@
 package org.egov.works.measurement.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.response.ResponseInfo;
 import org.egov.works.measurement.enrichment.MeasurementEnrichment;
 import org.egov.works.measurement.service.WorkflowService;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class MeasurementServiceUtil {
 
 
@@ -115,6 +117,16 @@ public class MeasurementServiceUtil {
                     measure.getBreadth().compareTo(BigDecimal.ZERO) == 0 && measure.getNumItems().compareTo(BigDecimal.ZERO) == 0)
                 return;
         }
+        if((measure.getLength() == null && measure.getHeight() == null &&
+                measure.getBreadth() == null && measure.getNumItems() == null)||
+                (measure.getLength().compareTo(BigDecimal.ZERO) == 0 &&
+                measure.getHeight().compareTo(BigDecimal.ZERO) == 0 &&
+                measure.getBreadth().compareTo(BigDecimal.ZERO) == 0 &&
+                measure.getNumItems().compareTo(BigDecimal.ZERO) == 0 )){
+            log.info("Either all the measures are null or all the measure values are 0 so setting them as it is.");
+
+        }else{
+
         if (measure.getLength() == null || measure.getLength().compareTo(BigDecimal.ZERO) == 0) {
             measure.setLength(BigDecimal.ONE);
         }
@@ -126,6 +138,7 @@ public class MeasurementServiceUtil {
         }
         if (measure.getNumItems() == null || measure.getNumItems().compareTo(BigDecimal.ZERO) == 0) {
             measure.setNumItems(BigDecimal.ONE);
+        }
         }
     }
 
