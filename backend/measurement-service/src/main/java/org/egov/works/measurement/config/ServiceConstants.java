@@ -65,4 +65,10 @@ public class ServiceConstants {
 
     public static final String CONTRACT_REVISION_ESTIMATE="CONTRACT-REVISION-ESTIMATE";
 
+    public static final String OVERHEAD="OVERHEAD";
+
+    public  static final String SENT_BACK="SENT_BACK";
+    public static final String SEND_BACK_TO_ORIGINATOR="SEND_BACK_TO_ORIGINATOR";
+
+
 }
