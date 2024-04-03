@@ -379,6 +379,9 @@ mixin _$WorkFlow {
   String? get comment => throw _privateConstructorUsedError;
   @JsonKey(name: 'assignees')
   List<String>? get assignees => throw _privateConstructorUsedError;
+  @JsonKey(name: 'documents')
+  List<WorkFlowSupportDocument>? get documents =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -394,7 +397,8 @@ abstract class $WorkFlowCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'action') String? action,
       @JsonKey(name: 'comment') String? comment,
-      @JsonKey(name: 'assignees') List<String>? assignees});
+      @JsonKey(name: 'assignees') List<String>? assignees,
+      @JsonKey(name: 'documents') List<WorkFlowSupportDocument>? documents});
 }
 
 /// @nodoc
@@ -413,6 +417,7 @@ class _$WorkFlowCopyWithImpl<$Res, $Val extends WorkFlow>
     Object? action = freezed,
     Object? comment = freezed,
     Object? assignees = freezed,
+    Object? documents = freezed,
   }) {
     return _then(_value.copyWith(
       action: freezed == action
@@ -427,6 +432,10 @@ class _$WorkFlowCopyWithImpl<$Res, $Val extends WorkFlow>
           ? _value.assignees
           : assignees // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      documents: freezed == documents
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<WorkFlowSupportDocument>?,
     ) as $Val);
   }
 }
@@ -441,7 +450,8 @@ abstract class _$$_WorkFlowCopyWith<$Res> implements $WorkFlowCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'action') String? action,
       @JsonKey(name: 'comment') String? comment,
-      @JsonKey(name: 'assignees') List<String>? assignees});
+      @JsonKey(name: 'assignees') List<String>? assignees,
+      @JsonKey(name: 'documents') List<WorkFlowSupportDocument>? documents});
 }
 
 /// @nodoc
@@ -458,6 +468,7 @@ class __$$_WorkFlowCopyWithImpl<$Res>
     Object? action = freezed,
     Object? comment = freezed,
     Object? assignees = freezed,
+    Object? documents = freezed,
   }) {
     return _then(_$_WorkFlow(
       action: freezed == action
@@ -472,6 +483,10 @@ class __$$_WorkFlowCopyWithImpl<$Res>
           ? _value._assignees
           : assignees // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      documents: freezed == documents
+          ? _value._documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<WorkFlowSupportDocument>?,
     ));
   }
 }
@@ -480,10 +495,16 @@ class __$$_WorkFlowCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_WorkFlow implements _WorkFlow {
   const _$_WorkFlow(
-      {@JsonKey(name: 'action') this.action,
-      @JsonKey(name: 'comment') this.comment,
-      @JsonKey(name: 'assignees') final List<String>? assignees})
-      : _assignees = assignees;
+      {@JsonKey(name: 'action')
+          this.action,
+      @JsonKey(name: 'comment')
+          this.comment,
+      @JsonKey(name: 'assignees')
+          final List<String>? assignees,
+      @JsonKey(name: 'documents')
+          final List<WorkFlowSupportDocument>? documents})
+      : _assignees = assignees,
+        _documents = documents;
 
   factory _$_WorkFlow.fromJson(Map<String, dynamic> json) =>
       _$$_WorkFlowFromJson(json);
@@ -505,9 +526,20 @@ class _$_WorkFlow implements _WorkFlow {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<WorkFlowSupportDocument>? _documents;
+  @override
+  @JsonKey(name: 'documents')
+  List<WorkFlowSupportDocument>? get documents {
+    final value = _documents;
+    if (value == null) return null;
+    if (_documents is EqualUnmodifiableListView) return _documents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'WorkFlow(action: $action, comment: $comment, assignees: $assignees)';
+    return 'WorkFlow(action: $action, comment: $comment, assignees: $assignees, documents: $documents)';
   }
 
   @override
@@ -518,13 +550,19 @@ class _$_WorkFlow implements _WorkFlow {
             (identical(other.action, action) || other.action == action) &&
             (identical(other.comment, comment) || other.comment == comment) &&
             const DeepCollectionEquality()
-                .equals(other._assignees, _assignees));
+                .equals(other._assignees, _assignees) &&
+            const DeepCollectionEquality()
+                .equals(other._documents, _documents));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, action, comment,
-      const DeepCollectionEquality().hash(_assignees));
+  int get hashCode => Object.hash(
+      runtimeType,
+      action,
+      comment,
+      const DeepCollectionEquality().hash(_assignees),
+      const DeepCollectionEquality().hash(_documents));
 
   @JsonKey(ignore: true)
   @override
@@ -542,9 +580,14 @@ class _$_WorkFlow implements _WorkFlow {
 
 abstract class _WorkFlow implements WorkFlow {
   const factory _WorkFlow(
-      {@JsonKey(name: 'action') final String? action,
-      @JsonKey(name: 'comment') final String? comment,
-      @JsonKey(name: 'assignees') final List<String>? assignees}) = _$_WorkFlow;
+      {@JsonKey(name: 'action')
+          final String? action,
+      @JsonKey(name: 'comment')
+          final String? comment,
+      @JsonKey(name: 'assignees')
+          final List<String>? assignees,
+      @JsonKey(name: 'documents')
+          final List<WorkFlowSupportDocument>? documents}) = _$_WorkFlow;
 
   factory _WorkFlow.fromJson(Map<String, dynamic> json) = _$_WorkFlow.fromJson;
 
@@ -558,9 +601,259 @@ abstract class _WorkFlow implements WorkFlow {
   @JsonKey(name: 'assignees')
   List<String>? get assignees;
   @override
+  @JsonKey(name: 'documents')
+  List<WorkFlowSupportDocument>? get documents;
+  @override
   @JsonKey(ignore: true)
   _$$_WorkFlowCopyWith<_$_WorkFlow> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+WorkFlowSupportDocument _$WorkFlowSupportDocumentFromJson(
+    Map<String, dynamic> json) {
+  return _WorkFlowSupportDocument.fromJson(json);
+}
+
+/// @nodoc
+mixin _$WorkFlowSupportDocument {
+  @JsonKey(name: 'documentType')
+  String? get documentType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'documentUid')
+  String? get documentUid => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fileName')
+  String? get fileName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'fileStoreId')
+  String? get fileStoreId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tenantId')
+  String? get tenantId => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $WorkFlowSupportDocumentCopyWith<WorkFlowSupportDocument> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $WorkFlowSupportDocumentCopyWith<$Res> {
+  factory $WorkFlowSupportDocumentCopyWith(WorkFlowSupportDocument value,
+          $Res Function(WorkFlowSupportDocument) then) =
+      _$WorkFlowSupportDocumentCopyWithImpl<$Res, WorkFlowSupportDocument>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'documentType') String? documentType,
+      @JsonKey(name: 'documentUid') String? documentUid,
+      @JsonKey(name: 'fileName') String? fileName,
+      @JsonKey(name: 'fileStoreId') String? fileStoreId,
+      @JsonKey(name: 'tenantId') String? tenantId});
+}
+
+/// @nodoc
+class _$WorkFlowSupportDocumentCopyWithImpl<$Res,
+        $Val extends WorkFlowSupportDocument>
+    implements $WorkFlowSupportDocumentCopyWith<$Res> {
+  _$WorkFlowSupportDocumentCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? documentType = freezed,
+    Object? documentUid = freezed,
+    Object? fileName = freezed,
+    Object? fileStoreId = freezed,
+    Object? tenantId = freezed,
+  }) {
+    return _then(_value.copyWith(
+      documentType: freezed == documentType
+          ? _value.documentType
+          : documentType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentUid: freezed == documentUid
+          ? _value.documentUid
+          : documentUid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileStoreId: freezed == fileStoreId
+          ? _value.fileStoreId
+          : fileStoreId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_WorkFlowSupportDocumentCopyWith<$Res>
+    implements $WorkFlowSupportDocumentCopyWith<$Res> {
+  factory _$$_WorkFlowSupportDocumentCopyWith(_$_WorkFlowSupportDocument value,
+          $Res Function(_$_WorkFlowSupportDocument) then) =
+      __$$_WorkFlowSupportDocumentCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'documentType') String? documentType,
+      @JsonKey(name: 'documentUid') String? documentUid,
+      @JsonKey(name: 'fileName') String? fileName,
+      @JsonKey(name: 'fileStoreId') String? fileStoreId,
+      @JsonKey(name: 'tenantId') String? tenantId});
+}
+
+/// @nodoc
+class __$$_WorkFlowSupportDocumentCopyWithImpl<$Res>
+    extends _$WorkFlowSupportDocumentCopyWithImpl<$Res,
+        _$_WorkFlowSupportDocument>
+    implements _$$_WorkFlowSupportDocumentCopyWith<$Res> {
+  __$$_WorkFlowSupportDocumentCopyWithImpl(_$_WorkFlowSupportDocument _value,
+      $Res Function(_$_WorkFlowSupportDocument) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? documentType = freezed,
+    Object? documentUid = freezed,
+    Object? fileName = freezed,
+    Object? fileStoreId = freezed,
+    Object? tenantId = freezed,
+  }) {
+    return _then(_$_WorkFlowSupportDocument(
+      documentType: freezed == documentType
+          ? _value.documentType
+          : documentType // ignore: cast_nullable_to_non_nullable
+              as String?,
+      documentUid: freezed == documentUid
+          ? _value.documentUid
+          : documentUid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileStoreId: freezed == fileStoreId
+          ? _value.fileStoreId
+          : fileStoreId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_WorkFlowSupportDocument implements _WorkFlowSupportDocument {
+  const _$_WorkFlowSupportDocument(
+      {@JsonKey(name: 'documentType') this.documentType,
+      @JsonKey(name: 'documentUid') this.documentUid,
+      @JsonKey(name: 'fileName') this.fileName,
+      @JsonKey(name: 'fileStoreId') this.fileStoreId,
+      @JsonKey(name: 'tenantId') this.tenantId});
+
+  factory _$_WorkFlowSupportDocument.fromJson(Map<String, dynamic> json) =>
+      _$$_WorkFlowSupportDocumentFromJson(json);
+
+  @override
+  @JsonKey(name: 'documentType')
+  final String? documentType;
+  @override
+  @JsonKey(name: 'documentUid')
+  final String? documentUid;
+  @override
+  @JsonKey(name: 'fileName')
+  final String? fileName;
+  @override
+  @JsonKey(name: 'fileStoreId')
+  final String? fileStoreId;
+  @override
+  @JsonKey(name: 'tenantId')
+  final String? tenantId;
+
+  @override
+  String toString() {
+    return 'WorkFlowSupportDocument(documentType: $documentType, documentUid: $documentUid, fileName: $fileName, fileStoreId: $fileStoreId, tenantId: $tenantId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_WorkFlowSupportDocument &&
+            (identical(other.documentType, documentType) ||
+                other.documentType == documentType) &&
+            (identical(other.documentUid, documentUid) ||
+                other.documentUid == documentUid) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
+            (identical(other.fileStoreId, fileStoreId) ||
+                other.fileStoreId == fileStoreId) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, documentType, documentUid, fileName, fileStoreId, tenantId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_WorkFlowSupportDocumentCopyWith<_$_WorkFlowSupportDocument>
+      get copyWith =>
+          __$$_WorkFlowSupportDocumentCopyWithImpl<_$_WorkFlowSupportDocument>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_WorkFlowSupportDocumentToJson(
+      this,
+    );
+  }
+}
+
+abstract class _WorkFlowSupportDocument implements WorkFlowSupportDocument {
+  const factory _WorkFlowSupportDocument(
+          {@JsonKey(name: 'documentType') final String? documentType,
+          @JsonKey(name: 'documentUid') final String? documentUid,
+          @JsonKey(name: 'fileName') final String? fileName,
+          @JsonKey(name: 'fileStoreId') final String? fileStoreId,
+          @JsonKey(name: 'tenantId') final String? tenantId}) =
+      _$_WorkFlowSupportDocument;
+
+  factory _WorkFlowSupportDocument.fromJson(Map<String, dynamic> json) =
+      _$_WorkFlowSupportDocument.fromJson;
+
+  @override
+  @JsonKey(name: 'documentType')
+  String? get documentType;
+  @override
+  @JsonKey(name: 'documentUid')
+  String? get documentUid;
+  @override
+  @JsonKey(name: 'fileName')
+  String? get fileName;
+  @override
+  @JsonKey(name: 'fileStoreId')
+  String? get fileStoreId;
+  @override
+  @JsonKey(name: 'tenantId')
+  String? get tenantId;
+  @override
+  @JsonKey(ignore: true)
+  _$$_WorkFlowSupportDocumentCopyWith<_$_WorkFlowSupportDocument>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 MusterRoll _$MusterRollFromJson(Map<String, dynamic> json) {

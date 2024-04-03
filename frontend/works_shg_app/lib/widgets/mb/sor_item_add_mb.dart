@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/widgets/mb/multi_line_items.dart';
@@ -70,6 +71,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
           orElse: () => null,
           loaded: (value) {
             if (value.warningMsg != null) {
+              SystemChannels.textInput.invokeMethod('TextInput.hide');
               Notifiers.getToastMessage(
                   context, value.warningMsg.toString(), 'ERROR');
             }

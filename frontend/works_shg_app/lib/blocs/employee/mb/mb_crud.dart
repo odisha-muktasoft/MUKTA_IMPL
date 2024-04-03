@@ -1,7 +1,6 @@
 //mb_crud
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +11,6 @@ import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
-import '../../../models/employee/mb/mb_inbox_response.dart';
 part 'mb_crud.freezed.dart';
 
 typedef MeasurementCrudBlocEventEmitter = Emitter<MeasurementCrudState>;

@@ -32,6 +32,7 @@ class WorkFlow with _$WorkFlow {
     @JsonKey(name: 'action') String? action,
     @JsonKey(name: 'comment') String? comment,
     @JsonKey(name: 'assignees') List<String>? assignees,
+    @JsonKey(name: 'documents')List<WorkFlowSupportDocument>?documents
   }) = _WorkFlow;
 
   factory WorkFlow.fromJson(
@@ -41,6 +42,22 @@ class WorkFlow with _$WorkFlow {
 }
 
 
+@freezed
+class WorkFlowSupportDocument with _$WorkFlowSupportDocument {
+  const factory WorkFlowSupportDocument({
+    @JsonKey(name: 'documentType') String? documentType,
+    @JsonKey(name: 'documentUid') String? documentUid,
+    @JsonKey(name: 'fileName') String? fileName,
+     @JsonKey(name: 'fileStoreId') String? fileStoreId,
+      @JsonKey(name: 'tenantId') String? tenantId,
+   
+  }) = _WorkFlowSupportDocument;
+
+  factory WorkFlowSupportDocument.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$WorkFlowSupportDocumentFromJson(json);
+}
 
 /// estimate
 ///

@@ -378,5 +378,7 @@ class MeasurementBook{
   String get mbSor=>"MB_SORS";
   String get projectName =>"MB_PROJECT_NAME";
   String get workflowState=>"MB_WORKFLOW_STATE";
+  String get mbAmount=>"MB_AMOUNT";
+  //String get workFlowState=>"COMMON_WORKFLOW_STATES";
 
 }

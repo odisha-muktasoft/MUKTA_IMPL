@@ -388,8 +388,17 @@ class MBLogic {
       'physicalRefNumber': measurement.physicalRefNumber,
       'workflow': {
         'action': measurement.workflow?.action,
-         'comment': measurement.workflow?.comment,
-         'assignees': measurement.workflow?.assignees,
+        'comment': measurement.workflow?.comment,
+        'assignees': measurement.workflow?.assignees,
+        'documents': measurement.workflow?.documents!.map((e) {
+          return {
+            "documentType": e.documentType,
+            "documentUid": e.documentUid,
+            "fileName": e.fileName,
+            "fileStoreId": e.fileStoreId,
+            "tenantId": e.tenantId
+          };
+        }).toList()
       },
       'additionalDetails': {
         'endDate': measurement.additionalDetail?.endDate,
@@ -549,56 +558,57 @@ class MBLogic {
     int measurementLineIndex,
   ) {
     List<SorObject> updatedSorObjects = [];
-    double totalAmount=0.0;
-  for (SorObject sorObject in sorObjects) {
-    List<FilteredMeasurementsMeasure> updatedMeasures = [];
-    for (FilteredMeasurementsMeasure measure in sorObject.filteredMeasurementsMeasure) {
-      double sum = 0.0;
-      for (int j = 0; j < measure.measureLineItems!.length; j++) {
-        sum += double.parse(measure.measureLineItems![j].quantity.toString());
+    double totalAmount = 0.0;
+    for (SorObject sorObject in sorObjects) {
+      List<FilteredMeasurementsMeasure> updatedMeasures = [];
+      for (FilteredMeasurementsMeasure measure
+          in sorObject.filteredMeasurementsMeasure) {
+        double sum = 0.0;
+        for (int j = 0; j < measure.measureLineItems!.length; j++) {
+          sum += double.parse(measure.measureLineItems![j].quantity.toString());
+        }
+        // Create a new instance of FilteredMeasurementsMeasure with updated numItems
+        FilteredMeasurementsMeasure updatedMeasure =
+            FilteredMeasurementsMeasure(
+          length: measure.length,
+          breath: measure.breath,
+          height: measure.height,
+          numItems: sum,
+          cumulativeValue: measure.cumulativeValue,
+          currentValue: measure.currentValue,
+          tenantId: measure.tenantId,
+          mbAmount: double.parse(
+              (sum * measure.contracts!.first.unitRate!).toString()),
+          type: measure.type,
+          targetId: measure.targetId,
+          isActive: measure.isActive,
+          id: measure.id,
+          referenceId: measure.referenceId,
+          measureLineItems: measure.measureLineItems,
+          contracts: measure.contracts,
+        );
+        totalAmount = totalAmount +
+            double.parse((sum * measure.contracts!.first.unitRate!).toString());
+        updatedMeasures.add(updatedMeasure);
       }
-      // Create a new instance of FilteredMeasurementsMeasure with updated numItems
-      FilteredMeasurementsMeasure updatedMeasure = FilteredMeasurementsMeasure(
-        length: measure.length,
-        breath: measure.breath,
-        height: measure.height,
-        numItems: sum,
-        cumulativeValue: measure.cumulativeValue,
-        currentValue: measure.currentValue,
-        tenantId: measure.tenantId,
-        mbAmount: double.parse( (sum*measure.contracts!.first.unitRate!).toString()),
-        type: measure.type,
-        targetId: measure.targetId,
-        isActive: measure.isActive,
-        id: measure.id,
-        referenceId: measure.referenceId,
-        measureLineItems: measure.measureLineItems,
-        contracts: measure.contracts,
+      // Create a new SorObject instance with the updated list
+      SorObject updatedSorObject = SorObject(
+        // Copy other properties from sorObject if necessary
+        id: sorObject.id,
+        sorId: sorObject.sorId,
+        filteredMeasurementsMeasure: updatedMeasures,
+        // Add other properties from sorObject if necessary
       );
-      totalAmount=totalAmount+double.parse( (sum*measure.contracts!.first.unitRate!).toString());
-      updatedMeasures.add(updatedMeasure);
+      updatedSorObjects.add(updatedSorObject);
     }
-    // Create a new SorObject instance with the updated list
-    SorObject updatedSorObject = SorObject(
-      // Copy other properties from sorObject if necessary
-      id:sorObject.id ,
-      sorId: sorObject.sorId,
-      filteredMeasurementsMeasure: updatedMeasures,
-      // Add other properties from sorObject if necessary
-    );
-    updatedSorObjects.add(updatedSorObject);
+    // return updatedSorObjects;
+
+    return TotalEstimate(totalAmount, updatedSorObjects);
   }
- // return updatedSorObjects;
-
-  return TotalEstimate(totalAmount, updatedSorObjects);
-
-  }
-
 }
 
-class TotalEstimate{
-
+class TotalEstimate {
   final double totalAmount;
-  final List<SorObject> sorObjectList; 
- const TotalEstimate( this.totalAmount, this.sorObjectList);
+  final List<SorObject> sorObjectList;
+  const TotalEstimate(this.totalAmount, this.sorObjectList);
 }

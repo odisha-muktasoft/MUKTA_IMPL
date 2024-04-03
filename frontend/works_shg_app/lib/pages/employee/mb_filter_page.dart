@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
-import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'as statusMap;
+import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'
+    as statusMap;
 import 'package:works_shg_app/router/app_router.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
@@ -24,7 +25,77 @@ class MBFilterPage extends StatefulWidget {
 class _MBFilterPageState extends State<MBFilterPage> {
   List<String> ward = []; // Initialize ward list
   List<statusMap.StatusMap> workflow = []; // Initialize workflow list
-  
+
+  TextEditingController mbNumber = TextEditingController();
+  TextEditingController projectId = TextEditingController();
+  TextEditingController projectName = TextEditingController();
+  bool workShow = true;
+  bool project = true;
+  @override
+  void initState() {
+    super.initState();
+    // Initialize text controllers and set initial values
+
+    // widthController = TextEditingController(text: widget.width.toString());
+    // heightController = TextEditingController(text: widget.height.toString());
+    // quantityController =
+    //     TextEditingController(text: widget.quantity.toString());
+
+    mbNumber.addListener(mbNumberUpload);
+    projectId.addListener(projectIdUpload);
+    projectName.addListener(projectNameUpload);
+  }
+
+  void mbNumberUpload() {
+    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+      setState(() {
+        workShow = false;
+      });
+    } else {
+      setState(() {
+        workShow = true;
+      });
+    }
+  }
+
+  void projectIdUpload() {
+    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+      setState(() {
+        workShow = false;
+      });
+    } else {
+      setState(() {
+        workShow = true;
+      });
+    }
+  }
+
+  void projectNameUpload() {
+    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+      setState(() {
+        workShow = false;
+      });
+    } else {
+      setState(() {
+        workShow = true;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    mbNumber.removeListener(mbNumberUpload);
+    projectId.removeListener(projectIdUpload);
+    projectName.removeListener(projectNameUpload);
+
+    mbNumber.dispose();
+    projectId.dispose();
+    projectName.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
@@ -68,7 +139,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                   child: DigitOutLineButton(
                                     label: "Clear",
                                     onPressed: () {
-                                       context.router.pop();
+                                      context.router.pop();
                                     },
                                   ),
                                 ),
@@ -77,19 +148,187 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                   child: DigitElevatedButton(
                                     child: const Text("Filter"),
                                     onPressed: () {
-                                      context.read<MeasurementInboxBloc>().add(
-                                            MeasurementBookInboxSearchBlocEvent(
-                                              ward: ward,
-                                              status: workflow.map((e) => e.statusid!).toList(),
-                                              projectId: null,
-                                              mbNumber: null,
-                                              projectName: null,
-                                              limit: 10,
-                                              offset: 0,
-                                            ),
-                                          );
+                                      final s;
+                                      if (workShow && !project) {
+                                        if (workflow.isEmpty &&
+                                            ward.isNotEmpty) {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                // "status": workflow
+                                                //     .map((e) => e.statusid!)
+                                                //     .toList(),
+                                                "ward": ward,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        } else if (workflow.isNotEmpty &&
+                                            ward.isEmpty) {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                "status": workflow
+                                                    .map((e) => e.statusid!)
+                                                    .toList(),
+                                                // "ward": ward,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        } else {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                "status": workflow
+                                                    .map((e) => e.statusid!)
+                                                    .toList(),
+                                                "ward": ward,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        }
+                                        context
+                                            .read<MeasurementInboxBloc>()
+                                            .add(
+                                              MeasurementBookInboxSearchBlocEvent(
+                                                limit: 10,
+                                                offset: 0,
+                                                data: s, // ward: ward,
+                                                // status: workflow
+                                                //     .map((e) => e.statusid!)
+                                                //     .toList(),
+                                                // projectId: null,
+                                                // mbNumber: null,
+                                                // projectName: null,
+                                              ),
+                                            );
+                                      } else {
+                                        if (mbNumber.text != "" &&
+                                            projectId.text == "" &&
+                                            projectName.text == "") {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                // "status": workflow
+                                                //     .map((e) => e.statusid!)
+                                                //     .toList(),
+                                                "measurementNumber":
+                                                    mbNumber.text,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        } else if (mbNumber.text == "" &&
+                                            projectId.text != "" &&
+                                            projectName.text == "") {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                "projectId": projectId.text,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        } else if (mbNumber.text == "" &&
+                                            projectId.text == "" &&
+                                            projectName.text != "") {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                "projectType": projectName.text,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        } else {
+                                          s = {
+                                            "inbox": {
+                                              "tenantId": "od.testing",
+                                              "moduleSearchCriteria": {
+                                                "tenantId": "od.testing",
+                                                "measurementNumber":
+                                                    mbNumber.text,
+                                                "projectId": projectId.text,
+                                                "projectType": projectName.text,
+                                              },
+                                              "processSearchCriteria": {
+                                                "businessService": ["MB"],
+                                                "moduleName":
+                                                    "measurement-service"
+                                              },
+                                              "limit": 10,
+                                              "offset": 0
+                                            }
+                                          };
+                                        }
+                                        context
+                                            .read<MeasurementInboxBloc>()
+                                            .add(
+                                              MeasurementBookInboxSearchBlocEvent(
+                                                limit: 10,
+                                                offset: 0,
+                                                data: s, // ward: ward,
+                                                // status: workflow
+                                                //     .map((e) => e.statusid!)
+                                                //     .toList(),
+                                                // projectId: null,
+                                                // mbNumber: null,
+                                                // projectName: null,
+                                              ),
+                                            );
+                                      }
 
-                                          context.router.pop();
+                                      context.router.pop();
                                     },
                                   ),
                                 )
@@ -122,40 +361,66 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 ),
                               ],
                             ),
-                            const DigitTextField(label: "MB number"),
-                            const DigitTextField(label: "Project ID"),
-                             DigitTextField(label: t.translate(i18.measurementBook.projectName)),
-                            DigitDropdown(
-                              onChanged: (value) {
-                                setState(() {
-                                  ward.add(value!);
-                                });
-                              },
-                              value: ward.isNotEmpty ? ward.first : null,
-                              label: t.translate(i18.common.ward),
-                              menuItems: location!
-                                  .tenantBoundaryList!.first.boundaryList!
-                                  .map((e) => e.code.toString())
-                                  .toList(),
-                              valueMapper: (value) {
-                                return value.toString();
-                              },
-                            ),
-                            DigitDropdown<statusMap.StatusMap>(
-                              onChanged: (value) {
-                               // setState(() {
-                                  workflow.add(value!);
-                                // });
-                              },
-                              value: workflow.isNotEmpty ? workflow.first : null,
-                              label: t.translate(i18.measurementBook.workflowState),
-                              menuItems: value.mbInboxResponse.statusMap!
-                                  .map((e) => e)
-                                  .toList(),
-                              valueMapper: (value) {
-                                return t.translate("MB_WFMB_STATE_${value.state.toString()}");
-                              },
-                            ),
+                            project
+                                ? DigitTextField(
+                                    label: "MB number",
+                                    controller: mbNumber,
+                                  )
+                                : const SizedBox.shrink(),
+                            project
+                                ? DigitTextField(
+                                    label: "Project ID",
+                                    controller: projectId,
+                                  )
+                                : const SizedBox.shrink(),
+                            project
+                                ? DigitTextField(
+                                    label: t.translate(
+                                        i18.measurementBook.projectName),
+                                    controller: projectName,
+                                  )
+                                : const SizedBox.shrink(),
+                            workShow
+                                ? DigitDropdown(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        ward.add(value!);
+                                        project = false;
+                                      });
+                                    },
+                                    value: ward.isNotEmpty ? ward.first : null,
+                                    label: t.translate(i18.common.ward),
+                                    menuItems: location!
+                                        .tenantBoundaryList!.first.boundaryList!
+                                        .map((e) => e.code.toString())
+                                        .toList(),
+                                    valueMapper: (value) {
+                                      return value.toString();
+                                    },
+                                  )
+                                : const SizedBox.shrink(),
+                            workShow
+                                ? DigitDropdown<statusMap.StatusMap>(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        workflow.add(value!);
+                                        project = false;
+                                      });
+                                    },
+                                    value: workflow.isNotEmpty
+                                        ? workflow.first
+                                        : null,
+                                    label: t.translate(
+                                        i18.measurementBook.workflowState),
+                                    menuItems: value.mbInboxResponse.statusMap!
+                                        .map((e) => e)
+                                        .toList(),
+                                    valueMapper: (value) {
+                                      return t.translate(
+                                          "MB_WFMB_STATE_${value.state.toString()}");
+                                    },
+                                  )
+                                : const SizedBox.shrink(),
                           ],
                         ),
                       ),
@@ -170,4 +435,3 @@ class _MBFilterPageState extends State<MBFilterPage> {
     );
   }
 }
-

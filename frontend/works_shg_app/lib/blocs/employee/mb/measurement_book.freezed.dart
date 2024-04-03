@@ -28,7 +28,8 @@ mixin _$MeasurementInboxBlocEvent {
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)
+            int offset,
+            Map<String, Map<String, Object>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -48,7 +49,8 @@ mixin _$MeasurementInboxBlocEvent {
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -68,7 +70,8 @@ mixin _$MeasurementInboxBlocEvent {
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -250,7 +253,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)
+            int offset,
+            Map<String, Map<String, Object>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -273,7 +277,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -296,7 +301,8 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -384,7 +390,8 @@ abstract class _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
       String? mbNumber,
       String? projectName,
       int limit,
-      int offset});
+      int offset,
+      Map<String, Map<String, Object>> data});
 }
 
 /// @nodoc
@@ -407,6 +414,7 @@ class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
     Object? projectName = freezed,
     Object? limit = null,
     Object? offset = null,
+    Object? data = null,
   }) {
     return _then(_$MeasurementBookInboxSearchBlocEvent(
       ward: freezed == ward
@@ -437,6 +445,10 @@ class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
           ? _value.offset
           : offset // ignore: cast_nullable_to_non_nullable
               as int,
+      data: null == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, Map<String, Object>>,
     ));
   }
 }
@@ -452,9 +464,11 @@ class _$MeasurementBookInboxSearchBlocEvent
       this.mbNumber,
       this.projectName,
       required this.limit,
-      required this.offset})
+      required this.offset,
+      required final Map<String, Map<String, Object>> data})
       : _ward = ward,
-        _status = status;
+        _status = status,
+        _data = data;
 
   final List<String>? _ward;
   @override
@@ -486,10 +500,17 @@ class _$MeasurementBookInboxSearchBlocEvent
   final int limit;
   @override
   final int offset;
+  final Map<String, Map<String, Object>> _data;
+  @override
+  Map<String, Map<String, Object>> get data {
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_data);
+  }
 
   @override
   String toString() {
-    return 'MeasurementInboxBlocEvent.search(ward: $ward, status: $status, projectId: $projectId, mbNumber: $mbNumber, projectName: $projectName, limit: $limit, offset: $offset)';
+    return 'MeasurementInboxBlocEvent.search(ward: $ward, status: $status, projectId: $projectId, mbNumber: $mbNumber, projectName: $projectName, limit: $limit, offset: $offset, data: $data)';
   }
 
   @override
@@ -506,7 +527,8 @@ class _$MeasurementBookInboxSearchBlocEvent
             (identical(other.projectName, projectName) ||
                 other.projectName == projectName) &&
             (identical(other.limit, limit) || other.limit == limit) &&
-            (identical(other.offset, offset) || other.offset == offset));
+            (identical(other.offset, offset) || other.offset == offset) &&
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @override
@@ -518,7 +540,8 @@ class _$MeasurementBookInboxSearchBlocEvent
       mbNumber,
       projectName,
       limit,
-      offset);
+      offset,
+      const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -541,7 +564,8 @@ class _$MeasurementBookInboxSearchBlocEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)
+            int offset,
+            Map<String, Map<String, Object>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -549,7 +573,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     required TResult Function() clear,
   }) {
     return search(
-        ward, status, projectId, mbNumber, projectName, limit, offset);
+        ward, status, projectId, mbNumber, projectName, limit, offset, data);
   }
 
   @override
@@ -565,7 +589,8 @@ class _$MeasurementBookInboxSearchBlocEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -573,7 +598,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     TResult? Function()? clear,
   }) {
     return search?.call(
-        ward, status, projectId, mbNumber, projectName, limit, offset);
+        ward, status, projectId, mbNumber, projectName, limit, offset, data);
   }
 
   @override
@@ -589,7 +614,8 @@ class _$MeasurementBookInboxSearchBlocEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -599,7 +625,7 @@ class _$MeasurementBookInboxSearchBlocEvent
   }) {
     if (search != null) {
       return search(
-          ward, status, projectId, mbNumber, projectName, limit, offset);
+          ward, status, projectId, mbNumber, projectName, limit, offset, data);
     }
     return orElse();
   }
@@ -648,13 +674,15 @@ class _$MeasurementBookInboxSearchBlocEvent
 abstract class MeasurementBookInboxSearchBlocEvent
     implements MeasurementInboxBlocEvent {
   const factory MeasurementBookInboxSearchBlocEvent(
-      {final List<String>? ward,
-      final List<String>? status,
-      final String? projectId,
-      final String? mbNumber,
-      final String? projectName,
-      required final int limit,
-      required final int offset}) = _$MeasurementBookInboxSearchBlocEvent;
+          {final List<String>? ward,
+          final List<String>? status,
+          final String? projectId,
+          final String? mbNumber,
+          final String? projectName,
+          required final int limit,
+          required final int offset,
+          required final Map<String, Map<String, Object>> data}) =
+      _$MeasurementBookInboxSearchBlocEvent;
 
   List<String>? get ward;
   List<String>? get status;
@@ -663,6 +691,7 @@ abstract class MeasurementBookInboxSearchBlocEvent
   String? get projectName;
   int get limit;
   int get offset;
+  Map<String, Map<String, Object>> get data;
   @JsonKey(ignore: true)
   _$$MeasurementBookInboxSearchBlocEventCopyWith<
           _$MeasurementBookInboxSearchBlocEvent>
@@ -795,7 +824,8 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)
+            int offset,
+            Map<String, Map<String, Object>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -818,7 +848,8 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -842,7 +873,8 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -970,7 +1002,8 @@ class _$MeasurementBookInboxBlocClearEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)
+            int offset,
+            Map<String, Map<String, Object>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -993,7 +1026,8 @@ class _$MeasurementBookInboxBlocClearEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -1016,7 +1050,8 @@ class _$MeasurementBookInboxBlocClearEvent
             String? mbNumber,
             String? projectName,
             int limit,
-            int offset)?
+            int offset,
+            Map<String, Map<String, Object>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -1091,7 +1126,8 @@ mixin _$MeasurementInboxState {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)
+            bool search,
+            Map<String, Map<String, Object>> data)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -1108,7 +1144,8 @@ mixin _$MeasurementInboxState {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) =>
@@ -1125,7 +1162,8 @@ mixin _$MeasurementInboxState {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1224,7 +1262,8 @@ class _$_Initial extends _Initial {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)
+            bool search,
+            Map<String, Map<String, Object>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1244,7 +1283,8 @@ class _$_Initial extends _Initial {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1264,7 +1304,8 @@ class _$_Initial extends _Initial {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1365,7 +1406,8 @@ class _$_Loading extends _Loading {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)
+            bool search,
+            Map<String, Map<String, Object>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1385,7 +1427,8 @@ class _$_Loading extends _Loading {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1405,7 +1448,8 @@ class _$_Loading extends _Loading {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1472,7 +1516,8 @@ abstract class _$$_LoadedCopyWith<$Res> {
       String? projectId,
       String? mbNumber,
       String? projectName,
-      bool search});
+      bool search,
+      Map<String, Map<String, Object>> data});
 
   $MBInboxResponseCopyWith<$Res> get mbInboxResponse;
 }
@@ -1495,6 +1540,7 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? mbNumber = freezed,
     Object? projectName = freezed,
     Object? search = null,
+    Object? data = null,
   }) {
     return _then(_$_Loaded(
       null == mbInboxResponse
@@ -1529,6 +1575,10 @@ class __$$_LoadedCopyWithImpl<$Res>
           ? _value.search
           : search // ignore: cast_nullable_to_non_nullable
               as bool,
+      null == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, Map<String, Object>>,
     ));
   }
 
@@ -1552,9 +1602,11 @@ class _$_Loaded extends _Loaded {
       this.projectId,
       this.mbNumber,
       this.projectName,
-      this.search)
+      this.search,
+      final Map<String, Map<String, Object>> data)
       : _ward = ward,
         _status = status,
+        _data = data,
         super._();
 
   @override
@@ -1589,10 +1641,17 @@ class _$_Loaded extends _Loaded {
   final String? projectName;
   @override
   final bool search;
+  final Map<String, Map<String, Object>> _data;
+  @override
+  Map<String, Map<String, Object>> get data {
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_data);
+  }
 
   @override
   String toString() {
-    return 'MeasurementInboxState.loaded(mbInboxResponse: $mbInboxResponse, isLoading: $isLoading, ward: $ward, status: $status, projectId: $projectId, mbNumber: $mbNumber, projectName: $projectName, search: $search)';
+    return 'MeasurementInboxState.loaded(mbInboxResponse: $mbInboxResponse, isLoading: $isLoading, ward: $ward, status: $status, projectId: $projectId, mbNumber: $mbNumber, projectName: $projectName, search: $search, data: $data)';
   }
 
   @override
@@ -1612,7 +1671,8 @@ class _$_Loaded extends _Loaded {
                 other.mbNumber == mbNumber) &&
             (identical(other.projectName, projectName) ||
                 other.projectName == projectName) &&
-            (identical(other.search, search) || other.search == search));
+            (identical(other.search, search) || other.search == search) &&
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @override
@@ -1625,7 +1685,8 @@ class _$_Loaded extends _Loaded {
       projectId,
       mbNumber,
       projectName,
-      search);
+      search,
+      const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -1646,12 +1707,13 @@ class _$_Loaded extends _Loaded {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)
+            bool search,
+            Map<String, Map<String, Object>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
     return loaded(mbInboxResponse, isLoading, ward, status, projectId, mbNumber,
-        projectName, search);
+        projectName, search, data);
   }
 
   @override
@@ -1667,12 +1729,13 @@ class _$_Loaded extends _Loaded {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
     return loaded?.call(mbInboxResponse, isLoading, ward, status, projectId,
-        mbNumber, projectName, search);
+        mbNumber, projectName, search, data);
   }
 
   @override
@@ -1688,14 +1751,15 @@ class _$_Loaded extends _Loaded {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
       return loaded(mbInboxResponse, isLoading, ward, status, projectId,
-          mbNumber, projectName, search);
+          mbNumber, projectName, search, data);
     }
     return orElse();
   }
@@ -1747,7 +1811,8 @@ abstract class _Loaded extends MeasurementInboxState {
       final String? projectId,
       final String? mbNumber,
       final String? projectName,
-      final bool search) = _$_Loaded;
+      final bool search,
+      final Map<String, Map<String, Object>> data) = _$_Loaded;
   const _Loaded._() : super._();
 
   MBInboxResponse get mbInboxResponse;
@@ -1758,6 +1823,7 @@ abstract class _Loaded extends MeasurementInboxState {
   String? get mbNumber;
   String? get projectName;
   bool get search;
+  Map<String, Map<String, Object>> get data;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1835,7 +1901,8 @@ class _$_Error extends _Error {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)
+            bool search,
+            Map<String, Map<String, Object>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1855,7 +1922,8 @@ class _$_Error extends _Error {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1875,7 +1943,8 @@ class _$_Error extends _Error {
             String? projectId,
             String? mbNumber,
             String? projectName,
-            bool search)?
+            bool search,
+            Map<String, Map<String, Object>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),

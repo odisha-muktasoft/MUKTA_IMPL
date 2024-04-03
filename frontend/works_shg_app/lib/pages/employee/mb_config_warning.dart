@@ -11,6 +11,7 @@ import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
+import 'package:works_shg_app/widgets/mb/multi_image.dart';
 import 'package:works_shg_app/widgets/molecules/file_picker.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
@@ -41,7 +42,7 @@ class MBTypeConfirmationPage extends StatefulWidget {
 
 class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
   List<String>? photo;
-
+List<WorkFlowSupportDocument> supportDocument=[];
   HRMSEmployee? selectedAssignee;
   var comment = TextEditingController();
 
@@ -171,6 +172,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           assignees: [
                                             selectedAssignee?.uuid ?? ""
                                           ],
+                                          documents: supportDocument,
                                         ));
 
                                 context.read<MeasurementCrudBloc>().add(
@@ -179,8 +181,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         tenantId: '',
                                         workFlow: WorkFlow(
                                           action: widget.nextActions.action,
-                                          comment: "",
-                                          assignees: [],
+                                          comment: comment.text,
+                                          assignees: [selectedAssignee?.uuid ?? ""],
+                                          documents: supportDocument,
                                         ),
                                       ),
                                     );
@@ -211,7 +214,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                              "Submit & Forward",
+                              t.translate(
+                                  "WF_MB_ACTION_${widget.nextActions.action}"),
                               style: DigitTheme
                                   .instance.mobileTheme.textTheme.headlineLarge,
                             ),
@@ -264,25 +268,46 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         maxLines: 6,
                         controller: comment,
                       ),
+                      // SizedBox(
+                      //   height: 300,
+                      //   child: SHGFilePicker(
+                      //     callBack: (List<FileStoreModel>? fileStore) {
+                      //       if (fileStore != null && fileStore.isNotEmpty) {
+                      //         // setState(() {
+                      //         photo = fileStore!
+                      //             .map((e) => e.fileStoreId!)
+                      //             .toList();
+                      //         // });
+                      //       } else {
+                      //         setState(() {
+                      //           photo = [];
+                      //         });
+                      //       }
+                      //     },
+                      //     extensions: const ['jpg', 'png', 'jpeg'],
+                      //     moduleName: 'works',
+                      //     label: t.translate("CLICK_TO_ADD_PHOTO"),
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 300,
-                        child: SHGFilePicker(
-                          callBack: (List<FileStoreModel>? fileStore) {
-                            if (fileStore != null && fileStore.isNotEmpty) {
-                              // setState(() {
-                              photo = fileStore!
-                                  .map((e) => e.fileStoreId!)
-                                  .toList();
-                              // });
-                            } else {
-                              setState(() {
-                                photo = [];
-                              });
-                            }
+                        child: FilePickerDemo(
+                          callBack: (List<FileStoreModel>? g,
+                              List<WorkflowDocument>? l) {
+                            final supportDocumentData= l!.map((e) {
+                            return  WorkFlowSupportDocument(
+                              documentType: e.documentType,
+                              documentUid: e.fileStore,
+                              fileName: e.documentAdditionalDetails?.fileName,
+                              fileStoreId: e.fileStore,
+                              tenantId: e.tenantId,
+                            );
+                           },).toList();
+                           supportDocument.addAll(supportDocumentData);
+                            print(supportDocument);
                           },
                           extensions: const ['jpg', 'png', 'jpeg'],
                           moduleName: 'works',
-                          label: t.translate("CLICK_TO_ADD_PHOTO"),
                         ),
                       ),
                     ],

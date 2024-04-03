@@ -281,7 +281,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       i18.common
                                           .commonWorkflowStates): t.translate(
                                       "MB_WFMB_STATE_${value.data.first.wfStatus!}"),
-                                  "MB Account": value.data.first.totalAmount,
+                                  t.translate(i18.measurementBook.mbAmount):
+                                      value.data.first.totalAmount != null
+                                          ? double.parse((value
+                                                  .data.first.totalAmount!
+                                                  .toDouble())
+                                              .toStringAsFixed(2))
+                                          : 0.0,
                                   // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
@@ -535,20 +541,18 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ))
                                     .toList();
                                 return DigitCard(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8.0),
-                                        child: Text(
-                                          t.translate(
-                                              i18.common.workflowTimeline),
-                                          style: DigitTheme.instance.mobileTheme
-                                              .textTheme.headlineLarge,
-                                        ),
+                                  child: ExpansionTile(
+                                    title: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8.0),
+                                      child: Text(
+                                        t.translate(
+                                            i18.common.workflowTimeline),
+                                        style: DigitTheme.instance.mobileTheme
+                                            .textTheme.headlineMedium,
                                       ),
+                                    ),
+                                    children: [
                                       DigitTimeline(
                                         timelineOptions: timeLineAttributes,
                                       ),

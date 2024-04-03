@@ -42,6 +42,10 @@ _$_WorkFlow _$$_WorkFlowFromJson(Map<String, dynamic> json) => _$_WorkFlow(
       assignees: (json['assignees'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      documents: (json['documents'] as List<dynamic>?)
+          ?.map((e) =>
+              WorkFlowSupportDocument.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_WorkFlowToJson(_$_WorkFlow instance) =>
@@ -49,6 +53,27 @@ Map<String, dynamic> _$$_WorkFlowToJson(_$_WorkFlow instance) =>
       'action': instance.action,
       'comment': instance.comment,
       'assignees': instance.assignees,
+      'documents': instance.documents,
+    };
+
+_$_WorkFlowSupportDocument _$$_WorkFlowSupportDocumentFromJson(
+        Map<String, dynamic> json) =>
+    _$_WorkFlowSupportDocument(
+      documentType: json['documentType'] as String?,
+      documentUid: json['documentUid'] as String?,
+      fileName: json['fileName'] as String?,
+      fileStoreId: json['fileStoreId'] as String?,
+      tenantId: json['tenantId'] as String?,
+    );
+
+Map<String, dynamic> _$$_WorkFlowSupportDocumentToJson(
+        _$_WorkFlowSupportDocument instance) =>
+    <String, dynamic>{
+      'documentType': instance.documentType,
+      'documentUid': instance.documentUid,
+      'fileName': instance.fileName,
+      'fileStoreId': instance.fileStoreId,
+      'tenantId': instance.tenantId,
     };
 
 _$_MusterRoll _$$_MusterRollFromJson(Map<String, dynamic> json) =>

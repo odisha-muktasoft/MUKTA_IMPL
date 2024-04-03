@@ -72,15 +72,14 @@ class MeasurementInboxBloc
       );
       if (event.offset == 0) {
         emit(MeasurementInboxState.loaded(
-          res,
-          res.items!.length < 10 ? false : true,
-          null,
-          null,
-          null,
-          null,
-          null,
-          false,
-        ));
+            res,
+            res.items!.length < 10 ? false : true,
+            null,
+            null,
+            null,
+            null,
+            null,
+            false, {}));
       } else {
         state.maybeMap(
           orElse: () {
@@ -93,14 +92,16 @@ class MeasurementInboxBloc
 
             emit(
               MeasurementInboxState.loaded(
-                  value.mbInboxResponse.copyWith(items: data),
-                  res.items!.length < 10 ? false : true,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  false),
+                value.mbInboxResponse.copyWith(items: data),
+                res.items!.length < 10 ? false : true,
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                {},
+              ),
             );
           },
         );
@@ -121,37 +122,38 @@ class MeasurementInboxBloc
         emit(const MeasurementInboxState.loading());
       }
 
-      final s = {
-        "inbox": {
-          "tenantId": "od.testing",
-          "moduleSearchCriteria": {
-            "tenantId": "od.testing",
-            "status": event.status,
-            "ward": event.ward,
-          },
-          "processSearchCriteria": {
-            "businessService": ["MB"],
-            "moduleName": "measurement-service"
-          },
-          "limit": 10,
-          "offset": event.offset
-        }
-      };
+      // final s = {
+      //   "inbox": {
+      //     "tenantId": "od.testing",
+      //     "moduleSearchCriteria": {
+      //       "tenantId": "od.testing",
+      //       "status": event.status,
+      //       "ward": event.ward,
+      //     },
+      //     "processSearchCriteria": {
+      //       "businessService": ["MB"],
+      //       "moduleName": "measurement-service"
+      //     },
+      //     "limit": 10,
+      //     "offset": event.offset
+      //   }
+      // };
       final MBInboxResponse res =
           await MBRepository(client.init()).fetchMbInbox(
         url: Urls.measurementService.measurementInbox,
-        body: s,
+        body: event.data,
       );
       if (event.offset == 0) {
         emit(MeasurementInboxState.loaded(
             res,
             res.items!.length < 10 ? false : true,
-            event.ward,
-            event.status,
-            event.projectId,
-            event.mbNumber,
-            event.projectName,
-            true));
+            null,
+            null,
+            null,
+            null,
+            null,
+            true,
+            event.data));
       } else {
         state.maybeMap(
           orElse: () {
@@ -164,14 +166,16 @@ class MeasurementInboxBloc
 
             emit(
               MeasurementInboxState.loaded(
-                  value.mbInboxResponse.copyWith(items: data),
-                  res.items!.length < 10 ? false : true,
-                  event.ward,
-                  event.status,
-                  event.projectId,
-                  event.mbNumber,
-                  event.projectName,
-                  true),
+                value.mbInboxResponse.copyWith(items: data),
+                res.items!.length < 10 ? false : true,
+                null,
+                null,
+                null,
+                null,
+                null,
+                true,
+                event.data,
+              ),
             );
           },
         );
@@ -194,31 +198,31 @@ class MeasurementInboxBloc
   ) async {
     Client client = Client();
     try {
-     await state.maybeMap(
+      await state.maybeMap(
         orElse: () {
           return null;
         },
         loaded: (value) async {
-          final s = {
-            "inbox": {
-              "tenantId": "od.testing",
-              "moduleSearchCriteria": {
-                "tenantId": "od.testing",
-                "status": value.status,
-                "ward": value.ward,
-              },
-              "processSearchCriteria": {
-                "businessService": ["MB"],
-                "moduleName": "measurement-service"
-              },
-              "limit": 10,
-              "offset": event.offset
-            }
-          };
+          // final s = {
+          //   "inbox": {
+          //     "tenantId": "od.testing",
+          //     "moduleSearchCriteria": {
+          //       "tenantId": "od.testing",
+          //       "status": value.status,
+          //       "ward": value.ward,
+          //     },
+          //     "processSearchCriteria": {
+          //       "businessService": ["MB"],
+          //       "moduleName": "measurement-service"
+          //     },
+          //     "limit": 10,
+          //     "offset": event.offset
+          //   }
+          // };
           final MBInboxResponse res =
               await MBRepository(client.init()).fetchMbInbox(
             url: Urls.measurementService.measurementInbox,
-            body: s,
+            body: value.data,
           );
           List<ItemData> data = [];
           data.addAll(value.mbInboxResponse.items ?? []);
@@ -226,21 +230,22 @@ class MeasurementInboxBloc
 
           emit(
             MeasurementInboxState.loaded(
-                value.mbInboxResponse.copyWith(items: data),
-                res.items!.length < 10 ? false : true,
-                // event.ward,
-                value.ward,
-                // event.status,
-                value.status,
-                // event.projectId,
-                value.projectId,
-                // event.mbNumber,
-                value.mbNumber,
+              value.mbInboxResponse.copyWith(items: data),
+              res.items!.length < 10 ? false : true,
+              // event.ward,
+              value.ward,
+              // event.status,
+              value.status,
+              // event.projectId,
+              value.projectId,
+              // event.mbNumber,
+              value.mbNumber,
 
-                // event.projectName,
-                value.projectName,
-                true,
-                ),
+              // event.projectName,
+              value.projectName,
+              true,
+              value.data,
+            ),
           );
         },
       );
@@ -260,15 +265,16 @@ class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
     required int offset,
   }) = MeasurementBookInboxBlocEvent;
 
-  const factory MeasurementInboxBlocEvent.search({
-    List<String>? ward,
-    List<String>? status,
-    String? projectId,
-    String? mbNumber,
-    String? projectName,
-    required int limit,
-    required int offset,
-  }) = MeasurementBookInboxSearchBlocEvent;
+  const factory MeasurementInboxBlocEvent.search(
+          {List<String>? ward,
+          List<String>? status,
+          String? projectId,
+          String? mbNumber,
+          String? projectName,
+          required int limit,
+          required int offset,
+          required Map<String, Map<String, Object>> data}) =
+      MeasurementBookInboxSearchBlocEvent;
 
   const factory MeasurementInboxBlocEvent.searchRepeat({
     required String tenantId,
@@ -289,14 +295,14 @@ class MeasurementInboxState with _$MeasurementInboxState {
   const factory MeasurementInboxState.initial() = _Initial;
   const factory MeasurementInboxState.loading() = _Loading;
   const factory MeasurementInboxState.loaded(
-    MBInboxResponse mbInboxResponse,
-    bool isLoading,
-    List<String>? ward,
-    List<String>? status,
-    String? projectId,
-    String? mbNumber,
-    String? projectName,
-    bool search,
-  ) = _Loaded;
+      MBInboxResponse mbInboxResponse,
+      bool isLoading,
+      List<String>? ward,
+      List<String>? status,
+      String? projectId,
+      String? mbNumber,
+      String? projectName,
+      bool search,
+      Map<String, Map<String, Object>> data) = _Loaded;
   const factory MeasurementInboxState.error(String? error) = _Error;
 }
