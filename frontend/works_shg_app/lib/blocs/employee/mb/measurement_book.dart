@@ -219,10 +219,12 @@ class MeasurementInboxBloc
           //     "offset": event.offset
           //   }
           // };
+          value.data['inbox']!['offset']=event.offset;
           final MBInboxResponse res =
               await MBRepository(client.init()).fetchMbInbox(
             url: Urls.measurementService.measurementInbox,
-            body: value.data,
+            body: value.data
+            //body: value.data,
           );
           List<ItemData> data = [];
           data.addAll(value.mbInboxResponse.items ?? []);
