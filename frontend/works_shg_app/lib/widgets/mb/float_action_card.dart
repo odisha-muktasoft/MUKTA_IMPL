@@ -1,6 +1,9 @@
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_components/widgets/digit_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class FloatActionCard extends StatelessWidget {
   final VoidCallback openButtonSheet;
@@ -12,6 +15,7 @@ class FloatActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return Card(
         // color: Colors.grey,
         shape: const RoundedRectangleBorder(
@@ -75,7 +79,7 @@ class FloatActionCard extends StatelessWidget {
                   ),
                   DigitElevatedButton(
                       onPressed: actions,
-                      child: const Text("Actions")),
+                      child:  Text(t.translate(i18.measurementBook.mbAction))),
                 ],
               ),
             )));

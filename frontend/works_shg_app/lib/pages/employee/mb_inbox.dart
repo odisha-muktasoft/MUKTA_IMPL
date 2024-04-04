@@ -13,6 +13,9 @@ import '../../utils/common_methods.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/mb/mb_detail_card.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
+
 
 class MeasurementBookInboxPage extends StatefulWidget {
   const MeasurementBookInboxPage({super.key});
@@ -235,7 +238,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           children: [
                                             TextButton.icon(
                                                 label: Text(
-                                                  'Filter',
+                                                  t.translate(i18.common.filter),
                                                   style: DigitTheme
                                                       .instance
                                                       .mobileTheme
@@ -363,7 +366,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         style: BorderStyle.solid,
                                       ),
                                     ),
-                                    child: const Text("Open Measurement Book"),
+                                    child:  Text(t.translate(i18.measurementBook.openMbBook)),
                                     onPressed: () {
                                       final contract = mbInboxResponse
                                               .mbInboxResponse
@@ -386,13 +389,13 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 ),
                               ),
                               items: {
-                                "MB number": mbInboxResponse
+                                t.translate(i18.measurementBook.mbNumber): mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
                                         .businessObject
                                         ?.measurementNumber ??
                                     "",
-                                "Project Description": mbInboxResponse
+                                t.translate(i18.measurementBook.projectDescription): mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
                                         .businessObject
@@ -400,7 +403,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ?.additionalDetails
                                         ?.projectDesc ??
                                     "",
-                                "Assignee": mbInboxResponse
+                                t.translate(i18.common.assignee): mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
                                         .processInstance
@@ -408,7 +411,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ?.first
                                         .name ??
                                     "NA",
-                                "Workflow State": mbInboxResponse
+                                t.translate(i18.measurementBook.workflowState): mbInboxResponse
                                             .mbInboxResponse
                                             .items?[index]
                                             .processInstance
@@ -418,7 +421,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     ? t.translate(
                                         "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
                                     : "",
-                                "MB Account": mbInboxResponse
+                                t.translate(i18.measurementBook.mbAmount): mbInboxResponse
                                         .mbInboxResponse
                                         .items?[index]
                                         .businessObject

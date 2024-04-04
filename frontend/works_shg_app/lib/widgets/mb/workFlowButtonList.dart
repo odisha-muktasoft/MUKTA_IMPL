@@ -39,6 +39,7 @@ class CommonButtonCard extends StatelessWidget {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       return DigitOutLineButton(
+                        
                          label: t.translate("WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
                        // label: g!.first.nextActions![index].action! ?? "",
                         onPressed: () {

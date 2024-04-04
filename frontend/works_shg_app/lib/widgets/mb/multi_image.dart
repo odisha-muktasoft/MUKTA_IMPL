@@ -16,13 +16,16 @@ import '../../data/repositories/core_repo/core_repository.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../utils/notifiers.dart';
 
+enum MediaType { mbDetail, mbConfim }
+
 class FilePickerDemo extends StatefulWidget {
   final Function(List<FileStoreModel>?, List<WorkflowDocument>?) callBack;
   final String? moduleName;
   final List<String>? extensions;
   final GlobalKey? contextKey;
+  final MediaType headerType;
 
-  const FilePickerDemo({Key? key, required this.callBack, this.moduleName, this.extensions, this.contextKey}) : super(key: key);
+  const FilePickerDemo({Key? key, required this.callBack, this.moduleName, this.extensions, this.contextKey, required this.headerType}) : super(key: key);
   @override
   FilePickerDemoState createState() => FilePickerDemoState();
 }
@@ -158,7 +161,8 @@ ss.clear();
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                //"${AppLocalizations.of(context).translate(i18.common.aadhaarNumber)}",
+                widget.headerType==MediaType.mbConfim?
+                "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}":
                 "Worksite photos",
                   textAlign: TextAlign.left,
                   style: TextStyle(

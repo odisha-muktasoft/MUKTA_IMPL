@@ -174,6 +174,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 .toString(),
                             openButtonSheet: () {
                               _openBottomSheet(
+                                t,
                                 context,
                                 value.data.first.totalSorAmount!,
                                 value.data.first.totalNorSorAmount!,
@@ -183,8 +184,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 widget.mbNumber,
                               );
                             },
-                            totalAmountText: 'Total MB Amount',
-                            subtext: '(For Current Entry)',
+                            totalAmountText: t.translate(i18.measurementBook.totalMbAmount),
+                            subtext: t.translate(i18.measurementBook.forCurrentEntry),
                           );
                         },
                       );
@@ -375,6 +376,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return sorCard(
+                                          t,
                                           context,
                                           index,
                                           magic: value.sor![index]
@@ -403,6 +405,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return sorCard(
+                                          t,
                                           context, index,
                                           magic: value.nonSor![index]
                                               .filteredMeasurementsMeasure,
@@ -446,7 +449,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                 'png',
                                                 'jpeg'
                                               ],
-                                              moduleName: 'works',
+                                              moduleName: 'works', headerType: MediaType.mbDetail,
                                             ),
                                           ),
                                         )
@@ -611,6 +614,7 @@ class _MBDetailPageState extends State<MBDetailPage>
   }
 
   Card sorCard(
+    AppLocalizations t,
     BuildContext ctx,
     int index, {
     List<FilteredMeasurementsMeasure>? magic,
@@ -646,16 +650,17 @@ class _MBDetailPageState extends State<MBDetailPage>
               ),
               SORTableCard(
                 element: {
-                  "Description":
+                  t.translate(i18.measurementBook.description):
                       magic.first.contracts!.first.estimates!.first.name,
-                  "Unit": line[0].uom,
-                  "Rate(rs)": line[0].unitRate,
+                  t.translate(i18.measurementBook.unit): line[0].uom,
+                  t.translate(i18.measurementBook.rate): line[0].unitRate,
                   // "Approved Quantity": line.fold(0, (sum, obj) {
                   //   int m = obj.quantity!;
                   //   return sum + m;
                   // }),
-                  "Approved Quantity": line[0].noOfunit,
+                  t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
                   "Consumed Quantity\n(Upto previous entry)":
+                  //  t.translate(i18.measurementBook.consumedQty):
                       preSor_NonSor == null
                           ? 0
                           : preSor_NonSor!.first.cumulativeValue,
@@ -663,7 +668,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 },
               ),
               DigitTextField(
-                label: "Current Measurement Book Entry",
+                label: t.translate(i18.measurementBook.currentMBEntry),
                 controller: TextEditingController()
                   ..value
                   ..text = magic[0].numItems.toString(),
@@ -702,7 +707,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           (magic[0].mbAmount!.toDouble()).toStringAsFixed(2))
                       .toString(),
                 // (magic[0].mbAmount).toString(),
-                label: "Amount for Current Entry",
+                label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
                 isDisabled: true,
               ),
             ],
@@ -713,6 +718,7 @@ class _MBDetailPageState extends State<MBDetailPage>
   }
 
   void _openBottomSheet(
+    AppLocalizations t,
     BuildContext context,
     double totalSorAmount,
     double totalNonSorAmount,
@@ -742,12 +748,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      "Total SOR Amount",
+                      // "Total SOR Amount",
+                      t.translate(i18.measurementBook.totalSorAmount),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                      "(for current entry)",
+                      // "(for current entry)",
+                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -772,12 +780,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      "Total Non SOR Amount",
+                      // "Total Non SOR Amount",
+                       t.translate(i18.measurementBook.totalNonSorAmount),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                      "(for current entry)",
+                     // "(for current entry)",
+                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -814,12 +824,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                         flex: 4,
                         child: ListTile(
                           title: Text(
-                            "Total MB Amount",
+                            // "Total MB Amount",
+                              t.translate(i18.measurementBook.totalMbAmount),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.headlineMedium,
                           ),
                           subtitle: Text(
-                            "(for current entry)",
+                            // "(for current entry)",
+                             t.translate(i18.measurementBook.forCurrentEntry),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.bodySmall,
                           ),
@@ -845,7 +857,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 15,
               ),
               DigitElevatedButton(
-                  child: const Text("Actions"),
+                  child:  Text(t.translate(i18.measurementBook.mbAction)),
                   onPressed: () {
                     Navigator.of(context).pop();
                     DigitActionDialog.show(

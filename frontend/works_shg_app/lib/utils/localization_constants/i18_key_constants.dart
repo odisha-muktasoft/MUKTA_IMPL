@@ -151,6 +151,9 @@ class Common {
   String get takeAction => 'ES_COMMON_TAKE_ACTION';
   String get assignee => "COMMON_ASSIGNEE";
   String get commonWorkflowStates=> "COMMON_WORKFLOW_STATES";
+  String get supportingDocumentHeader=>"WORKFLOW_MODAL_UPLOAD_FILES";
+  String get date=>"ES_COMMON_DATE";
+  String get filter=>"ES_COMMON_FILTER";
 }
 
 class Home {
@@ -380,5 +383,26 @@ class MeasurementBook{
   String get workflowState=>"MB_WORKFLOW_STATE";
   String get mbAmount=>"MB_AMOUNT";
   String get assignedToAll=>"MB_ASSIGNED_TO_ALL";
+  String get unit=>"MB_UNIT";
+  String get description=>"MB_DESCRIPTION";
+  String get rate=>"MB_RATE";
+  String get approvedQty=>"MB_APPROVER_QUANT";
+  String get consumedQty=>"MB_CONSUMED_QUANT";
+  String get mbStatus=>"MB_STATUS";
+  String get mbHistory=>"MB_HISTORY";
+  // I updated
+  String get totalSorAmount=>"MB_TOTAL_SOR_AMT";
+  String get forCurrentEntry=>"MB_FOR_CURRENT_ENTRY";
+  String get totalNonSorAmount=>"MB_TOTAL_NON_SOR_AMT";
+  String get totalMbAmount=>"MB_TOTAL_MB_AMT";
+  String get openMbBook=>"MB_OPEN_BOOK";
+  String get currentMBEntry=>"CURRENT_MB_ENTRY";
+  String get mbAmtCurrentEntry=>"MB_AMT_CURRENT_ENTRY";
+  String get mbAction=>"MB_ACTION";
+  String get projectDescription=>"MB_PROJECT_DESC";
+  String get mbWorkflowState=>"MB_WORKFLOW_STATUS";
+  String get mbInbox=>"MB_INBOX";
+  
+  
 
 }

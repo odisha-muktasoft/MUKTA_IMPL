@@ -399,7 +399,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                   ),
                                   project
                                       ? DigitTextField(
-                                          label: "MB number",
+                                          label: t.translate(i18.measurementBook.mbNumber),
                                           controller: mbNumber,
                                         )
                                       : const SizedBox.shrink(),

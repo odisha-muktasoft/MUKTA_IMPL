@@ -105,8 +105,9 @@ List<WorkFlowSupportDocument> supportDocument=[];
               context,
               // AppLocalizations.of(context)
               //     .translate(i18.login.invalidOTP),
-              'ERROR',
+             
               "something went wrong",
+               'ERROR',
             );
           },
         );
@@ -222,6 +223,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                           ),
                         ],
                       ),
+                      (widget.nextActions.action ==  "EDIT/RE-SUBMIT" || widget.nextActions.action ==  "VERIFY_AND_FORWARD")?
                       BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
                         builder: (context, state) {
                           return state.maybeMap(
@@ -262,7 +264,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                             },
                           );
                         },
-                      ),
+                      ): const SizedBox.shrink(),
                       DigitTextField(
                         label: t.translate("WF_MODAL_COMMENTS"),
                         maxLines: 6,
@@ -289,6 +291,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                       //     label: t.translate("CLICK_TO_ADD_PHOTO"),
                       //   ),
                       // ),
+                    widget.nextActions.action !=  "EDIT/RE-SUBMIT"?
                       SizedBox(
                         height: 300,
                         child: FilePickerDemo(
@@ -307,9 +310,9 @@ List<WorkFlowSupportDocument> supportDocument=[];
                             print(supportDocument);
                           },
                           extensions: const ['jpg', 'png', 'jpeg'],
-                          moduleName: 'works',
+                          moduleName: 'works', headerType: MediaType.mbConfim,
                         ),
-                      ),
+                      ):const SizedBox.shrink(),
                     ],
                   ),
                 );

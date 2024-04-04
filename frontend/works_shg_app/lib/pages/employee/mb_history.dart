@@ -22,6 +22,8 @@ import '../../widgets/mb/mb_detail_card.dart';
 import '../../widgets/mb/text_button_underline.dart';
 import '../../widgets/mb/workFlowButtonList.dart';
 import 'mb_inbox.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class MBHistoryBookPage extends StatefulWidget {
   final String contractNumber;
@@ -84,6 +86,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 .toString(),
                             openButtonSheet: () {
                               _openBottomSheet(
+                                t,
                                 context,
                                 value.data.first.totalSorAmount!,
                                 value.data.first.totalNorSorAmount!,
@@ -93,7 +96,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.mbNumber,
                               );
                             },
-                            totalAmountText: 'Total MB Amount',
+                            totalAmountText: t.translate(i18.measurementBook.totalMbAmount),
                           );
                         },
                       );
@@ -134,7 +137,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "MB History",
+                                    t.translate(i18.measurementBook.mbHistory),
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
                                   ),
@@ -154,8 +157,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))}-${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                 items: {
-                                  "MB number": k[adjustedIndex].mbNumber,
-                                  "Date": DateFormat('dd/MM/yyyy').format(
+                                  t.translate(i18.measurementBook.mbNumber): k[adjustedIndex].mbNumber,
+                                  t.translate(i18.common.date): DateFormat('dd/MM/yyyy').format(
                                       DateTime.fromMillisecondsSinceEpoch(
                                           k[adjustedIndex].entryDate!)),
                                   "MB Account":
@@ -164,7 +167,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                               (k[adjustedIndex].totalAmount!)
                                                   .toStringAsFixed(2))
                                           : '0.0',
-                                  "Status": k[adjustedIndex].wfStatus,
+                                  t.translate(i18.measurementBook.mbStatus): k[adjustedIndex].wfStatus,
                                 },
                                 widget: CommonTextButtonUnderline(
                                   label: 'View Muster Roll',
@@ -190,6 +193,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
   }
 
   void _openBottomSheet(
+    AppLocalizations t,
     BuildContext context,
     double totalSorAmount,
     double totalNonSorAmount,
@@ -219,12 +223,13 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      "Total SOR Amount",
+                      // "Total SOR Amount",
+                      t.translate(i18.measurementBook.totalSorAmount),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                      "(for current entry)",
+                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -249,12 +254,13 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      "Total Non SOR Amount",
+                      // "Total Non SOR Amount",
+                      t.translate(i18.measurementBook.totalNonSorAmount),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                      "(for current entry)",
+                     t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -291,12 +297,13 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         flex: 4,
                         child: ListTile(
                           title: Text(
-                            "Total MB Amount",
+                            // "Total MB Amount",
+                            t.translate(i18.measurementBook.totalMbAmount),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.headlineMedium,
                           ),
                           subtitle: Text(
-                            "(for current entry)",
+                            t.translate(i18.measurementBook.forCurrentEntry),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.bodySmall,
                           ),
@@ -322,7 +329,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 height: 15,
               ),
               DigitElevatedButton(
-                  child: const Text("Actions"),
+                  child:  Text(t.translate(i18.measurementBook.mbAction)),
                   onPressed: () {
                     Navigator.of(context).pop();
                     DigitActionDialog.show(
