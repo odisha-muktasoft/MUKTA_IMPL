@@ -275,7 +275,7 @@ class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
           String? projectName,
           required int limit,
           required int offset,
-          required Map<String, Map<String, Object>> data}) =
+          required Map<String, Map<String, dynamic>> data}) =
       MeasurementBookInboxSearchBlocEvent;
 
   const factory MeasurementInboxBlocEvent.searchRepeat({
@@ -305,6 +305,6 @@ class MeasurementInboxState with _$MeasurementInboxState {
       String? mbNumber,
       String? projectName,
       bool search,
-      Map<String, Map<String, Object>> data) = _Loaded;
+      Map<String, Map<String, dynamic>> data) = _Loaded;
   const factory MeasurementInboxState.error(String? error) = _Error;
 }

@@ -132,6 +132,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, state) {
         return Scaffold(
+           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           floatingActionButton:
               BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
@@ -142,8 +143,15 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                 },
                 loaded: (value) {
                   if (value.mbInboxResponse.items!.length > 19) {
-                    return DigitIconButton(
-                      iconText: "Back to top",
+                    return TextButton.icon(
+                      style: TextButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(
+                              color: const DigitColors().burningOrange), 
+                        ),
+                      ),
+                      label: const Text("Back to top"),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -151,6 +159,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                           curve: Curves.easeInOut,
                         );
                       },
+                      icon: const Icon(Icons.upload),
                     );
                   } else {
                     return const SizedBox.shrink();

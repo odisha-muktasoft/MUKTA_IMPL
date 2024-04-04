@@ -29,7 +29,7 @@ mixin _$MeasurementInboxBlocEvent {
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -50,7 +50,7 @@ mixin _$MeasurementInboxBlocEvent {
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -71,7 +71,7 @@ mixin _$MeasurementInboxBlocEvent {
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -254,7 +254,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -278,7 +278,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -302,7 +302,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -391,7 +391,7 @@ abstract class _$$MeasurementBookInboxSearchBlocEventCopyWith<$Res> {
       String? projectName,
       int limit,
       int offset,
-      Map<String, Map<String, Object>> data});
+      Map<String, Map<String, dynamic>> data});
 }
 
 /// @nodoc
@@ -448,7 +448,7 @@ class __$$MeasurementBookInboxSearchBlocEventCopyWithImpl<$Res>
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as Map<String, Map<String, Object>>,
+              as Map<String, Map<String, dynamic>>,
     ));
   }
 }
@@ -465,7 +465,7 @@ class _$MeasurementBookInboxSearchBlocEvent
       this.projectName,
       required this.limit,
       required this.offset,
-      required final Map<String, Map<String, Object>> data})
+      required final Map<String, Map<String, dynamic>> data})
       : _ward = ward,
         _status = status,
         _data = data;
@@ -500,9 +500,9 @@ class _$MeasurementBookInboxSearchBlocEvent
   final int limit;
   @override
   final int offset;
-  final Map<String, Map<String, Object>> _data;
+  final Map<String, Map<String, dynamic>> _data;
   @override
-  Map<String, Map<String, Object>> get data {
+  Map<String, Map<String, dynamic>> get data {
     if (_data is EqualUnmodifiableMapView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_data);
@@ -565,7 +565,7 @@ class _$MeasurementBookInboxSearchBlocEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -590,7 +590,7 @@ class _$MeasurementBookInboxSearchBlocEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -615,7 +615,7 @@ class _$MeasurementBookInboxSearchBlocEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -681,7 +681,7 @@ abstract class MeasurementBookInboxSearchBlocEvent
           final String? projectName,
           required final int limit,
           required final int offset,
-          required final Map<String, Map<String, Object>> data}) =
+          required final Map<String, Map<String, dynamic>> data}) =
       _$MeasurementBookInboxSearchBlocEvent;
 
   List<String>? get ward;
@@ -691,7 +691,7 @@ abstract class MeasurementBookInboxSearchBlocEvent
   String? get projectName;
   int get limit;
   int get offset;
-  Map<String, Map<String, Object>> get data;
+  Map<String, Map<String, dynamic>> get data;
   @JsonKey(ignore: true)
   _$$MeasurementBookInboxSearchBlocEventCopyWith<
           _$MeasurementBookInboxSearchBlocEvent>
@@ -825,7 +825,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -849,7 +849,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -874,7 +874,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -1003,7 +1003,7 @@ class _$MeasurementBookInboxBlocClearEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         search,
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
@@ -1027,7 +1027,7 @@ class _$MeasurementBookInboxBlocClearEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
@@ -1051,7 +1051,7 @@ class _$MeasurementBookInboxBlocClearEvent
             String? projectName,
             int limit,
             int offset,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         search,
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
@@ -1127,7 +1127,7 @@ mixin _$MeasurementInboxState {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -1145,7 +1145,7 @@ mixin _$MeasurementInboxState {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) =>
@@ -1163,7 +1163,7 @@ mixin _$MeasurementInboxState {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1263,7 +1263,7 @@ class _$_Initial extends _Initial {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1284,7 +1284,7 @@ class _$_Initial extends _Initial {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1305,7 +1305,7 @@ class _$_Initial extends _Initial {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1407,7 +1407,7 @@ class _$_Loading extends _Loading {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1428,7 +1428,7 @@ class _$_Loading extends _Loading {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1449,7 +1449,7 @@ class _$_Loading extends _Loading {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1517,7 +1517,7 @@ abstract class _$$_LoadedCopyWith<$Res> {
       String? mbNumber,
       String? projectName,
       bool search,
-      Map<String, Map<String, Object>> data});
+      Map<String, Map<String, dynamic>> data});
 
   $MBInboxResponseCopyWith<$Res> get mbInboxResponse;
 }
@@ -1578,7 +1578,7 @@ class __$$_LoadedCopyWithImpl<$Res>
       null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as Map<String, Map<String, Object>>,
+              as Map<String, Map<String, dynamic>>,
     ));
   }
 
@@ -1603,7 +1603,7 @@ class _$_Loaded extends _Loaded {
       this.mbNumber,
       this.projectName,
       this.search,
-      final Map<String, Map<String, Object>> data)
+      final Map<String, Map<String, dynamic>> data)
       : _ward = ward,
         _status = status,
         _data = data,
@@ -1641,9 +1641,9 @@ class _$_Loaded extends _Loaded {
   final String? projectName;
   @override
   final bool search;
-  final Map<String, Map<String, Object>> _data;
+  final Map<String, Map<String, dynamic>> _data;
   @override
-  Map<String, Map<String, Object>> get data {
+  Map<String, Map<String, dynamic>> get data {
     if (_data is EqualUnmodifiableMapView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_data);
@@ -1708,7 +1708,7 @@ class _$_Loaded extends _Loaded {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1730,7 +1730,7 @@ class _$_Loaded extends _Loaded {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1752,7 +1752,7 @@ class _$_Loaded extends _Loaded {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -1812,7 +1812,7 @@ abstract class _Loaded extends MeasurementInboxState {
       final String? mbNumber,
       final String? projectName,
       final bool search,
-      final Map<String, Map<String, Object>> data) = _$_Loaded;
+      final Map<String, Map<String, dynamic>> data) = _$_Loaded;
   const _Loaded._() : super._();
 
   MBInboxResponse get mbInboxResponse;
@@ -1823,7 +1823,7 @@ abstract class _Loaded extends MeasurementInboxState {
   String? get mbNumber;
   String? get projectName;
   bool get search;
-  Map<String, Map<String, Object>> get data;
+  Map<String, Map<String, dynamic>> get data;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1902,7 +1902,7 @@ class _$_Error extends _Error {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)
+            Map<String, Map<String, dynamic>> data)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1923,7 +1923,7 @@ class _$_Error extends _Error {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1944,7 +1944,7 @@ class _$_Error extends _Error {
             String? mbNumber,
             String? projectName,
             bool search,
-            Map<String, Map<String, Object>> data)?
+            Map<String, Map<String, dynamic>> data)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),

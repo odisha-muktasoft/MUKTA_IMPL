@@ -1,5 +1,6 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
@@ -43,7 +44,9 @@ class Attachments extends StatelessWidget {
                                 e.tenantId ??
                                     GlobalVariables.stateInfoListModel!.code
                                         .toString(),
-                                context),
+                                context,
+                               
+                                ),
                             child: Container(
                                 width: 50,
                                 margin: const EdgeInsets.symmetric(
