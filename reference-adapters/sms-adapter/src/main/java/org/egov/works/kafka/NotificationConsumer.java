@@ -27,10 +27,16 @@ public class NotificationConsumer {
      */
     //@KafkaListener(topics = {"kafka.topics.consumer"})
     @KafkaListener(topics = {"${contract.kafka.update.topic}",
-                             "${estimate.kafka.update.topic}",
-                             "${expense.billing.bill.create}",
-                             "${expense.billing.bill.update}",
-                             "${musterroll.kafka.update.topic}"})
+            "${estimate.kafka.update.topic}",
+            "${expense.billing.bill.create}",
+            "${expense.billing.bill.update}",
+            "${musterroll.kafka.update.topic}",
+            "${measurement-service.kafka.update.topic}",
+            "${org.kafka.create.topic}",
+            "${org.kafka.update.topic}",
+            "${individual.producer.save.topic}",
+            "${individual.producer.update.topic}"}
+    )
     public void listen(final HashMap<String, Object> record,@Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 
         notificationService.fetchServiceBasedOnTopic(record,topic);
