@@ -19,10 +19,12 @@ class MBLogic {
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
-          endDate: mbDetailResponse.period?.endDate ??
-              (e.additionalDetail?.endDate ?? 00),
-          startDate: mbDetailResponse.period?.startDate ??
-              (e.additionalDetail?.startDate ?? 00),
+          endDate:e.additionalDetail?.endDate
+            ??
+              (mbDetailResponse.period?.endDate ?? 00),
+          startDate:e.additionalDetail?.startDate
+           ??
+              ( mbDetailResponse.period?.startDate ?? 00),
           entryDate: e.entryDate,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
