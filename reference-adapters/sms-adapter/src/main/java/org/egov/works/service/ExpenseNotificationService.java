@@ -51,17 +51,17 @@ public class ExpenseNotificationService {
     private LocalizationUtil localizationUtil;
 
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
 
-        BillRequest billRequest= mapper.convertValue(record,BillRequest.class);
         try {
+            BillRequest billRequest= mapper.readValue(record,BillRequest.class);
             if (billRequest.getBill().getBusinessService().equalsIgnoreCase("EXPENSE.SUPERVISION")){
                 sendNotificationForSupervisionBill(billRequest);
             }else{
                 sendNotificationForPurchaseBill(billRequest);
             }
         } catch (Exception e) {
-            log.error("Exception while sending notification: " + e);
+            log.error("Exception while sending notification: ", e);
         }
 
     }

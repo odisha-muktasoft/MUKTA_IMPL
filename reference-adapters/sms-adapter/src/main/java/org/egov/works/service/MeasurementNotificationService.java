@@ -36,14 +36,13 @@ public class MeasurementNotificationService {
     @Autowired
     private Producer producer;
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
-
-        MeasurementServiceRequest measurementServiceRequest= mapper.convertValue(record, MeasurementServiceRequest.class);
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
 
         try {
+            MeasurementServiceRequest measurementServiceRequest= mapper.readValue(record, MeasurementServiceRequest.class);
             sendNotification(measurementServiceRequest);
         } catch (Exception e) {
-            log.error("Exception while sending notification: " + e);
+            log.error("Exception while sending notification: ", e);
         }
     }
 
