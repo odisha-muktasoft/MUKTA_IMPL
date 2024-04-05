@@ -23,7 +23,9 @@ _$_MBDetailResponse _$$_MBDetailResponseFromJson(Map<String, dynamic> json) =>
       measurement: json['measurement'] == null
           ? null
           : Measurement.fromJson(json['measurement'] as Map<String, dynamic>),
-      musterRolls: json['musterRolls'],
+      musterRolls: (json['musterRolls'] as List<dynamic>?)
+          ?.map((e) => MusterRoll.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_MBDetailResponseToJson(_$_MBDetailResponse instance) =>

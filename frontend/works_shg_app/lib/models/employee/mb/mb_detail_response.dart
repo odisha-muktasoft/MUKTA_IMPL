@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
+import 'package:works_shg_app/models/muster_rolls/estimate_muster_roll_model.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 
 import 'filtered_Measures.dart';
@@ -15,7 +16,7 @@ class MBDetailResponse with _$MBDetailResponse {
     @JsonKey(name: 'period') Period? period,
     @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
     @JsonKey(name: 'measurement') Measurement? measurement,
-    @JsonKey(name: 'musterRolls') dynamic musterRolls
+    @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls
   }) = _MBDetailResponse;
 
   factory MBDetailResponse.fromJson(

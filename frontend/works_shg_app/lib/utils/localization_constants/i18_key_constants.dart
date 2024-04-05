@@ -154,6 +154,7 @@ class Common {
   String get supportingDocumentHeader=>"WORKFLOW_MODAL_UPLOAD_FILES";
   String get date=>"ES_COMMON_DATE";
   String get filter=>"ES_COMMON_FILTER";
+  String get musterRollId=>"ES_COMMON_MUSTER_ROLL_ID";
 }
 
 class Home {

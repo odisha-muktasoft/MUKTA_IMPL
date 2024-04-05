@@ -268,16 +268,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               .contractAdditionalDetails
                                               ?.projectDesc ??
                                           "NA",
-                                  t.translate(i18.common.assignee): value
-                                          .data
-                                          .first
-                                          .measures!
-                                          .first
-                                          .contracts!
-                                          .first
-                                          .contractAdditionalDetails
-                                          ?.officerInChargeDesgn ??
-                                      "NA",
+                                  // t.translate(i18.common.assignee): value
+                                  //         .data
+                                  //         .first
+                                  //         .measures!
+                                  //         .first
+                                  //         .contracts!
+                                  //         .first
+                                  //         .contractAdditionalDetails
+                                  //         ?.officerInChargeDesgn ??
+                                  //     "NA",
                                   t.translate(
                                       i18.common
                                           .commonWorkflowStates): t.translate(
@@ -289,6 +289,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                   .toDouble())
                                               .toStringAsFixed(2))
                                           : 0.0,
+                                          t.translate(i18.common.musterRollId):value.data.first.musterRollNumber,
                                   // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
@@ -304,7 +305,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     );
                                   },
                                 ),
-                                show: true,
+                                show: false,
                                 sla: 1,
                               ),
                             ],

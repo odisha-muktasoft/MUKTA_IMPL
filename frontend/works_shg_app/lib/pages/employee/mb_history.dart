@@ -161,7 +161,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   t.translate(i18.common.date): DateFormat('dd/MM/yyyy').format(
                                       DateTime.fromMillisecondsSinceEpoch(
                                           k[adjustedIndex].entryDate!)),
-                                  "MB Account":
+                                  t.translate(i18.measurementBook.mbAmount):
                                       k[adjustedIndex].totalAmount != null
                                           ? double.parse(
                                               (k[adjustedIndex].totalAmount!)
