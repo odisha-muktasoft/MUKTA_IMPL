@@ -49,11 +49,10 @@ public class IndividualNotificationService {
     private ObjectMapper mapper;
 
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, boolean isCreateOperation){
-
-       IndividualRequest individualRequest  = mapper.convertValue(record, IndividualRequest.class);
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, boolean isCreateOperation){
 
         try {
+            IndividualRequest individualRequest  = mapper.readValue(record, IndividualRequest.class);
             sendNotification(individualRequest, isCreateOperation);
         } catch (Exception e) {
             log.error("Exception while sending notification: " + e);

@@ -68,14 +68,13 @@ public class ContractNotificationService {
     private ContractsUtil contractsUtil;
 
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
-
-        ContractRequest contractRequest= mapper.convertValue(record,ContractRequest.class);
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
 
         try {
+            ContractRequest contractRequest= mapper.readValue(record,ContractRequest.class);
             sendNotification(contractRequest);
         } catch (Exception e) {
-            log.error("Exception while sending notification: " + e);
+            log.error("Exception while sending notification: ", e);
         }
     }
 

@@ -55,14 +55,13 @@ public class MusterRollNotificationService {
     private LocalizationUtil localizationUtil;
 
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-
-        MusterRollRequest musterRollRequest = mapper.convertValue(record, MusterRollRequest.class);
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 
         try {
+            MusterRollRequest musterRollRequest = mapper.readValue(record, MusterRollRequest.class);
             sendNotificationToCBO(musterRollRequest);
         } catch (Exception e) {
-            log.error("Exception while sending notification: " + e);
+            log.error("Exception while sending notification: ", e);
         }
     }
 

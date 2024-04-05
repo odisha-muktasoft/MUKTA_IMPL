@@ -45,15 +45,13 @@ public class OrganizationNotificationService {
     private ServiceRequestRepository repository;
 
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, boolean isCreateOperation){
-
-        OrgRequest orgRequest= mapper.convertValue(record, OrgRequest.class);
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, boolean isCreateOperation){
 
         try {
-
+            OrgRequest orgRequest= mapper.readValue(record, OrgRequest.class);
             sendNotification(orgRequest, isCreateOperation);
         } catch (Exception e) {
-            log.error("Exception while sending notification: " + e);
+            log.error("Exception while sending notification: ", e);
         }
     }
 
