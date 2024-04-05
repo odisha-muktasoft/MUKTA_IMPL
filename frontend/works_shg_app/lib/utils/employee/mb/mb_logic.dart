@@ -30,7 +30,8 @@ class MBLogic {
           referenceId: e.referenceId,
           // to be chnaged
           //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
-          musterRollNumber: mbDetailResponse.musterRolls?.first.musterRollNumber??"",
+         // musterRollNumber: mbDetailResponse.musterRolls?.first.musterRollNumber??"",
+          musterRollNumber: mbDetailResponse.musterRolls is List?mbDetailResponse.musterRolls?.first["musterRollNumber"]??"":"",
           mbNumber: e.measurementNumber,
           wfStatus: e.wfStatus,
           tenantId: e.tenantId,

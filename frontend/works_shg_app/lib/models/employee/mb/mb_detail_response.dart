@@ -16,7 +16,7 @@ class MBDetailResponse with _$MBDetailResponse {
     @JsonKey(name: 'period') Period? period,
     @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
     @JsonKey(name: 'measurement') Measurement? measurement,
-    @JsonKey(name: 'musterRolls') List<MusterRoll>? musterRolls
+    @JsonKey(name: 'musterRolls') dynamic musterRolls
   }) = _MBDetailResponse;
 
   factory MBDetailResponse.fromJson(
