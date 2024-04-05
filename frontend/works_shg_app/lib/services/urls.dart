@@ -63,9 +63,9 @@ class UserServices {
 
 class WorkServices {
   const WorkServices();
-  String get myWorks => 'contract/v1/_search';
-  String get updateWorkOrder => 'contract/v1/_update';
-  String get createWorkOrder => 'contract/v1/_create';
+  String get myWorks => 'mukta-contract/v1/_search';
+  String get updateWorkOrder => 'mukta-contract/v1/_update';
+  String get createWorkOrder => 'mukta-contract/v1/_create';
 }
 
 class MusterRollServices {
