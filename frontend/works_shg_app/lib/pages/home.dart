@@ -183,7 +183,7 @@ class _HomePage extends State<HomePage> {
   List<Widget> _getItems(BuildContext context) {
     return [
       HomeItemCard(
-        icon: Icons.flaky,
+        icon: SvgPicture.asset(Constants.mbIcon),
         label: 'Measurement Books',
         onPressed: () {
           context.router.push(
@@ -193,7 +193,7 @@ class _HomePage extends State<HomePage> {
         },
       ),
       HomeItemCard(
-        icon: Icons.on_device_training_outlined,
+        icon: SvgPicture.asset(Constants.workOrderIcon),
         label: 'Work Orders',
         onPressed: () {
           context.router.push(
@@ -313,7 +313,7 @@ class _HomePage extends State<HomePage> {
 }
 
 class HomeItemCard extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final String label;
   final VoidCallback? onPressed;
 
@@ -338,13 +338,14 @@ class HomeItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              color: onPressed == null
-                  ? theme.disabledColor
-                  : theme.colorScheme.secondary,
-              size: 30,
-            ),
+            icon,
+            // Icon(
+            //   icon,
+            //   color: onPressed == null
+            //       ? theme.disabledColor
+            //       : theme.colorScheme.secondary,
+            //   size: 30,
+            // ),
             const SizedBox(height: 24),
             Text(
               AppLocalizations.of(context).translate(

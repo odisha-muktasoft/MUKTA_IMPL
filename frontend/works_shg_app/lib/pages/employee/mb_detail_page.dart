@@ -761,7 +761,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount!.toDouble().roundToDouble().toString(),
+                      totalSorAmount!.toDouble().toStringAsFixed(2),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -793,7 +793,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount!.toDouble().roundToDouble().toString(),
+                      totalNonSorAmount!.toDouble().toStringAsFixed(2),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),

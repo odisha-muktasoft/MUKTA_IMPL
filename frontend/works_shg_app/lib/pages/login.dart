@@ -85,7 +85,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     }
   }
 
-  Widget getLoginCard(BuildContext loginContext, AppInitializationState data) {
+  Widget getLoginCard(
+    AppLocalizations t,
+    BuildContext loginContext, AppInitializationState data) {
     return Center(
       child: Form(
         key: formKey,
@@ -129,7 +131,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                   physics: const NeverScrollableScrollPhysics(),
                   controller: _tabController, children: [
                   cboLogin(loginContext),
-                  employeeLogin(loginContext, data,
+                  employeeLogin(
+                    t,loginContext, data,
                       userName: userNameController,
                       userpassword: userPasswordController)
                 ]),
@@ -318,6 +321,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -330,14 +334,14 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 if (constraints.maxWidth < 720) {
                   return Center(
                     child: MobileView(
-                      getLoginCard(context, state),
+                      getLoginCard(t,context, state),
                       GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
                       logoBottomPosition: constraints.maxHeight / 8,
                       cardBottomPosition: constraints.maxHeight / 3,
                     ),
                   );
                 } else {
-                  return DesktopView(getLoginCard(context, state),
+                  return DesktopView(getLoginCard(t,context, state),
                       GlobalVariables.stateInfoListModel!.bannerUrl.toString());
                 }
               });
@@ -346,7 +350,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 
-  SizedBox employeeLogin(BuildContext context, AppInitializationState data,
+  SizedBox employeeLogin(
+    AppLocalizations t,
+    BuildContext context, AppInitializationState data,
       {required TextEditingController userName,
       required TextEditingController userpassword}) {
     return SizedBox(
@@ -385,7 +391,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               label: "City *",
               menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
               valueMapper: (value) {
-                return value!.code!;
+                // return value!.code!;
+                return t.translate(convertToTenant(value!.code!));
+                
               }),
           DigitIconButton(
             iconText: "Forgot Password?",
@@ -397,4 +405,9 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       ),
     );
   }
+  String convertToTenant(String input) {
+  List<String> parts = input.split('.');
+  String result = "TENANT_TENANTS_${parts.map((part) => part.toUpperCase()).join('_')}";
+  return result;
+}
 }

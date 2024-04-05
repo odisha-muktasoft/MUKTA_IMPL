@@ -1,8 +1,10 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
@@ -147,7 +149,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                 loaded: (value) {
                   if (value.mbInboxResponse.items!.length > 19) {
                     return TextButton.icon(
+                      
                       style: TextButton.styleFrom(
+                        backgroundColor: const DigitColors().white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
@@ -162,7 +166,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                           curve: Curves.easeInOut,
                         );
                       },
-                      icon: const Icon(Icons.upload),
+                      icon: SvgPicture.asset(Constants.doubleArrow),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -308,8 +312,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                               color: const DigitColors()
                                                   .burningOrange,
                                               onPressed: () {},
-                                              icon: const Icon(
-                                                  Icons.sort_outlined)),
+                                              icon: SvgPicture.asset(Constants.sort)),
                                           Text(
                                             "Sort",
                                             style: DigitTheme
