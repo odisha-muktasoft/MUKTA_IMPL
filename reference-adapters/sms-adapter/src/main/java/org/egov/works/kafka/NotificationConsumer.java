@@ -37,7 +37,7 @@ public class NotificationConsumer {
             "${individual.producer.save.topic}",
             "${individual.producer.update.topic}"}
     )
-    public void listen(final HashMap<String, Object> record,@Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+    public void listen(final String record,@Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
 
         notificationService.fetchServiceBasedOnTopic(record,topic);
 

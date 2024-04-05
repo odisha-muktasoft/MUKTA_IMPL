@@ -53,14 +53,13 @@ public class EstimateNotificationService {
     @Autowired
     private LocalizationUtil localizationUtil;
 
-    public void process(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
-
-        EstimateRequest estimateRequest= mapper.convertValue(record,EstimateRequest.class);
+    public void process(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
 
         try {
+            EstimateRequest estimateRequest= mapper.readValue(record,EstimateRequest.class);
             sendNotification(estimateRequest);
         } catch (Exception e) {
-            log.error("Exception while sending notification: " + e);
+            log.error("Exception while sending notification: ", e);
         }
     }
 

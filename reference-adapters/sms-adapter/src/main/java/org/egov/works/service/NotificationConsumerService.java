@@ -43,7 +43,7 @@ public class NotificationConsumerService {
     private IndividualNotificationService individualNotificationService;
 
 
-    public void fetchServiceBasedOnTopic(final HashMap<String, Object> record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
+    public void fetchServiceBasedOnTopic(final String record, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
 
 
 
