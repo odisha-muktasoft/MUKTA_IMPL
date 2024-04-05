@@ -154,6 +154,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                 loaded: (value) {
                   if (value.mbInboxResponse.items!.length > 19) {
                     return TextButton.icon(
+                      
                       style: TextButton.styleFrom(
                         backgroundColor: const DigitColors().white,
                         shape: RoundedRectangleBorder(
