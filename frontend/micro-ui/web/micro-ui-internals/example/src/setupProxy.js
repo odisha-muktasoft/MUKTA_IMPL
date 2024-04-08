@@ -90,8 +90,9 @@ module.exports = function (app) {
     "/mukta-expense/payment/",
     "/mukta-expense-calculator/",
     "/measurement-service/",
-    "/mukta-mukta-services/",
-    "/mdms-v2/"
+    "/mukta-services/",
+    "/mdms-v2/",
+    "mukta-ifix-adapter"
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };
