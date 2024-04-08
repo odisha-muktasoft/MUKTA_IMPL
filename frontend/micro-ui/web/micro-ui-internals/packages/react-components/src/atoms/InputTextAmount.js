@@ -398,6 +398,7 @@ export const InputAmountWrapper = ({ref,...props}) => {
       className={`form-control ${className}`}
       value={ props.defaultValue ? props.defaultValue : (value ? value : "") }
       onValueChange={handleOnValueChange}
+      intlConfig={props?.intlConfig}
       // placeholder="Please enter a number"
       prefix={prefix}
       step={1}

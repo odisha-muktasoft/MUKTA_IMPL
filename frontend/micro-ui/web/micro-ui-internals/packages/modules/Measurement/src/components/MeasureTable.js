@@ -247,7 +247,7 @@ const MeasureTable = (props) => {
       }
     );
     return fields?.map((row, index) => {
-      const consumedQty = row.currentMBEntry;
+      const consumedQty = row.currentMBEntry || 0;
       const initialState = { tableState: row?.measures };
       const optionsData = UOMData?.map((obj) => ({ code: obj?.code, name: obj?.name }));
       if (isLoading) {
@@ -303,7 +303,7 @@ const MeasureTable = (props) => {
                 <td>{row.description}</td>
                 <td>{row.uom}</td>
                 <td>
-                  <Amount customStyle={{ textAlign: "right" }} value={row?.unitRate?.toFixed?.(2) || 0} t={t} roundOff={false}></Amount>
+                  <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.unitRate).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
                 </td>
               </>
             )}
@@ -313,7 +313,7 @@ const MeasureTable = (props) => {
                   <Amount customStyle={{ textAlign: "right" }} value={row?.originalQty?.toFixed?.(2) || 0} t={t} roundOff={false}></Amount>
                 </td>
                 <td>
-                  <Amount customStyle={{ textAlign: "right" }} value={row?.originalAmount || 0} t={t} roundOff={false}></Amount>
+                  <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.originalAmount).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
                 </td>
               </>
             )}
@@ -369,7 +369,7 @@ const MeasureTable = (props) => {
             </td>
 
             <td>
-              <Amount customStyle={{ textAlign: "right" }} value={parseFloat(row?.amount).toFixed(2) || 0} t={t} roundOff={false}></Amount>
+              <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.amount).toFixed(2), "number", undefined, true, undefined, 2)  || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
             </td>
             {(mode == "CREATEALL" || mode == "CREATERE") && (
               <td>
