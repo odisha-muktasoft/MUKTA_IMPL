@@ -1,5 +1,4 @@
 package org.egov.works.models;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -39,6 +38,12 @@ public class ContractCriteria {
 
     @JsonProperty("contractNumber")
     private String contractNumber = null;
+
+    @JsonProperty("supplementNumber")
+    private String supplementNumber = null;
+
+    @JsonProperty("businessService")
+    private String businessService = null;
 
     @JsonProperty("ids")
     private List<String> ids = null;
