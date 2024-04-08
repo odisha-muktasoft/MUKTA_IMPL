@@ -1,55 +1,55 @@
 package org.egov.works.models;
 
+import javax.validation.Valid;
+
+import org.egov.tracer.model.CustomException;
+import org.springframework.validation.annotation.Validated;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 
 /**
  * Pagination details
  */
-@ApiModel(description = "Pagination details")
 @Validated
-@javax.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2023-02-01T15:45:33.268+05:30")
-
+@javax.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2023-04-02T17:49:59.877+05:30[Asia/Kolkata]")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Pagination {
+
     @JsonProperty("limit")
     @Valid
-//    @DecimalMax("100")
-    private Integer limit = null;
+    private Integer limit;
 
     @JsonProperty("offSet")
     @Valid
-    private Integer offSet = null;
+    private Integer offSet;
 
     @JsonProperty("totalCount")
     @Valid
-    private Integer totalCount = null;
+    private Integer totalCount;
 
     @JsonProperty("sortBy")
-    private String sortBy = null;
+    private String sortBy;
 
     @JsonProperty("order")
-    private OrderEnum order = null;
+    private OrderEnum order;
 
     /**
      * Sorting order
      */
     public enum OrderEnum {
-        ASC("asc"),
 
-        DESC("desc");
+        ASC("ASC"),
+
+        DESC("DESC");
 
         private String value;
 
@@ -60,11 +60,12 @@ public class Pagination {
         @JsonCreator
         public static OrderEnum fromValue(String text) {
             for (OrderEnum b : OrderEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
+                if (String.valueOf(b.value).equalsIgnoreCase(text)) {
                     return b;
                 }
             }
-            return null;
+            throw new CustomException("EG_EXPENSE_SEARCH_INVALID_ORDER",
+                    "The order value provided : " + text + " is wrong. it can only be ASC or DESC");
         }
 
         @Override
@@ -74,6 +75,4 @@ public class Pagination {
         }
     }
 
-
 }
-

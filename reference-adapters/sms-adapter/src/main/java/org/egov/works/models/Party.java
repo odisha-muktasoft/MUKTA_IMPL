@@ -52,7 +52,7 @@ public class Party {
 	private String identifier;
 
 	@JsonProperty("status")
-	private Status status;
+	private String status;
 
 	@JsonProperty("additionalDetails")
 	private Object additionalDetails;
