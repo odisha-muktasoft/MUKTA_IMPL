@@ -705,13 +705,27 @@ class _MBDetailPageState extends State<MBDetailPage>
                 label: t.translate(i18.measurementBook.currentMBEntry),
                 controller: TextEditingController()
                   ..value
-                  ..text = (magic.fold(0.0, (sum, obj) {
-                    dynamic m = obj.measureLineItems!.fold(0.0, (sum, obj) {
-                      dynamic m = obj.quantity!;
-                      return sum + double.parse(m.toString());
-                    });
+                  ..text = double.parse((magic.fold(0.0, (sum, obj) {
+                    dynamic m;
+                    if (obj.contracts?.first.estimates?.first.isDeduction ==
+                        false) {
+                      m = obj.measureLineItems!.fold(0.0, (sum, ob) {
+                        dynamic mk = ob.quantity!;
+                        return sum + double.parse(mk.toString());
+                      });
+                    } else {
+                      m = -(obj.measureLineItems!.fold(0.0, (sum, ob) {
+                        dynamic mr = ob.quantity!;
+                        return sum + double.parse(mr.toString());
+                      }));
+                    }
+                    // dynamic m = obj.measureLineItems!.fold(0.0, (sum, ob) {
+                    //   dynamic m = ob.quantity!;
+                    //   return sum + double.parse(m.toString());
+                    // });
                     return sum + double.parse(m.toString());
-                  })).toString(),
+                  })).toStringAsFixed(2))
+                      .toString(),
                 suffixIcon: GestureDetector(
                   onTap: () {
                     showDialog(
@@ -745,8 +759,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                 controller: TextEditingController()
                   ..value
                   ..text = (magic.fold(0.0, (sum, obj) {
-                    dynamic m = obj.mbAmount;
-                    return double.parse( double.parse((sum + double.parse(m.toString())).toString()).toStringAsFixed(2));
+                    dynamic m;
+                    if (obj.contracts?.first.estimates?.first.isDeduction ==
+                        false) {
+                      m = obj.mbAmount ?? 0.0;
+                    } else {
+                      m = -(obj.mbAmount ?? 0.0);
+                    }
+
+                    return double.parse(double.parse(
+                            (sum + double.parse(m.toString())).toString())
+                        .toStringAsFixed(2));
                   })).toString(),
                 // (magic[0].mbAmount).toString(),
                 label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
