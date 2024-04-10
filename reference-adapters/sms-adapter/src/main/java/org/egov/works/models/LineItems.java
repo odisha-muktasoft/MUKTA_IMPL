@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import digit.models.coremodels.AuditDetails;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
+import org.egov.works.models.AmountBreakup;
+import org.egov.works.models.Status;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -38,6 +40,10 @@ public class LineItems {
     @JsonProperty("estimateLineItemId")
     @Size(min = 1, max = 64)
     private String estimateLineItemId = null;
+
+    @JsonProperty("contractLineItemRef")
+    @Size(min = 1, max = 64)
+    private String contractLineItemRef = null;
 
     @JsonProperty("tenantId")
     @NotNull
