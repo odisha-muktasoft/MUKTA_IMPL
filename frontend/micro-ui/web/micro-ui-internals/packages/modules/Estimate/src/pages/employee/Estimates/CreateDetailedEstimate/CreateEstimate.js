@@ -310,7 +310,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
   function validateNonSor(items) {
     //this is to check is any one param is present for non other param should also be present or removed alltogether
     for (const item of items) {
-      if (!item.description || !item.uom || item.unitRate === undefined || item.unitRate <= 0 || item.currentMBEntry === undefined || !item.currentMBEntry) {
+      if (!item.description || !item.uom || item.unitRate === undefined || item.unitRate <= 0 || item.currentMBEntry === undefined || (isCreateRevisionEstimate || isEditRevisionEstimate ? !(item?.currentMBEntry >= 0) : !item.currentMBEntry)) {
         setShowToast({ error: true, label: `${t("ERR_NONSOR_ITEM_IS_MISSING")} ${ item?.sNo}` });
         setIsButtonDisabled(false);
         setShowModal(false);
