@@ -12,7 +12,6 @@ import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../models/employee/mb/filtered_Measures.dart';
-import '../../models/employee/mb/mb_detail_response.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
@@ -184,8 +183,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 widget.mbNumber,
                               );
                             },
-                            totalAmountText: t.translate(i18.measurementBook.totalMbAmount),
-                            subtext: t.translate(i18.measurementBook.forCurrentEntry),
+                            totalAmountText:
+                                t.translate(i18.measurementBook.totalMbAmount),
+                            subtext: t
+                                .translate(i18.measurementBook.forCurrentEntry),
                           );
                         },
                       );
@@ -289,7 +290,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                   .toDouble())
                                               .toStringAsFixed(2))
                                           : 0.0,
-                                          t.translate(i18.common.musterRollId):value.data.first.musterRollNumber,
+                                  t.translate(i18.common.musterRollId):
+                                      value.data.first.musterRollNumber,
                                   // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
@@ -450,7 +452,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                 'png',
                                                 'jpeg'
                                               ],
-                                              moduleName: 'works', headerType: MediaType.mbDetail,
+                                              moduleName: 'works',
+                                              headerType: MediaType.mbDetail,
                                             ),
                                           ),
                                         )
@@ -459,55 +462,85 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             child: Text("No Data Found"),
                                           ),
                                         )
-                                  : ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          onTap: () =>
-                                              CommonMethods().onTapOfAttachment(
-                                            mm![index],
-                                            mm![index].tenantId!,
-                                            context,
-                                            roleType: RoleType.employee,
+                                  : !value.viewStatus
+                                      ? Card(
+                                          child: Center(
+                                            child: FilePickerDemo(
+                                              callBack: (List<FileStoreModel>?
+                                                      g,
+                                                  List<WorkflowDocument>? l) {
+                                                context
+                                                    .read<
+                                                        MeasurementDetailBloc>()
+                                                    .add(
+                                                      MeasurementUploadDocumentBlocEvent(
+                                                        tenantId: '',
+                                                        workflowDocument: l!,
+                                                      ),
+                                                    );
+                                                print(g);
+                                              },
+                                              extensions: const [
+                                                'jpg',
+                                                'png',
+                                                'jpeg'
+                                              ],
+                                              moduleName: 'works',
+                                              headerType: MediaType.mbDetail,
+                                            ),
                                           ),
-                                          child: Container(
-                                              //width: 50,
-                                              margin:
-                                                  const EdgeInsets.symmetric(
+                                        )
+                                      : ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return InkWell(
+                                              onTap: () => CommonMethods()
+                                                  .onTapOfAttachment(
+                                                mm![index],
+                                                mm![index].tenantId!,
+                                                context,
+                                                roleType: RoleType.employee,
+                                              ),
+                                              child: Container(
+                                                  //width: 50,
+                                                  margin: const EdgeInsets
+                                                          .symmetric(
                                                       vertical: 5,
                                                       horizontal: 5),
-                                              child: Wrap(
-                                                  runSpacing: 8,
-                                                  spacing: 5,
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/png/attachment.png',
-                                                      height: 200,
-                                                      width: MediaQuery.sizeOf(
-                                                              context)
-                                                          .width,
-                                                    ),
-                                                    //         Image.network( CommonMethods().loadImg(mm![index].fileStoreId!,
-                                                    // mm![index].tenantId!,
+                                                  child: Wrap(
+                                                      runSpacing: 8,
+                                                      spacing: 5,
+                                                      children: [
+                                                        Image.asset(
+                                                          'assets/png/attachment.png',
+                                                          height: 200,
+                                                          width:
+                                                              MediaQuery.sizeOf(
+                                                                      context)
+                                                                  .width,
+                                                        ),
+                                                        //         Image.network( CommonMethods().loadImg(mm![index].fileStoreId!,
+                                                        // mm![index].tenantId!,
 
-                                                    // roleType: RoleType.employee,),),
-                                                    Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .translate(mm![index]
-                                                              .name
-                                                              .toString()),
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    )
-                                                  ])),
-                                        );
-                                      },
-                                      itemCount:
-                                          value.rawData.documents!.length),
+                                                        // roleType: RoleType.employee,),),
+                                                        Text(
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .translate(mm![
+                                                                      index]
+                                                                  .name
+                                                                  .toString()),
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        )
+                                                      ])),
+                                            );
+                                          },
+                                          itemCount:
+                                              value.rawData.documents!.length),
                             ],
                           ),
                         ),
@@ -628,8 +661,11 @@ class _MBDetailPageState extends State<MBDetailPage>
         return e.contracts!.first.estimates!.first;
       },
     ).toList();
-
-    double consumed = magic.fold(0, (sum, obj) {
+    double noOfQty = line.fold(0.0, (sum, obj) {
+      int m = obj.quantity!;
+      return sum + m;
+    });
+    double consumed = magic.fold(0.0, (sum, obj) {
       double m = obj.cumulativeValue!;
       return sum + m.toDouble();
     });
@@ -655,13 +691,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                       magic.first.contracts!.first.estimates!.first.name,
                   t.translate(i18.measurementBook.unit): line[0].uom,
                   t.translate(i18.measurementBook.rate): line[0].unitRate,
-                  // "Approved Quantity": line.fold(0, (sum, obj) {
-                  //   int m = obj.quantity!;
-                  //   return sum + m;
-                  // }),
-                  t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
+                  "Approved Quantity": noOfQty,
+                  // t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
                   "Consumed Quantity\n(Upto previous entry)":
-                  //  t.translate(i18.measurementBook.consumedQty):
+                      //  t.translate(i18.measurementBook.consumedQty):
                       preSor_NonSor == null
                           ? 0
                           : preSor_NonSor!.first.cumulativeValue,
@@ -672,17 +705,24 @@ class _MBDetailPageState extends State<MBDetailPage>
                 label: t.translate(i18.measurementBook.currentMBEntry),
                 controller: TextEditingController()
                   ..value
-                  ..text = magic[0].numItems.toString(),
+                  ..text = (magic.fold(0.0, (sum, obj) {
+                    dynamic m = obj.measureLineItems!.fold(0.0, (sum, obj) {
+                      dynamic m = obj.quantity!;
+                      return sum + double.parse(m.toString());
+                    });
+                    return sum + double.parse(m.toString());
+                  })).toString(),
                 suffixIcon: GestureDetector(
                   onTap: () {
                     showDialog(
                       context: ctx,
-                      builder: (BuildContext ctx) {
+                      builder: (_) {
                         return HorizontalCardListDialog(
                           lineItems: magic,
                           index: index,
                           type: type,
-                          noOfUnit: line[0].noOfunit,
+                          // noOfUnit: line[0].noOfunit,
+                          noOfUnit: noOfQty,
                           cummulativePrevQty: preSor_NonSor == null
                               ? 0
                               : preSor_NonSor!.first.cumulativeValue,
@@ -704,9 +744,10 @@ class _MBDetailPageState extends State<MBDetailPage>
               DigitTextField(
                 controller: TextEditingController()
                   ..value
-                  ..text = double.parse(
-                          (magic[0].mbAmount!.toDouble()).toStringAsFixed(2))
-                      .toString(),
+                  ..text = (magic.fold(0.0, (sum, obj) {
+                    dynamic m = obj.mbAmount;
+                    return double.parse( double.parse((sum + double.parse(m.toString())).toString()).toStringAsFixed(2));
+                  })).toString(),
                 // (magic[0].mbAmount).toString(),
                 label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
                 isDisabled: true,
@@ -756,7 +797,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     ),
                     subtitle: Text(
                       // "(for current entry)",
-                       t.translate(i18.measurementBook.forCurrentEntry),
+                      t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -782,13 +823,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                   child: ListTile(
                     title: Text(
                       // "Total Non SOR Amount",
-                       t.translate(i18.measurementBook.totalNonSorAmount),
+                      t.translate(i18.measurementBook.totalNonSorAmount),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                     // "(for current entry)",
-                       t.translate(i18.measurementBook.forCurrentEntry),
+                      // "(for current entry)",
+                      t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -826,13 +867,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                         child: ListTile(
                           title: Text(
                             // "Total MB Amount",
-                              t.translate(i18.measurementBook.totalMbAmount),
+                            t.translate(i18.measurementBook.totalMbAmount),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.headlineMedium,
                           ),
                           subtitle: Text(
                             // "(for current entry)",
-                             t.translate(i18.measurementBook.forCurrentEntry),
+                            t.translate(i18.measurementBook.forCurrentEntry),
                             style: DigitTheme
                                 .instance.mobileTheme.textTheme.bodySmall,
                           ),
@@ -858,7 +899,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 15,
               ),
               DigitElevatedButton(
-                  child:  Text(t.translate(i18.measurementBook.mbAction)),
+                  child: Text(t.translate(i18.measurementBook.mbAction)),
                   onPressed: () {
                     Navigator.of(context).pop();
                     DigitActionDialog.show(

@@ -215,7 +215,9 @@ List<WorkFlowSupportDocument> supportDocument=[];
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
+                             widget.nextActions.action== "EDIT/RE-SUBMIT"?
                               t.translate(
+                                  "WORKS_UPDATE_AND_FORWARD"):t.translate(
                                   "WF_MB_ACTION_${widget.nextActions.action}"),
                               style: DigitTheme
                                   .instance.mobileTheme.textTheme.headlineLarge,

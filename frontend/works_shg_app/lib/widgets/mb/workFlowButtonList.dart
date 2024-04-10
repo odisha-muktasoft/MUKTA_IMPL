@@ -38,9 +38,12 @@ class CommonButtonCard extends StatelessWidget {
                 child: Center(
                   child: ListView.builder(
                     itemBuilder: (context, index) {
+                     String editReSubmit="EDIT_RE_SUBMIT";
                       return DigitOutLineButton(
                         
-                         label: t.translate("WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
+                         label:g!.first.nextActions![index].action ==
+                                  "EDIT/RE-SUBMIT"?
+                          t.translate("WF_MB_ACTION_$editReSubmit"):t.translate("WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
                        // label: g!.first.nextActions![index].action! ?? "",
                         onPressed: () {
                           final data =

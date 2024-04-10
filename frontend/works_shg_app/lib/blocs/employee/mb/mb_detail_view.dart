@@ -331,27 +331,52 @@ class MeasurementDetailBloc
     // Return the original list if no modification is made
     return sorObjects;
   }
+//temp for bug fixes
+  // SorObject? findSorObjectById(
+  //     List<FilteredMeasurements> filteredMeasurementsList, String sorId) {
+  //   for (FilteredMeasurements filteredMeasurements
+  //       in filteredMeasurementsList) {
+  //     List<FilteredMeasurementsMeasure> mutableList = [];
+  //     for (FilteredMeasurementsMeasure measure
+  //         in filteredMeasurements.measures ?? []) {
+  //       if (measure.contracts!.first.estimates!.first.sorId == sorId) {
+  //         mutableList.add(measure);
+  //         return SorObject(
+  //             id: measure.contracts!.first.estimates!.first.id,
+  //             sorId: measure.contracts!.first.estimates!.first.sorId,
+  //             filteredMeasurementsMeasure: mutableList
+  //             // Fill in the properties of SorObject based on the found measure
+  //             );
+  //       }
+  //     }
+  //   }
+  //   return null; // If no SorObject with the given sorId is found
+  // }
 
   SorObject? findSorObjectById(
-      List<FilteredMeasurements> filteredMeasurementsList, String sorId) {
-    for (FilteredMeasurements filteredMeasurements
-        in filteredMeasurementsList) {
-      List<FilteredMeasurementsMeasure> mutableList = [];
-      for (FilteredMeasurementsMeasure measure
-          in filteredMeasurements.measures ?? []) {
-        if (measure.contracts!.first.estimates!.first.sorId == sorId) {
-          mutableList.add(measure);
-          return SorObject(
-              id: measure.contracts!.first.estimates!.first.id,
-              sorId: measure.contracts!.first.estimates!.first.sorId,
-              filteredMeasurementsMeasure: mutableList
-              // Fill in the properties of SorObject based on the found measure
-              );
-        }
+  List<FilteredMeasurements> filteredMeasurementsList, String sorId) {
+  for (FilteredMeasurements filteredMeasurements
+      in filteredMeasurementsList) {
+    List<FilteredMeasurementsMeasure> mutableList = [];
+    for (FilteredMeasurementsMeasure measure
+        in filteredMeasurements.measures ?? []) {
+      if (measure.contracts!.first.estimates!.first.sorId == sorId) {
+        mutableList.add(measure);
+        // Do not return here
       }
     }
-    return null; // If no SorObject with the given sorId is found
+    if (mutableList.isNotEmpty) {
+      // If any matching measures are found, create and return SorObject
+      return SorObject(
+        id: mutableList.first.contracts!.first.estimates!.first.id,
+        sorId: mutableList.first.contracts!.first.estimates!.first.sorId,
+        filteredMeasurementsMeasure: mutableList
+        // Fill in the properties of SorObject based on the found measures
+      );
+    }
   }
+  return null; // If no SorObject with the given sorId is found in any filtered measurements
+}
 
 // calculate qty
   dynamic calulateQuantity({

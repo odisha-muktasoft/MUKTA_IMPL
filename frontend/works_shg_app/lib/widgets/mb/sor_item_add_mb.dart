@@ -36,8 +36,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
   @override
   void initState() {
     lineItems = widget.lineItems;
+    _scrollController = PageController(initialPage: 0);
     super.initState();
-    _scrollController = PageController();
+    
   }
 
   void _scrollForward() {
