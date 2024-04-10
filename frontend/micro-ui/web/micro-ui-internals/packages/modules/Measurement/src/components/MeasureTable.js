@@ -313,7 +313,7 @@ const MeasureTable = (props) => {
                   <Amount customStyle={{ textAlign: "right" }} value={row?.originalQty?.toFixed?.(2) || 0} t={t} roundOff={false}></Amount>
                 </td>
                 <td>
-                  <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.originalAmount).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
+                  <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(isNaN(row?.originalAmount) ? 0 : row?.originalAmount).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
                 </td>
               </>
             )}
@@ -373,8 +373,8 @@ const MeasureTable = (props) => {
             </td>
             {(mode == "CREATEALL" || mode == "CREATERE") && (
               <td>
-                <span className="icon-wrapper" onClick={() => (mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && row?.showMeasure === false) ) ) ? "" : remove(index)}>
-                  <DeleteIcon fill={(mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && row?.showMeasure === false) )) ? "lightgrey" : "#FF9100"} />
+                <span className="icon-wrapper" onClick={() => (mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && (row?.hasOwnProperty('originalQty'))) ) ) ? "" : remove(index)}>
+                  <DeleteIcon fill={(mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && (row?.hasOwnProperty('originalQty'))) )) ? "lightgrey" : "#FF9100"} />
                 </span>
               </td>
             )}
