@@ -8,11 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
+import 'package:works_shg_app/router/app_router.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../utils/common_methods.dart';
+import '../../utils/constants.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
@@ -96,7 +98,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.mbNumber,
                               );
                             },
-                            totalAmountText: t.translate(i18.measurementBook.totalMbAmount),
+                            totalAmountText:
+                                t.translate(i18.measurementBook.totalMbAmount),
                           );
                         },
                       );
@@ -157,22 +160,36 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))}-${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                 items: {
-                                  t.translate(i18.measurementBook.mbNumber): k[adjustedIndex].mbNumber,
-                                  t.translate(i18.common.date): DateFormat('dd/MM/yyyy').format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          k[adjustedIndex].entryDate!)),
+                                  t.translate(i18.measurementBook.mbNumber):
+                                      k[adjustedIndex].mbNumber,
+                                  t.translate(i18.common.date):
+                                      DateFormat('dd/MM/yyyy').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              k[adjustedIndex].entryDate!)),
                                   t.translate(i18.measurementBook.mbAmount):
                                       k[adjustedIndex].totalAmount != null
                                           ? double.parse(
                                               (k[adjustedIndex].totalAmount!)
                                                   .toStringAsFixed(2))
                                           : '0.0',
-                                  t.translate(i18.measurementBook.mbStatus): k[adjustedIndex].wfStatus,
+                                  t.translate(i18.measurementBook.mbStatus):
+                                      k[adjustedIndex].wfStatus,
                                 },
                                 widget: CommonTextButtonUnderline(
                                   label: 'View Muster Roll',
-                                  onPressed: () {},
-                                ), show: false,
+                                  onPressed: () {
+                                    context.router.push(
+                                      SHGInboxRoute(
+                                        tenantId: "od.testing",
+                                        musterRollNo: k[adjustedIndex]
+                                            .musterRollNumber
+                                            .toString(),
+                                        sentBackCode: Constants.sentBack,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                show: false,
                               );
                             } else {
                               return null; // Return null for the skipped item
@@ -229,7 +246,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                       t.translate(i18.measurementBook.forCurrentEntry),
+                      t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -260,7 +277,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                     t.translate(i18.measurementBook.forCurrentEntry),
+                      t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
@@ -329,7 +346,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 height: 15,
               ),
               DigitElevatedButton(
-                  child:  Text(t.translate(i18.measurementBook.mbAction)),
+                  child: Text(t.translate(i18.measurementBook.mbAction)),
                   onPressed: () {
                     Navigator.of(context).pop();
                     DigitActionDialog.show(

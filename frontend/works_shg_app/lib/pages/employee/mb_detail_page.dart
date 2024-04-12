@@ -104,16 +104,17 @@ class _MBDetailPageState extends State<MBDetailPage>
           orElse: () => const SizedBox.shrink(),
           loaded: (mbWorkFlow) {
             final g = mbWorkFlow.musterWorkFlowModel?.processInstances;
+            if ( g!=null && g?.first.nextActions != null) {
+              final data = g?.first.nextActions!.first.roles?.join(',');
 
-            final data = g?.first.nextActions!.first.roles?.join(',');
-
-            context.read<EmpHRMSBloc>().add(
-                  EmpHRMSLoadBlocEvent(
-                    isActive: true,
-                    roles: data ?? "",
-                    tenantId: 'od.testing',
-                  ),
-                );
+              context.read<EmpHRMSBloc>().add(
+                    EmpHRMSLoadBlocEvent(
+                      isActive: true,
+                      roles: data ?? "",
+                      tenantId: 'od.testing',
+                    ),
+                  );
+            }
           },
         );
       },

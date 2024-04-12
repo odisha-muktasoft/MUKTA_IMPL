@@ -28,7 +28,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedIndex = 0;
   var userIdController = TextEditingController();
 
   var userNameController = TextEditingController();
@@ -38,6 +37,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   bool autoValidation = false;
   bool phoneNumberAutoValidation = false;
   final FocusNode _numberFocus = FocusNode();
+  String selectTenantId = "";
 
   List<DigitRowCardModel> btns = [
     const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
@@ -56,9 +56,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     userIdController.clear();
     userNameController.clear();
     userPasswordController.clear();
-    setState(() {
-      _selectedIndex = _tabController.index;
-    });
+    setState(() {});
   }
 
   @override
@@ -85,9 +83,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     }
   }
 
-  Widget getLoginCard(
-    AppLocalizations t,
-    BuildContext loginContext, AppInitializationState data) {
+  Widget getLoginCard(AppLocalizations t, BuildContext loginContext,
+      AppInitializationState data) {
     return Center(
       child: Form(
         key: formKey,
@@ -128,14 +125,14 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 duration: Duration(
                     milliseconds: _tabController.index == 0 ? 100 : 100),
                 child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: _tabController, children: [
-                  cboLogin(loginContext),
-                  employeeLogin(
-                    t,loginContext, data,
-                      userName: userNameController,
-                      userpassword: userPasswordController)
-                ]),
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: [
+                      cboLogin(loginContext),
+                      employeeLogin(t, loginContext, data,
+                          userName: userNameController,
+                          userpassword: userPasswordController)
+                    ]),
               ),
               // btns.first.isSelected
               //     ? cboLogin(loginContext)
@@ -224,13 +221,23 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       },
                       child: DigitElevatedButton(
                         onPressed: () {
-                          context.read<AuthBloc>().add(
+                          if (userNameController.text!="" && userPasswordController.text!="" && selectTenantId!="" ) {
+                            context.read<AuthBloc>().add(
                                 AuthLoginEvent(
                                   userId: userNameController.text,
                                   password: userPasswordController.text,
                                   roleType: RoleType.employee,
+                                  tenantId: selectTenantId.toString(),
                                 ),
                               );
+                          } else {
+                            Notifiers.getToastMessage(
+                                  context,
+                                  AppLocalizations.of(context)
+                                      .translate(i18.common.allFieldsMandatory),
+                                  'ERROR');
+                          }
+                          
                         },
                         child: Center(
                           child: Text(AppLocalizations.of(loginContext)
@@ -334,14 +341,14 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 if (constraints.maxWidth < 720) {
                   return Center(
                     child: MobileView(
-                      getLoginCard(t,context, state),
+                      getLoginCard(t, context, state),
                       GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
                       logoBottomPosition: constraints.maxHeight / 8,
                       cardBottomPosition: constraints.maxHeight / 3,
                     ),
                   );
                 } else {
-                  return DesktopView(getLoginCard(t,context, state),
+                  return DesktopView(getLoginCard(t, context, state),
                       GlobalVariables.stateInfoListModel!.bannerUrl.toString());
                 }
               });
@@ -351,8 +358,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   }
 
   SizedBox employeeLogin(
-    AppLocalizations t,
-    BuildContext context, AppInitializationState data,
+      AppLocalizations t, BuildContext context, AppInitializationState data,
       {required TextEditingController userName,
       required TextEditingController userpassword}) {
     return SizedBox(
@@ -378,7 +384,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
             //  focusNode: _numberFocus,
             validator: (val) {
-              if (val!.trim().isEmpty || val!.trim().length != 10) {
+              if (val!.trim().isEmpty || val!.trim() == "") {
                 return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
               }
               return null;
@@ -386,14 +392,17 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             onChange: (value) {},
           ),
           DigitDropdown(
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  selectTenantId = value?.code ?? "";
+                });
+              },
               value: null,
               label: "City *",
               menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
               valueMapper: (value) {
                 // return value!.code!;
                 return t.translate(convertToTenant(value!.code!));
-                
               }),
           DigitIconButton(
             iconText: "Forgot Password?",
@@ -405,9 +414,11 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
   String convertToTenant(String input) {
-  List<String> parts = input.split('.');
-  String result = "TENANT_TENANTS_${parts.map((part) => part.toUpperCase()).join('_')}";
-  return result;
-}
+    List<String> parts = input.split('.');
+    String result =
+        "TENANT_TENANTS_${parts.map((part) => part.toUpperCase()).join('_')}";
+    return result;
+  }
 }

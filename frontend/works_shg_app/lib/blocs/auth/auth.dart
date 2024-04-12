@@ -40,7 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         "userType": event.roleType == RoleType.cbo ? 'CITIZEN' : 'EMPLOYEE',
         "tenantId": event.roleType == RoleType.cbo
             ? GlobalVariables.globalConfigObject?.globalConfigs?.stateTenantId
-            : "od.testing",
+            : event.tenantId,
         "scope": "read",
         "grant_type": "password"
       });
@@ -150,6 +150,7 @@ class AuthEvent with _$AuthEvent {
     required String userId,
     required String password,
     required RoleType roleType,
+    String? tenantId,
   }) = AuthLoginEvent;
 
   const factory AuthEvent.logout() = AuthLogoutEvent;

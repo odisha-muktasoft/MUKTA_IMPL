@@ -155,6 +155,7 @@ class Common {
   String get date=>"ES_COMMON_DATE";
   String get filter=>"ES_COMMON_FILTER";
   String get musterRollId=>"ES_COMMON_MUSTER_ROLL_ID";
+  String get allFieldsMandatory=>"ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS";
 }
 
 class Home {

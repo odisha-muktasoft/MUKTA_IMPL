@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password, RoleType roleType)
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
         login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
@@ -26,14 +27,18 @@ mixin _$AuthEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password, RoleType roleType)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password, RoleType roleType)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
@@ -87,7 +92,8 @@ abstract class _$$AuthLoginEventCopyWith<$Res> {
           _$AuthLoginEvent value, $Res Function(_$AuthLoginEvent) then) =
       __$$AuthLoginEventCopyWithImpl<$Res>;
   @useResult
-  $Res call({String userId, String password, RoleType roleType});
+  $Res call(
+      {String userId, String password, RoleType roleType, String? tenantId});
 }
 
 /// @nodoc
@@ -104,6 +110,7 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
     Object? userId = null,
     Object? password = null,
     Object? roleType = null,
+    Object? tenantId = freezed,
   }) {
     return _then(_$AuthLoginEvent(
       userId: null == userId
@@ -118,6 +125,10 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
           ? _value.roleType
           : roleType // ignore: cast_nullable_to_non_nullable
               as RoleType,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -126,7 +137,10 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
 
 class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
   const _$AuthLoginEvent(
-      {required this.userId, required this.password, required this.roleType});
+      {required this.userId,
+      required this.password,
+      required this.roleType,
+      this.tenantId});
 
   @override
   final String userId;
@@ -134,10 +148,12 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
   final String password;
   @override
   final RoleType roleType;
+  @override
+  final String? tenantId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthEvent.login(userId: $userId, password: $password, roleType: $roleType)';
+    return 'AuthEvent.login(userId: $userId, password: $password, roleType: $roleType, tenantId: $tenantId)';
   }
 
   @override
@@ -147,7 +163,8 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
       ..add(DiagnosticsProperty('type', 'AuthEvent.login'))
       ..add(DiagnosticsProperty('userId', userId))
       ..add(DiagnosticsProperty('password', password))
-      ..add(DiagnosticsProperty('roleType', roleType));
+      ..add(DiagnosticsProperty('roleType', roleType))
+      ..add(DiagnosticsProperty('tenantId', tenantId));
   }
 
   @override
@@ -159,11 +176,14 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.roleType, roleType) ||
-                other.roleType == roleType));
+                other.roleType == roleType) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userId, password, roleType);
+  int get hashCode =>
+      Object.hash(runtimeType, userId, password, roleType, tenantId);
 
   @JsonKey(ignore: true)
   @override
@@ -174,34 +194,39 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password, RoleType roleType)
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
         login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
   }) {
-    return login(userId, password, roleType);
+    return login(userId, password, roleType, tenantId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password, RoleType roleType)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) {
-    return login?.call(userId, password, roleType);
+    return login?.call(userId, password, roleType, tenantId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password, RoleType roleType)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
   }) {
     if (login != null) {
-      return login(userId, password, roleType);
+      return login(userId, password, roleType, tenantId);
     }
     return orElse();
   }
@@ -246,11 +271,13 @@ abstract class AuthLoginEvent implements AuthEvent {
   const factory AuthLoginEvent(
       {required final String userId,
       required final String password,
-      required final RoleType roleType}) = _$AuthLoginEvent;
+      required final RoleType roleType,
+      final String? tenantId}) = _$AuthLoginEvent;
 
   String get userId;
   String get password;
   RoleType get roleType;
+  String? get tenantId;
   @JsonKey(ignore: true)
   _$$AuthLoginEventCopyWith<_$AuthLoginEvent> get copyWith =>
       throw _privateConstructorUsedError;
@@ -302,7 +329,8 @@ class _$AuthLogoutEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password, RoleType roleType)
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
         login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
@@ -313,7 +341,9 @@ class _$AuthLogoutEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password, RoleType roleType)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) {
@@ -323,7 +353,9 @@ class _$AuthLogoutEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password, RoleType roleType)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
@@ -424,7 +456,8 @@ class _$AuthClearLoggedDetailsEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password, RoleType roleType)
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
         login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
@@ -435,7 +468,9 @@ class _$AuthClearLoggedDetailsEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password, RoleType roleType)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) {
@@ -445,7 +480,9 @@ class _$AuthClearLoggedDetailsEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password, RoleType roleType)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
