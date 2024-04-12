@@ -343,7 +343,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
       return false;
     }
     //To validate that if SOR is present it should have measures
-    if(data?.SORtable?.filter((ob) => ob?.sorCode && (!(ob?.currentMBEntry)))?.length > 0)
+    if(data?.SORtable?.filter((ob) => ob?.sorCode && (isCreateRevisionEstimate || isEditRevisionEstimate ? ob?.currentMBEntry < 0 : !(ob?.currentMBEntry)))?.length > 0)
     {
       setShowToast({ error: true, label: "ERR_MB_AMOUNT_IS_NOT_RIGHT_FOR_SOR" });
       setIsButtonDisabled(false);
