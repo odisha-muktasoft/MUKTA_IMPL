@@ -30,7 +30,9 @@ class CommonMBCard extends StatelessWidget {
             : CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          headLabel != null ? Text(headLabel!) : const SizedBox.shrink(),
+          headLabel != null ? Text(headLabel!,
+          style: DigitTheme.instance.mobileTheme.textTheme.headlineMedium,
+          ) : const SizedBox.shrink(),
           DigitTableCard(
             element: items,
           ),

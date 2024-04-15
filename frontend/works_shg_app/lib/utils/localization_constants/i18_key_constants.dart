@@ -392,6 +392,9 @@ class MeasurementBook{
   String get consumedQty=>"MB_CONSUMED_QUANT";
   String get mbStatus=>"MB_STATUS";
   String get mbHistory=>"MB_HISTORY";
+  String get  workOrderNumber=>"MB_SEARCH_REFERENCE_NUMBER";
+  String get measurementPeriod=>"MB_MEASUREMENT_PERIOD";
+
   // I updated
   String get totalSorAmount=>"MB_TOTAL_SOR_AMT";
   String get forCurrentEntry=>"MB_FOR_CURRENT_ENTRY";

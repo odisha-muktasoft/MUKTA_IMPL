@@ -2,10 +2,12 @@ import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
@@ -104,7 +106,7 @@ class _MBDetailPageState extends State<MBDetailPage>
           orElse: () => const SizedBox.shrink(),
           loaded: (mbWorkFlow) {
             final g = mbWorkFlow.musterWorkFlowModel?.processInstances;
-            if ( g!=null && g?.first.nextActions != null) {
+            if ( g!=null && g?.first.nextActions != null && g.first.nextActions!.isNotEmpty) {
               final data = g?.first.nextActions!.first.roles?.join(',');
 
               context.read<EmpHRMSBloc>().add(
@@ -281,16 +283,22 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   //         ?.officerInChargeDesgn ??
                                   //     "NA",
                                   t.translate(
-                                      i18.common
-                                          .commonWorkflowStates): t.translate(
+                                      i18.measurementBook
+                                          .workOrderNumber): t.translate(
                                       "MB_WFMB_STATE_${value.data.first.wfStatus!}"),
-                                  t.translate(i18.measurementBook.mbAmount):
-                                      value.data.first.totalAmount != null
-                                          ? double.parse((value
-                                                  .data.first.totalAmount!
-                                                  .toDouble())
-                                              .toStringAsFixed(2))
-                                          : 0.0,
+                                  // t.translate(i18.measurementBook.mbAmount):
+                                  //     value.data.first.totalAmount != null
+                                  //         ? double.parse((value
+                                  //                 .data.first.totalAmount!
+                                  //                 .toDouble())
+                                  //             .toStringAsFixed(2))
+                                  //         : 0.0,
+                                  t.translate(i18.measurementBook.measurementPeriod):
+                                      value.data.first.entryDate != null
+                                          ?DateFormat('dd/MM/yyyy').format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              value.data.first.entryDate!))
+                                          : "NA",
                                   t.translate(i18.common.musterRollId):
                                       value.data.first.musterRollNumber,
                                   // "SLA Days remaining": 2,
@@ -303,7 +311,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       MBHistoryBookRoute(
                                         contractNumber: widget.contractNumber,
                                         mbNumber: widget.mbNumber,
-                                        tenantId: widget.tenantId,
+                                        tenantId: widget.tenantId??"od.testing",
                                       ),
                                     );
                                   },
