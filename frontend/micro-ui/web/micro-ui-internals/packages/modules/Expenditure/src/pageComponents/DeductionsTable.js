@@ -359,7 +359,7 @@ const DeductionsTable = ({control,watch,...props}) => {
     if(isHeadCodesLoading && !HeadCodes?.length>0) return <Loader />
 
     return (
-        <table className='table reports-table sub-work-table' style={{ marginTop: "-2rem" }}>
+        <table className='table reports-table sub-work-table'>
             <thead>
                 <tr>{renderHeader()}</tr>
             </thead>

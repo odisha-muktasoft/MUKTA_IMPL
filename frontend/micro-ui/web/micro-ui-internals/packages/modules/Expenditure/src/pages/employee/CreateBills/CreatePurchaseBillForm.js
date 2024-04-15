@@ -45,8 +45,12 @@ const CreatePurchaseBillForm = ({
         () => Digit.Utils.preProcessMDMSConfig(t, createPurchaseBillConfig, {
             updateDependent : [
               {
+                  key : 'invoiceDetails_organisationType',
+                  value : [preProcessData?.organisationTypes]
+              },
+              {
                   key : 'invoiceDetails_vendor',
-                  value : [preProcessData?.nameOfVendor]
+                  value : [sessionFormData?.invoiceDetails_organisationType?.code === "CBO" ? preProcessData?.nameOfCbo : preProcessData?.nameOfVendor]
               },
               {
                 key : 'basicDetails_purchaseBillNumber',
@@ -62,7 +66,7 @@ const CreatePurchaseBillForm = ({
               },
             ]
           }),
-      [preProcessData?.nameOfVendor]);
+      [preProcessData?.nameOfVendor, preProcessData?.nameOfCbo, sessionFormData?.invoiceDetails_organisationType]);
 
     const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
         if (!_.isEqual(sessionFormData, formData)) {
@@ -75,6 +79,12 @@ const CreatePurchaseBillForm = ({
             if(formData.invoiceDetails_materialCost) {
                 let gstAmount = formData.invoiceDetails_gst ? formData.invoiceDetails_gst : 0;
                 setValue("billDetails_billAmt", parseInt(formData.invoiceDetails_materialCost)+parseInt(gstAmount));
+            }
+
+            if(difference?.invoiceDetails_organisationType)
+            {
+                setValue("invoiceDetails_vendor", '');
+                setValue("invoiceDetails_vendorId", undefined);  
             }
 
             if(formData.billDetails_billAmt) {
@@ -271,9 +281,11 @@ const CreatePurchaseBillForm = ({
                         showNavs={createPurchaseBillConfig?.metaData?.showNavs}
                         showFormInNav={true}
                         showMultipleCardsWithoutNavs={false}
-                        showMultipleCardsInNavs={false}
+                        showMultipleCardsInNavs={true}
                         horizontalNavConfig={navConfig}
                         onFormValueChange={onFormValueChange}
+                        sectionHeadStyle={{ marginTop: "2rem", marginBottom : "2rem" }}
+                        labelBold={true}
                         cardClassName = "mukta-header-card"
                     />)
                 }
