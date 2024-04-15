@@ -124,7 +124,8 @@ export const createBillPayload = (data, contract,  docConfigData,workflowDetails
                 "orgName":contract.additionalDetails.orgName,
                 "projectName":contract.additionalDetails.projectName,
                 "invoiceDate": convertDateToEpoch(data?.invoiceDetails_invoiceDate),
-                "mbValidationData" : MBValidationData
+                "mbValidationData" : MBValidationData,
+                "organisationType" : data?.invoiceDetails_organisationType,
             },
             "documents": fetchDocuments(
               data?.uploadedDocs,

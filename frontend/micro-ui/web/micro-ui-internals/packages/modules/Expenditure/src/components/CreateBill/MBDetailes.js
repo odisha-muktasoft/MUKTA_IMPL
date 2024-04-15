@@ -42,7 +42,7 @@ const MBDetailes = ({ formdata }) => {
   let rowStyle = window?.location.href.includes("create-purchase-bill") ? {marginRight:"9%"} : {}
  
   return (
-        <div style={{marginTop:"2rem", marginBottom:"2rem"}}>
+        <div style={{ marginBottom:"2rem"}}>
         {!isMeasurementLoading && allMeasurementsIds && !(allMeasurementsIds?.length > 0) && <CitizenInfoLabel textStyle={{color:"#505A5F"}} fill={"#D4351C"} style={{marginBottom:"2rem", maxWidth:"40%",backgroundColor:"#EFC7C1"}} info={t("WORKS_PB_INFO")} text={t("WORKS_INFO_MB_NOT_CREATED")} />}
         <StatusTable>
         <Row className="border-none" label={t("WORKS_MB_NUMBERS")} amountStyle={{overflow:"auto", whiteSpace:"nowrap", marginBottom:"-15px"}} text={allMeasurementsIds?.length > 0 ? getMBLinks(allMeasurementsIds, tenantId, workOrderNumber, history) : "NA"} textStyle={{ overflow:"hidden", width:"40%", marginRight:window.location.href.includes("create-purchase-bill")? "29%" : "20%" }} />

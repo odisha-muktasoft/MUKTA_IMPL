@@ -74,6 +74,7 @@ export const updateDefaultValues = ({t, tenantId, configs, findCurrentDate, isMo
     configs.defaultValues.invoiceDetails_vendor =  isModify ? { code: org?.id, name: org?.name, orgNumber: org?.orgNumber} : ""
     configs.defaultValues.invoiceDetails_invoiceNumber = bill?.additionalDetails?.invoiceNumber || ""
     configs.defaultValues.invoiceDetails_invoiceDate = bill?.billDate ? Digit.DateUtils.ConvertTimestampToDate(bill?.billDate, 'yyyy-MM-dd') : ""
+    configs.defaultValues.invoiceDetails_organisationType = { code : "CBO", name : "CBO" }
 
     if(isModify) {
       
@@ -91,6 +92,7 @@ export const updateDefaultValues = ({t, tenantId, configs, findCurrentDate, isMo
     configs.defaultValues.deductionDetails = setDeductionTableData(bill,charges,t)
     configs.defaultValues.invoiceDetails_gst = setGSTCost(bill)
     configs.defaultValues.invoiceDetails_materialCost = setMaterialCost(bill)
+    configs.defaultValues.invoiceDetails_organisationType = bill?.additionalDetails?.organisationType || { code : "VEN", name : "Vendor" }
     
     }
     setSessionFormData({...sessionFormData, ...configs?.defaultValues});
