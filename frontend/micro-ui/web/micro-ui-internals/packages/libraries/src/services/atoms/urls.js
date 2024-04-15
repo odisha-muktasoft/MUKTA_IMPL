@@ -93,11 +93,11 @@ const Urls = {
   },
 expense:{
   createPayment: "/expense/payment/v1/_create",
-  searchPayment: "/ifms/pi/v1/_search",
+  searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
   updatePayment: "/expense/payment/v1/_update",
   regenerate : '/egov-pdf/bill/_generate',
   searchPaymentWMS:"/wms/ifms-pi/_search",
-  updatePI:"/ifms/pi/v1/_create",
+  updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
   searchPA:"/expense/payment/v1/_search"
 
 },
