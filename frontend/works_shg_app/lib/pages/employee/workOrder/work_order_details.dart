@@ -62,6 +62,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
                   callback: () {
                     // context.router.popUntilRouteWithPath('home') ;
                     // context.router.push(const WorkOrderRoute());
+                    context.router.pop();
                   },
                 ),
                 CommonWidgets.downloadButton(

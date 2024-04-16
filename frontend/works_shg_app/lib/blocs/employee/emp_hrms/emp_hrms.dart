@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/data/repositories/employee_repository/emp_hrms.dart';
 import 'package:works_shg_app/services/urls.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../models/employee/mb/role_based_hrms.dart';
@@ -31,7 +32,7 @@ class EmpHRMSBloc extends Bloc<EmpHRMSBlocEvent, EmpHRMsState> {
           queryParameters: {
             "roles": event.roles.toString(),
             "isActive": true,
-            "tenantId": "od.testing",
+            "tenantId": GlobalVariables.tenantId,
           });
 
       emit(

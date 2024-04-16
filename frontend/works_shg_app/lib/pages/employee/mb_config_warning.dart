@@ -9,6 +9,7 @@ import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/mb/multi_image.dart';
@@ -72,7 +73,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
             context.read<MusterGetWorkflowBloc>().add(
                   //hard coded
                   FetchMBWorkFlowEvent(
-                      tenantId: 'od.testing', mbNumber: widget.mbNumber!),
+                      tenantId: GlobalVariables.tenantId!, mbNumber: widget.mbNumber!),
                 );
             context.read<MeasurementDetailBloc>().add(
                   MeasurementDetailBookBlocEvent(

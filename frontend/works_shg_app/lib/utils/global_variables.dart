@@ -106,6 +106,7 @@ class GlobalVariables {
   static Map<String, dynamic>? userRequestModel;
   static Map<String, String> downloadUrl = {};
   static RoleType roleType= RoleType.none;
+  static String? tenantId;
 }
 
 PackageInfo? packageInfo;

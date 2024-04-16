@@ -56,12 +56,12 @@ class _MBDetailPageState extends State<MBDetailPage>
     context.read<MusterGetWorkflowBloc>().add(
           //hard coded
           FetchMBWorkFlowEvent(
-              tenantId: 'od.testing', mbNumber: widget.mbNumber),
+              tenantId: widget.tenantId!, mbNumber: widget.mbNumber),
         );
 
     context.read<MeasurementDetailBloc>().add(
           MeasurementDetailBookBlocEvent(
-            tenantId: '',
+            tenantId: widget.tenantId!,
             contractNumber: widget.contractNumber,
             measurementNumber: widget.mbNumber,
           ),
@@ -113,7 +113,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     EmpHRMSLoadBlocEvent(
                       isActive: true,
                       roles: data ?? "",
-                      tenantId: 'od.testing',
+                      tenantId: widget.tenantId!,
                     ),
                   );
             }
@@ -311,7 +311,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       MBHistoryBookRoute(
                                         contractNumber: widget.contractNumber,
                                         mbNumber: widget.mbNumber,
-                                        tenantId: widget.tenantId??"od.testing",
+                                        tenantId: widget.tenantId,
                                       ),
                                     );
                                   },

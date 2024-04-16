@@ -56,7 +56,7 @@ class CoreRepository {
         }
       }
       // testing
-      request.fields['tenantId'] = "od.testing";
+      request.fields['tenantId'] = GlobalVariables.tenantId!;
       request.fields['module'] = moduleName;
       await request.send().then((response) async {
         if (response.statusCode == 201) {

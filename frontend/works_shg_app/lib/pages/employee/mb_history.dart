@@ -180,11 +180,11 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   onPressed: () {
                                     context.router.push(
                                       SHGInboxRoute(
-                                        tenantId: "od.testing",
+                                        tenantId: widget.tenantId!,
                                         musterRollNo: k[adjustedIndex]
                                             .musterRollNumber
                                             .toString(),
-                                        sentBackCode: Constants.sentBack,
+                                        sentBackCode: "PENDINGFORCORRECTION"??Constants.sentBack,
                                       ),
                                     );
                                   },

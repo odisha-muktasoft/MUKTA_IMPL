@@ -398,7 +398,7 @@ mixin _$WorkOrderInboxState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -407,7 +407,7 @@ mixin _$WorkOrderInboxState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -415,7 +415,7 @@ mixin _$WorkOrderInboxState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -504,7 +504,7 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -516,7 +516,7 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -527,7 +527,7 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -619,7 +619,7 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -631,7 +631,7 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -642,7 +642,7 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -700,9 +700,9 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({MBInboxResponse mbInboxResponse, bool isLoading});
+  $Res call({WOInboxResponse mbInboxResponse, bool isLoading});
 
-  $MBInboxResponseCopyWith<$Res> get mbInboxResponse;
+  $WOInboxResponseCopyWith<$Res> get mbInboxResponse;
 }
 
 /// @nodoc
@@ -722,7 +722,7 @@ class __$$_LoadedCopyWithImpl<$Res>
       null == mbInboxResponse
           ? _value.mbInboxResponse
           : mbInboxResponse // ignore: cast_nullable_to_non_nullable
-              as MBInboxResponse,
+              as WOInboxResponse,
       null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -732,8 +732,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
   @override
   @pragma('vm:prefer-inline')
-  $MBInboxResponseCopyWith<$Res> get mbInboxResponse {
-    return $MBInboxResponseCopyWith<$Res>(_value.mbInboxResponse, (value) {
+  $WOInboxResponseCopyWith<$Res> get mbInboxResponse {
+    return $WOInboxResponseCopyWith<$Res>(_value.mbInboxResponse, (value) {
       return _then(_value.copyWith(mbInboxResponse: value));
     });
   }
@@ -745,7 +745,7 @@ class _$_Loaded extends _Loaded {
   const _$_Loaded(this.mbInboxResponse, this.isLoading) : super._();
 
   @override
-  final MBInboxResponse mbInboxResponse;
+  final WOInboxResponse mbInboxResponse;
   @override
   final bool isLoading;
 
@@ -779,7 +779,7 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -791,7 +791,7 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return loaded?.call(mbInboxResponse, isLoading);
@@ -802,7 +802,7 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -852,10 +852,10 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends WorkOrderInboxState {
   const factory _Loaded(
-      final MBInboxResponse mbInboxResponse, final bool isLoading) = _$_Loaded;
+      final WOInboxResponse mbInboxResponse, final bool isLoading) = _$_Loaded;
   const _Loaded._() : super._();
 
-  MBInboxResponse get mbInboxResponse;
+  WOInboxResponse get mbInboxResponse;
   bool get isLoading;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
@@ -926,7 +926,7 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)
+    required TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -938,7 +938,7 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult? Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -949,7 +949,7 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(MBInboxResponse mbInboxResponse, bool isLoading)? loaded,
+    TResult Function(WOInboxResponse mbInboxResponse, bool isLoading)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {

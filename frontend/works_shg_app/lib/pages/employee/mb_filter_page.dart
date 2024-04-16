@@ -7,6 +7,7 @@ import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'
     as statusMap;
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
@@ -159,9 +160,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   ward.isNotEmpty) {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       // "status": workflow
                                                       //     .map((e) => e.statusid!)
                                                       //     .toList(),
@@ -180,9 +181,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   ward.isEmpty) {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       "status": workflow
                                                           .map((e) =>
                                                               e.statusid!)
@@ -201,9 +202,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               } else {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       "status": workflow
                                                           .map((e) =>
                                                               e.statusid!)
@@ -251,9 +252,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   projectName.text == "") {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       // "status": workflow
                                                       //     .map((e) => e.statusid!)
                                                       //     .toList(),
@@ -274,9 +275,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   projectName.text == "") {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       "projectId":
                                                           projectId.text,
                                                     },
@@ -294,9 +295,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   projectName.text != "") {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       "projectType":
                                                           projectName.text,
                                                     },
@@ -312,9 +313,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               } else {
                                                 s = {
                                                   "inbox": {
-                                                    "tenantId": "od.testing",
+                                                    "tenantId": GlobalVariables.tenantId,
                                                     "moduleSearchCriteria": {
-                                                      "tenantId": "od.testing",
+                                                      "tenantId": GlobalVariables.tenantId,
                                                       "measurementNumber":
                                                           mbNumber.text,
                                                       "projectId":

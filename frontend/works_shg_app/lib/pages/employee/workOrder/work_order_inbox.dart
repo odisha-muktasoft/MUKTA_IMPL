@@ -1,8 +1,10 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
@@ -35,7 +37,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
             limit: 10,
             moduleName: 'contract-service',
             offset: pageCount,
-            tenantId: 'od.testing',
+            tenantId: GlobalVariables.tenantId!,
           ),
         );
     super.initState();
@@ -64,7 +66,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
             limit: 10,
             moduleName: 'measurement-module',
             offset: s,
-            tenantId: 'od.testing',
+            tenantId: GlobalVariables.tenantId!,
           ),
         );
 
@@ -136,11 +138,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Back(
-                                  // widget: null,
                                   callback: () {
-                                    context.router.navigateBack();
-                                    // Navigator.of(context).pop();
-                                    //context.router.push(const HomeRoute());
+                                    context.router.pop();
                                   },
                                 ),
                                 Padding(
@@ -198,6 +197,14 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 onPressed: () {
                                   context.router
                                       .push(const WorkOrderDetailRoute());
+                                  // final contract = value
+                                  //         .mbInboxResponse
+                                  //         .items?[index]
+                                  //         .woBusinessObject
+                                  //         ?.contractNumber ??
+                                  //     "";
+                                  // context.router.push(ViewWorkDetailsRoute(
+                                  //     contractNumber: contract!));
                                 },
                               ),
                               widget2: Padding(
@@ -205,19 +212,17 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 child: DigitElevatedButton(
                                   child: const Text("Create Measurement Book"),
                                   onPressed: () {
-                                    final contract=value
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.contract?.contractNumber??"";
-                                   final mbNumber=    value
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.measurementNumber ??
-                                    "";
+                                    final contract = value
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .woBusinessObject
+                                            ?.contractNumber ??
+                                        "";
+
                                     context.router.push(MBDetailRoute(
-                                        contractNumber: contract, mbNumber: mbNumber));
+                                        contractNumber: contract,
+                                        mbNumber: "",
+                                        tenantId: GlobalVariables.tenantId));
                                   },
                                 ),
                               ),
@@ -225,18 +230,44 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 "Work Order Number": value
                                         .mbInboxResponse
                                         .items?[index]
-                                        .businessObject
-                                        ?.measurementNumber ??
+                                        .woBusinessObject
+                                        ?.contractNumber ??
                                     "",
-                                "Project Description":
-                                    "Wall Painting in Ward 1",
-                                "CBO Name": "SHG group-C#1",
-                                "CBO Role": "Pending for verification",
-                                "Officer In-charge name": "240000",
-                                "Start Date": index + 1,
-                                "End Date": index + 1,
-                                "Work value(Rs)": 240000,
-                                "Status": "Approved"
+                                "Project Description": value
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .woBusinessObject
+                                        ?.woAdditionalDetails
+                                        ?.projectName ??
+                                    "",
+                                "CBO Name": value
+                                        .mbInboxResponse
+                                        .items?[index]
+                                        .woBusinessObject
+                                        ?.woAdditionalDetails
+                                        ?.orgName ??
+                                    "",
+                                // "CBO Role": "Pending for verification",
+                                // "Officer In-charge name": "240000",
+                                // "Start Date": value.mbInboxResponse
+                                //         .items?[index]
+                                //         .woBusinessObject?. != null
+                                //           ?DateFormat('dd/MM/yyyy').format(
+                                //           DateTime.fromMillisecondsSinceEpoch(
+                                //               value.mbInboxResponse
+                                //         .items?[index]
+                                //         .woBusinessObject?))
+                                //           : "NA",
+                                //"End Date": index + 1,
+                                "Work value (Rs)":
+                                    NumberFormat('##,##,##,##,###').format(value
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .woBusinessObject
+                                            ?.totalContractedAmount ??
+                                        0),
+                                "Status": t.translate(
+                                    "MB_WFMB_STATE_${value.mbInboxResponse.items?[index].processInstance?.state?.state.toString()}")
                               },
                             );
                           },

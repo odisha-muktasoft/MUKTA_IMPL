@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:works_shg_app/data/repositories/employee_repository/work_order.dart';
+import 'package:works_shg_app/models/employee/work_order/wo_inbox_response.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
-import '../../../data/repositories/employee_repository/mb.dart';
-import '../../../models/employee/mb/mb_inbox_response.dart';
 import '../../../services/urls.dart';
 part 'workorder_book.freezed.dart';
 
@@ -27,11 +28,11 @@ class WorkOrderInboxBloc
         emit(const WorkOrderInboxState.loading());
       }
 
-      final MBInboxResponse res = await MBRepository(client.init())
-          .fetchMbInbox(url: Urls.measurementService.measurementInbox, body: {
+      final WOInboxResponse res = await WORepository(client.init())
+          .fetchWoInbox(url: Urls.measurementService.measurementInbox, body: {
         "inbox": {
-          "tenantId": "od.testing",
-          "moduleSearchCriteria": {"tenantId": "od.testing"},
+          "tenantId": GlobalVariables.tenantId,
+          "moduleSearchCriteria": {"tenantId": GlobalVariables.tenantId},
           "processSearchCriteria": {
             "businessService": ["CONTRACT","CONTRACT-REVISION"],
             "moduleName": "contract-service"
@@ -49,7 +50,7 @@ class WorkOrderInboxBloc
             return null;
           },
           loaded: (value) {
-            List<ItemData> data = [];
+            List<WOItemData> data = [];
             data.addAll(value.mbInboxResponse.items ?? []);
             data.addAll(res.items!);
 
@@ -86,7 +87,7 @@ class WorkOrderInboxState with _$WorkOrderInboxState {
 
   const factory WorkOrderInboxState.initial() = _Initial;
   const factory WorkOrderInboxState.loading() = _Loading;
-  const factory WorkOrderInboxState.loaded(MBInboxResponse mbInboxResponse,
+  const factory WorkOrderInboxState.loaded(WOInboxResponse mbInboxResponse,
   bool isLoading
   ) =
       _Loaded;

@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
@@ -70,12 +71,12 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             limit: 10,
             moduleName: 'measurement-module',
             offset: pageCount,
-            tenantId: 'od.testing',
+            tenantId: GlobalVariables.tenantId!,
           ),
         );
 
     context.read<WageSeekerLocationBloc>().add(
-          const LocationEventWageSeeker(tenantId: "od.testing"),
+           LocationEventWageSeeker(tenantId:  GlobalVariables.tenantId!),
         );
     _scrollController.addListener(_scrollListener);
 
@@ -109,7 +110,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   limit: 10,
                   moduleName: 'measurement-module',
                   offset: s,
-                  tenantId: 'od.testing',
+                  tenantId:  GlobalVariables.tenantId!,
                 ),
               );
         } else {
@@ -119,7 +120,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   limit: 10,
                   moduleName: 'measurement-module',
                   offset: s,
-                  tenantId: 'od.testing',
+                  tenantId:  GlobalVariables.tenantId!,
                 ),
               );
         }
@@ -292,7 +293,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                                   'measurement-module',
                                                               offset: pageCount,
                                                               tenantId:
-                                                                  'od.testing',
+                                                                   GlobalVariables.tenantId!,
                                                             ),
                                                           );
                                                     },
@@ -386,7 +387,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           "";
                                       context.router.push(MBDetailRoute(
                                           contractNumber: contract,
-                                          mbNumber: mbNumber));
+                                          mbNumber: mbNumber,
+                                          tenantId: GlobalVariables.tenantId
+                                          ));
                                     },
                                   ),
                                 ),

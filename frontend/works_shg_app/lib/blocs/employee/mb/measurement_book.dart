@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
@@ -30,11 +31,11 @@ class MeasurementInboxBloc
         emit(const MeasurementInboxState.loading());
       }
 
-      final s = {
+     final   s = {
         "inbox": {
-          "tenantId": "od.testing",
+          "tenantId": GlobalVariables.tenantId,
           "moduleSearchCriteria": {
-            "tenantId": "od.testing",
+            "tenantId": GlobalVariables.tenantId,
             // "status":["1f4fa87c-b299-4adf-8691-409bf0b8e164",],
             //  "status":[],
             // "ward":[],

@@ -49,6 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           event.roleType == RoleType.cbo ? RoleType.cbo : RoleType.employee;
       GlobalVariables.authToken = userDetailsModel.access_token;
       GlobalVariables.uuid = userDetailsModel.userRequestModel?.uuid;
+      GlobalVariables.tenantId=userDetailsModel.userRequestModel?.tenantId;
       GlobalVariables.userRequestModel =
           jsonDecode(jsonEncode(userDetailsModel.userRequestModel));
       if (kIsWeb) {

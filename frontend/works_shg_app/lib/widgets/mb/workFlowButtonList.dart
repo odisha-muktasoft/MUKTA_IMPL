@@ -2,6 +2,7 @@ import 'package:digit_components/widgets/digit_outline_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
@@ -72,7 +73,7 @@ class CommonButtonCard extends StatelessWidget {
                                                 "EDIT/RE-SUBMIT"
                                             ? data ?? "MB_VERIFIER"
                                             : "MB_VERIFIER",
-                                    tenantId: 'od.testing',
+                                    tenantId:  GlobalVariables.tenantId!,
                                   ),
                                 );
                             // Navigator.of(

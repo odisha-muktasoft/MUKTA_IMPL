@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
@@ -47,7 +48,7 @@ class MeasurementDetailBloc
         // "measurementNumber": "MB/2023-24/000214",
         // "key": "View",
         "contractNumber": event.contractNumber,
-        "tenantId": "od.testing",
+        "tenantId": GlobalVariables.tenantId,
         "measurementNumber": event.measurementNumber,
         "key": "View",
       });
