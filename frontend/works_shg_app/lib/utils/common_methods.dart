@@ -149,15 +149,16 @@ class CommonMethods {
   }
 
   void onTapOfAttachment(
-      FileStoreModel store, String tenantId, BuildContext context,{  RoleType roleType=RoleType.cbo}) async {
+      FileStoreModel store, String tenantId, BuildContext context,
+      {RoleType roleType = RoleType.cbo}) async {
     var random = Random();
     List<FileStoreModel>? file = await CoreRepository().fetchFiles(
-        [store.fileStoreId.toString()],
-       roleType== RoleType.cbo?
-         GlobalVariables.organisationListModel!.organisations!.first.tenantId
-             .toString():
-        tenantId,
-            );
+      [store.fileStoreId.toString()],
+      roleType == RoleType.cbo
+          ? GlobalVariables.organisationListModel!.organisations!.first.tenantId
+              .toString()
+          : tenantId,
+    );
     var fileName = CommonMethods.getExtension(file!.first.url.toString());
     CoreRepository().fileDownload(file.first.url.toString(),
         '${random.nextInt(200)}${random.nextInt(100)}$fileName');
@@ -198,7 +199,7 @@ class CommonMethods {
   static getConvertedLocalizedCode(String type, {String subString = ''}) {
     switch (type) {
       case 'city':
-        return GlobalVariables
+        return GlobalVariables.tenantId ?? GlobalVariables
             .organisationListModel!.organisations!.first.tenantId
             .toString()
             .toUpperCase()
@@ -206,16 +207,14 @@ class CommonMethods {
 
       case 'ward':
       case 'locality':
-        return '${GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString().toUpperCase().replaceAll('.', '_')}_ADMIN_${subString.toUpperCase()}';
+        return '${GlobalVariables.tenantId ?? GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString().toUpperCase().replaceAll('.', '_')}_ADMIN_${subString.toUpperCase()}';
     }
   }
 
   static String getLocaleModules() {
-   return  GlobalVariables.roleType==RoleType.cbo?
-
-
-     'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString()},rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}'
-  :  'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}';
+    return GlobalVariables.roleType == RoleType.cbo
+        ? 'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString()},rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}'
+        : 'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}';
   }
 
   static DateTime firstDayOfWeek(DateTime date) {
@@ -239,16 +238,16 @@ class CommonMethods {
     return endDayOfWeek;
   }
 
+  Future<String> loadImg(String storeId, String tenantId,
+      {RoleType roleType = RoleType.cbo}) async {
+    List<FileStoreModel>? file = await CoreRepository().fetchFiles(
+      [storeId.toString()],
+      roleType == RoleType.cbo
+          ? GlobalVariables.organisationListModel!.organisations!.first.tenantId
+              .toString()
+          : tenantId,
+    );
 
-Future<String> loadImg(String storeId, String tenantId,{  RoleType roleType=RoleType.cbo})async {
-  List<FileStoreModel>? file = await CoreRepository().fetchFiles(
-        [storeId.toString()],
-       roleType== RoleType.cbo?
-         GlobalVariables.organisationListModel!.organisations!.first.tenantId
-             .toString():
-        tenantId,
-            );
-
-return file!=null? file.first.url! : "";
-}
+    return file != null ? file.first.url! : "";
+  }
 }

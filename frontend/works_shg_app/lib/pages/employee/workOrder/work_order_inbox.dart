@@ -15,6 +15,8 @@ import '../../../widgets/Back.dart';
 import '../../../widgets/SideBar.dart';
 import '../../../widgets/mb/text_button_underline.dart';
 import '../../../widgets/work_order/work_order_card.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class WorkOderInboxPage extends StatefulWidget {
   const WorkOderInboxPage({super.key});
@@ -89,7 +91,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   return const SizedBox.shrink();
                 },
                 loaded: (value) {
-                  if (value.mbInboxResponse.items!.length > 19) {
+                  if (value.contracts!.length > 19) {
                     return DigitIconButton(
                       iconText: "Back to top",
                       onPressed: () {
@@ -145,7 +147,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "Work Order Inbox (${value.mbInboxResponse.items?.length ?? 0})",
+                                    "Work Order Inbox (${value.contracts?.length ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
                                   ),
@@ -180,9 +182,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                           (BuildContext context, int index) {
                             if (index ==
                                     (value.isLoading
-                                        ? value.mbInboxResponse!.items!.length
-                                        : value.mbInboxResponse!.items!.length -
-                                            1) &&
+                                        ? value.contracts!.length
+                                        : value.contracts!.length - 1) &&
                                 value.isLoading) {
                               return Container(
                                 padding: const EdgeInsets.all(16.0),
@@ -195,16 +196,14 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               widget1: CommonTextButtonUnderline(
                                 label: 'View Details',
                                 onPressed: () {
-                                  context.router
-                                      .push(const WorkOrderDetailRoute());
-                                  // final contract = value
-                                  //         .mbInboxResponse
-                                  //         .items?[index]
-                                  //         .woBusinessObject
-                                  //         ?.contractNumber ??
-                                  //     "";
-                                  // context.router.push(ViewWorkDetailsRoute(
-                                  //     contractNumber: contract!));
+                                  // context.router
+                                  //     .push(const WorkOrderDetailRoute());
+                                  context.router.push(ViewWorkDetailsRoute(
+                                    contractNumber: value.contracts![index]
+                                            ?.contractNumber ??
+                                        "",
+                                    wfStatus: "ACCEPTED",
+                                  ));
                                 },
                               ),
                               widget2: Padding(
@@ -212,68 +211,138 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 child: DigitElevatedButton(
                                   child: const Text("Create Measurement Book"),
                                   onPressed: () {
-                                    final contract = value
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .woBusinessObject
-                                            ?.contractNumber ??
+                                    // DigitActionDialog.show(context,
+                                    //     widget: Center(
+                                    //       child: Column(
+                                    //         mainAxisSize: MainAxisSize.min,
+                                    //         children: [
+                                    //           Padding(
+                                    //             padding: const EdgeInsets.only(
+                                    //                 bottom: 8.0),
+                                    //             child: DigitOutlineIconButton(
+                                    //               buttonStyle: OutlinedButton.styleFrom(
+                                    //                   minimumSize: Size(
+                                    //                       MediaQuery.of(context)
+                                    //                               .size
+                                    //                               .width /
+                                    //                           2.8,
+                                    //                       50),
+                                    //                   shape:
+                                    //                       const RoundedRectangleBorder(),
+                                    //                   side: BorderSide(
+                                    //                       color:
+                                    //                           const DigitColors()
+                                    //                               .burningOrange,
+                                    //                       width: 1)),
+                                    //               onPressed: () {
+                                    //                 Navigator.of(context,
+                                    //                         rootNavigator: true)
+                                    //                     .pop();
+                                    //               },
+                                    //               label: AppLocalizations.of(
+                                    //                       context)
+                                    //                   .translate(i18.home
+                                    //                       .manageWageSeekers),
+                                    //               icon: Icons.fingerprint,
+                                    //               textStyle: const TextStyle(
+                                    //                   fontWeight:
+                                    //                       FontWeight.w700,
+                                    //                   fontSize: 18),
+                                    //             ),
+                                    //           ),
+                                    //           DigitOutlineIconButton(
+                                    //             label: AppLocalizations.of(
+                                    //                     context)
+                                    //                 .translate(i18.workOrder
+                                    //                     .requestTimeExtension),
+                                    //             icon: Icons
+                                    //                 .calendar_today_rounded,
+                                    //             buttonStyle: OutlinedButton.styleFrom(
+                                    //                 minimumSize: Size(
+                                    //                     MediaQuery.of(context)
+                                    //                             .size
+                                    //                             .width /
+                                    //                         2.8,
+                                    //                     50),
+                                    //                 shape:
+                                    //                     const RoundedRectangleBorder(),
+                                    //                 side: BorderSide(
+                                    //                     color:
+                                    //                         const DigitColors()
+                                    //                             .burningOrange,
+                                    //                     width: 1)),
+                                    //             onPressed: () {
+                                    //               Navigator.of(context,
+                                    //                       rootNavigator: true)
+                                    //                   .pop();
+                                    //             },
+                                    //             textStyle: const TextStyle(
+                                    //                 fontWeight: FontWeight.w700,
+                                    //                 fontSize: 18),
+                                    //           )
+                                    //         ],
+                                    //       ),
+                                    //     ));
+
+                                    final contract = value.contracts?[index]
+                                            .contractNumber ??
                                         "";
 
                                     context.router.push(MBDetailRoute(
-                                        contractNumber: contract,
-                                        mbNumber: "",
-                                        tenantId: GlobalVariables.tenantId));
+                                      contractNumber: contract,
+                                      mbNumber: "",
+                                      tenantId: GlobalVariables.tenantId,
+                                    ));
                                   },
                                 ),
                               ),
                               items: {
-                                "Work Order Number": value
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .woBusinessObject
-                                        ?.contractNumber ??
+                                "Work Order Number":
+                                    value.contracts?[index].contractNumber ??
+                                        "",
+                                "Project Description": value.contracts?[index]
+                                        .additionalDetails?.projectDesc ??
                                     "",
-                                "Project Description": value
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .woBusinessObject
-                                        ?.woAdditionalDetails
-                                        ?.projectName ??
+                                "CBO Name": value.contracts?[index]
+                                        ?.additionalDetails?.cboName ??
                                     "",
-                                "CBO Name": value
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .woBusinessObject
-                                        ?.woAdditionalDetails
-                                        ?.orgName ??
+                                "CBO Role": value.contracts?[index]
+                                        ?.additionalDetails?.cboOrgNumber ??
                                     "",
-                                // "CBO Role": "Pending for verification",
-                                // "Officer In-charge name": "240000",
-                                // "Start Date": value.mbInboxResponse
-                                //         .items?[index]
-                                //         .woBusinessObject?. != null
-                                //           ?DateFormat('dd/MM/yyyy').format(
-                                //           DateTime.fromMillisecondsSinceEpoch(
-                                //               value.mbInboxResponse
-                                //         .items?[index]
-                                //         .woBusinessObject?))
-                                //           : "NA",
-                                //"End Date": index + 1,
+                                "Officer In-charge name": value
+                                        .contracts?[index]
+                                        .additionalDetails
+                                        ?.officerInChargeName
+                                        ?.name ??
+                                    "NA",
+                                "Start Date":
+                                    value.contracts?[index].startDate != null
+                                        ? DateFormat('dd/MM/yyyy').format(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                value.contracts?[index]
+                                                        .startDate! ??
+                                                    0))
+                                        : "NA",
+                                "End Date": value.contracts?[index].endDate !=
+                                        null
+                                    ? DateFormat('dd/MM/yyyy').format(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            value.contracts?[index].endDate! ??
+                                                0))
+                                    : "NA",
                                 "Work value (Rs)":
                                     NumberFormat('##,##,##,##,###').format(value
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .woBusinessObject
+                                            .contracts?[index]
                                             ?.totalContractedAmount ??
                                         0),
                                 "Status": t.translate(
-                                    "MB_WFMB_STATE_${value.mbInboxResponse.items?[index].processInstance?.state?.state.toString()}")
+                                    "WF_WORK_ORDER_STATE_${value.contracts?[index].wfStatus}")
                               },
                             );
                           },
                           childCount: value.isLoading
-                              ? value!.mbInboxResponse.items!.length + 1
-                              : value!.mbInboxResponse.items!.length,
+                              ? value!.contracts!.length + 1
+                              : value!.contracts!.length,
                         ),
                       ),
                     ],

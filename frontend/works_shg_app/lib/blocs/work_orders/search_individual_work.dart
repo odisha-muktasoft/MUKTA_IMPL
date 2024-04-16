@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/data/repositories/work_order_repository/my_works_repository.dart';
 import 'package:works_shg_app/services/urls.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -42,8 +43,10 @@ class SearchIndividualWorkBloc
                 url: Urls.workServices.myWorks,
                 body: {
                   ...?event.body,
-                  "tenantId": GlobalVariables
-                      .organisationListModel!.organisations!.first.tenantId,
+                  "tenantId": GlobalVariables.roleType == RoleType.employee
+                      ? GlobalVariables.tenantId
+                      : GlobalVariables
+                          .organisationListModel!.organisations!.first.tenantId,
                   "orgIds": [],
                   "contractNumber": event.contractNumber,
                   "pagination": {
