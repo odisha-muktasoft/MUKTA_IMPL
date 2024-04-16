@@ -113,6 +113,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
+      GlobalVariables.tenantId=null;
       GlobalVariables.roleType = RoleType.none;
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
@@ -136,6 +137,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
+      GlobalVariables.tenantId=null;
       GlobalVariables.roleType = RoleType.none;
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
