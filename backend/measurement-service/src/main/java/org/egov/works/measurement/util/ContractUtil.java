@@ -278,49 +278,6 @@ public class ContractUtil {
 
         Map<String, EstimateDetail> estimateLineItemIdToEstimateDetail = estimateResponse.getEstimates().get(0).getEstimateDetails().stream().collect(Collectors.toMap(EstimateDetail::getId, estimateDetail -> estimateDetail));
 
- /*       Map<String, BigDecimal> targetIdToCumulativeValue = new HashMap<>();
-
-        String estimateLineItemId;
-
-        if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty()) {
-            for (Measure measure : measurementFromDB.getMeasures()) {
-                BigDecimal cumulativeValue = measure.getCumulativeValue();
-                if (isUpdate)
-
-                    cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
-                targetIdToCumulativeValue.put(measure.getTargetId(), cumulativeValue);
-            }
-        }
-        for (Measure measure : measurement.getMeasures()) {
-            // Get the lineItemId corresponding in targetId
-
-            estimateLineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
-            if (estimateLineItemId == null)
-                throw new CustomException(ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_CODE, ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_MSG + measure.getTargetId());
-            // Get the estimateDetail corresponding to estimateLineItemId
-            EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(estimateLineItemId);
-            if (estimateDetail == null)
-                throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + estimateLineItemId);
-
-            // Get cumulative value corresponding to targetId
-            BigDecimal prevCumulativeValue = null;
-            if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty() && targetIdToCumulativeValue.containsKey(measure.getTargetId())) {
-                prevCumulativeValue = targetIdToCumulativeValue.get(measure.getTargetId());
-            } else {
-                prevCumulativeValue = BigDecimal.ZERO;
-            }
-            measurementServiceUtil.validateDimensions(measure,isUpdate);
-            BigDecimal currValue = measure.getBreadth().multiply(measure.getHeight()).multiply(measure.getLength()).multiply(measure.getNumItems());
-
-            BigDecimal totalValue = currValue.add(prevCumulativeValue);
-            BigDecimal estimateNoOfUnit=  BigDecimal.valueOf(estimateDetail.getNoOfunit());
-
-
-            if (totalValue.compareTo(estimateNoOfUnit) > 0) {
-                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, measure.getTargetId(), estimateNoOfUnit));
-            }
-        }*/
-
         Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
         if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty()) {
             for (Measure measure : measurementFromDB.getMeasures()) {
@@ -332,8 +289,13 @@ public class ContractUtil {
                 EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItemId);
                 if (estimateDetail == null)
                     throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + lineItemId);
-
-                BigDecimal cumulativeValue = measure.getCumulativeValue();
+                BigDecimal cumulativeValue= BigDecimal.ZERO;
+                if(estimateDetail.getIsDeduction()){
+                    cumulativeValue=cumulativeValue.subtract(measure.getCumulativeValue());
+                }else
+                {
+                    cumulativeValue=cumulativeValue.add(measure.getCumulativeValue());
+                }
                 if (isUpdate)
 
                     cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
@@ -394,7 +356,8 @@ public class ContractUtil {
                             .multiply(totalLength)
                             .multiply(totalNumItems);
 
-                    totalCurrValue = totalCurrValue.add(currValue);
+
+                    totalCurrValue = estimateDetail.getIsDeduction()?totalCurrValue.subtract(currValue):totalCurrValue.add(currValue);
                 }
 
 
@@ -406,9 +369,24 @@ public class ContractUtil {
 
 
             // Calculate the total noOfUnit for the group of EstimateDetail objects corresponding to the SOR ID
-            BigDecimal totalNoOfUnit = BigDecimal.valueOf(estimateDetailList.stream()
+                BigDecimal totalNoOfUnit= BigDecimal.ZERO;
+                for(EstimateDetail estimatedDetail:estimateDetailList){
+                    if(estimatedDetail.getIsDeduction()){
+                        totalNoOfUnit=totalNoOfUnit.subtract(BigDecimal.valueOf(estimatedDetail.getNoOfunit()));
+                    }else{
+                        totalNoOfUnit=totalNoOfUnit.add(BigDecimal.valueOf(estimatedDetail.getNoOfunit()));
+                    }
+
+                }
+          /*  BigDecimal totalNoOfUnit = BigDecimal.valueOf(estimateDetailList.stream().forEach(estimateDetail1 -> {
+
+                if(estimateDetail1.getIsDeduction()){
+
+                }
+
+                    }));
                     .mapToDouble(EstimateDetail::getNoOfunit) // Extract the noOfUnit as double from each EstimateDetail object
-                    .sum()); // Sum up the noOfUnit values
+                    .sum()); // Sum up the noOfUnit values*/
 
 
             if (totalValue.compareTo(totalNoOfUnit) > 0) {
