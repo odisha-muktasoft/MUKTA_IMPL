@@ -106,7 +106,9 @@ class MeasurementDetailBloc
           //       number: event.number)),
           //   measurelineitemNo: event.measurementLineIndex,
           // );
-          MeasureLineItem mm = const MeasureLineItem(
+          
+          if (event.single) {
+            MeasureLineItem mm = const MeasureLineItem(
             width: 0,
             height: 0,
             length: 0,
@@ -114,9 +116,16 @@ class MeasurementDetailBloc
             quantity: 0,
             measurelineitemNo: 1,
           );
-          if (event.single) {
             mk = [mm];
           } else {
+            MeasureLineItem mm =  MeasureLineItem(
+            width: 0,
+            height: 0,
+            length: 0,
+            number: 0,
+            quantity: 0,
+            measurelineitemNo: event.measurementLineIndex,
+          );
             mk = [mm];
           }
 
