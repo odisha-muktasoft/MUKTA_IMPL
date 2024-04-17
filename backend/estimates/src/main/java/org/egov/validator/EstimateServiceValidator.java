@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BitField;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -169,14 +170,35 @@ public class EstimateServiceValidator {
         log.info("EstimateServiceValidator::validateMeasurement");
         List<EstimateDetail> estimateDetail = estimateRequest.getEstimate().getEstimateDetails();
 
+        Map<String, List<EstimateDetail>> sorIdToEstimateDetailMap = new HashMap<>();
+        Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
+        Map<String, BigDecimal> sorIdToCurrentValueMap = new HashMap<>();
+        Map<String, BigDecimal> sorIdToEstimateDetailtNoOfUnitMap = new HashMap<>();
         estimateDetail.forEach(estimateDetail1 -> {
+
             if (!estimateDetail1.getCategory().equals(OVERHEAD_CODE) && estimateDetail1.getPreviousLineItemId() != null) {
-                validateMeasurementForEstimateDetail(estimateDetail1, measurementResponse, contractResponse, errorMap);
+                sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail1.getSorId(), k -> new ArrayList<>()).add(estimateDetail1);
+                sorIdToEstimateDetailtNoOfUnitMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(estimateDetail1.getNoOfunit()), BigDecimal::add);
+                fetchCummulativeAndCurrentValueOnSORLevel(estimateDetail1, measurementResponse, contractResponse, sorIdToCumulativeValueMap, sorIdToCurrentValueMap);
             }
         });
+
+        if (!sorIdToEstimateDetailMap.isEmpty()) {
+            for (Map.Entry<String, List<EstimateDetail>> entry : sorIdToEstimateDetailMap.entrySet()) {
+                String sorId = entry.getKey();
+                BigDecimal totalCurrentValueSorLevel=!sorIdToCurrentValueMap.isEmpty()?sorIdToCurrentValueMap.get(sorId):BigDecimal.ZERO;
+                BigDecimal totalCummulativeValueSorLevel=!sorIdToCumulativeValueMap.isEmpty()?sorIdToCumulativeValueMap.get(sorId):BigDecimal.ZERO;
+                BigDecimal totalNoOfUnitForEstimateDetailSorLevel=!sorIdToEstimateDetailtNoOfUnitMap.isEmpty()?sorIdToEstimateDetailtNoOfUnitMap.get(sorId): BigDecimal.ZERO;
+                BigDecimal measuredCummulativeValue= totalCummulativeValueSorLevel.subtract(totalCurrentValueSorLevel);
+                if (totalNoOfUnitForEstimateDetailSorLevel.compareTo(measuredCummulativeValue)<0) {
+                    errorMap.put(INVALID_ESTIMATE_DETAIL, "No of Unit should not be less than measurement book cumulative value");
+                }
+            }
+        }
     }
 
-    private void validateMeasurementForEstimateDetail(EstimateDetail estimateDetail1, Object measurementResponse, Object contractResponse, Map<String, String> errorMap) {
+    private void fetchCummulativeAndCurrentValueOnSORLevel(EstimateDetail estimateDetail1, Object measurementResponse, Object contractResponse, Map<String, BigDecimal> sorIdToCumulativeValueMap,
+                                                      Map<String, BigDecimal> sorIdToCurrentValueMap ) {
         String jsonPathForContractLineItemRef = "$.contracts[*].lineItems[?(@.estimateLineItemId=='{{}}')].contractLineItemRef";
         String contractLineItemRefId = getContractLineItemRefId(contractResponse, jsonPathForContractLineItemRef, estimateDetail1.getPreviousLineItemId());
 
@@ -186,7 +208,11 @@ public class EstimateServiceValidator {
         if (measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()) {
             log.info("No measurement found for the given estimate");
         } else {
-            validateMeasurementCumulativeValue(measurementCumulativeValue, measurementResponse, contractLineItemRefId, estimateDetail1, errorMap);
+            Double cumulativeValue = measurementCumulativeValue.get(0);
+            cumulativeValue=estimateDetail1.getIsDeduction()?cumulativeValue * -1:cumulativeValue;
+            log.info("Sor Id To Cumulative Value Map created");
+            sorIdToCumulativeValueMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(cumulativeValue), BigDecimal::add);
+            fetchTotalCurrentValueOnSorLevel( measurementResponse, contractLineItemRefId, estimateDetail1, sorIdToCurrentValueMap);
         }
     }
 
@@ -221,21 +247,22 @@ public class EstimateServiceValidator {
         return measurementCumulativeValue;
     }
 
-    private void validateMeasurementCumulativeValue(List<Double> measurementCumulativeValue, Object measurementResponse, String contractLineItemRefId, EstimateDetail estimateDetail1, Map<String, String> errorMap) {
+    private void fetchTotalCurrentValueOnSorLevel(Object measurementResponse,
+                                                    String contractLineItemRefId, EstimateDetail estimateDetail1,
+                                                    Map<String, BigDecimal> sorIdToCurrentValueMap) {
         String jsonPathForMeasurementWfStatus = "$.measurements[*].wfStatus";
         List<String> wfStatus = getMeasurementWfStatus(measurementResponse, jsonPathForMeasurementWfStatus);
 
-        Double cumulativeValue = measurementCumulativeValue.get(0);
         if (!wfStatus.isEmpty() && !wfStatus.get(0).equalsIgnoreCase(ESTIMATE_APPROVED_STATUS)) {
             String jsonPathForMeasurementCurrentValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].currentValue";
             List<Double> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
+            Double currentValue = measurementCurrentValue.get(0);
+            currentValue=estimateDetail1.getIsDeduction()?currentValue * -1:currentValue;
+            log.info("Sor Id To currentValue Value Map created");
+            sorIdToCurrentValueMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(currentValue), BigDecimal::add);
 
-            cumulativeValue = cumulativeValue -measurementCurrentValue.get(0);
         }
 
-        if (estimateDetail1.getNoOfunit() < cumulativeValue) {
-            errorMap.put(INVALID_ESTIMATE_DETAIL, "No of Unit should not be less than measurement book cumulative value");
-        }
     }
 
     private List<String> getMeasurementWfStatus(Object measurementResponse, String jsonPath) {
