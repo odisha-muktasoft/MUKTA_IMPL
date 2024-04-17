@@ -346,6 +346,8 @@ public class ContractUtil {
             List<Measure> measureList = sorIdToMeasuresMap.getOrDefault(sorId, Collections.emptyList());
                 BigDecimal totalCurrValue = BigDecimal.ZERO;
                 for (Measure measure : measureList) {
+                    String lineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
+                    EstimateDetail estimateDetailForMeasure = estimateLineItemIdToEstimateDetail.get(lineItemId);
                     BigDecimal totalBreadth = measure.getBreadth();
                     BigDecimal totalHeight = measure.getHeight();
                     BigDecimal totalLength = measure.getLength();
@@ -357,7 +359,7 @@ public class ContractUtil {
                             .multiply(totalNumItems);
 
 
-                    totalCurrValue = estimateDetail.getIsDeduction()?totalCurrValue.subtract(currValue):totalCurrValue.add(currValue);
+                    totalCurrValue = estimateDetailForMeasure.getIsDeduction()?totalCurrValue.subtract(currValue):totalCurrValue.add(currValue);
                 }
 
 
@@ -378,15 +380,6 @@ public class ContractUtil {
                     }
 
                 }
-          /*  BigDecimal totalNoOfUnit = BigDecimal.valueOf(estimateDetailList.stream().forEach(estimateDetail1 -> {
-
-                if(estimateDetail1.getIsDeduction()){
-
-                }
-
-                    }));
-                    .mapToDouble(EstimateDetail::getNoOfunit) // Extract the noOfUnit as double from each EstimateDetail object
-                    .sum()); // Sum up the noOfUnit values*/
 
 
             if (totalValue.compareTo(totalNoOfUnit) > 0) {
