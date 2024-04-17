@@ -289,18 +289,7 @@ public class ContractUtil {
                 EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItemId);
                 if (estimateDetail == null)
                     throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + lineItemId);
-                BigDecimal cumulativeValue= BigDecimal.ZERO;
-                if(estimateDetail.getIsDeduction()){
-                    cumulativeValue=cumulativeValue.subtract(measure.getCumulativeValue());
-                }else
-                {
-                    cumulativeValue=cumulativeValue.add(measure.getCumulativeValue());
-                }
-                cumulativeValue=cumulativeValue.abs();
-
-                if (isUpdate)
-
-                    cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
+                BigDecimal cumulativeValue = getCummulativeValue(isUpdate, measure, estimateDetail);
 
                 sorIdToCumulativeValueMap.merge(estimateDetail.getSorId(), cumulativeValue, BigDecimal::add);
                // targetIdToCumulativeValue.put(measure.getTargetId(), cumulativeValue);
@@ -394,6 +383,14 @@ public class ContractUtil {
 
 
 
+    }
+
+    private static BigDecimal getCummulativeValue(Boolean isUpdate, Measure measure, EstimateDetail estimateDetail) {
+        BigDecimal cumulativeValue=measure.getCumulativeValue();
+        if (isUpdate)
+            cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
+
+        return estimateDetail.getIsDeduction()?cumulativeValue:cumulativeValue.multiply(BigDecimal.valueOf(-1));
     }
 
 }
