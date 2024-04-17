@@ -21,11 +21,11 @@ const PurchaseBill = () => {
     const organisationTypes = [
         {
             code : "CBO",
-            name : t("COMMON_MASTERS_ORG_CBO")
+            name : "CBO"
         },
         {
             code : "VEN",
-            name : t("COMMON_MASTERS_ORG_VEN")
+            name : "Vendor"
         }
     ]
 
@@ -180,7 +180,7 @@ const PurchaseBill = () => {
 
     return (
         <React.Fragment>
-            <Header styles={{fontSize: "32px", marginBottom:"-2rem"}}>{isModify ? t("EXP_MODIFY_PB") : t("ACTION_TEST_CREATE_PB")}</Header>
+            <Header styles={{fontSize: "32px"}}>{isModify ? t("EXP_MODIFY_PB") : t("ACTION_TEST_CREATE_PB")}</Header>
             {
                 isFormReady && <CreatePurchaseBillForm 
                 createPurchaseBillConfig={configs} 
