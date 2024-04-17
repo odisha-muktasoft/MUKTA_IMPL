@@ -74,7 +74,7 @@ export const updateDefaultValues = ({t, tenantId, configs, findCurrentDate, isMo
     configs.defaultValues.invoiceDetails_vendor =  isModify ? { code: org?.id, name: org?.name, orgNumber: org?.orgNumber} : ""
     configs.defaultValues.invoiceDetails_invoiceNumber = bill?.additionalDetails?.invoiceNumber || ""
     configs.defaultValues.invoiceDetails_invoiceDate = bill?.billDate ? Digit.DateUtils.ConvertTimestampToDate(bill?.billDate, 'yyyy-MM-dd') : ""
-    configs.defaultValues.invoiceDetails_organisationType = { code : "CBO", name : "CBO" }
+    configs.defaultValues.invoiceDetails_organisationType = { code : "CBO", name : t("COMMON_MASTERS_ORG_CBO") }
 
     if(isModify) {
       
