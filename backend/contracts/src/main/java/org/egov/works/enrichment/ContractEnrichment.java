@@ -83,17 +83,35 @@ public class ContractEnrichment {
         // Enrich UUID and AuditDetails
         enrichIdsAgreementDateAndAuditDetailsOnCreate(contractRequest);
         // Enrich Supplement number and mark contracts and document status as in-workflow
-        if (contractRequest.getContract().getBusinessService() != null
-                && (contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)
-                || contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_REVISION_ESTIMATE))) {
-            // Enrich Supplement Number
-            enrichSupplementNumber(contractRequest);
-            markContractAndDocumentsStatus(contractRequest, Status.INWORKFLOW);
-            markLineItemsAndAmountBreakupsStatus(contractRequest, Status.INWORKFLOW);
+        if (contractRequest.getContract().getBusinessService() != null) {
 
-        } else {
-            // Enrich Contract Number
-            enrichContractNumber(contractRequest);
+            switch(contractRequest.getContract().getBusinessService()){
+                case CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE:
+                {
+                    enrichSupplementNumber(contractRequest);
+                    markContractAndDocumentsStatus(contractRequest, Status.INWORKFLOW);
+                    markLineItemsAndAmountBreakupsStatus(contractRequest, Status.INWORKFLOW);
+
+                    break;
+                }
+                case CONTRACT_REVISION_ESTIMATE:
+                {
+                    enrichSupplementNumber(contractRequest);
+                    markContractAndDocumentsStatus(contractRequest, Status.ACTIVE);
+                    markLineItemsAndAmountBreakupsStatus(contractRequest, Status.ACTIVE);
+                    enrichPreviousContractLineItems(contractRequest);
+                    break;
+                }
+                default:
+                {
+                    log.info("Request Triggered for buisness service CONTRACT ");
+                    enrichContractNumber(contractRequest);
+
+                }
+            }
+            // Enrich Supplement Number
+
+
         }
     }
 
@@ -458,8 +476,8 @@ public class ContractEnrichment {
     }
 
     public void enrichPreviousContractLineItems(ContractRequest contractRequest) {
-        if (contractRequest.getContract().getBusinessService() != null && (contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)
-                && APPROVE_ACTION.equalsIgnoreCase(contractRequest.getWorkflow().getAction()))) {
+        if (contractRequest.getContract().getBusinessService() != null
+                &&!CONTRACT_BUSINESS_SERVICE.equals(contractRequest.getContract().getBusinessService())){
             log.info("Setting previous contract statuses inactive");
             Contract previousActiveContract = contractServiceUtil.getActiveContractsFromDB(contractRequest).get(0);
 
@@ -468,20 +486,42 @@ public class ContractEnrichment {
                     .contract(previousActiveContract).build();
             ProcessInstance processInstance = workflowService.getProcessInstance(contractRequestFromDB);
             contractRequestFromDB.getContract().setProcessInstance(processInstance);
-            markContractAndDocumentsStatus(contractRequestFromDB, Status.INACTIVE);
-            markLineItemsAndAmountBreakupsStatus(contractRequestFromDB, Status.INACTIVE);
-            contractProducer.push(config.getUpdateContractTopic(), contractRequestFromDB);
 
-            // Push updated end date to kafka topic to update attendance register end date
-            JsonNode requestInfo = mapper.convertValue(contractRequest.getRequestInfo(), JsonNode.class);
-            JsonNode attendanceContractRevisionRequest = mapper.createObjectNode()
-                    .putPOJO("RequestInfo", requestInfo)
-                    .put("tenantId", contractRequest.getContract().getTenantId())
-                    .put("referenceId", contractRequest.getContract().getContractNumber())
-                    .put("endDate", contractRequest.getContract().getEndDate());
+            switch (contractRequest.getContract().getBusinessService()){
+                case  CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE:
+                {
+                   if(APPROVE_ACTION.equalsIgnoreCase(contractRequest.getWorkflow().getAction())){
+                       markContractAndDocumentsStatus(contractRequestFromDB, Status.INACTIVE);
+                       markLineItemsAndAmountBreakupsStatus(contractRequestFromDB, Status.INACTIVE);
+                       contractProducer.push(config.getUpdateContractTopic(), contractRequestFromDB);
+                       // Push updated end date to kafka topic to update attendance register end date
+                       JsonNode requestInfo = mapper.convertValue(contractRequest.getRequestInfo(), JsonNode.class);
+                       JsonNode attendanceContractRevisionRequest = mapper.createObjectNode()
+                               .putPOJO("RequestInfo", requestInfo)
+                               .put("tenantId", contractRequest.getContract().getTenantId())
+                               .put("referenceId", contractRequest.getContract().getContractNumber())
+                               .put("endDate", contractRequest.getContract().getEndDate());
 
-            log.info("Pushing updated end date to attendance register end date update topic");
-            contractProducer.push(config.getUpdateTimeExtensionTopic(), attendanceContractRevisionRequest);
+                       log.info("Pushing updated end date to attendance register end date update topic");
+                       contractProducer.push(config.getUpdateTimeExtensionTopic(), attendanceContractRevisionRequest);
+                   }
+                   break;
+                }
+                case CONTRACT_REVISION_ESTIMATE:
+                {
+                    markContractAndDocumentsStatus(contractRequestFromDB, Status.INACTIVE);
+                    markLineItemsAndAmountBreakupsStatus(contractRequestFromDB, Status.INACTIVE);
+                    contractProducer.push(config.getUpdateContractTopic(), contractRequestFromDB);
+                    break;
+                }
+                default:
+                    log.info("Update Request For Original Contract");
+            }
+
+
+
+
+
         }
     }
 
