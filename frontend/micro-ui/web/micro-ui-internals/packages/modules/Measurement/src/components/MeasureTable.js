@@ -121,6 +121,15 @@ const MeasureTable = (props) => {
   const sum = parseFloat(fields?.reduce((acc, row) => acc + parseFloat(row?.amount), 0)?.toFixed?.(2)) || 0;
   let formattedSum =  isNaN(sum) ? 0 : parseFloat(sum)?.toFixed(2)
 
+  function checkIfDeletionisAllowed(row){
+    if(window.location.href.includes("create"))
+      return (mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && (row?.hasOwnProperty('originalQty'))) ) )
+    else if(window.location.href.includes("update"))
+      return (mode === "CREATERE" && row.originalQty);
+
+    return false;
+  }
+
   // register(tableKey)
 
   useEffect(() => {
@@ -391,8 +400,8 @@ const MeasureTable = (props) => {
             </td>
             {(mode == "CREATEALL" || mode == "CREATERE") && (
               <td>
-                <span className="icon-wrapper" onClick={() => (mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && (row?.hasOwnProperty('originalQty'))) ) ) ? "" : remove(index)}>
-                  <DeleteIcon fill={(mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && (row?.hasOwnProperty('originalQty'))) )) ? "lightgrey" : "#FF9100"} />
+                <span className="icon-wrapper" onClick={() => checkIfDeletionisAllowed(row) ? "" : remove(index)}>
+                  <DeleteIcon fill={checkIfDeletionisAllowed(row) ? "lightgrey" : "#FF9100"} />
                 </span>
               </td>
             )}
