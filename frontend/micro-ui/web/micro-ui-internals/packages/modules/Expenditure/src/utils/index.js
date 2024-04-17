@@ -92,7 +92,7 @@ export const updateDefaultValues = ({t, tenantId, configs, findCurrentDate, isMo
     configs.defaultValues.deductionDetails = setDeductionTableData(bill,charges,t)
     configs.defaultValues.invoiceDetails_gst = setGSTCost(bill)
     configs.defaultValues.invoiceDetails_materialCost = setMaterialCost(bill)
-    configs.defaultValues.invoiceDetails_organisationType = bill?.additionalDetails?.organisationType || { code : "VEN", name : t("COMMON_MASTERS_ORG_VEN") }
+    configs.defaultValues.invoiceDetails_organisationType = bill?.additionalDetails?.organisationType || { code : "VEN", name : "Vendor" }
     
     }
     setSessionFormData({...sessionFormData, ...configs?.defaultValues});
