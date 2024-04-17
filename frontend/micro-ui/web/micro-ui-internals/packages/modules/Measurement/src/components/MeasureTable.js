@@ -44,6 +44,17 @@ let defaultSOR = {
       ]
   };
 
+  function hasDecimalPlaces(number, decimalPlaces) {
+    if(number == "")
+    {  
+        return true;
+    }
+    var numStr = number.toString();
+    // Using regex to check if its accepting upto given decimal places
+    var regex = new RegExp(`^[0-9]+(\\.[0-9]{0,${decimalPlaces}})?$`);
+    return regex.test(numStr);
+  }
+
 const MeasureTable = (props) => {
   const { register, setValue, arrayProps = {}, config = {},watch } = props;
   let { key: tableKey, mode } = config;
@@ -241,8 +252,15 @@ const MeasureTable = (props) => {
         const field = fields[index] || {};
         field[key] = value;
         if(tableKey === "NONSOR" && key === "unitRate")
+        {  
           field["amount"] = (parseFloat(field[key]) * field["currentMBEntry"]) || 0
+        }
+
         fields[index] = { ...field };
+        if(tableKey === "NONSOR" && key === "unitRate" && !(hasDecimalPlaces(field[key],2)))
+        {
+          return;
+        }
         setFormValue(fields);
       }
     );
