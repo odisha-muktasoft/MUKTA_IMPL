@@ -183,7 +183,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
             className="icon-wrapper"
             onClick={(newValue) => {
               //added this condition as user should not able to delete row if only one is present
-              if(fields?.length > 1 && (mode === "CREATERE" && !(value?.id) ))
+              if(fields?.length > 1 && (mode === "CREATERE" && !(value?.id) || mode !== "CREATERE"))
               dispatch({
                 type: "REMOVE_ROW",
                 id: index + 1,
