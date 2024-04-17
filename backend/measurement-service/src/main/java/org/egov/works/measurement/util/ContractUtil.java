@@ -289,13 +289,7 @@ public class ContractUtil {
                 EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItemId);
                 if (estimateDetail == null)
                     throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + lineItemId);
-                BigDecimal cumulativeValue= BigDecimal.ZERO;
-                if(estimateDetail.getIsDeduction()){
-                    cumulativeValue=cumulativeValue.subtract(measure.getCumulativeValue());
-                }else
-                {
-                    cumulativeValue=cumulativeValue.add(measure.getCumulativeValue());
-                }
+                BigDecimal cumulativeValue = measure.getCumulativeValue();
                 if (isUpdate)
 
                     cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
