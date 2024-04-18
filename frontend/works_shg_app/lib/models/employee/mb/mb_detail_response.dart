@@ -14,7 +14,7 @@ class MBDetailResponse with _$MBDetailResponse {
     @JsonKey(name: 'contract') Contract? contract,
     @JsonKey(name: 'estimate') Estimate? estimate,
     @JsonKey(name: 'period') Period? period,
-    @JsonKey(name: 'allMeasurements') List<Measurement>? allMeasurements,
+    @JsonKey(name: 'allMeasurements') dynamic allMeasurements,
     @JsonKey(name: 'measurement') Measurement? measurement,
     @JsonKey(name: 'musterRolls') dynamic musterRolls
   }) = _MBDetailResponse;

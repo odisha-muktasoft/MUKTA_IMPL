@@ -21,8 +21,8 @@ mixin _$MeasurementDetailBlocEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -71,8 +71,8 @@ mixin _$MeasurementDetailBlocEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -121,8 +121,8 @@ mixin _$MeasurementDetailBlocEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -326,8 +326,8 @@ class _$MeasurementUploadDocumentBlocEvent
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -379,8 +379,8 @@ class _$MeasurementUploadDocumentBlocEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -432,8 +432,8 @@ class _$MeasurementUploadDocumentBlocEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -562,7 +562,11 @@ abstract class _$$MeasurementDetailBookBlocEventCopyWith<$Res> {
           $Res Function(_$MeasurementDetailBookBlocEvent) then) =
       __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>;
   @useResult
-  $Res call({String tenantId, String contractNumber, String measurementNumber});
+  $Res call(
+      {String tenantId,
+      String contractNumber,
+      String measurementNumber,
+      MBScreen screenType});
 }
 
 /// @nodoc
@@ -581,6 +585,7 @@ class __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>
     Object? tenantId = null,
     Object? contractNumber = null,
     Object? measurementNumber = null,
+    Object? screenType = null,
   }) {
     return _then(_$MeasurementDetailBookBlocEvent(
       tenantId: null == tenantId
@@ -595,6 +600,10 @@ class __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>
           ? _value.measurementNumber
           : measurementNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      screenType: null == screenType
+          ? _value.screenType
+          : screenType // ignore: cast_nullable_to_non_nullable
+              as MBScreen,
     ));
   }
 }
@@ -606,7 +615,8 @@ class _$MeasurementDetailBookBlocEvent
   const _$MeasurementDetailBookBlocEvent(
       {required this.tenantId,
       required this.contractNumber,
-      required this.measurementNumber});
+      required this.measurementNumber,
+      required this.screenType});
 
   @override
   final String tenantId;
@@ -614,10 +624,12 @@ class _$MeasurementDetailBookBlocEvent
   final String contractNumber;
   @override
   final String measurementNumber;
+  @override
+  final MBScreen screenType;
 
   @override
   String toString() {
-    return 'MeasurementDetailBlocEvent.create(tenantId: $tenantId, contractNumber: $contractNumber, measurementNumber: $measurementNumber)';
+    return 'MeasurementDetailBlocEvent.create(tenantId: $tenantId, contractNumber: $contractNumber, measurementNumber: $measurementNumber, screenType: $screenType)';
   }
 
   @override
@@ -630,12 +642,14 @@ class _$MeasurementDetailBookBlocEvent
             (identical(other.contractNumber, contractNumber) ||
                 other.contractNumber == contractNumber) &&
             (identical(other.measurementNumber, measurementNumber) ||
-                other.measurementNumber == measurementNumber));
+                other.measurementNumber == measurementNumber) &&
+            (identical(other.screenType, screenType) ||
+                other.screenType == screenType));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, tenantId, contractNumber, measurementNumber);
+  int get hashCode => Object.hash(
+      runtimeType, tenantId, contractNumber, measurementNumber, screenType);
 
   @JsonKey(ignore: true)
   @override
@@ -650,8 +664,8 @@ class _$MeasurementDetailBookBlocEvent
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -695,7 +709,7 @@ class _$MeasurementDetailBookBlocEvent
             String? filteredMeasurementMeasureId)
         submitLine,
   }) {
-    return create(tenantId, contractNumber, measurementNumber);
+    return create(tenantId, contractNumber, measurementNumber, screenType);
   }
 
   @override
@@ -703,8 +717,8 @@ class _$MeasurementDetailBookBlocEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -748,7 +762,8 @@ class _$MeasurementDetailBookBlocEvent
             String? filteredMeasurementMeasureId)?
         submitLine,
   }) {
-    return create?.call(tenantId, contractNumber, measurementNumber);
+    return create?.call(
+        tenantId, contractNumber, measurementNumber, screenType);
   }
 
   @override
@@ -756,8 +771,8 @@ class _$MeasurementDetailBookBlocEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -803,7 +818,7 @@ class _$MeasurementDetailBookBlocEvent
     required TResult orElse(),
   }) {
     if (create != null) {
-      return create(tenantId, contractNumber, measurementNumber);
+      return create(tenantId, contractNumber, measurementNumber, screenType);
     }
     return orElse();
   }
@@ -867,14 +882,15 @@ class _$MeasurementDetailBookBlocEvent
 abstract class MeasurementDetailBookBlocEvent
     implements MeasurementDetailBlocEvent {
   const factory MeasurementDetailBookBlocEvent(
-          {required final String tenantId,
-          required final String contractNumber,
-          required final String measurementNumber}) =
-      _$MeasurementDetailBookBlocEvent;
+      {required final String tenantId,
+      required final String contractNumber,
+      required final String measurementNumber,
+      required final MBScreen screenType}) = _$MeasurementDetailBookBlocEvent;
 
   String get tenantId;
   String get contractNumber;
   String get measurementNumber;
+  MBScreen get screenType;
   @JsonKey(ignore: true)
   _$$MeasurementDetailBookBlocEventCopyWith<_$MeasurementDetailBookBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
@@ -926,8 +942,8 @@ class _$MeasurementDetailBlocClearEvent
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -979,8 +995,8 @@ class _$MeasurementDetailBlocClearEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1032,8 +1048,8 @@ class _$MeasurementDetailBlocClearEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -1334,8 +1350,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1398,8 +1414,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1462,8 +1478,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -1812,8 +1828,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1877,8 +1893,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1942,8 +1958,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2164,8 +2180,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2217,8 +2233,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2270,8 +2286,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2491,8 +2507,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2545,8 +2561,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2599,8 +2615,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2866,8 +2882,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2920,8 +2936,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2974,8 +2990,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(
-            String tenantId, String contractNumber, String measurementNumber)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3114,7 +3130,7 @@ mixin _$MeasurementDetailState {
     required TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3131,7 +3147,7 @@ mixin _$MeasurementDetailState {
     TResult? Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3148,7 +3164,7 @@ mixin _$MeasurementDetailState {
     TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3247,7 +3263,7 @@ class _$_Initial extends _Initial {
     required TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3267,7 +3283,7 @@ class _$_Initial extends _Initial {
     TResult? Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3287,7 +3303,7 @@ class _$_Initial extends _Initial {
     TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3388,7 +3404,7 @@ class _$_Loading extends _Loading {
     required TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3408,7 +3424,7 @@ class _$_Loading extends _Loading {
     TResult? Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3428,7 +3444,7 @@ class _$_Loading extends _Loading {
     TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3495,14 +3511,12 @@ abstract class _$$_LoadedCopyWith<$Res> {
   $Res call(
       {String? warningMsg,
       bool viewStatus,
-      Measurement rawData,
+      dynamic rawData,
       List<FilteredMeasurements> data,
       List<SorObject>? sor,
       List<SorObject>? nonSor,
       List<SorObject>? preSor,
       List<SorObject>? preNonSor});
-
-  $MeasurementCopyWith<$Res> get rawData;
 }
 
 /// @nodoc
@@ -3517,7 +3531,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? warningMsg = freezed,
     Object? viewStatus = null,
-    Object? rawData = null,
+    Object? rawData = freezed,
     Object? data = null,
     Object? sor = freezed,
     Object? nonSor = freezed,
@@ -3533,10 +3547,10 @@ class __$$_LoadedCopyWithImpl<$Res>
           ? _value.viewStatus
           : viewStatus // ignore: cast_nullable_to_non_nullable
               as bool,
-      null == rawData
+      freezed == rawData
           ? _value.rawData
           : rawData // ignore: cast_nullable_to_non_nullable
-              as Measurement,
+              as dynamic,
       null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
@@ -3558,14 +3572,6 @@ class __$$_LoadedCopyWithImpl<$Res>
           : preNonSor // ignore: cast_nullable_to_non_nullable
               as List<SorObject>?,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MeasurementCopyWith<$Res> get rawData {
-    return $MeasurementCopyWith<$Res>(_value.rawData, (value) {
-      return _then(_value.copyWith(rawData: value));
-    });
   }
 }
 
@@ -3593,7 +3599,7 @@ class _$_Loaded extends _Loaded {
   @override
   final bool viewStatus;
   @override
-  final Measurement rawData;
+  final dynamic rawData;
   final List<FilteredMeasurements> _data;
   @override
   List<FilteredMeasurements> get data {
@@ -3656,7 +3662,7 @@ class _$_Loaded extends _Loaded {
                 other.warningMsg == warningMsg) &&
             (identical(other.viewStatus, viewStatus) ||
                 other.viewStatus == viewStatus) &&
-            (identical(other.rawData, rawData) || other.rawData == rawData) &&
+            const DeepCollectionEquality().equals(other.rawData, rawData) &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             const DeepCollectionEquality().equals(other._sor, _sor) &&
             const DeepCollectionEquality().equals(other._nonSor, _nonSor) &&
@@ -3670,7 +3676,7 @@ class _$_Loaded extends _Loaded {
       runtimeType,
       warningMsg,
       viewStatus,
-      rawData,
+      const DeepCollectionEquality().hash(rawData),
       const DeepCollectionEquality().hash(_data),
       const DeepCollectionEquality().hash(_sor),
       const DeepCollectionEquality().hash(_nonSor),
@@ -3691,7 +3697,7 @@ class _$_Loaded extends _Loaded {
     required TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3712,7 +3718,7 @@ class _$_Loaded extends _Loaded {
     TResult? Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3733,7 +3739,7 @@ class _$_Loaded extends _Loaded {
     TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3792,7 +3798,7 @@ abstract class _Loaded extends MeasurementDetailState {
   const factory _Loaded(
       final String? warningMsg,
       final bool viewStatus,
-      final Measurement rawData,
+      final dynamic rawData,
       final List<FilteredMeasurements> data,
       final List<SorObject>? sor,
       final List<SorObject>? nonSor,
@@ -3802,7 +3808,7 @@ abstract class _Loaded extends MeasurementDetailState {
 
   String? get warningMsg;
   bool get viewStatus;
-  Measurement get rawData;
+  dynamic get rawData;
   List<FilteredMeasurements> get data;
   List<SorObject>? get sor;
   List<SorObject>? get nonSor;
@@ -3880,7 +3886,7 @@ class _$_Error extends _Error {
     required TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3900,7 +3906,7 @@ class _$_Error extends _Error {
     TResult? Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,
@@ -3920,7 +3926,7 @@ class _$_Error extends _Error {
     TResult Function(
             String? warningMsg,
             bool viewStatus,
-            Measurement rawData,
+            dynamic rawData,
             List<FilteredMeasurements> data,
             List<SorObject>? sor,
             List<SorObject>? nonSor,

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
@@ -291,7 +292,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                     context.router.push(MBDetailRoute(
                                       contractNumber: contract,
                                       mbNumber: "",
-                                      tenantId: GlobalVariables.tenantId,
+                                      tenantId: GlobalVariables.tenantId, type: MBScreen.create,
                                     ));
                                   },
                                 ),

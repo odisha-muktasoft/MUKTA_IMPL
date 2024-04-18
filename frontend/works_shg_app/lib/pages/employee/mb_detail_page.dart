@@ -17,6 +17,7 @@ import '../../models/employee/mb/filtered_Measures.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
+import '../../utils/employee/mb/mb_logic.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
@@ -34,11 +35,12 @@ class MBDetailPage extends StatefulWidget {
   final String contractNumber;
   final String mbNumber;
   final String? tenantId;
+  final MBScreen type;
   const MBDetailPage(
       {super.key,
       required this.contractNumber,
       required this.mbNumber,
-      this.tenantId});
+      this.tenantId, required this.type});
 
   @override
   State<MBDetailPage> createState() => _MBDetailPageState();
@@ -63,7 +65,7 @@ class _MBDetailPageState extends State<MBDetailPage>
           MeasurementDetailBookBlocEvent(
             tenantId: widget.tenantId!,
             contractNumber: widget.contractNumber,
-            measurementNumber: widget.mbNumber,
+            measurementNumber: widget.mbNumber, screenType: widget.type,
           ),
         );
     super.initState();
@@ -165,7 +167,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 widget: CommonButtonCard(
                                   g: g,
                                   contractNumber: widget.contractNumber,
-                                  mbNumber: widget.mbNumber,
+                                  mbNumber: widget.mbNumber, type: widget.type,
                                 ),
                               );
                             },
@@ -221,7 +223,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                   return const SizedBox.shrink();
                 },
                 loaded: (value) {
-                  final mm = value.rawData.documents
+                  final dynamic mm;
+                  if (widget.type==MBScreen.create) {
+                    mm=null;
+                  }
+                  else{
+                 mm=  value.rawData.documents
                       ?.map((d) => FileStoreModel(
                             name: d.documentAdditionalDetails?.fileName,
                             fileStoreId: d.fileStore,
@@ -229,6 +236,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             tenantId: d.documentAdditionalDetails?.tenantId,
                           ))
                       .toList();
+                  }
                   return SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +319,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       MBHistoryBookRoute(
                                         contractNumber: widget.contractNumber,
                                         mbNumber: widget.mbNumber,
-                                        tenantId: widget.tenantId,
+                                        tenantId: widget.tenantId, type: widget.type,
                                       ),
                                     );
                                   },
@@ -369,6 +377,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           height: tabViewHeight(
                             value.sor!.length,
                             value.nonSor!.length,
+                            widget.type==MBScreen.create?0:
                             value.rawData.documents != null &&
                                     value.rawData.documents!.isEmpty
                                 ? 0
@@ -436,6 +445,35 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       },
                                       itemCount: value.nonSor!.length,
                                     ),
+                             widget.type==MBScreen.create?
+                             Card(
+                                          child: Center(
+                                            child: FilePickerDemo(
+                                              callBack: (List<FileStoreModel>?
+                                                      g,
+                                                  List<WorkflowDocument>? l) {
+                                                context
+                                                    .read<
+                                                        MeasurementDetailBloc>()
+                                                    .add(
+                                                      MeasurementUploadDocumentBlocEvent(
+                                                        tenantId: '',
+                                                        workflowDocument: l!,
+                                                      ),
+                                                    );
+                                                print(g);
+                                              },
+                                              extensions: const [
+                                                'jpg',
+                                                'png',
+                                                'jpeg'
+                                              ],
+                                              moduleName: 'works',
+                                              headerType: MediaType.mbDetail,
+                                            ),
+                                          ),
+                                        )
+                             :
                               value.rawData.documents != null &&
                                       value.rawData.documents!.isEmpty
                                   ? !value.viewStatus
@@ -553,7 +591,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ],
                           ),
                         ),
-
+                  widget.type==MBScreen.update?
                         //workflow
                         BlocBuilder<MusterGetWorkflowBloc,
                             MusterGetWorkflowState>(
@@ -609,7 +647,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                               },
                             );
                           },
-                        ),
+                        )
+                        :const SizedBox.shrink(),
+                       
                         // image
 
                         // FilePickerDemo(
@@ -939,7 +979,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                       widget: CommonButtonCard(
                         g: processInstances,
                         contractNumber: contractNumber,
-                        mbNumber: mbNumber,
+                        mbNumber: mbNumber, type: widget.type,
                       ),
                     );
                   }),

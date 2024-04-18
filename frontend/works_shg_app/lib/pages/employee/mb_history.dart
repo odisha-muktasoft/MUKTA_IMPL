@@ -15,6 +15,7 @@ import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/constants.dart';
+import '../../utils/employee/mb/mb_logic.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
@@ -31,11 +32,12 @@ class MBHistoryBookPage extends StatefulWidget {
   final String contractNumber;
   final String mbNumber;
   final String? tenantId;
+  final MBScreen type;
   const MBHistoryBookPage(
       {super.key,
       required this.contractNumber,
       required this.mbNumber,
-      this.tenantId});
+      this.tenantId, required this.type});
 
   @override
   State<MBHistoryBookPage> createState() => _MBHistoryBookPageState();
@@ -78,7 +80,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget: CommonButtonCard(
                                   g: g,
                                   contractNumber: widget.contractNumber,
-                                  mbNumber: widget.mbNumber,
+                                  mbNumber: widget.mbNumber, type: widget.type,
                                 ),
                               );
                             },
@@ -354,7 +356,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                       widget: CommonButtonCard(
                         g: processInstances,
                         contractNumber: contractNumber,
-                        mbNumber: mbNumber,
+                        mbNumber: mbNumber, type: widget.type,
                       ),
                     );
                   }),

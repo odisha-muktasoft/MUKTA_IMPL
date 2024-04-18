@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
+import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
@@ -388,7 +389,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       context.router.push(MBDetailRoute(
                                           contractNumber: contract,
                                           mbNumber: mbNumber,
-                                          tenantId: GlobalVariables.tenantId
+                                          tenantId: GlobalVariables.tenantId, type: MBScreen.update,
                                           ));
                                     },
                                   ),

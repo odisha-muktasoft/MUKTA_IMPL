@@ -30,11 +30,12 @@ class MBTypeConfirmationPage extends StatefulWidget {
   final NextActions nextActions;
   final String? contractNumber;
   final String? mbNumber;
+  final MBScreen type;
   const MBTypeConfirmationPage({
     super.key,
     required this.nextActions,
     this.contractNumber,
-    this.mbNumber,
+    this.mbNumber, required this.type,
   });
 
   @override
@@ -79,7 +80,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                   MeasurementDetailBookBlocEvent(
                     contractNumber: widget.contractNumber!,
                     measurementNumber: widget.mbNumber!,
-                    tenantId: '',
+                    tenantId: '', screenType: widget.type,
                   ),
                 );
             //context.router.push(const HomeRoute());

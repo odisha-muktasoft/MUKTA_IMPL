@@ -60,16 +60,35 @@ class MeasurementDetailBloc
       //   comment: "loading",
       // )));
       // print(kk);
-      final List<FilteredMeasurements> data =
-          MBLogic.getMeasureList(mbDetailResponse: res);
+      List<FilteredMeasurements> data;
+      if (event.screenType == MBScreen.create) {
+        data = MBLogic.formContract(mbDetailResponse: res);
+      } else {
+        data = MBLogic.getMeasureList(mbDetailResponse: res);
+      }
 
+      // final List<FilteredMeasurements> data =
+      //     MBLogic.getMeasureList(mbDetailResponse: res);
       List<List<List<SorObject>>> sorList = MBLogic.getSors(data);
 
       emit(
         MeasurementDetailState.loaded(
           null,
           true,
-          res.allMeasurements!.first,
+          res.allMeasurements! is List
+              ? res.allMeasurements
+                  .map<Measurement>((dynamic item) {
+                    if (item is Measurement) {
+                      return item;
+                    } else {
+                      // Assuming there's a conversion method or constructor for Measurement
+                      return Measurement.fromJson(
+                          item); // Adjust this based on your actual implementation
+                    }
+                  })
+                  .toList()
+                  .first
+              : res.allMeasurements!,
           data,
           sorList.first.first,
           sorList.first.last,
@@ -106,26 +125,26 @@ class MeasurementDetailBloc
           //       number: event.number)),
           //   measurelineitemNo: event.measurementLineIndex,
           // );
-          
+
           if (event.single) {
             MeasureLineItem mm = const MeasureLineItem(
-            width: 0,
-            height: 0,
-            length: 0,
-            number: 0,
-            quantity: 0,
-            measurelineitemNo: 1,
-          );
+              width: 0,
+              height: 0,
+              length: 0,
+              number: 0,
+              quantity: 0,
+              measurelineitemNo: 1,
+            );
             mk = [mm];
           } else {
-            MeasureLineItem mm =  MeasureLineItem(
-            width: 0,
-            height: 0,
-            length: 0,
-            number: 0,
-            quantity: 0,
-            measurelineitemNo: event.measurementLineIndex,
-          );
+            MeasureLineItem mm = MeasureLineItem(
+              width: 0,
+              height: 0,
+              length: 0,
+              number: 0,
+              quantity: 0,
+              measurelineitemNo: event.measurementLineIndex,
+            );
             mk = [mm];
           }
 
@@ -241,7 +260,8 @@ class MeasurementDetailBloc
             }
           } else {
             emit(value.copyWith(
-              warningMsg: "please check the numberThe current quantity of MB entry should not exceed the approved quantity minus the consumed quantity.",
+              warningMsg:
+                  "please check the numberThe current quantity of MB entry should not exceed the approved quantity minus the consumed quantity.",
             ));
           }
         },
@@ -364,29 +384,29 @@ class MeasurementDetailBloc
   // }
 
   SorObject? findSorObjectById(
-  List<FilteredMeasurements> filteredMeasurementsList, String sorId) {
-  for (FilteredMeasurements filteredMeasurements
-      in filteredMeasurementsList) {
-    List<FilteredMeasurementsMeasure> mutableList = [];
-    for (FilteredMeasurementsMeasure measure
-        in filteredMeasurements.measures ?? []) {
-      if (measure.contracts!.first.estimates!.first.sorId == sorId) {
-        mutableList.add(measure);
-        // Do not return here
+      List<FilteredMeasurements> filteredMeasurementsList, String sorId) {
+    for (FilteredMeasurements filteredMeasurements
+        in filteredMeasurementsList) {
+      List<FilteredMeasurementsMeasure> mutableList = [];
+      for (FilteredMeasurementsMeasure measure
+          in filteredMeasurements.measures ?? []) {
+        if (measure.contracts!.first.estimates!.first.sorId == sorId) {
+          mutableList.add(measure);
+          // Do not return here
+        }
+      }
+      if (mutableList.isNotEmpty) {
+        // If any matching measures are found, create and return SorObject
+        return SorObject(
+            id: mutableList.first.contracts!.first.estimates!.first.id,
+            sorId: mutableList.first.contracts!.first.estimates!.first.sorId,
+            filteredMeasurementsMeasure: mutableList
+            // Fill in the properties of SorObject based on the found measures
+            );
       }
     }
-    if (mutableList.isNotEmpty) {
-      // If any matching measures are found, create and return SorObject
-      return SorObject(
-        id: mutableList.first.contracts!.first.estimates!.first.id,
-        sorId: mutableList.first.contracts!.first.estimates!.first.sorId,
-        filteredMeasurementsMeasure: mutableList
-        // Fill in the properties of SorObject based on the found measures
-      );
-    }
+    return null; // If no SorObject with the given sorId is found in any filtered measurements
   }
-  return null; // If no SorObject with the given sorId is found in any filtered measurements
-}
 
 // calculate qty
   dynamic calulateQuantity({
@@ -500,29 +520,31 @@ class MeasurementDetailBloc
         loaded: (value) {
 //update data
 
-  List<WorkflowDocument> updatedDocuments = [...value.data.first.documents ?? []]; // Create a copy of existing documents
+          List<WorkflowDocument> updatedDocuments = [
+            ...value.data.first.documents ?? []
+          ]; // Create a copy of existing documents
 
 // Add or update the new documents
-if (event.workflowDocument != null && event.workflowDocument.isNotEmpty) {
-  if (updatedDocuments.isEmpty) {
-    // If updatedDocuments is empty, assign event.workflowDocument directly
-    updatedDocuments = List.from(event.workflowDocument);
-  } else {
-    // Iterate over each new document
-    for (WorkflowDocument document in event.workflowDocument) {
-      // Find and replace the document with the same id, or add the new document
-      // int index = updatedDocuments.indexWhere((doc) => doc.id == document.id);
-      // if (index != -1) {
-      //   updatedDocuments[index] = document;
-      // } else {
-      //   updatedDocuments.add(document);
-      // }
+          if (event.workflowDocument != null &&
+              event.workflowDocument.isNotEmpty) {
+            if (updatedDocuments.isEmpty) {
+              // If updatedDocuments is empty, assign event.workflowDocument directly
+              updatedDocuments = List.from(event.workflowDocument);
+            } else {
+              // Iterate over each new document
+              for (WorkflowDocument document in event.workflowDocument) {
+                // Find and replace the document with the same id, or add the new document
+                // int index = updatedDocuments.indexWhere((doc) => doc.id == document.id);
+                // if (index != -1) {
+                //   updatedDocuments[index] = document;
+                // } else {
+                //   updatedDocuments.add(document);
+                // }
 
-      updatedDocuments.add(document);
-    }
-  }
-}
-
+                updatedDocuments.add(document);
+              }
+            }
+          }
 
           List<FilteredMeasurements> newData = value.data.mapIndexed(
             (index, e) {
@@ -578,6 +600,7 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     required String tenantId,
     required String contractNumber,
     required String measurementNumber,
+    required MBScreen screenType,
   }) = MeasurementDetailBookBlocEvent;
 
   const factory MeasurementDetailBlocEvent.clear() =
@@ -647,7 +670,7 @@ class MeasurementDetailState with _$MeasurementDetailState {
   const factory MeasurementDetailState.loaded(
     String? warningMsg,
     bool viewStatus,
-    Measurement rawData,
+    dynamic rawData,
     List<FilteredMeasurements> data,
     List<SorObject>? sor,
     List<SorObject>? nonSor,

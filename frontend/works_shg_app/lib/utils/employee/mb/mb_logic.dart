@@ -6,11 +6,82 @@ import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/employee/mb/mb_inbox_response.dart';
 
+enum MBScreen { create, update}
 class MBLogic {
+// start experiment
+
+  static List<FilteredMeasurements> formContract(
+      {required MBDetailResponse mbDetailResponse}) {
+    List<FilteredMeasurementsContract> s = getContract(
+      mbDetailResponse!.contract!.lineItems!.first.contractLineItemRef!,
+      mbDetailResponse,
+    );
+    FilteredMeasurements sata = FilteredMeasurements(
+      totalAmount: 0.0,
+      totalNorSorAmount: 0.0,
+      totalSorAmount: 0.0,
+      musterRollNumber: null,
+      mbNumber: null,
+      wfStatus: mbDetailResponse.estimate!.wfStatus,
+      tenantId: null,
+      endDate: 0,
+      startDate: 0,
+      entryDate: 0,
+      referenceId: null,
+      id: null,
+      physicalRefNumber: null,
+      measures: s.map((e) {
+        FilteredMeasurementsMeasure filteredMeasurementsMeasure =
+            FilteredMeasurementsMeasure(
+              contracts: s,
+                length: double.parse(  e.estimates!.first.length!.toString()) ?? 0.0,
+                breath:double.parse( e.estimates!.first.width.toString() )?? 0.0,
+                height:double.parse(  e.estimates!.first.height.toString() )?? 0.0,
+                numItems: 0.0,
+                cumulativeValue: 0.0,
+                currentValue: 0.0,
+                tenantId:
+                    mbDetailResponse!.contract!.lineItems!.first.tenantId!,
+                mbAmount: 0.0,
+                targetId: e.contractLineItemRef,
+                isActive: null,
+                id: null,
+                measureLineItems: e!.estimates!?.map((e) {
+                  MeasureLineItem sk = MeasureLineItem(
+                    width: e.width ?? 0.0,
+                    height: e.height ?? 0.0,
+                    length: e.length ?? 0.0,
+                    number: 0.0,
+                    quantity: 0.0,
+                    measurelineitemNo: 0,
+                  );
+
+                  return sk;
+                }).toList());
+
+
+        return filteredMeasurementsMeasure;
+      }).toList(),
+      documents: null
+    );
+
+    return [sata];
+  }
+
+// end
   static List<FilteredMeasurements> getMeasureList(
       {required MBDetailResponse mbDetailResponse}) {
     final List<Measurement> allMeasurements =
-        mbDetailResponse.allMeasurements ?? [];
+       mbDetailResponse.allMeasurements is List?  mbDetailResponse.allMeasurements
+    .map<Measurement>((dynamic item) {
+      if (item is Measurement) {
+        return item;
+      } else {
+        // Assuming there's a conversion method or constructor for Measurement
+        return Measurement.fromJson(item); // Adjust this based on your actual implementation
+      }
+    })
+    .toList()   : [];
 
     final data = allMeasurements.map((e) {
       FilteredMeasurements datak = FilteredMeasurements(
@@ -19,19 +90,19 @@ class MBLogic {
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
           totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
-          endDate:e.additionalDetail?.endDate
-            ??
+          endDate: e.additionalDetail?.endDate ??
               (mbDetailResponse.period?.endDate ?? 00),
-          startDate:e.additionalDetail?.startDate
-           ??
-              ( mbDetailResponse.period?.startDate ?? 00),
+          startDate: e.additionalDetail?.startDate ??
+              (mbDetailResponse.period?.startDate ?? 00),
           entryDate: e.entryDate,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
           // to be chnaged
           //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
-         // musterRollNumber: mbDetailResponse.musterRolls?.first.musterRollNumber??"",
-          musterRollNumber: mbDetailResponse.musterRolls is List?mbDetailResponse.musterRolls?.first["musterRollNumber"]??"":"",
+          // musterRollNumber: mbDetailResponse.musterRolls?.first.musterRollNumber??"",
+          musterRollNumber: mbDetailResponse.musterRolls is List
+              ? mbDetailResponse.musterRolls?.first["musterRollNumber"] ?? ""
+              : "",
           mbNumber: e.measurementNumber,
           wfStatus: e.wfStatus,
           tenantId: e.tenantId,
@@ -362,7 +433,8 @@ class MBLogic {
 
   static Map<String, dynamic> measurementToMap(Measurement measurement) {
     Map<String, dynamic> data = {
-      "documents": measurement.documents!.map((e) {
+      "documents": measurement.documents!=null?
+      measurement.documents!.map((e) {
         return {
           "fileStore": e.fileStore,
           "id": e.id,
@@ -380,10 +452,11 @@ class MBLogic {
                 : ''
           }
         };
-      }).toList(),
-      'id': measurement.id,
+      }).toList():[],
+
+      'id': measurement.id??"",
       'tenantId': measurement.tenantId,
-      'measurementNumber': measurement.measurementNumber,
+      'measurementNumber': measurement.measurementNumber??"",
       'entryDate': measurement.entryDate,
       'isActive': measurement.isActive,
       'wfStatus': measurement.wfStatus,

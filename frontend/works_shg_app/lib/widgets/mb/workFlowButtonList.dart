@@ -11,17 +11,20 @@ import '../../router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+import '../../utils/employee/mb/mb_logic.dart';
+
 class CommonButtonCard extends StatelessWidget {
   const CommonButtonCard({
     super.key,
     required this.g,
     required this.contractNumber,
-    required this.mbNumber,
+    required this.mbNumber, required this.type,
   });
 
   final List<ProcessInstances>? g;
   final String contractNumber;
   final String mbNumber;
+  final MBScreen type;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +90,7 @@ class CommonButtonCard extends StatelessWidget {
                               MBTypeConfirmationRoute(
                                 nextActions: g!.first.nextActions![index],
                                 contractNumber: contractNumber,
-                                mbNumber: mbNumber,
+                                mbNumber: mbNumber, type: type,
                               ),
                             );
                           }

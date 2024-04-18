@@ -3,6 +3,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/widgets/Back.dart';
 
 import '../../../blocs/localization/app_localization.dart';
@@ -38,7 +39,11 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
             child: DigitElevatedButton(
               child: const Text("Create Measurement Book"),
               onPressed: () {
-                context.router.push( MBDetailRoute(contractNumber: '', mbNumber: ''));
+                context.router.push(MBDetailRoute(
+                  contractNumber: '',
+                  mbNumber: '',
+                  type: MBScreen.create,
+                ));
               },
             ),
           ),

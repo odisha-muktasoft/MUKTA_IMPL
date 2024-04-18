@@ -110,7 +110,11 @@ class MusterGetWorkflowState with _$MusterGetWorkflowState {
   const factory MusterGetWorkflowState.loading() = _Loading;
   const factory MusterGetWorkflowState.loaded(
       {MusterWorkFlowModel? musterWorkFlowModel,
-      @Default(false) bool isInWorkflow}) = _Loaded;
+
+      @Default(false) bool isInWorkflow,
+      
+      
+      }) = _Loaded;
   const factory MusterGetWorkflowState.error() = _Error;
 
   // const factory MusterGetWorkflowState({

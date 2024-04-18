@@ -232,6 +232,7 @@ class _$AppRouter extends RootStackRouter {
           contractNumber: args.contractNumber,
           mbNumber: args.mbNumber,
           tenantId: args.tenantId,
+          type: args.type,
         ),
       );
     },
@@ -244,6 +245,7 @@ class _$AppRouter extends RootStackRouter {
           contractNumber: args.contractNumber,
           mbNumber: args.mbNumber,
           tenantId: args.tenantId,
+          type: args.type,
         ),
       );
     },
@@ -256,6 +258,7 @@ class _$AppRouter extends RootStackRouter {
           nextActions: args.nextActions,
           contractNumber: args.contractNumber,
           mbNumber: args.mbNumber,
+          type: args.type,
         ),
       );
     },
@@ -963,6 +966,7 @@ class MBDetailRoute extends PageRouteInfo<MBDetailRouteArgs> {
     required String contractNumber,
     required String mbNumber,
     String? tenantId,
+    required MBScreen type,
   }) : super(
           MBDetailRoute.name,
           path: 'mb-detail',
@@ -971,6 +975,7 @@ class MBDetailRoute extends PageRouteInfo<MBDetailRouteArgs> {
             contractNumber: contractNumber,
             mbNumber: mbNumber,
             tenantId: tenantId,
+            type: type,
           ),
         );
 
@@ -983,6 +988,7 @@ class MBDetailRouteArgs {
     required this.contractNumber,
     required this.mbNumber,
     this.tenantId,
+    required this.type,
   });
 
   final Key? key;
@@ -993,9 +999,11 @@ class MBDetailRouteArgs {
 
   final String? tenantId;
 
+  final MBScreen type;
+
   @override
   String toString() {
-    return 'MBDetailRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId}';
+    return 'MBDetailRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId, type: $type}';
   }
 }
 
@@ -1007,6 +1015,7 @@ class MBHistoryBookRoute extends PageRouteInfo<MBHistoryBookRouteArgs> {
     required String contractNumber,
     required String mbNumber,
     String? tenantId,
+    required MBScreen type,
   }) : super(
           MBHistoryBookRoute.name,
           path: 'mb-history',
@@ -1015,6 +1024,7 @@ class MBHistoryBookRoute extends PageRouteInfo<MBHistoryBookRouteArgs> {
             contractNumber: contractNumber,
             mbNumber: mbNumber,
             tenantId: tenantId,
+            type: type,
           ),
         );
 
@@ -1027,6 +1037,7 @@ class MBHistoryBookRouteArgs {
     required this.contractNumber,
     required this.mbNumber,
     this.tenantId,
+    required this.type,
   });
 
   final Key? key;
@@ -1037,9 +1048,11 @@ class MBHistoryBookRouteArgs {
 
   final String? tenantId;
 
+  final MBScreen type;
+
   @override
   String toString() {
-    return 'MBHistoryBookRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId}';
+    return 'MBHistoryBookRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId, type: $type}';
   }
 }
 
@@ -1052,6 +1065,7 @@ class MBTypeConfirmationRoute
     required NextActions nextActions,
     String? contractNumber,
     String? mbNumber,
+    required MBScreen type,
   }) : super(
           MBTypeConfirmationRoute.name,
           path: 'mb-type-confirmation',
@@ -1060,6 +1074,7 @@ class MBTypeConfirmationRoute
             nextActions: nextActions,
             contractNumber: contractNumber,
             mbNumber: mbNumber,
+            type: type,
           ),
         );
 
@@ -1072,6 +1087,7 @@ class MBTypeConfirmationRouteArgs {
     required this.nextActions,
     this.contractNumber,
     this.mbNumber,
+    required this.type,
   });
 
   final Key? key;
@@ -1082,9 +1098,11 @@ class MBTypeConfirmationRouteArgs {
 
   final String? mbNumber;
 
+  final MBScreen type;
+
   @override
   String toString() {
-    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions, contractNumber: $contractNumber, mbNumber: $mbNumber}';
+    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions, contractNumber: $contractNumber, mbNumber: $mbNumber, type: $type}';
   }
 }
 

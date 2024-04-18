@@ -17,9 +17,7 @@ _$_MBDetailResponse _$$_MBDetailResponseFromJson(Map<String, dynamic> json) =>
       period: json['period'] == null
           ? null
           : Period.fromJson(json['period'] as Map<String, dynamic>),
-      allMeasurements: (json['allMeasurements'] as List<dynamic>?)
-          ?.map((e) => Measurement.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      allMeasurements: json['allMeasurements'],
       measurement: json['measurement'] == null
           ? null
           : Measurement.fromJson(json['measurement'] as Map<String, dynamic>),
