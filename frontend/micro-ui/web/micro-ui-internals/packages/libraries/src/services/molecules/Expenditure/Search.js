@@ -258,6 +258,7 @@ export const BillsSearch = {
         title: "EXP_INVOICE_DETAILS",
         asSectionHeader: true,
         values: [
+            { title: "EXP_ORG_TYPE", value: billData?.additionalDetails?.organisationType?.name || t("COMMON_MASTERS_ORG_VEN") || "NA" },
             { title: "EXP_VENDOR_NAME", value: orgData?.name || "NA" },
             { title: "EXP_VENDOR_ID", value: orgData?.orgNumber || "NA" },
             { title: "EXP_INVOICE_NUMBER", value: billData?.additionalDetails?.invoiceNumber || "NA" },
