@@ -13,6 +13,7 @@ import 'package:works_shg_app/widgets/atoms/app_logo.dart';
 
 import '../blocs/app_initilization/app_initilization.dart';
 import '../blocs/localization/app_localization.dart';
+import '../utils/employee/support_services.dart';
 import '../utils/notifiers.dart';
 import '../widgets/molecules/desktop_view.dart';
 import '../widgets/molecules/mobile_view.dart';
@@ -402,7 +403,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
               valueMapper: (value) {
                 // return value!.code!;
-                return t.translate(convertToTenant(value!.code!));
+                return t.translate(Conversion.convertToTenant(value!.code!));
               }),
           DigitIconButton(
             iconText: "Forgot Password?",
@@ -415,10 +416,5 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 
-  String convertToTenant(String input) {
-    List<String> parts = input.split('.');
-    String result =
-        "TENANT_TENANTS_${parts.map((part) => part.toUpperCase()).join('_')}";
-    return result;
-  }
+ 
 }

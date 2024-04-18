@@ -7,6 +7,7 @@ import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'
     as statusMap;
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 
@@ -436,7 +437,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               .map((e) => e.code.toString())
                                               .toList(),
                                           valueMapper: (value) {
-                                            return value.toString();
+                                            return  t.translate(convertToWard(value.toString()));
+                                           // return value.toString();
                                           },
                                         )
                                       : const SizedBox.shrink(),
@@ -481,4 +483,12 @@ class _MBFilterPageState extends State<MBFilterPage> {
   FormGroup detailBuildForm() => fb.group(<String, Object>{
         genderKey: FormControl<String>(value: "MB_ASSIGNED_TO_ALL"),
       });
+
+      String convertToWard(String input) {
+    
+   String tenant=Conversion. splitTenant(GlobalVariables.tenantId!);
+    String result =
+        "${tenant}_ADMIN_${input.toUpperCase()}";
+    return result;
+  }
 }
