@@ -178,7 +178,8 @@ public class EstimateServiceValidator {
 
             if (!estimateDetail1.getCategory().equals(OVERHEAD_CODE) && estimateDetail1.getPreviousLineItemId() != null) {
                 sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail1.getSorId(), k -> new ArrayList<>()).add(estimateDetail1);
-                sorIdToEstimateDetailtNoOfUnitMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(estimateDetail1.getNoOfunit()), BigDecimal::add);
+                Double noOfUnit=estimateDetail1.getIsDeduction()?estimateDetail1.getNoOfunit() * -1 :estimateDetail1.getNoOfunit();
+                sorIdToEstimateDetailtNoOfUnitMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(noOfUnit), BigDecimal::add);
                 fetchCummulativeAndCurrentValueOnSORLevel(estimateDetail1, measurementResponse, contractResponse, sorIdToCumulativeValueMap, sorIdToCurrentValueMap);
             }
         });
