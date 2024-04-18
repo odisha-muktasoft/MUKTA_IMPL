@@ -183,14 +183,14 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
             className="icon-wrapper"
             onClick={(newValue) => {
               //added this condition as user should not able to delete row if only one is present
-              if(fields?.length > 1 && (mode === "CREATERE" && !(value?.previousLineItemId) || mode !== "CREATERE"))
+              if(fields?.length > 1 && (mode === "CREATERE" && (window?.location.href.includes("create") ? !(value?.id) : !(value?.previousLineItemId)) || mode !== "CREATERE"))
               dispatch({
                 type: "REMOVE_ROW",
                 id: index + 1,
               });
             }}
           >
-            <DeleteIcon fill={mode === "CREATERE" && value?.previousLineItemId? "lightgrey" : "#FF9100"} />
+            <DeleteIcon fill={mode === "CREATERE" && (window.location.href.includes("create")? value?.id : value?.previousLineItemId)? "lightgrey" : "#FF9100"} />
           </span>
         </td>
       )}
