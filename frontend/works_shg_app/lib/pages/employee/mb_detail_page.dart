@@ -4,17 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
+import 'package:works_shg_app/blocs/employee/estimate/estimate.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
+import '../../blocs/muster_rolls/get_business_workflow.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
+import '../../blocs/work_orders/search_individual_work.dart';
 import '../../models/employee/mb/filtered_Measures.dart';
 import '../../models/file_store/file_store_model.dart';
+import '../../models/muster_rolls/business_service_workflow.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/employee/mb/mb_logic.dart';
@@ -40,7 +45,8 @@ class MBDetailPage extends StatefulWidget {
       {super.key,
       required this.contractNumber,
       required this.mbNumber,
-      this.tenantId, required this.type});
+      this.tenantId,
+      required this.type});
 
   @override
   State<MBDetailPage> createState() => _MBDetailPageState();
@@ -53,19 +59,41 @@ class _MBDetailPageState extends State<MBDetailPage>
 
   int phots = 0;
   List<DigitTimelineOptions> timeLineAttributes = [];
+
+  // check points for creating new MB
+//  ACTIVE
+  String workorderStatus = "";
+  //  INWORKFLOW
+  String estimateStatus = "";
   @override
   void initState() {
-    context.read<MusterGetWorkflowBloc>().add(
-          //hard coded
-          FetchMBWorkFlowEvent(
-              tenantId: widget.tenantId!, mbNumber: widget.mbNumber),
-        );
-
+    if (widget.type == MBScreen.create) {
+      context.read<BusinessWorkflowBloc>().add(
+            //hard coded
+            GetBusinessWorkflowEvent(
+                tenantId: widget.tenantId!,
+                // businessService: 'CONTRACT',
+                 businessService: 'MB',
+                 ),
+          );
+      // SearchIndividualWorkBloc
+      context.read<SearchIndividualWorkBloc>().add(
+            IndividualWorkSearchEvent(
+                contractNumber: widget.contractNumber, body: null),
+          );
+    } else {
+      context.read<MusterGetWorkflowBloc>().add(
+            //hard coded
+            FetchMBWorkFlowEvent(
+                tenantId: widget.tenantId!, mbNumber: widget.mbNumber),
+          );
+    }
     context.read<MeasurementDetailBloc>().add(
           MeasurementDetailBookBlocEvent(
             tenantId: widget.tenantId!,
             contractNumber: widget.contractNumber,
-            measurementNumber: widget.mbNumber, screenType: widget.type,
+            measurementNumber: widget.mbNumber,
+            screenType: widget.type,
           ),
         );
     super.initState();
@@ -89,39 +117,80 @@ class _MBDetailPageState extends State<MBDetailPage>
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    // return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
-    //   builder: (context, state) {
-    //     return state.maybeMap(
-    //       orElse: () {
-    //         return const SizedBox.shrink();
-    //       },
-    //       loaded: (value) {
-    //         return testing(context);
-    //       },
-    //     );
-    //   },
-    // );
 
-    return BlocListener<MusterGetWorkflowBloc, MusterGetWorkflowState>(
-      listener: (context, state) {
-        state.maybeMap(
-          orElse: () => const SizedBox.shrink(),
-          loaded: (mbWorkFlow) {
-            final g = mbWorkFlow.musterWorkFlowModel?.processInstances;
-            if ( g!=null && g?.first.nextActions != null && g.first.nextActions!.isNotEmpty) {
-              final data = g?.first.nextActions!.first.roles?.join(',');
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<MusterGetWorkflowBloc, MusterGetWorkflowState>(
+          listener: (context, state) {
+            state.maybeMap(
+              orElse: () => const SizedBox.shrink(),
+              loaded: (mbWorkFlow) {
+                final g = mbWorkFlow.musterWorkFlowModel?.processInstances;
+                if (g != null &&
+                    g?.first.nextActions != null &&
+                    g.first.nextActions!.isNotEmpty) {
+                  final data = g?.first.nextActions!.first.roles?.join(',');
 
-              context.read<EmpHRMSBloc>().add(
-                    EmpHRMSLoadBlocEvent(
-                      isActive: true,
-                      roles: data ?? "",
-                      tenantId: widget.tenantId!,
-                    ),
-                  );
-            }
+                  context.read<EmpHRMSBloc>().add(
+                        EmpHRMSLoadBlocEvent(
+                          isActive: true,
+                          roles: data ?? "",
+                          tenantId: widget.tenantId!,
+                        ),
+                      );
+                }
+              },
+            );
           },
-        );
-      },
+        ),
+        BlocListener<SearchIndividualWorkBloc, SearchIndividualWorkState>(
+          listener: (context, state) {
+            state.maybeMap(
+              orElse: () => null,
+              loaded: (value) {
+
+                print("individualWork${value.contractsModel!.contracts!.first.status!}");
+                setState(() {
+                  workorderStatus =
+                      value.contractsModel!.contracts!.first.status!;
+                });
+
+                context.read<EstimateBloc>().add(EstimateLoadBlocEvent(
+                      isActive: true,
+                      roles: value.contractsModel!.contracts!.first
+                          .additionalDetails!.estimateNumber!,
+                      tenantId: widget.tenantId!,
+                    ));
+              },
+            );
+          },
+        ),
+        BlocListener<EstimateBloc, EstimateState>(
+          listener: (context, estimateState) {
+            estimateState.maybeMap(
+              orElse: () => null,
+              loaded: (value) {
+                print("bubu estimate");
+                print(value.estimateDetailResponse?.estimates!.first.status!);
+                setState(() {
+                  estimateStatus =
+                      value.estimateDetailResponse!.estimates!.first.status!;
+                });
+                context.read<EmpHRMSBloc>().add(
+                      EmpHRMSLoadBlocEvent(
+                        isActive: true,
+                        roles: "MB_VERIFIER",
+                        tenantId: widget.tenantId!,
+                      ),
+                    );
+              },
+              error: (value) {
+                print(value.toString());
+              },
+            );
+          },
+        ),
+      ],
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -150,7 +219,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                     });
                     sorprice += (line.first.unitRate! * consumed);
                   }
-
+                 if (widget.type==MBScreen.update) {
+                   
+                 
                   return BlocBuilder<MusterGetWorkflowBloc,
                       MusterGetWorkflowState>(
                     builder: (context, state) {
@@ -162,14 +233,19 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                           return FloatActionCard(
                             actions: () {
-                              DigitActionDialog.show(
+                             
+                              
+                                DigitActionDialog.show(
                                 context,
                                 widget: CommonButtonCard(
                                   g: g,
                                   contractNumber: widget.contractNumber,
-                                  mbNumber: widget.mbNumber, type: widget.type,
+                                  mbNumber: widget.mbNumber,
+                                  type: widget.type,
                                 ),
                               );
+                              
+                              
                             },
                             // amount: sorprice.toString(),
                             amount: value.data.first.totalAmount!
@@ -186,6 +262,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 g,
                                 widget.contractNumber,
                                 widget.mbNumber,
+                                  widget.type,
+                                   null,
                               );
                             },
                             totalAmountText:
@@ -196,7 +274,84 @@ class _MBDetailPageState extends State<MBDetailPage>
                         },
                       );
                     },
+
                   );
+                  } else {
+                   
+                   return BlocBuilder<BusinessWorkflowBloc,
+                      BusinessGetWorkflowState>(
+                    builder: (context, state) {
+                      return state.maybeMap(
+                        orElse: () => const SizedBox.shrink(),
+                        loaded: (business) {
+                          const g = null;
+                          final bk=    business.businessWorkFlowModel!.businessServices??[];
+
+                          return FloatActionCard(
+                            actions: () {
+                               if (workorderStatus=="ACTIVE" && estimateStatus!="INWORKFLOW") {
+                                DigitActionDialog.show(
+                                context,
+                                widget: CommonButtonCard(
+                                  g: g,
+                                  contractNumber: widget.contractNumber,
+                                  mbNumber: widget.mbNumber,
+                                  type: widget.type,
+                                  bs: bk,
+                                ),
+                              );
+                              } else {
+                                String show="";
+                                if(workorderStatus!="ACTIVE"){
+                                  show="time extension";
+                                }
+                                else if(estimateStatus=="INWORKFLOW"){
+                                  show="estimate revision";
+                                }
+                                Notifiers.getToastMessage(
+                                        context, "MB can not be created as the $show in progress", 'ERROR');
+                              }
+                              // DigitActionDialog.show(
+                              //   context,
+                              //   widget: CommonButtonCard(
+                              //     g: null,
+                              //     contractNumber: widget.contractNumber,
+                              //     mbNumber: widget.mbNumber,
+                              //     type: widget.type,
+                              //     bs: bk,
+                              //   ),
+                              // );
+                            },
+                            // amount: sorprice.toString(),
+                            amount: value.data.first.totalAmount!
+                                .toDouble()
+                                .roundToDouble()
+                                .toString(),
+                            openButtonSheet: () {
+                              _openBottomSheet(
+                                t,
+                                context,
+                                value.data.first.totalSorAmount!,
+                                value.data.first.totalNorSorAmount!,
+                                value.data.first.totalAmount!,
+                                g,
+                                widget.contractNumber,
+                                widget.mbNumber,
+                                  widget.type,
+                                   bk,
+                              );
+                            },
+                            totalAmountText:
+                                t.translate(i18.measurementBook.totalMbAmount),
+                            subtext: t
+                                .translate(i18.measurementBook.forCurrentEntry),
+                          );
+                        },
+                      );
+                    },
+
+                  );
+                 }
                 },
                 loading: (value) {
                   return const SizedBox.shrink();
@@ -224,18 +379,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                 },
                 loaded: (value) {
                   final dynamic mm;
-                  if (widget.type==MBScreen.create) {
-                    mm=null;
-                  }
-                  else{
-                 mm=  value.rawData.documents
-                      ?.map((d) => FileStoreModel(
-                            name: d.documentAdditionalDetails?.fileName,
-                            fileStoreId: d.fileStore,
-                            id: d.id,
-                            tenantId: d.documentAdditionalDetails?.tenantId,
-                          ))
-                      .toList();
+                  if (widget.type == MBScreen.create) {
+                    mm = null;
+                  } else {
+                    mm = value.rawData.documents
+                        ?.map((d) => FileStoreModel(
+                              name: d.documentAdditionalDetails?.fileName,
+                              fileStoreId: d.fileStore,
+                              id: d.id,
+                              tenantId: d.documentAdditionalDetails?.tenantId,
+                            ))
+                        .toList();
                   }
                   return SingleChildScrollView(
                     child: Column(
@@ -290,10 +444,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   //         .contractAdditionalDetails
                                   //         ?.officerInChargeDesgn ??
                                   //     "NA",
+                                  // t.translate(
+                                  //     i18.measurementBook
+                                  //         .workOrderNumber): t.translate(
+                                  //     "MB_WFMB_STATE_//${value.data.first.wfStatus!}"),
                                   t.translate(
-                                      i18.measurementBook
-                                          .workOrderNumber): t.translate(
-                                      "MB_WFMB_STATE_${value.data.first.wfStatus!}"),
+                                          i18.measurementBook.workOrderNumber):
+                                      value.data.first.referenceId ?? "NA",
                                   // t.translate(i18.measurementBook.mbAmount):
                                   //     value.data.first.totalAmount != null
                                   //         ? double.parse((value
@@ -301,12 +458,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   //                 .toDouble())
                                   //             .toStringAsFixed(2))
                                   //         : 0.0,
-                                  t.translate(i18.measurementBook.measurementPeriod):
-                                      value.data.first.entryDate != null
-                                          ?DateFormat('dd/MM/yyyy').format(
+                                  t.translate(i18
+                                      .measurementBook.measurementPeriod): value
+                                              .data.first.entryDate !=
+                                          null
+                                      ? DateFormat('dd/MM/yyyy').format(
                                           DateTime.fromMillisecondsSinceEpoch(
                                               value.data.first.entryDate!))
-                                          : "NA",
+                                      : "NA",
                                   t.translate(i18.common.musterRollId):
                                       value.data.first.musterRollNumber,
                                   // "SLA Days remaining": 2,
@@ -319,7 +478,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       MBHistoryBookRoute(
                                         contractNumber: widget.contractNumber,
                                         mbNumber: widget.mbNumber,
-                                        tenantId: widget.tenantId, type: widget.type,
+                                        tenantId: widget.tenantId,
+                                        type: widget.type,
                                       ),
                                     );
                                   },
@@ -377,11 +537,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                           height: tabViewHeight(
                             value.sor!.length,
                             value.nonSor!.length,
-                            widget.type==MBScreen.create?0:
-                            value.rawData.documents != null &&
-                                    value.rawData.documents!.isEmpty
+                            widget.type == MBScreen.create
                                 ? 0
-                                : value.rawData.documents!.length,
+                                : value.rawData.documents != null &&
+                                        value.rawData.documents!.isEmpty
+                                    ? 0
+                                    : value.rawData.documents!.length,
                           ),
                           child: TabBarView(
                             controller: _tabController,
@@ -445,211 +606,228 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       },
                                       itemCount: value.nonSor!.length,
                                     ),
-                             widget.type==MBScreen.create?
-                             Card(
-                                          child: Center(
-                                            child: FilePickerDemo(
-                                              callBack: (List<FileStoreModel>?
-                                                      g,
-                                                  List<WorkflowDocument>? l) {
-                                                context
-                                                    .read<
-                                                        MeasurementDetailBloc>()
-                                                    .add(
-                                                      MeasurementUploadDocumentBlocEvent(
-                                                        tenantId: '',
-                                                        workflowDocument: l!,
-                                                      ),
-                                                    );
-                                                print(g);
-                                              },
-                                              extensions: const [
-                                                'jpg',
-                                                'png',
-                                                'jpeg'
-                                              ],
-                                              moduleName: 'works',
-                                              headerType: MediaType.mbDetail,
-                                            ),
-                                          ),
-                                        )
-                             :
-                              value.rawData.documents != null &&
-                                      value.rawData.documents!.isEmpty
-                                  ? !value.viewStatus
-                                      ? Card(
-                                          child: Center(
-                                            child: FilePickerDemo(
-                                              callBack: (List<FileStoreModel>?
-                                                      g,
-                                                  List<WorkflowDocument>? l) {
-                                                context
-                                                    .read<
-                                                        MeasurementDetailBloc>()
-                                                    .add(
-                                                      MeasurementUploadDocumentBlocEvent(
-                                                        tenantId: '',
-                                                        workflowDocument: l!,
-                                                      ),
-                                                    );
-                                                print(g);
-                                              },
-                                              extensions: const [
-                                                'jpg',
-                                                'png',
-                                                'jpeg'
-                                              ],
-                                              moduleName: 'works',
-                                              headerType: MediaType.mbDetail,
-                                            ),
-                                          ),
-                                        )
-                                      : const Card(
-                                          child: Center(
-                                            child: Text("No Data Found"),
-                                          ),
-                                        )
-                                  : !value.viewStatus
-                                      ? Card(
-                                          child: Center(
-                                            child: FilePickerDemo(
-                                              callBack: (List<FileStoreModel>?
-                                                      g,
-                                                  List<WorkflowDocument>? l) {
-                                                context
-                                                    .read<
-                                                        MeasurementDetailBloc>()
-                                                    .add(
-                                                      MeasurementUploadDocumentBlocEvent(
-                                                        tenantId: '',
-                                                        workflowDocument: l!,
-                                                      ),
-                                                    );
-                                                print(g);
-                                              },
-                                              extensions: const [
-                                                'jpg',
-                                                'png',
-                                                'jpeg'
-                                              ],
-                                              moduleName: 'works',
-                                              headerType: MediaType.mbDetail,
-                                            ),
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return InkWell(
-                                              onTap: () => CommonMethods()
-                                                  .onTapOfAttachment(
-                                                mm![index],
-                                                mm![index].tenantId!,
-                                                context,
-                                                roleType: RoleType.employee,
-                                              ),
-                                              child: Container(
-                                                  //width: 50,
-                                                  margin: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 5,
-                                                      horizontal: 5),
-                                                  child: Wrap(
-                                                      runSpacing: 8,
-                                                      spacing: 5,
-                                                      children: [
-                                                        Image.asset(
-                                                          'assets/png/attachment.png',
-                                                          height: 200,
-                                                          width:
-                                                              MediaQuery.sizeOf(
-                                                                      context)
-                                                                  .width,
-                                                        ),
-                                                        //         Image.network( CommonMethods().loadImg(mm![index].fileStoreId!,
-                                                        // mm![index].tenantId!,
-
-                                                        // roleType: RoleType.employee,),),
-                                                        Text(
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .translate(mm![
-                                                                      index]
-                                                                  .name
-                                                                  .toString()),
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        )
-                                                      ])),
-                                            );
+                              widget.type == MBScreen.create
+                                  ? Card(
+                                      child: Center(
+                                        child: FilePickerDemo(
+                                          callBack: (List<FileStoreModel>? g,
+                                              List<WorkflowDocument>? l) {
+                                            context
+                                                .read<MeasurementDetailBloc>()
+                                                .add(
+                                                  MeasurementUploadDocumentBlocEvent(
+                                                    tenantId: '',
+                                                    workflowDocument: l!,
+                                                  ),
+                                                );
+                                            print(g);
                                           },
-                                          itemCount:
-                                              value.rawData.documents!.length),
+                                          extensions: const [
+                                            'jpg',
+                                            'png',
+                                            'jpeg'
+                                          ],
+                                          moduleName: 'works',
+                                          headerType: MediaType.mbDetail,
+                                        ),
+                                      ),
+                                    )
+                                  : value.rawData.documents != null &&
+                                          value.rawData.documents!.isEmpty
+                                      ? !value.viewStatus
+                                          ? Card(
+                                              child: Center(
+                                                child: FilePickerDemo(
+                                                  callBack: (List<
+                                                              FileStoreModel>?
+                                                          g,
+                                                      List<WorkflowDocument>?
+                                                          l) {
+                                                    context
+                                                        .read<
+                                                            MeasurementDetailBloc>()
+                                                        .add(
+                                                          MeasurementUploadDocumentBlocEvent(
+                                                            tenantId: '',
+                                                            workflowDocument:
+                                                                l!,
+                                                          ),
+                                                        );
+                                                    print(g);
+                                                  },
+                                                  extensions: const [
+                                                    'jpg',
+                                                    'png',
+                                                    'jpeg'
+                                                  ],
+                                                  moduleName: 'works',
+                                                  headerType:
+                                                      MediaType.mbDetail,
+                                                ),
+                                              ),
+                                            )
+                                          : const Card(
+                                              child: Center(
+                                                child: Text("No Data Found"),
+                                              ),
+                                            )
+                                      : !value.viewStatus
+                                          ? Card(
+                                              child: Center(
+                                                child: FilePickerDemo(
+                                                  callBack: (List<
+                                                              FileStoreModel>?
+                                                          g,
+                                                      List<WorkflowDocument>?
+                                                          l) {
+                                                    context
+                                                        .read<
+                                                            MeasurementDetailBloc>()
+                                                        .add(
+                                                          MeasurementUploadDocumentBlocEvent(
+                                                            tenantId: '',
+                                                            workflowDocument:
+                                                                l!,
+                                                          ),
+                                                        );
+                                                    print(g);
+                                                  },
+                                                  extensions: const [
+                                                    'jpg',
+                                                    'png',
+                                                    'jpeg'
+                                                  ],
+                                                  moduleName: 'works',
+                                                  headerType:
+                                                      MediaType.mbDetail,
+                                                ),
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return InkWell(
+                                                  onTap: () => CommonMethods()
+                                                      .onTapOfAttachment(
+                                                    mm![index],
+                                                    mm![index].tenantId!,
+                                                    context,
+                                                    roleType: RoleType.employee,
+                                                  ),
+                                                  child: Container(
+                                                      //width: 50,
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 5,
+                                                          horizontal: 5),
+                                                      child: Wrap(
+                                                          runSpacing: 8,
+                                                          spacing: 5,
+                                                          children: [
+                                                            Image.asset(
+                                                              'assets/png/attachment.png',
+                                                              height: 200,
+                                                              width: MediaQuery
+                                                                      .sizeOf(
+                                                                          context)
+                                                                  .width,
+                                                            ),
+                                                            //         Image.network( CommonMethods().loadImg(mm![index].fileStoreId!,
+                                                            // mm![index].tenantId!,
+
+                                                            // roleType: RoleType.employee,),),
+                                                            Text(
+                                                              AppLocalizations.of(
+                                                                      context)
+                                                                  .translate(mm![
+                                                                          index]
+                                                                      .name
+                                                                      .toString()),
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                            )
+                                                          ])),
+                                                );
+                                              },
+                                              itemCount: value
+                                                  .rawData.documents!.length),
                             ],
                           ),
                         ),
-                  widget.type==MBScreen.update?
-                        //workflow
-                        BlocBuilder<MusterGetWorkflowBloc,
-                            MusterGetWorkflowState>(
-                          builder: (context, state) {
-                            return state.maybeMap(
-                              orElse: SizedBox.shrink,
-                              loaded: (value) {
-                                final timeLineAttributes = value
-                                    .musterWorkFlowModel!.processInstances!
-                                    .mapIndexed((i, e) => DigitTimelineOptions(
-                                          title: t.translate(
-                                              '${e.workflowState?.state}'),
-                                          subTitle: DateFormats.getTimeLineDate(
-                                              e.auditDetails
-                                                      ?.lastModifiedTime ??
-                                                  0),
-                                          isCurrentState: i == 0,
-                                          comments: e.comment,
-                                          documents: e.documents != null
-                                              ? e.documents
-                                                  ?.map((d) => FileStoreModel(
-                                                      name: '',
-                                                      fileStoreId:
-                                                          d.documentUid))
-                                                  .toList()
-                                              : null,
-                                          assignee: e.assignes?.first.name,
-                                          mobileNumber: e.assignes != null
-                                              ? '+91-${e.assignes?.first.mobileNumber}'
-                                              : null,
-                                        ))
-                                    .toList();
-                                return DigitCard(
-                                  child: ExpansionTile(
-                                    title: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: Text(
-                                        t.translate(
-                                            i18.common.workflowTimeline),
-                                        style: DigitTheme.instance.mobileTheme
-                                            .textTheme.headlineMedium,
-                                      ),
-                                    ),
-                                    children: [
-                                      DigitTimeline(
-                                        timelineOptions: timeLineAttributes,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                //
-                              },
-                            );
-                          },
-                        )
-                        :const SizedBox.shrink(),
-                       
+                        widget.type == MBScreen.update
+                            ?
+                            //workflow
+                            BlocBuilder<MusterGetWorkflowBloc,
+                                MusterGetWorkflowState>(
+                                builder: (context, state) {
+                                  return state.maybeMap(
+                                    orElse: SizedBox.shrink,
+                                    loaded: (value) {
+                                      final timeLineAttributes = value
+                                          .musterWorkFlowModel!
+                                          .processInstances!
+                                          .mapIndexed((i, e) =>
+                                              DigitTimelineOptions(
+                                                title: t.translate(
+                                                    '${e.workflowState?.state}'),
+                                                subTitle: DateFormats
+                                                    .getTimeLineDate(e
+                                                            .auditDetails
+                                                            ?.lastModifiedTime ??
+                                                        0),
+                                                isCurrentState: i == 0,
+                                                comments: e.comment,
+                                                documents: e.documents != null
+                                                    ? e.documents
+                                                        ?.map((d) =>
+                                                            FileStoreModel(
+                                                                name: '',
+                                                                fileStoreId: d
+                                                                    .documentUid))
+                                                        .toList()
+                                                    : null,
+                                                assignee:
+                                                    e.assignes?.first.name,
+                                                mobileNumber: e.assignes != null
+                                                    ? '+91-${e.assignes?.first.mobileNumber}'
+                                                    : null,
+                                              ))
+                                          .toList();
+                                      return DigitCard(
+                                        child: ExpansionTile(
+                                          title: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: Text(
+                                              t.translate(
+                                                  i18.common.workflowTimeline),
+                                              style: DigitTheme
+                                                  .instance
+                                                  .mobileTheme
+                                                  .textTheme
+                                                  .headlineMedium,
+                                            ),
+                                          ),
+                                          children: [
+                                            DigitTimeline(
+                                              timelineOptions:
+                                                  timeLineAttributes,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                      //
+                                    },
+                                  );
+                                },
+                              )
+                            : const SizedBox.shrink(),
+
                         // image
 
                         // FilePickerDemo(
@@ -840,6 +1018,8 @@ class _MBDetailPageState extends State<MBDetailPage>
     List<ProcessInstances>? processInstances,
     String contractNumber,
     String mbNumber,
+    MBScreen type,
+    List<BusinessServices>? bs
   ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -979,7 +1159,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                       widget: CommonButtonCard(
                         g: processInstances,
                         contractNumber: contractNumber,
-                        mbNumber: mbNumber, type: widget.type,
+                        mbNumber: mbNumber,
+                        type: widget.type,
+                        bs: bs,
                       ),
                     );
                   }),

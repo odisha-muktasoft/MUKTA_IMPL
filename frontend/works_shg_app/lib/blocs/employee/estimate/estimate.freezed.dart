@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'mb_crud.dart';
+part of 'estimate.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,65 +15,59 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$MeasurementCrudBlocEvent {
+mixin _$EstimateBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)
-        update,
+    required TResult Function(String tenantId, String roles, bool isActive)
+        load,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)?
-        update,
+    TResult? Function(String tenantId, String roles, bool isActive)? load,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)?
-        update,
+    TResult Function(String tenantId, String roles, bool isActive)? load,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MeasurementUpdateBlocEvent value) update,
-    required TResult Function(MeasurementCrudBlocClearEvent value) clear,
+    required TResult Function(EstimateLoadBlocEvent value) load,
+    required TResult Function(EstimateBlocClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MeasurementUpdateBlocEvent value)? update,
-    TResult? Function(MeasurementCrudBlocClearEvent value)? clear,
+    TResult? Function(EstimateLoadBlocEvent value)? load,
+    TResult? Function(EstimateBlocClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MeasurementUpdateBlocEvent value)? update,
-    TResult Function(MeasurementCrudBlocClearEvent value)? clear,
+    TResult Function(EstimateLoadBlocEvent value)? load,
+    TResult Function(EstimateBlocClearEvent value)? clear,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MeasurementCrudBlocEventCopyWith<$Res> {
-  factory $MeasurementCrudBlocEventCopyWith(MeasurementCrudBlocEvent value,
-          $Res Function(MeasurementCrudBlocEvent) then) =
-      _$MeasurementCrudBlocEventCopyWithImpl<$Res, MeasurementCrudBlocEvent>;
+abstract class $EstimateBlocEventCopyWith<$Res> {
+  factory $EstimateBlocEventCopyWith(
+          EstimateBlocEvent value, $Res Function(EstimateBlocEvent) then) =
+      _$EstimateBlocEventCopyWithImpl<$Res, EstimateBlocEvent>;
 }
 
 /// @nodoc
-class _$MeasurementCrudBlocEventCopyWithImpl<$Res,
-        $Val extends MeasurementCrudBlocEvent>
-    implements $MeasurementCrudBlocEventCopyWith<$Res> {
-  _$MeasurementCrudBlocEventCopyWithImpl(this._value, this._then);
+class _$EstimateBlocEventCopyWithImpl<$Res, $Val extends EstimateBlocEvent>
+    implements $EstimateBlocEventCopyWith<$Res> {
+  _$EstimateBlocEventCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -82,158 +76,114 @@ class _$MeasurementCrudBlocEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$MeasurementUpdateBlocEventCopyWith<$Res> {
-  factory _$$MeasurementUpdateBlocEventCopyWith(
-          _$MeasurementUpdateBlocEvent value,
-          $Res Function(_$MeasurementUpdateBlocEvent) then) =
-      __$$MeasurementUpdateBlocEventCopyWithImpl<$Res>;
+abstract class _$$EstimateLoadBlocEventCopyWith<$Res> {
+  factory _$$EstimateLoadBlocEventCopyWith(_$EstimateLoadBlocEvent value,
+          $Res Function(_$EstimateLoadBlocEvent) then) =
+      __$$EstimateLoadBlocEventCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {String tenantId,
-      Measurement measurement,
-      WorkFlow workFlow,
-      MBScreen type});
-
-  $MeasurementCopyWith<$Res> get measurement;
-  $WorkFlowCopyWith<$Res> get workFlow;
+  $Res call({String tenantId, String roles, bool isActive});
 }
 
 /// @nodoc
-class __$$MeasurementUpdateBlocEventCopyWithImpl<$Res>
-    extends _$MeasurementCrudBlocEventCopyWithImpl<$Res,
-        _$MeasurementUpdateBlocEvent>
-    implements _$$MeasurementUpdateBlocEventCopyWith<$Res> {
-  __$$MeasurementUpdateBlocEventCopyWithImpl(
-      _$MeasurementUpdateBlocEvent _value,
-      $Res Function(_$MeasurementUpdateBlocEvent) _then)
+class __$$EstimateLoadBlocEventCopyWithImpl<$Res>
+    extends _$EstimateBlocEventCopyWithImpl<$Res, _$EstimateLoadBlocEvent>
+    implements _$$EstimateLoadBlocEventCopyWith<$Res> {
+  __$$EstimateLoadBlocEventCopyWithImpl(_$EstimateLoadBlocEvent _value,
+      $Res Function(_$EstimateLoadBlocEvent) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? tenantId = null,
-    Object? measurement = null,
-    Object? workFlow = null,
-    Object? type = null,
+    Object? roles = null,
+    Object? isActive = null,
   }) {
-    return _then(_$MeasurementUpdateBlocEvent(
+    return _then(_$EstimateLoadBlocEvent(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
               as String,
-      measurement: null == measurement
-          ? _value.measurement
-          : measurement // ignore: cast_nullable_to_non_nullable
-              as Measurement,
-      workFlow: null == workFlow
-          ? _value.workFlow
-          : workFlow // ignore: cast_nullable_to_non_nullable
-              as WorkFlow,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as MBScreen,
+      roles: null == roles
+          ? _value.roles
+          : roles // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $MeasurementCopyWith<$Res> get measurement {
-    return $MeasurementCopyWith<$Res>(_value.measurement, (value) {
-      return _then(_value.copyWith(measurement: value));
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $WorkFlowCopyWith<$Res> get workFlow {
-    return $WorkFlowCopyWith<$Res>(_value.workFlow, (value) {
-      return _then(_value.copyWith(workFlow: value));
-    });
   }
 }
 
 /// @nodoc
 
-class _$MeasurementUpdateBlocEvent implements MeasurementUpdateBlocEvent {
-  const _$MeasurementUpdateBlocEvent(
-      {required this.tenantId,
-      required this.measurement,
-      required this.workFlow,
-      required this.type});
+class _$EstimateLoadBlocEvent implements EstimateLoadBlocEvent {
+  const _$EstimateLoadBlocEvent(
+      {required this.tenantId, required this.roles, required this.isActive});
 
   @override
   final String tenantId;
   @override
-  final Measurement measurement;
+  final String roles;
   @override
-  final WorkFlow workFlow;
-  @override
-  final MBScreen type;
+  final bool isActive;
 
   @override
   String toString() {
-    return 'MeasurementCrudBlocEvent.update(tenantId: $tenantId, measurement: $measurement, workFlow: $workFlow, type: $type)';
+    return 'EstimateBlocEvent.load(tenantId: $tenantId, roles: $roles, isActive: $isActive)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementUpdateBlocEvent &&
+            other is _$EstimateLoadBlocEvent &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
-            (identical(other.measurement, measurement) ||
-                other.measurement == measurement) &&
-            (identical(other.workFlow, workFlow) ||
-                other.workFlow == workFlow) &&
-            (identical(other.type, type) || other.type == type));
+            (identical(other.roles, roles) || other.roles == roles) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, tenantId, measurement, workFlow, type);
+  int get hashCode => Object.hash(runtimeType, tenantId, roles, isActive);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementUpdateBlocEventCopyWith<_$MeasurementUpdateBlocEvent>
-      get copyWith => __$$MeasurementUpdateBlocEventCopyWithImpl<
-          _$MeasurementUpdateBlocEvent>(this, _$identity);
+  _$$EstimateLoadBlocEventCopyWith<_$EstimateLoadBlocEvent> get copyWith =>
+      __$$EstimateLoadBlocEventCopyWithImpl<_$EstimateLoadBlocEvent>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)
-        update,
+    required TResult Function(String tenantId, String roles, bool isActive)
+        load,
     required TResult Function() clear,
   }) {
-    return update(tenantId, measurement, workFlow, type);
+    return load(tenantId, roles, isActive);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)?
-        update,
+    TResult? Function(String tenantId, String roles, bool isActive)? load,
     TResult? Function()? clear,
   }) {
-    return update?.call(tenantId, measurement, workFlow, type);
+    return load?.call(tenantId, roles, isActive);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)?
-        update,
+    TResult Function(String tenantId, String roles, bool isActive)? load,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
-    if (update != null) {
-      return update(tenantId, measurement, workFlow, type);
+    if (load != null) {
+      return load(tenantId, roles, isActive);
     }
     return orElse();
   }
@@ -241,85 +191,79 @@ class _$MeasurementUpdateBlocEvent implements MeasurementUpdateBlocEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MeasurementUpdateBlocEvent value) update,
-    required TResult Function(MeasurementCrudBlocClearEvent value) clear,
+    required TResult Function(EstimateLoadBlocEvent value) load,
+    required TResult Function(EstimateBlocClearEvent value) clear,
   }) {
-    return update(this);
+    return load(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MeasurementUpdateBlocEvent value)? update,
-    TResult? Function(MeasurementCrudBlocClearEvent value)? clear,
+    TResult? Function(EstimateLoadBlocEvent value)? load,
+    TResult? Function(EstimateBlocClearEvent value)? clear,
   }) {
-    return update?.call(this);
+    return load?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MeasurementUpdateBlocEvent value)? update,
-    TResult Function(MeasurementCrudBlocClearEvent value)? clear,
+    TResult Function(EstimateLoadBlocEvent value)? load,
+    TResult Function(EstimateBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
-    if (update != null) {
-      return update(this);
+    if (load != null) {
+      return load(this);
     }
     return orElse();
   }
 }
 
-abstract class MeasurementUpdateBlocEvent implements MeasurementCrudBlocEvent {
-  const factory MeasurementUpdateBlocEvent(
+abstract class EstimateLoadBlocEvent implements EstimateBlocEvent {
+  const factory EstimateLoadBlocEvent(
       {required final String tenantId,
-      required final Measurement measurement,
-      required final WorkFlow workFlow,
-      required final MBScreen type}) = _$MeasurementUpdateBlocEvent;
+      required final String roles,
+      required final bool isActive}) = _$EstimateLoadBlocEvent;
 
   String get tenantId;
-  Measurement get measurement;
-  WorkFlow get workFlow;
-  MBScreen get type;
+  String get roles;
+  bool get isActive;
   @JsonKey(ignore: true)
-  _$$MeasurementUpdateBlocEventCopyWith<_$MeasurementUpdateBlocEvent>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$EstimateLoadBlocEventCopyWith<_$EstimateLoadBlocEvent> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementCrudBlocClearEventCopyWith<$Res> {
-  factory _$$MeasurementCrudBlocClearEventCopyWith(
-          _$MeasurementCrudBlocClearEvent value,
-          $Res Function(_$MeasurementCrudBlocClearEvent) then) =
-      __$$MeasurementCrudBlocClearEventCopyWithImpl<$Res>;
+abstract class _$$EstimateBlocClearEventCopyWith<$Res> {
+  factory _$$EstimateBlocClearEventCopyWith(_$EstimateBlocClearEvent value,
+          $Res Function(_$EstimateBlocClearEvent) then) =
+      __$$EstimateBlocClearEventCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MeasurementCrudBlocClearEventCopyWithImpl<$Res>
-    extends _$MeasurementCrudBlocEventCopyWithImpl<$Res,
-        _$MeasurementCrudBlocClearEvent>
-    implements _$$MeasurementCrudBlocClearEventCopyWith<$Res> {
-  __$$MeasurementCrudBlocClearEventCopyWithImpl(
-      _$MeasurementCrudBlocClearEvent _value,
-      $Res Function(_$MeasurementCrudBlocClearEvent) _then)
+class __$$EstimateBlocClearEventCopyWithImpl<$Res>
+    extends _$EstimateBlocEventCopyWithImpl<$Res, _$EstimateBlocClearEvent>
+    implements _$$EstimateBlocClearEventCopyWith<$Res> {
+  __$$EstimateBlocClearEventCopyWithImpl(_$EstimateBlocClearEvent _value,
+      $Res Function(_$EstimateBlocClearEvent) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
-  const _$MeasurementCrudBlocClearEvent();
+class _$EstimateBlocClearEvent implements EstimateBlocClearEvent {
+  const _$EstimateBlocClearEvent();
 
   @override
   String toString() {
-    return 'MeasurementCrudBlocEvent.clear()';
+    return 'EstimateBlocEvent.clear()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MeasurementCrudBlocClearEvent);
+        (other.runtimeType == runtimeType && other is _$EstimateBlocClearEvent);
   }
 
   @override
@@ -328,9 +272,8 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)
-        update,
+    required TResult Function(String tenantId, String roles, bool isActive)
+        load,
     required TResult Function() clear,
   }) {
     return clear();
@@ -339,9 +282,7 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)?
-        update,
+    TResult? Function(String tenantId, String roles, bool isActive)? load,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -350,9 +291,7 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String tenantId, Measurement measurement,
-            WorkFlow workFlow, MBScreen type)?
-        update,
+    TResult Function(String tenantId, String roles, bool isActive)? load,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -365,8 +304,8 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MeasurementUpdateBlocEvent value) update,
-    required TResult Function(MeasurementCrudBlocClearEvent value) clear,
+    required TResult Function(EstimateLoadBlocEvent value) load,
+    required TResult Function(EstimateBlocClearEvent value) clear,
   }) {
     return clear(this);
   }
@@ -374,8 +313,8 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(MeasurementUpdateBlocEvent value)? update,
-    TResult? Function(MeasurementCrudBlocClearEvent value)? clear,
+    TResult? Function(EstimateLoadBlocEvent value)? load,
+    TResult? Function(EstimateBlocClearEvent value)? clear,
   }) {
     return clear?.call(this);
   }
@@ -383,8 +322,8 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MeasurementUpdateBlocEvent value)? update,
-    TResult Function(MeasurementCrudBlocClearEvent value)? clear,
+    TResult Function(EstimateLoadBlocEvent value)? load,
+    TResult Function(EstimateBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
     if (clear != null) {
@@ -394,19 +333,18 @@ class _$MeasurementCrudBlocClearEvent implements MeasurementCrudBlocClearEvent {
   }
 }
 
-abstract class MeasurementCrudBlocClearEvent
-    implements MeasurementCrudBlocEvent {
-  const factory MeasurementCrudBlocClearEvent() =
-      _$MeasurementCrudBlocClearEvent;
+abstract class EstimateBlocClearEvent implements EstimateBlocEvent {
+  const factory EstimateBlocClearEvent() = _$EstimateBlocClearEvent;
 }
 
 /// @nodoc
-mixin _$MeasurementCrudState {
+mixin _$EstimateState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Measurement? measurement) loaded,
+    required TResult Function(EstimateDetailResponse? estimateDetailResponse)
+        loaded,
     required TResult Function(String? error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -414,7 +352,7 @@ mixin _$MeasurementCrudState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement? measurement)? loaded,
+    TResult? Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -422,7 +360,7 @@ mixin _$MeasurementCrudState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement? measurement)? loaded,
+    TResult Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -455,17 +393,16 @@ mixin _$MeasurementCrudState {
 }
 
 /// @nodoc
-abstract class $MeasurementCrudStateCopyWith<$Res> {
-  factory $MeasurementCrudStateCopyWith(MeasurementCrudState value,
-          $Res Function(MeasurementCrudState) then) =
-      _$MeasurementCrudStateCopyWithImpl<$Res, MeasurementCrudState>;
+abstract class $EstimateStateCopyWith<$Res> {
+  factory $EstimateStateCopyWith(
+          EstimateState value, $Res Function(EstimateState) then) =
+      _$EstimateStateCopyWithImpl<$Res, EstimateState>;
 }
 
 /// @nodoc
-class _$MeasurementCrudStateCopyWithImpl<$Res,
-        $Val extends MeasurementCrudState>
-    implements $MeasurementCrudStateCopyWith<$Res> {
-  _$MeasurementCrudStateCopyWithImpl(this._value, this._then);
+class _$EstimateStateCopyWithImpl<$Res, $Val extends EstimateState>
+    implements $EstimateStateCopyWith<$Res> {
+  _$EstimateStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -482,7 +419,7 @@ abstract class _$$_InitialCopyWith<$Res> {
 
 /// @nodoc
 class __$$_InitialCopyWithImpl<$Res>
-    extends _$MeasurementCrudStateCopyWithImpl<$Res, _$_Initial>
+    extends _$EstimateStateCopyWithImpl<$Res, _$_Initial>
     implements _$$_InitialCopyWith<$Res> {
   __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
       : super(_value, _then);
@@ -495,7 +432,7 @@ class _$_Initial extends _Initial {
 
   @override
   String toString() {
-    return 'MeasurementCrudState.initial()';
+    return 'EstimateState.initial()';
   }
 
   @override
@@ -512,7 +449,8 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Measurement? measurement) loaded,
+    required TResult Function(EstimateDetailResponse? estimateDetailResponse)
+        loaded,
     required TResult Function(String? error) error,
   }) {
     return initial();
@@ -523,7 +461,7 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement? measurement)? loaded,
+    TResult? Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -534,7 +472,7 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement? measurement)? loaded,
+    TResult Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -582,7 +520,7 @@ class _$_Initial extends _Initial {
   }
 }
 
-abstract class _Initial extends MeasurementCrudState {
+abstract class _Initial extends EstimateState {
   const factory _Initial() = _$_Initial;
   const _Initial._() : super._();
 }
@@ -596,7 +534,7 @@ abstract class _$$_LoadingCopyWith<$Res> {
 
 /// @nodoc
 class __$$_LoadingCopyWithImpl<$Res>
-    extends _$MeasurementCrudStateCopyWithImpl<$Res, _$_Loading>
+    extends _$EstimateStateCopyWithImpl<$Res, _$_Loading>
     implements _$$_LoadingCopyWith<$Res> {
   __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
       : super(_value, _then);
@@ -609,7 +547,7 @@ class _$_Loading extends _Loading {
 
   @override
   String toString() {
-    return 'MeasurementCrudState.loading()';
+    return 'EstimateState.loading()';
   }
 
   @override
@@ -626,7 +564,8 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Measurement? measurement) loaded,
+    required TResult Function(EstimateDetailResponse? estimateDetailResponse)
+        loaded,
     required TResult Function(String? error) error,
   }) {
     return loading();
@@ -637,7 +576,7 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement? measurement)? loaded,
+    TResult? Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -648,7 +587,7 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement? measurement)? loaded,
+    TResult Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -696,7 +635,7 @@ class _$_Loading extends _Loading {
   }
 }
 
-abstract class _Loading extends MeasurementCrudState {
+abstract class _Loading extends EstimateState {
   const factory _Loading() = _$_Loading;
   const _Loading._() : super._();
 }
@@ -706,14 +645,14 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({Measurement? measurement});
+  $Res call({EstimateDetailResponse? estimateDetailResponse});
 
-  $MeasurementCopyWith<$Res>? get measurement;
+  $EstimateDetailResponseCopyWith<$Res>? get estimateDetailResponse;
 }
 
 /// @nodoc
 class __$$_LoadedCopyWithImpl<$Res>
-    extends _$MeasurementCrudStateCopyWithImpl<$Res, _$_Loaded>
+    extends _$EstimateStateCopyWithImpl<$Res, _$_Loaded>
     implements _$$_LoadedCopyWith<$Res> {
   __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
       : super(_value, _then);
@@ -721,25 +660,26 @@ class __$$_LoadedCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? measurement = freezed,
+    Object? estimateDetailResponse = freezed,
   }) {
     return _then(_$_Loaded(
-      freezed == measurement
-          ? _value.measurement
-          : measurement // ignore: cast_nullable_to_non_nullable
-              as Measurement?,
+      freezed == estimateDetailResponse
+          ? _value.estimateDetailResponse
+          : estimateDetailResponse // ignore: cast_nullable_to_non_nullable
+              as EstimateDetailResponse?,
     ));
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MeasurementCopyWith<$Res>? get measurement {
-    if (_value.measurement == null) {
+  $EstimateDetailResponseCopyWith<$Res>? get estimateDetailResponse {
+    if (_value.estimateDetailResponse == null) {
       return null;
     }
 
-    return $MeasurementCopyWith<$Res>(_value.measurement!, (value) {
-      return _then(_value.copyWith(measurement: value));
+    return $EstimateDetailResponseCopyWith<$Res>(_value.estimateDetailResponse!,
+        (value) {
+      return _then(_value.copyWith(estimateDetailResponse: value));
     });
   }
 }
@@ -747,14 +687,14 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.measurement) : super._();
+  const _$_Loaded(this.estimateDetailResponse) : super._();
 
   @override
-  final Measurement? measurement;
+  final EstimateDetailResponse? estimateDetailResponse;
 
   @override
   String toString() {
-    return 'MeasurementCrudState.loaded(measurement: $measurement)';
+    return 'EstimateState.loaded(estimateDetailResponse: $estimateDetailResponse)';
   }
 
   @override
@@ -762,12 +702,12 @@ class _$_Loaded extends _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
-            (identical(other.measurement, measurement) ||
-                other.measurement == measurement));
+            (identical(other.estimateDetailResponse, estimateDetailResponse) ||
+                other.estimateDetailResponse == estimateDetailResponse));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, measurement);
+  int get hashCode => Object.hash(runtimeType, estimateDetailResponse);
 
   @JsonKey(ignore: true)
   @override
@@ -780,10 +720,11 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Measurement? measurement) loaded,
+    required TResult Function(EstimateDetailResponse? estimateDetailResponse)
+        loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(measurement);
+    return loaded(estimateDetailResponse);
   }
 
   @override
@@ -791,10 +732,10 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement? measurement)? loaded,
+    TResult? Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(measurement);
+    return loaded?.call(estimateDetailResponse);
   }
 
   @override
@@ -802,12 +743,12 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement? measurement)? loaded,
+    TResult Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(measurement);
+      return loaded(estimateDetailResponse);
     }
     return orElse();
   }
@@ -850,11 +791,12 @@ class _$_Loaded extends _Loaded {
   }
 }
 
-abstract class _Loaded extends MeasurementCrudState {
-  const factory _Loaded(final Measurement? measurement) = _$_Loaded;
+abstract class _Loaded extends EstimateState {
+  const factory _Loaded(final EstimateDetailResponse? estimateDetailResponse) =
+      _$_Loaded;
   const _Loaded._() : super._();
 
-  Measurement? get measurement;
+  EstimateDetailResponse? get estimateDetailResponse;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -870,7 +812,7 @@ abstract class _$$_ErrorCopyWith<$Res> {
 
 /// @nodoc
 class __$$_ErrorCopyWithImpl<$Res>
-    extends _$MeasurementCrudStateCopyWithImpl<$Res, _$_Error>
+    extends _$EstimateStateCopyWithImpl<$Res, _$_Error>
     implements _$$_ErrorCopyWith<$Res> {
   __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
       : super(_value, _then);
@@ -899,7 +841,7 @@ class _$_Error extends _Error {
 
   @override
   String toString() {
-    return 'MeasurementCrudState.error(error: $error)';
+    return 'EstimateState.error(error: $error)';
   }
 
   @override
@@ -924,7 +866,8 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(Measurement? measurement) loaded,
+    required TResult Function(EstimateDetailResponse? estimateDetailResponse)
+        loaded,
     required TResult Function(String? error) error,
   }) {
     return error(this.error);
@@ -935,7 +878,7 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(Measurement? measurement)? loaded,
+    TResult? Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -946,7 +889,7 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(Measurement? measurement)? loaded,
+    TResult Function(EstimateDetailResponse? estimateDetailResponse)? loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -994,7 +937,7 @@ class _$_Error extends _Error {
   }
 }
 
-abstract class _Error extends MeasurementCrudState {
+abstract class _Error extends EstimateState {
   const factory _Error(final String? error) = _$_Error;
   const _Error._() : super._();
 

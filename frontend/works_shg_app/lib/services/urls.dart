@@ -11,6 +11,7 @@ class Urls {
   static BillServices billServices = const BillServices();
   static MeasurementService measurementService= const MeasurementService();
   static EmpHrms empHrms =const EmpHrms();
+  static EstimateService estimateService = const EstimateService();
 }
 
 class CommonServices {
@@ -107,4 +108,15 @@ class MeasurementService{
    String get measurementInbox=>'inbox/v2/_search';
    String get measurementDetail=>"mukta-services/measurement/_search";
    String get updateMeasurement => "measurement-service/v1/_update";
+   String get createMeasurement=>"measurement-service/v1/_create";
+}
+
+//estimate/v1/_search
+
+
+class EstimateService{
+   const EstimateService();
+
+   String get estimateSearch=>'estimate/v1/_search';
+   
 }

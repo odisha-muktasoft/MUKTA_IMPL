@@ -31,7 +31,7 @@ class MeasurementCrudBloc
       emit(const MeasurementCrudState.loading());
 
       final Measurement res = await MBRepository(client.init()).updateMeasurement(
-        url: Urls.measurementService.updateMeasurement,
+        url:  event.type== MBScreen.update? Urls.measurementService.updateMeasurement:Urls.measurementService.createMeasurement,
         body: {
           "measurements": [MBLogic.measurementToMap(event.measurement)]
           //     "measurements": [
@@ -140,6 +140,7 @@ class MeasurementCrudBlocEvent with _$MeasurementCrudBlocEvent {
     required String tenantId,
     required Measurement measurement,
     required WorkFlow workFlow,
+    required MBScreen type,
   }) = MeasurementUpdateBlocEvent;
 
   const factory MeasurementCrudBlocEvent.clear() =

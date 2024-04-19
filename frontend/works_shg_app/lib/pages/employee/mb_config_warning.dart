@@ -8,6 +8,7 @@ import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
+import 'package:works_shg_app/models/muster_rolls/business_service_workflow.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
@@ -27,15 +28,16 @@ import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 
 class MBTypeConfirmationPage extends StatefulWidget {
-  final NextActions nextActions;
+  final NextActions? nextActions;
   final String? contractNumber;
   final String? mbNumber;
   final MBScreen type;
+  final StateActions? stateActions;
   const MBTypeConfirmationPage({
     super.key,
     required this.nextActions,
     this.contractNumber,
-    this.mbNumber, required this.type,
+    this.mbNumber, required this.type, this.stateActions,
   });
 
   @override
@@ -132,6 +134,10 @@ List<WorkFlowSupportDocument> supportDocument=[];
             return state.maybeMap(
               orElse: () => const SizedBox.shrink(),
               loaded: (value) {
+
+                if (widget.type==MBScreen.update) {
+                  
+                
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ScrollableContent(
@@ -155,10 +161,10 @@ List<WorkFlowSupportDocument> supportDocument=[];
                             flex: 2,
                             child: DigitElevatedButton(
                               child: Text(
-                                widget.nextActions.action == "EDIT/RE-SUBMIT"
+                                widget.nextActions!.action == "EDIT/RE-SUBMIT"
                                     ? "Forward"
                                     : t.translate(
-                                        "WF_MODAL_SUBMIT_MB_${widget.nextActions.action!}"),
+                                        "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
                               ),
                               onPressed: () {
                                 List<List<SorObject>> sorList = [
@@ -170,24 +176,24 @@ List<WorkFlowSupportDocument> supportDocument=[];
                                         data: value.data,
                                         sorList: sorList,
                                         workFlow: WorkFlow(
-                                          action: widget.nextActions.action,
+                                          action: widget.nextActions!.action,
                                           comment: comment.text,
                                           assignees: [
                                             selectedAssignee?.uuid ?? ""
                                           ],
                                           documents: supportDocument,
-                                        ));
+                                        ), type: widget.type,);
 
                                 context.read<MeasurementCrudBloc>().add(
                                       MeasurementUpdateBlocEvent(
                                         measurement: kkk.measurement!,
                                         tenantId: '',
                                         workFlow: WorkFlow(
-                                          action: widget.nextActions.action,
+                                          action: widget.nextActions!.action,
                                           comment: comment.text,
                                           assignees: [selectedAssignee?.uuid ?? ""],
                                           documents: supportDocument,
-                                        ),
+                                        ), type: widget.type,
                                       ),
                                     );
                                 // Navigator.of(context)
@@ -217,17 +223,17 @@ List<WorkFlowSupportDocument> supportDocument=[];
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Text(
-                             widget.nextActions.action== "EDIT/RE-SUBMIT"?
+                             widget.nextActions!.action== "EDIT/RE-SUBMIT"?
                               t.translate(
                                   "WORKS_UPDATE_AND_FORWARD"):t.translate(
-                                  "WF_MB_ACTION_${widget.nextActions.action}"),
+                                  "WF_MB_ACTION_${widget.nextActions!.action}"),
                               style: DigitTheme
                                   .instance.mobileTheme.textTheme.headlineLarge,
                             ),
                           ),
                         ],
                       ),
-                      (widget.nextActions.action ==  "EDIT/RE-SUBMIT" || widget.nextActions.action ==  "VERIFY_AND_FORWARD")?
+                      (widget.nextActions!.action ==  "EDIT/RE-SUBMIT" || widget.nextActions!.action ==  "VERIFY_AND_FORWARD")?
                       BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
                         builder: (context, state) {
                           return state.maybeMap(
@@ -295,7 +301,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                       //     label: t.translate("CLICK_TO_ADD_PHOTO"),
                       //   ),
                       // ),
-                    widget.nextActions.action !=  "EDIT/RE-SUBMIT"?
+                    widget.nextActions!.action !=  "EDIT/RE-SUBMIT"?
                       SizedBox(
                         height: 300,
                         child: FilePickerDemo(
@@ -320,6 +326,167 @@ List<WorkFlowSupportDocument> supportDocument=[];
                     ],
                   ),
                 );
+              
+              } else {
+                  
+                   return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ScrollableContent(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    footer: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: DigitOutLineButton(
+                              label: "Cancel",
+                              onPressed: () {
+                                context.router.pop();
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: DigitElevatedButton(
+                              child: Text(
+                                widget.stateActions!.action == "CREATE"
+                                    ? "Submit"
+                                    : t.translate(
+                                        "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
+                              ),
+                              onPressed: () {
+                                List<List<SorObject>> sorList = [
+                                  value.sor!,
+                                  value.nonSor!
+                                ];
+                                MBDetailResponse kkk =
+                                    MBLogic.getMbPayloadUpdate(
+                                        data: value.data,
+                                        sorList: sorList,
+                                        workFlow: WorkFlow(
+                                          action: widget.stateActions!.action=="CREATE"?"SUBMIT":widget.stateActions!.action,
+                                          comment: comment.text,
+                                          assignees: [
+                                            selectedAssignee?.uuid ?? ""
+                                          ],
+                                          documents: supportDocument,
+                                        ), type: widget.type,);
+
+                                context.read<MeasurementCrudBloc>().add(
+                                      MeasurementUpdateBlocEvent(
+                                        measurement: kkk.measurement!,
+                                        tenantId: '',
+                                        workFlow: WorkFlow(
+                                          action: widget.stateActions!.action=="CREATE"?"SUBMIT":widget.stateActions!.action,
+                                          comment: comment.text,
+                                          assignees: [selectedAssignee?.uuid ?? ""],
+                                          documents: supportDocument,
+                                        ), type: widget.type,
+                                      ),
+                                    );
+                                // Navigator.of(context)
+                                //     .popUntil((route) => route is HomeRoute);
+                                // context.router.push(const HomeRoute());
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                context.router.pop();
+                              },
+                              icon: const Icon(Icons.close)),
+                        ],
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                             widget.stateActions!.action== "CREATE"?
+                              t.translate(
+                                  "WORKS_CREATE"):t.translate(
+                                  "WF_MB_ACTION_${widget.stateActions!.action}"),
+                              style: DigitTheme
+                                  .instance.mobileTheme.textTheme.headlineLarge,
+                            ),
+                          ),
+                        ],
+                      ),
+                      (widget.stateActions!.action ==  "CREATE" )?
+                      BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
+                        builder: (context, state) {
+                          return state.maybeMap(
+                            orElse: () => const SizedBox.shrink(),
+                            loaded: (value) {
+                              
+
+                              return DigitDropdown<HRMSEmployee>(
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedAssignee = value!;
+                                  });
+                                },
+                                value: selectedAssignee ??
+                                    value.hrmsEmployee!.first,
+                                label: t.translate("WF_MODAL_APPROVER"),
+                                menuItems:
+                                    value.hrmsEmployee!.map((e) => e).toList(),
+                                valueMapper: (value) {
+                                  return t.translate(value.code.toString());
+                                  // return value.toString();
+                                },
+                              );
+                            },
+                            error: (value) {
+                              return const SizedBox.shrink();
+                            },
+                          );
+                        },
+                      ): const SizedBox.shrink(),
+                      DigitTextField(
+                        label: t.translate("WF_MODAL_COMMENTS"),
+                        maxLines: 6,
+                        controller: comment,
+                      ),
+                     
+                    widget.stateActions!.action !=  "CREATE"?
+                      SizedBox(
+                        height: 300,
+                        child: FilePickerDemo(
+                          callBack: (List<FileStoreModel>? g,
+                              List<WorkflowDocument>? l) {
+                            final supportDocumentData= l!.map((e) {
+                            return  WorkFlowSupportDocument(
+                              documentType: e.documentType,
+                              documentUid: e.fileStore,
+                              fileName: e.documentAdditionalDetails?.fileName,
+                              fileStoreId: e.fileStore,
+                              tenantId: e.tenantId,
+                            );
+                           },).toList();
+                           supportDocument.addAll(supportDocumentData);
+                            print(supportDocument);
+                          },
+                          extensions: const ['jpg', 'png', 'jpeg'],
+                          moduleName: 'works', headerType: MediaType.mbConfim,
+                        ),
+                      ):const SizedBox.shrink(),
+                    ],
+                  ),
+                );
+                }
               },
               error: (value) {
                 return const SizedBox.shrink();

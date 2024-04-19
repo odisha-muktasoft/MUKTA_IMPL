@@ -12,6 +12,7 @@ class MBLogic {
 
   static List<FilteredMeasurements> formContract(
       {required MBDetailResponse mbDetailResponse}) {
+
     List<FilteredMeasurementsContract> s = getContract(
       mbDetailResponse!.contract!.lineItems!.first.contractLineItemRef!,
       mbDetailResponse,
@@ -22,15 +23,15 @@ class MBLogic {
       totalSorAmount: 0.0,
       musterRollNumber: null,
       mbNumber: null,
-      wfStatus: mbDetailResponse.estimate!.wfStatus,
-      tenantId: null,
+      wfStatus: null,
+      tenantId: mbDetailResponse!.contract!.tenantId,
       endDate: 0,
       startDate: 0,
-      entryDate: 0,
-      referenceId: null,
+      entryDate: DateTime.now().millisecondsSinceEpoch,
+      referenceId: mbDetailResponse!.contract!.contractNumber,
       id: null,
       physicalRefNumber: null,
-      measures: s.map((e) {
+      measures: s.mapIndexed((index,e) {
         FilteredMeasurementsMeasure filteredMeasurementsMeasure =
             FilteredMeasurementsMeasure(
               contracts: s,
@@ -45,7 +46,7 @@ class MBLogic {
                 mbAmount: 0.0,
                 targetId: e.contractLineItemRef,
                 isActive: null,
-                id: null,
+                id: "${e.contractLineItemRef}$index",
                 measureLineItems: e!.estimates!?.map((e) {
                   MeasureLineItem sk = MeasureLineItem(
                     width: e.width ?? 0.0,
@@ -399,6 +400,7 @@ class MBLogic {
     required List<FilteredMeasurements> data,
     required List<List<SorObject>> sorList,
     required WorkFlow workFlow,
+    required MBScreen type,
   }) {
     MBDetailResponse sa = MBDetailResponse(
       measurement: Measurement(
@@ -408,7 +410,7 @@ class MBLogic {
         measurementNumber: data.first.mbNumber,
         physicalRefNumber: data.first.physicalRefNumber,
         referenceId: data.first.referenceId,
-        entryDate: data.first.entryDate,
+        entryDate: type==MBScreen.update? data.first.entryDate:DateTime.now().millisecondsSinceEpoch,
         isActive: true,
         wfStatus: data.first.wfStatus,
         workflow: workFlow,
@@ -454,9 +456,9 @@ class MBLogic {
         };
       }).toList():[],
 
-      'id': measurement.id??"",
+      'id': measurement.id,
       'tenantId': measurement.tenantId,
-      'measurementNumber': measurement.measurementNumber??"",
+      'measurementNumber': measurement.measurementNumber,
       'entryDate': measurement.entryDate,
       'isActive': measurement.isActive,
       'wfStatus': measurement.wfStatus,

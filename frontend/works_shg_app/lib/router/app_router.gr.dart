@@ -259,6 +259,7 @@ class _$AppRouter extends RootStackRouter {
           contractNumber: args.contractNumber,
           mbNumber: args.mbNumber,
           type: args.type,
+          stateActions: args.stateActions,
         ),
       );
     },
@@ -1062,10 +1063,11 @@ class MBTypeConfirmationRoute
     extends PageRouteInfo<MBTypeConfirmationRouteArgs> {
   MBTypeConfirmationRoute({
     Key? key,
-    required NextActions nextActions,
+    required NextActions? nextActions,
     String? contractNumber,
     String? mbNumber,
     required MBScreen type,
+    StateActions? stateActions,
   }) : super(
           MBTypeConfirmationRoute.name,
           path: 'mb-type-confirmation',
@@ -1075,6 +1077,7 @@ class MBTypeConfirmationRoute
             contractNumber: contractNumber,
             mbNumber: mbNumber,
             type: type,
+            stateActions: stateActions,
           ),
         );
 
@@ -1088,11 +1091,12 @@ class MBTypeConfirmationRouteArgs {
     this.contractNumber,
     this.mbNumber,
     required this.type,
+    this.stateActions,
   });
 
   final Key? key;
 
-  final NextActions nextActions;
+  final NextActions? nextActions;
 
   final String? contractNumber;
 
@@ -1100,9 +1104,11 @@ class MBTypeConfirmationRouteArgs {
 
   final MBScreen type;
 
+  final StateActions? stateActions;
+
   @override
   String toString() {
-    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions, contractNumber: $contractNumber, mbNumber: $mbNumber, type: $type}';
+    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions, contractNumber: $contractNumber, mbNumber: $mbNumber, type: $type, stateActions: $stateActions}';
   }
 }
 

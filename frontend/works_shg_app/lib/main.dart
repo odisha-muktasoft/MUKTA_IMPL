@@ -48,6 +48,7 @@ import 'blocs/attendance/individual_wms_search.dart';
 import 'blocs/attendance/muster_submission_mdms.dart';
 import 'blocs/attendance/search_projects/search_individual_project.dart';
 import 'blocs/auth/auth.dart';
+import 'blocs/employee/estimate/estimate.dart';
 import 'blocs/employee/mb/mb_detail_view.dart';
 import 'blocs/employee/mb/measurement_book.dart';
 import 'blocs/employee/work_order/workorder_book.dart';
@@ -183,6 +184,8 @@ class _MainApplicationState extends State<MainApplication> {
 
     return MultiBlocProvider(
       providers: [
+
+        BlocProvider(create:(context)=>EstimateBloc()),
         BlocProvider(
           create: (context) => EmpHRMSBloc(),
         ),

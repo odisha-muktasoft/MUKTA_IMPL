@@ -74,7 +74,7 @@ class MeasurementDetailBloc
       emit(
         MeasurementDetailState.loaded(
           null,
-          true,
+         event.screenType == MBScreen.create?false: true,
           res.allMeasurements! is List
               ? res.allMeasurements
                   .map<Measurement>((dynamic item) {
@@ -439,10 +439,10 @@ class MeasurementDetailBloc
         number = 1;
       }
 
-      return (double.parse(height.toString()) *
+      return double.parse((double.parse(height.toString()) *
               double.parse(width.toString()) *
               double.parse(length.toString()) *
-              double.parse(number.toString()))
+              double.parse(number.toString())).toString())
           .toString();
     }
   }
@@ -478,7 +478,7 @@ class MeasurementDetailBloc
                   musterRollNumber: e.musterRollNumber,
                   endDate: e.endDate,
                   startDate: e.startDate,
-                  entryDate: e.endDate,
+                  entryDate: e.entryDate,
                   referenceId: e.referenceId,
                   physicalRefNumber: e.physicalRefNumber,
                   measures: e.measures,
