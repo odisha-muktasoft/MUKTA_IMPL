@@ -34,6 +34,7 @@ mixin _$MeasurementInboxBlocEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         searchRepeat,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +56,7 @@ mixin _$MeasurementInboxBlocEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         searchRepeat,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -76,6 +78,7 @@ mixin _$MeasurementInboxBlocEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         searchRepeat,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
@@ -86,6 +89,7 @@ mixin _$MeasurementInboxBlocEvent {
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
     required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
         searchRepeat,
+    required TResult Function(MeasurementBookInboxSortBlocEvent value) sort,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -95,6 +99,7 @@ mixin _$MeasurementInboxBlocEvent {
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult? Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -104,6 +109,7 @@ mixin _$MeasurementInboxBlocEvent {
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) =>
@@ -259,6 +265,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         searchRepeat,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) {
     return create(tenantId, businessService, moduleName, limit, offset);
@@ -283,6 +290,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         searchRepeat,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) {
     return create?.call(tenantId, businessService, moduleName, limit, offset);
@@ -307,6 +315,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         searchRepeat,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -323,6 +332,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
     required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
         searchRepeat,
+    required TResult Function(MeasurementBookInboxSortBlocEvent value) sort,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return create(this);
@@ -335,6 +345,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult? Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return create?.call(this);
@@ -347,6 +358,7 @@ class _$MeasurementBookInboxBlocEvent implements MeasurementBookInboxBlocEvent {
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -570,6 +582,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         searchRepeat,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) {
     return search(
@@ -595,6 +608,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         searchRepeat,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) {
     return search?.call(
@@ -620,6 +634,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         searchRepeat,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -637,6 +652,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
     required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
         searchRepeat,
+    required TResult Function(MeasurementBookInboxSortBlocEvent value) sort,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return search(this);
@@ -649,6 +665,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult? Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return search?.call(this);
@@ -661,6 +678,7 @@ class _$MeasurementBookInboxSearchBlocEvent
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -830,6 +848,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         searchRepeat,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) {
     return searchRepeat(tenantId, businessService, moduleName, limit, offset);
@@ -854,6 +873,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         searchRepeat,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) {
     return searchRepeat?.call(
@@ -879,6 +899,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         searchRepeat,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -895,6 +916,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
     required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
         searchRepeat,
+    required TResult Function(MeasurementBookInboxSortBlocEvent value) sort,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return searchRepeat(this);
@@ -907,6 +929,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult? Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return searchRepeat?.call(this);
@@ -919,6 +942,7 @@ class _$MeasurementBookInboxSearchRepeatBlocEvent
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -946,6 +970,209 @@ abstract class MeasurementBookInboxSearchRepeatBlocEvent
   @JsonKey(ignore: true)
   _$$MeasurementBookInboxSearchRepeatBlocEventCopyWith<
           _$MeasurementBookInboxSearchRepeatBlocEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$MeasurementBookInboxSortBlocEventCopyWith<$Res> {
+  factory _$$MeasurementBookInboxSortBlocEventCopyWith(
+          _$MeasurementBookInboxSortBlocEvent value,
+          $Res Function(_$MeasurementBookInboxSortBlocEvent) then) =
+      __$$MeasurementBookInboxSortBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int sortCode});
+}
+
+/// @nodoc
+class __$$MeasurementBookInboxSortBlocEventCopyWithImpl<$Res>
+    extends _$MeasurementInboxBlocEventCopyWithImpl<$Res,
+        _$MeasurementBookInboxSortBlocEvent>
+    implements _$$MeasurementBookInboxSortBlocEventCopyWith<$Res> {
+  __$$MeasurementBookInboxSortBlocEventCopyWithImpl(
+      _$MeasurementBookInboxSortBlocEvent _value,
+      $Res Function(_$MeasurementBookInboxSortBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sortCode = null,
+  }) {
+    return _then(_$MeasurementBookInboxSortBlocEvent(
+      sortCode: null == sortCode
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MeasurementBookInboxSortBlocEvent
+    implements MeasurementBookInboxSortBlocEvent {
+  const _$MeasurementBookInboxSortBlocEvent({required this.sortCode});
+
+  @override
+  final int sortCode;
+
+  @override
+  String toString() {
+    return 'MeasurementInboxBlocEvent.sort(sortCode: $sortCode)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MeasurementBookInboxSortBlocEvent &&
+            (identical(other.sortCode, sortCode) ||
+                other.sortCode == sortCode));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, sortCode);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MeasurementBookInboxSortBlocEventCopyWith<
+          _$MeasurementBookInboxSortBlocEvent>
+      get copyWith => __$$MeasurementBookInboxSortBlocEventCopyWithImpl<
+          _$MeasurementBookInboxSortBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        create,
+    required TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, Map<String, dynamic>> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
+    required TResult Function(int sortCode) sort,
+    required TResult Function() clear,
+  }) {
+    return sort(sortCode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        create,
+    TResult? Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, Map<String, dynamic>> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
+    TResult? Function(int sortCode)? sort,
+    TResult? Function()? clear,
+  }) {
+    return sort?.call(sortCode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        create,
+    TResult Function(
+            List<String>? ward,
+            List<String>? status,
+            String? projectId,
+            String? mbNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, Map<String, dynamic>> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
+    TResult Function(int sortCode)? sort,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (sort != null) {
+      return sort(sortCode);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MeasurementBookInboxBlocEvent value) create,
+    required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
+    required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
+        searchRepeat,
+    required TResult Function(MeasurementBookInboxSortBlocEvent value) sort,
+    required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
+  }) {
+    return sort(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
+    TResult? Function(MeasurementBookInboxSortBlocEvent value)? sort,
+    TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
+  }) {
+    return sort?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MeasurementBookInboxBlocEvent value)? create,
+    TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
+    TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
+        searchRepeat,
+    TResult Function(MeasurementBookInboxSortBlocEvent value)? sort,
+    TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (sort != null) {
+      return sort(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MeasurementBookInboxSortBlocEvent
+    implements MeasurementInboxBlocEvent {
+  const factory MeasurementBookInboxSortBlocEvent(
+      {required final int sortCode}) = _$MeasurementBookInboxSortBlocEvent;
+
+  int get sortCode;
+  @JsonKey(ignore: true)
+  _$$MeasurementBookInboxSortBlocEventCopyWith<
+          _$MeasurementBookInboxSortBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -1008,6 +1235,7 @@ class _$MeasurementBookInboxBlocClearEvent
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         searchRepeat,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) {
     return clear();
@@ -1032,6 +1260,7 @@ class _$MeasurementBookInboxBlocClearEvent
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         searchRepeat,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -1056,6 +1285,7 @@ class _$MeasurementBookInboxBlocClearEvent
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         searchRepeat,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -1072,6 +1302,7 @@ class _$MeasurementBookInboxBlocClearEvent
     required TResult Function(MeasurementBookInboxSearchBlocEvent value) search,
     required TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)
         searchRepeat,
+    required TResult Function(MeasurementBookInboxSortBlocEvent value) sort,
     required TResult Function(MeasurementBookInboxBlocClearEvent value) clear,
   }) {
     return clear(this);
@@ -1084,6 +1315,7 @@ class _$MeasurementBookInboxBlocClearEvent
     TResult? Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult? Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult? Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult? Function(MeasurementBookInboxBlocClearEvent value)? clear,
   }) {
     return clear?.call(this);
@@ -1096,6 +1328,7 @@ class _$MeasurementBookInboxBlocClearEvent
     TResult Function(MeasurementBookInboxSearchBlocEvent value)? search,
     TResult Function(MeasurementBookInboxSearchRepeatBlocEvent value)?
         searchRepeat,
+    TResult Function(MeasurementBookInboxSortBlocEvent value)? sort,
     TResult Function(MeasurementBookInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {

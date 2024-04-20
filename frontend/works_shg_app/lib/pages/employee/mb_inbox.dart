@@ -6,9 +6,11 @@ import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
+import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/widgets/mb/radio_button_sheet.dart';
 
 import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -19,7 +21,6 @@ import '../../widgets/SideBar.dart';
 import '../../widgets/mb/mb_detail_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-
 
 class MeasurementBookInboxPage extends StatefulWidget {
   const MeasurementBookInboxPage({super.key});
@@ -77,7 +78,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
         );
 
     context.read<WageSeekerLocationBloc>().add(
-           LocationEventWageSeeker(tenantId:  GlobalVariables.tenantId!),
+          LocationEventWageSeeker(tenantId: GlobalVariables.tenantId!),
         );
     _scrollController.addListener(_scrollListener);
 
@@ -111,7 +112,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   limit: 10,
                   moduleName: 'measurement-module',
                   offset: s,
-                  tenantId:  GlobalVariables.tenantId!,
+                  tenantId: GlobalVariables.tenantId!,
                 ),
               );
         } else {
@@ -121,7 +122,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   limit: 10,
                   moduleName: 'measurement-module',
                   offset: s,
-                  tenantId:  GlobalVariables.tenantId!,
+                  tenantId: GlobalVariables.tenantId!,
                 ),
               );
         }
@@ -139,7 +140,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, state) {
         return Scaffold(
-           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           floatingActionButton:
               BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
@@ -151,13 +153,12 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                 loaded: (value) {
                   if (value.mbInboxResponse.items!.length > 19) {
                     return TextButton.icon(
-                      
                       style: TextButton.styleFrom(
                         backgroundColor: const DigitColors().white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
-                              color: const DigitColors().burningOrange), 
+                              color: const DigitColors().burningOrange),
                         ),
                       ),
                       label: const Text("Back to top"),
@@ -244,7 +245,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           children: [
                                             TextButton.icon(
                                                 label: Text(
-                                                  t.translate(i18.common.filter),
+                                                  t.translate(
+                                                      i18.common.filter),
                                                   style: DigitTheme
                                                       .instance
                                                       .mobileTheme
@@ -294,7 +296,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                                   'measurement-module',
                                                               offset: pageCount,
                                                               tenantId:
-                                                                   GlobalVariables.tenantId!,
+                                                                  GlobalVariables
+                                                                      .tenantId!,
                                                             ),
                                                           );
                                                     },
@@ -308,14 +311,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           ],
                                         ),
                                       ),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                              onPressed: () {},
-                                              icon: SvgPicture.asset(Constants.sort)),
-                                          Text(
+                                      TextButton.icon(
+                                          label: Text(
+                                            // t.translate(i18.common.filter),
                                             "Sort",
                                             style: DigitTheme
                                                 .instance
@@ -327,8 +325,39 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                   .burningOrange,
                                             ),
                                           ),
-                                        ],
-                                      ),
+
+                                          // color: const DigitColors()
+                                          //     .burningOrange,
+                                          onPressed: () {
+                                            Conversion.openSortingModal(context,listData: Conversion
+                                                        .sortMB, sortType: SortType.mbSort);
+                                          },
+                                          icon:
+                                              SvgPicture.asset(Constants.sort)),
+
+                                      // Row(
+                                      //   children: [
+                                      //     IconButton(
+                                      //         color: const DigitColors()
+                                      //             .burningOrange,
+                                      //         onPressed: () {
+                                      //           _openSortingModal();
+                                      //         },
+                                      //         icon: SvgPicture.asset(Constants.sort)),
+                                      //     Text(
+                                      //       "Sort",
+                                      //       style: DigitTheme
+                                      //           .instance
+                                      //           .mobileTheme
+                                      //           .textTheme
+                                      //           .labelLarge!
+                                      //           .copyWith(
+                                      //         color: const DigitColors()
+                                      //             .burningOrange,
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -371,7 +400,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         style: BorderStyle.solid,
                                       ),
                                     ),
-                                    child:  Text(t.translate(i18.measurementBook.openMbBook)),
+                                    child: Text(t.translate(
+                                        i18.measurementBook.openMbBook)),
                                     onPressed: () {
                                       final contract = mbInboxResponse
                                               .mbInboxResponse
@@ -387,38 +417,44 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                               ?.measurementNumber ??
                                           "";
                                       context.router.push(MBDetailRoute(
-                                          contractNumber: contract,
-                                          mbNumber: mbNumber,
-                                          tenantId: GlobalVariables.tenantId, type: MBScreen.update,
-                                          ));
+                                        contractNumber: contract,
+                                        mbNumber: mbNumber,
+                                        tenantId: GlobalVariables.tenantId,
+                                        type: MBScreen.update,
+                                      ));
                                     },
                                   ),
                                 ),
                               ),
                               items: {
-                                t.translate(i18.measurementBook.mbNumber): mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.measurementNumber ??
-                                    "",
-                                t.translate(i18.measurementBook.projectDescription): mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.contract
-                                        ?.additionalDetails
-                                        ?.projectDesc ??
-                                    "",
-                                t.translate(i18.common.assignee): mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .processInstance
-                                        ?.assignes
-                                        ?.first
-                                        .name ??
-                                    "NA",
-                                t.translate(i18.measurementBook.workflowState): mbInboxResponse
+                                t.translate(i18.measurementBook.mbNumber):
+                                    mbInboxResponse
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .businessObject
+                                            ?.measurementNumber ??
+                                        "",
+                                t.translate(
+                                        i18.measurementBook.projectDescription):
+                                    mbInboxResponse
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .businessObject
+                                            ?.contract
+                                            ?.additionalDetails
+                                            ?.projectDesc ??
+                                        "",
+                                t.translate(i18.common.assignee):
+                                    mbInboxResponse
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .processInstance
+                                            ?.assignes
+                                            ?.first
+                                            .name ??
+                                        "NA",
+                                t.translate(i18.measurementBook
+                                    .workflowState): mbInboxResponse
                                             .mbInboxResponse
                                             .items?[index]
                                             .processInstance
@@ -428,17 +464,18 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     ? t.translate(
                                         "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
                                     : "",
-                                t.translate(i18.measurementBook.mbAmount): mbInboxResponse
-                                        .mbInboxResponse
-                                        .items?[index]
-                                        .businessObject
-                                        ?.measures
-                                        ?.first
-                                        .measureAdditionalDetails
-                                        ?.mbAmount
-                                        ?.roundToDouble()
-                                        .toString() ??
-                                    "0.0"
+                                t.translate(i18.measurementBook.mbAmount):
+                                    mbInboxResponse
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .businessObject
+                                            ?.measures
+                                            ?.first
+                                            .measureAdditionalDetails
+                                            ?.mbAmount
+                                            ?.roundToDouble()
+                                            .toString() ??
+                                        "0.0"
                                 // "SLA Days remaining": mbInboxResponse
                                 //         .mbInboxResponse
                                 //         .items?[index]
@@ -473,6 +510,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
       },
     );
   }
+
+ 
 
   Future<dynamic> filterDialog(BuildContext context) {
     return showDialog(

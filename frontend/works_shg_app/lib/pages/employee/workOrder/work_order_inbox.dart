@@ -1,10 +1,12 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
+import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
@@ -12,6 +14,7 @@ import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 import '../../../blocs/employee/work_order/workorder_book.dart';
 import '../../../blocs/localization/app_localization.dart';
 import '../../../utils/common_methods.dart';
+import '../../../utils/constants.dart';
 import '../../../widgets/Back.dart';
 import '../../../widgets/SideBar.dart';
 import '../../../widgets/mb/text_button_underline.dart';
@@ -160,15 +163,58 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      IconButton(
-                                          onPressed: () {},
+                                      TextButton.icon(
+                                          label: Text(
+                                            t.translate(i18.common.filter),
+                                            style: DigitTheme
+                                                .instance
+                                                .mobileTheme
+                                                .textTheme
+                                                .labelLarge!
+                                                .copyWith(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                            ),
+                                          ),
+
+                                          // color: const DigitColors()
+                                          //     .burningOrange,
+                                          onPressed: () {
+                                            context.router
+                                                .push(const MBFilterRoute());
+                                            //  final result=   await filterDialog(context);
+                                          },
                                           icon: const Icon(
                                             Icons.filter_alt,
                                           )),
-                                      IconButton(
-                                          onPressed: () {},
-                                          icon:
-                                              const Icon(Icons.sort_outlined)),
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                              onPressed: () {
+                                                Conversion.openSortingModal(
+                                                    context,
+                                                    listData: Conversion
+                                                        .sortWorkOrder, sortType: SortType.woSort,
+                                                        );
+                                              },
+                                              icon: SvgPicture.asset(
+                                                  Constants.sort)),
+                                          Text(
+                                            "Sort",
+                                            style: DigitTheme
+                                                .instance
+                                                .mobileTheme
+                                                .textTheme
+                                                .labelLarge!
+                                                .copyWith(
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -285,14 +331,15 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                     //       ),
                                     //     ));
 
-                                    final contract = value.contracts?[index]
-                                            .contractNumber ??
+                                    final contract = value
+                                            .contracts?[index].contractNumber ??
                                         "";
 
                                     context.router.push(MBDetailRoute(
                                       contractNumber: contract,
                                       mbNumber: "",
-                                      tenantId: GlobalVariables.tenantId, type: MBScreen.create,
+                                      tenantId: GlobalVariables.tenantId,
+                                      type: MBScreen.create,
                                     ));
                                   },
                                 ),

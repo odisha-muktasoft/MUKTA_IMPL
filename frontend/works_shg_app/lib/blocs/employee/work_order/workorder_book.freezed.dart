@@ -21,6 +21,7 @@ mixin _$WorkOrderInboxBlocEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         create,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +30,7 @@ mixin _$WorkOrderInboxBlocEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         create,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +39,7 @@ mixin _$WorkOrderInboxBlocEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         create,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
@@ -44,18 +47,21 @@ mixin _$WorkOrderInboxBlocEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
+    required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) =>
@@ -198,6 +204,7 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         create,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) {
     return create(tenantId, businessService, moduleName, limit, offset);
@@ -209,6 +216,7 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         create,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) {
     return create?.call(tenantId, businessService, moduleName, limit, offset);
@@ -220,6 +228,7 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         create,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -233,6 +242,7 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
+    required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) {
     return create(this);
@@ -242,6 +252,7 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) {
     return create?.call(this);
@@ -251,6 +262,7 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -277,6 +289,157 @@ abstract class WorkOrderInboxBlocCreateEvent
   int get offset;
   @JsonKey(ignore: true)
   _$$WorkOrderInboxBlocCreateEventCopyWith<_$WorkOrderInboxBlocCreateEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WorkOrderInboxSortBlocEventCopyWith<$Res> {
+  factory _$$WorkOrderInboxSortBlocEventCopyWith(
+          _$WorkOrderInboxSortBlocEvent value,
+          $Res Function(_$WorkOrderInboxSortBlocEvent) then) =
+      __$$WorkOrderInboxSortBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int sortCode});
+}
+
+/// @nodoc
+class __$$WorkOrderInboxSortBlocEventCopyWithImpl<$Res>
+    extends _$WorkOrderInboxBlocEventCopyWithImpl<$Res,
+        _$WorkOrderInboxSortBlocEvent>
+    implements _$$WorkOrderInboxSortBlocEventCopyWith<$Res> {
+  __$$WorkOrderInboxSortBlocEventCopyWithImpl(
+      _$WorkOrderInboxSortBlocEvent _value,
+      $Res Function(_$WorkOrderInboxSortBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sortCode = null,
+  }) {
+    return _then(_$WorkOrderInboxSortBlocEvent(
+      sortCode: null == sortCode
+          ? _value.sortCode
+          : sortCode // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
+  const _$WorkOrderInboxSortBlocEvent({required this.sortCode});
+
+  @override
+  final int sortCode;
+
+  @override
+  String toString() {
+    return 'WorkOrderInboxBlocEvent.sort(sortCode: $sortCode)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WorkOrderInboxSortBlocEvent &&
+            (identical(other.sortCode, sortCode) ||
+                other.sortCode == sortCode));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, sortCode);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WorkOrderInboxSortBlocEventCopyWith<_$WorkOrderInboxSortBlocEvent>
+      get copyWith => __$$WorkOrderInboxSortBlocEventCopyWithImpl<
+          _$WorkOrderInboxSortBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        create,
+    required TResult Function(int sortCode) sort,
+    required TResult Function() clear,
+  }) {
+    return sort(sortCode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        create,
+    TResult? Function(int sortCode)? sort,
+    TResult? Function()? clear,
+  }) {
+    return sort?.call(sortCode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        create,
+    TResult Function(int sortCode)? sort,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (sort != null) {
+      return sort(sortCode);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
+    required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
+  }) {
+    return sort(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
+  }) {
+    return sort?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (sort != null) {
+      return sort(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WorkOrderInboxSortBlocEvent implements WorkOrderInboxBlocEvent {
+  const factory WorkOrderInboxSortBlocEvent({required final int sortCode}) =
+      _$WorkOrderInboxSortBlocEvent;
+
+  int get sortCode;
+  @JsonKey(ignore: true)
+  _$$WorkOrderInboxSortBlocEventCopyWith<_$WorkOrderInboxSortBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -325,6 +488,7 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
     required TResult Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)
         create,
+    required TResult Function(int sortCode) sort,
     required TResult Function() clear,
   }) {
     return clear();
@@ -336,6 +500,7 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
     TResult? Function(String tenantId, String businessService,
             String moduleName, int limit, int offset)?
         create,
+    TResult? Function(int sortCode)? sort,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -347,6 +512,7 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
     TResult Function(String tenantId, String businessService, String moduleName,
             int limit, int offset)?
         create,
+    TResult Function(int sortCode)? sort,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -360,6 +526,7 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
+    required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) {
     return clear(this);
@@ -369,6 +536,7 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) {
     return clear?.call(this);
@@ -378,6 +546,7 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {

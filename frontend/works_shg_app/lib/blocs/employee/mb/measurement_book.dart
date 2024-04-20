@@ -20,6 +20,7 @@ class MeasurementInboxBloc
     on<MeasurementBookInboxSearchBlocEvent>(searchMb);
     on<MeasurementBookInboxBlocClearEvent>(initialStage);
     on<MeasurementBookInboxSearchRepeatBlocEvent>(repeatSearch);
+    on<MeasurementBookInboxSortBlocEvent>(sort);
   }
   FutureOr<void> getMBInbox(
     MeasurementBookInboxBlocEvent event,
@@ -31,7 +32,7 @@ class MeasurementInboxBloc
         emit(const MeasurementInboxState.loading());
       }
 
-     final   s = {
+      final s = {
         "inbox": {
           "tenantId": GlobalVariables.tenantId,
           "moduleSearchCriteria": {
@@ -220,13 +221,13 @@ class MeasurementInboxBloc
           //     "offset": event.offset
           //   }
           // };
-          value.data['inbox']!['offset']=event.offset;
-          final MBInboxResponse res =
-              await MBRepository(client.init()).fetchMbInbox(
-            url: Urls.measurementService.measurementInbox,
-            body: value.data
-            //body: value.data,
-          );
+          value.data['inbox']!['offset'] = event.offset;
+          final MBInboxResponse res = await MBRepository(client.init())
+              .fetchMbInbox(
+                  url: Urls.measurementService.measurementInbox,
+                  body: value.data
+                  //body: value.data,
+                  );
           List<ItemData> data = [];
           data.addAll(value.mbInboxResponse.items ?? []);
           data.addAll(res.items!);
@@ -250,6 +251,55 @@ class MeasurementInboxBloc
               value.data,
             ),
           );
+        },
+      );
+    } on DioError catch (e) {
+      emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+    }
+  }
+
+// function for sorting
+
+  FutureOr<void> sort(
+    MeasurementBookInboxSortBlocEvent event,
+    MeasurementInboxBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () {
+          return null;
+        },
+        loaded: (value) {
+          List<ItemData> itemList =
+              List.from(value.mbInboxResponse.items ?? []);
+          switch (event.sortCode) {
+            case 0:
+              itemList.sort((a, b) => a.businessObject!.serviceSla!
+                  .compareTo(b.businessObject!.serviceSla!));
+
+              break;
+            case 1:
+              itemList.sort((a, b) => a.processInstance!.state!.state!
+                  .compareTo(b.processInstance!.state!.state!));
+              break;
+            case 2:
+              itemList.sort((a, b) => a.businessObject!.measures!.first
+                  .measureAdditionalDetails!.mbAmount!
+                  .compareTo(b.businessObject!.measures!.first
+                      .measureAdditionalDetails!.mbAmount!));
+              break;
+            case 3:
+              itemList.sort((a, b) => b.businessObject!.measures!.first
+                  .measureAdditionalDetails!.mbAmount!
+                  .compareTo(a.businessObject!.measures!.first
+                      .measureAdditionalDetails!.mbAmount!));
+              break;
+            default:
+          }
+
+          emit(value.copyWith(
+              mbInboxResponse:
+                  value.mbInboxResponse.copyWith(items: itemList)));
         },
       );
     } on DioError catch (e) {
@@ -286,6 +336,11 @@ class MeasurementInboxBlocEvent with _$MeasurementInboxBlocEvent {
     required int limit,
     required int offset,
   }) = MeasurementBookInboxSearchRepeatBlocEvent;
+
+  // event for sorting the list
+  const factory MeasurementInboxBlocEvent.sort({
+    required int sortCode,
+  }) = MeasurementBookInboxSortBlocEvent;
 
   const factory MeasurementInboxBlocEvent.clear() =
       MeasurementBookInboxBlocClearEvent;

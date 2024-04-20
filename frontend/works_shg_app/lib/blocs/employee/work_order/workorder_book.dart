@@ -20,6 +20,7 @@ class WorkOrderInboxBloc
     extends Bloc<WorkOrderInboxBlocEvent, WorkOrderInboxState> {
   WorkOrderInboxBloc() : super(const WorkOrderInboxState.initial()) {
     on<WorkOrderInboxBlocCreateEvent>(getWorkOrderInbox);
+    on<WorkOrderInboxSortBlocEvent>(sort);
   }
   FutureOr<void> getWorkOrderInbox(
     WorkOrderInboxBlocCreateEvent event,
@@ -98,6 +99,57 @@ class WorkOrderInboxBloc
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
+
+
+// function for sorting
+
+  FutureOr<void> sort(
+    WorkOrderInboxSortBlocEvent event,
+    WorkOrderInboxBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () {
+          return null;
+        },
+        loaded: (value) {
+          List<Contracts> itemList =
+              List.from(value.contracts ?? []);
+          switch (event.sortCode) {
+            case 0:
+              itemList.sort((a, b) => a.endDate!
+                  .compareTo(b.endDate!));
+
+              break;
+            case 1:
+              itemList.sort((a, b) => a.startDate!
+                  .compareTo(b.startDate!));
+              break;
+            case 2:
+              itemList.sort((a, b) => a.issueDate!
+                  .compareTo(b.issueDate!));
+              break;
+            case 3:
+              itemList.sort((a, b) => b.totalContractedAmount!
+                  .compareTo(a.totalContractedAmount!));
+              break;
+              case 4:
+              itemList.sort((a, b) => a.additionalDetails!.cboName!
+                  .compareTo(b.additionalDetails!.cboName!));
+              break;
+            default:
+          }
+
+          emit(value.copyWith(
+            contracts: itemList
+          ));
+        },
+      );
+    } on DioError catch (e) {
+      emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
+    }
+  }
+
 }
 
 @freezed
@@ -109,6 +161,11 @@ class WorkOrderInboxBlocEvent with _$WorkOrderInboxBlocEvent {
     required int limit,
     required int offset,
   }) = WorkOrderInboxBlocCreateEvent;
+
+  // event for sorting the list
+  const factory WorkOrderInboxBlocEvent.sort({
+    required int sortCode,
+  }) = WorkOrderInboxSortBlocEvent;
 
   const factory WorkOrderInboxBlocEvent.clear() =
      WorkOrderInboxBlocClearEvent;

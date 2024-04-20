@@ -110,7 +110,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
               // AppLocalizations.of(context)
               //     .translate(i18.login.invalidOTP),
              
-              "something went wrong",
+              value.error.toString(),
                'ERROR',
             );
           },

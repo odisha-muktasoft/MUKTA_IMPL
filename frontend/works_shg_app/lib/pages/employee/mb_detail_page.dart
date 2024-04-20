@@ -71,10 +71,10 @@ class _MBDetailPageState extends State<MBDetailPage>
       context.read<BusinessWorkflowBloc>().add(
             //hard coded
             GetBusinessWorkflowEvent(
-                tenantId: widget.tenantId!,
-                // businessService: 'CONTRACT',
-                 businessService: 'MB',
-                 ),
+              tenantId: widget.tenantId!,
+              // businessService: 'CONTRACT',
+              businessService: 'MB',
+            ),
           );
       // SearchIndividualWorkBloc
       context.read<SearchIndividualWorkBloc>().add(
@@ -148,8 +148,8 @@ class _MBDetailPageState extends State<MBDetailPage>
             state.maybeMap(
               orElse: () => null,
               loaded: (value) {
-
-                print("individualWork${value.contractsModel!.contracts!.first.status!}");
+                print(
+                    "individualWork${value.contractsModel!.contracts!.first.status!}");
                 setState(() {
                   workorderStatus =
                       value.contractsModel!.contracts!.first.status!;
@@ -219,139 +219,134 @@ class _MBDetailPageState extends State<MBDetailPage>
                     });
                     sorprice += (line.first.unitRate! * consumed);
                   }
-                 if (widget.type==MBScreen.update) {
-                   
-                 
-                  return BlocBuilder<MusterGetWorkflowBloc,
-                      MusterGetWorkflowState>(
-                    builder: (context, state) {
-                      return state.maybeMap(
-                        orElse: () => const SizedBox.shrink(),
-                        loaded: (mbWorkFlow) {
-                          final g =
-                              mbWorkFlow.musterWorkFlowModel?.processInstances;
+                  if (widget.type == MBScreen.update) {
+                    return BlocBuilder<MusterGetWorkflowBloc,
+                        MusterGetWorkflowState>(
+                      builder: (context, state) {
+                        return state.maybeMap(
+                          orElse: () => const SizedBox.shrink(),
+                          loaded: (mbWorkFlow) {
+                            final g = mbWorkFlow
+                                .musterWorkFlowModel?.processInstances;
 
-                          return FloatActionCard(
-                            actions: () {
-                             
-                              
+                            return FloatActionCard(
+                              actions: () {
                                 DigitActionDialog.show(
-                                context,
-                                widget: CommonButtonCard(
-                                  g: g,
-                                  contractNumber: widget.contractNumber,
-                                  mbNumber: widget.mbNumber,
-                                  type: widget.type,
-                                ),
-                              );
-                              
-                              
-                            },
-                            // amount: sorprice.toString(),
-                            amount: value.data.first.totalAmount!
-                                .toDouble()
-                                .roundToDouble()
-                                .toString(),
-                            openButtonSheet: () {
-                              _openBottomSheet(
-                                t,
-                                context,
-                                value.data.first.totalSorAmount!,
-                                value.data.first.totalNorSorAmount!,
-                                value.data.first.totalAmount!,
-                                g,
-                                widget.contractNumber,
-                                widget.mbNumber,
+                                  context,
+                                  widget: CommonButtonCard(
+                                    g: g,
+                                    contractNumber: widget.contractNumber,
+                                    mbNumber: widget.mbNumber,
+                                    type: widget.type,
+                                  ),
+                                );
+                              },
+                              // amount: sorprice.toString(),
+                              amount: value.data.first.totalAmount!
+                                  .toDouble()
+                                  .roundToDouble()
+                                  .toString(),
+                              openButtonSheet: () {
+                                _openBottomSheet(
+                                  t,
+                                  context,
+                                  value.data.first.totalSorAmount!,
+                                  value.data.first.totalNorSorAmount!,
+                                  value.data.first.totalAmount!,
+                                  g,
+                                  widget.contractNumber,
+                                  widget.mbNumber,
                                   widget.type,
-                                   null,
-                              );
-                            },
-                            totalAmountText:
-                                t.translate(i18.measurementBook.totalMbAmount),
-                            subtext: t
-                                .translate(i18.measurementBook.forCurrentEntry),
-                          );
-                        },
-                      );
-                    },
-
-                  );
+                                  null,
+                                );
+                              },
+                              totalAmountText: t
+                                  .translate(i18.measurementBook.totalMbAmount),
+                              subtext: t.translate(
+                                  i18.measurementBook.forCurrentEntry),
+                            );
+                          },
+                        );
+                      },
+                    );
                   } else {
-                   
-                   return BlocBuilder<BusinessWorkflowBloc,
-                      BusinessGetWorkflowState>(
-                    builder: (context, state) {
-                      return state.maybeMap(
-                        orElse: () => const SizedBox.shrink(),
-                        loaded: (business) {
-                          const g = null;
-                          final bk=    business.businessWorkFlowModel!.businessServices??[];
+                    return BlocBuilder<BusinessWorkflowBloc,
+                        BusinessGetWorkflowState>(
+                      builder: (context, state) {
+                        return state.maybeMap(
+                          orElse: () => const SizedBox.shrink(),
+                          loaded: (business) {
+                            const g = null;
+                            final bk = business
+                                    .businessWorkFlowModel!.businessServices ??
+                                [];
 
-                          return FloatActionCard(
-                            actions: () {
-                               if (workorderStatus=="ACTIVE" && estimateStatus!="INWORKFLOW") {
-                                DigitActionDialog.show(
-                                context,
-                                widget: CommonButtonCard(
-                                  g: g,
-                                  contractNumber: widget.contractNumber,
-                                  mbNumber: widget.mbNumber,
-                                  type: widget.type,
-                                  bs: bk,
-                                ),
-                              );
-                              } else {
-                                String show="";
-                                if(workorderStatus!="ACTIVE"){
-                                  show="time extension";
+                            return FloatActionCard(
+                              actions: () {
+                                if (workorderStatus == "ACTIVE" &&
+                                    estimateStatus != "INWORKFLOW") {
+                                  DigitActionDialog.show(
+                                    context,
+                                    widget: CommonButtonCard(
+                                      g: g,
+                                      contractNumber: widget.contractNumber,
+                                      mbNumber: widget.mbNumber,
+                                      type: widget.type,
+                                      bs: bk,
+                                    ),
+                                  );
+                                } else {
+                                  String show = "";
+                                  if (workorderStatus != "ACTIVE") {
+                                    show = "time extension";
+                                  } else if (estimateStatus == "INWORKFLOW") {
+                                    show = "estimate revision";
+                                  }
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      "MB can not be created as the $show in progress",
+                                      'ERROR');
                                 }
-                                else if(estimateStatus=="INWORKFLOW"){
-                                  show="estimate revision";
-                                }
-                                Notifiers.getToastMessage(
-                                        context, "MB can not be created as the $show in progress", 'ERROR');
-                              }
-                              // DigitActionDialog.show(
-                              //   context,
-                              //   widget: CommonButtonCard(
-                              //     g: null,
-                              //     contractNumber: widget.contractNumber,
-                              //     mbNumber: widget.mbNumber,
-                              //     type: widget.type,
-                              //     bs: bk,
-                              //   ),
-                              // );
-                            },
-                            // amount: sorprice.toString(),
-                            amount: value.data.first.totalAmount!
-                                .toDouble()
-                                .roundToDouble()
-                                .toString(),
-                            openButtonSheet: () {
-                              _openBottomSheet(
-                                t,
-                                context,
-                                value.data.first.totalSorAmount!,
-                                value.data.first.totalNorSorAmount!,
-                                value.data.first.totalAmount!,
-                                g,
-                                widget.contractNumber,
-                                widget.mbNumber,
+                                // DigitActionDialog.show(
+                                //   context,
+                                //   widget: CommonButtonCard(
+                                //     g: null,
+                                //     contractNumber: widget.contractNumber,
+                                //     mbNumber: widget.mbNumber,
+                                //     type: widget.type,
+                                //     bs: bk,
+                                //   ),
+                                // );
+                              },
+                              // amount: sorprice.toString(),
+                              amount: value.data.first.totalAmount!
+                                  .toDouble()
+                                  .roundToDouble()
+                                  .toString(),
+                              openButtonSheet: () {
+                                _openBottomSheet(
+                                  t,
+                                  context,
+                                  value.data.first.totalSorAmount!,
+                                  value.data.first.totalNorSorAmount!,
+                                  value.data.first.totalAmount!,
+                                  g,
+                                  widget.contractNumber,
+                                  widget.mbNumber,
                                   widget.type,
-                                   bk,
-                              );
-                            },
-                            totalAmountText:
-                                t.translate(i18.measurementBook.totalMbAmount),
-                            subtext: t
-                                .translate(i18.measurementBook.forCurrentEntry),
-                          );
-                        },
-                      );
-                    },
-
-                  );
-                 }
+                                  bk,
+                                );
+                              },
+                              totalAmountText: t
+                                  .translate(i18.measurementBook.totalMbAmount),
+                              subtext: t.translate(
+                                  i18.measurementBook.forCurrentEntry),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
                 loading: (value) {
                   return const SizedBox.shrink();
@@ -1010,17 +1005,16 @@ class _MBDetailPageState extends State<MBDetailPage>
   }
 
   void _openBottomSheet(
-    AppLocalizations t,
-    BuildContext context,
-    double totalSorAmount,
-    double totalNonSorAmount,
-    double mbAmount,
-    List<ProcessInstances>? processInstances,
-    String contractNumber,
-    String mbNumber,
-    MBScreen type,
-    List<BusinessServices>? bs
-  ) {
+      AppLocalizations t,
+      BuildContext context,
+      double totalSorAmount,
+      double totalNonSorAmount,
+      double mbAmount,
+      List<ProcessInstances>? processInstances,
+      String contractNumber,
+      String mbNumber,
+      MBScreen type,
+      List<BusinessServices>? bs) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -1171,6 +1165,9 @@ class _MBDetailPageState extends State<MBDetailPage>
       },
     );
   }
+
+
+  
 }
 
 class CustomTab extends StatelessWidget {

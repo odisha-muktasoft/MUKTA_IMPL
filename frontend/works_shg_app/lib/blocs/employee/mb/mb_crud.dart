@@ -129,7 +129,7 @@ class MeasurementCrudBloc
 
      emit(MeasurementCrudState.loaded(res));
     } on DioError catch (e) {
-      emit(MeasurementCrudState.error(e.toString()));
+      emit(MeasurementCrudState.error(e.response!.data['Errors'][0]['message']));
     }
   }
 }
