@@ -41,11 +41,14 @@ class Attachments extends StatelessWidget {
                       .map<Widget>((e) => InkWell(
                             onTap: () => CommonMethods().onTapOfAttachment(
                                 e,
-                                e.tenantId ??
+                                e.tenantId==null?
+                                GlobalVariables.roleType==RoleType.employee?
+                                GlobalVariables.tenantId!:
                                     GlobalVariables.stateInfoListModel!.code
-                                        .toString(),
+                                        .toString():e.tenantId!,
+                               // "od.testing",
                                 context,
-                               
+                               roleType: GlobalVariables.roleType==RoleType.employee?RoleType.employee:RoleType.cbo
                                 ),
                             child: Container(
                                 width: 50,

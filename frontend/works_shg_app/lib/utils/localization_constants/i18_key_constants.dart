@@ -156,6 +156,7 @@ class Common {
   String get filter=>"ES_COMMON_FILTER";
   String get musterRollId=>"ES_COMMON_MUSTER_ROLL_ID";
   String get allFieldsMandatory=>"ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS";
+  
 }
 
 class Home {
@@ -411,6 +412,9 @@ class MeasurementBook{
   String get createMb=>"MB_BUTTON_LEVEL_CREATE";
   String get sort=>"MB_SORT";
   String get backToTop=>"MB_BACK_TO_TOP";
+  String get workOrderInbox=>"MB_WORK_ORDER_INBOX";
+  String get filter=>"MB_FILTER";
+  String get clear=>"MB_CLEAR";
   
   
 

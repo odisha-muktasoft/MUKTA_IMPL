@@ -34,7 +34,7 @@ class Conversion {
     showModalBottomSheet(
       builder: (BuildContext context) {
         return SizedBox(
-          height: 300,
+          height: (listData.length*80),
           width: MediaQuery.of(context).size.width,
           child: Center(
               child: MyBottomSheet(

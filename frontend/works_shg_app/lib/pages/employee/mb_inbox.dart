@@ -220,7 +220,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "MB Inbox (${mbInboxResponse.mbInboxResponse.items?.length ?? 0})",
+                                    "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.items?.length ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
                                   ),

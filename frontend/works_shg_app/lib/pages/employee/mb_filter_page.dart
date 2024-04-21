@@ -144,7 +144,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       Expanded(
                                         flex: 2,
                                         child: DigitOutLineButton(
-                                          label: "Clear",
+                                          label: t.translate(i18.measurementBook.clear),
                                           onPressed: () {
                                             context.router.pop();
                                           },
@@ -153,7 +153,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       Expanded(
                                         flex: 2,
                                         child: DigitElevatedButton(
-                                          child: const Text("Filter"),
+                                          child:  Text(t.translate(i18.measurementBook.filter)),
                                           onPressed: () async {
                                             Map<String, Map<String, dynamic>> s;
                                             if (workShow && !project) {
@@ -379,7 +379,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: Text(
-                                          "Filter",
+                                         t.translate(i18.measurementBook.filter),
                                           style: DigitTheme.instance.mobileTheme
                                               .textTheme.headlineLarge,
                                         ),

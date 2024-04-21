@@ -105,7 +105,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               color: const DigitColors().burningOrange),
                         ),
                       ),
-                      label:  Text(t.translate(i18.measurementBook.backToTop)),
+                      label: Text(t.translate(i18.measurementBook.backToTop)),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -122,7 +122,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
               );
             },
           ),
-           floatingActionButtonLocation:
+          floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           appBar: AppBar(
@@ -162,7 +162,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
-                                    "Work Order Inbox (${value.contracts?.length ?? 0})",
+                                    "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
                                   ),
@@ -205,15 +205,17 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                   .burningOrange,
                                               onPressed: () {
                                                 Conversion.openSortingModal(
-                                                    context,
-                                                    listData: Conversion
-                                                        .sortWorkOrder, sortType: SortType.woSort,
-                                                        );
+                                                  context,
+                                                  listData:
+                                                      Conversion.sortWorkOrder,
+                                                  sortType: SortType.woSort,
+                                                );
                                               },
                                               icon: SvgPicture.asset(
                                                   Constants.sort)),
                                           Text(
-                                            t.translate(i18.measurementBook.sort),
+                                            t.translate(
+                                                i18.measurementBook.sort),
                                             style: DigitTheme
                                                 .instance
                                                 .mobileTheme
@@ -267,7 +269,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               widget2: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: DigitElevatedButton(
-                                  child:  Text(t.translate(i18.measurementBook.createMb)),
+                                  child: Text(t
+                                      .translate(i18.measurementBook.createMb)),
                                   onPressed: () {
                                     // DigitActionDialog.show(context,
                                     //     widget: Center(

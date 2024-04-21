@@ -150,7 +150,7 @@ class CommonMethods {
 
   void onTapOfAttachment(
       FileStoreModel store, String tenantId, BuildContext context,
-      {RoleType roleType = RoleType.cbo}) async {
+      {  RoleType roleType=RoleType.cbo}) async {
     var random = Random();
     List<FileStoreModel>? file = await CoreRepository().fetchFiles(
       [store.fileStoreId.toString()],
