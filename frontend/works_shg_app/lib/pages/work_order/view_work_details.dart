@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/work_orders/work_order_pdf.dart';
+import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -120,21 +121,33 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
         ),
         drawer: DrawerWrapper(
             Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
-        bottomNavigationBar: GlobalVariables.roleType == RoleType.employee
-            ? SizedBox(
+        bottomNavigationBar: BlocBuilder<SearchIndividualWorkBloc,
+              SearchIndividualWorkState>(
+          builder: (context, state) {
+
+            return state.maybeMap(orElse:() => const SizedBox.shrink(),
+            loaded: (value) => 
+             GlobalVariables.roleType == RoleType.employee
+          
+            ?  SizedBox(
                 height: 60,
                 child: DigitCard(
                   padding: const EdgeInsets.all(8.0),
                   margin: const EdgeInsets.all(0),
                   child: DigitElevatedButton(
                     onPressed: () {
-                      print("object");
+                      context.router.push(MBDetailRoute(
+                        contractNumber: widget.contractNumber!,
+                        mbNumber: "",
+                        tenantId: GlobalVariables.tenantId,
+                        type: MBScreen.create,
+                      ));
                     },
                     child: Center(
                       child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 4.0, horizontal: 4.0),
-                          child: Text(t.translate("Create Measurement Book"),
+                          child: Text(t.translate(i18.measurementBook.createMb),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
@@ -146,7 +159,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   ),
                 ),
               )
-            : cboBottomNavigationBar(t),
+            : cboBottomNavigationBar(t)
+            );
+            },
+        ),
         body: GlobalVariables.roleType == RoleType.employee
             ? empScrollableContent(t)
             : cboScrollableContent(t),

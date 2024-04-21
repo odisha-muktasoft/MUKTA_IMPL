@@ -256,7 +256,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               widget2: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: DigitElevatedButton(
-                                  child: const Text("Create Measurement Book"),
+                                  child:  Text(t.translate(i18.measurementBook.createMb)),
                                   onPressed: () {
                                     // DigitActionDialog.show(context,
                                     //     widget: Center(

@@ -906,7 +906,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  "SOR${index + 1}",
+                  "${type.toUpperCase()}${index + 1}",
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),

@@ -37,7 +37,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: DigitElevatedButton(
-              child: const Text("Create Measurement Book"),
+              child:  Text(t.translate(i18.measurementBook.createMb)),
               onPressed: () {
                 context.router.push(MBDetailRoute(
                   contractNumber: '',

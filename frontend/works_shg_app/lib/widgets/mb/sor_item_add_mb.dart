@@ -132,7 +132,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               type: widget.type,
                               viewMode: value.viewStatus,
                               noOfUnit: widget.noOfUnit,
-                              cummulativePrevQty: widget.cummulativePrevQty,
+                              cummulativePrevQty: widget.cummulativePrevQty, index: index,
                             );
                           },
                           itemCount: lineItems?.length,
@@ -197,6 +197,7 @@ class CardWidget extends StatefulWidget {
   final bool viewMode;
   final dynamic noOfUnit;
   final dynamic cummulativePrevQty;
+  final int index;
 
   const CardWidget({
     super.key,
@@ -206,7 +207,7 @@ class CardWidget extends StatefulWidget {
     required this.type,
     required this.viewMode,
     this.noOfUnit,
-    this.cummulativePrevQty,
+    this.cummulativePrevQty, required this.index,
   });
 
   @override
@@ -250,16 +251,17 @@ class _CardWidgetState extends State<CardWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'SOR1',
+                  widget.type.toUpperCase(),
                   style: DigitTheme.instance.mobileTheme.textTheme.displayLarge,
                 ),
                 Text(
-                  'Item 1',
+                  'Item ${widget.index+1}',
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
                 DigitTableCard(element: {
-                  "Type": "Plus",
+                  "Type": widget.filteredMeasurementsMeasure!.contracts!
+                      .first.estimates!.first.isDeduction,
                   "Description": widget.filteredMeasurementsMeasure!.contracts!
                       .first.estimates!.first.description,
                 }),
@@ -666,7 +668,7 @@ class _CardWidgetState extends State<CardWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top:4.0,left: 8.0,right: 8.0,bottom: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

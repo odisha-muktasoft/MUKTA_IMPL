@@ -407,6 +407,8 @@ class MeasurementBook{
   String get projectDescription=>"MB_PROJECT_DESC";
   String get mbWorkflowState=>"MB_WORKFLOW_STATUS";
   String get mbInbox=>"MB_INBOX";
+
+  String get createMb=>"MB_BUTTON_LEVEL_CREATE";
   
   
 
