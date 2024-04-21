@@ -161,7 +161,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               color: const DigitColors().burningOrange),
                         ),
                       ),
-                      label: const Text("Back to top"),
+                      label:  Text(t.translate(i18.measurementBook.backToTop)),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -313,8 +313,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       ),
                                       TextButton.icon(
                                           label: Text(
-                                            // t.translate(i18.common.filter),
-                                            "Sort",
+                                             t.translate(i18.measurementBook.sort),
+                                            
                                             style: DigitTheme
                                                 .instance
                                                 .mobileTheme

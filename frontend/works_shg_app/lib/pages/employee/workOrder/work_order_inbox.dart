@@ -96,8 +96,16 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                 },
                 loaded: (value) {
                   if (value.contracts!.length > 19) {
-                    return DigitIconButton(
-                      iconText: "Back to top",
+                    return TextButton.icon(
+                      style: TextButton.styleFrom(
+                        backgroundColor: const DigitColors().white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(
+                              color: const DigitColors().burningOrange),
+                        ),
+                      ),
+                      label:  Text(t.translate(i18.measurementBook.backToTop)),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -105,6 +113,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                           curve: Curves.easeInOut,
                         );
                       },
+                      icon: SvgPicture.asset(Constants.doubleArrow),
                     );
                   } else {
                     return const SizedBox.shrink();
@@ -113,6 +122,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
               );
             },
           ),
+           floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           appBar: AppBar(
             titleSpacing: 0,
@@ -202,7 +213,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                               icon: SvgPicture.asset(
                                                   Constants.sort)),
                                           Text(
-                                            "Sort",
+                                            t.translate(i18.measurementBook.sort),
                                             style: DigitTheme
                                                 .instance
                                                 .mobileTheme

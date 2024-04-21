@@ -258,12 +258,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   widget.mbNumber,
                                   widget.type,
                                   null,
+                                  (g!=null && (g.first.nextActions!=null && g.first.nextActions!.isEmpty))?false:true
                                 );
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
                               subtext: t.translate(
-                                  i18.measurementBook.forCurrentEntry),
+                                  i18.measurementBook.forCurrentEntry), showAction:(g!=null && (g.first.nextActions!=null && g.first.nextActions!.isEmpty))?false:true,
                             );
                           },
                         );
@@ -335,12 +336,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   widget.mbNumber,
                                   widget.type,
                                   bk,
+                                  (bk!=null &&( bk!=null && bk.isEmpty))?false:true
                                 );
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
                               subtext: t.translate(
-                                  i18.measurementBook.forCurrentEntry),
+                                  i18.measurementBook.forCurrentEntry), showAction: (bk!=null &&( bk!=null && bk.isEmpty))?false:true ,
                             );
                           },
                         );
@@ -1021,7 +1023,9 @@ class _MBDetailPageState extends State<MBDetailPage>
       String contractNumber,
       String mbNumber,
       MBScreen type,
-      List<BusinessServices>? bs) {
+      List<BusinessServices>? bs,
+      bool showBtn,
+      ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -1151,6 +1155,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               const SizedBox(
                 height: 15,
               ),
+              showBtn?
               DigitElevatedButton(
                   child: Text(t.translate(i18.measurementBook.mbAction)),
                   onPressed: () {
@@ -1165,7 +1170,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         bs: bs,
                       ),
                     );
-                  }),
+                  }):const SizedBox.shrink(),
             ],
           ),
         );

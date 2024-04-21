@@ -217,6 +217,7 @@ class _SideBar extends State<SideBar> {
                       color: const DigitColors().burningOrange,
                     )
                   : const SizedBox.shrink(),
+                  GlobalVariables.roleType== RoleType.cbo?
               Expanded(
                 child: DigitIconTile(
                     title: AppLocalizations.of(context)
@@ -226,7 +227,7 @@ class _SideBar extends State<SideBar> {
                     onPressed: () {
                       context.router.push(const ORGProfileRoute());
                     }),
-              ),
+              ):const SizedBox.shrink(),
             ],
           ),
           DigitIconTile(

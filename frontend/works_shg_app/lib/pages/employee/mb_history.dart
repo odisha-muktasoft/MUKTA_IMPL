@@ -101,7 +101,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               );
                             },
                             totalAmountText:
-                                t.translate(i18.measurementBook.totalMbAmount),
+                                t.translate(i18.measurementBook.totalMbAmount), showAction: (g!=null && g.isEmpty)?false:true,
                           );
                         },
                       );

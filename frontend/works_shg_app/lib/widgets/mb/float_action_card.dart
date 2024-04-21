@@ -11,7 +11,8 @@ class FloatActionCard extends StatelessWidget {
   final String totalAmountText;
   final String? subtext;
   final String amount;
-  const FloatActionCard({super.key, required this.openButtonSheet, required this.actions, required this.totalAmountText,  this.subtext, required this.amount});
+  final bool showAction;
+  const FloatActionCard({super.key, required this.openButtonSheet, required this.actions, required this.totalAmountText,  this.subtext, required this.amount, required this.showAction});
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +78,10 @@ class FloatActionCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                 showAction?
                   DigitElevatedButton(
                       onPressed: actions,
-                      child:  Text(t.translate(i18.measurementBook.mbAction))),
+                      child:  Text(t.translate(i18.measurementBook.mbAction),),):const SizedBox.shrink(),
                 ],
               ),
             )));

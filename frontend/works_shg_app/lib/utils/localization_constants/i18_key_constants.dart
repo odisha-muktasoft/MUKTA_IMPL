@@ -409,6 +409,8 @@ class MeasurementBook{
   String get mbInbox=>"MB_INBOX";
 
   String get createMb=>"MB_BUTTON_LEVEL_CREATE";
+  String get sort=>"MB_SORT";
+  String get backToTop=>"MB_BACK_TO_TOP";
   
   
 
