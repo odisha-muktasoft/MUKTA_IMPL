@@ -61,8 +61,9 @@ class MeasurementDetailBloc
       // )));
       // print(kk);
       List<FilteredMeasurements> data;
-      if (event.screenType == MBScreen.create) {
+      if (event.screenType == MBScreen.create && res.allMeasurements is! List) {
         data = MBLogic.formContract(mbDetailResponse: res);
+        print("object");
       } else {
         data = MBLogic.getMeasureList(mbDetailResponse: res);
       }
@@ -70,11 +71,11 @@ class MeasurementDetailBloc
       // final List<FilteredMeasurements> data =
       //     MBLogic.getMeasureList(mbDetailResponse: res);
       List<List<List<SorObject>>> sorList = MBLogic.getSors(data);
-
+      print("object");
       emit(
         MeasurementDetailState.loaded(
           null,
-         event.screenType == MBScreen.create?false: true,
+          event.screenType == MBScreen.create ? false : true,
           res.allMeasurements! is List
               ? res.allMeasurements
                   .map<Measurement>((dynamic item) {
@@ -92,8 +93,8 @@ class MeasurementDetailBloc
           data,
           sorList.first.first,
           sorList.first.last,
-          sorList.length > 2 ? sorList[1].first : null,
-          sorList.length > 2 ? sorList[1].last : null,
+          sorList.length >= 2 ? sorList[1].first : null,
+          sorList.length >= 2 ? sorList[1].last : null,
         ),
       );
     } on DioError catch (e) {
@@ -440,9 +441,10 @@ class MeasurementDetailBloc
       }
 
       return double.parse((double.parse(height.toString()) *
-              double.parse(width.toString()) *
-              double.parse(length.toString()) *
-              double.parse(number.toString())).toString())
+                  double.parse(width.toString()) *
+                  double.parse(length.toString()) *
+                  double.parse(number.toString()))
+              .toString())
           .toString();
     }
   }

@@ -156,7 +156,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            final adjustedIndex = index + 1;
+                            
+                            final adjustedIndex = widget.type==MBScreen.update?index + 1:index;
                             if (adjustedIndex < k.length) {
                               return CommonMBCard(
                                 headLabel:
@@ -197,7 +198,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               return null; // Return null for the skipped item
                             }
                           },
-                          childCount: k.length - 1,
+                          childCount: widget.type==MBScreen.update? k.length - 1:k.length,
                         ),
                       ),
                     ],

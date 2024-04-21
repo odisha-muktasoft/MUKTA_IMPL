@@ -417,7 +417,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               CommonMBCard(
                                 items: {
                                   t.translate(i18.measurementBook.mbNumber):
-                                      value.data.first.mbNumber,
+                                      value.data.first.mbNumber??"NA",
                                   t.translate(i18.attendanceMgmt.projectDesc):
                                       value
                                               .data
@@ -462,7 +462,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               value.data.first.entryDate!))
                                       : "NA",
                                   t.translate(i18.common.musterRollId):
-                                      value.data.first.musterRollNumber,
+                                      value.data.first.musterRollNumber??"NA",
                                   // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
@@ -884,13 +884,17 @@ class _MBDetailPageState extends State<MBDetailPage>
       },
     ).toList();
     double noOfQty = line.fold(0.0, (sum, obj) {
-      int m = obj.quantity!;
+      int m = double.parse(obj.noOfunit!.toString()).toInt();
       return sum + m;
     });
-    double consumed = magic.fold(0.0, (sum, obj) {
-      double m = obj.cumulativeValue!;
-      return sum + m.toDouble();
-    });
+    // double consumed = magic.fold(0.0, (sum, obj) {
+    //   double m = obj.cumulativeValue!;
+    //   return sum + m.toDouble();
+    // });
+    // double consumed = preSor_NonSor!.fold(0.0, (sum, obj) {
+    //   double m = obj.cumulativeValue!;
+    //   return sum + m.toDouble();
+    // });
     return Card(
       child: SizedBox(
         height: 480,
@@ -919,7 +923,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                       //  t.translate(i18.measurementBook.consumedQty):
                       preSor_NonSor == null
                           ? 0
-                          : preSor_NonSor!.first.cumulativeValue,
+                          : preSor_NonSor!.fold(0.0, (sum, obj) {
+                              double m = obj.cumulativeValue!;
+                              return sum + m.toDouble();
+                            }),
                   // "Consumed Quantity\n(current entry)": magic[0].currentValue!.toDouble(),
                 },
               ),
@@ -1165,9 +1172,6 @@ class _MBDetailPageState extends State<MBDetailPage>
       },
     );
   }
-
-
-  
 }
 
 class CustomTab extends StatelessWidget {

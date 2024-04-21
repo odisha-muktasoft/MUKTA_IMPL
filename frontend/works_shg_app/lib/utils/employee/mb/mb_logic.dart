@@ -6,65 +6,124 @@ import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/employee/mb/mb_inbox_response.dart';
 
-enum MBScreen { create, update}
+enum MBScreen { create, update }
+
 class MBLogic {
 // start experiment
 
   static List<FilteredMeasurements> formContract(
       {required MBDetailResponse mbDetailResponse}) {
+    // List<FilteredMeasurementsContract> s = getContract(
+    //   mbDetailResponse!.contract!.lineItems!.first.contractLineItemRef!,
+    //   mbDetailResponse,
+    // );
+    List<FilteredMeasurementsContract> s =
+        mbDetailResponse.contract!.lineItems!.map((e) {
+      FilteredMeasurementsContract filteredMeasurementsContract =
+          FilteredMeasurementsContract(
+              contractAdditionalDetails:
+                  mbDetailResponse.contract?.additionalDetails,
+              estimateId: e.estimateId,
+              estimateLineItemId: e.estimateLineItemId,
+              contractLineItemRef: e.contractLineItemRef,
+              unitRate: e.unitRate,
+              status: e.status,
+              // estimates: mbDetailResponse.estimate?.estimateDetails
+              //         ?.map((e) {
+              //           if (e.sorId != null) {
+              //             FilteredMeasurementsEstimate
+              //                 filteredMeasurementsEstimate =
+              //                 FilteredMeasurementsEstimate(
+              //               id: e.id,
+              //               sorId: e.sorId,
+              //               category: e.category,
+              //               name: e.name,
+              //               description: e.description,
+              //               unitRate: e.unitRate,
+              //               noOfunit: e.noOfunit != null
+              //                   ? double.parse(
+              //                       (e.noOfunit!.toDouble()).toStringAsFixed(2))
+              //                   : 0,
+              //               uom: e.uom,
+              //               length: e.length != null ? e.length!.toInt() : 0,
+              //               width: e.width != null ? e.width!.toInt() : 0,
+              //               height: e.height != null ? e.height!.toInt() : 0,
+              //               quantity:
+              //                   e.quantity != null ? e.quantity!.toInt() : 0,
+              //               isDeduction: e.isDeduction,
+              //             );
 
-    List<FilteredMeasurementsContract> s = getContract(
-      mbDetailResponse!.contract!.lineItems!.first.contractLineItemRef!,
-      mbDetailResponse,
-    );
+              //             return filteredMeasurementsEstimate;
+              //           }
+              //         })
+              //         .toList()
+              //         .whereNotNull()
+              //         .toList() ??
+              //     []
+
+              estimates: getEstimate(e.estimateLineItemId!, mbDetailResponse));
+
+      return filteredMeasurementsContract;
+    }).toList();
+
     FilteredMeasurements sata = FilteredMeasurements(
-      totalAmount: 0.0,
-      totalNorSorAmount: 0.0,
-      totalSorAmount: 0.0,
-      musterRollNumber: null,
-      mbNumber: null,
-      wfStatus: null,
-      tenantId: mbDetailResponse!.contract!.tenantId,
-      endDate: 0,
-      startDate: 0,
-      entryDate: DateTime.now().millisecondsSinceEpoch,
-      referenceId: mbDetailResponse!.contract!.contractNumber,
-      id: null,
-      physicalRefNumber: null,
-      measures: s.mapIndexed((index,e) {
-        FilteredMeasurementsMeasure filteredMeasurementsMeasure =
-            FilteredMeasurementsMeasure(
-              contracts: s,
-                length: double.parse(  e.estimates!.first.length!.toString()) ?? 0.0,
-                breath:double.parse( e.estimates!.first.width.toString() )?? 0.0,
-                height:double.parse(  e.estimates!.first.height.toString() )?? 0.0,
-                numItems: 0.0,
-                cumulativeValue: 0.0,
-                currentValue: 0.0,
-                tenantId:
-                    mbDetailResponse!.contract!.lineItems!.first.tenantId!,
-                mbAmount: 0.0,
-                targetId: e.contractLineItemRef,
-                isActive: null,
-                id: "${e.contractLineItemRef}$index",
-                measureLineItems: e!.estimates!?.map((e) {
-                  MeasureLineItem sk = MeasureLineItem(
-                    width: e.width ?? 0.0,
-                    height: e.height ?? 0.0,
-                    length: e.length ?? 0.0,
-                    number: 0.0,
-                    quantity: 0.0,
-                    measurelineitemNo: 0,
-                  );
+        totalAmount: 0.0,
+        totalNorSorAmount: 0.0,
+        totalSorAmount: 0.0,
+        musterRollNumber: null,
+        mbNumber: null,
+        wfStatus: null,
+        tenantId: mbDetailResponse!.contract!.tenantId,
+        endDate: 0,
+        startDate: 0,
+        entryDate: DateTime.now().millisecondsSinceEpoch,
+        referenceId: mbDetailResponse!.contract!.contractNumber,
+        id: null,
+        physicalRefNumber: null,
+        measures: mbDetailResponse.contract!.lineItems!.mapIndexed((index, e) {
+          FilteredMeasurementsMeasure filteredMeasurementsMeasure =
+              FilteredMeasurementsMeasure(
+                  contracts:
+                      getContract(e.contractLineItemRef!, mbDetailResponse),
+                  length: 0.0,
+                  breath: 0.0,
+                  height: 0.0,
+                  numItems: 0.0,
+                  cumulativeValue: 0.0,
+                  currentValue: 0.0,
+                  tenantId:
+                      mbDetailResponse!.contract!.lineItems!.first.tenantId!,
+                  mbAmount: 0.0,
+                  targetId: e.contractLineItemRef,
+                  isActive: null,
+                  id: "${e.contractLineItemRef}$index",
+                  // measureLineItems: e!.estimates!?.mapIndexed((index, e) {
+                  //   MeasureLineItem sk = MeasureLineItem(
+                  //     width: e.width ?? 0.0,
+                  //     height: e.height ?? 0.0,
+                  //     length: e.length ?? 0.0,
+                  //     number: 0.0,
+                  //     quantity: 0.0,
+                  //     measurelineitemNo: index,
+                  //   );
 
-                  return sk;
-                }).toList());
+                  //   return sk;
+                  // }).toList()
 
+                  measureLineItems: [
+                const MeasureLineItem(
+                  width: 0.0,
+                  height: 0.0,
+                  length: 0.0,
+                  number: 0.0,
+                  quantity: 0.0,
+                  measurelineitemNo: 0,
+                ),
+              ]);
 
-        return filteredMeasurementsMeasure;
-      }).toList(),
-      documents: null
-    );
+          return filteredMeasurementsMeasure;
+        }).toList(),
+        documents: null);
 
     return [sata];
   }
@@ -73,16 +132,17 @@ class MBLogic {
   static List<FilteredMeasurements> getMeasureList(
       {required MBDetailResponse mbDetailResponse}) {
     final List<Measurement> allMeasurements =
-       mbDetailResponse.allMeasurements is List?  mbDetailResponse.allMeasurements
-    .map<Measurement>((dynamic item) {
-      if (item is Measurement) {
-        return item;
-      } else {
-        // Assuming there's a conversion method or constructor for Measurement
-        return Measurement.fromJson(item); // Adjust this based on your actual implementation
-      }
-    })
-    .toList()   : [];
+        mbDetailResponse.allMeasurements is List
+            ? mbDetailResponse.allMeasurements.map<Measurement>((dynamic item) {
+                if (item is Measurement) {
+                  return item;
+                } else {
+                  // Assuming there's a conversion method or constructor for Measurement
+                  return Measurement.fromJson(
+                      item); // Adjust this based on your actual implementation
+                }
+              }).toList()
+            : [];
 
     final data = allMeasurements.map((e) {
       FilteredMeasurements datak = FilteredMeasurements(
@@ -197,7 +257,7 @@ class MBLogic {
           length: e.length != null ? e.length!.toInt() : 0,
           width: e.width != null ? e.width!.toInt() : 0,
           height: e.height != null ? e.height!.toInt() : 0,
-          quantity: e.quantity != null ? e.quantity!.toInt() : 0,
+          quantity: e.quantity != null ? e.quantity!.toInt() : e.noOfunit!.toInt(),
           isDeduction: e.isDeduction,
         );
 
@@ -410,7 +470,9 @@ class MBLogic {
         measurementNumber: data.first.mbNumber,
         physicalRefNumber: data.first.physicalRefNumber,
         referenceId: data.first.referenceId,
-        entryDate: type==MBScreen.update? data.first.entryDate:DateTime.now().millisecondsSinceEpoch,
+        entryDate: type == MBScreen.update
+            ? data.first.entryDate
+            : DateTime.now().millisecondsSinceEpoch,
         isActive: true,
         wfStatus: data.first.wfStatus,
         workflow: workFlow,
@@ -435,27 +497,27 @@ class MBLogic {
 
   static Map<String, dynamic> measurementToMap(Measurement measurement) {
     Map<String, dynamic> data = {
-      "documents": measurement.documents!=null?
-      measurement.documents!.map((e) {
-        return {
-          "fileStore": e.fileStore,
-          "id": e.id,
-          "documentUid": e.documentUid,
-          "documentType": e.documentType,
-          "additionalDetails": {
-            "fileName": e.documentAdditionalDetails != null
-                ? e.documentAdditionalDetails!.fileName ?? ''
-                : '',
-            "fileType": e.documentAdditionalDetails != null
-                ? e.documentAdditionalDetails!.fileType ?? ''
-                : '',
-            "tenantId": e.documentAdditionalDetails != null
-                ? e.documentAdditionalDetails!.tenantId ?? ''
-                : ''
-          }
-        };
-      }).toList():[],
-
+      "documents": measurement.documents != null
+          ? measurement.documents!.map((e) {
+              return {
+                "fileStore": e.fileStore,
+                "id": e.id,
+                "documentUid": e.documentUid,
+                "documentType": e.documentType,
+                "additionalDetails": {
+                  "fileName": e.documentAdditionalDetails != null
+                      ? e.documentAdditionalDetails!.fileName ?? ''
+                      : '',
+                  "fileType": e.documentAdditionalDetails != null
+                      ? e.documentAdditionalDetails!.fileType ?? ''
+                      : '',
+                  "tenantId": e.documentAdditionalDetails != null
+                      ? e.documentAdditionalDetails!.tenantId ?? ''
+                      : ''
+                }
+              };
+            }).toList()
+          : [],
       'id': measurement.id,
       'tenantId': measurement.tenantId,
       'measurementNumber': measurement.measurementNumber,
