@@ -844,6 +844,9 @@ public class ContractServiceValidator {
         String jsonPathForMeasurementCurrentValue = "$.measurements[*].measures[?(@.targetId=='{{yourDynamicValue}}')].currentValue";
         String jsonPathForMeasurementWfStatus = "$.measurements[*].wfStatus";
         Object measurementResponse = measurementUtil.getMeasurementDetails(contractRequest);
+        if (null != measurementResponse) {
+
+
         List<String> wfStatus;
         try {
             wfStatus = JsonPath.read(measurementResponse, jsonPathForMeasurementWfStatus);
@@ -922,7 +925,7 @@ public class ContractServiceValidator {
             }
             if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")) {
                 List<EstimateDetail> estimateDetailList = sorIdToEstimateDetailMap.getOrDefault(sorId, Collections.emptyList());
-                BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId).subtract(sorIdToCurrentValueMap.get(sorId));
+                BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId).add(sorIdToCurrentValueMap.get(sorId));
                 BigDecimal totalNoOfUnit = BigDecimal.ZERO;
                 for (EstimateDetail estimatedDetail : estimateDetailList) {
                     if (estimatedDetail.getIsDeduction()) {
@@ -935,7 +938,7 @@ public class ContractServiceValidator {
 
                 if (totalNoOfUnit.compareTo(totalValue) < 0) {
                     throw new CustomException("CUMULATIVE_VALUE_GREATER_THAN_ESTIMATE_DETAIL_UNITS", "No of Unit of estimate " +
-                            "should be greater than or equal to measurement book cumulative value. Retry after changing this value for this sor : " + sorId);
+                            "should be greater than or equal to measurement book cumulative value. Retry after changing  value for this sor : " + sorId);
                 }
 
             }
@@ -944,6 +947,9 @@ public class ContractServiceValidator {
 
 
         log.info("Validated measurements");
+    }else{
+            log.info("No Measurement Book Present ");
+        }
 
     }
 
