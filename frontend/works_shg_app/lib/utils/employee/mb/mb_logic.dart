@@ -150,15 +150,21 @@ class MBLogic {
     final data = allMeasurements.mapIndexed((index, e) {
       FilteredMeasurements datak = FilteredMeasurements(
           documents: e.documents?.map((e) => e).toList(),
-          id: e.id,
-          totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
-          totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
-          totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
+          id: index == 0 && type == MBScreen.update? e.id:null,
+          totalSorAmount: index == 0 && type == MBScreen.update
+              ? e.additionalDetail?.sorAmount ?? 0.0
+              : 0.0,
+          totalNorSorAmount: index == 0 && type == MBScreen.update
+              ? e.additionalDetail?.nonSorAmount ?? 0.0
+              : 0.0,
+          totalAmount: index == 0 && type == MBScreen.update
+              ? e.additionalDetail?.totalAmount ?? 0.0
+              : 0.0,
           endDate: e.additionalDetail?.endDate ??
               (mbDetailResponse.period?.endDate ?? 00),
           startDate: e.additionalDetail?.startDate ??
               (mbDetailResponse.period?.startDate ?? 00),
-          entryDate: e.entryDate,
+          entryDate:index == 0 && type == MBScreen.update? e.entryDate:DateTime.now().millisecondsSinceEpoch,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
           // to be chnaged
@@ -167,13 +173,16 @@ class MBLogic {
           musterRollNumber: mbDetailResponse.musterRolls is List
               ? mbDetailResponse.musterRolls?.first["musterRollNumber"] ?? ""
               : "",
-          mbNumber: e.measurementNumber,
+          mbNumber: 
+          index == 0 && type == MBScreen.create?null:e.measurementNumber,
           wfStatus: e.wfStatus,
           tenantId: e.tenantId,
           measures: e.measures?.map((e) {
             FilteredMeasurementsMeasure filteredMeasurementsMeasure =
                 FilteredMeasurementsMeasure(
-              mbAmount: e.measureAdditionalDetails?.mbAmount,
+              mbAmount: index == 0 && type == MBScreen.update
+                  ? e.measureAdditionalDetails?.mbAmount
+                  : 0.0,
               type: e.measureAdditionalDetails?.type,
               length: e.length,
               breath: e.breadth,
@@ -193,7 +202,21 @@ class MBLogic {
                   ? (e.measureAdditionalDetails!.measureLineItems != null &&
                           e.measureAdditionalDetails!.measureLineItems!
                               .isNotEmpty)
-                      ? e.measureAdditionalDetails!.measureLineItems!
+                      ? e.measureAdditionalDetails!.measureLineItems!.map((e) {
+                          if (index == 0 && type == MBScreen.create) {
+                            MeasureLineItem measureLineItem = MeasureLineItem(
+                              width:  0.0,
+                              height:  0.0,
+                              length:  0.0,
+                              number:  0.0,
+                              quantity: 0.0,
+                              measurelineitemNo: e.measurelineitemNo,
+                            );
+                            return measureLineItem;
+                          } else {
+                            return e;
+                          }
+                        }).toList()
                       // testing null pre[null]
                       : [
                           const MeasureLineItem(
