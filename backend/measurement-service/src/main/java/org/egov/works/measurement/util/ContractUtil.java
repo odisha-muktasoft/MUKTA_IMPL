@@ -390,7 +390,7 @@ public class ContractUtil {
         if (isUpdate)
             cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
 
-        return estimateDetail.getIsDeduction()?cumulativeValue:cumulativeValue.multiply(BigDecimal.valueOf(-1));
+        return estimateDetail.getIsDeduction()?cumulativeValue.multiply(BigDecimal.valueOf(-1)):cumulativeValue;
     }
 
 }
