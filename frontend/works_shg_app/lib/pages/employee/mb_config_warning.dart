@@ -78,16 +78,44 @@ List<WorkFlowSupportDocument> supportDocument=[];
                   FetchMBWorkFlowEvent(
                       tenantId: GlobalVariables.tenantId!, mbNumber: widget.mbNumber!),
                 );
-            context.read<MeasurementDetailBloc>().add(
+                if (widget.type==MBScreen.update) {
+                   context.read<MeasurementDetailBloc>().add(
                   MeasurementDetailBookBlocEvent(
                     contractNumber: widget.contractNumber!,
                     measurementNumber: widget.mbNumber!,
                     tenantId: '', screenType: widget.type,
                   ),
                 );
+                Navigator.of(context).pop();
+                } else {
+                  context.read<MeasurementDetailBloc>().add(
+                  MeasurementDetailBookBlocEvent(
+                    contractNumber: widget.contractNumber!,
+                    measurementNumber: value.measurement?.measurementNumber??'',
+                    tenantId: '', screenType: MBScreen.update,
+                  ),
+                );
+                 Navigator.of(context).pop();
+             Navigator.of(context).pop();
+              context.router.push(MBDetailRoute(
+                                      contractNumber: widget.contractNumber!,
+                                      mbNumber: value.measurement?.measurementNumber??'',
+                                      tenantId: GlobalVariables.tenantId,
+                                      type: MBScreen.update,
+                                    ));
+                }
+            // context.read<MeasurementDetailBloc>().add(
+            //       MeasurementDetailBookBlocEvent(
+            //         contractNumber: widget.contractNumber!,
+            //         measurementNumber: widget.mbNumber!,
+            //         tenantId: '', screenType: widget.type,
+            //       ),
+            //     );
             //context.router.push(const HomeRoute());
             // context.router.push( MBDetailRoute(contractNumber: widget.contractNumber!, mbNumber: widget.mbNumber!));
-            Navigator.of(context).pop();
+           
+           // Navigator.of(context).pop();
+             
           },
           loading: (value) {
             Navigator.of(

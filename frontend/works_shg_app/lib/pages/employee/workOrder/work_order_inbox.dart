@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
+import 'package:works_shg_app/blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
+import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 
 import '../../../blocs/employee/work_order/workorder_book.dart';
@@ -46,6 +49,9 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
             tenantId: GlobalVariables.tenantId!,
           ),
         );
+    context.read<ORGSearchBloc>().add(
+          SearchMbORGEvent(tenantId: GlobalVariables.tenantId!),
+        );
     super.initState();
     _scrollController.addListener(_scrollListener);
   }
@@ -66,15 +72,45 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
   void _addRandomData() {
     int s = pageCount + 10;
-    context.read<WorkOrderInboxBloc>().add(
-          WorkOrderInboxBlocCreateEvent(
-            businessService: "MB",
-            limit: 10,
-            moduleName: 'measurement-module',
-            offset: s,
-            tenantId: GlobalVariables.tenantId!,
-          ),
-        );
+
+    final state = context.read<WorkOrderInboxBloc>().state;
+
+    state.maybeMap(
+      orElse: () => {},
+      loaded: (value) {
+        if (value.search) {
+          context.read<WorkOrderInboxBloc>().add(
+                WorkOrderInboxSearchRepeatBlocEvent(
+                  businessService: "Contract",
+                  limit: 10,
+                  moduleName: 'contract-module',
+                  offset: s,
+                  tenantId: GlobalVariables.tenantId!,
+                ),
+              );
+        } else {
+          context.read<WorkOrderInboxBloc>().add(
+                WorkOrderInboxBlocCreateEvent(
+                  businessService: "MB",
+                  limit: 10,
+                  moduleName: 'measurement-module',
+                  offset: s,
+                  tenantId: GlobalVariables.tenantId!,
+                ),
+              );
+        }
+      },
+    );
+
+    // context.read<WorkOrderInboxBloc>().add(
+    //       WorkOrderInboxBlocCreateEvent(
+    //         businessService: "MB",
+    //         limit: 10,
+    //         moduleName: 'measurement-module',
+    //         offset: s,
+    //         tenantId: GlobalVariables.tenantId!,
+    //       ),
+    //     );
 
     setState(() {
       pageCount = s;
@@ -191,13 +227,43 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                           // color: const DigitColors()
                                           //     .burningOrange,
                                           onPressed: () {
+                                            // context.router
+                                            //     .push(const MBFilterRoute());
                                             context.router
-                                                .push(const MBFilterRoute());
+                                                .push(const WOFilterRoute());
                                             //  final result=   await filterDialog(context);
                                           },
                                           icon: const Icon(
                                             Icons.filter_alt,
                                           )),
+                                      // reset
+                                      value.search
+                                          ? IconButton(
+                                              onPressed: () {
+                                                pageCount = 0;
+                                                context
+                                                    .read<WorkOrderInboxBloc>()
+                                                    .add(
+                                                      WorkOrderInboxBlocCreateEvent(
+                                                        businessService: "MB",
+                                                        limit: 10,
+                                                        moduleName:
+                                                            'contract-service',
+                                                        offset: pageCount,
+                                                        tenantId:
+                                                            GlobalVariables
+                                                                .tenantId!,
+                                                      ),
+                                                    );
+                                              },
+                                              icon: Icon(
+                                                Icons.restore_outlined,
+                                                color: const DigitColors()
+                                                    .burningOrange,
+                                              ),
+                                            )
+                                          : const SizedBox.shrink(),
+
                                       Row(
                                         children: [
                                           IconButton(
@@ -237,176 +303,221 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                           height: 150,
                         ),
                       ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            if (index ==
-                                    (value.isLoading
-                                        ? value.contracts!.length
-                                        : value.contracts!.length - 1) &&
-                                value.isLoading) {
-                              return Container(
-                                padding: const EdgeInsets.all(16.0),
-                                alignment: Alignment.center,
-                                child: const CircularProgressIndicator(),
-                              );
-                            }
-
-                            return WorkOrderCard(
-                              widget1: CommonTextButtonUnderline(
-                                label: 'View Details',
-                                onPressed: () {
-                                  // context.router
-                                  //     .push(const WorkOrderDetailRoute());
-                                  context.router.push(ViewWorkDetailsRoute(
-                                    contractNumber: value.contracts![index]
-                                            ?.contractNumber ??
-                                        "",
-                                    wfStatus: "ACCEPTED",
-                                  ));
+                      value.contracts!.isEmpty
+                          ? SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  return const Center(
+                                    child: EmptyImage(
+                                      align: Alignment.center,
+                                      label: "Work order not Found",
+                                      
+                                    ),
+                                  );
                                 },
+                                childCount: 1,
                               ),
-                              widget2: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: DigitElevatedButton(
-                                  child: Text(t
-                                      .translate(i18.measurementBook.createMb)),
-                                  onPressed: () {
-                                    // DigitActionDialog.show(context,
-                                    //     widget: Center(
-                                    //       child: Column(
-                                    //         mainAxisSize: MainAxisSize.min,
-                                    //         children: [
-                                    //           Padding(
-                                    //             padding: const EdgeInsets.only(
-                                    //                 bottom: 8.0),
-                                    //             child: DigitOutlineIconButton(
-                                    //               buttonStyle: OutlinedButton.styleFrom(
-                                    //                   minimumSize: Size(
-                                    //                       MediaQuery.of(context)
-                                    //                               .size
-                                    //                               .width /
-                                    //                           2.8,
-                                    //                       50),
-                                    //                   shape:
-                                    //                       const RoundedRectangleBorder(),
-                                    //                   side: BorderSide(
-                                    //                       color:
-                                    //                           const DigitColors()
-                                    //                               .burningOrange,
-                                    //                       width: 1)),
-                                    //               onPressed: () {
-                                    //                 Navigator.of(context,
-                                    //                         rootNavigator: true)
-                                    //                     .pop();
-                                    //               },
-                                    //               label: AppLocalizations.of(
-                                    //                       context)
-                                    //                   .translate(i18.home
-                                    //                       .manageWageSeekers),
-                                    //               icon: Icons.fingerprint,
-                                    //               textStyle: const TextStyle(
-                                    //                   fontWeight:
-                                    //                       FontWeight.w700,
-                                    //                   fontSize: 18),
-                                    //             ),
-                                    //           ),
-                                    //           DigitOutlineIconButton(
-                                    //             label: AppLocalizations.of(
-                                    //                     context)
-                                    //                 .translate(i18.workOrder
-                                    //                     .requestTimeExtension),
-                                    //             icon: Icons
-                                    //                 .calendar_today_rounded,
-                                    //             buttonStyle: OutlinedButton.styleFrom(
-                                    //                 minimumSize: Size(
-                                    //                     MediaQuery.of(context)
-                                    //                             .size
-                                    //                             .width /
-                                    //                         2.8,
-                                    //                     50),
-                                    //                 shape:
-                                    //                     const RoundedRectangleBorder(),
-                                    //                 side: BorderSide(
-                                    //                     color:
-                                    //                         const DigitColors()
-                                    //                             .burningOrange,
-                                    //                     width: 1)),
-                                    //             onPressed: () {
-                                    //               Navigator.of(context,
-                                    //                       rootNavigator: true)
-                                    //                   .pop();
-                                    //             },
-                                    //             textStyle: const TextStyle(
-                                    //                 fontWeight: FontWeight.w700,
-                                    //                 fontSize: 18),
-                                    //           )
-                                    //         ],
-                                    //       ),
-                                    //     ));
+                            )
+                          : SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  // if (index ==
+                                  //         (mbInboxResponse.isLoading
+                                  //             ? mbInboxResponse
+                                  //                 .mbInboxResponse!.items!.length
+                                  //             : mbInboxResponse.mbInboxResponse!
+                                  //                     .items!.length -
+                                  //                 1) &&
+                                  //     mbInboxResponse.isLoading) {
+                                  //   // Display loading indicator
+                                  //   return Container(
+                                  //     padding: const EdgeInsets.all(16.0),
+                                  //     alignment: Alignment.center,
+                                  //     child: const CircularProgressIndicator(),
+                                  //   );
+                                  // }
 
-                                    final contract = value
-                                            .contracts?[index].contractNumber ??
-                                        "";
+                                  //
+                                  if (index ==
+                                          (value.isLoading
+                                              ? value.contracts!.length
+                                              : value.contracts!.length - 1) &&
+                                      value.isLoading) {
+                                    return Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      alignment: Alignment.center,
+                                      child: const CircularProgressIndicator(),
+                                    );
+                                  }
 
-                                    context.router.push(MBDetailRoute(
-                                      contractNumber: contract,
-                                      mbNumber: "",
-                                      tenantId: GlobalVariables.tenantId,
-                                      type: MBScreen.create,
-                                    ));
-                                  },
-                                ),
+                                  return WorkOrderCard(
+                                    widget1: CommonTextButtonUnderline(
+                                      label: 'View Details',
+                                      onPressed: () {
+                                        // context.router
+                                        //     .push(const WorkOrderDetailRoute());
+                                        context.router
+                                            .push(ViewWorkDetailsRoute(
+                                          contractNumber: value
+                                                  .contracts![index]
+                                                  ?.contractNumber ??
+                                              "",
+                                          wfStatus: "ACCEPTED",
+                                        ));
+                                      },
+                                    ),
+                                    widget2: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: DigitElevatedButton(
+                                        child: Text(t.translate(
+                                            i18.measurementBook.createMb)),
+                                        onPressed: () {
+                                          // DigitActionDialog.show(context,
+                                          //     widget: Center(
+                                          //       child: Column(
+                                          //         mainAxisSize: MainAxisSize.min,
+                                          //         children: [
+                                          //           Padding(
+                                          //             padding: const EdgeInsets.only(
+                                          //                 bottom: 8.0),
+                                          //             child: DigitOutlineIconButton(
+                                          //               buttonStyle: OutlinedButton.styleFrom(
+                                          //                   minimumSize: Size(
+                                          //                       MediaQuery.of(context)
+                                          //                               .size
+                                          //                               .width /
+                                          //                           2.8,
+                                          //                       50),
+                                          //                   shape:
+                                          //                       const RoundedRectangleBorder(),
+                                          //                   side: BorderSide(
+                                          //                       color:
+                                          //                           const DigitColors()
+                                          //                               .burningOrange,
+                                          //                       width: 1)),
+                                          //               onPressed: () {
+                                          //                 Navigator.of(context,
+                                          //                         rootNavigator: true)
+                                          //                     .pop();
+                                          //               },
+                                          //               label: AppLocalizations.of(
+                                          //                       context)
+                                          //                   .translate(i18.home
+                                          //                       .manageWageSeekers),
+                                          //               icon: Icons.fingerprint,
+                                          //               textStyle: const TextStyle(
+                                          //                   fontWeight:
+                                          //                       FontWeight.w700,
+                                          //                   fontSize: 18),
+                                          //             ),
+                                          //           ),
+                                          //           DigitOutlineIconButton(
+                                          //             label: AppLocalizations.of(
+                                          //                     context)
+                                          //                 .translate(i18.workOrder
+                                          //                     .requestTimeExtension),
+                                          //             icon: Icons
+                                          //                 .calendar_today_rounded,
+                                          //             buttonStyle: OutlinedButton.styleFrom(
+                                          //                 minimumSize: Size(
+                                          //                     MediaQuery.of(context)
+                                          //                             .size
+                                          //                             .width /
+                                          //                         2.8,
+                                          //                     50),
+                                          //                 shape:
+                                          //                     const RoundedRectangleBorder(),
+                                          //                 side: BorderSide(
+                                          //                     color:
+                                          //                         const DigitColors()
+                                          //                             .burningOrange,
+                                          //                     width: 1)),
+                                          //             onPressed: () {
+                                          //               Navigator.of(context,
+                                          //                       rootNavigator: true)
+                                          //                   .pop();
+                                          //             },
+                                          //             textStyle: const TextStyle(
+                                          //                 fontWeight: FontWeight.w700,
+                                          //                 fontSize: 18),
+                                          //           )
+                                          //         ],
+                                          //       ),
+                                          //     ));
+
+                                          final contract = value
+                                                  .contracts?[index]
+                                                  .contractNumber ??
+                                              "";
+
+                                          context.router.push(MBDetailRoute(
+                                            contractNumber: contract,
+                                            mbNumber: "",
+                                            tenantId: GlobalVariables.tenantId,
+                                            type: MBScreen.create,
+                                          ));
+                                        },
+                                      ),
+                                    ),
+                                    items: {
+                                      "Work Order Number": value
+                                              .contracts?[index]
+                                              .contractNumber ??
+                                          "",
+                                      "Project Description": value
+                                              .contracts?[index]
+                                              .additionalDetails
+                                              ?.projectDesc ??
+                                          "",
+                                      "CBO Name": value.contracts?[index]
+                                              ?.additionalDetails?.cboName ??
+                                          "",
+                                      "CBO Role": value
+                                              .contracts?[index]
+                                              ?.additionalDetails
+                                              ?.cboOrgNumber ??
+                                          "",
+                                      "Officer In-charge name": value
+                                              .contracts?[index]
+                                              .additionalDetails
+                                              ?.officerInChargeName
+                                              ?.name ??
+                                          "NA",
+                                      "Start Date": value.contracts?[index]
+                                                  .startDate !=
+                                              null
+                                          ? DateFormat('dd/MM/yyyy').format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                      value.contracts?[index]
+                                                              .startDate! ??
+                                                          0))
+                                          : "NA",
+                                      "End Date": value
+                                                  .contracts?[index].endDate !=
+                                              null
+                                          ? DateFormat('dd/MM/yyyy').format(
+                                              DateTime
+                                                  .fromMillisecondsSinceEpoch(
+                                                      value.contracts?[index]
+                                                              .endDate! ??
+                                                          0))
+                                          : "NA",
+                                      "Work value (Rs)":
+                                          NumberFormat('##,##,##,##,###')
+                                              .format(value.contracts?[index]
+                                                      ?.totalContractedAmount ??
+                                                  0),
+                                      "Status": t.translate(
+                                          "WF_WORK_ORDER_STATE_${value.contracts?[index].wfStatus}")
+                                    },
+                                  );
+                                },
+                                childCount: value.isLoading
+                                    ? value!.contracts!.length + 1
+                                    : value!.contracts!.length,
                               ),
-                              items: {
-                                "Work Order Number":
-                                    value.contracts?[index].contractNumber ??
-                                        "",
-                                "Project Description": value.contracts?[index]
-                                        .additionalDetails?.projectDesc ??
-                                    "",
-                                "CBO Name": value.contracts?[index]
-                                        ?.additionalDetails?.cboName ??
-                                    "",
-                                "CBO Role": value.contracts?[index]
-                                        ?.additionalDetails?.cboOrgNumber ??
-                                    "",
-                                "Officer In-charge name": value
-                                        .contracts?[index]
-                                        .additionalDetails
-                                        ?.officerInChargeName
-                                        ?.name ??
-                                    "NA",
-                                "Start Date":
-                                    value.contracts?[index].startDate != null
-                                        ? DateFormat('dd/MM/yyyy').format(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                value.contracts?[index]
-                                                        .startDate! ??
-                                                    0))
-                                        : "NA",
-                                "End Date": value.contracts?[index].endDate !=
-                                        null
-                                    ? DateFormat('dd/MM/yyyy').format(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            value.contracts?[index].endDate! ??
-                                                0))
-                                    : "NA",
-                                "Work value (Rs)":
-                                    NumberFormat('##,##,##,##,###').format(value
-                                            .contracts?[index]
-                                            ?.totalContractedAmount ??
-                                        0),
-                                "Status": t.translate(
-                                    "WF_WORK_ORDER_STATE_${value.contracts?[index].wfStatus}")
-                              },
-                            );
-                          },
-                          childCount: value.isLoading
-                              ? value!.contracts!.length + 1
-                              : value!.contracts!.length,
-                        ),
-                      ),
+                            ),
                     ],
                   );
                 },

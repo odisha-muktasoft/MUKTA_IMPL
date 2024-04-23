@@ -65,7 +65,7 @@ class MeasurementDetailBloc
         data = MBLogic.formContract(mbDetailResponse: res);
         print("object");
       } else {
-        data = MBLogic.getMeasureList(mbDetailResponse: res);
+        data = MBLogic.getMeasureList(mbDetailResponse: res, type: event.screenType,);
       }
 
       // final List<FilteredMeasurements> data =

@@ -18,9 +18,10 @@ typedef ORGSearchEmitter = Emitter<ORGSearchState>;
 class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
   ORGSearchBloc() : super(const ORGSearchState.initial()) {
     on<SearchORGEvent>(_onSearch);
+    on<SearchMbORGEvent>(mbOrgSearch);
   }
 
-  FutureOr<void> _onSearch(ORGSearchEvent event, ORGSearchEmitter emit) async {
+  FutureOr<void> _onSearch(SearchORGEvent event, ORGSearchEmitter emit) async {
     Client client = Client();
     try {
       emit(const ORGSearchState.loading());
@@ -37,11 +38,31 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
       emit(ORGSearchState.error(e.response?.data['Errors'][0]['code']));
     }
   }
+
+
+  FutureOr<void> mbOrgSearch(SearchMbORGEvent event, ORGSearchEmitter emit) async {
+    Client client = Client();
+    try {
+      emit(const ORGSearchState.loading());
+      OrganisationListModel organisationListModel =
+          await ORGRepository(client.init())
+              .searchORG(url: Urls.orgServices.orgSearch, body: {
+        "SearchCriteria": {"tenantId": event.tenantId},
+        "Pagination": {"offSet": 0, "limit": 1000}
+      });
+      GlobalVariables.organisationListModel = organisationListModel;
+      await Future.delayed(const Duration(seconds: 1));
+      emit(ORGSearchState.loaded(organisationListModel));
+    } on DioError catch (e) {
+      emit(ORGSearchState.error(e.response?.data['Errors'][0]['code']));
+    }
+  }
 }
 
 @freezed
 class ORGSearchEvent with _$ORGSearchEvent {
   const factory ORGSearchEvent.search(String mobileNumber) = SearchORGEvent;
+   const factory ORGSearchEvent.mbOrgsearch({ required String tenantId}) = SearchMbORGEvent;
 }
 
 @freezed

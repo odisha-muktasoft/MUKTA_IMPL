@@ -275,6 +275,12 @@ class _$AppRouter extends RootStackRouter {
         child: const WorkOrderDetailPage(),
       );
     },
+    WOFilterRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WOFilterPage(),
+      );
+    },
   };
 
   @override
@@ -421,6 +427,11 @@ class _$AppRouter extends RootStackRouter {
             RouteConfig(
               WorkOrderDetailRoute.name,
               path: 'workOrder-details',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              WOFilterRoute.name,
+              path: 'wo-filter',
               parent: AuthenticatedRouteWrapper.name,
             ),
           ],
@@ -1134,4 +1145,16 @@ class WorkOrderDetailRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'WorkOrderDetailRoute';
+}
+
+/// generated route for
+/// [WOFilterPage]
+class WOFilterRoute extends PageRouteInfo<void> {
+  const WOFilterRoute()
+      : super(
+          WOFilterRoute.name,
+          path: 'wo-filter',
+        );
+
+  static const String name = 'WOFilterRoute';
 }

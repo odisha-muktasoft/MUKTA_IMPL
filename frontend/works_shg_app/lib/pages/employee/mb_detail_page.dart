@@ -10,6 +10,7 @@ import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
+import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
@@ -547,7 +548,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                               value.sor!.isEmpty
                                   ? const Card(
                                       child:
-                                          Center(child: Text("No Data Found")),
+                                          Center(
+                                    child: EmptyImage(
+                                      align: Alignment.center,
+                                      label: "No Data Found",
+                                      
+                                    
+                                  )
+                                          ),
                                     )
                                   : ListView.builder(
                                       physics:
@@ -576,7 +584,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                               value.nonSor!.isEmpty
                                   ? const Card(
                                       child:
-                                          Center(child: Text("No Data Found")),
+                                         Center(
+                                    child: EmptyImage(
+                                      align: Alignment.center,
+                                      label: "No Data Found",
+                                      
+                                    ),
+                                  ),
                                     )
                                   : ListView.builder(
                                       physics:
@@ -665,8 +679,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             )
                                           : const Card(
                                               child: Center(
-                                                child: Text("No Data Found"),
-                                              ),
+                                    child: EmptyImage(
+                                      align: Alignment.center,
+                                      label: "No Document Found",
+                                      
+                                    ),
+                                  )
                                             )
                                       : !value.viewStatus
                                           ? Card(

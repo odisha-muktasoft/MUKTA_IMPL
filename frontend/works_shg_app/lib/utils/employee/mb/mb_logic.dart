@@ -129,8 +129,10 @@ class MBLogic {
   }
 
 // end
-  static List<FilteredMeasurements> getMeasureList(
-      {required MBDetailResponse mbDetailResponse}) {
+  static List<FilteredMeasurements> getMeasureList({
+    required MBDetailResponse mbDetailResponse,
+    required MBScreen type,
+  }) {
     final List<Measurement> allMeasurements =
         mbDetailResponse.allMeasurements is List
             ? mbDetailResponse.allMeasurements.map<Measurement>((dynamic item) {
@@ -144,18 +146,24 @@ class MBLogic {
               }).toList()
             : [];
 
-    final data = allMeasurements.map((e) {
+    final data = allMeasurements.mapIndexed((index, e) {
       FilteredMeasurements datak = FilteredMeasurements(
           documents: e.documents?.map((e) => e).toList(),
-          id: e.id,
-          totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
-          totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
-          totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
+          id: index == 0 && type == MBScreen.update? e.id:null,
+          totalSorAmount: index == 0 && type == MBScreen.update
+              ? e.additionalDetail?.sorAmount ?? 0.0
+              : 0.0,
+          totalNorSorAmount: index == 0 && type == MBScreen.update
+              ? e.additionalDetail?.nonSorAmount ?? 0.0
+              : 0.0,
+          totalAmount: index == 0 && type == MBScreen.update
+              ? e.additionalDetail?.totalAmount ?? 0.0
+              : 0.0,
           endDate: e.additionalDetail?.endDate ??
               (mbDetailResponse.period?.endDate ?? 00),
           startDate: e.additionalDetail?.startDate ??
               (mbDetailResponse.period?.startDate ?? 00),
-          entryDate: e.entryDate,
+          entryDate:index == 0 && type == MBScreen.update? e.entryDate:DateTime.now().millisecondsSinceEpoch,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
           // to be chnaged
@@ -164,21 +172,28 @@ class MBLogic {
           musterRollNumber: mbDetailResponse.musterRolls is List
               ? mbDetailResponse.musterRolls?.first["musterRollNumber"] ?? ""
               : "",
-          mbNumber: e.measurementNumber,
+          mbNumber: 
+          index == 0 && type == MBScreen.create?null:e.measurementNumber,
           wfStatus: e.wfStatus,
           tenantId: e.tenantId,
           measures: e.measures?.map((e) {
             FilteredMeasurementsMeasure filteredMeasurementsMeasure =
                 FilteredMeasurementsMeasure(
-              mbAmount: e.measureAdditionalDetails?.mbAmount,
+              mbAmount: index == 0 && type == MBScreen.update
+                  ? e.measureAdditionalDetails?.mbAmount
+                  : 0.0,
               type: e.measureAdditionalDetails?.type,
-              length: e.length,
-              breath: e.breadth,
-              height: e.height,
-              numItems: e.numItems,
-              currentValue: e.currentValue,
-              cumulativeValue: e.cumulativeValue,
-              tenantId: null,
+              length: index == 0 && type == MBScreen.update ? e.length : 0.0,
+              breath: index == 0 && type == MBScreen.update ? e.breadth : 0.0,
+              height: index == 0 && type == MBScreen.update ? e.height : 0.0,
+              numItems:
+                  index == 0 && type == MBScreen.create ? 0.0:e.numItems ,
+              currentValue:
+                  index == 0 && type == MBScreen.create ? 0.0:e.currentValue ,
+              cumulativeValue: index == 0 && type == MBScreen.update
+                  ? e.cumulativeValue
+                  : e.cumulativeValue,
+              tenantId:e.targetId,
               targetId: e.targetId,
               isActive: e.isActive,
               id: e.id,
@@ -190,15 +205,39 @@ class MBLogic {
                   ? (e.measureAdditionalDetails!.measureLineItems != null &&
                           e.measureAdditionalDetails!.measureLineItems!
                               .isNotEmpty)
-                      ? e.measureAdditionalDetails!.measureLineItems!
+                      ? e.measureAdditionalDetails!.measureLineItems!.map((e) {
+                          if (index == 0 && type == MBScreen.create) {
+                            MeasureLineItem measureLineItem = MeasureLineItem(
+                              width:  0.0,
+                              height:  0.0,
+                              length:  0.0,
+                              number:  0.0,
+                              quantity: 0.0,
+                              measurelineitemNo: e.measurelineitemNo,
+                            );
+                            return measureLineItem;
+                          } else {
+                            return e;
+                          }
+                        }).toList()
                       // testing null pre[null]
                       : [
                           MeasureLineItem(
-                            width: e.breadth,
-                            height: e.height,
-                            length: e.length,
-                            number: e.numItems,
-                            quantity: e.currentValue,
+                            width: index == 0 && type == MBScreen.update
+                                ? e.breadth
+                                : 0.0,
+                            height: index == 0 && type == MBScreen.update
+                                ? e.height
+                                : 0.0,
+                            length: index == 0 && type == MBScreen.update
+                                ? e.length
+                                : 0.0,
+                            number: index == 0 && type == MBScreen.update
+                                ? e.numItems
+                                : 0.0,
+                            quantity: index == 0 && type == MBScreen.update
+                                ? e.currentValue
+                                : 0.0,
                             measurelineitemNo: 0,
                           ),
                         ]
@@ -257,7 +296,8 @@ class MBLogic {
           length: e.length != null ? e.length!.toInt() : 0,
           width: e.width != null ? e.width!.toInt() : 0,
           height: e.height != null ? e.height!.toInt() : 0,
-          quantity: e.quantity != null ? e.quantity!.toInt() : e.noOfunit!.toInt(),
+          quantity:
+              e.quantity != null ? e.quantity!.toInt() : e.noOfunit!.toInt(),
           isDeduction: e.isDeduction,
         );
 

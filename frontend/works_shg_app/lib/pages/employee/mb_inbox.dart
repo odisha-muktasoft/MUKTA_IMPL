@@ -9,6 +9,7 @@ import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
+import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/widgets/mb/radio_button_sheet.dart';
 
@@ -161,7 +162,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               color: const DigitColors().burningOrange),
                         ),
                       ),
-                      label:  Text(t.translate(i18.measurementBook.backToTop)),
+                      label: Text(t.translate(i18.measurementBook.backToTop)),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -313,8 +314,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       ),
                                       TextButton.icon(
                                           label: Text(
-                                             t.translate(i18.measurementBook.sort),
-                                            
+                                            t.translate(
+                                                i18.measurementBook.sort),
                                             style: DigitTheme
                                                 .instance
                                                 .mobileTheme
@@ -329,8 +330,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           // color: const DigitColors()
                                           //     .burningOrange,
                                           onPressed: () {
-                                            Conversion.openSortingModal(context,listData: Conversion
-                                                        .sortMB, sortType: SortType.mbSort);
+                                            Conversion.openSortingModal(context,
+                                                listData: Conversion.sortMB,
+                                                sortType: SortType.mbSort);
                                           },
                                           icon:
                                               SvgPicture.asset(Constants.sort)),
@@ -367,134 +369,155 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                           height: 150,
                         ),
                       ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            // Display items
-                            if (index ==
-                                    (mbInboxResponse.isLoading
-                                        ? mbInboxResponse
-                                            .mbInboxResponse!.items!.length
-                                        : mbInboxResponse.mbInboxResponse!
-                                                .items!.length -
-                                            1) &&
-                                mbInboxResponse.isLoading) {
-                              // Display loading indicator
-                              return Container(
-                                padding: const EdgeInsets.all(16.0),
-                                alignment: Alignment.center,
-                                child: const CircularProgressIndicator(),
-                              );
-                            }
+                      mbInboxResponse!.mbInboxResponse.items!.isEmpty
+                          ? SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  // Display items
 
-                            return CommonMBCard(
-                              widget: Center(
-                                child: SizedBox(
-                                  width: MediaQuery.sizeOf(context).width,
-                                  child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
-                                        width: 1.0,
-                                        color:
-                                            const DigitColors().burningOrange,
-                                        style: BorderStyle.solid,
+                                  return const Center(
+                                    child:   EmptyImage(
+                                      align: Alignment.center,
+                                      label: "Measurement Number not Found",
+                                    ),
+                                  );
+                                },
+                                childCount: 1,
+                              ),
+                            )
+                          : SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                  // Display items
+                                  if (index ==
+                                          (mbInboxResponse.isLoading
+                                              ? mbInboxResponse.mbInboxResponse!
+                                                  .items!.length
+                                              : mbInboxResponse.mbInboxResponse!
+                                                      .items!.length -
+                                                  1) &&
+                                      mbInboxResponse.isLoading) {
+                                    // Display loading indicator
+                                    return Container(
+                                      padding: const EdgeInsets.all(16.0),
+                                      alignment: Alignment.center,
+                                      child: const CircularProgressIndicator(),
+                                    );
+                                  }
+
+                                  return CommonMBCard(
+                                    widget: Center(
+                                      child: SizedBox(
+                                        width: MediaQuery.sizeOf(context).width,
+                                        child: OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            side: BorderSide(
+                                              width: 1.0,
+                                              color: const DigitColors()
+                                                  .burningOrange,
+                                              style: BorderStyle.solid,
+                                            ),
+                                          ),
+                                          child: Text(t.translate(
+                                              i18.measurementBook.openMbBook)),
+                                          onPressed: () {
+                                            final contract = mbInboxResponse
+                                                    .mbInboxResponse
+                                                    .items?[index]
+                                                    .businessObject
+                                                    ?.contract
+                                                    ?.contractNumber ??
+                                                "";
+                                            final mbNumber = mbInboxResponse
+                                                    .mbInboxResponse
+                                                    .items?[index]
+                                                    .businessObject
+                                                    ?.measurementNumber ??
+                                                "";
+                                            context.router.push(MBDetailRoute(
+                                              contractNumber: contract,
+                                              mbNumber: mbNumber,
+                                              tenantId:
+                                                  GlobalVariables.tenantId,
+                                              type: MBScreen.update,
+                                            ));
+                                          },
+                                        ),
                                       ),
                                     ),
-                                    child: Text(t.translate(
-                                        i18.measurementBook.openMbBook)),
-                                    onPressed: () {
-                                      final contract = mbInboxResponse
+                                    items: {
+                                      t.translate(i18.measurementBook.mbNumber):
+                                          mbInboxResponse
+                                                  .mbInboxResponse
+                                                  .items?[index]
+                                                  .businessObject
+                                                  ?.measurementNumber ??
+                                              "",
+                                      t.translate(i18.measurementBook
+                                          .projectDescription): mbInboxResponse
                                               .mbInboxResponse
                                               .items?[index]
                                               .businessObject
                                               ?.contract
-                                              ?.contractNumber ??
-                                          "";
-                                      final mbNumber = mbInboxResponse
-                                              .mbInboxResponse
-                                              .items?[index]
-                                              .businessObject
-                                              ?.measurementNumber ??
-                                          "";
-                                      context.router.push(MBDetailRoute(
-                                        contractNumber: contract,
-                                        mbNumber: mbNumber,
-                                        tenantId: GlobalVariables.tenantId,
-                                        type: MBScreen.update,
-                                      ));
+                                              ?.additionalDetails
+                                              ?.projectDesc ??
+                                          "",
+                                      t.translate(i18.common.assignee):
+                                          mbInboxResponse
+                                                  .mbInboxResponse
+                                                  .items?[index]
+                                                  .processInstance
+                                                  ?.assignes
+                                                  ?.first
+                                                  .name ??
+                                              "NA",
+                                      t.translate(i18.measurementBook
+                                          .workflowState): mbInboxResponse
+                                                  .mbInboxResponse
+                                                  .items?[index]
+                                                  .processInstance
+                                                  ?.state
+                                                  ?.state !=
+                                              null
+                                          ? t.translate(
+                                              "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
+                                          : "",
+                                      t.translate(i18.measurementBook.mbAmount):
+                                          mbInboxResponse
+                                                  .mbInboxResponse
+                                                  .items?[index]
+                                                  .businessObject
+                                                  ?.measures
+                                                  ?.first
+                                                  .measureAdditionalDetails
+                                                  ?.mbAmount
+                                                  ?.roundToDouble()
+                                                  .toString() ??
+                                              "0.0"
+                                      // "SLA Days remaining": mbInboxResponse
+                                      //         .mbInboxResponse
+                                      //         .items?[index]
+                                      //         .businessObject
+                                      //         ?.serviceSla ??
+                                      //     "0"
                                     },
-                                  ),
-                                ),
+                                    show: true,
+                                    sla: mbInboxResponse
+                                            .mbInboxResponse
+                                            .items?[index]
+                                            .businessObject
+                                            ?.serviceSla ??
+                                        0,
+                                  );
+                                },
+                                childCount: mbInboxResponse.isLoading
+                                    ? mbInboxResponse!
+                                            .mbInboxResponse.items!.length +
+                                        1
+                                    : mbInboxResponse!
+                                        .mbInboxResponse.items!.length,
                               ),
-                              items: {
-                                t.translate(i18.measurementBook.mbNumber):
-                                    mbInboxResponse
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .businessObject
-                                            ?.measurementNumber ??
-                                        "",
-                                t.translate(
-                                        i18.measurementBook.projectDescription):
-                                    mbInboxResponse
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .businessObject
-                                            ?.contract
-                                            ?.additionalDetails
-                                            ?.projectDesc ??
-                                        "",
-                                t.translate(i18.common.assignee):
-                                    mbInboxResponse
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .processInstance
-                                            ?.assignes
-                                            ?.first
-                                            .name ??
-                                        "NA",
-                                t.translate(i18.measurementBook
-                                    .workflowState): mbInboxResponse
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .processInstance
-                                            ?.state
-                                            ?.state !=
-                                        null
-                                    ? t.translate(
-                                        "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
-                                    : "",
-                                t.translate(i18.measurementBook.mbAmount):
-                                    mbInboxResponse
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .businessObject
-                                            ?.measures
-                                            ?.first
-                                            .measureAdditionalDetails
-                                            ?.mbAmount
-                                            ?.roundToDouble()
-                                            .toString() ??
-                                        "0.0"
-                                // "SLA Days remaining": mbInboxResponse
-                                //         .mbInboxResponse
-                                //         .items?[index]
-                                //         .businessObject
-                                //         ?.serviceSla ??
-                                //     "0"
-                              },
-                              show: true,
-                              sla: mbInboxResponse.mbInboxResponse.items?[index]
-                                      .businessObject?.serviceSla ??
-                                  0,
-                            );
-                          },
-                          childCount: mbInboxResponse.isLoading
-                              ? mbInboxResponse!.mbInboxResponse.items!.length +
-                                  1
-                              : mbInboxResponse!.mbInboxResponse.items!.length,
-                        ),
-                      ),
+                            ),
                     ],
                   );
                 },
@@ -510,8 +533,6 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
       },
     );
   }
-
- 
 
   Future<dynamic> filterDialog(BuildContext context) {
     return showDialog(

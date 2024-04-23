@@ -22,6 +22,18 @@ mixin _$WorkOrderInboxBlocEvent {
             String moduleName, int limit, int offset)
         create,
     required TResult Function(int sortCode) sort,
+    required TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -31,6 +43,18 @@ mixin _$WorkOrderInboxBlocEvent {
             String moduleName, int limit, int offset)?
         create,
     TResult? Function(int sortCode)? sort,
+    TResult? Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -40,6 +64,18 @@ mixin _$WorkOrderInboxBlocEvent {
             int limit, int offset)?
         create,
     TResult Function(int sortCode)? sort,
+    TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
@@ -48,6 +84,9 @@ mixin _$WorkOrderInboxBlocEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
     required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxSearchBlocEvent value) search,
+    required TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +94,8 @@ mixin _$WorkOrderInboxBlocEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult? Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +103,8 @@ mixin _$WorkOrderInboxBlocEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) =>
@@ -205,6 +248,18 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
             String moduleName, int limit, int offset)
         create,
     required TResult Function(int sortCode) sort,
+    required TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
     return create(tenantId, businessService, moduleName, limit, offset);
@@ -217,6 +272,18 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
             String moduleName, int limit, int offset)?
         create,
     TResult? Function(int sortCode)? sort,
+    TResult? Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
     return create?.call(tenantId, businessService, moduleName, limit, offset);
@@ -229,6 +296,18 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
             int limit, int offset)?
         create,
     TResult Function(int sortCode)? sort,
+    TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -243,6 +322,9 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
     required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxSearchBlocEvent value) search,
+    required TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) {
     return create(this);
@@ -253,6 +335,8 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult? Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) {
     return create?.call(this);
@@ -263,6 +347,8 @@ class _$WorkOrderInboxBlocCreateEvent implements WorkOrderInboxBlocCreateEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -365,6 +451,18 @@ class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
             String moduleName, int limit, int offset)
         create,
     required TResult Function(int sortCode) sort,
+    required TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
     return sort(sortCode);
@@ -377,6 +475,18 @@ class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
             String moduleName, int limit, int offset)?
         create,
     TResult? Function(int sortCode)? sort,
+    TResult? Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
     return sort?.call(sortCode);
@@ -389,6 +499,18 @@ class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
             int limit, int offset)?
         create,
     TResult Function(int sortCode)? sort,
+    TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -403,6 +525,9 @@ class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
     required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxSearchBlocEvent value) search,
+    required TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) {
     return sort(this);
@@ -413,6 +538,8 @@ class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult? Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) {
     return sort?.call(this);
@@ -423,6 +550,8 @@ class _$WorkOrderInboxSortBlocEvent implements WorkOrderInboxSortBlocEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -440,6 +569,556 @@ abstract class WorkOrderInboxSortBlocEvent implements WorkOrderInboxBlocEvent {
   int get sortCode;
   @JsonKey(ignore: true)
   _$$WorkOrderInboxSortBlocEventCopyWith<_$WorkOrderInboxSortBlocEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WorkOrderInboxSearchBlocEventCopyWith<$Res> {
+  factory _$$WorkOrderInboxSearchBlocEventCopyWith(
+          _$WorkOrderInboxSearchBlocEvent value,
+          $Res Function(_$WorkOrderInboxSearchBlocEvent) then) =
+      __$$WorkOrderInboxSearchBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {List<String>? ward,
+      String? projectId,
+      String? contractNumber,
+      String? projectName,
+      int limit,
+      int offset,
+      Map<String, dynamic> data});
+}
+
+/// @nodoc
+class __$$WorkOrderInboxSearchBlocEventCopyWithImpl<$Res>
+    extends _$WorkOrderInboxBlocEventCopyWithImpl<$Res,
+        _$WorkOrderInboxSearchBlocEvent>
+    implements _$$WorkOrderInboxSearchBlocEventCopyWith<$Res> {
+  __$$WorkOrderInboxSearchBlocEventCopyWithImpl(
+      _$WorkOrderInboxSearchBlocEvent _value,
+      $Res Function(_$WorkOrderInboxSearchBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? ward = freezed,
+    Object? projectId = freezed,
+    Object? contractNumber = freezed,
+    Object? projectName = freezed,
+    Object? limit = null,
+    Object? offset = null,
+    Object? data = null,
+  }) {
+    return _then(_$WorkOrderInboxSearchBlocEvent(
+      ward: freezed == ward
+          ? _value._ward
+          : ward // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      projectId: freezed == projectId
+          ? _value.projectId
+          : projectId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      contractNumber: freezed == contractNumber
+          ? _value.contractNumber
+          : contractNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      projectName: freezed == projectName
+          ? _value.projectName
+          : projectName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      offset: null == offset
+          ? _value.offset
+          : offset // ignore: cast_nullable_to_non_nullable
+              as int,
+      data: null == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WorkOrderInboxSearchBlocEvent implements WorkOrderInboxSearchBlocEvent {
+  const _$WorkOrderInboxSearchBlocEvent(
+      {final List<String>? ward,
+      this.projectId,
+      this.contractNumber,
+      this.projectName,
+      required this.limit,
+      required this.offset,
+      required final Map<String, dynamic> data})
+      : _ward = ward,
+        _data = data;
+
+  final List<String>? _ward;
+  @override
+  List<String>? get ward {
+    final value = _ward;
+    if (value == null) return null;
+    if (_ward is EqualUnmodifiableListView) return _ward;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String? projectId;
+  @override
+  final String? contractNumber;
+  @override
+  final String? projectName;
+  @override
+  final int limit;
+  @override
+  final int offset;
+  final Map<String, dynamic> _data;
+  @override
+  Map<String, dynamic> get data {
+    if (_data is EqualUnmodifiableMapView) return _data;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_data);
+  }
+
+  @override
+  String toString() {
+    return 'WorkOrderInboxBlocEvent.search(ward: $ward, projectId: $projectId, contractNumber: $contractNumber, projectName: $projectName, limit: $limit, offset: $offset, data: $data)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WorkOrderInboxSearchBlocEvent &&
+            const DeepCollectionEquality().equals(other._ward, _ward) &&
+            (identical(other.projectId, projectId) ||
+                other.projectId == projectId) &&
+            (identical(other.contractNumber, contractNumber) ||
+                other.contractNumber == contractNumber) &&
+            (identical(other.projectName, projectName) ||
+                other.projectName == projectName) &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.offset, offset) || other.offset == offset) &&
+            const DeepCollectionEquality().equals(other._data, _data));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_ward),
+      projectId,
+      contractNumber,
+      projectName,
+      limit,
+      offset,
+      const DeepCollectionEquality().hash(_data));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WorkOrderInboxSearchBlocEventCopyWith<_$WorkOrderInboxSearchBlocEvent>
+      get copyWith => __$$WorkOrderInboxSearchBlocEventCopyWithImpl<
+          _$WorkOrderInboxSearchBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        create,
+    required TResult Function(int sortCode) sort,
+    required TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
+    required TResult Function() clear,
+  }) {
+    return search(
+        ward, projectId, contractNumber, projectName, limit, offset, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        create,
+    TResult? Function(int sortCode)? sort,
+    TResult? Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
+    TResult? Function()? clear,
+  }) {
+    return search?.call(
+        ward, projectId, contractNumber, projectName, limit, offset, data);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        create,
+    TResult Function(int sortCode)? sort,
+    TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (search != null) {
+      return search(
+          ward, projectId, contractNumber, projectName, limit, offset, data);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
+    required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxSearchBlocEvent value) search,
+    required TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)
+        searchRepeat,
+    required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
+  }) {
+    return search(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult? Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
+    TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
+  }) {
+    return search?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
+    TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (search != null) {
+      return search(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WorkOrderInboxSearchBlocEvent
+    implements WorkOrderInboxBlocEvent {
+  const factory WorkOrderInboxSearchBlocEvent(
+          {final List<String>? ward,
+          final String? projectId,
+          final String? contractNumber,
+          final String? projectName,
+          required final int limit,
+          required final int offset,
+          required final Map<String, dynamic> data}) =
+      _$WorkOrderInboxSearchBlocEvent;
+
+  List<String>? get ward;
+  String? get projectId;
+  String? get contractNumber;
+  String? get projectName;
+  int get limit;
+  int get offset;
+  Map<String, dynamic> get data;
+  @JsonKey(ignore: true)
+  _$$WorkOrderInboxSearchBlocEventCopyWith<_$WorkOrderInboxSearchBlocEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WorkOrderInboxSearchRepeatBlocEventCopyWith<$Res> {
+  factory _$$WorkOrderInboxSearchRepeatBlocEventCopyWith(
+          _$WorkOrderInboxSearchRepeatBlocEvent value,
+          $Res Function(_$WorkOrderInboxSearchRepeatBlocEvent) then) =
+      __$$WorkOrderInboxSearchRepeatBlocEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String tenantId,
+      String businessService,
+      String moduleName,
+      int limit,
+      int offset});
+}
+
+/// @nodoc
+class __$$WorkOrderInboxSearchRepeatBlocEventCopyWithImpl<$Res>
+    extends _$WorkOrderInboxBlocEventCopyWithImpl<$Res,
+        _$WorkOrderInboxSearchRepeatBlocEvent>
+    implements _$$WorkOrderInboxSearchRepeatBlocEventCopyWith<$Res> {
+  __$$WorkOrderInboxSearchRepeatBlocEventCopyWithImpl(
+      _$WorkOrderInboxSearchRepeatBlocEvent _value,
+      $Res Function(_$WorkOrderInboxSearchRepeatBlocEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tenantId = null,
+    Object? businessService = null,
+    Object? moduleName = null,
+    Object? limit = null,
+    Object? offset = null,
+  }) {
+    return _then(_$WorkOrderInboxSearchRepeatBlocEvent(
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+      businessService: null == businessService
+          ? _value.businessService
+          : businessService // ignore: cast_nullable_to_non_nullable
+              as String,
+      moduleName: null == moduleName
+          ? _value.moduleName
+          : moduleName // ignore: cast_nullable_to_non_nullable
+              as String,
+      limit: null == limit
+          ? _value.limit
+          : limit // ignore: cast_nullable_to_non_nullable
+              as int,
+      offset: null == offset
+          ? _value.offset
+          : offset // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WorkOrderInboxSearchRepeatBlocEvent
+    implements WorkOrderInboxSearchRepeatBlocEvent {
+  const _$WorkOrderInboxSearchRepeatBlocEvent(
+      {required this.tenantId,
+      required this.businessService,
+      required this.moduleName,
+      required this.limit,
+      required this.offset});
+
+  @override
+  final String tenantId;
+  @override
+  final String businessService;
+  @override
+  final String moduleName;
+  @override
+  final int limit;
+  @override
+  final int offset;
+
+  @override
+  String toString() {
+    return 'WorkOrderInboxBlocEvent.searchRepeat(tenantId: $tenantId, businessService: $businessService, moduleName: $moduleName, limit: $limit, offset: $offset)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WorkOrderInboxSearchRepeatBlocEvent &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.businessService, businessService) ||
+                other.businessService == businessService) &&
+            (identical(other.moduleName, moduleName) ||
+                other.moduleName == moduleName) &&
+            (identical(other.limit, limit) || other.limit == limit) &&
+            (identical(other.offset, offset) || other.offset == offset));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, tenantId, businessService, moduleName, limit, offset);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WorkOrderInboxSearchRepeatBlocEventCopyWith<
+          _$WorkOrderInboxSearchRepeatBlocEvent>
+      get copyWith => __$$WorkOrderInboxSearchRepeatBlocEventCopyWithImpl<
+          _$WorkOrderInboxSearchRepeatBlocEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        create,
+    required TResult Function(int sortCode) sort,
+    required TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
+    required TResult Function() clear,
+  }) {
+    return searchRepeat(tenantId, businessService, moduleName, limit, offset);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        create,
+    TResult? Function(int sortCode)? sort,
+    TResult? Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
+    TResult? Function()? clear,
+  }) {
+    return searchRepeat?.call(
+        tenantId, businessService, moduleName, limit, offset);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        create,
+    TResult Function(int sortCode)? sort,
+    TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (searchRepeat != null) {
+      return searchRepeat(tenantId, businessService, moduleName, limit, offset);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
+    required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxSearchBlocEvent value) search,
+    required TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)
+        searchRepeat,
+    required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
+  }) {
+    return searchRepeat(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult? Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
+    TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
+  }) {
+    return searchRepeat?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
+    TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
+    TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (searchRepeat != null) {
+      return searchRepeat(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WorkOrderInboxSearchRepeatBlocEvent
+    implements WorkOrderInboxBlocEvent {
+  const factory WorkOrderInboxSearchRepeatBlocEvent(
+      {required final String tenantId,
+      required final String businessService,
+      required final String moduleName,
+      required final int limit,
+      required final int offset}) = _$WorkOrderInboxSearchRepeatBlocEvent;
+
+  String get tenantId;
+  String get businessService;
+  String get moduleName;
+  int get limit;
+  int get offset;
+  @JsonKey(ignore: true)
+  _$$WorkOrderInboxSearchRepeatBlocEventCopyWith<
+          _$WorkOrderInboxSearchRepeatBlocEvent>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -489,6 +1168,18 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
             String moduleName, int limit, int offset)
         create,
     required TResult Function(int sortCode) sort,
+    required TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)
+        search,
+    required TResult Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)
+        searchRepeat,
     required TResult Function() clear,
   }) {
     return clear();
@@ -501,6 +1192,18 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
             String moduleName, int limit, int offset)?
         create,
     TResult? Function(int sortCode)? sort,
+    TResult? Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult? Function(String tenantId, String businessService,
+            String moduleName, int limit, int offset)?
+        searchRepeat,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -513,6 +1216,18 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
             int limit, int offset)?
         create,
     TResult Function(int sortCode)? sort,
+    TResult Function(
+            List<String>? ward,
+            String? projectId,
+            String? contractNumber,
+            String? projectName,
+            int limit,
+            int offset,
+            Map<String, dynamic> data)?
+        search,
+    TResult Function(String tenantId, String businessService, String moduleName,
+            int limit, int offset)?
+        searchRepeat,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -527,6 +1242,9 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(WorkOrderInboxBlocCreateEvent value) create,
     required TResult Function(WorkOrderInboxSortBlocEvent value) sort,
+    required TResult Function(WorkOrderInboxSearchBlocEvent value) search,
+    required TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)
+        searchRepeat,
     required TResult Function(WorkOrderInboxBlocClearEvent value) clear,
   }) {
     return clear(this);
@@ -537,6 +1255,8 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult? Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult? Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult? Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult? Function(WorkOrderInboxBlocClearEvent value)? clear,
   }) {
     return clear?.call(this);
@@ -547,6 +1267,8 @@ class _$WorkOrderInboxBlocClearEvent implements WorkOrderInboxBlocClearEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WorkOrderInboxBlocCreateEvent value)? create,
     TResult Function(WorkOrderInboxSortBlocEvent value)? sort,
+    TResult Function(WorkOrderInboxSearchBlocEvent value)? search,
+    TResult Function(WorkOrderInboxSearchRepeatBlocEvent value)? searchRepeat,
     TResult Function(WorkOrderInboxBlocClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -567,8 +1289,12 @@ mixin _$WorkOrderInboxState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)
+    required TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -577,8 +1303,12 @@ mixin _$WorkOrderInboxState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult? Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult? Function(String? error)? error,
   }) =>
@@ -587,8 +1317,12 @@ mixin _$WorkOrderInboxState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -678,8 +1412,12 @@ class _$_Initial extends _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)
+    required TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -691,8 +1429,12 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult? Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -704,8 +1446,12 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -798,8 +1544,12 @@ class _$_Loading extends _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)
+    required TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -811,8 +1561,12 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult? Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -824,8 +1578,12 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -887,7 +1645,9 @@ abstract class _$$_LoadedCopyWith<$Res> {
   $Res call(
       {WOInboxResponse? mbInboxResponse,
       bool isLoading,
-      List<Contracts>? contracts});
+      List<Contracts>? contracts,
+      bool search,
+      Map<String, dynamic> searchData});
 
   $WOInboxResponseCopyWith<$Res>? get mbInboxResponse;
 }
@@ -905,6 +1665,8 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? mbInboxResponse = freezed,
     Object? isLoading = null,
     Object? contracts = freezed,
+    Object? search = null,
+    Object? searchData = null,
   }) {
     return _then(_$_Loaded(
       freezed == mbInboxResponse
@@ -919,6 +1681,14 @@ class __$$_LoadedCopyWithImpl<$Res>
           ? _value._contracts
           : contracts // ignore: cast_nullable_to_non_nullable
               as List<Contracts>?,
+      null == search
+          ? _value.search
+          : search // ignore: cast_nullable_to_non_nullable
+              as bool,
+      null == searchData
+          ? _value._searchData
+          : searchData // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
     ));
   }
 
@@ -939,8 +1709,13 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 class _$_Loaded extends _Loaded {
   const _$_Loaded(
-      this.mbInboxResponse, this.isLoading, final List<Contracts>? contracts)
+      this.mbInboxResponse,
+      this.isLoading,
+      final List<Contracts>? contracts,
+      this.search,
+      final Map<String, dynamic> searchData)
       : _contracts = contracts,
+        _searchData = searchData,
         super._();
 
   @override
@@ -958,8 +1733,18 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
+  final bool search;
+  final Map<String, dynamic> _searchData;
+  @override
+  Map<String, dynamic> get searchData {
+    if (_searchData is EqualUnmodifiableMapView) return _searchData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_searchData);
+  }
+
+  @override
   String toString() {
-    return 'WorkOrderInboxState.loaded(mbInboxResponse: $mbInboxResponse, isLoading: $isLoading, contracts: $contracts)';
+    return 'WorkOrderInboxState.loaded(mbInboxResponse: $mbInboxResponse, isLoading: $isLoading, contracts: $contracts, search: $search, searchData: $searchData)';
   }
 
   @override
@@ -972,12 +1757,20 @@ class _$_Loaded extends _Loaded {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             const DeepCollectionEquality()
-                .equals(other._contracts, _contracts));
+                .equals(other._contracts, _contracts) &&
+            (identical(other.search, search) || other.search == search) &&
+            const DeepCollectionEquality()
+                .equals(other._searchData, _searchData));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, mbInboxResponse, isLoading,
-      const DeepCollectionEquality().hash(_contracts));
+  int get hashCode => Object.hash(
+      runtimeType,
+      mbInboxResponse,
+      isLoading,
+      const DeepCollectionEquality().hash(_contracts),
+      search,
+      const DeepCollectionEquality().hash(_searchData));
 
   @JsonKey(ignore: true)
   @override
@@ -990,12 +1783,16 @@ class _$_Loaded extends _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)
+    required TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)
         loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(mbInboxResponse, isLoading, contracts);
+    return loaded(mbInboxResponse, isLoading, contracts, search, searchData);
   }
 
   @override
@@ -1003,12 +1800,17 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult? Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(mbInboxResponse, isLoading, contracts);
+    return loaded?.call(
+        mbInboxResponse, isLoading, contracts, search, searchData);
   }
 
   @override
@@ -1016,14 +1818,18 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(mbInboxResponse, isLoading, contracts);
+      return loaded(mbInboxResponse, isLoading, contracts, search, searchData);
     }
     return orElse();
   }
@@ -1067,13 +1873,19 @@ class _$_Loaded extends _Loaded {
 }
 
 abstract class _Loaded extends WorkOrderInboxState {
-  const factory _Loaded(final WOInboxResponse? mbInboxResponse,
-      final bool isLoading, final List<Contracts>? contracts) = _$_Loaded;
+  const factory _Loaded(
+      final WOInboxResponse? mbInboxResponse,
+      final bool isLoading,
+      final List<Contracts>? contracts,
+      final bool search,
+      final Map<String, dynamic> searchData) = _$_Loaded;
   const _Loaded._() : super._();
 
   WOInboxResponse? get mbInboxResponse;
   bool get isLoading;
   List<Contracts>? get contracts;
+  bool get search;
+  Map<String, dynamic> get searchData;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1143,8 +1955,12 @@ class _$_Error extends _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)
+    required TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -1156,8 +1972,12 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult? Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -1169,8 +1989,12 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(WOInboxResponse? mbInboxResponse, bool isLoading,
-            List<Contracts>? contracts)?
+    TResult Function(
+            WOInboxResponse? mbInboxResponse,
+            bool isLoading,
+            List<Contracts>? contracts,
+            bool search,
+            Map<String, dynamic> searchData)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
