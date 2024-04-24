@@ -925,7 +925,7 @@ public class ContractServiceValidator {
             }
             if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")) {
                 List<EstimateDetail> estimateDetailList = sorIdToEstimateDetailMap.getOrDefault(sorId, Collections.emptyList());
-                BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId).add(sorIdToCurrentValueMap.get(sorId));
+                BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId).subtract(sorIdToCurrentValueMap.get(sorId));
                 BigDecimal totalNoOfUnit = BigDecimal.ZERO;
                 for (EstimateDetail estimatedDetail : estimateDetailList) {
                     if (estimatedDetail.getIsDeduction()) {
