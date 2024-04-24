@@ -137,6 +137,10 @@ class WorkOrderInboxBloc
               itemList.sort((a, b) => a.additionalDetails!.cboName!
                   .compareTo(b.additionalDetails!.cboName!));
               break;
+               case 5:
+              itemList.sort((a, b) =>
+                  a.totalContractedAmount!.compareTo(b.totalContractedAmount!));
+              break;
             default:
           }
 

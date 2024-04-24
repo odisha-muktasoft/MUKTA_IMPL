@@ -402,11 +402,15 @@ class MBLogic {
       List<FilteredMeasurementsMeasure> nonSor = [];
 
       for (int i = 0; i < s[a].measures!.length; i++) {
+        if (s[a].measures![i].contracts!.first.estimates!=null && s[a].measures![i].contracts!.first.estimates!.first.category!=null) {
+          
+        
         if (s[a].measures![i].contracts!.first.estimates!.first.category ==
             "SOR") {
           sor.add(s[a].measures![i]);
         } else {
           nonSor.add(s[a].measures![i]);
+        }
         }
       }
 
@@ -446,13 +450,20 @@ class MBLogic {
       }
 
       for (var obj in sor) {
-        String mValue = obj.contracts!.first.estimates!.first.sorId!;
-        addObjectOrModify(mValue, obj, "SOR");
+        String? mValue = obj.contracts!.first.estimates!.first.sorId;
+        if (mValue!=null) {
+          addObjectOrModify(mValue, obj, "SOR");
+        }
+        
       }
 
       for (var obj in nonSor) {
-        String mValue = obj.contracts!.first.estimates!.first.sorId!;
-        addObjectOrModify(mValue, obj, "NonSOR");
+        String? mValue = obj.contracts!.first.estimates!.first.sorId;
+        
+        if (mValue!=null) {
+           addObjectOrModify(mValue, obj, "NonSOR");
+        }
+       
       }
 
       mark.add([listSors, listNonSors]);

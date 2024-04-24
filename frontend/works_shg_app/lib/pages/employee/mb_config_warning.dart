@@ -57,6 +57,12 @@ List<WorkFlowSupportDocument> supportDocument=[];
 
     super.initState();
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    comment.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -286,8 +292,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                                     selectedAssignee = value!;
                                   });
                                 },
-                                value: selectedAssignee ??
-                                    value.hrmsEmployee!.first,
+                                value: selectedAssignee ,
                                 label: t.translate("WF_MODAL_APPROVER"),
                                 menuItems:
                                     value.hrmsEmployee!.map((e) => e).toList(),
@@ -466,8 +471,7 @@ List<WorkFlowSupportDocument> supportDocument=[];
                                     selectedAssignee = value!;
                                   });
                                 },
-                                value: selectedAssignee ??
-                                    value.hrmsEmployee!.first,
+                                value: selectedAssignee ,
                                 label: t.translate("WF_MODAL_APPROVER"),
                                 menuItems:
                                     value.hrmsEmployee!.map((e) => e).toList(),

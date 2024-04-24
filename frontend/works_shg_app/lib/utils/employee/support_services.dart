@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/widgets/mb/radio_button_sheet.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
-enum SortType{mbSort,woSort}
+enum SortType { mbSort, woSort }
+
 class Conversion {
   static final sortMB = [
-    SortObject("SlaDaysRemaining", 0),
-    SortObject("WorkFlowState", 1),
-    SortObject("Amount - - LowToHigh", 2),
-    SortObject("Amount - - HighToLow", 3),
+    SortObject(i18.common.slaDaysRemaining, 0),
+    SortObject(i18.measurementBook.workFlowState, 1),
+    SortObject(i18.measurementBook.amountLowToHigh, 2),
+    SortObject(i18.measurementBook.amountHighToLow, 3),
   ];
   static final sortWorkOrder = [
-    SortObject("End Date", 0),
-    SortObject("Start Date", 1),
-    SortObject("Issued Date", 2),
-    SortObject("Work Value", 3),
-    SortObject("CBO Name", 4),
+    SortObject(i18.common.endDate, 0),
+    SortObject(i18.common.startDate, 1),
+    SortObject(i18.common.issuedDate, 2),
+    SortObject(i18.measurementBook.amountLowToHigh, 5),
+    SortObject(i18.measurementBook.amountHighToLow, 3),
+    SortObject(i18.measurementBook.cboName, 4),
   ];
 
   static String convertToTenant(String input) {
@@ -30,15 +34,17 @@ class Conversion {
     return result;
   }
 
-  static void openSortingModal(BuildContext context, {required List<SortObject>listData, required SortType sortType}) {
+  static void openSortingModal(BuildContext context,
+      {required List<SortObject> listData, required SortType sortType}) {
     showModalBottomSheet(
       builder: (BuildContext context) {
         return SizedBox(
-          height: (listData.length*80),
+          height: (listData.length * 80),
           width: MediaQuery.of(context).size.width,
           child: Center(
               child: MyBottomSheet(
-            dataList: listData, sortType: sortType,
+            dataList: listData,
+            sortType: sortType,
           )),
         );
       },

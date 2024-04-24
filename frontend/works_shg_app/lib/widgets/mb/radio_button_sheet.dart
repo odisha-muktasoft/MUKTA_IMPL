@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
 import 'package:works_shg_app/blocs/employee/work_order/workorder_book.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class MyBottomSheet extends StatefulWidget {
   final List<SortObject> dataList;
@@ -20,6 +23,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +31,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              "SORT BY",
+              t.translate(i18.measurementBook.sortBy),
               style: DigitTheme.instance.mobileTheme.textTheme.headlineMedium!
                   .copyWith(
                       fontWeight: FontWeight.w100,
@@ -46,7 +50,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                     contentPadding: const EdgeInsets.only(left: 16, right: 16),
                     controlAffinity: ListTileControlAffinity.trailing,
                     title: Text(
-                      widget.dataList[index].name,
+                      t.translate(widget.dataList[index].name),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineSmall,
                     ),

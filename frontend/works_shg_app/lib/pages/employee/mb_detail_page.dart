@@ -249,23 +249,31 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   .toString(),
                               openButtonSheet: () {
                                 _openBottomSheet(
-                                  t,
-                                  context,
-                                  value.data.first.totalSorAmount!,
-                                  value.data.first.totalNorSorAmount!,
-                                  value.data.first.totalAmount!,
-                                  g,
-                                  widget.contractNumber,
-                                  widget.mbNumber,
-                                  widget.type,
-                                  null,
-                                  (g!=null && (g.first.nextActions!=null && g.first.nextActions!.isEmpty))?false:true
-                                );
+                                    t,
+                                    context,
+                                    value.data.first.totalSorAmount!,
+                                    value.data.first.totalNorSorAmount!,
+                                    value.data.first.totalAmount!,
+                                    g,
+                                    widget.contractNumber,
+                                    widget.mbNumber,
+                                    widget.type,
+                                    null,
+                                    (g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? false
+                                        : true);
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
                               subtext: t.translate(
-                                  i18.measurementBook.forCurrentEntry), showAction:(g!=null && (g.first.nextActions!=null && g.first.nextActions!.isEmpty))?false:true,
+                                  i18.measurementBook.forCurrentEntry),
+                              showAction: (g != null &&
+                                      (g.first.nextActions != null &&
+                                          g.first.nextActions!.isEmpty))
+                                  ? false
+                                  : true,
                             );
                           },
                         );
@@ -327,23 +335,28 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   .toString(),
                               openButtonSheet: () {
                                 _openBottomSheet(
-                                  t,
-                                  context,
-                                  value.data.first.totalSorAmount!,
-                                  value.data.first.totalNorSorAmount!,
-                                  value.data.first.totalAmount!,
-                                  g,
-                                  widget.contractNumber,
-                                  widget.mbNumber,
-                                  widget.type,
-                                  bk,
-                                  (bk!=null &&( bk!=null && bk.isEmpty))?false:true
-                                );
+                                    t,
+                                    context,
+                                    value.data.first.totalSorAmount!,
+                                    value.data.first.totalNorSorAmount!,
+                                    value.data.first.totalAmount!,
+                                    g,
+                                    widget.contractNumber,
+                                    widget.mbNumber,
+                                    widget.type,
+                                    bk,
+                                    (bk != null && (bk != null && bk.isEmpty))
+                                        ? false
+                                        : true);
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
                               subtext: t.translate(
-                                  i18.measurementBook.forCurrentEntry), showAction: (bk!=null &&( bk!=null && bk.isEmpty))?false:true ,
+                                  i18.measurementBook.forCurrentEntry),
+                              showAction:
+                                  (bk != null && (bk != null && bk.isEmpty))
+                                      ? false
+                                      : true,
                             );
                           },
                         );
@@ -420,18 +433,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                               CommonMBCard(
                                 items: {
                                   t.translate(i18.measurementBook.mbNumber):
-                                      value.data.first.mbNumber??"NA",
-                                  t.translate(i18.attendanceMgmt.projectDesc):
-                                      value
-                                              .data
-                                              .first
-                                              .measures!
-                                              .first
-                                              .contracts!
-                                              .first
-                                              .contractAdditionalDetails
-                                              ?.projectDesc ??
-                                          "NA",
+                                      value.data.first.mbNumber ?? "NA",
+                                  t.translate(i18.common.musterRollId):
+                                      value.data.first.musterRollNumber ?? "NA",
+
                                   // t.translate(i18.common.assignee): value
                                   //         .data
                                   //         .first
@@ -446,9 +451,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   //     i18.measurementBook
                                   //         .workOrderNumber): t.translate(
                                   //     "MB_WFMB_STATE_//${value.data.first.wfStatus!}"),
-                                  t.translate(
-                                          i18.measurementBook.workOrderNumber):
-                                      value.data.first.referenceId ?? "NA",
+                                  // t.translate(
+                                  //         i18.measurementBook.workOrderNumber):
+                                  //     value.data.first.referenceId ?? "NA",
                                   // t.translate(i18.measurementBook.mbAmount):
                                   //     value.data.first.totalAmount != null
                                   //         ? double.parse((value
@@ -464,8 +469,18 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           DateTime.fromMillisecondsSinceEpoch(
                                               value.data.first.entryDate!))
                                       : "NA",
-                                  t.translate(i18.common.musterRollId):
-                                      value.data.first.musterRollNumber??"NA",
+                                  t.translate(i18.attendanceMgmt.projectDesc):
+                                      value
+                                              .data
+                                              .first
+                                              .measures!
+                                              .first
+                                              .contracts!
+                                              .first
+                                              .contractAdditionalDetails
+                                              ?.projectDesc ??
+                                          "NA",
+
                                   // "SLA Days remaining": 2,
                                 },
                                 widget: CommonTextButtonUnderline(
@@ -547,15 +562,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                             children: [
                               value.sor!.isEmpty
                                   ? const Card(
-                                      child:
-                                          Center(
-                                    child: EmptyImage(
-                                      align: Alignment.center,
-                                      label: "No Data Found",
-                                      
-                                    
-                                  )
-                                          ),
+                                      child: Center(
+                                          child: EmptyImage(
+                                        align: Alignment.center,
+                                        label: "No Data Found",
+                                      )),
                                     )
                                   : ListView.builder(
                                       physics:
@@ -583,14 +594,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     ),
                               value.nonSor!.isEmpty
                                   ? const Card(
-                                      child:
-                                         Center(
-                                    child: EmptyImage(
-                                      align: Alignment.center,
-                                      label: "No Data Found",
-                                      
-                                    ),
-                                  ),
+                                      child: Center(
+                                        child: EmptyImage(
+                                          align: Alignment.center,
+                                          label: "No Data Found",
+                                        ),
+                                      ),
                                     )
                                   : ListView.builder(
                                       physics:
@@ -679,13 +688,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             )
                                           : const Card(
                                               child: Center(
-                                    child: EmptyImage(
-                                      align: Alignment.center,
-                                      label: "No Document Found",
-                                      
-                                    ),
-                                  )
-                                            )
+                                              child: EmptyImage(
+                                                align: Alignment.center,
+                                                label: "No Document Found",
+                                              ),
+                                            ))
                                       : !value.viewStatus
                                           ? Card(
                                               child: Center(
@@ -1032,18 +1039,18 @@ class _MBDetailPageState extends State<MBDetailPage>
   }
 
   void _openBottomSheet(
-      AppLocalizations t,
-      BuildContext context,
-      double totalSorAmount,
-      double totalNonSorAmount,
-      double mbAmount,
-      List<ProcessInstances>? processInstances,
-      String contractNumber,
-      String mbNumber,
-      MBScreen type,
-      List<BusinessServices>? bs,
-      bool showBtn,
-      ) {
+    AppLocalizations t,
+    BuildContext context,
+    double totalSorAmount,
+    double totalNonSorAmount,
+    double mbAmount,
+    List<ProcessInstances>? processInstances,
+    String contractNumber,
+    String mbNumber,
+    MBScreen type,
+    List<BusinessServices>? bs,
+    bool showBtn,
+  ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -1173,22 +1180,23 @@ class _MBDetailPageState extends State<MBDetailPage>
               const SizedBox(
                 height: 15,
               ),
-              showBtn?
-              DigitElevatedButton(
-                  child: Text(t.translate(i18.measurementBook.mbAction)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    DigitActionDialog.show(
-                      context,
-                      widget: CommonButtonCard(
-                        g: processInstances,
-                        contractNumber: contractNumber,
-                        mbNumber: mbNumber,
-                        type: widget.type,
-                        bs: bs,
-                      ),
-                    );
-                  }):const SizedBox.shrink(),
+              showBtn
+                  ? DigitElevatedButton(
+                      child: Text(t.translate(i18.measurementBook.mbAction)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        DigitActionDialog.show(
+                          context,
+                          widget: CommonButtonCard(
+                            g: processInstances,
+                            contractNumber: contractNumber,
+                            mbNumber: mbNumber,
+                            type: widget.type,
+                            bs: bs,
+                          ),
+                        );
+                      })
+                  : const SizedBox.shrink(),
             ],
           ),
         );

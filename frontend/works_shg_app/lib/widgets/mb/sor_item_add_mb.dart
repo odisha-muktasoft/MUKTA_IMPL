@@ -260,8 +260,9 @@ class _CardWidgetState extends State<CardWidget> {
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
                 DigitTableCard(element: {
-                  "Type": widget.filteredMeasurementsMeasure!.contracts!
-                      .first.estimates!.first.isDeduction,
+                  "Is Deduction": (widget.filteredMeasurementsMeasure!.contracts!
+                      .first.estimates!.first.isDeduction!=null && widget.filteredMeasurementsMeasure!.contracts!
+                      .first.estimates!.first.isDeduction!) ?"Yes":"No",
                   "Description": widget.filteredMeasurementsMeasure!.contracts!
                       .first.estimates!.first.description,
                 }),
