@@ -113,6 +113,16 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
           state[findIndex].width = 0;
           state[findIndex].height = 0;
         } 
+
+        let allHaveZeroProperties = element?.additionalDetails?.measureLineItems?.every(obj => obj.width === 0 && obj.height === 0 && obj.length === 0 && obj.number === 0); 
+        if(allHaveZeroProperties)
+        {
+          state[findIndex].number = 0;
+          state[findIndex].length = 0;
+          state[findIndex].width = 0;
+          state[findIndex].height = 0;
+        }
+
         return [...state];
       case "REMOVE_ROW":
         const { id: rowIdToRemove } = action;
