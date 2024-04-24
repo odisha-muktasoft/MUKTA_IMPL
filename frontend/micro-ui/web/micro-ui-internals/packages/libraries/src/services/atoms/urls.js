@@ -96,7 +96,7 @@ expense:{
   searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
   updatePayment: "/expense/payment/v1/_update",
   regenerate : '/egov-pdf/bill/_generate',
-  searchPaymentWMS:"/wms/ifms-pi/_search",
+  searchPaymentWMS:"/wms/mukta-pi/_search",
   updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
   searchPA:"/expense/payment/v1/_search"
 
