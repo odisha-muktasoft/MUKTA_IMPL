@@ -290,7 +290,7 @@ export const BillsSearch = {
         totalDeductions += lineItem?.amount;
 
         return [
-          index + 1,
+          ++index,
           t(`EXP_${lineItem?.headCode}`),
           percentageOrFixed,
           lineItem?.additionalDetails?.comments || "NA",
