@@ -47,7 +47,7 @@ const ViewPaymentInstruction = () => {
     }
     //revised
     else{
-      payloadForUpdate.parentPI = piDetails?.jitBillNo
+      payloadForUpdate.referenceId = piDetails?.jitBillNo
     }
     //in case of retry (Failed status) send referenceId
     // in case of Partial status, send piNumber to generate revised pi
