@@ -44,7 +44,7 @@ const ViewPayment = () => {
     }
     //revised
     else{
-      payloadForUpdate.referenceId = data?.[0]?.latestPaymentInstruction?.parentPiNumber || data?.[0]?.latestPaymentInstruction?.muktaReferenceId
+      payloadForUpdate.referenceId = data?.[0]?.latestPaymentInstruction?.muktaReferenceId
     }
     //in case of retry (Failed status) send referenceId
     // in case of Partial status, send piNumber to generate revised pi
