@@ -25,7 +25,7 @@ public class OrganisationUtil {
                 AuditDetails auditDetailsForCreate = AuditDetails.builder().createdBy(by).lastModifiedBy(by).createdTime(time).lastModifiedTime(time).build();
                 organisation.setAuditDetails(auditDetailsForCreate);
             } else {
-                AuditDetails auditDetailsForUpdate = AuditDetails.builder().lastModifiedBy(by).lastModifiedTime(time).build();
+                AuditDetails auditDetailsForUpdate = AuditDetails.builder().createdBy(organisation.getAuditDetails().getCreatedBy()).createdTime(organisation.getAuditDetails().getCreatedTime()).lastModifiedBy(by).lastModifiedTime(time).build();
                 organisation.setAuditDetails(auditDetailsForUpdate);
             }
         }
