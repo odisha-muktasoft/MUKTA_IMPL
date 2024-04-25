@@ -582,7 +582,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           // preSor_NonSor: value.preSor![index]
                                           // .filteredMeasurementsMeasure,
 
-                                          preSor_NonSor: value.preSor == null
+                                          preSorNonSor: value.preSor == null
                                               ? null
                                               : value.preSor![index]
                                                   .filteredMeasurementsMeasure,
@@ -615,7 +615,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           // preSor_NonSor: value.preNonSor![index]
                                           // .filteredMeasurementsMeasure,
 
-                                          preSor_NonSor: value.preNonSor == null
+                                          preSorNonSor: value.preNonSor == null
                                               ? null
                                               : value.preNonSor![index]
                                                   .filteredMeasurementsMeasure,
@@ -901,7 +901,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     BuildContext ctx,
     int index, {
     List<FilteredMeasurementsMeasure>? magic,
-    List<FilteredMeasurementsMeasure>? preSor_NonSor,
+    List<FilteredMeasurementsMeasure>? preSorNonSor,
     required String type,
     required String sorNonSorId,
   }) {
@@ -948,9 +948,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                   // t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
                   "Consumed Quantity\n(Upto previous entry)":
                       //  t.translate(i18.measurementBook.consumedQty):
-                      preSor_NonSor == null
+                      preSorNonSor == null
                           ? 0
-                          : preSor_NonSor!.fold(0.0, (sum, obj) {
+                          : preSorNonSor!.fold(0.0, (sum, obj) {
                               double m = obj.cumulativeValue!;
                               return sum + m.toDouble();
                             }),
@@ -993,9 +993,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                           type: type,
                           // noOfUnit: line[0].noOfunit,
                           noOfUnit: noOfQty,
-                          cummulativePrevQty: preSor_NonSor == null
+                          cummulativePrevQty: preSorNonSor == null
                               ? 0
-                              : preSor_NonSor!.first.cumulativeValue,
+                             // : preSorNonSor!.first.cumulativeValue,
+                             :preSorNonSor!.fold(0.0, (sum, obj) {
+                              double m = obj.cumulativeValue!;
+                              return sum + m.toDouble();
+                            }),
                           sorId: sorNonSorId,
                         );
                       },

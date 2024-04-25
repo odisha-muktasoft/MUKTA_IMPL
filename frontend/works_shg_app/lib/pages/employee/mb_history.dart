@@ -37,7 +37,8 @@ class MBHistoryBookPage extends StatefulWidget {
       {super.key,
       required this.contractNumber,
       required this.mbNumber,
-      this.tenantId, required this.type});
+      this.tenantId,
+      required this.type});
 
   @override
   State<MBHistoryBookPage> createState() => _MBHistoryBookPageState();
@@ -65,48 +66,53 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
               loaded: (value) {
                 final k = value.data;
                 return Scaffold(
-                  bottomNavigationBar: BlocBuilder<MusterGetWorkflowBloc,
-                      MusterGetWorkflowState>(
-                    builder: (context, state) {
-                      return state.maybeMap(
-                        orElse: () => const SizedBox.shrink(),
-                        loaded: (mbWorkFlow) {
-                          final g =
-                              mbWorkFlow.musterWorkFlowModel?.processInstances;
-                          return FloatActionCard(
-                            actions: () {
-                              DigitActionDialog.show(
-                                context,
-                                widget: CommonButtonCard(
-                                  g: g,
-                                  contractNumber: widget.contractNumber,
-                                  mbNumber: widget.mbNumber, type: widget.type,
-                                ),
-                              );
-                            },
-                            amount: value.data.first.totalAmount!
-                                .toDouble()
-                                .roundToDouble()
-                                .toString(),
-                            openButtonSheet: () {
-                              _openBottomSheet(
-                                t,
-                                context,
-                                value.data.first.totalSorAmount!,
-                                value.data.first.totalNorSorAmount!,
-                                value.data.first.totalAmount!,
-                                g,
-                                widget.contractNumber,
-                                widget.mbNumber,
-                              );
-                            },
-                            totalAmountText:
-                                t.translate(i18.measurementBook.totalMbAmount), showAction: (g!=null && g.isEmpty)?false:true,
-                          );
-                        },
-                      );
-                    },
-                  ),
+                  bottomNavigationBar: widget.type == MBScreen.create
+                      ? const SizedBox.shrink()
+                      : BlocBuilder<MusterGetWorkflowBloc,
+                          MusterGetWorkflowState>(
+                          builder: (context, state) {
+                            return state.maybeMap(
+                              orElse: () => const SizedBox.shrink(),
+                              loaded: (mbWorkFlow) {
+                                final g = mbWorkFlow
+                                    .musterWorkFlowModel?.processInstances;
+                                return FloatActionCard(
+                                  actions: () {
+                                    DigitActionDialog.show(
+                                      context,
+                                      widget: CommonButtonCard(
+                                        g: g,
+                                        contractNumber: widget.contractNumber,
+                                        mbNumber: widget.mbNumber,
+                                        type: widget.type,
+                                      ),
+                                    );
+                                  },
+                                  amount: value.data.first.totalAmount!
+                                      .toDouble()
+                                      .roundToDouble()
+                                      .toString(),
+                                  openButtonSheet: () {
+                                    _openBottomSheet(
+                                      t,
+                                      context,
+                                      value.data.first.totalSorAmount!,
+                                      value.data.first.totalNorSorAmount!,
+                                      value.data.first.totalAmount!,
+                                      g,
+                                      widget.contractNumber,
+                                      widget.mbNumber,
+                                    );
+                                  },
+                                  totalAmountText: t.translate(
+                                      i18.measurementBook.totalMbAmount),
+                                  showAction:
+                                      (g != null && g.isEmpty) ? false : true,
+                                );
+                              },
+                            );
+                          },
+                        ),
                   backgroundColor: const DigitColors().seaShellGray,
                   appBar: AppBar(
                     titleSpacing: 0,
@@ -156,8 +162,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            
-                            final adjustedIndex = widget.type==MBScreen.update?index + 1:index;
+                            final adjustedIndex = widget.type == MBScreen.update
+                                ? index + 1
+                                : index + 1;
                             if (adjustedIndex < k.length) {
                               return CommonMBCard(
                                 headLabel:
@@ -187,7 +194,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                         musterRollNo: k[adjustedIndex]
                                             .musterRollNumber
                                             .toString(),
-                                        sentBackCode: "PENDINGFORCORRECTION"??Constants.sentBack,
+                                        sentBackCode: "PENDINGFORCORRECTION" ??
+                                            Constants.sentBack,
                                       ),
                                     );
                                   },
@@ -198,7 +206,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               return null; // Return null for the skipped item
                             }
                           },
-                          childCount: widget.type==MBScreen.update? k.length - 1:k.length,
+                          childCount: widget.type == MBScreen.update
+                              ? k.length - 1
+                              : k.length,
                         ),
                       ),
                     ],
@@ -357,7 +367,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                       widget: CommonButtonCard(
                         g: processInstances,
                         contractNumber: contractNumber,
-                        mbNumber: mbNumber, type: widget.type,
+                        mbNumber: mbNumber,
+                        type: widget.type,
                       ),
                     );
                   }),

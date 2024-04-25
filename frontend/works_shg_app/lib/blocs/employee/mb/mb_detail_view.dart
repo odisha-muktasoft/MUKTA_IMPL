@@ -262,7 +262,7 @@ class MeasurementDetailBloc
           } else {
             emit(value.copyWith(
               warningMsg:
-                  "please check the numberThe current quantity of MB entry should not exceed the approved quantity minus the consumed quantity.",
+                  "The current quantity of MB entry should not exceed the approved quantity minus the consumed quantity.",
             ));
           }
         },
