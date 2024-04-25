@@ -71,7 +71,7 @@ const ProjectDetails = () => {
             history.push(`/${window.contextPath}/employee/estimate/create-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
         }
         if(option?.name === "VIEW_ESTIMATE"){
-            if(estimates?.[0]?.wfStatus?.includes("DRAFTED"))
+            if(estimates?.[0]?.wfStatus?.includes("DRAFTED") && !(estimates?.[0]?.revisionNumber))
                 history.push(`/${window.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}&isEdit=true`);
             else
                 history.push(`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}`);
