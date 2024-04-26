@@ -63,7 +63,7 @@ const ViewPaymentInstruction = () => {
       onSuccess: async (responseData, variables) => {
           setShowToast({
             error:false,
-            label:`${t("EXP_RETRY_PI_MESSAGE")} : ${responseData?.paymentInstruction?.jitBillNo}`
+            label:`${t("EXP_RETRY_PI_MESSAGE")}`
           })
           closeToast()
           refetch()
