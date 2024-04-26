@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.User;
 import org.egov.tracer.model.CustomException;
+import org.egov.web.models.ProcessInstance;
+import org.egov.web.models.ProcessInstanceRequest;
+import org.egov.web.models.Workflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -21,12 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import digit.models.coremodels.BusinessService;
 import digit.models.coremodels.BusinessServiceResponse;
-import digit.models.coremodels.ProcessInstance;
-import digit.models.coremodels.ProcessInstanceRequest;
 import digit.models.coremodels.ProcessInstanceResponse;
 import digit.models.coremodels.RequestInfoWrapper;
 import digit.models.coremodels.State;
-import digit.models.coremodels.Workflow;
+//import digit.models.coremodels.Workflow;
 
 @Service
 @Slf4j
@@ -125,7 +126,7 @@ public class WorkflowUtil {
 	 * @return
 	 */
 	private ProcessInstance getProcessInstanceForWorkflow(RequestInfo requestInfo, String tenantId, String businessId,
-			String businessServiceCode, Workflow workflow, String wfModuleName) {
+														  String businessServiceCode, Workflow workflow, String wfModuleName) {
 
 		ProcessInstance processInstance = new ProcessInstance();
 		processInstance.setBusinessId(businessId);
