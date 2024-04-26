@@ -249,21 +249,24 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   .toString(),
                               openButtonSheet: () {
                                 _openBottomSheet(
-                                    t,
-                                    context,
-                                    value.data.first.totalSorAmount!,
-                                    value.data.first.totalNorSorAmount!,
-                                    value.data.first.totalAmount!,
-                                    g,
-                                    widget.contractNumber,
-                                    widget.mbNumber,
-                                    widget.type,
-                                    null,
-                                    (g != null &&
-                                            (g.first.nextActions != null &&
-                                                g.first.nextActions!.isEmpty))
-                                        ? false
-                                        : true);
+                                  t,
+                                  context,
+                                  value.data.first.totalSorAmount!,
+                                  value.data.first.totalNorSorAmount!,
+                                  value.data.first.totalAmount!,
+                                  g,
+                                  widget.contractNumber,
+                                  widget.mbNumber,
+                                  widget.type,
+                                  null,
+                                  (g != null &&
+                                          (g.first.nextActions != null &&
+                                              g.first.nextActions!.isEmpty))
+                                      ? false
+                                      : true,
+                                  workorderStatus,
+                                  estimateStatus,
+                                );
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
@@ -335,19 +338,22 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   .toString(),
                               openButtonSheet: () {
                                 _openBottomSheet(
-                                    t,
-                                    context,
-                                    value.data.first.totalSorAmount!,
-                                    value.data.first.totalNorSorAmount!,
-                                    value.data.first.totalAmount!,
-                                    g,
-                                    widget.contractNumber,
-                                    widget.mbNumber,
-                                    widget.type,
-                                    bk,
-                                    (bk != null && (bk != null && bk.isEmpty))
-                                        ? false
-                                        : true);
+                                  t,
+                                  context,
+                                  value.data.first.totalSorAmount!,
+                                  value.data.first.totalNorSorAmount!,
+                                  value.data.first.totalAmount!,
+                                  g,
+                                  widget.contractNumber,
+                                  widget.mbNumber,
+                                  widget.type,
+                                  bk,
+                                  (bk != null && (bk != null && bk.isEmpty))
+                                      ? false
+                                      : true,
+                                  workorderStatus,
+                                  estimateStatus,
+                                );
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
@@ -995,11 +1001,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                           noOfUnit: noOfQty,
                           cummulativePrevQty: preSorNonSor == null
                               ? 0
-                             // : preSorNonSor!.first.cumulativeValue,
-                             :preSorNonSor!.fold(0.0, (sum, obj) {
-                              double m = obj.cumulativeValue!;
-                              return sum + m.toDouble();
-                            }),
+                              // : preSorNonSor!.first.cumulativeValue,
+                              : preSorNonSor!.fold(0.0, (sum, obj) {
+                                  double m = obj.cumulativeValue!;
+                                  return sum + m.toDouble();
+                                }),
                           sorId: sorNonSorId,
                         );
                       },
@@ -1054,6 +1060,8 @@ class _MBDetailPageState extends State<MBDetailPage>
     MBScreen type,
     List<BusinessServices>? bs,
     bool showBtn,
+    String workorderStatus,
+    String estimateStatus,
   ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -1189,16 +1197,42 @@ class _MBDetailPageState extends State<MBDetailPage>
                       child: Text(t.translate(i18.measurementBook.mbAction)),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        DigitActionDialog.show(
-                          context,
-                          widget: CommonButtonCard(
-                            g: processInstances,
-                            contractNumber: contractNumber,
-                            mbNumber: mbNumber,
-                            type: widget.type,
-                            bs: bs,
-                          ),
-                        );
+                        if (workorderStatus == "ACTIVE" &&
+                            estimateStatus != "INWORKFLOW") {
+                          DigitActionDialog.show(
+                            context,
+                            widget: CommonButtonCard(
+                              g: processInstances,
+                              contractNumber: contractNumber,
+                              mbNumber: mbNumber,
+                              type: widget.type,
+                              bs: bs,
+                            ),
+                          );
+                        } else {
+                          String show = "";
+                          if (workorderStatus != "ACTIVE") {
+                            show = "time extension";
+                          } else if (estimateStatus == "INWORKFLOW") {
+                            show = "estimate revision";
+                          }
+                          Notifiers.getToastMessage(
+                              context,
+                              "MB can not be created as the $show in progress",
+                              'ERROR');
+                        }
+
+// before
+                        // DigitActionDialog.show(
+                        //   context,
+                        //   widget: CommonButtonCard(
+                        //     g: processInstances,
+                        //     contractNumber: contractNumber,
+                        //     mbNumber: mbNumber,
+                        //     type: widget.type,
+                        //     bs: bs,
+                        //   ),
+                        // );
                       })
                   : const SizedBox.shrink(),
             ],
