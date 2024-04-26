@@ -201,8 +201,8 @@ public class OrganisationEnrichmentService {
         List<Organisation> orgList = organisationService.searchOrganisation(orgSearchRequest);
         if(orgList != null && !orgList.isEmpty()) {
             AuditDetails createdAuditDetails = organisation.getAuditDetails();
-            createdAuditDetails.setCreatedBy(orgList.getFirst().getAuditDetails().getCreatedBy());
-            createdAuditDetails.setCreatedTime(orgList.getFirst().getAuditDetails().getCreatedTime());
+            createdAuditDetails.setCreatedBy(orgList.get(0).getAuditDetails().getCreatedBy());
+            createdAuditDetails.setCreatedTime(orgList.get(0).getAuditDetails().getCreatedTime());
         }
 
     }
@@ -219,7 +219,7 @@ public class OrganisationEnrichmentService {
 
         // Set the createdBy and createdTime of organisation
         if(organisationList != null && !organisationList.isEmpty()) {
-            enrichOrgCreateAuditDetails(requestInfo, organisationList.getFirst());
+            enrichOrgCreateAuditDetails(requestInfo, organisationList.get(0));
         }
 
         //set the audit details for organisation
