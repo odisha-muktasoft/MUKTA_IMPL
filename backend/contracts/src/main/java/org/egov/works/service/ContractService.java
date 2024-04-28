@@ -153,9 +153,6 @@ public class ContractService {
         List<String> estimateIds= new ArrayList<>();
       // Need to check the status of the estimate if it is Active or not
         if(request.getEstimate().getStatus().equals(Status.ACTIVE)){
-        if(!request.getWorkflow().getAction().equals("APPROVE")){
-            throw new CustomException("REVISED_ESTIMATE_NOT_APPROVED", "Revised Estimate is not Approved");
-        }
 
         if(request.getEstimate()!=null || request.getEstimate().getOldUuid()!=null){
             tenantId=request.getEstimate().getTenantId();
@@ -176,7 +173,7 @@ public class ContractService {
             createContract(createRevisedContractRequest(contractList,request));
         }
         }else {
-            log.info("ESTIMATE_NOT_ACTIVE","Estimate is not in Active state");
+            log.info("ESTIMATE_NOT_ACTIVE","Revised Estimate is not in Active state");
         }
     }
 
@@ -203,7 +200,7 @@ public class ContractService {
             throw new CustomException("WF_STATUS_NOT_APPROVED","Time Extension  wfStatus is not Approved");
         }
 
-        Workflow workflow=Workflow.builder().action("SUBMIT").assignees(new ArrayList<>()).build();
+        Workflow workflow=Workflow.builder().action(SUBMIT).assignees(new ArrayList<>()).build();
 
         return ContractRequest.builder()
                 .requestInfo(request.getRequestInfo())

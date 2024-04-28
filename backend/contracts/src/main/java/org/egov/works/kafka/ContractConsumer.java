@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static org.egov.works.util.ContractServiceConstants.APPROVE_ACTION;
 import static org.egov.works.util.ContractServiceConstants.REVISION_ESTIMATE;
 
 @Component
@@ -42,7 +43,12 @@ public class ContractConsumer {
         try {
             request = objectMapper.readValue(consumerRecord, EstimateRequest.class);
             if(request.getEstimate().getBusinessService().equals(REVISION_ESTIMATE)){
-                contractService.createAndPostRevisedContractRequest(request);
+                if(!request.getWorkflow().getAction().equals(APPROVE_ACTION)){
+                    throw new CustomException("REVISED_ESTIMATE_NOT_APPROVED", "Revised Estimate is not Approved");
+                }else{
+                    contractService.createAndPostRevisedContractRequest(request);
+                }
+
             }else{
                 log.info("Request is not for Revised Estimate");
             }
