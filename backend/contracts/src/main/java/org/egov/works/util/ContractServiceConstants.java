@@ -117,4 +117,6 @@ public class ContractServiceConstants {
     public static final String REVISION_ESTIMATE="REVISION-ESTIMATE";
 
     public static final String REJECTED_STATUS = "REJECTED";
+
+    public static final String SUBMIT="SUBMIT";
 }

@@ -846,120 +846,122 @@ public class ContractServiceValidator {
         Object measurementResponse = measurementUtil.getMeasurementDetails(contractRequest);
         if (null != measurementResponse) {
 
+            Map<?, ?> map = (Map<?, ?>) measurementResponse;
+            if (map.containsKey("measurement")) {
+                log.info("The 'measurement' key contains a value.");
 
-        List<String> wfStatus;
-        try {
-            wfStatus = JsonPath.read(measurementResponse, jsonPathForMeasurementWfStatus);
-        } catch (Exception e) {
-            throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
-        }
-
-
-        Map<String, EstimateDetail> estimateLineItemIdToEstimateDetail = estimate.getEstimateDetails().stream().
-                collect(Collectors.toMap(EstimateDetail::getId, estimateDetail -> estimateDetail));
-        Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
-        Map<String, BigDecimal> sorIdToCurrentValueMap = new HashMap<>();
-        Map<String, BigDecimal> sorIdToContractNoOfUnitMap = new HashMap<>();
-        Map<String, List<EstimateDetail>> sorIdToEstimateDetailMap = new HashMap<>();
-        contractRequest.getContract().getLineItems().forEach(lineItems -> {
-            if (lineItems.getContractLineItemRef() != null) {
-                List<Double> measurementCumulativeValue = new ArrayList<Double>();
-                List<Object> cummulativeValue = null;
-                EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItems.getEstimateLineItemId());
-                log.info("Sor Id To Estimate Details List Map created");
-                sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail.getSorId(), k -> new ArrayList<>()).add(estimateDetail);
+                List<String> wfStatus;
                 try {
-                    cummulativeValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCumulativeValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
+                    wfStatus = JsonPath.read(measurementResponse, jsonPathForMeasurementWfStatus);
                 } catch (Exception e) {
                     throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                 }
-                convertValueToDouble(measurementCumulativeValue, cummulativeValue);
-                if (measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()) {
-                    log.info("No measurement found for the given estimate");
-                } else {
-                    Double cumulativeValue = measurementCumulativeValue.get(0);
-                    Double noOfUnit = lineItems.getNoOfunit();
-                    if (estimateDetail.getIsDeduction()) {
-                        cumulativeValue = cumulativeValue * -1;
-                        noOfUnit = noOfUnit * -1;
-                    }
-                    log.info("Sor Id To Cumulative Value Map created");
-                    sorIdToCumulativeValueMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(cumulativeValue), BigDecimal::add);
-                    sorIdToContractNoOfUnitMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(noOfUnit), BigDecimal::add);
 
-                    if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")) {
-                        List<Double> measurementCurrentValue = new ArrayList<Double>();
-                        List<Object> currentValue = null;
 
+                Map<String, EstimateDetail> estimateLineItemIdToEstimateDetail = estimate.getEstimateDetails().stream().
+                        collect(Collectors.toMap(EstimateDetail::getId, estimateDetail -> estimateDetail));
+                Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
+                Map<String, BigDecimal> sorIdToCurrentValueMap = new HashMap<>();
+                Map<String, BigDecimal> sorIdToContractNoOfUnitMap = new HashMap<>();
+                Map<String, BigDecimal> sorIdToEstimateNoOfUnitMap = new HashMap<>();
+                Map<String, List<EstimateDetail>> sorIdToEstimateDetailMap = new HashMap<>();
+                contractRequest.getContract().getLineItems().forEach(lineItems -> {
+                    if (lineItems.getContractLineItemRef() != null) {
+                        List<Double> measurementCumulativeValue = new ArrayList<Double>();
+                        List<Object> cummulativeValue = null;
+                        EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItems.getEstimateLineItemId());
+                        log.info("Sor Id To Estimate Details List Map created");
+                        sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail.getSorId(), k -> new ArrayList<>()).add(estimateDetail);
                         try {
-                            currentValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCurrentValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
+                            cummulativeValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCumulativeValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
                         } catch (Exception e) {
                             throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
                         }
-                        convertValueToDouble(measurementCurrentValue, currentValue);
-                        Double currenValue = measurementCurrentValue.get(0);
-                        if (estimateDetail.getIsDeduction()) {
-                            currenValue = currenValue * -1;
+                        convertValueToDouble(measurementCumulativeValue, cummulativeValue);
+                        if (measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()) {
+                            log.info("No measurement found for the given estimate");
+                        } else {
+                            Double cumulativeValue = measurementCumulativeValue.get(0);
+                            Double noOfUnit = lineItems.getNoOfunit();
+                            Double estimateNoOfunit = estimateDetail.getNoOfunit();
+                            if (estimateDetail.getIsDeduction()) {
+                                cumulativeValue = cumulativeValue * -1;
+                                noOfUnit = noOfUnit * -1;
+                                estimateNoOfunit = estimateNoOfunit * -1;
+                            }
+                            log.info("Sor Id To Cumulative Value Map created");
+                            sorIdToCumulativeValueMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(cumulativeValue), BigDecimal::add);
+                            sorIdToContractNoOfUnitMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(noOfUnit), BigDecimal::add);
+                            sorIdToEstimateNoOfUnitMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(estimateNoOfunit), BigDecimal::add);
+
+                            if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")) {
+                                List<Double> measurementCurrentValue = new ArrayList<Double>();
+                                List<Object> currentValue = null;
+
+                                try {
+                                    currentValue = JsonPath.read(measurementResponse, jsonPathForMeasurementCurrentValue.replace("{{yourDynamicValue}}", lineItems.getContractLineItemRef()));
+                                } catch (Exception e) {
+                                    throw new CustomException("JSONPATH_ERROR", "Failed to parse measurement search response");
+                                }
+                                convertValueToDouble(measurementCurrentValue, currentValue);
+                                Double currenValue = measurementCurrentValue.get(0);
+                                if (estimateDetail.getIsDeduction()) {
+                                    currenValue = currenValue * -1;
+                                }
+                                log.info("Sor Id To Current Value Map created");
+                                sorIdToCurrentValueMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(currenValue), BigDecimal::add);
+
+
+                            }
                         }
-                        log.info("Sor Id To Current Value Map created");
-                        sorIdToCurrentValueMap.merge(estimateDetail.getSorId(), BigDecimal.valueOf(currenValue), BigDecimal::add);
-
 
                     }
-                }
+                });
+                estimate.getEstimateDetails().forEach(estimateDetail -> {
+                    String sorId = estimateDetail.getSorId();
+                    if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")) {
+                        BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId).subtract(sorIdToCurrentValueMap.get(sorId));
+                        sorIdToCumulativeValueMap.put(sorId, totalValue);
 
-            }
-        });
-        estimate.getEstimateDetails().forEach(estimateDetail -> {
-            String sorId = estimateDetail.getSorId();
-            if ((!sorIdToCumulativeValueMap.isEmpty() && !sorIdToContractNoOfUnitMap.isEmpty()) || (null != sorIdToCumulativeValueMap && null != sorIdToContractNoOfUnitMap)) {
-                if (sorIdToContractNoOfUnitMap.get(sorId).compareTo(sorIdToCumulativeValueMap.get(sorId)) < 0) {
-                    throw new CustomException("CUMULATIVE_VALUE_GREATER_THAN_CONTRACT_UNITS", "No of Unit of contract" +
-                            " should be greater than or equal to measurement book cumulative value. Retry after changing the value provided for this sor : " + sorId);
-                } else {
-                    log.info("Validation Passed for the check applied on contract total noOfUnit and MB total cummulative value for a SOR linked in the estimate");
-                }
+                    }
+                    log.info("Measurement Book is in Workflow");
+                    if ((!sorIdToCumulativeValueMap.isEmpty() && !sorIdToContractNoOfUnitMap.isEmpty())) {
+                        if (sorIdToContractNoOfUnitMap.get(sorId).compareTo(sorIdToCumulativeValueMap.get(sorId)) < 0) {
+                            throw new CustomException("CUMULATIVE_VALUE_GREATER_THAN_CONTRACT_UNITS", "No of Unit of contract" +
+                                    " should be greater than or equal to measurement book cumulative value. Retry after changing the value provided for this sor : " + sorId);
+                        } else {
+                            log.info("Validation Passed for the check applied on contract total noOfUnit and MB total cummulative value for a SOR linked in the estimate");
+                        }
 
-            } else {
-                throw new CustomException("CUMMULATIVE_AND_CONTRACT_NO_OF_UNIT", "No value present in the respective maps");
-            }
-            if (!wfStatus.get(0).equalsIgnoreCase("APPROVED")) {
-                List<EstimateDetail> estimateDetailList = sorIdToEstimateDetailMap.getOrDefault(sorId, Collections.emptyList());
-                BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId).subtract(sorIdToCurrentValueMap.get(sorId));
-                BigDecimal totalNoOfUnit = BigDecimal.ZERO;
-                for (EstimateDetail estimatedDetail : estimateDetailList) {
-                    if (estimatedDetail.getIsDeduction()) {
-                        totalNoOfUnit = totalNoOfUnit.subtract(BigDecimal.valueOf(estimatedDetail.getNoOfunit()));
+                    }
+
+                    if (sorIdToEstimateNoOfUnitMap.get(sorId).compareTo(sorIdToCumulativeValueMap.get(sorId)) < 0) {
+                        throw new CustomException("CUMULATIVE_VALUE_GREATER_THAN_ESTIMATE_DETAIL_UNITS", "No of Unit of estimate " +
+                                "should be greater than or equal to measurement book cumulative value. Retry after changing  value for this sor : " + sorId);
+
                     } else {
-                        totalNoOfUnit = totalNoOfUnit.add(BigDecimal.valueOf(estimatedDetail.getNoOfunit()));
+                        log.info("Validation Passed for the check applied on estimate total noOfUnit and MB total cummulative value for a SOR linked in the estimate");
                     }
 
-                }
 
-                if (totalNoOfUnit.compareTo(totalValue) < 0) {
-                    throw new CustomException("CUMULATIVE_VALUE_GREATER_THAN_ESTIMATE_DETAIL_UNITS", "No of Unit of estimate " +
-                            "should be greater than or equal to measurement book cumulative value. Retry after changing  value for this sor : " + sorId);
-                }
+                });
 
+
+                log.info("Validated measurements");
             }
-
-        });
-
-
-        log.info("Validated measurements");
-    }else{
+        } else {
             log.info("No Measurement Book Present ");
         }
 
     }
 
-    private void validateRevisionLimit(List<Contract> contractFromDB) {
-        if (contractFromDB.get(0).getVersionNumber() != null &&
-                (contractFromDB.get(0).getVersionNumber() > config.getContractRevisionMaxLimit())) {
-            throw new CustomException("CONTRACT_REVISION_MAX_LIMIT_REACHED",
-                    "Contract cannot be revised more than max limit :: " + config.getContractRevisionMaxLimit());
-        }
+private void validateRevisionLimit(List<Contract> contractFromDB) {
+    if (contractFromDB.get(0).getVersionNumber() != null &&
+            (contractFromDB.get(0).getVersionNumber() > config.getContractRevisionMaxLimit())) {
+        throw new CustomException("CONTRACT_REVISION_MAX_LIMIT_REACHED",
+                "Contract cannot be revised more than max limit :: " + config.getContractRevisionMaxLimit());
     }
+}
 
     private void convertValueToDouble(List<Double> convertedValue, List<Object> measurementValue) {
         if (measurementValue != null) {
