@@ -145,9 +145,9 @@ public class EstimateServiceValidator {
         }
     }
 
-    private void validateContractAndMeasurementBook(EstimateRequest estimateRequest, Estimate estimateForRevision, Map<String, String> errorMap) {
+    private void validateContractAndMeasurementBook(EstimateRequest estimateRequest, Estimate previousEstimate, Map<String, String> errorMap) {
         log.info("EstimateServiceValidator::validateContractAndMeasurementBook");
-        Object contractResponse = contractUtils.getContractDetails(estimateRequest.getRequestInfo(), estimateForRevision);
+        Object contractResponse = contractUtils.getContractDetails(estimateRequest.getRequestInfo(), previousEstimate);
         final String jsonPathForContractNumber = "$.contracts.*.contractNumber";
         List<Object> contractNumbers = null;
         try {
@@ -162,14 +162,23 @@ public class EstimateServiceValidator {
             log.info("Contract found for the given estimate");
             String contractNumber = contractNumbers.get(0).toString();
             Object measurementResponse = measurementUtils.getMeasurementDetails(estimateRequest, contractNumber);
-            validateMeasurement(measurementResponse, estimateRequest,contractResponse, errorMap);
+            validateMeasurement(measurementResponse, estimateRequest,previousEstimate,contractResponse, errorMap);
         }
     }
 
-    private void validateMeasurement(Object measurementResponse, EstimateRequest estimateRequest, Object contractResponse, Map<String, String> errorMap) {
+    private void validateMeasurement(Object measurementResponse, EstimateRequest estimateRequest,Estimate previousEstimate, Object contractResponse, Map<String, String> errorMap) {
         log.info("EstimateServiceValidator::validateMeasurement");
         List<EstimateDetail> estimateDetail = estimateRequest.getEstimate().getEstimateDetails();
+        List<EstimateDetail> previousEstimateDetail = previousEstimate.getEstimateDetails();
+        HashMap<String,EstimateDetail> previousEstimateDetailMap = new HashMap<>();
 
+        previousEstimateDetail.forEach(estimateDetail1 -> previousEstimateDetailMap.put(estimateDetail1.getId(),estimateDetail1));
+        estimateDetail.forEach(estimateDetail1 -> {
+            if(estimateDetail1.getPreviousLineItemId() != null && previousEstimateDetailMap.containsKey(estimateDetail1.getPreviousLineItemId()) && estimateDetail1.isActive()){
+                previousEstimateDetailMap.remove(estimateDetail1.getPreviousLineItemId());
+            }
+        });
+        validateMeasurementCumulativeValueForDeletedItems(previousEstimateDetailMap, measurementResponse, contractResponse, errorMap);
         Map<String, List<EstimateDetail>> sorIdToEstimateDetailMap = new HashMap<>();
         Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
         Map<String, BigDecimal> sorIdToCurrentValueMap = new HashMap<>();
@@ -187,7 +196,7 @@ public class EstimateServiceValidator {
         if (!sorIdToEstimateDetailMap.isEmpty()) {
             for (Map.Entry<String, List<EstimateDetail>> entry : sorIdToEstimateDetailMap.entrySet()) {
                 String sorId = entry.getKey();
-                BigDecimal totalCurrentValueSorLevel=!sorIdToCurrentValueMap.isEmpty()?sorIdToCurrentValueMap.get(sorId):BigDecimal.ZERO;
+                BigDecimal totalCurrentValueSorLevel=!sorIdToCurrentValueMap.isEmpty()&&sorIdToCurrentValueMap.get(sorId)!=null ?sorIdToCurrentValueMap.get(sorId):BigDecimal.ZERO;
                 BigDecimal totalCummulativeValueSorLevel=!sorIdToCumulativeValueMap.isEmpty()?sorIdToCumulativeValueMap.get(sorId):BigDecimal.ZERO;
                 BigDecimal totalNoOfUnitForEstimateDetailSorLevel=!sorIdToEstimateDetailtNoOfUnitMap.isEmpty()?sorIdToEstimateDetailtNoOfUnitMap.get(sorId): BigDecimal.ZERO;
                 BigDecimal measuredCummulativeValue= totalCummulativeValueSorLevel.subtract(totalCurrentValueSorLevel);
@@ -214,6 +223,22 @@ public class EstimateServiceValidator {
             log.info("Sor Id To Cumulative Value Map created");
             sorIdToCumulativeValueMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(cumulativeValue), BigDecimal::add);
             fetchTotalCurrentValueOnSorLevel( measurementResponse, contractLineItemRefId, estimateDetail1, sorIdToCurrentValueMap);
+        }
+    }
+
+    private void validateMeasurementCumulativeValueForDeletedItems(HashMap<String,EstimateDetail> previousEstimateDetailMap, Object measurementResponse, Object contractResponse, Map<String, String> errorMap) {
+        String jsonPathForContractLineItemRef = "$.contracts[*].lineItems[?(@.estimateLineItemId=='{{}}')].contractLineItemRef";
+        String jsonPathForMeasurementCumulativeValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].cumulativeValue";
+        for(Map.Entry<String,EstimateDetail> entry : previousEstimateDetailMap.entrySet()){
+            String contractLineItemRefId = getContractLineItemRefId(contractResponse, jsonPathForContractLineItemRef, entry.getKey());
+            List<Double> measurementCumulativeValue = getMeasurementCumulativeValue(measurementResponse, jsonPathForMeasurementCumulativeValue, contractLineItemRefId);
+            if(measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()){
+                log.info("No measurement found for the given estimate");
+            }else{
+                if(measurementCumulativeValue.get(0) != 0){
+                    errorMap.put("INVALID_ESTIMATE_DETAIL", "Measurement book cumulative value should be zero for deleted items");
+                }
+            }
         }
     }
 
@@ -888,7 +913,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
     }
     private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request){
         Estimate estimate = request.getEstimate();
-        String id = estimate.getId();
+        String id = estimate.getOldUuid();
         List<String> ids = new ArrayList<>();
         ids.add(id);
         EstimateSearchCriteria searchCriteria = EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
