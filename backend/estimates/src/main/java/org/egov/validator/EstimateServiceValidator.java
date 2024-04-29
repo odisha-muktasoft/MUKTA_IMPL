@@ -913,10 +913,19 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
     }
     private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request){
         Estimate estimate = request.getEstimate();
-        String id = estimate.getOldUuid();
-        List<String> ids = new ArrayList<>();
-        ids.add(id);
-        EstimateSearchCriteria searchCriteria = EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
+        String id ;
+        EstimateSearchCriteria searchCriteria;
+        if(request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
+            id = estimate.getOldUuid();
+            searchCriteria =EstimateSearchCriteria.builder().oldUuid(id).tenantId(estimate.getTenantId()).build();
+        }else{
+            id=estimate.getId();
+            List<String> ids = new ArrayList<>();
+            ids.add(id);
+            searchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
+        }
+
+
         List<Estimate> estimateList = estimateRepository.getEstimate(searchCriteria);
         if (CollectionUtils.isEmpty(estimateList)) {
             throw new CustomException("INVALID_ESTIMATE_MODIFY", "The record that you are trying to update does not exists in the system");
