@@ -181,7 +181,7 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
   const uniqueBeneficiaryMap = new Map();
   allBeneficiaryDetails.forEach(beneficiary => {
     const { beneficiaryNumber, auditDetails } = beneficiary;
-    if (!uniqueBeneficiaryMap.has(beneficiaryNumber) || auditDetails.lastModifiedTime > uniqueBeneficiaryMap.get(beneficiaryNumber).auditDetails.lastModifiedTime) {
+    if (!uniqueBeneficiaryMap.has(beneficiaryNumber) || auditDetails.createdTime > uniqueBeneficiaryMap.get(beneficiaryNumber).auditDetails.createdTime) {
       uniqueBeneficiaryMap.set(beneficiaryNumber, beneficiary);
     }
   });
