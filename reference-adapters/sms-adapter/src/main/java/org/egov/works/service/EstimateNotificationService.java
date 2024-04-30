@@ -169,18 +169,18 @@ public class EstimateNotificationService {
         List<String> boundaries = new ArrayList<>();
         List<String> boundaryTypes = new ArrayList<>();
         try {
-            projectNumber = JsonPath.read(projectRes, PROJECT_NUMBER_CODE);
-            projectNames = JsonPath.read(projectRes, PROJECT_NAME_CODE);
-            boundaries = JsonPath.read(projectRes, PROJECT_BOUNDARY_CODE);
-            boundaryTypes = JsonPath.read(projectRes, PROJECT_BOUNDARY_TYPE_CODE);
+            projectNumber = JsonPath.read(projectRes, PROJECT_NUMBER);
+            projectNames = JsonPath.read(projectRes, PROJECT_NAME);
+            boundaries = JsonPath.read(projectRes, PROJECT_BOUNDARY);
+            boundaryTypes = JsonPath.read(projectRes, PROJECT_BOUNDARY_TYPE);
 
         } catch (Exception e) {
-            throw new CustomException("PARSING_ERROR", "Failed to parse HRMS response");
+            throw new CustomException("PARSING_ERROR", "Failed to parse project response");
         }
 
         projectDetails.put(PROJECT_NAME, projectNames.get(0));
-        projectDetails.put("boundary", boundaries.get(0));
-        projectDetails.put("boundaryType", boundaryTypes.get(0));
+        projectDetails.put(PROJECT_BOUNDARY, boundaries.get(0));
+        projectDetails.put(PROJECT_BOUNDARY_TYPE, boundaryTypes.get(0));
         projectDetails.put(PROJECT_NUMBER, projectNumber.get(0));
 
         return projectDetails;

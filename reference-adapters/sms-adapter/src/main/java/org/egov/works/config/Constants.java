@@ -67,6 +67,8 @@ public class Constants {
     public static final String MOBILE_NUMBERS = "mobileNumbers";
     public static final String MOBILE_NUMBER = "mobileNumber";
     public static final String PROJECT_NUMBER = "projectNumber";
+    public static final String PROJECT_BOUNDARY = "boundary";
+    public static final String PROJECT_BOUNDARY_TYPE = "boundaryType";
     public static final String PROJECT_ID = "projectId";
     public static final String CONTRACT_REVISION_SEND_BACK_LOCALIZATION_CODE = "TIME_EXTENSION_SEND_BACK_TO_CBO";
     public static final String CONTRACT_REVISION_APPROVE_LOCALIZATION_CODE = "TIME_EXTENSION_APPROVE";
