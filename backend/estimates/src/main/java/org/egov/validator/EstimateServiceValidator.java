@@ -917,7 +917,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         EstimateSearchCriteria searchCriteria;
         if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
             id = estimate.getOldUuid();
-            searchCriteria =EstimateSearchCriteria.builder().oldUuid(id).tenantId(estimate.getTenantId()).build();
+            searchCriteria =EstimateSearchCriteria.builder().oldUuid(id).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
         }else{
             id=estimate.getId();
             List<String> ids = new ArrayList<>();
