@@ -913,14 +913,15 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
     }
     private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request){
         Estimate estimate = request.getEstimate();
-        String id ;
+        List<String> ids = new ArrayList<>();
+        String id;
         EstimateSearchCriteria searchCriteria;
         if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
-            id = estimate.getOldUuid();
-            searchCriteria =EstimateSearchCriteria.builder().oldUuid(id).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
+           id = estimate.getOldUuid();
+            ids.add(id);
+            searchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
         }else{
-            id=estimate.getId();
-            List<String> ids = new ArrayList<>();
+             id = estimate.getId();
             ids.add(id);
             searchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
         }
