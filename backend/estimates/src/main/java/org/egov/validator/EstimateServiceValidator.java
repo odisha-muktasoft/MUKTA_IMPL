@@ -917,21 +917,20 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         String id;
         EstimateSearchCriteria previousEstimateSearchCriteria=new EstimateSearchCriteria();
         EstimateSearchCriteria currentEstimateSearchCriteria;
+        Boolean isPreviousEstimateSearch = Boolean.FALSE;
         if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
            id = estimate.getOldUuid();
             ids.add(id);
             previousEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
+            isPreviousEstimateSearch=Boolean.TRUE;
         }
         id = estimate.getId();
         ids.add(id);
         currentEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
 
-
-
-
         List<Estimate> previousEstimateList = estimateRepository.getEstimate(previousEstimateSearchCriteria);
         List<Estimate> currentEstimateList=estimateRepository.getEstimate(currentEstimateSearchCriteria);
-        if (CollectionUtils.isEmpty(previousEstimateList)) {
+        if (isPreviousEstimateSearch && CollectionUtils.isEmpty(previousEstimateList)) {
             throw new CustomException("NO_ORIGINAL_ESTIMATE_FOUND", "The record that you are trying to update does not have any existing original estimate in the system");
         }
         if(CollectionUtils.isEmpty(currentEstimateList)){
@@ -962,7 +961,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
             estimate.setAuditDetails(currentEstimate.getAuditDetails());
         }
 
-        return previousEstimateFromDB;
+        return request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())? previousEstimateFromDB:currentEstimate;
     }
 
     private void validatePreviousEstimateForUpdate(Estimate estimate, Estimate estimateFromDB) {
