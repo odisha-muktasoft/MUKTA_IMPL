@@ -896,9 +896,9 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         if (StringUtils.isBlank(id)) {
             errorMap.put("ESTIMATE_ID", "Estimate id is mandatory");
         } else {
-            estimateForRevision = validateEstimateFromDBAndFetchPreviousEstimate(request);
+            estimateForRevision = validateEstimateFromDBAndFetchPreviousEstimate(request,errorMap);
         }
-        validateRequestOnMDMSV1AndV2(request,errorMap,false,estimateForRevision);
+        //validateRequestOnMDMSV1AndV2(request,errorMap,false,estimateForRevision);
         validateProjectId(request);
         validateNoOfUnit(estimateDetails);
 
@@ -911,7 +911,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
             throw new CustomException(errorMap);
 
     }
-    private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request){
+    private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request, Map<String, String> errorMap){
         Estimate estimate = request.getEstimate();
         List<String> ids = new ArrayList<>();
         String id;
@@ -960,6 +960,8 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         if (ObjectUtils.isEmpty(estimate.getAuditDetails())) {
             estimate.setAuditDetails(currentEstimate.getAuditDetails());
         }
+
+        validateRequestOnMDMSV1AndV2(request,errorMap,false,currentEstimate);
 
         return request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())? previousEstimateFromDB:currentEstimate;
     }
