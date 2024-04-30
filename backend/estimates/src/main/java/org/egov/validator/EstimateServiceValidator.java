@@ -963,7 +963,7 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
 
         validateRequestOnMDMSV1AndV2(request,errorMap,false,currentEstimate);
 
-        return request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())? previousEstimateFromDB:currentEstimate;
+        return (request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService()))? previousEstimateFromDB:currentEstimate;
     }
 
     private void validatePreviousEstimateForUpdate(Estimate estimate, Estimate estimateFromDB) {
