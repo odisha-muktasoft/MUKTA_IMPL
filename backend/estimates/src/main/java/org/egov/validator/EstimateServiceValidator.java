@@ -939,7 +939,10 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         //check projectId is same or not, if project Id is not same throw validation error
         Estimate previousEstimateFromDB = previousEstimateList.get(0);
         Estimate currentEstimate=currentEstimateList.get(0);
-        if (!previousEstimateFromDB.getProjectId().equals(estimate.getProjectId())) {
+        if (isPreviousEstimateSearch && !previousEstimateFromDB.getProjectId().equals(estimate.getProjectId())) {
+            throw new CustomException("INVALID_PROJECT_ID", "The project id is different than that is linked with given estimate id : " + id);
+        }
+        if (!currentEstimate.getProjectId().equals(estimate.getProjectId())) {
             throw new CustomException("INVALID_PROJECT_ID", "The project id is different than that is linked with given estimate id : " + id);
         }
         if(Boolean.TRUE.equals(estimateServiceUtil.isRevisionEstimate(request))){
