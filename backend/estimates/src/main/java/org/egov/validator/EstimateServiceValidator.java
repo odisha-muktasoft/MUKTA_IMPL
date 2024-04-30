@@ -915,25 +915,32 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         Estimate estimate = request.getEstimate();
         List<String> ids = new ArrayList<>();
         String id;
-        EstimateSearchCriteria searchCriteria;
+        EstimateSearchCriteria previousEstimateSearchCriteria=new EstimateSearchCriteria();
+        EstimateSearchCriteria currentEstimateSearchCriteria;
         if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
            id = estimate.getOldUuid();
             ids.add(id);
-            searchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
-        }else{
-             id = estimate.getId();
-            ids.add(id);
-            searchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
+            previousEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
         }
+        id = estimate.getId();
+        ids.add(id);
+        currentEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
 
 
-        List<Estimate> estimateList = estimateRepository.getEstimate(searchCriteria);
-        if (CollectionUtils.isEmpty(estimateList)) {
+
+
+        List<Estimate> previousEstimateList = estimateRepository.getEstimate(previousEstimateSearchCriteria);
+        List<Estimate> currentEstimateList=estimateRepository.getEstimate(currentEstimateSearchCriteria);
+        if (CollectionUtils.isEmpty(previousEstimateList)) {
+            throw new CustomException("NO_ORIGINAL_ESTIMATE_FOUND", "The record that you are trying to update does not have any existing original estimate in the system");
+        }
+        if(CollectionUtils.isEmpty(currentEstimateList)){
             throw new CustomException("INVALID_ESTIMATE_MODIFY", "The record that you are trying to update does not exists in the system");
         }
         //check projectId is same or not, if project Id is not same throw validation error
-        Estimate estimateFromDB = estimateList.get(0);
-        if (!estimateFromDB.getProjectId().equals(estimate.getProjectId())) {
+        Estimate previousEstimateFromDB = previousEstimateList.get(0);
+        Estimate currentEstimate=currentEstimateList.get(0);
+        if (!previousEstimateFromDB.getProjectId().equals(estimate.getProjectId())) {
             throw new CustomException("INVALID_PROJECT_ID", "The project id is different than that is linked with given estimate id : " + id);
         }
         if(Boolean.TRUE.equals(estimateServiceUtil.isRevisionEstimate(request))){
@@ -943,19 +950,19 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
             if(estimate.getEstimateNumber() == null){
                 throw new CustomException("INVALID_ESTIMATE_NUMBER", "Estimate number is mandatory for revision estimate");
             }
-            if(!estimate.getRevisionNumber().equals(estimateFromDB.getRevisionNumber())){
+            if(!estimate.getRevisionNumber().equals(currentEstimate.getRevisionNumber())){
                 throw new CustomException("INVALID_REVISION_NUMBER", "revisionNumber is not valid");
             }
-            if(!estimate.getEstimateNumber().equals(estimateFromDB.getEstimateNumber())){
+            if(!estimate.getEstimateNumber().equals(previousEstimateFromDB.getEstimateNumber())){
                 throw new CustomException("INVALID_ESTIMATE_NUMBER", "estimateNumber is not valid");
             }
-            validatePreviousEstimateForUpdate(estimate, estimateFromDB);
+            validatePreviousEstimateForUpdate(estimate, currentEstimate);
         }
         if (ObjectUtils.isEmpty(estimate.getAuditDetails())) {
-            estimate.setAuditDetails(estimateFromDB.getAuditDetails());
+            estimate.setAuditDetails(currentEstimate.getAuditDetails());
         }
 
-        return estimateFromDB;
+        return previousEstimateFromDB;
     }
 
     private void validatePreviousEstimateForUpdate(Estimate estimate, Estimate estimateFromDB) {
