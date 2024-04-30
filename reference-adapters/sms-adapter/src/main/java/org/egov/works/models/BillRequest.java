@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import digit.models.coremodels.Workflow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
