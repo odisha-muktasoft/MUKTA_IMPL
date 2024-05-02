@@ -102,12 +102,17 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                       g,
                                       widget.contractNumber,
                                       widget.mbNumber,
+                                      (g != null &&
+                                      (g.first.nextActions != null &&
+                                          g.first.nextActions!.isEmpty)) ? false : true
                                     );
                                   },
                                   totalAmountText: t.translate(
                                       i18.measurementBook.totalMbAmount),
                                   showAction:
-                                      (g != null && g.isEmpty) ? false : true,
+                                      (g != null &&
+                                      (g.first.nextActions != null &&
+                                          g.first.nextActions!.isEmpty)) ? false : true,
                                 );
                               },
                             );
@@ -194,8 +199,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                         musterRollNo: k[adjustedIndex]
                                             .musterRollNumber
                                             .toString(),
-                                        sentBackCode: "PENDINGFORCORRECTION" ??
-                                            Constants.sentBack,
+                                        sentBackCode: "PENDINGFORCORRECTION",
                                       ),
                                     );
                                   },
@@ -231,6 +235,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
     List<ProcessInstances>? processInstances,
     String contractNumber,
     String mbNumber,
+    bool showBtn,
   ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -358,6 +363,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
               const SizedBox(
                 height: 15,
               ),
+              showBtn?
               DigitElevatedButton(
                   child: Text(t.translate(i18.measurementBook.mbAction)),
                   onPressed: () {
@@ -371,7 +377,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         type: widget.type,
                       ),
                     );
-                  }),
+                  }):
+                 const  SizedBox.shrink()
+                  ,
             ],
           ),
         );
