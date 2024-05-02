@@ -84,7 +84,6 @@ class _MBDetailPageState extends State<MBDetailPage>
           );
     } else {
       context.read<MusterGetWorkflowBloc>().add(
-            //hard coded
             FetchMBWorkFlowEvent(
                 tenantId: widget.tenantId!, mbNumber: widget.mbNumber),
           );
@@ -128,9 +127,9 @@ class _MBDetailPageState extends State<MBDetailPage>
               loaded: (mbWorkFlow) {
                 final g = mbWorkFlow.musterWorkFlowModel?.processInstances;
                 if (g != null &&
-                    g?.first.nextActions != null &&
+                    g.first.nextActions != null &&
                     g.first.nextActions!.isNotEmpty) {
-                  final data = g?.first.nextActions!.first.roles?.join(',');
+                  final data = g.first.nextActions!.first.roles?.join(',');
 
                   context.read<EmpHRMSBloc>().add(
                         EmpHRMSLoadBlocEvent(
@@ -171,7 +170,6 @@ class _MBDetailPageState extends State<MBDetailPage>
             estimateState.maybeMap(
               orElse: () => null,
               loaded: (value) {
-                print("bubu estimate");
                 print(value.estimateDetailResponse?.estimates!.first.status!);
                 setState(() {
                   estimateStatus =
@@ -249,24 +247,26 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   .toString(),
                               openButtonSheet: () {
                                 _openBottomSheet(
-                                  t,
-                                  context,
-                                  value.data.first.totalSorAmount!,
-                                  value.data.first.totalNorSorAmount!,
-                                  value.data.first.totalAmount!,
-                                  g,
-                                  widget.contractNumber,
-                                  widget.mbNumber,
-                                  widget.type,
-                                  null,
-                                  (g != null &&
-                                          (g.first.nextActions != null &&
-                                              g.first.nextActions!.isEmpty))
-                                      ? false
-                                      : true,
-                                  workorderStatus,
-                                  estimateStatus,
-                                );
+                                    t,
+                                    context,
+                                    value.data.first.totalSorAmount!,
+                                    value.data.first.totalNorSorAmount!,
+                                    value.data.first.totalAmount!,
+                                    g,
+                                    widget.contractNumber,
+                                    widget.mbNumber,
+                                    widget.type,
+                                    null,
+                                    (g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? false
+                                        : true,
+                                    workorderStatus,
+                                    estimateStatus,
+                                    (value.data.length >= 2
+                                        ? value.data[1].wfStatus == "APPROVED"
+                                        : false));
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
@@ -296,8 +296,11 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                             return FloatActionCard(
                               actions: () {
-                                if (workorderStatus == "ACTIVE" &&
-                                    estimateStatus != "INWORKFLOW") {
+                                if ((workorderStatus == "ACTIVE" &&
+                                        estimateStatus != "INWORKFLOW") &&
+                                    (value.data.length >= 2
+                                        ? value.data[1].wfStatus == "APPROVED"
+                                        : false)) {
                                   DigitActionDialog.show(
                                     context,
                                     widget: CommonButtonCard(
@@ -314,12 +317,22 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     show = "time extension";
                                   } else if (estimateStatus == "INWORKFLOW") {
                                     show = "estimate revision";
+                                  } else {
+                                    show = "existing MB";
                                   }
                                   Notifiers.getToastMessage(
                                       context,
                                       "MB can not be created as the $show in progress",
                                       'ERROR');
+
+                                  // if (value.data[1].wfStatus != "APPROVED") {
+                                  //   Notifiers.getToastMessage(
+                                  //       context,
+                                  //       "MB can not be created as the existing MB in progress",
+                                  //       'ERROR');
+                                  // }
                                 }
+
                                 // DigitActionDialog.show(
                                 //   context,
                                 //   widget: CommonButtonCard(
@@ -338,22 +351,24 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   .toString(),
                               openButtonSheet: () {
                                 _openBottomSheet(
-                                  t,
-                                  context,
-                                  value.data.first.totalSorAmount!,
-                                  value.data.first.totalNorSorAmount!,
-                                  value.data.first.totalAmount!,
-                                  g,
-                                  widget.contractNumber,
-                                  widget.mbNumber,
-                                  widget.type,
-                                  bk,
-                                  (bk != null && (bk != null && bk.isEmpty))
-                                      ? false
-                                      : true,
-                                  workorderStatus,
-                                  estimateStatus,
-                                );
+                                    t,
+                                    context,
+                                    value.data.first.totalSorAmount!,
+                                    value.data.first.totalNorSorAmount!,
+                                    value.data.first.totalAmount!,
+                                    g,
+                                    widget.contractNumber,
+                                    widget.mbNumber,
+                                    widget.type,
+                                    bk,
+                                    (bk != null && (bk != null && bk.isEmpty))
+                                        ? false
+                                        : true,
+                                    workorderStatus,
+                                    estimateStatus,
+                                    (value.data.length >= 2
+                                        ? value.data[1].wfStatus == "APPROVED"
+                                        : false));
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
@@ -1062,6 +1077,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     bool showBtn,
     String workorderStatus,
     String estimateStatus,
+    bool previousMBStatus,
   ) {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -1197,8 +1213,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                       child: Text(t.translate(i18.measurementBook.mbAction)),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        if (workorderStatus == "ACTIVE" &&
-                            estimateStatus != "INWORKFLOW") {
+                        if ((workorderStatus == "ACTIVE" &&
+                                estimateStatus != "INWORKFLOW") &&
+                            previousMBStatus) {
                           DigitActionDialog.show(
                             context,
                             widget: CommonButtonCard(
@@ -1215,6 +1232,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                             show = "time extension";
                           } else if (estimateStatus == "INWORKFLOW") {
                             show = "estimate revision";
+                          } else {
+                            show = "existing MB";
                           }
                           Notifiers.getToastMessage(
                               context,

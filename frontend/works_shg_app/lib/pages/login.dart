@@ -122,7 +122,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     ),
                   ]),
               AnimatedContainer(
-                height: _tabController.index == 0 ? 120 : 320,
+                height: _tabController.index == 0 ? 120 : 325,
                 duration: Duration(
                     milliseconds: _tabController.index == 0 ? 100 : 100),
                 child: TabBarView(
@@ -222,23 +222,24 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                       },
                       child: DigitElevatedButton(
                         onPressed: () {
-                          if (userNameController.text!="" && userPasswordController.text!="" && selectTenantId!="" ) {
+                          if (userNameController.text != "" &&
+                              userPasswordController.text != "" &&
+                              selectTenantId != "") {
                             context.read<AuthBloc>().add(
-                                AuthLoginEvent(
-                                  userId: userNameController.text,
-                                  password: userPasswordController.text,
-                                  roleType: RoleType.employee,
-                                  tenantId: selectTenantId.toString(),
-                                ),
-                              );
+                                  AuthLoginEvent(
+                                    userId: userNameController.text,
+                                    password: userPasswordController.text,
+                                    roleType: RoleType.employee,
+                                    tenantId: selectTenantId.toString(),
+                                  ),
+                                );
                           } else {
                             Notifiers.getToastMessage(
-                                  context,
-                                  AppLocalizations.of(context)
-                                      .translate(i18.common.allFieldsMandatory),
-                                  'ERROR');
+                                context,
+                                AppLocalizations.of(context)
+                                    .translate(i18.common.allFieldsMandatory),
+                                'ERROR');
                           }
-                          
                         },
                         child: Center(
                           child: Text(AppLocalizations.of(loginContext)
@@ -367,7 +368,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       child: Column(
         children: [
           DigitTextField(
-            label: 'User Name*',
+            label:
+                '${AppLocalizations.of(context).translate(i18.login.loginUserName)}*',
             controller: userName,
             isRequired: true,
             validator: (val) {
@@ -379,7 +381,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             onChange: (value) {},
           ),
           DigitTextField(
-            label: 'Password*',
+            label:
+                '${AppLocalizations.of(context).translate(i18.login.loginPassword)}*',
             controller: userpassword,
             isRequired: true,
 
@@ -399,14 +402,13 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                 });
               },
               value: null,
-              label: "City *",
+              label: "${t.translate(i18.common.city)} *",
               menuItems: data!.initMdmsModel!.tenant!.tenantListModel!,
               valueMapper: (value) {
-                // return value!.code!;
                 return t.translate(Conversion.convertToTenant(value!.code!));
               }),
           DigitIconButton(
-            iconText: "Forgot Password?",
+            iconText: t.translate(i18.login.forgotPassword),
             onPressed: () {
               forgotPassword();
             },
@@ -415,6 +417,4 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
- 
 }

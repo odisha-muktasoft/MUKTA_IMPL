@@ -205,7 +205,7 @@ class MeasurementDetailBloc
             event.filteredMeasurementMeasureId!,
             event.measurementLineIndex!,
           );
-          print("bubul$target");
+          print("money: $target");
           print(event.sorId);
           print(event.type);
 
