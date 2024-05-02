@@ -185,7 +185,7 @@ public class EstimateServiceValidator {
         Map<String, BigDecimal> sorIdToEstimateDetailtNoOfUnitMap = new HashMap<>();
         estimateDetail.forEach(estimateDetail1 -> {
 
-            if (!estimateDetail1.getCategory().equals(OVERHEAD_CODE) && estimateDetail1.getPreviousLineItemId() != null) {
+            if (!estimateDetail1.getCategory().equals(OVERHEAD_CODE) ) {
                 sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail1.getSorId(), k -> new ArrayList<>()).add(estimateDetail1);
                 Double noOfUnit=estimateDetail1.getIsDeduction()?estimateDetail1.getNoOfunit() * -1 :estimateDetail1.getNoOfunit();
                 sorIdToEstimateDetailtNoOfUnitMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(noOfUnit), BigDecimal::add);
@@ -197,7 +197,7 @@ public class EstimateServiceValidator {
             for (Map.Entry<String, List<EstimateDetail>> entry : sorIdToEstimateDetailMap.entrySet()) {
                 String sorId = entry.getKey();
                 BigDecimal totalCurrentValueSorLevel=!sorIdToCurrentValueMap.isEmpty()&&sorIdToCurrentValueMap.get(sorId)!=null ?sorIdToCurrentValueMap.get(sorId):BigDecimal.ZERO;
-                BigDecimal totalCummulativeValueSorLevel=!sorIdToCumulativeValueMap.isEmpty()?sorIdToCumulativeValueMap.get(sorId):BigDecimal.ZERO;
+                BigDecimal totalCummulativeValueSorLevel=!sorIdToCumulativeValueMap.isEmpty()&&sorIdToCumulativeValueMap.get(sorId)!=null?sorIdToCumulativeValueMap.get(sorId):BigDecimal.ZERO;
                 BigDecimal totalNoOfUnitForEstimateDetailSorLevel=!sorIdToEstimateDetailtNoOfUnitMap.isEmpty()?sorIdToEstimateDetailtNoOfUnitMap.get(sorId): BigDecimal.ZERO;
                 BigDecimal measuredCummulativeValue= totalCummulativeValueSorLevel.subtract(totalCurrentValueSorLevel);
                 if (totalNoOfUnitForEstimateDetailSorLevel.compareTo(measuredCummulativeValue)<0) {
