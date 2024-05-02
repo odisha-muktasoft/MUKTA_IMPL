@@ -210,6 +210,8 @@ public class EstimateServiceValidator {
     private void fetchCummulativeAndCurrentValueOnSORLevel(EstimateDetail estimateDetail1, Object measurementResponse, Object contractResponse, Map<String, BigDecimal> sorIdToCumulativeValueMap,
                                                       Map<String, BigDecimal> sorIdToCurrentValueMap ) {
         String jsonPathForContractLineItemRef = "$.contracts[*].lineItems[?(@.estimateLineItemId=='{{}}')].contractLineItemRef";
+        if(estimateDetail1.getPreviousLineItemId()!=null){
+
         String contractLineItemRefId = getContractLineItemRefId(contractResponse, jsonPathForContractLineItemRef, estimateDetail1.getPreviousLineItemId());
 
         String jsonPathForMeasurementCumulativeValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].cumulativeValue";
@@ -223,6 +225,9 @@ public class EstimateServiceValidator {
             log.info("Sor Id To Cumulative Value Map created");
             sorIdToCumulativeValueMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(cumulativeValue), BigDecimal::add);
             fetchTotalCurrentValueOnSorLevel( measurementResponse, contractLineItemRefId, estimateDetail1, sorIdToCurrentValueMap);
+        }
+        }else{
+            log.info("New Line Item added in  Estimate");
         }
     }
 
