@@ -197,9 +197,10 @@ public class OrganisationEnrichmentService {
             log.info("Inside EnrichOrgCreateAuditDetails method");
             List<Organisation> orgList = organisationUtil.searchExistingOrganisation(requestInfo,organisation);
             if(orgList != null && !orgList.isEmpty()) {
-                AuditDetails createdAuditDetails = organisation.getAuditDetails();
+                AuditDetails createdAuditDetails = new AuditDetails();
                 createdAuditDetails.setCreatedBy(orgList.get(0).getAuditDetails().getCreatedBy());
                 createdAuditDetails.setCreatedTime(orgList.get(0).getAuditDetails().getCreatedTime());
+                organisation.setAuditDetails(createdAuditDetails);
             }else{
                 log.error("No Org Found with this orgNumber::{}", organisation.getOrgNumber());
             }
