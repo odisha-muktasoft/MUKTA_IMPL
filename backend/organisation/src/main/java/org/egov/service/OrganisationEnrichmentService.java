@@ -26,8 +26,7 @@ public class OrganisationEnrichmentService {
 
     private final Configuration config;
 
-    @Autowired
-    private OrganisationService organisationService;
+
 
     @Autowired
     public OrganisationEnrichmentService(OrganisationUtil organisationUtil, IdgenUtil idgenUtil, Configuration config) {
@@ -194,16 +193,18 @@ public class OrganisationEnrichmentService {
         }
     }
 
-    private void enrichOrgCreateAuditDetails(RequestInfo requestInfo, Organisation organisation){
+    public void enrichOrgCreateAuditDetails( RequestInfo requestInfo,Organisation organisation){
+            log.info("Inside EnrichOrgCreateAuditDetails method");
+            List<Organisation> orgList = organisationUtil.searchExistingOrganisation(requestInfo,organisation);
+            if(orgList != null && !orgList.isEmpty()) {
+                AuditDetails createdAuditDetails = organisation.getAuditDetails();
+                createdAuditDetails.setCreatedBy(orgList.get(0).getAuditDetails().getCreatedBy());
+                createdAuditDetails.setCreatedTime(orgList.get(0).getAuditDetails().getCreatedTime());
+            }else{
+                log.error("No Org Found with this orgNumber::{}", organisation.getOrgNumber());
+            }
 
-        OrgSearchCriteria orgSearchCriteria = OrgSearchCriteria.builder().tenantId(requestInfo.getUserInfo().getTenantId()).orgNumber(organisation.getOrgNumber()).build();
-        OrgSearchRequest orgSearchRequest = OrgSearchRequest.builder().requestInfo(requestInfo).searchCriteria(orgSearchCriteria).build();
-        List<Organisation> orgList = organisationService.searchOrganisation(orgSearchRequest);
-        if(orgList != null && !orgList.isEmpty()) {
-            AuditDetails createdAuditDetails = organisation.getAuditDetails();
-            createdAuditDetails.setCreatedBy(orgList.get(0).getAuditDetails().getCreatedBy());
-            createdAuditDetails.setCreatedTime(orgList.get(0).getAuditDetails().getCreatedTime());
-        }
+
 
     }
 
