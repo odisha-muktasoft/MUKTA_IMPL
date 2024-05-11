@@ -193,6 +193,7 @@ public class PurchaseBillGeneratorService {
         List<LineItem> lineItems = billDetail.getLineItems();
         String tenantId = billDetail.getTenantId();
 
+
         BigDecimal expense = calculateTotalExpense(lineItems, headCodes);
         setLineItemsInactive(billDetail);
         BigDecimal deduction = calculateTotalDeduction(lineItems, headCodes, applicableCharges, tenantId, expense,billDetail);
@@ -209,13 +210,21 @@ public class PurchaseBillGeneratorService {
         BigDecimal expense = BigDecimal.ZERO;
         List<LineItem> lineItemWithZeroAmount = new ArrayList<>();
         for(LineItem lineItem : lineItems) {
-            String headCode = lineItem.getHeadCode();
+
             BigDecimal amount = lineItem.getAmount().setScale(0, RoundingMode.HALF_UP);
             lineItem.setAmount(amount);
+            String headCode = lineItem.getHeadCode();
+
             String category = getHeadCodeCategory(headCode,headCodes);
-            if(category != null && category.equalsIgnoreCase(EXPENSE_CONSTANT) && lineItem.getStatus().equals(LINEITEM_STATUS_ACTIVE)) {
+//            if(category != null && category.equalsIgnoreCase(EXPENSE_CONSTANT) && lineItem.getStatus().equals(LINEITEM_STATUS_ACTIVE)) {
+//                expense = expense.add(amount);
+//            }
+
+            if (category != null && category.equalsIgnoreCase(EXPENSE_CONSTANT) &&
+                    lineItem.getStatus().equals(LINEITEM_STATUS_ACTIVE) && headCode.equals("MC")) {
                 expense = expense.add(amount);
             }
+
             if(amount.compareTo(BigDecimal.ZERO) <= 0){
                 lineItemWithZeroAmount.add(lineItem);
             }
