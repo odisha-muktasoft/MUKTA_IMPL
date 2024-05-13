@@ -217,7 +217,7 @@ export const BillsSearch = {
     const orgData = orgResponse?.organisations?.[0];
 
     //lineItems
-    const lineItems = billData?.billDetails?.[0]?.payableLineItems?.filter((ob) => ob?.status === "ACTIVE");
+    const lineItems = billData?.billDetails?.[0]?.lineItems;
 
     let mcDetails = {};
     let gstDetails = {};
