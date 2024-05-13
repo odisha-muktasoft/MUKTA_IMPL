@@ -11,6 +11,7 @@ import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.request.User;
 import org.egov.digit.expense.calculator.config.ExpenseCalculatorConfiguration;
 import org.egov.digit.expense.calculator.repository.ServiceRequestRepository;
+import org.egov.digit.expense.calculator.web.models.Workflow;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,6 @@ import digit.models.coremodels.ProcessInstanceRequest;
 import digit.models.coremodels.ProcessInstanceResponse;
 import digit.models.coremodels.RequestInfoWrapper;
 import digit.models.coremodels.State;
-import digit.models.coremodels.Workflow;
 
 @Service
 public class WorkflowUtil {
@@ -80,7 +80,7 @@ public class WorkflowUtil {
 	 * @return
 	 */
 	public String updateWorkflowStatus(RequestInfo requestInfo, String tenantId, String businessId,
-			String businessServiceCode, Workflow workflow, String wfModuleName) {
+									   String businessServiceCode, Workflow workflow, String wfModuleName) {
 		ProcessInstance processInstance = getProcessInstanceForWorkflow(requestInfo, tenantId, businessId,
 				businessServiceCode, workflow, wfModuleName);
 		ProcessInstanceRequest workflowRequest = new ProcessInstanceRequest(requestInfo,
@@ -127,13 +127,13 @@ public class WorkflowUtil {
 		processInstance.setModuleName(wfModuleName);
 		processInstance.setTenantId(tenantId);
 		processInstance.setBusinessService(configs.getPurchaseBusinessService());
-		processInstance.setDocuments(workflow.getVerificationDocuments());
-		processInstance.setComment(workflow.getComments());
+		processInstance.setDocuments(workflow.getDocuments());
+		processInstance.setComment(workflow.getComment());
 
-		if (!CollectionUtils.isEmpty(workflow.getAssignes())) {
+		if (!CollectionUtils.isEmpty(workflow.getAssignees())) {
 			List<User> users = new ArrayList<>();
 
-			workflow.getAssignes().forEach(uuid -> {
+			workflow.getAssignees().forEach(uuid -> {
 				User user = new User();
 				user.setUuid(uuid);
 				users.add(user);
@@ -162,8 +162,8 @@ public class WorkflowUtil {
 				userIds = processInstance.getAssignes().stream().map(User::getUuid).collect(Collectors.toList());
 			}
 
-			Workflow workflow = Workflow.builder().action(processInstance.getAction()).assignes(userIds)
-					.comments(processInstance.getComment()).verificationDocuments(processInstance.getDocuments())
+			Workflow workflow = Workflow.builder().action(processInstance.getAction()).assignees(userIds)
+					.comment(processInstance.getComment()).documents(processInstance.getDocuments())
 					.build();
 
 			businessIdToWorkflow.put(processInstance.getBusinessId(), workflow);
