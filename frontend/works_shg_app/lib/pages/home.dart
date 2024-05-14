@@ -11,11 +11,11 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/ButtonLink.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 
-import '../blocs/app_initilization/app_initilization.dart';
 import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/organisation/org_search_bloc.dart';
+import '../models/app_config/app_config_model.dart';
 import '../models/organisation/organisation_model.dart';
 import '../models/screen_config/home_screen_config.dart';
 import '../utils/constants.dart';
@@ -53,187 +53,197 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 0,
-          title: BlocBuilder<ORGSearchBloc, ORGSearchState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                  orElse: () => Container(),
-                  loaded: (OrganisationListModel? organisationListModel) {
-                    return const AppBarLogo();
-                  });
-            },
-          ),
-        ),
-        drawer: const DrawerWrapper(Drawer(child: SideBar())),
-        body: BlocBuilder<LocalizationBloc, LocalizationState>(
-            builder: (context, localState) {
-          return BlocListener<ORGSearchBloc, ORGSearchState>(
-              listener: (context, orgState) {
-            orgState.maybeWhen(
-                orElse: () => false,
-                error: (String? error) {
-                  Notifiers.getToastMessage(context,
-                      t.translate(i18.common.noOrgLinkedWithMob), 'ERROR');
-                  context.read<AuthBloc>().add(const AuthLogoutEvent());
-                },
-                loaded: (OrganisationListModel? organisationListModel) async {
-                  if ((organisationListModel?.organisations ?? []).isEmpty) {
-                    Notifiers.getToastMessage(context,
-                        t.translate(i18.common.noOrgLinkedWithMob), 'ERROR');
-                    context.read<AuthBloc>().add(const AuthLogoutEvent());
-                  } else {
-                    var currLoc = await GlobalVariables.selectedLocale();
-                    context.read<LocalizationBloc>().add(
-                          LocalizationEvent.onLoadLocalization(
-                              module: CommonMethods.getLocaleModules(),
-                              tenantId: GlobalVariables.globalConfigObject!
-                                  .globalConfigs!.stateTenantId
-                                  .toString(),
-                              locale: currLoc.toString()),
-                        );
-                    context.read<AppInitializationBloc>().add(
-                        AppInitializationSetupEvent(
-                            selectedLang: currLoc.toString()));
-                    await AppLocalizations(
-                      Locale(currLoc.toString().split('_').first,
-                          currLoc.toString().split('_').last),
-                    ).load();
-                  }
-                });
-          }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                  builder: (context, state) {
+      appBar: AppBar(
+        titleSpacing: 0,
+        title: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+          builder: (context, state) {
             return state.maybeWhen(
                 orElse: () => Container(),
-                loading: () => shg_loader.Loaders.circularLoader(context),
                 loaded: (OrganisationListModel? organisationListModel) {
-                  return ScrollableContent(
-                    footer: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: PoweredByDigit(),
-                    ),
-                    children: [
-                      DigitCard(
-                        onPressed: null,
-                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                        child: Align(
-                            alignment: Alignment.topCenter,
-                            child: BlocBuilder<HomeScreenBloc,
-                                HomeScreenBlocState>(
-                              builder: (context, config) {
-                                return config.maybeWhen(
-                                    orElse: () => Container(),
-                                    loading: () =>
-                                        shg_loader.Loaders.circularLoader(
-                                            context),
-                                    loaded: (List<CBOHomeScreenConfigModel>?
-                                        cboHomeScreenConfig) {
-                                      return Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: cboHomeScreenConfig
-                                                  ?.map((e) {
-                                                if (e.order == 1) {
-                                                  return Column(
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          Text(
-                                                            t.translate(
-                                                                i18.home.mukta),
-                                                            style: DigitTheme
-                                                                .instance
-                                                                .mobileTheme
-                                                                .textTheme
-                                                                .headlineLarge,
-                                                          ),
-                                                          SvgPicture.asset(
-                                                              Constants
-                                                                  .muktaIcon)
-                                                        ],
-                                                      ),
-                                                      ButtonLink(
-                                                          t.translate(
-                                                              e.label ?? ''),
-                                                          getRoute(
-                                                              e.key.toString(),
-                                                              context))
-                                                    ],
-                                                  );
-                                                } else {
-                                                  return ButtonLink(
-                                                      t.translate(
-                                                          e.label ?? ''),
-                                                      getRoute(e.key.toString(),
-                                                          context));
-                                                }
-                                              }).toList() ??
-                                              []);
-                                    });
-                              },
-                            )),
-                      )
-                    ],
-                  );
+                  return const AppBarLogo();
                 });
-          }));
-        }));
+          },
+        ),
+      ),
+      drawer: const DrawerWrapper(Drawer(child: SideBar())),
+      body: BlocBuilder<LocalizationBloc, LocalizationState>(
+        builder: (context, localState) {
+          return localState.maybeMap(
+            orElse: () => const SizedBox.shrink(),
+            loaded: (value) {
+              Languages selectedLan=  value.languages!.firstWhere((element) => element.isSelected);
+              return BlocListener<ORGSearchBloc, ORGSearchState>(
+                listener: (context, orgState) {
+                  orgState.maybeWhen(
+                      orElse: () => false,
+                      error: (String? error) {
+                        Notifiers.getToastMessage(
+                            context,
+                            t.translate(i18.common.noOrgLinkedWithMob),
+                            'ERROR');
+                        context.read<AuthBloc>().add(const AuthLogoutEvent());
+                      },
+                      loaded:
+                          (OrganisationListModel? organisationListModel) async {
+                        if ((organisationListModel?.organisations ?? [])
+                            .isEmpty) {
+                          Notifiers.getToastMessage(
+                              context,
+                              t.translate(i18.common.noOrgLinkedWithMob),
+                              'ERROR');
+                          context.read<AuthBloc>().add(const AuthLogoutEvent());
+                        } else {
+                          
+                        }
+                      });
+                },
+                child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () => Container(),
+                      loading: () => shg_loader.Loaders.circularLoader(context),
+                      loaded: (OrganisationListModel? organisationListModel) {
+                        return ScrollableContent(
+                          footer: const Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: PoweredByDigit(),
+                          ),
+                          children: [
+                            DigitCard(
+                              onPressed: null,
+                              padding:
+                                  const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: BlocBuilder<HomeScreenBloc,
+                                    HomeScreenBlocState>(
+                                  builder: (context, config) {
+                                    return config.maybeWhen(
+                                      orElse: () => Container(),
+                                      loading: () =>
+                                          shg_loader.Loaders.circularLoader(
+                                              context),
+                                      loaded: (List<CBOHomeScreenConfigModel>?
+                                          cboHomeScreenConfig) {
+                                        return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: cboHomeScreenConfig?.map(
+                                                  (e) {
+                                                    if (e.order == 1) {
+                                                      return Column(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                t.translate(i18
+                                                                    .home
+                                                                    .mukta),
+                                                                style: DigitTheme
+                                                                    .instance
+                                                                    .mobileTheme
+                                                                    .textTheme
+                                                                    .headlineLarge,
+                                                              ),
+                                                              SvgPicture.asset(
+                                                                  Constants
+                                                                      .muktaIcon)
+                                                            ],
+                                                          ),
+                                                          ButtonLink(
+                                                            t.translate(
+                                                                e.label ?? ''),
+                                                            getRoute(
+                                                              e.key.toString(),
+                                                              context,
+                                                              selectedLan,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    } else {
+                                                      return ButtonLink(
+                                                        t.translate(
+                                                            e.label ?? ''),
+                                                        getRoute(
+                                                          e.key.toString(),
+                                                          context,
+                                                          selectedLan,
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                ).toList() ??
+                                                []);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
   }
 
-  Future<void> localeLoad() async {
+  Future<void> localeLoad(Languages data) async {
     var currentLocale = await GlobalVariables.selectedLocale();
     context.read<LocalizationBloc>().add(
-          LocalizationEvent.onLoadLocalization(
+          LocalizationEvent.onSpecificLoadLocalization(
               module: CommonMethods.getLocaleModules(),
               tenantId: GlobalVariables
                   .globalConfigObject!.globalConfigs!.stateTenantId
                   .toString(),
-              locale: currentLocale.toString()),
+              locale: data.value.toString()),
         );
-    context.read<AppInitializationBloc>().add(
-        AppInitializationSetupEvent(selectedLang: currentLocale.toString()));
-    await AppLocalizations(
-      Locale(currentLocale.toString().split('_').first,
-          currentLocale.toString().split('_').last),
-    ).load();
-  }
+      }
 
-  void Function()? getRoute(String key, BuildContext context) {
+  void Function()? getRoute(
+      String key, BuildContext context, Languages data) {
     switch (key) {
       case Constants.homeMyWorks:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const WorkOrderRoute());
         };
       case Constants.homeTrackAttendance:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const TrackAttendanceInboxRoute());
         };
       case Constants.homeMusterRolls:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const ViewMusterRollsRoute());
         };
       case Constants.homeMyBills:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const MyBillsRoute());
         };
       case Constants.homeRegisterWageSeeker:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const RegisterIndividualRoute());
         };
       case Constants.homeMyServiceRequests:
         return () {
-          localeLoad();
+          localeLoad(data);
           context.router.push(const MyServiceRequestsRoute());
         };
       default:

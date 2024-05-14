@@ -4,12 +4,14 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime/mime.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:root_checker_plus/root_checker_plus.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:works_shg_app/data/schema/localization.dart';
 import 'package:works_shg_app/services/local_storage.dart';
 
 import '../data/repositories/core_repo/core_repository.dart';
@@ -229,5 +231,16 @@ class CommonMethods {
     // For Friday as endDay date.add(Duration(days: DateTime.daysPerWeek - currentDay - 1));
     // For Sunday as endDay date.add(Duration(days: DateTime.daysPerWeek - currentDay + 1));
     return endDayOfWeek;
+  }
+
+  static initilizeHiveBox() async {
+    await Hive.initFlutter();
+
+    Hive.registerAdapter(KeyLocaleModelAdapter());
+    Hive.registerAdapter(LocalizationAdapter());
+    await Hive.openBox<KeyLocaleModel>("keyValueModel");
+    await Hive.openBox<Localization>("localization");
+    await Hive.box<KeyLocaleModel>('keyValueModel').clear();
+    await Hive.box<Localization>('localization').clear();
   }
 }

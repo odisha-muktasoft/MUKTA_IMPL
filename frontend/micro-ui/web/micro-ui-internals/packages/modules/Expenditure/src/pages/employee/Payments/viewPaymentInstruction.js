@@ -47,7 +47,7 @@ const ViewPaymentInstruction = () => {
     }
     //revised
     else{
-      payloadForUpdate.parentPI = piDetails?.jitBillNo
+      payloadForUpdate.referenceId = piDetails?.muktaReferenceId
     }
     //in case of retry (Failed status) send referenceId
     // in case of Partial status, send piNumber to generate revised pi
@@ -63,7 +63,7 @@ const ViewPaymentInstruction = () => {
       onSuccess: async (responseData, variables) => {
           setShowToast({
             error:false,
-            label:`${t("EXP_RETRY_PI_MESSAGE")} : ${responseData?.paymentInstruction?.jitBillNo}`
+            label:`${t("EXP_RETRY_PI_MESSAGE")}`
           })
           closeToast()
           refetch()

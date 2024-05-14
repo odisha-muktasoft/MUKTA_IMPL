@@ -25,6 +25,7 @@ const CreateMeasurement = ({ props }) => {
   const [defaultState, setDefaultState] = useState({ SOR: [], NONSOR: [] });
   const [showToast, setShowToast] = useState({display: false, error: false});
   const [errorMessage, setErrorMessage] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [displayMenu, setDisplayMenu] = useState(false);
   const [config, setConfig] = useState({});
   const [approvers, setApprovers] = useState([]);
@@ -106,7 +107,7 @@ const CreateMeasurement = ({ props }) => {
         createState?.accessors?.setValue?.("NONSOR", defaultValues?.NONSOR);
         createState?.accessors?.setValue?.("contract", data?.contract);
         if (data?.period?.type == "error") {
-          setErrorMessage(data?.period?.message);
+          setErrorMessage(t(data?.period?.message));
           setShowToast({display:true, error:true});
         }
       }
@@ -142,7 +143,7 @@ const CreateMeasurement = ({ props }) => {
 
   function onActionSelect(action = "SUBMIT") {
     if (createState?.period?.type == "error") {
-      setErrorMessage(createState?.period?.message);
+      setErrorMessage(t(createState?.period?.message));
       setShowToast({display:true, error:true});
       return null;
     }
@@ -160,6 +161,7 @@ const CreateMeasurement = ({ props }) => {
   // Handle form submission
   const handleCreateMeasurement = async (data, action) => {
     setShowModal(false);
+    setIsButtonDisabled(true);
     if (props?.isUpdate) {
       data.id = props?.data?.[0].id;
       data.measurementNumber = props?.data?.[0].measurementNumber;
@@ -172,7 +174,8 @@ const CreateMeasurement = ({ props }) => {
     const measurements = transformData(updateData(data, createState, tenantId));
     //call the createMutation for MB and route to response page on onSuccess or show error
     const onError = (resp) => {
-      setErrorMessage(resp?.response?.data?.Errors?.[0]?.message);
+      setIsButtonDisabled(false);
+      setErrorMessage(t(resp?.response?.data?.Errors?.[0]?.message));
       setShowToast({display:true, error:true});
     };
     const onSuccess = (resp) => {
@@ -205,7 +208,7 @@ const CreateMeasurement = ({ props }) => {
   };
   //remove Toast after 3s
   useEffect(() => {
-    if (showToast) {
+    if (showToast && showToast?.display === true) {
       setTimeout(() => {
         closeToast();
       }, 3000);
@@ -235,7 +238,7 @@ const CreateMeasurement = ({ props }) => {
   // else render form and data
   return (
     <div>
-      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={(_data) => handleCreateMeasurement({..._data,...createState},"SUBMIT")} config={config} />}
+      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={(_data) => handleCreateMeasurement({..._data,...createState},"SUBMIT")} config={config} isDisabled={isButtonDisabled} />}
       <Header className="works-header-view modify-header">{t("MB_MEASUREMENT_BOOK")}</Header>
       <FormComposerV2
         label={t("MB_SUBMIT_BAR")}
@@ -255,8 +258,8 @@ const CreateMeasurement = ({ props }) => {
       />
       {showToast?.display && <Toast error={showToast?.error} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
       <ActionBar>
-        {displayMenu ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
-        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+        {displayMenu && !isButtonDisabled ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
+        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />
       </ActionBar>
     </div>
   );

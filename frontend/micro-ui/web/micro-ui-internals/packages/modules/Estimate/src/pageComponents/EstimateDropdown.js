@@ -27,7 +27,7 @@ const EstimateDropdown = (props) => {
     return <Loader />;
   }
   const filteredCodes = data?.mdms
-    .filter((item) => item.data && item.data.code) // Ensure 'data' and 'code' exist
+    .filter((item) => item.data && item.data.code && item?.data?.description !== "Not Applicable") // Ensure 'data' and 'code' exist
     .map((item) => ({ code: item.data.code, label: Digit.Utils.locale.getTransformedLocale(`${props?.schemaCode}.${item.data.code}`) }));
 
   return (

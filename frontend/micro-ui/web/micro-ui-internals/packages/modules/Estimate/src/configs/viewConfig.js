@@ -37,7 +37,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
 
   const getRedirectionCallback = () => {
     if(revisionNumber)
-    window.location.href = `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${estimateDetails?.tenantId}&projectNumber=${estimateDetails?.additionalDetails?.projectNumber}&revisionNumber=${estimateDetails?.revisionNumber}&isEditRevisionEstimate=true`
+    window.location.href = `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${estimateDetails?.tenantId}&projectNumber=${estimateDetails?.additionalDetails?.projectNumber}&revisionNumber=${estimateDetails?.revisionNumber}&estimateNumber=${estimateDetails?.estimateNumber}&isEditRevisionEstimate=true`
     else
     window.location.href = `/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${estimateDetails?.tenantId}&projectNumber=${estimateDetails?.additionalDetails?.projectNumber}&estimateNumber=${estimateDetails?.estimateNumber}&isEdit=true`
 }
@@ -220,7 +220,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
               },
               {
                 key: "PROJECT_ESTIMATED_COST",
-                value: projectDetails?.additionalDetails?.estimatedCostInRs,
+                value: projectDetails?.additionalDetails?.estimatedCostInRs || "NA",
               },
             ],
           },

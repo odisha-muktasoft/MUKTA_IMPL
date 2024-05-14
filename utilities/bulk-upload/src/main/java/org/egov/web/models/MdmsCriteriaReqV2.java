@@ -1,4 +1,4 @@
-package org.egov.web.models.bankaccount;
+package org.egov.web.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -9,26 +9,24 @@ import org.egov.common.contract.request.RequestInfo;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
- * BankAccountRequest
+ * MdmsCriteriaReq
  */
 @Validated
-@javax.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2023-03-14T17:30:53.139+05:30[Asia/Kolkata]")
+@javax.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2023-05-30T09:26:57.838+05:30[Asia/Kolkata]")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BankAccountRequest {
+public class MdmsCriteriaReqV2 {
 
     @JsonProperty("RequestInfo")
     @Valid
     private RequestInfo requestInfo = null;
 
-    @JsonProperty("bankAccounts")
+    @JsonProperty("MdmsCriteria")
     @Valid
-    private List<BankAccount> bankAccounts = null;
-
+    private MdmsCriteriaV2 mdmsCriteria = null;
 
 }

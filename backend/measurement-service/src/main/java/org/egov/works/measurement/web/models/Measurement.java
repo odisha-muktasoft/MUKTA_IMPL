@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.egov.common.contract.models.AuditDetails;
-import org.egov.common.contract.models.Document;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;

@@ -38,6 +38,17 @@ public class Workflow {
 	@Valid
 	private List<Document> documents;
 
+    @JsonProperty("verificationDocuments")
+    @Valid
+    private List<Document> verificationDocuments = null;
+
+    @JsonProperty("comments")
+    private String comments = null;
+
+    @JsonProperty("assignes")
+    @Valid
+    private List<String> assignes = null;
+
     public Workflow addAssigneesItem(String assigneesItem) {
         if (this.assignees == null) {
             this.assignees = new ArrayList<>();

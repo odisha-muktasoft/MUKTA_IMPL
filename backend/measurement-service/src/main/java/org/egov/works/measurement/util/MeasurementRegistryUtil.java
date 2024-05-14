@@ -1,7 +1,6 @@
 package org.egov.works.measurement.util;
 
 import org.egov.works.measurement.config.MBServiceConfiguration;
-import org.egov.works.measurement.repository.ServiceRequestRepository;
 import org.egov.works.measurement.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +11,10 @@ import java.util.List;
 
 @Component
 public class MeasurementRegistryUtil {
-    @Autowired
-    private IdgenUtil idgenUtil;
+
     @Autowired
     private MBServiceConfiguration MBServiceConfiguration;
-    @Autowired
-    private ServiceRequestRepository serviceRequestRepository;
+
     @Autowired
     private MeasurementServiceUtil measurementServiceUtil;
     @Autowired

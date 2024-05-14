@@ -141,4 +141,13 @@ public class MBServiceConfiguration {
     @Value("${kafka.topics.notification.sms}")
     private String smsNotifTopic;
 
+    @Value("${notification.sms.enabled}")
+    private boolean isSMSEnabled;
+
+    @Value("${kafka.topics.works.notification.sms.name}")
+    private String muktaNotificationTopic;
+
+    @Value("${sms.isAdditonalFieldRequired}")
+    private boolean isAdditonalFieldRequired;
+
 }

@@ -151,7 +151,7 @@ export const RenderWfActions = ({ section }) => {
 export const RenderPhotos = ({section}) => {
   const { t } = useTranslation();
   function OpenImage(imageSource, index, thumbnailsToShow) {
-    window.open(thumbnailsToShow?.fullImage?.[0], "_blank");
+    window.open(thumbnailsToShow?.fullImage?.[index ? index : 0], "_blank");
   }
 
   return (

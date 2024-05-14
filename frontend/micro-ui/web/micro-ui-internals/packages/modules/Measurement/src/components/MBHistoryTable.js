@@ -68,8 +68,8 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
     { label: t("MB_STATUS"), key: "status" },
     { label: t("MB_ONLY_AMOUNT"), key: "amount" },
   ];
-
-  const filteredArray =  data?.allMeasurements && data?.allMeasurements?.length > 0 && data?.allMeasurements?.code !== "NO_MEASUREMENT_ROLL_FOUND"? data?.allMeasurements?.filter((item) => item.measurementNumber !== measurementNumber && item?.wfStatus === "APPROVED") : [];
+  let relevantMbs = window?.location.href.includes("/measurement/view") ? data?.allMeasurements.filter(obj => obj.auditDetails.lastModifiedTime < data?.allMeasurements.find(o => o.measurementNumber === measurementNumber).auditDetails.lastModifiedTime) : data?.allMeasurements;
+  const filteredArray =  relevantMbs && relevantMbs?.length > 0 && relevantMbs?.code !== "NO_MEASUREMENT_ROLL_FOUND"? relevantMbs?.filter((item) => item.measurementNumber !== measurementNumber && item?.wfStatus === "APPROVED") : [];
 
   const sortedRows = (filteredArray || [])
     .sort((a, b) => {
@@ -80,7 +80,7 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
     .reverse()
     .map((item, index) => ({
       sno: index + 1,
-      mbref: {link:true, value:item?.measurementNumber, search:`?tenantId=${tenantId}&workOrderNumber=${contractNumber}&mbNumber=${item?.measurementNumber}`, pathname:window.location.pathname},
+      mbref: {link:true, value:item?.measurementNumber, search:`?tenantId=${tenantId}&workOrderNumber=${contractNumber}&mbNumber=${item?.measurementNumber}`, pathname:`/${window?.contextPath}/employee/measurement/view`},
       musterid: {link:true, value:findMusterRollNumber(data?.musterRolls, item?.measurementNumber, item?.additionalDetails?.startDate, item?.additionalDetails?.endDate), search:`?tenantId=${tenantId}&musterRollNumber=${findMusterRollNumber(data?.musterRolls, item?.measurementNumber, item?.additionalDetails?.startDate, item?.additionalDetails?.endDate)}`, pathname:`/${window.contextPath}/employee/attendencemgmt/view-attendance`},
       mbDate: Digit.Utils.pt.convertEpochToDate(item?.entryDate),
       period:  `${Digit.DateUtils.ConvertEpochToDate(item?.additionalDetails?.startDate)} - ${Digit.DateUtils.ConvertEpochToDate(item?.additionalDetails?.endDate)}` || t("NA"),

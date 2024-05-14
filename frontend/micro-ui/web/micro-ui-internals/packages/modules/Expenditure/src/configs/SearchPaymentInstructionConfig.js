@@ -6,7 +6,7 @@ export const SearchPaymentInstructionConfig = {
       "label": "EXP_SEARCH_PAYMENT_INS",
       "type": "search",
       "apiDetails": {
-        "serviceName": "/wms/ifms-pi/_search",
+        "serviceName": "/wms/mukta-pi/_search",
         "requestParam": {},
         "requestBody": {
           "inbox": {

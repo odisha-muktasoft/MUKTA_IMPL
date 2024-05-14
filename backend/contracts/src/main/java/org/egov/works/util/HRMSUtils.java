@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +57,37 @@ public class HRMSUtils {
         return roles;
     }
 
+
     public Map<String, String> getEmployeeDetailsByUuid(RequestInfo requestInfo, String tenantId, String uuid) {
         StringBuilder url = getHRMSURIWithUUid(tenantId, uuid);
+
+        RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(requestInfo).build();
+
+        Object res = serviceRequestRepository.fetchResult(url, requestInfoWrapper);
+
+        Map<String, String> userDetailsForSMS = new HashMap<>();
+        List<String> userNames = null;
+        List<String> mobileNumbers = null;
+        List<String> designations=null;
+
+        try {
+            designations = JsonPath.read(res, HRMS_USER_DESIGNATION);
+            userNames = JsonPath.read(res, HRMS_USER_USERNAME_CODE);
+            mobileNumbers = JsonPath.read(res, HRMS_USER_MOBILE_NO);
+
+        } catch (Exception e) {
+            throw new CustomException("PARSING_ERROR", "Failed to parse HRMS response");
+        }
+
+        userDetailsForSMS.put("userName", userNames.get(0));
+        userDetailsForSMS.put("mobileNumber", mobileNumbers.get(0));
+        userDetailsForSMS.put("designation", designations.get(0));
+
+        return userDetailsForSMS;
+    }
+
+    public Map<String, String> getEmployeeDetailsByCode(RequestInfo requestInfo, String tenantId, String code) {
+        StringBuilder url = getHRMSURIWithCode(tenantId,code);
 
         RequestInfoWrapper requestInfoWrapper = RequestInfoWrapper.builder().requestInfo(requestInfo).build();
 
@@ -92,6 +122,17 @@ public class HRMSUtils {
         builder.append(tenantId);
         builder.append("&codes=");
         builder.append(StringUtils.join(employeeIds, ","));
+
+        return builder;
+    }
+    private StringBuilder getHRMSURIWithCode(String tenantId, String code) {
+
+        StringBuilder builder = new StringBuilder(config.getHrmsHost());
+        builder.append(config.getHrmsEndPoint());
+        builder.append("?tenantId=");
+        builder.append(tenantId);
+        builder.append("&codes=");
+        builder.append(code);
 
         return builder;
     }

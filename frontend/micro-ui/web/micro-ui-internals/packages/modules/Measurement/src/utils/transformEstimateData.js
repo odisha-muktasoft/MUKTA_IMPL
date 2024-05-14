@@ -11,6 +11,16 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
   const transformedContract = transformContractObject(contract);
   const isMeasurement = measurement && Object.keys(measurement)?.length > 0;
   let isMeasurementCreate = window.location.href.includes("measurement/create")
+
+  lineItems?.filter(e => e.category === "NON-SOR")
+    .forEach((item, index) => {
+      // Check if the "sorId" is not null or undefined
+      if (item.sorId !== null && item.sorId !== undefined && item?.sorId === "45") {
+          // Update the "sorId" with the desired sequence
+          item.sorId = (index + 1).toString();
+      }
+      });
+      
   const transformedEstimateObject = lineItems
     .filter((e) => e.category === type)
     .reduce((acc, curr) => {
@@ -21,7 +31,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       }
       return acc;
     }, {});
-  const lastApprovedMeasurementObject = transformMeasureObject(allMeasurements?.filter?.((e) => e?.isActive && e?.wfStatus === "APPROVED")?.[0])
+  const lastApprovedMeasurementObject = transformMeasureObject(allMeasurements?.filter?.((e) => e?.isActive && e?.wfStatus === "APPROVED")?.find((ob) => ob?.auditDetails?.lastModifiedTime < measurement?.auditDetails?.lastModifiedTime)) || {};
   const transformMeasurementData = isMeasurement ? transformMeasureObject(measurement) : transformMeasureObject(lastMeasuredObject);
   return Object.keys(transformedEstimateObject).map((key, index) => {
     const measures = transformedEstimateObject[key].map((estimate, index) =>{
@@ -38,7 +48,8 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       number: isMeasurementCreate ? 0 : (measuredObject?.numItems || 0),
       noOfunit:  isMeasurementCreate ? 0 : (measuredObject?.currentValue || 0),
       rowAmount: isMeasurementCreate ? 0 : (measuredObject?.additionalDetails?.mbAmount || 0),
-      consumedRowQuantity: window.location.href.includes("/measurement/update") || window.location.href.includes("/measurement/view")? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
+      additionalDetails: {...measuredObject?.additionalDetails, measureLineItems : measuredObject?.additionalDetails?.measureLineItems?.length > 0 && !(window.location.href.includes("measurement/create")) ? measuredObject?.additionalDetails?.measureLineItems : [{number:0,width:0,length:0,height:0, quantity:0, measurelineitemNo:0}]},
+      consumedRowQuantity: window.location.href.includes("/measurement/update") || (window.location.href.includes("/measurement/view"))? lastApprovedMeasurementObject?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue  : transformMeasurementData?.lineItemsObject?.[transformedContract?.lineItemsObject?.[estimate?.id]?.contractLineItemId]?.cumulativeValue || 0,
     })
   });
     return {
@@ -90,8 +101,8 @@ export const transformMeasureObject = (measurement = {}) => {
 export const getDefaultValues = (data, t, mbNumber) => {
   const { contract, estimate, allMeasurements, measurement, musterRollNumber, period } = data;
 
-  const SOR = transformEstimateData(estimate?.estimateDetails, contract, "SOR", measurement, allMeasurements);
-  const NONSOR = transformEstimateData(estimate?.estimateDetails, contract, "NON-SOR", measurement, allMeasurements);
+  const SOR = transformEstimateData(estimate?.estimateDetails, contract, "SOR", allMeasurements?.length > 0 ? allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0] : measurement, allMeasurements);
+  const NONSOR = transformEstimateData(estimate?.estimateDetails, contract, "NON-SOR", allMeasurements?.length > 0 ? allMeasurements?.filter((ob) => ob?.measurementNumber === mbNumber)?.[0] : measurement, allMeasurements);
 
   // extract details from contract
   const {
@@ -146,7 +157,7 @@ export const getDefaultValues = (data, t, mbNumber) => {
     projectName,
     projectDesc,
     projectLocation,
-    sanctionDate: Digit.DateUtils.ConvertEpochToDate(issueDate),
+    sanctionDate:issueDate ?  Digit.DateUtils.ConvertEpochToDate(issueDate) : Digit.DateUtils.ConvertEpochToDate(estimate?.proposalDate),
     musterRollNo: musterRoll,
     measurementPeriod: measurementPeriod,
     CurrentStartDate,

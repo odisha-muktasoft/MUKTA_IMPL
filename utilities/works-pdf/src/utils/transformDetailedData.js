@@ -22,6 +22,12 @@ const transformDetailedData = (data) => {
         return Nformatter.format(value);
     }
 
+    const Nformatter1 = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
+    // Function to format a number with commas
+    function formatNumberWithCommas1(value) {
+        return Nformatter1.format(value);
+    }
+    
     // Format totalEstimatedAmount with commas
     var totalEstimatedAmount = parseFloat(data.estimates[lastIndex].additionalDetails.totalEstimatedAmount).toFixed(2);
 
@@ -30,8 +36,13 @@ const transformDetailedData = (data) => {
     const sorIdMap = {};
 
     var count = -1;
-
+    var count1 = 100;
     for (const estimateDetail of data.estimates[lastIndex].estimateDetails) {
+
+        if(estimateDetail.category === 'NON-SOR' && estimateDetail.sorId === '45'){
+            estimateDetail.sorId = count1;
+            count1++;
+        }
 
         if(estimateDetail.category === 'NON-SOR' && estimateDetail.sorId === null){
             estimateDetail.sorId = '0';
@@ -53,13 +64,17 @@ const transformDetailedData = (data) => {
         if(estimateDetail.height == null)estimateDetail.height=1;
         if(estimateDetail.quantity == null)estimateDetail.quantity=1;
 
-        var estQ = estimateDetail.length*estimateDetail.width*estimateDetail.height*estimateDetail.quantity;
+        var estQ = estimateDetail.noOfunit;
         estimateDetail.estimatedQuantity = estQ;
+
+        estimateDetail.unitRate = formatNumberWithCommas1(estimateDetail.unitRate);
 
         const { sorId, category, isDeduction, name, description, uom, unitRate, estimatedQuantity, amountDetail, additionalDetails } = estimateDetail;
     
         if (sorIdMap[sorId] === undefined) {
             const amount = isDeduction ? -amountDetail[0].amount : amountDetail[0].amount;
+            // Apply condition on estimatedQuantity according to isDeduction
+            const adjustedEstimatedQuantity = isDeduction ? -estimatedQuantity : estimatedQuantity;
     
             sorIdMap[sorId] = {
                 sorId,
@@ -68,7 +83,7 @@ const transformDetailedData = (data) => {
                 description,
                 uom,
                 unitRate,
-                estimatedQuantity,
+                estimatedQuantity: adjustedEstimatedQuantity,
                 amount,
                 additionalDetails
             };

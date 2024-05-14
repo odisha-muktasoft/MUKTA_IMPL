@@ -71,7 +71,7 @@ const ProjectDetails = () => {
             history.push(`/${window.contextPath}/employee/estimate/create-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
         }
         if(option?.name === "VIEW_ESTIMATE"){
-            if(estimates?.[0]?.wfStatus?.includes("DRAFTED"))
+            if(estimates?.[0]?.wfStatus?.includes("DRAFTED") && !(estimates?.[0]?.revisionNumber))
                 history.push(`/${window.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}&isEdit=true`);
             else
                 history.push(`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}`);
@@ -101,8 +101,8 @@ const ProjectDetails = () => {
     const { data } = Digit.Hooks.works.useViewProjectDetails(t, tenantId, searchParams, filters, headerLocale);
 
     //fetch estimate details
-    const { data : estimates, isError : isEstimateSearchError,isLoading:estimateLoading } = Digit.Hooks.works.useSearchEstimate( tenantId, {limit : 1, offset : 0, projectId : data?.projectDetails?.searchedProject?.basicDetails?.uuid });
-    
+    let { data : estimates, isError : isEstimateSearchError,isLoading:estimateLoading } = Digit.Hooks.works.useSearchEstimate( tenantId, { offset : 0, projectId : data?.projectDetails?.searchedProject?.basicDetails?.uuid });
+    estimates = estimates?.filter((ob) => ob?.wfStatus !== "REJECTED")
 
     useEffect(()=>{
         const projectModifierRoles = ["PROJECT_CREATOR"];
@@ -110,7 +110,7 @@ const ProjectDetails = () => {
     },[loggedInUserRoles]);
 
     useEffect(()=>{
-        const estimateViewerAndCreatorRole = ["ESTIMATE_CREATOR", "ESTIMATE_VERIFIER", "TECHNICAL_SANCTIONER", "ESTIMATE_APPROVER"];
+        const estimateViewerAndCreatorRole = ["ESTIMATE_CREATOR", "ESTIMATE_VERIFIER", "TECHNICAL_SANCTIONER", "ESTIMATE_APPROVER", "ESTIMATE_VIEWER"];
         isEstimateViewerAndCreator = estimateViewerAndCreatorRole?.some(role=>loggedInUserRoles?.includes(role));
     },[loggedInUserRoles]);
 
