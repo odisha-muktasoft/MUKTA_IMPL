@@ -116,7 +116,9 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
    } 
 
    const imfsFundsResponse = await PaymentService.ifms_funds_search(fundsSearchPayload);
-  const piTableRows = paymentInstructions?.map((pi,idx)=>{
+  const piTableRows = paymentInstructions?.sort((a,b)=>{
+    return b.auditDetails.createdTime - a.auditDetails.createdTime 
+  })?.map((pi,idx)=>{
     const { piStatus,auditDetails:{createdTime},netAmount,jitBillNo } = pi
     return [
       {
@@ -140,7 +142,7 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
       returnPaymentStatusObjectForPI(piStatus,pi),
       netAmount ? `₹ ${Digit.Utils.dss.formatterWithoutRound(netAmount,"number")}` : t("ES_COMMON_NA")
     ]
-  })  
+  });
 
   const piTable = {
     title: "EXP_PIS",
