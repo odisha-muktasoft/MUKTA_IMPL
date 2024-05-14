@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:works_shg_app/blocs/app_initilization/home_screen_bloc.dart';
@@ -26,6 +27,7 @@ import 'package:works_shg_app/blocs/work_orders/decline_work_order.dart';
 import 'package:works_shg_app/data/init_client.dart';
 import 'package:works_shg_app/data/repositories/attendance_mdms.dart';
 import 'package:works_shg_app/data/repositories/common_repository/common_repository.dart';
+import 'package:works_shg_app/data/schema/localization.dart';
 import 'package:works_shg_app/router/app_navigator_observer.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
@@ -78,6 +80,7 @@ import 'data/repositories/remote/mdms.dart';
 import 'models/user_details/user_details_model.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
   setPathUrlStrategy();
   if (kIsWeb && !kDebugMode) {
@@ -95,7 +98,11 @@ void main() async {
       // exit(1); /// to close the app smoothly
     };
 
-    WidgetsFlutterBinding.ensureInitialized();
+    // initialize the hiveBox database
+    await CommonMethods.initilizeHiveBox();
+    
+   
+
     if (!kIsWeb) {
       await FlutterDownloader.initialize(
           debug: true // optional: set false to disable printing logs to console
@@ -103,7 +110,10 @@ void main() async {
     }
 
     await CommonMethods.fetchPackageInfo();
-    runApp(MainApplication(appRouter: AppRouter()));
+    runApp(MainApplication(
+      appRouter: AppRouter(),
+      
+    ));
   }, (Object error, StackTrace stack) {
     if (kDebugMode) {
       print(error.toString());
@@ -113,7 +123,11 @@ void main() async {
 }
 
 class MainApplication extends StatefulWidget {
-  const MainApplication({super.key, required AppRouter appRouter});
+  
+  const MainApplication({
+    super.key,
+    required AppRouter appRouter,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -179,10 +193,16 @@ class _MainApplicationState extends State<MainApplication> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+            create: (context) => LocalizationBloc(
+                  const LocalizationState.initial(),
+                  LocalizationRepository(initClient.init()),
+                )),
+        BlocProvider(
           create: (context) => AppInitializationBloc(
             const AppInitializationState(),
             MdmsRepository(initClient.init()),
-          )..add(const AppInitializationSetupEvent(selectedLang: 'en_IN')),
+            BlocProvider.of<LocalizationBloc>(context),
+          )..add(  AppInitializationSetupEvent(selectedLang: LanguageEnum.en_IN.name)),
           lazy: false,
         ),
         BlocProvider(create: (context) => AuthBloc()),
@@ -265,85 +285,48 @@ class _MainApplicationState extends State<MainApplication> {
                 MdmsRepository(client.init()))),
       ],
       child: BlocBuilder<AppInitializationBloc, AppInitializationState>(
-          builder: (context, appInitState) {
-        return appInitState.isInitializationCompleted &&
-                appInitState.initMdmsModel != null
-            ? BlocBuilder<AuthBloc, AuthState>(builder: (context, authState) {
-                return BlocProvider(
-                    create: (appInitState.initMdmsModel != null &&
-                            appInitState
-                                    .stateInfoListModel?.localizationModules !=
-                                null)
-                        ? (context) => LocalizationBloc(
-                              const LocalizationState.initial(),
-                              LocalizationRepository(initClient.init()),
-                            )..add(LocalizationEvent.onLoadLocalization(
-                                module:
-                                    'rainmaker-common,rainmaker-common-masters,rainmaker-${appInitState.stateInfoListModel?.code}',
-                                tenantId: appInitState
-                                    .initMdmsModel!
-                                    .commonMastersModel!
-                                    .stateInfoListModel!
-                                    .first
-                                    .code
-                                    .toString(),
-                                locale: appInitState.digitRowCardItems!
-                                    .firstWhere((e) => e.isSelected)
-                                    .value,
-                              ))
-                        : (context) => LocalizationBloc(
-                              const LocalizationState.initial(),
-                              LocalizationRepository(initClient.init()),
-                            ),
-                    child: MaterialApp.router(
-                      title: 'MUKTA CBO App',
-                      supportedLocales: appInitState.initMdmsModel != null
-                          ? appInitState.digitRowCardItems!.map((e) {
-                              final results = e.value.split('_');
+        builder: (context, appInitState) {
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, authState) {
+              return MaterialApp.router(
+                title: 'MUKTA CBO App',
+                supportedLocales: appInitState.initMdmsModel != null
+                    ? appInitState.digitRowCardItems!.map((e) {
+                        final results = e.value.split('_');
 
-                              return results.isNotEmpty
-                                  ? Locale(results.first, results.last)
-                                  : const Locale('en', 'IN');
-                            })
-                          : [],
-                      locale: const Locale('en', 'IN'),
-                      localizationsDelegates: const [
-                        AppLocalizations.delegate,
-                        GlobalWidgetsLocalizations.delegate,
-                        GlobalCupertinoLocalizations.delegate,
-                        GlobalMaterialLocalizations.delegate,
-                      ],
-                      localeResolutionCallback: (locale, supportedLocales) {
-                        for (var supportedLocaleLanguage in supportedLocales) {
-                          if (supportedLocaleLanguage.languageCode ==
-                                  locale?.languageCode &&
-                              supportedLocaleLanguage.countryCode ==
-                                  locale?.countryCode) {
-                            return supportedLocaleLanguage;
-                          }
-                        }
-                        return supportedLocales.first;
-                      },
-                      theme: DigitTheme.instance.mobileTheme,
-                      scaffoldMessengerKey: scaffoldMessengerKey,
-                      routeInformationParser: appRouter.defaultRouteParser(),
-                      routerDelegate: AutoRouterDelegate.declarative(
-                        appRouter,
-                        navigatorObservers: () => [AppRouterObserver()],
-                        routes: (handler) => [
-                          authState.maybeWhen(
-                              initial: () =>
-                                  const UnauthenticatedRouteWrapper(),
-                              loaded: (UserDetailsModel? userDetailsModel,
-                                      String? accessToken) =>
-                                  const AuthenticatedRouteWrapper(),
-                              orElse: () => const UnauthenticatedRouteWrapper())
-                        ],
-                      ),
-                    ));
-              })
-            : Container();
-      }),
+                        return results.isNotEmpty
+                            ? Locale(results.first, results.last)
+                            : const Locale('en', 'IN');
+                      })
+                    : [const Locale('en', 'IN')],
+                locale: const Locale('en', 'IN'),
+                localizationsDelegates: [
+                  AppLocalizations.getDelegate(),
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                ],
+               
+                theme: DigitTheme.instance.mobileTheme,
+                scaffoldMessengerKey: scaffoldMessengerKey,
+                routeInformationParser: appRouter.defaultRouteParser(),
+                routerDelegate: AutoRouterDelegate.declarative(
+                  appRouter,
+                  navigatorObservers: () => [AppRouterObserver()],
+                  routes: (handler) => [
+                    authState.maybeWhen(
+                        initial: () => const UnauthenticatedRouteWrapper(),
+                        loaded: (UserDetailsModel? userDetailsModel,
+                                String? accessToken) =>
+                            const AuthenticatedRouteWrapper(),
+                        orElse: () => const UnauthenticatedRouteWrapper())
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }

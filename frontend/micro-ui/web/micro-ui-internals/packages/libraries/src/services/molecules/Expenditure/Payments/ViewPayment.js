@@ -58,9 +58,8 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
 
   //fetch all pis
   const piSearchPayload = {
-    "searchCriteria": {
-      tenantId,
-      muktaReferenceId:paymentNumber
+    "criteria": {
+      payment_number:paymentNumber
   }
   }
   const piResponse = await ExpenseService.searchPayment(piSearchPayload)
@@ -136,8 +135,8 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
       },
       pi?.parentPiNumber ? t("EXP_PI_TYPE_REVISED") : t("EXP_PI_TYPE_ORIGINAL"),
       Digit.DateUtils.ConvertTimestampToDate(createdTime),
-      imfsFundsResponse?.funds?.find((obj) => obj?.id == pi?.transactionDetails?.[0]?.sanctionId)?.hoaCode || t("ES_COMMON_NA"),
-      imfsFundsResponse?.funds?.find((obj) => obj?.id == pi?.transactionDetails?.[0]?.sanctionId)?.masterAllotmentId || t("ES_COMMON_NA"),
+      pi?.additionalDetails?.hoaCode || t("ES_COMMON_NA"),
+      pi?.additionalDetails?.mstAllotmentId || t("ES_COMMON_NA"),
       returnPaymentStatusObjectForPI(piStatus,pi),
       netAmount ? `₹ ${Digit.Utils.dss.formatterWithoutRound(netAmount,"number")}` : t("ES_COMMON_NA")
     ]
@@ -182,7 +181,7 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
   const uniqueBeneficiaryMap = new Map();
   allBeneficiaryDetails.forEach(beneficiary => {
     const { beneficiaryNumber, auditDetails } = beneficiary;
-    if (!uniqueBeneficiaryMap.has(beneficiaryNumber) || auditDetails.lastModifiedTime > uniqueBeneficiaryMap.get(beneficiaryNumber).auditDetails.lastModifiedTime) {
+    if (!uniqueBeneficiaryMap.has(beneficiaryNumber) || auditDetails.createdTime > uniqueBeneficiaryMap.get(beneficiaryNumber).auditDetails.createdTime) {
       uniqueBeneficiaryMap.set(beneficiaryNumber, beneficiary);
     }
   });

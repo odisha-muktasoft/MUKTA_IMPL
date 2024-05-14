@@ -55,7 +55,7 @@ const getMeasurementFromMeasures = (item, type) => {
       length: parseFloat(measure?.length),
       breadth:parseFloat(measure?.width),
       height: parseFloat(measure?.height),
-      numItems: measure?.number,
+      numItems: measure?.noOfunit,
       currentValue: measure?.noOfunit,
       description : measure?.description,
       cumulativeValue: 0,
@@ -64,6 +64,7 @@ const getMeasurementFromMeasures = (item, type) => {
       additionalDetails: {
         mbAmount: measure?.rowAmount || 0,
         type: type,
+        measureLineItems : measure?.additionalDetails?.measureLineItems?.length == 1 && measure?.additionalDetails?.measureLineItems?.[0]?.quantity <= 0? []  : measure?.additionalDetails?.measureLineItems?.filter(item => item.quantity !== null && item.quantity !== 0).sort((a, b) => a.measurelineitemNo - b.measurelineitemNo).map((item, index) => ({ ...item, measurelineitemNo: index })),
       },
     };
     measurements.push(measurement);
@@ -116,8 +117,11 @@ const measurement= {
       // sumSor += sorItem.measures?.[0]?.rowAmount;
       measurement.measures.push(...getMeasurementFromMeasures(sorItem, "SOR"));
       sorItem.measures.forEach((measure) => {
-        if (measure.rowAmount) {
+        if ( measure?.isDeduction == false && measure?.rowAmount) {
           sumSor += measure.rowAmount;
+        }
+        else if( measure?.isDeduction == true && measure?.rowAmount) {
+          sumSor -= measure?.rowAmount;
         }
       });
     });
@@ -129,8 +133,11 @@ const measurement= {
       //sumNonSor += nonsorItem.measures?.[0]?.rowAmount;
       measurement.measures.push(...getMeasurementFromMeasures(nonsorItem, "NONSOR"));
       nonsorItem.measures?.forEach((measure) => {
-        if (measure.rowAmount) {
-          sumNonSor += measure.rowAmount;
+        if (measure?.isDeduction == false && measure?.rowAmount) {
+          sumNonSor += measure?.rowAmount;
+        }
+        else if(measure?.isDeduction == true && measure?.rowAmount) {
+          sumNonSor -= measure?.rowAmount;
         }
       });
     });

@@ -86,7 +86,16 @@ router.post(
             var estimate = resEstimate.data;
             const projectId = estimate.estimates[0].additionalDetails.projectNumber;
 
-            result = await search_projectDetails(tenantId, requestinfo, projectId);
+            try {
+
+                result = await search_projectDetails(tenantId, requestinfo, projectId);
+
+            }
+            catch (ex) {
+
+                return renderError(res, "Failed to query details of the project", 500);
+
+            }
             estimate.projectName = result.data.Project[0].name;
 
 
@@ -158,7 +167,7 @@ router.post(
             } 
             catch (ex) {
 
-                return renderError(res, "Failed to query details of estimate", 500);
+                return renderError(res, "Failed to query details of detailed estimate", 500);
                 
             }
 

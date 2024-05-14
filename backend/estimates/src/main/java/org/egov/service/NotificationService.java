@@ -64,12 +64,19 @@ public class NotificationService {
      * @param request
      */
     public void sendNotification(EstimateRequest request) {
-        Workflow workflow = request.getWorkflow();
 
-        if ("REJECT".equalsIgnoreCase(workflow.getAction())) {
-            pushNotificationToCreatorForRejectAction(request);
-        } else if ("APPROVE".equalsIgnoreCase(workflow.getAction())) {
-            pushNotificationToCreatorForApproveAction(request);
+        if(config.getIsSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
+            Workflow workflow = request.getWorkflow();
+
+            if ("REJECT".equalsIgnoreCase(workflow.getAction())) {
+                pushNotificationToCreatorForRejectAction(request);
+            } else if ("APPROVE".equalsIgnoreCase(workflow.getAction())) {
+                pushNotificationToCreatorForApproveAction(request);
+            }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
     }
 
@@ -202,14 +209,14 @@ public class NotificationService {
      * @return
      */
     public String getMessage(EstimateRequest request, String msgCode) {
-        String tenantId = request.getEstimate().getTenantId();
+        String rootTenantId = request.getEstimate().getTenantId().split("\\.")[0];
         RequestInfo requestInfo = request.getRequestInfo();
         String locale = "en_IN";
         if(requestInfo.getMsgId().split("\\|").length > 1)
             locale = requestInfo.getMsgId().split("\\|")[1];
-        Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(requestInfo, tenantId,
+        Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(requestInfo, rootTenantId,
                 locale, EstimateServiceConstant.ESTIMATE_MODULE_CODE);
-        return localizedMessageMap.get(locale + "|" + tenantId).get(msgCode);
+        return localizedMessageMap.get(locale + "|" + rootTenantId).get(msgCode);
     }
 
     /**

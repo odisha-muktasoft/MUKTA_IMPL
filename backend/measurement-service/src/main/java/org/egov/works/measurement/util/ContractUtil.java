@@ -2,6 +2,7 @@ package org.egov.works.measurement.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.models.RequestInfoWrapper;
+import org.egov.common.contract.models.Workflow;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.tracer.model.CustomException;
 import org.egov.works.measurement.config.MBServiceConfiguration;
@@ -70,7 +71,7 @@ public class ContractUtil {
      * @param requestInfo
      * @return
      */
-    public Boolean validContract(Measurement measurement, RequestInfo requestInfo, Boolean isUpdate) {
+    public Boolean validContract(Measurement measurement, RequestInfo requestInfo, Boolean isUpdate, Workflow workflow) {
         Map<String, ArrayList<String>> lineItemsToEstimateIdMap;
         List<String> lineItemIdsList = new ArrayList<>();
         List<String> estimateIdsList = new ArrayList<>();
@@ -100,8 +101,8 @@ public class ContractUtil {
 
 
 
-        boolean isValidEntryDate = ((measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getStartDate()) >= 0)
-                && (measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getEndDate()) <= 0));
+        boolean isValidEntryDate = ((measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getStartDate()) >= 0));
+//                && (measurement.getEntryDate().compareTo(contractResponse.getContracts().get(0).getEndDate()) <= 0));
 
         lineItemsToEstimateIdMap = getValidLineItemsId(contractResponse); // get set of active line items
 
@@ -139,7 +140,7 @@ public class ContractUtil {
         if (!measurementResponse.getBody().getMeasurements().isEmpty()) {
             measurementFromDB = measurementResponse.getBody().getMeasurements().get(0);
         }
-        validateDimensions(estimateResponse, measurement, contractResponse, measurementFromDB, isUpdate);
+        validateDimensions(estimateResponse, measurement, contractResponse, measurementFromDB, isUpdate,workflow);
         log.info(estimateResponse.getEstimates().get(0).getId());
 
         return isValidEntryDate;
@@ -271,45 +272,125 @@ public class ContractUtil {
         return estimateResponse;
     }
 
-    public void validateDimensions(EstimateResponse estimateResponse, Measurement measurement, ContractResponse contractResponse, Measurement measurementFromDB, Boolean isUpdate)  {
+    public void validateDimensions(EstimateResponse estimateResponse, Measurement measurement, ContractResponse contractResponse, Measurement measurementFromDB, Boolean isUpdate,Workflow workflow)  {
 
         Map<String, String> targetIdToEstimateLineItemRef = contractResponse.getContracts().get(0).getLineItems().stream().collect(Collectors.toMap(LineItems::getContractLineItemRef, LineItems::getEstimateLineItemId));
 
         Map<String, EstimateDetail> estimateLineItemIdToEstimateDetail = estimateResponse.getEstimates().get(0).getEstimateDetails().stream().collect(Collectors.toMap(EstimateDetail::getId, estimateDetail -> estimateDetail));
 
-        Map<String, BigDecimal> targetIdToCumulativeValue = new HashMap<>();
-
+        Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
         if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty()) {
             for (Measure measure : measurementFromDB.getMeasures()) {
-                BigDecimal cumulativeValue = measure.getCumulativeValue();
-                if (isUpdate)
-                    cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
-                targetIdToCumulativeValue.put(measure.getTargetId(), cumulativeValue);
-            }
-        }
-        for (Measure measure : measurement.getMeasures()) {
-            // Get the lineItemId corresponding in targetId
-            String estimateLineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
-            if (estimateLineItemId == null)
-                throw new CustomException(ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_CODE, ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_MSG + measure.getTargetId());
-            // Get the estimateDetail corresponding to estimateLineItemId
-            EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(estimateLineItemId);
-            if (estimateDetail == null)
-                throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + estimateLineItemId);
-            // Get cumulative value corresponding to targetId
-            BigDecimal prevCumulativeValue = null;
-            if (measurementFromDB != null && !measurementFromDB.getMeasures().isEmpty() && targetIdToCumulativeValue.containsKey(measure.getTargetId())) {
-                prevCumulativeValue = targetIdToCumulativeValue.get(measure.getTargetId());
-            } else {
-                prevCumulativeValue = BigDecimal.ZERO;
-            }
-            measurementServiceUtil.validateDimensions(measure);
-            BigDecimal currValue = measure.getBreadth().multiply(measure.getHeight()).multiply(measure.getLength()).multiply(measure.getNumItems());
-            BigDecimal totalValue = currValue.add(prevCumulativeValue);
+                String lineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
+                if (lineItemId == null)
+                    throw new CustomException(ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_CODE, ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_MSG + measure.getTargetId());
 
-            if (totalValue.compareTo(BigDecimal.valueOf(estimateDetail.getNoOfunit())) > 0) {
-                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, measure.getTargetId(), BigDecimal.valueOf(estimateDetail.getNoOfunit())));
+                // Get the EstimateDetail corresponding to the lineItemId
+                EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItemId);
+                if (estimateDetail == null)
+                    throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + lineItemId);
+                BigDecimal cumulativeValue = getCummulativeValue(isUpdate, measure, estimateDetail);
+
+                sorIdToCumulativeValueMap.merge(estimateDetail.getSorId(), cumulativeValue, BigDecimal::add);
+               // targetIdToCumulativeValue.put(measure.getTargetId(), cumulativeValue);
             }
         }
+
+        // Map to store Measure objects grouped by SOR ID
+        Map<String, List<Measure>> sorIdToMeasuresMap = new HashMap<>();
+        // Map to store EstimateDetail objects grouped by SOR ID
+        Map<String, List<EstimateDetail>> sorIdToEstimateDetailMap = new HashMap<>();
+
+       // Iterate over the measures and populate the maps
+        for (Measure measure : measurement.getMeasures()) {
+            // Get the lineItemId corresponding to targetId
+            String lineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
+            if (lineItemId == null)
+                throw new CustomException(ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_CODE, ESTIMATE_LINE_ITEM_ID_NOT_PRESENT_MSG + measure.getTargetId());
+
+            // Get the EstimateDetail corresponding to the lineItemId
+            EstimateDetail estimateDetail = estimateLineItemIdToEstimateDetail.get(lineItemId);
+            if (estimateDetail == null)
+                throw new CustomException(ESTIMATE_DETAILS_NOT_PRESENT_CODE, ESTIMATE_DETAILS_NOT_PRESENT_MSG + lineItemId);
+
+            measurementServiceUtil.validateDimensions(measure,isUpdate);
+
+            // Group Measure objects by SOR ID
+            sorIdToMeasuresMap.computeIfAbsent(estimateDetail.getSorId(), k -> new ArrayList<>()).add(measure);
+
+            // Store EstimateDetail objects by SOR ID
+            sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail.getSorId(), k -> new ArrayList<>()).add(estimateDetail);
+
+        }
+
+        if( (SENT_BACK).equals(workflow.getAction())|| (SEND_BACK_TO_ORIGINATOR).equals(workflow.getAction())){
+         log.info("For Sent Back or Send Back to Originator we don't need to implement the validation on dimensions");
+        }else{
+        List<EstimateDetail> estimateDetails=estimateResponse.getEstimates().get(0).getEstimateDetails();
+        // Iterate over the EstimateDetail objects
+        estimateDetails.forEach(estimateDetail -> {
+            if(!estimateDetail.getCategory().equals(OVERHEAD)){
+            // Get the SOR ID from the EstimateDetail
+            String sorId = estimateDetail.getSorId();
+
+            // Get the list of Measure objects corresponding to the SOR ID from sorIdToMeasuresMap
+            List<Measure> measureList = sorIdToMeasuresMap.getOrDefault(sorId, Collections.emptyList());
+                BigDecimal totalCurrValue = BigDecimal.ZERO;
+                for (Measure measure : measureList) {
+                    String lineItemId = targetIdToEstimateLineItemRef.get(measure.getTargetId());
+                    EstimateDetail estimateDetailForMeasure = estimateLineItemIdToEstimateDetail.get(lineItemId);
+                    BigDecimal totalBreadth = measure.getBreadth();
+                    BigDecimal totalHeight = measure.getHeight();
+                    BigDecimal totalLength = measure.getLength();
+                    BigDecimal totalNumItems = measure.getNumItems();
+
+                    BigDecimal currValue = totalBreadth
+                            .multiply(totalHeight)
+                            .multiply(totalLength)
+                            .multiply(totalNumItems);
+
+
+                    totalCurrValue = estimateDetailForMeasure.getIsDeduction()?totalCurrValue.subtract(currValue):totalCurrValue.add(currValue);
+                }
+
+
+
+            BigDecimal totalValue = sorIdToCumulativeValueMap.get(sorId)!=null ?totalCurrValue.add(sorIdToCumulativeValueMap.get(sorId)):totalCurrValue.add(BigDecimal.ZERO);
+
+            // Get the list of EstimateDetail objects corresponding to the SOR ID from sorIdToEstimateDetailMap
+            List<EstimateDetail> estimateDetailList = sorIdToEstimateDetailMap.getOrDefault(sorId, Collections.emptyList());
+
+
+            // Calculate the total noOfUnit for the group of EstimateDetail objects corresponding to the SOR ID
+                BigDecimal totalNoOfUnit= BigDecimal.ZERO;
+                for(EstimateDetail estimatedDetail:estimateDetailList){
+                    if(estimatedDetail.getIsDeduction()){
+                        totalNoOfUnit=totalNoOfUnit.subtract(BigDecimal.valueOf(estimatedDetail.getNoOfunit()));
+                    }else{
+                        totalNoOfUnit=totalNoOfUnit.add(BigDecimal.valueOf(estimatedDetail.getNoOfunit()));
+                    }
+
+                }
+
+
+            if (totalValue.compareTo(totalNoOfUnit) > 0) {
+                throw new CustomException(TOTAL_VALUE_GREATER_THAN_ESTIMATE_CODE, String.format(TOTAL_VALUE_GREATER_THAN_ESTIMATE_MSG, sorId,totalValue, totalNoOfUnit));
+            }
+            // Now you can use currValue as needed for the group of Measure objects corresponding to the SOR ID
+        }});
+        }
+
+
+
+
     }
+
+    private static BigDecimal getCummulativeValue(Boolean isUpdate, Measure measure, EstimateDetail estimateDetail) {
+        BigDecimal cumulativeValue=measure.getCumulativeValue();
+        if (isUpdate)
+            cumulativeValue = cumulativeValue.subtract(measure.getCurrentValue());
+
+        return estimateDetail.getIsDeduction()?cumulativeValue.multiply(BigDecimal.valueOf(-1)):cumulativeValue;
+    }
+
 }

@@ -38,14 +38,19 @@ const CreatePurchaseBillForm = ({
     const [selectedApprover, setSelectedApprover] = useState({});
     const [inputFormData,setInputFormData] = useState({})
     const [config, setConfig] = useState({});
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false)
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     createPurchaseBillConfig = useMemo(
         () => Digit.Utils.preProcessMDMSConfig(t, createPurchaseBillConfig, {
             updateDependent : [
               {
+                  key : 'invoiceDetails_organisationType',
+                  value : [preProcessData?.organisationTypes]
+              },
+              {
                   key : 'invoiceDetails_vendor',
-                  value : [preProcessData?.nameOfVendor]
+                  value : [sessionFormData?.invoiceDetails_organisationType?.code === "CBO" ? preProcessData?.nameOfCbo : preProcessData?.nameOfVendor]
               },
               {
                 key : 'basicDetails_purchaseBillNumber',
@@ -61,7 +66,7 @@ const CreatePurchaseBillForm = ({
               },
             ]
           }),
-      [preProcessData?.nameOfVendor]);
+      [preProcessData?.nameOfVendor, preProcessData?.nameOfCbo, sessionFormData?.invoiceDetails_organisationType]);
 
     const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
         if (!_.isEqual(sessionFormData, formData)) {
@@ -74,6 +79,12 @@ const CreatePurchaseBillForm = ({
             if(formData.invoiceDetails_materialCost) {
                 let gstAmount = formData.invoiceDetails_gst ? formData.invoiceDetails_gst : 0;
                 setValue("billDetails_billAmt", parseInt(formData.invoiceDetails_materialCost)+parseInt(gstAmount));
+            }
+
+            if(difference?.invoiceDetails_organisationType)
+            {
+                setValue("invoiceDetails_vendor", '');
+                setValue("invoiceDetails_vendorId", undefined);  
             }
 
             if(formData.billDetails_billAmt) {
@@ -90,7 +101,7 @@ const CreatePurchaseBillForm = ({
             }
 
             if(difference?.billDetails_billAmt){
-                let billAmount = parseFloat(Digit.Utils.dss.convertFormatterToNumber(formData?.billDetails_billAmt));
+                let billAmount = parseFloat(Digit.Utils.dss.convertFormatterToNumber(formData.invoiceDetails_materialCost));
                 formData?.deductionDetails && formData?.deductionDetails?.forEach((data, index)=>{
                   if(data?.name?.calculationType === "percentage") {
                     const amount = billAmount ? (billAmount * (parseFloat(data?.name?.value)/100)).toFixed(1) : 0
@@ -150,6 +161,7 @@ const CreatePurchaseBillForm = ({
 
 
     const OnModalSubmit = async (_data) => {
+        setIsButtonDisabled(true);
         _data = Digit.Utils.trimStringsInObject(_data)
         //here make complete data in combination with _data and inputFormData and create payload accordingly
         //also test edit flow with this change
@@ -158,7 +170,7 @@ const CreatePurchaseBillForm = ({
             assignees:selectedApprover.uuid ? [selectedApprover.uuid]: [],
             comment:_data.comments ? _data.comments : ""
         }
-        const payload = createBillPayload(inputFormData, contract, docConfigData,workflowDetails);
+        const payload = createBillPayload(inputFormData, contract, docConfigData,workflowDetails, MBValidationData);
         
         if(isModify){
             const updatedBillObject = updateBillPayload(bill,payload)
@@ -181,9 +193,11 @@ const CreatePurchaseBillForm = ({
 
             await CreatePurchaseBillMutation(payload, {
                 onError: async (error, variables) => {
+                    setIsButtonDisabled(false);
                     sendDataToResponsePage("billNumber", tenantId, false, "EXPENDITURE_PB_CREATED_FORWARDED", false);
                 },
                 onSuccess: async (responseData, variables) => {
+                setIsButtonDisabled(false);
                 sendDataToResponsePage(responseData?.bills?.[0]?.billNumber, tenantId, true, "EXPENDITURE_PB_CREATED_FORWARDED", true);
                 },
             });
@@ -241,6 +255,7 @@ const CreatePurchaseBillForm = ({
                     closeModal={() => setShowModal(false)}
                     onSubmit={handleSubmit}
                     config={config}
+                    isDisabled = {isButtonDisabled}
                 />
                 }
 
@@ -266,9 +281,11 @@ const CreatePurchaseBillForm = ({
                         showNavs={createPurchaseBillConfig?.metaData?.showNavs}
                         showFormInNav={true}
                         showMultipleCardsWithoutNavs={false}
-                        showMultipleCardsInNavs={false}
+                        showMultipleCardsInNavs={true}
                         horizontalNavConfig={navConfig}
                         onFormValueChange={onFormValueChange}
+                        sectionHeadStyle={{ marginTop: "2rem", marginBottom : "2rem" }}
+                        labelBold={true}
                         cardClassName = "mukta-header-card"
                     />)
                 }

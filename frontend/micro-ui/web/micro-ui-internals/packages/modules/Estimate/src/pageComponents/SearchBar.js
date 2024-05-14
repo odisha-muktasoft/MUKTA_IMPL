@@ -36,7 +36,7 @@ const SearchBar = (props) => {
       if (data?.MdmsRes?.["WORKS-SOR"]?.SOR?.length > 0) {
         setSuggestions(data?.MdmsRes?.["WORKS-SOR"]?.SOR);
       } else {
-        setSuggestions([{ description: "No Matching SORs" }]);
+        setSuggestions([{ description: t("NO_MATCHING_SOR") }]);
       }
     } catch (error) {
       // Handle any errors here
@@ -76,11 +76,11 @@ const SearchBar = (props) => {
   };
 
   return (
-    <div className={"search-bar-sor"}>
-      <TextInput type="text" name={"Search"} placeholder="Type any SOR description..." value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
+    <div className={"search-bar-sor"} style={{margin:"20px 1.4rem 0"}}>
+      <TextInput type="text" name={"Search"} placeholder={t("SEARCH_SOR_HINT")} value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
       {suggestions?.length > 0 && (
       <ul
-        className="suggestions-sor" style={{zIndex:"100", maxHeight:"33rem", overflow:"auto"}}
+        className="suggestions-sor" style={{zIndex:"10", maxHeight:"33rem", overflow:"auto"}}
       >
         {suggestions.map((option) => (
           <li

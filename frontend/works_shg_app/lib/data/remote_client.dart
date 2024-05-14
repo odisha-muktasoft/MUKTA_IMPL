@@ -31,7 +31,7 @@ class ApiInterceptors extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     var ts = DateTime.now().millisecondsSinceEpoch;
-    var selectedLocale = await GlobalVariables.selectedLocale() ?? "en_IN";
+    var selectedLocale = await GlobalVariables.selectedLocale() ?? LanguageEnum.en_IN.name;
     options.data = {
       ...options.data,
       "RequestInfo": {

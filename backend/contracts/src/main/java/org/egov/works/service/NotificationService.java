@@ -1,11 +1,13 @@
 package org.egov.works.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import digit.models.coremodels.RequestInfoWrapper;
 import digit.models.coremodels.SMSRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.tracer.model.CustomException;
 import org.egov.works.config.ContractServiceConfiguration;
 import org.egov.works.kafka.ContractProducer;
 import org.egov.works.repository.ServiceRequestRepository;
@@ -68,25 +70,32 @@ public class NotificationService {
      * @param request
      */
     public void sendNotification(ContractRequest request) {
-        Workflow workflow = request.getWorkflow();
 
-        if (request.getContract().getBusinessService() != null
-                && !request.getContract().getBusinessService().isEmpty()
-                && request.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)) {
-            pushNotificationForRevisedContract (request);
+        if(config.getIsSMSEnabled()){
+            log.info("Notification is enabled for this service");
 
-        }else {
-            if (REJECT_ACTION.equalsIgnoreCase(workflow.getAction())) {
-                pushNotificationToCreatorForRejectAction(request);
-            } else if (APPROVE_ACTION.equalsIgnoreCase(workflow.getAction())) {
-                //No template present for Creator Approve Action
-                pushNotificationToCreatorForApproveAction(request);
-                pushNotificationToCBOForApproveAction(request);
-            } else if (ACCEPT_ACTION.equalsIgnoreCase(workflow.getAction())) {
-                pushNotificationToCreatorForAcceptAction(request);
-            } else if ("DECLINE".equalsIgnoreCase(workflow.getAction())) {
-                pushNotificationToCreatorForDeclineAction(request);
+            Workflow workflow = request.getWorkflow();
+
+            if (request.getContract().getBusinessService() != null
+                    && !request.getContract().getBusinessService().isEmpty()
+                    && request.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)) {
+                pushNotificationForRevisedContract (request);
+
+            }else {
+                if (REJECT_ACTION.equalsIgnoreCase(workflow.getAction())) {
+                    pushNotificationToCreatorForRejectAction(request);
+                } else if (APPROVE_ACTION.equalsIgnoreCase(workflow.getAction())) {
+                    //No template present for Creator Approve Action
+                    pushNotificationToCreatorForApproveAction(request);
+                    pushNotificationToCBOForApproveAction(request);
+                } else if (ACCEPT_ACTION.equalsIgnoreCase(workflow.getAction())) {
+                    pushNotificationToCreatorForAcceptAction(request);
+                } else if ("DECLINE".equalsIgnoreCase(workflow.getAction())) {
+                    pushNotificationToCreatorForDeclineAction(request);
+                }
             }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
 
     }
@@ -140,8 +149,18 @@ public class NotificationService {
         List<Contract> contractsFromDB = contractService.getContracts(contractCriteria);
         Contract originalContractFromDB = contractsFromDB.stream().filter(contract -> (contract.getBusinessService() != null && contract.getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE))).collect(Collectors.toList()).get(0);
         log.info("Getting officer-in-charge for contract :: " + originalContractFromDB.getContractNumber());
-        String officerInChargeUuid = originalContractFromDB.getAuditDetails().getCreatedBy();
-        Map<String,String> officerInChargeMobileNumberMap =hrmsUtils.getEmployeeDetailsByUuid(request.getRequestInfo(), request.getContract().getTenantId(),officerInChargeUuid);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String officerInchargeCode = null;
+        try{
+            Map<String, Object> addtionalDetailsMap = objectMapper.convertValue(originalContractFromDB.getAdditionalDetails(), Map.class);
+            if (addtionalDetailsMap.containsKey("officerInChargeName")) {
+                Map<String, String> officerInChargeNameMap = (Map<String, String>) addtionalDetailsMap.get("officerInChargeName");
+                officerInchargeCode = officerInChargeNameMap.get("code");
+            }
+        }catch (Exception e){
+            throw new CustomException("OFFICER_INCHARGE_NOT_FOUND","Failed tp fetch officerInCharge details");
+        }
+        Map<String,String> officerInChargeMobileNumberMap =hrmsUtils.getEmployeeDetailsByCode(request.getRequestInfo(), request.getContract().getTenantId(),officerInchargeCode);
         String officerInChargeMobileNumber = officerInChargeMobileNumberMap.get(MOBILE_NUMBER);
         Map<String, String> smsDetailsMap = new HashMap<>();
 
@@ -419,11 +438,12 @@ public class NotificationService {
      */
     public String getMessage(ContractRequest request, String msgCode) {
         String locale = "en_IN";
+        String rootTenantId = request.getContract().getTenantId().split("\\.")[0];
         if(request.getRequestInfo().getMsgId().split("\\|").length > 1)
             locale = request.getRequestInfo().getMsgId().split("\\|")[1];
-        Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), request.getContract().getTenantId(),
+        Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), rootTenantId,
                 locale, ContractServiceConstants.CONTRACTS_MODULE_CODE);
-        return localizedMessageMap.get(locale + "|" + request.getContract().getTenantId()).get(msgCode);
+        return localizedMessageMap.get(locale + "|" + rootTenantId).get(msgCode);
     }
     private String buildMessageForRevisedContract(Map<String, String> userDetailsForSMS, String message, Boolean isSendBack) {
         if (Boolean.FALSE.equals(isSendBack)) {

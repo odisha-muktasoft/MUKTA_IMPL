@@ -89,15 +89,15 @@ const Urls = {
     billAmendmentSearch: "/billing-service/amendment/_search",
     getBulkPdfRecordsDetails: "/pdf-service/v1/_getBulkPdfRecordsDetails",
     createPayment: "/mukta-expense/payment/v1/_create",
-    ifms_funds_search : "/ifms/funds/v1/_search"
+    ifms_funds_search : "/ifms-adapter/funds/v1/_search"
   },
 expense:{
   createPayment: "/mukta-expense/payment/v1/_create",
-  searchPayment: "/ifms/pi/v1/_search",
+  searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
   updatePayment: "/mukta-expense/payment/v1/_update",
   regenerate : '/egov-pdf/bill/_generate',
-  searchPaymentWMS:"/wms/ifms-pi/_search",
-  updatePI:"/ifms/pi/v1/_create",
+  searchPaymentWMS:"/wms/mukta-pi/_search",
+  updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
   searchPA:"/mukta-expense/payment/v1/_search"
 
 },

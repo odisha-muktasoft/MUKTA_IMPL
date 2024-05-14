@@ -190,9 +190,9 @@ const fetchDocuments = (docs) => {
 //Method is used to create labourAnalysisPayload in additional details
 const getLabourMaterialAnalysis = (data) => {
   return {
-    labour : parseFloat(getLabourMaterialAnalysisCost(data,"LH")),
-    material : parseFloat(getLabourMaterialAnalysisCost(data,"MA")),
-    machinery : parseFloat(getLabourMaterialAnalysisCost(data,"MH"))
+    labour : parseFloat(getLabourMaterialAnalysisCost(data,["LA"])),
+    material : parseFloat(getLabourMaterialAnalysisCost(data,["MA","RA","CA","EMF","DMF","ADC","LC"])),
+    machinery : parseFloat(getLabourMaterialAnalysisCost(data,["MHA"]))
   }
 }
 
@@ -214,6 +214,7 @@ export const createEstimatePayload = (data, projectData, isEdit, estimate, isCre
         name: projectData?.projectDetails?.searchedProject?.basicDetails?.projectName,
         businessService : isCreateRevisionEstimate || isEditRevisionEstimate ? "REVISION-ESTIMATE" : null,
         description: projectData?.projectDetails?.searchedProject?.basicDetails?.projectDesc,
+        oldUuid : estimate?.oldUuid,
         executingDepartment: "WRK", //hardcoded since we are not capturing it anymore and it is required at BE side
         // "executingDepartment": filteredFormData?.selectedDept?.code,
         // "projectId":"7c941228-6149-4adc-bdb9-8b77f6c3757d",//static for now
