@@ -452,58 +452,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
                             children: [
                               CommonMBCard(
-                                items: {
-                                  t.translate(i18.measurementBook.mbNumber):
-                                      value.data.first.mbNumber ?? "NA",
-                                  t.translate(i18.common.musterRollId):
-                                      value.data.first.musterRollNumber ?? "NA",
-
-                                  // t.translate(i18.common.assignee): value
-                                  //         .data
-                                  //         .first
-                                  //         .measures!
-                                  //         .first
-                                  //         .contracts!
-                                  //         .first
-                                  //         .contractAdditionalDetails
-                                  //         ?.officerInChargeDesgn ??
-                                  //     "NA",
-                                  // t.translate(
-                                  //     i18.measurementBook
-                                  //         .workOrderNumber): t.translate(
-                                  //     "MB_WFMB_STATE_//${value.data.first.wfStatus!}"),
-                                  // t.translate(
-                                  //         i18.measurementBook.workOrderNumber):
-                                  //     value.data.first.referenceId ?? "NA",
-                                  // t.translate(i18.measurementBook.mbAmount):
-                                  //     value.data.first.totalAmount != null
-                                  //         ? double.parse((value
-                                  //                 .data.first.totalAmount!
-                                  //                 .toDouble())
-                                  //             .toStringAsFixed(2))
-                                  //         : 0.0,
-                                  t.translate(i18
-                                      .measurementBook.measurementPeriod): value
-                                              .data.first.entryDate !=
-                                          null
-                                      ? DateFormat('dd/MM/yyyy').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              value.data.first.entryDate!))
-                                      : "NA",
-                                  t.translate(i18.attendanceMgmt.projectDesc):
-                                      value
-                                              .data
-                                              .first
-                                              .measures!
-                                              .first
-                                              .contracts!
-                                              .first
-                                              .contractAdditionalDetails
-                                              ?.projectDesc ??
-                                          "NA",
-
-                                  // "SLA Days remaining": 2,
-                                },
+                                items: primaryItems(t, value.data, widget.type),
                                 widget: CommonTextButtonUnderline(
                                   label: t.translate(
                                       i18.measurementBook.mbShowHistory),
@@ -661,7 +610,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                     workflowDocument: l!,
                                                   ),
                                                 );
-                                            print(g);
                                           },
                                           extensions: const [
                                             'jpg',
@@ -902,6 +850,42 @@ class _MBDetailPageState extends State<MBDetailPage>
         ),
       ),
     );
+  }
+
+  Map<String, dynamic> primaryItems(
+      AppLocalizations t, List<FilteredMeasurements> s, MBScreen mbScreen) {
+    if (mbScreen == MBScreen.create) {
+      return {
+        t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
+
+        t.translate(i18.measurementBook.measurementPeriod): s.first.entryDate !=
+                null
+            ? DateFormat('dd/MM/yyyy')
+                .format(DateTime.fromMillisecondsSinceEpoch(s.first.entryDate!))
+            : "NA",
+        t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
+                .contracts!.first.contractAdditionalDetails?.projectDesc ??
+            "NA",
+
+        // "SLA Days remaining": 2,
+      };
+    } else {
+      return {
+        t.translate(i18.measurementBook.mbNumber): s.first.mbNumber ?? "NA",
+        t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
+
+        t.translate(i18.measurementBook.measurementPeriod): s.first.entryDate !=
+                null
+            ? DateFormat('dd/MM/yyyy')
+                .format(DateTime.fromMillisecondsSinceEpoch(s.first.entryDate!))
+            : "NA",
+        t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
+                .contracts!.first.contractAdditionalDetails?.projectDesc ??
+            "NA",
+
+        // "SLA Days remaining": 2,
+      };
+    }
   }
 
   double tabViewHeight(int sork, int nonSork, int photo) {
@@ -1213,9 +1197,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                       child: Text(t.translate(i18.measurementBook.mbAction)),
                       onPressed: () {
                         Navigator.of(context).pop();
-                        if ((workorderStatus == "ACTIVE" &&
-                                estimateStatus != "INWORKFLOW") &&
-                            previousMBStatus) {
+                        if (widget.type == MBScreen.update) {
                           DigitActionDialog.show(
                             context,
                             widget: CommonButtonCard(
@@ -1227,18 +1209,33 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
                           );
                         } else {
-                          String show = "";
-                          if (workorderStatus != "ACTIVE") {
-                            show = "time extension";
-                          } else if (estimateStatus == "INWORKFLOW") {
-                            show = "estimate revision";
-                          } else {
-                            show = "existing MB";
-                          }
-                          Notifiers.getToastMessage(
+                          if ((workorderStatus == "ACTIVE" &&
+                                  estimateStatus != "INWORKFLOW") &&
+                              previousMBStatus) {
+                            DigitActionDialog.show(
                               context,
-                              "MB can not be created as the $show in progress",
-                              'ERROR');
+                              widget: CommonButtonCard(
+                                g: processInstances,
+                                contractNumber: contractNumber,
+                                mbNumber: mbNumber,
+                                type: widget.type,
+                                bs: bs,
+                              ),
+                            );
+                          } else {
+                            String show = "";
+                            if (workorderStatus != "ACTIVE") {
+                              show = "time extension";
+                            } else if (estimateStatus == "INWORKFLOW") {
+                              show = "estimate revision";
+                            } else {
+                              show = "existing MB";
+                            }
+                            Notifiers.getToastMessage(
+                                context,
+                                "MB can not be created as the $show in progress",
+                                'ERROR');
+                          }
                         }
 
 // before

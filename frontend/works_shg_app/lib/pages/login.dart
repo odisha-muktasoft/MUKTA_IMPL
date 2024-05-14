@@ -254,7 +254,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 
-  Future<dynamic> forgotPassword() {
+  Future<dynamic> forgotPassword(AppLocalizations t) {
     return showDialog(
       barrierDismissible: false,
       context: context,
@@ -262,7 +262,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
         return AlertDialog(
           contentPadding: const EdgeInsets.all(5.0),
           titlePadding: const EdgeInsets.only(top: 8.0, left: 5.0, bottom: 8.0),
-          title: const Text("Forgot Password"),
+          title:  Text(t.translate(i18.login.forgotPassword)),
           content: SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: 120,
@@ -279,7 +279,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                   ),
                 ),
                 DigitElevatedButton(
-                  child: const Text("OK"),
+                  child:  Text(t.translate(i18.common.oK)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -410,7 +410,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
           DigitIconButton(
             iconText: t.translate(i18.login.forgotPassword),
             onPressed: () {
-              forgotPassword();
+              forgotPassword(t);
             },
           ),
         ],

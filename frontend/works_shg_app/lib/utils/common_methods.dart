@@ -207,7 +207,7 @@ class CommonMethods {
 
       case 'ward':
       case 'locality':
-        return '${GlobalVariables.tenantId ?? GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString().toUpperCase().replaceAll('.', '_')}_ADMIN_${subString.toUpperCase()}';
+        return '${GlobalVariables.tenantId!=null?GlobalVariables.tenantId.toString().toUpperCase().replaceAll('.', '_') : GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString().toUpperCase().replaceAll('.', '_')}_ADMIN_${subString.toUpperCase()}';
     }
   }
 
