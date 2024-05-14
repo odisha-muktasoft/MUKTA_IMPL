@@ -235,13 +235,8 @@ const UtilMeasureCard = React.memo(({ columns, fields = [], register, setValue, 
   return (
     <Fragment>
       <div>
-        <CardSectionHeader style={{ fontSize: "18px" }}>{t("WORKS_MEASUREMENT_TABLE_HEADER")}</CardSectionHeader>
-        {/* <span className="measure-table-header" onClick={() => {
-          tableData[tableIndex].showMeasure = false;
-          setValue(tableData);
-        }}>
-        <CloseSvg />
-    </span>*/}
+        <CardSectionHeader style={{ fontSize: "18px" }}>{t("Material")}</CardSectionHeader>
+      
       </div>
       <table className="table reports-table sub-work-table">
         <thead>

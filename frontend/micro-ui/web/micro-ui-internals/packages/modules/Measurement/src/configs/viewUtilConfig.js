@@ -133,6 +133,7 @@ export const viewUtilSecondData = (
             cardHeader: { value: "Machinery Wise Consolidation", inlineStyles: {} },
             component: "ViewUtilTable",
             props: {
+              type:true,
               config: {
                 key: "SOR",
                 mode: "VIEW",

@@ -3,13 +3,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Fragment } from "react";
 
-function has4DecimalPlaces(number, decimalPlaces) {
-  if (number == "" || isNaN(number)) return true;
-  var numStr = number.toString();
-  // Using regex to check if its accepting upto 4 decimal places
-  var regex = new RegExp(`^\\d+(\\.\\d{0,${decimalPlaces}})?$`);
-  return regex.test(numStr);
-}
 
 const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dispatch, InputDecimalValidation, measurelineitemNo, style }) => {
   return (
@@ -20,52 +13,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         style={mode === "CREATE" || mode === "VIEW" ? { marginBottom: "0px" } : {}}
         type={fieldKey == "description" ? "text" : "number"}
         onChange={(newValue) => {
-          //newValue.target.value = fieldKey == "description" ? newValue?.target?.value :  limitDecimalDigits(newValue.target.value);
-          if (
-            fieldKey === "description" ||
-            (newValue?.target?.value && parseFloat(newValue?.target?.value) >= 0) ||
-            newValue?.target?.value === "" ||
-            newValue?.target?.value === null
-          ) {
-            let updatedMeasureLineItems = [];
-            if (mode === "CREATE") {
-              updatedMeasureLineItems = row?.additionalDetails?.measureLineItems?.length > 0 ? [...row?.additionalDetails?.measureLineItems] : [];
-              let findMeasureIndex = updatedMeasureLineItems?.findIndex((ob) => ob?.measurelineitemNo === measurelineitemNo);
-              updatedMeasureLineItems[findMeasureIndex][fieldKey] = newValue?.target?.value === "" ? 0 : newValue?.target?.value;
-            }
-            //on addition of multimeasure updating its value inside additional details
-            if (InputDecimalValidation?.active) {
-              //calling the input validation here to check if the input is under provided decimal places
-              if (has4DecimalPlaces(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
-                dispatch({
-                  type: "UPDATE_ROW",
-                  state:
-                    mode === "CREATE"
-                      ? {
-                          id: id,
-                          value: newValue.target.value,
-                          row: row,
-                          type: fieldKey,
-                          additionalDetails: { ...row?.additionalDetails, measureLineItems: updatedMeasureLineItems },
-                        }
-                      : { id: id, value: newValue.target.value, row: row, type: fieldKey },
-                });
-            } else {
-              dispatch({
-                type: "UPDATE_ROW",
-                state:
-                  mode === "CREATE"
-                    ? {
-                        id: id,
-                        value: newValue.target.value,
-                        row: row,
-                        type: fieldKey,
-                        additionalDetails: { ...row?.additionalDetails, measureLineItems: updatedMeasureLineItems },
-                      }
-                    : { id: id, value: newValue.target.value, row: row, type: fieldKey },
-              });
-            }
-          }
+        
         }}
         disable={disable}
       />
