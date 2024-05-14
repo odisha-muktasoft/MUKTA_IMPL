@@ -2,8 +2,8 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:works_shg_app/blocs/app_initilization/app_initilization.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
+import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -12,11 +12,11 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/ButtonLink.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 
+import '../blocs/app_initilization/app_initilization.dart';
 import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/organisation/org_search_bloc.dart';
-import '../models/app_config/app_config_model.dart';
 import '../models/organisation/organisation_model.dart';
 import '../models/screen_config/home_screen_config.dart';
 import '../utils/constants.dart';
@@ -66,38 +66,83 @@ class _HomePage extends State<HomePage> {
             },
           ),
         ),
-      ),
-      drawer: const DrawerWrapper(Drawer(child: SideBar())),
-      body: BlocBuilder<LocalizationBloc, LocalizationState>(
-        builder: (context, localState) {
+        drawer: const DrawerWrapper(Drawer(child: SideBar())),
+        body: BlocBuilder<LocalizationBloc, LocalizationState>(
+            builder: (context, localState) {
           return localState.maybeMap(
             orElse: () => const SizedBox.shrink(),
             loaded: (value) {
               Languages selectedLan=  value.languages!.firstWhere((element) => element.isSelected);
-              return BlocListener<ORGSearchBloc, ORGSearchState>(
-                listener: (context, orgState) {
-                  orgState.maybeWhen(
-                      orElse: () => false,
-                      error: (String? error) {
-                        Notifiers.getToastMessage(
-                            context,
-                            t.translate(i18.common.noOrgLinkedWithMob),
-                            'ERROR');
-                        context.read<AuthBloc>().add(const AuthLogoutEvent());
-                      },
-                      loaded:
-                          (OrganisationListModel? organisationListModel) async {
-                        if ((organisationListModel?.organisations ?? [])
-                            .isEmpty) {
-                          Notifiers.getToastMessage(
-                              context,
-                              t.translate(i18.common.noOrgLinkedWithMob),
-                              'ERROR');
-                          context.read<AuthBloc>().add(const AuthLogoutEvent());
-                        } else {
-                          
-                        }
-                      });
+              return BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  return state.maybeMap(
+                    loaded: (value) {
+                      if (value.roleType == RoleType.cbo) {
+                        return BlocListener<ORGSearchBloc, ORGSearchState>(
+                            listener: (context, orgState) {
+                          orgState.maybeWhen(
+                              orElse: () => false,
+                              error: (String? error) {
+                                Notifiers.getToastMessage(
+                                    context,
+                                    t.translate(i18.common.noOrgLinkedWithMob),
+                                    'ERROR');
+                                context
+                                    .read<AuthBloc>()
+                                    .add(const AuthLogoutEvent());
+                              },
+                              loaded: (OrganisationListModel?
+                                  organisationListModel) async {
+                                if ((organisationListModel?.organisations ?? [])
+                                    .isEmpty) {
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                          i18.common.noOrgLinkedWithMob),
+                                      'ERROR');
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(const AuthLogoutEvent());
+                                } else {}
+                              });
+                        }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                                builder: (context, state) {
+                          return state.maybeWhen(
+                              orElse: () => Container(),
+                              loading: () =>
+                                  shg_loader.Loaders.circularLoader(context),
+                              loaded: (OrganisationListModel?
+                                  organisationListModel) {
+                                return BlocBuilder<HomeScreenBloc,
+                                    HomeScreenBlocState>(
+                                  builder: (context, config) {
+                                    return config.maybeWhen(
+                                        orElse: () => Container(),
+                                        loading: () =>
+                                            shg_loader.Loaders.circularLoader(
+                                                context),
+                                        loaded: (List<CBOHomeScreenConfigModel>?
+                                            cboHomeScreenConfig) {
+                                          // role based config
+
+                                          return cboBasedLayout(
+                                              cboHomeScreenConfig,
+                                              t,
+                                              context,
+                                              selectedLan,);
+                                        });
+                                  },
+                                );
+                              });
+                        }));
+                      } else {
+                        return empBasedLayout(context);
+                      }
+                    },
+                    orElse: () {
+                      return const SizedBox.shrink();
+                    },
+                  );
                 },
               );
             },
@@ -152,9 +197,11 @@ class _HomePage extends State<HomePage> {
 
 //
   ScrollableContent cboBasedLayout(
-      List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
-      AppLocalizations t,
-      BuildContext context) {
+    List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+    AppLocalizations t,
+    BuildContext context,
+    Languages selectedLan,
+  ) {
     return ScrollableContent(
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
@@ -187,12 +234,17 @@ class _HomePage extends State<HomePage> {
                                 ],
                               ),
                               ButtonLink(t.translate(e.label ?? ''),
-                                  getRoute(e.key.toString(), context))
+                                  getRoute(e.key.toString(), context,selectedLan))
                             ],
                           );
                         } else {
-                          return ButtonLink(t.translate(e.label ?? ''),
-                              getRoute(e.key.toString(), context));
+                          return ButtonLink(
+                              t.translate(e.label ?? ''),
+                              getRoute(
+                                e.key.toString(),
+                                context,
+                                selectedLan
+                              ));
                         }
                       }).toList() ??
                       []),
@@ -201,7 +253,7 @@ class _HomePage extends State<HomePage> {
         ]);
   }
 
-  Future<void> localeLoad() async {
+  Future<void> localeLoad(Languages data) async {
     var currentLocale = await GlobalVariables.selectedLocale();
     context.read<LocalizationBloc>().add(
           LocalizationEvent.onSpecificLoadLocalization(
@@ -211,10 +263,9 @@ class _HomePage extends State<HomePage> {
                   .toString(),
               locale: data.value.toString()),
         );
-      }
+  }
 
-  void Function()? getRoute(
-      String key, BuildContext context, Languages data) {
+  void Function()? getRoute(String key, BuildContext context, Languages data) {
     switch (key) {
       case Constants.homeMyWorks:
         return () {
@@ -269,7 +320,6 @@ class HomeItemCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DigitCard(
-      
       onPressed: onPressed,
       padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
       child: Align(

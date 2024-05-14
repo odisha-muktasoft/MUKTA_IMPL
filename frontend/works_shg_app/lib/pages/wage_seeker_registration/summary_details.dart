@@ -73,7 +73,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
           ),
         ),
         DigitCard(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -188,7 +188,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           Align(
                             alignment: Alignment.center,
                             child: Image.memory(
-                              FilePickerData.bytes!.first,
+                              FilePickerData.bytes!,
                               fit: BoxFit.cover,
                               width: MediaQuery.of(context).size.width / 2,
                               height: MediaQuery.of(context).size.width / 2,
@@ -213,7 +213,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Image.file(
-                                  FilePickerData.imageFile!.first,
+                                  FilePickerData.imageFile!,
                                   fit: BoxFit.cover,
                                   width: MediaQuery.of(context).size.width / 2,
                                   height: MediaQuery.of(context).size.width / 2,
@@ -356,22 +356,9 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   listener: (context, individualState) {
                     individualState.maybeWhen(
                         orElse: () => false,
-                        loading: () {
-                           Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).popUntil(
-                      (route) => route is! PopupRoute,
-                    );
-                        Loaders.showLoadingDialog(context);},
-                       //     shg_loader.Loaders.circularLoader(context),
+                        loading: () =>
+                            shg_loader.Loaders.circularLoader(context),
                         loaded: (SingleIndividualModel? individualListModel) {
-                           Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).popUntil(
-                      (route) => route is! PopupRoute,
-                    );
                           context.read<WageSeekerBankCreateBloc>().add(
                                 CreateBankWageSeekerEvent(
                                     tenantId: individualListModel
@@ -388,41 +375,18 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                                     bankName: '${financialDetails?.bankName}'),
                               );
                         },
-                        error: (String? error) {
-                           Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).popUntil(
-                      (route) => route is! PopupRoute,
-                    );
-                          Notifiers.getToastMessage(
-                            context, error.toString(), 'ERROR');}
-                            
-                            
-                            );
+                        error: (String? error) => Notifiers.getToastMessage(
+                            context, error.toString(), 'ERROR'));
                   },
                   child: BlocListener<WageSeekerBankCreateBloc,
                       WageSeekerBankCreateState>(
                     listener: (context, individualState) {
                       individualState.maybeWhen(
                           orElse: () => false,
-                          loading: () {
-                           Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).popUntil(
-                      (route) => route is! PopupRoute,
-                    );
-                          Loaders.showLoadingDialog(context);},
-                              //shg_loader.Loaders.circularLoader(context),
+                          loading: () =>
+                              shg_loader.Loaders.circularLoader(context),
                           loaded: (BankingDetailsModel? bankingDetails,
                               BankAccounts? bankAccountDetails) {
-                                 Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).popUntil(
-                      (route) => route is! PopupRoute,
-                    );
                             var localizationText =
                                 '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
                             localizationText = localizationText.replaceFirst(
@@ -439,17 +403,8 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                                   i18.common.backToHome,
                                 )));
                           },
-                          error: (String? error) { 
-                             Navigator.of(
-                      context,
-                      rootNavigator: true,
-                    ).popUntil(
-                      (route) => route is! PopupRoute,
-                    );
-                            Notifiers.getToastMessage(
-                              context, error.toString(), 'ERROR');}
-                              
-                              );
+                          error: (String? error) => Notifiers.getToastMessage(
+                              context, error.toString(), 'ERROR'));
                     },
                     child: Center(
                       child: DigitElevatedButton(
@@ -457,7 +412,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                             if (debouncer != null && debouncer!.isActive) {
                               debouncer!.cancel(); // Cancel the previous timer if it's active.
                             }
-                            debouncer = Timer(const Duration(milliseconds: 1000), () {
+                            debouncer = Timer(Duration(milliseconds: 1000), () {
                           context.read<WageSeekerCreateBloc>().add(
                                 CreateWageSeekerEvent(
                                     individualDetails: individualDetails,

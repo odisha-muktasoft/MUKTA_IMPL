@@ -8,6 +8,7 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/muster_rolls/search_muster_roll.dart';
 import '../data/init_client.dart';
+import '../data/repositories/remote/localization.dart';
 
 class AuthenticatedPageWrapper extends StatefulWidget {
   const AuthenticatedPageWrapper({
@@ -71,7 +72,7 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
           create: (context) => LocalizationBloc(
             const LocalizationState.initial(),
             LocalizationRepository(initClient.init()),
-            widget.isar,
+            
           )..add(LocalizationEvent.onLoadLocalization(
               module: 'rainmaker-attendencemgmt,rainmaker-measurement,rainmaker-workflow',
               tenantId: GlobalVariables
