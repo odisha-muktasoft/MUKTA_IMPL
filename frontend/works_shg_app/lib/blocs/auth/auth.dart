@@ -136,7 +136,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (kIsWeb) {
           html.window.sessionStorage.remove(e.value);
         } else {
+          await Hive.box<KeyLocaleModel>('keyValueModel').clear();
+          await Hive.box<Localization>('localization').clear();
           await storage.delete(key: e.value);
+          
         }
       });
       GlobalVariables.organisationListModel = null;

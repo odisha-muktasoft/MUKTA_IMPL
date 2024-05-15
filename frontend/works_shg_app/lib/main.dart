@@ -215,11 +215,11 @@ class _MainApplicationState extends State<MainApplication> {
         BlocProvider(
           create: (context) => MeasurementInboxBloc(),
         ),
-        BlocProvider(
-            create: (context) => LocalizationBloc(
-                  const LocalizationState.initial(),
-                  LocalizationRepository(initClient.init()),
-                )),
+        // BlocProvider(
+        //     create: (context) => LocalizationBloc(
+        //           const LocalizationState.initial(),
+        //           LocalizationRepository(initClient.init()),
+        //         )),
         BlocProvider(
             create: (context) => LocalizationBloc(
                   const LocalizationState.initial(),
