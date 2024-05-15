@@ -26,6 +26,7 @@ def getContracts(requestInfo, tenantId, contractStatus):
         headers = {'Content-Type': 'application/json'}
 
         hasMoreRecords = True
+        contractNumberSet= set()
         while hasMoreRecords:
             payload["pagination"] = { "limit": limit, "offSet": offset  }
             requestData = json.dumps(payload)
@@ -33,7 +34,7 @@ def getContracts(requestInfo, tenantId, contractStatus):
             # Convert the response to json
             payloadData = response.json()
             contractsData = payloadData.get("contracts", [])
-            contractNumberSet= set()
+
             if (len(contractsData) > 0):
                 for contract in contractsData:
                     contract_number = contract.get("contractNumber")
