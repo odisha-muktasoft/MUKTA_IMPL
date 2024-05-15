@@ -220,6 +220,7 @@ class _MainApplicationState extends State<MainApplication> {
         //           const LocalizationState.initial(),
         //           LocalizationRepository(initClient.init()),
         //         )),
+        
         BlocProvider(
             create: (context) => LocalizationBloc(
                   const LocalizationState.initial(),
@@ -233,7 +234,7 @@ class _MainApplicationState extends State<MainApplication> {
           )..add(  AppInitializationSetupEvent(selectedLang: LanguageEnum.en_IN.name)),
           lazy: false,
         ),
-        BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => AuthBloc( BlocProvider.of<AppInitializationBloc>(context))),
         BlocProvider(create: (context) => OTPBloc()),
         BlocProvider(create: (context) => HomeScreenBloc()),
         BlocProvider(create: (context) => AppVersionBloc()),
