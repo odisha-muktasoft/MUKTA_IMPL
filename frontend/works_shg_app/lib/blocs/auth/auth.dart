@@ -21,6 +21,8 @@ part 'auth.freezed.dart';
 
 typedef AuthEmitter = Emitter<AuthState>;
 
+enum RoleType { cbo, employee, none }
+
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const AuthState.initial()) {
     on<AuthLoginEvent>(_onLogin);
@@ -37,15 +39,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .validateLogin(url: Urls.userServices.authenticate, body: {
         "username": event.userId.toString(),
         "password": event.password.toString(),
-        "userType": 'CITIZEN',
-        "tenantId":
-            GlobalVariables.globalConfigObject?.globalConfigs?.stateTenantId,
+        "userType": event.roleType == RoleType.cbo ? 'CITIZEN' : 'EMPLOYEE',
+        "tenantId": event.roleType == RoleType.cbo
+            ? GlobalVariables.globalConfigObject?.globalConfigs?.stateTenantId
+            : event.tenantId,
         "scope": "read",
         "grant_type": "password"
       });
       await Future.delayed(const Duration(seconds: 1));
+      GlobalVariables.roleType =
+          event.roleType == RoleType.cbo ? RoleType.cbo : RoleType.employee;
       GlobalVariables.authToken = userDetailsModel.access_token;
       GlobalVariables.uuid = userDetailsModel.userRequestModel?.uuid;
+      GlobalVariables.tenantId=userDetailsModel.userRequestModel?.tenantId;
       GlobalVariables.userRequestModel =
           jsonDecode(jsonEncode(userDetailsModel.userRequestModel));
       if (kIsWeb) {
@@ -72,8 +78,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             value: jsonEncode(userDetailsModel.userRequestModel?.mobileNumber));
       }
       if (userDetailsModel != null) {
-        emit(AuthState.loaded(
-            userDetailsModel, userDetailsModel.access_token.toString()));
+        emit(
+          AuthState.loaded(
+            userDetailsModel,
+            userDetailsModel.access_token.toString(),
+            event.roleType == RoleType.cbo ? RoleType.cbo : RoleType.employee,
+          ),
+        );
       } else {
         emit(const AuthState.error());
       }
@@ -106,10 +117,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
-      emit(const AuthState.loaded(null, null));
+      GlobalVariables.tenantId=null;
+      GlobalVariables.roleType = RoleType.none;
+      emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
     } on DioError catch (e) {
-      emit(const AuthState.loaded(null, null));
+      emit(const AuthState.loaded(null, null, RoleType.none));
     }
   }
 
@@ -128,7 +141,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       });
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
-      emit(const AuthState.loaded(null, null));
+      GlobalVariables.tenantId=null;
+      GlobalVariables.roleType = RoleType.none;
+      emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
     } on DioError catch (e) {
       emit(const AuthState.error());
@@ -141,6 +156,8 @@ class AuthEvent with _$AuthEvent {
   const factory AuthEvent.login({
     required String userId,
     required String password,
+    required RoleType roleType,
+    String? tenantId,
   }) = AuthLoginEvent;
 
   const factory AuthEvent.logout() = AuthLogoutEvent;
@@ -154,6 +171,9 @@ class AuthState with _$AuthState {
   const factory AuthState.initial() = _Initial;
   const factory AuthState.loading() = _Loading;
   const factory AuthState.loaded(
-      UserDetailsModel? userDetailsModel, String? accessToken) = _Loaded;
+    UserDetailsModel? userDetailsModel,
+    String? accessToken,
+    RoleType roleType,
+  ) = _Loaded;
   const factory AuthState.error() = _Error;
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
+import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -53,152 +54,203 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0,
-        title: BlocBuilder<ORGSearchBloc, ORGSearchState>(
-          builder: (context, state) {
-            return state.maybeWhen(
-                orElse: () => Container(),
-                loaded: (OrganisationListModel? organisationListModel) {
-                  return const AppBarLogo();
-                });
-          },
+        appBar: AppBar(
+          titleSpacing: 0,
+          title: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                  orElse: () => Container(),
+                  loaded: (OrganisationListModel? organisationListModel) {
+                    return const AppBarLogo();
+                  });
+            },
+          ),
         ),
-      ),
-      drawer: const DrawerWrapper(Drawer(child: SideBar())),
-      body: BlocBuilder<LocalizationBloc, LocalizationState>(
-        builder: (context, localState) {
+        drawer: const DrawerWrapper(Drawer(child: SideBar())),
+        body: BlocBuilder<LocalizationBloc, LocalizationState>(
+            builder: (context, localState) {
           return localState.maybeMap(
             orElse: () => const SizedBox.shrink(),
             loaded: (value) {
               Languages selectedLan=  value.languages!.firstWhere((element) => element.isSelected);
-              return BlocListener<ORGSearchBloc, ORGSearchState>(
-                listener: (context, orgState) {
-                  orgState.maybeWhen(
-                      orElse: () => false,
-                      error: (String? error) {
-                        Notifiers.getToastMessage(
-                            context,
-                            t.translate(i18.common.noOrgLinkedWithMob),
-                            'ERROR');
-                        context.read<AuthBloc>().add(const AuthLogoutEvent());
-                      },
-                      loaded:
-                          (OrganisationListModel? organisationListModel) async {
-                        if ((organisationListModel?.organisations ?? [])
-                            .isEmpty) {
-                          Notifiers.getToastMessage(
-                              context,
-                              t.translate(i18.common.noOrgLinkedWithMob),
-                              'ERROR');
-                          context.read<AuthBloc>().add(const AuthLogoutEvent());
-                        } else {
-                          
-                        }
-                      });
-                },
-                child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                  builder: (context, state) {
-                    return state.maybeWhen(
-                      orElse: () => Container(),
-                      loading: () => shg_loader.Loaders.circularLoader(context),
-                      loaded: (OrganisationListModel? organisationListModel) {
-                        return ScrollableContent(
-                          footer: const Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: PoweredByDigit(),
-                          ),
-                          children: [
-                            DigitCard(
-                              onPressed: null,
-                              padding:
-                                  const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: BlocBuilder<HomeScreenBloc,
+              return BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  return state.maybeMap(
+                    loaded: (value) {
+                      if (value.roleType == RoleType.cbo) {
+                        return BlocListener<ORGSearchBloc, ORGSearchState>(
+                            listener: (context, orgState) {
+                          orgState.maybeWhen(
+                              orElse: () => false,
+                              error: (String? error) {
+                                Notifiers.getToastMessage(
+                                    context,
+                                    t.translate(i18.common.noOrgLinkedWithMob),
+                                    'ERROR');
+                                context
+                                    .read<AuthBloc>()
+                                    .add(const AuthLogoutEvent());
+                              },
+                              loaded: (OrganisationListModel?
+                                  organisationListModel) async {
+                                if ((organisationListModel?.organisations ?? [])
+                                    .isEmpty) {
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                          i18.common.noOrgLinkedWithMob),
+                                      'ERROR');
+                                  context
+                                      .read<AuthBloc>()
+                                      .add(const AuthLogoutEvent());
+                                } else {}
+                              });
+                        }, child: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                                builder: (context, state) {
+                          return state.maybeWhen(
+                              orElse: () => Container(),
+                              loading: () =>
+                                  shg_loader.Loaders.circularLoader(context),
+                              loaded: (OrganisationListModel?
+                                  organisationListModel) {
+                                return BlocBuilder<HomeScreenBloc,
                                     HomeScreenBlocState>(
                                   builder: (context, config) {
                                     return config.maybeWhen(
-                                      orElse: () => Container(),
-                                      loading: () =>
-                                          shg_loader.Loaders.circularLoader(
-                                              context),
-                                      loaded: (List<CBOHomeScreenConfigModel>?
-                                          cboHomeScreenConfig) {
-                                        return Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: cboHomeScreenConfig?.map(
-                                                  (e) {
-                                                    if (e.order == 1) {
-                                                      return Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                t.translate(i18
-                                                                    .home
-                                                                    .mukta),
-                                                                style: DigitTheme
-                                                                    .instance
-                                                                    .mobileTheme
-                                                                    .textTheme
-                                                                    .headlineLarge,
-                                                              ),
-                                                              SvgPicture.asset(
-                                                                  Constants
-                                                                      .muktaIcon)
-                                                            ],
-                                                          ),
-                                                          ButtonLink(
-                                                            t.translate(
-                                                                e.label ?? ''),
-                                                            getRoute(
-                                                              e.key.toString(),
-                                                              context,
-                                                              selectedLan,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    } else {
-                                                      return ButtonLink(
-                                                        t.translate(
-                                                            e.label ?? ''),
-                                                        getRoute(
-                                                          e.key.toString(),
-                                                          context,
-                                                          selectedLan,
-                                                        ),
-                                                      );
-                                                    }
-                                                  },
-                                                ).toList() ??
-                                                []);
-                                      },
-                                    );
+                                        orElse: () => Container(),
+                                        loading: () =>
+                                            shg_loader.Loaders.circularLoader(
+                                                context),
+                                        loaded: (List<CBOHomeScreenConfigModel>?
+                                            cboHomeScreenConfig) {
+                                          // role based config
+
+                                          return cboBasedLayout(
+                                              cboHomeScreenConfig,
+                                              t,
+                                              context,
+                                              selectedLan,);
+                                        });
                                   },
-                                ),
-                              ),
-                            )
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
+                                );
+                              });
+                        }));
+                      } else {
+                        return empBasedLayout(context);
+                      }
+                    },
+                    orElse: () {
+                      return const SizedBox.shrink();
+                    },
+                  );
+                },
               );
             },
           );
+        }));
+  }
+
+  ScrollableContent empBasedLayout(BuildContext context) {
+    return ScrollableContent(
+      slivers: [
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return _getItems(context).elementAt(index);
+            },
+            childCount: 2,
+          ),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 145,
+            childAspectRatio: 104 / 128,
+          ),
+        ),
+      ],
+    );
+  }
+// data
+
+  List<Widget> _getItems(BuildContext context) {
+    return [
+      HomeItemCard(
+        icon: SvgPicture.asset(Constants.mbIcon),
+        label: 'Measurement Books',
+        onPressed: () {
+          context.router.push(
+            const MeasurementBookInboxRoute(),
+          );
+          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
         },
       ),
-    );
+      HomeItemCard(
+        icon: SvgPicture.asset(Constants.workOrderIcon),
+        label: 'Work Orders',
+        onPressed: () {
+          context.router.push(
+            const WorkOderInboxRoute(),
+          );
+          //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));
+        },
+      )
+    ];
+  }
+
+//
+  ScrollableContent cboBasedLayout(
+    List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+    AppLocalizations t,
+    BuildContext context,
+    Languages selectedLan,
+  ) {
+    return ScrollableContent(
+        footer: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: PoweredByDigit(),
+        ),
+        children: [
+          DigitCard(
+            onPressed: null,
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: cboHomeScreenConfig?.map((e) {
+                        if (e.order == 1) {
+                          return Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    t.translate(i18.home.mukta),
+                                    style: DigitTheme.instance.mobileTheme
+                                        .textTheme.headlineLarge,
+                                  ),
+                                  SvgPicture.asset(Constants.muktaIcon)
+                                ],
+                              ),
+                              ButtonLink(t.translate(e.label ?? ''),
+                                  getRoute(e.key.toString(), context,selectedLan))
+                            ],
+                          );
+                        } else {
+                          return ButtonLink(
+                              t.translate(e.label ?? ''),
+                              getRoute(
+                                e.key.toString(),
+                                context,
+                                selectedLan
+                              ));
+                        }
+                      }).toList() ??
+                      []),
+            ),
+          ),
+        ]);
   }
 
   Future<void> localeLoad(Languages data) async {
@@ -211,10 +263,9 @@ class _HomePage extends State<HomePage> {
                   .toString(),
               locale: data.value.toString()),
         );
-      }
+  }
 
-  void Function()? getRoute(
-      String key, BuildContext context, Languages data) {
+  void Function()? getRoute(String key, BuildContext context, Languages data) {
     switch (key) {
       case Constants.homeMyWorks:
         return () {
@@ -249,5 +300,54 @@ class _HomePage extends State<HomePage> {
       default:
         return null;
     }
+  }
+}
+
+class HomeItemCard extends StatelessWidget {
+  final Widget icon;
+  final String label;
+  final VoidCallback? onPressed;
+
+  const HomeItemCard({
+    required this.icon,
+    required this.label,
+    this.onPressed,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return DigitCard(
+      onPressed: onPressed,
+      padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            icon,
+            // Icon(
+            //   icon,
+            //   color: onPressed == null
+            //       ? theme.disabledColor
+            //       : theme.colorScheme.secondary,
+            //   size: 30,
+            // ),
+            const SizedBox(height: 20),
+            Text(
+              AppLocalizations.of(context).translate(
+                label,
+              ),
+              style: theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

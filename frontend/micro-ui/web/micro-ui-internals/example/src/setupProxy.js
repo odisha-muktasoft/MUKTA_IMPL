@@ -90,7 +90,7 @@ module.exports = function (app) {
     "/mukta-expense/payment/",
     "/mukta-expense-calculator/",
     "/measurement-service/",
-    "/mukta-mukta-services/",
+    "/mukta-services/",
     "/mdms-v2/",
     "mukta-ifix-adapter",
     "/ifms-adapter"

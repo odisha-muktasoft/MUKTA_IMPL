@@ -8,6 +8,7 @@ WageSeeker wageSeeker = const WageSeeker();
 AttendanceMgmt attendanceMgmt = const AttendanceMgmt();
 MyBills myBills = const MyBills();
 MyServiceRequests myServiceRequests = const MyServiceRequests();
+MeasurementBook measurementBook = const MeasurementBook();
 
 class Login {
   const Login();
@@ -148,6 +149,16 @@ class Common {
   String get noValue => 'ES_COMMON_NA';
   String get noOrgLinkedWithMob => 'ES_COMMON_NO_ORG_LINKED_WITH_MOBILE_NUMBER';
   String get takeAction => 'ES_COMMON_TAKE_ACTION';
+  String get assignee => "COMMON_ASSIGNEE";
+  String get commonWorkflowStates => "COMMON_WORKFLOW_STATES";
+  String get supportingDocumentHeader => "WORKFLOW_MODAL_UPLOAD_FILES";
+  String get date => "ES_COMMON_DATE";
+  String get filter => "ES_COMMON_FILTER";
+  String get musterRollId => "ES_COMMON_MUSTER_ROLL_ID";
+  String get allFieldsMandatory =>
+      "ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS";
+  String get slaDaysRemaining => "COMMON_SLA_DAYS";
+  String get issuedDate => "WORKS_CONTRACT_ISSUE_DATE";
 }
 
 class Home {
@@ -271,6 +282,20 @@ class WageSeeker {
   String get pinCodeValidation => 'COMMON_PINCODE_VALIDATION';
   String get maxStreetCharacters => 'MAX_STREET_NAME_CHARACTERS';
   String get maxDoorNoCharacters => 'MAX_DOOR_NO_CHARACTERS';
+
+  // wage seeker indentification flow
+
+  String get identificationHeader => 'WAGE_SEEKER_IDENTIFICATION_HEADER';
+  String get personalDetailHeader => 'WAGE_SEEKER_PERSONAL_DETAIL_HEADER';
+  String get identityDocumentLabel => 'WAGE_SEEKER_IDENTITY_DOCUMENT_LABEL';
+  String get identityNumberLabel => 'WAGE_SEEKER_IDENTITY_NUMBER_LABEL';
+  String get identityNameLabel => 'WAGE_SEEKER_IDENTITY_NAME_LABEL';
+  String get adharValidate => 'AADHAAR_VALIDATE';
+  String get adharVerifySuccess => 'WAGE_SEEKER_AADHAAR_VERIFY_SUCCESS';
+  String get adharVerifyError => 'WAGE_SEEKER_AADHAAR_VERIFY_ERROR';
+  String get adharVerifyFailed => 'WAGE_SEEKER_AADHAAR_VERIFY_FAILED';
+  String get individualSkillHeader => 'WAGE_SEEKER_SKILL_DETAIL_HEADER';
+  String get individualPhotoHeader => 'WAGE_SEEKER_PHOTO_DETAIL_HEADER';
 }
 
 class AttendanceMgmt {
@@ -339,4 +364,61 @@ class MyServiceRequests {
   String get revisedEndDate => 'WORKS_REVISED_END_DATE';
   String get editAction => 'WF_CONTRACT_ACTION_EDIT';
   String get noServiceRequests => 'SR_NO_SERVICE_REQUEST_FOUND';
+}
+
+class MeasurementBook {
+  const MeasurementBook();
+
+  String get measurementBookTitle => "MEASUREMENT_BOOK_TITLE";
+  String get primaryDetails => "PRIMARY_DETAILS";
+  String get mbNumber => "MB_NUMBER";
+  String get mbSlaDaysRemaining => "MB_SLA_DAYS_REMAINING";
+  String get mbShowHistory => "MB_SHOW_HISTORY";
+  String get mbWorksitePhotos => "MB_WORKSITE_PHOTOS";
+  String get mbNonSor => "MB_NONSOR";
+  String get mbSor => "MB_SORS";
+  String get projectName => "MB_PROJECT_NAME";
+  String get workflowState => "MB_WORKFLOW_STATE";
+  String get mbAmount => "MB_AMOUNT";
+  String get assignedToAll => "MB_ASSIGNED_TO_ALL";
+  String get unit => "MB_UNIT";
+  String get description => "MB_DESCRIPTION";
+  String get rate => "MB_RATE";
+  String get approvedQty => "MB_APPROVER_QUANT";
+  String get consumedQty => "MB_CONSUMED_QUANT";
+  String get mbStatus => "MB_STATUS";
+  String get mbHistory => "MB_HISTORY";
+  String get workOrderNumber => "MB_SEARCH_REFERENCE_NUMBER";
+  String get measurementPeriod => "MB_MEASUREMENT_PERIOD";
+
+  // I updated
+  String get totalSorAmount => "MB_TOTAL_SOR_AMT";
+  String get forCurrentEntry => "MB_FOR_CURRENT_ENTRY";
+  String get totalNonSorAmount => "MB_TOTAL_NON_SOR_AMT";
+  String get totalMbAmount => "MB_TOTAL_MB_AMT";
+  String get openMbBook => "MB_OPEN_BOOK";
+  String get currentMBEntry => "CURRENT_MB_ENTRY";
+  String get mbAmtCurrentEntry => "MB_AMT_CURRENT_ENTRY";
+  String get mbAction => "MB_ACTION";
+  String get projectDescription => "MB_PROJECT_DESC";
+  String get mbWorkflowState => "MB_WORKFLOW_STATUS";
+  String get mbInbox => "MB_INBOX";
+
+  String get createMb => "MB_BUTTON_LEVEL_CREATE";
+  String get sort => "MB_SORT";
+  String get backToTop => "MB_BACK_TO_TOP";
+  String get workOrderInbox => "MB_WORK_ORDER_INBOX";
+  String get filter => "MB_FILTER";
+  String get clear => "MB_CLEAR";
+
+// sort
+
+
+  String get workFlowState => "WORK_FLOW_STATE";
+  String get amountLowToHigh => "AMOUNT_LOW_HIGH";
+  String get amountHighToLow => "AMOUNT_HIGH_LOW";
+
+  String get cboName => "CBO_NAME";
+  String get sortBy => "SORT_BY";
+
 }

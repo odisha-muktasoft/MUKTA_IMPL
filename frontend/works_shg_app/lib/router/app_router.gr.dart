@@ -211,6 +211,76 @@ class _$AppRouter extends RootStackRouter {
         child: const MyServiceRequestsPage(),
       );
     },
+    MeasurementBookInboxRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MeasurementBookInboxPage(),
+      );
+    },
+    MBFilterRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const MBFilterPage(),
+      );
+    },
+    MBDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<MBDetailRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: MBDetailPage(
+          key: args.key,
+          contractNumber: args.contractNumber,
+          mbNumber: args.mbNumber,
+          tenantId: args.tenantId,
+          type: args.type,
+        ),
+      );
+    },
+    MBHistoryBookRoute.name: (routeData) {
+      final args = routeData.argsAs<MBHistoryBookRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: MBHistoryBookPage(
+          key: args.key,
+          contractNumber: args.contractNumber,
+          mbNumber: args.mbNumber,
+          tenantId: args.tenantId,
+          type: args.type,
+        ),
+      );
+    },
+    MBTypeConfirmationRoute.name: (routeData) {
+      final args = routeData.argsAs<MBTypeConfirmationRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: MBTypeConfirmationPage(
+          key: args.key,
+          nextActions: args.nextActions,
+          contractNumber: args.contractNumber,
+          mbNumber: args.mbNumber,
+          type: args.type,
+          stateActions: args.stateActions,
+        ),
+      );
+    },
+    WorkOderInboxRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WorkOderInboxPage(),
+      );
+    },
+    WorkOrderDetailRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WorkOrderDetailPage(),
+      );
+    },
+    WOFilterRoute.name: (routeData) {
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const WOFilterPage(),
+      );
+    },
   };
 
   @override
@@ -322,6 +392,46 @@ class _$AppRouter extends RootStackRouter {
             RouteConfig(
               MyServiceRequestsRoute.name,
               path: 'my-service-requests',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MeasurementBookInboxRoute.name,
+              path: 'measurement-inbox',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBFilterRoute.name,
+              path: 'mb-filter',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBDetailRoute.name,
+              path: 'mb-detail',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBHistoryBookRoute.name,
+              path: 'mb-history',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBTypeConfirmationRoute.name,
+              path: 'mb-type-confirmation',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              WorkOderInboxRoute.name,
+              path: 'workOrder-inbox',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              WorkOrderDetailRoute.name,
+              path: 'workOrder-details',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              WOFilterRoute.name,
+              path: 'wo-filter',
               parent: AuthenticatedRouteWrapper.name,
             ),
           ],
@@ -834,4 +944,217 @@ class MyServiceRequestsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'MyServiceRequestsRoute';
+}
+
+/// generated route for
+/// [MeasurementBookInboxPage]
+class MeasurementBookInboxRoute extends PageRouteInfo<void> {
+  const MeasurementBookInboxRoute()
+      : super(
+          MeasurementBookInboxRoute.name,
+          path: 'measurement-inbox',
+        );
+
+  static const String name = 'MeasurementBookInboxRoute';
+}
+
+/// generated route for
+/// [MBFilterPage]
+class MBFilterRoute extends PageRouteInfo<void> {
+  const MBFilterRoute()
+      : super(
+          MBFilterRoute.name,
+          path: 'mb-filter',
+        );
+
+  static const String name = 'MBFilterRoute';
+}
+
+/// generated route for
+/// [MBDetailPage]
+class MBDetailRoute extends PageRouteInfo<MBDetailRouteArgs> {
+  MBDetailRoute({
+    Key? key,
+    required String contractNumber,
+    required String mbNumber,
+    String? tenantId,
+    required MBScreen type,
+  }) : super(
+          MBDetailRoute.name,
+          path: 'mb-detail',
+          args: MBDetailRouteArgs(
+            key: key,
+            contractNumber: contractNumber,
+            mbNumber: mbNumber,
+            tenantId: tenantId,
+            type: type,
+          ),
+        );
+
+  static const String name = 'MBDetailRoute';
+}
+
+class MBDetailRouteArgs {
+  const MBDetailRouteArgs({
+    this.key,
+    required this.contractNumber,
+    required this.mbNumber,
+    this.tenantId,
+    required this.type,
+  });
+
+  final Key? key;
+
+  final String contractNumber;
+
+  final String mbNumber;
+
+  final String? tenantId;
+
+  final MBScreen type;
+
+  @override
+  String toString() {
+    return 'MBDetailRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId, type: $type}';
+  }
+}
+
+/// generated route for
+/// [MBHistoryBookPage]
+class MBHistoryBookRoute extends PageRouteInfo<MBHistoryBookRouteArgs> {
+  MBHistoryBookRoute({
+    Key? key,
+    required String contractNumber,
+    required String mbNumber,
+    String? tenantId,
+    required MBScreen type,
+  }) : super(
+          MBHistoryBookRoute.name,
+          path: 'mb-history',
+          args: MBHistoryBookRouteArgs(
+            key: key,
+            contractNumber: contractNumber,
+            mbNumber: mbNumber,
+            tenantId: tenantId,
+            type: type,
+          ),
+        );
+
+  static const String name = 'MBHistoryBookRoute';
+}
+
+class MBHistoryBookRouteArgs {
+  const MBHistoryBookRouteArgs({
+    this.key,
+    required this.contractNumber,
+    required this.mbNumber,
+    this.tenantId,
+    required this.type,
+  });
+
+  final Key? key;
+
+  final String contractNumber;
+
+  final String mbNumber;
+
+  final String? tenantId;
+
+  final MBScreen type;
+
+  @override
+  String toString() {
+    return 'MBHistoryBookRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId, type: $type}';
+  }
+}
+
+/// generated route for
+/// [MBTypeConfirmationPage]
+class MBTypeConfirmationRoute
+    extends PageRouteInfo<MBTypeConfirmationRouteArgs> {
+  MBTypeConfirmationRoute({
+    Key? key,
+    required NextActions? nextActions,
+    String? contractNumber,
+    String? mbNumber,
+    required MBScreen type,
+    StateActions? stateActions,
+  }) : super(
+          MBTypeConfirmationRoute.name,
+          path: 'mb-type-confirmation',
+          args: MBTypeConfirmationRouteArgs(
+            key: key,
+            nextActions: nextActions,
+            contractNumber: contractNumber,
+            mbNumber: mbNumber,
+            type: type,
+            stateActions: stateActions,
+          ),
+        );
+
+  static const String name = 'MBTypeConfirmationRoute';
+}
+
+class MBTypeConfirmationRouteArgs {
+  const MBTypeConfirmationRouteArgs({
+    this.key,
+    required this.nextActions,
+    this.contractNumber,
+    this.mbNumber,
+    required this.type,
+    this.stateActions,
+  });
+
+  final Key? key;
+
+  final NextActions? nextActions;
+
+  final String? contractNumber;
+
+  final String? mbNumber;
+
+  final MBScreen type;
+
+  final StateActions? stateActions;
+
+  @override
+  String toString() {
+    return 'MBTypeConfirmationRouteArgs{key: $key, nextActions: $nextActions, contractNumber: $contractNumber, mbNumber: $mbNumber, type: $type, stateActions: $stateActions}';
+  }
+}
+
+/// generated route for
+/// [WorkOderInboxPage]
+class WorkOderInboxRoute extends PageRouteInfo<void> {
+  const WorkOderInboxRoute()
+      : super(
+          WorkOderInboxRoute.name,
+          path: 'workOrder-inbox',
+        );
+
+  static const String name = 'WorkOderInboxRoute';
+}
+
+/// generated route for
+/// [WorkOrderDetailPage]
+class WorkOrderDetailRoute extends PageRouteInfo<void> {
+  const WorkOrderDetailRoute()
+      : super(
+          WorkOrderDetailRoute.name,
+          path: 'workOrder-details',
+        );
+
+  static const String name = 'WorkOrderDetailRoute';
+}
+
+/// generated route for
+/// [WOFilterPage]
+class WOFilterRoute extends PageRouteInfo<void> {
+  const WOFilterRoute()
+      : super(
+          WOFilterRoute.name,
+          path: 'wo-filter',
+        );
+
+  static const String name = 'WOFilterRoute';
 }

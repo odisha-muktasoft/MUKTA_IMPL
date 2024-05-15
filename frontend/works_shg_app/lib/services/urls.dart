@@ -9,6 +9,9 @@ class Urls {
   static WorkServices workServices = const WorkServices();
   static ORGServices orgServices = const ORGServices();
   static BillServices billServices = const BillServices();
+  static MeasurementService measurementService= const MeasurementService();
+  static EmpHrms empHrms =const EmpHrms();
+  static EstimateService estimateService = const EstimateService();
 }
 
 class CommonServices {
@@ -41,6 +44,8 @@ class WageSeekerServices {
 
   String get individualCreate => 'mukta-individual/v1/_create';
   String get bankCreate => '/bankaccount-service/bankaccount/v1/_create';
+
+  String get adharVerifyUrl=>'http://164.100.141.79/authekycv4/api/authenticate';
 }
 
 class InitServices {
@@ -68,6 +73,12 @@ class WorkServices {
   String get createWorkOrder => 'mukta-contract/v1/_create';
 }
 
+class EmpHrms {
+  const EmpHrms();
+  String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+  
+}
+
 class MusterRollServices {
   const MusterRollServices();
   String get searchMusterRolls => 'muster-roll/v1/_search';
@@ -86,4 +97,26 @@ class AttendanceRegisterServices {
   String get deEnrollAttendee => 'attendance/attendee/v1/_delete';
   String get individualSearch => 'mukta-individual/v1/_search';
   String get wmsIndividualSearch => 'wms/mukta-individual/_search';
+}
+
+
+
+
+class MeasurementService{
+   const MeasurementService();
+
+   String get measurementInbox=>'inbox/v2/_search';
+   String get measurementDetail=>"mukta-services/measurement/_search";
+   String get updateMeasurement => "measurement-service/v1/_update";
+   String get createMeasurement=>"measurement-service/v1/_create";
+}
+
+//estimate/v1/_search
+
+
+class EstimateService{
+   const EstimateService();
+
+   String get estimateSearch=>'estimate/v1/_search';
+   
 }

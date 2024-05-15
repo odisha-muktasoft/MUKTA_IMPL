@@ -18,6 +18,8 @@ import 'package:works_shg_app/blocs/attendance/individual_search.dart';
 import 'package:works_shg_app/blocs/attendance/search_projects/search_projects.dart';
 import 'package:works_shg_app/blocs/attendance/skills/skills_bloc.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
+import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/muster_rolls/create_muster.dart';
 import 'package:works_shg_app/blocs/muster_rolls/muster_roll_estimate.dart';
 import 'package:works_shg_app/blocs/muster_rolls/search_muster_roll.dart';
@@ -48,6 +50,10 @@ import 'blocs/attendance/individual_wms_search.dart';
 import 'blocs/attendance/muster_submission_mdms.dart';
 import 'blocs/attendance/search_projects/search_individual_project.dart';
 import 'blocs/auth/auth.dart';
+import 'blocs/employee/estimate/estimate.dart';
+import 'blocs/employee/mb/mb_detail_view.dart';
+import 'blocs/employee/mb/measurement_book.dart';
+import 'blocs/employee/work_order/workorder_book.dart';
 import 'blocs/localization/app_localization.dart';
 import 'blocs/localization/localization.dart';
 import 'blocs/muster_rolls/from_to_date_search_muster_roll.dart';
@@ -192,6 +198,28 @@ class _MainApplicationState extends State<MainApplication> {
 
     return MultiBlocProvider(
       providers: [
+
+        BlocProvider(create:(context)=>EstimateBloc()),
+        BlocProvider(
+          create: (context) => EmpHRMSBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MeasurementCrudBloc(),
+        ),
+        BlocProvider(
+          create: (context) => WorkOrderInboxBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MeasurementDetailBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MeasurementInboxBloc(),
+        ),
+        BlocProvider(
+            create: (context) => LocalizationBloc(
+                  const LocalizationState.initial(),
+                  LocalizationRepository(initClient.init()),
+                )),
         BlocProvider(
             create: (context) => LocalizationBloc(
                   const LocalizationState.initial(),
@@ -317,7 +345,7 @@ class _MainApplicationState extends State<MainApplication> {
                     authState.maybeWhen(
                         initial: () => const UnauthenticatedRouteWrapper(),
                         loaded: (UserDetailsModel? userDetailsModel,
-                                String? accessToken) =>
+                                String? accessToken, RoleType? roleType) =>
                             const AuthenticatedRouteWrapper(),
                         orElse: () => const UnauthenticatedRouteWrapper())
                   ],

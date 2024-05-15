@@ -21,6 +21,7 @@ mixin _$MusterGetWorkflowEvent {
     required TResult Function(
             String tenantId, String musterRollNumber, String musterSentBackCode)
         get,
+    required TResult Function(String tenantId, String mbNumber) fetch,
     required TResult Function() dispose,
   }) =>
       throw _privateConstructorUsedError;
@@ -29,6 +30,7 @@ mixin _$MusterGetWorkflowEvent {
     TResult? Function(String tenantId, String musterRollNumber,
             String musterSentBackCode)?
         get,
+    TResult? Function(String tenantId, String mbNumber)? fetch,
     TResult? Function()? dispose,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,6 +39,7 @@ mixin _$MusterGetWorkflowEvent {
     TResult Function(String tenantId, String musterRollNumber,
             String musterSentBackCode)?
         get,
+    TResult Function(String tenantId, String mbNumber)? fetch,
     TResult Function()? dispose,
     required TResult orElse(),
   }) =>
@@ -44,18 +47,21 @@ mixin _$MusterGetWorkflowEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GetMusterWorkflowEvent value) get,
+    required TResult Function(FetchMBWorkFlowEvent value) fetch,
     required TResult Function(DisposeMusterRollWorkflowEvent value) dispose,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GetMusterWorkflowEvent value)? get,
+    TResult? Function(FetchMBWorkFlowEvent value)? fetch,
     TResult? Function(DisposeMusterRollWorkflowEvent value)? dispose,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GetMusterWorkflowEvent value)? get,
+    TResult Function(FetchMBWorkFlowEvent value)? fetch,
     TResult Function(DisposeMusterRollWorkflowEvent value)? dispose,
     required TResult orElse(),
   }) =>
@@ -173,6 +179,7 @@ class _$GetMusterWorkflowEvent implements GetMusterWorkflowEvent {
     required TResult Function(
             String tenantId, String musterRollNumber, String musterSentBackCode)
         get,
+    required TResult Function(String tenantId, String mbNumber) fetch,
     required TResult Function() dispose,
   }) {
     return get(tenantId, musterRollNumber, musterSentBackCode);
@@ -184,6 +191,7 @@ class _$GetMusterWorkflowEvent implements GetMusterWorkflowEvent {
     TResult? Function(String tenantId, String musterRollNumber,
             String musterSentBackCode)?
         get,
+    TResult? Function(String tenantId, String mbNumber)? fetch,
     TResult? Function()? dispose,
   }) {
     return get?.call(tenantId, musterRollNumber, musterSentBackCode);
@@ -195,6 +203,7 @@ class _$GetMusterWorkflowEvent implements GetMusterWorkflowEvent {
     TResult Function(String tenantId, String musterRollNumber,
             String musterSentBackCode)?
         get,
+    TResult Function(String tenantId, String mbNumber)? fetch,
     TResult Function()? dispose,
     required TResult orElse(),
   }) {
@@ -208,6 +217,7 @@ class _$GetMusterWorkflowEvent implements GetMusterWorkflowEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GetMusterWorkflowEvent value) get,
+    required TResult Function(FetchMBWorkFlowEvent value) fetch,
     required TResult Function(DisposeMusterRollWorkflowEvent value) dispose,
   }) {
     return get(this);
@@ -217,6 +227,7 @@ class _$GetMusterWorkflowEvent implements GetMusterWorkflowEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GetMusterWorkflowEvent value)? get,
+    TResult? Function(FetchMBWorkFlowEvent value)? fetch,
     TResult? Function(DisposeMusterRollWorkflowEvent value)? dispose,
   }) {
     return get?.call(this);
@@ -226,6 +237,7 @@ class _$GetMusterWorkflowEvent implements GetMusterWorkflowEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GetMusterWorkflowEvent value)? get,
+    TResult Function(FetchMBWorkFlowEvent value)? fetch,
     TResult Function(DisposeMusterRollWorkflowEvent value)? dispose,
     required TResult orElse(),
   }) {
@@ -247,6 +259,166 @@ abstract class GetMusterWorkflowEvent implements MusterGetWorkflowEvent {
   String get musterSentBackCode;
   @JsonKey(ignore: true)
   _$$GetMusterWorkflowEventCopyWith<_$GetMusterWorkflowEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FetchMBWorkFlowEventCopyWith<$Res> {
+  factory _$$FetchMBWorkFlowEventCopyWith(_$FetchMBWorkFlowEvent value,
+          $Res Function(_$FetchMBWorkFlowEvent) then) =
+      __$$FetchMBWorkFlowEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String tenantId, String mbNumber});
+}
+
+/// @nodoc
+class __$$FetchMBWorkFlowEventCopyWithImpl<$Res>
+    extends _$MusterGetWorkflowEventCopyWithImpl<$Res, _$FetchMBWorkFlowEvent>
+    implements _$$FetchMBWorkFlowEventCopyWith<$Res> {
+  __$$FetchMBWorkFlowEventCopyWithImpl(_$FetchMBWorkFlowEvent _value,
+      $Res Function(_$FetchMBWorkFlowEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tenantId = null,
+    Object? mbNumber = null,
+  }) {
+    return _then(_$FetchMBWorkFlowEvent(
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+      mbNumber: null == mbNumber
+          ? _value.mbNumber
+          : mbNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FetchMBWorkFlowEvent implements FetchMBWorkFlowEvent {
+  const _$FetchMBWorkFlowEvent(
+      {required this.tenantId, required this.mbNumber});
+
+  @override
+  final String tenantId;
+  @override
+  final String mbNumber;
+
+  @override
+  String toString() {
+    return 'MusterGetWorkflowEvent.fetch(tenantId: $tenantId, mbNumber: $mbNumber)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FetchMBWorkFlowEvent &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.mbNumber, mbNumber) ||
+                other.mbNumber == mbNumber));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, tenantId, mbNumber);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FetchMBWorkFlowEventCopyWith<_$FetchMBWorkFlowEvent> get copyWith =>
+      __$$FetchMBWorkFlowEventCopyWithImpl<_$FetchMBWorkFlowEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            String tenantId, String musterRollNumber, String musterSentBackCode)
+        get,
+    required TResult Function(String tenantId, String mbNumber) fetch,
+    required TResult Function() dispose,
+  }) {
+    return fetch(tenantId, mbNumber);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String tenantId, String musterRollNumber,
+            String musterSentBackCode)?
+        get,
+    TResult? Function(String tenantId, String mbNumber)? fetch,
+    TResult? Function()? dispose,
+  }) {
+    return fetch?.call(tenantId, mbNumber);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String tenantId, String musterRollNumber,
+            String musterSentBackCode)?
+        get,
+    TResult Function(String tenantId, String mbNumber)? fetch,
+    TResult Function()? dispose,
+    required TResult orElse(),
+  }) {
+    if (fetch != null) {
+      return fetch(tenantId, mbNumber);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GetMusterWorkflowEvent value) get,
+    required TResult Function(FetchMBWorkFlowEvent value) fetch,
+    required TResult Function(DisposeMusterRollWorkflowEvent value) dispose,
+  }) {
+    return fetch(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GetMusterWorkflowEvent value)? get,
+    TResult? Function(FetchMBWorkFlowEvent value)? fetch,
+    TResult? Function(DisposeMusterRollWorkflowEvent value)? dispose,
+  }) {
+    return fetch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GetMusterWorkflowEvent value)? get,
+    TResult Function(FetchMBWorkFlowEvent value)? fetch,
+    TResult Function(DisposeMusterRollWorkflowEvent value)? dispose,
+    required TResult orElse(),
+  }) {
+    if (fetch != null) {
+      return fetch(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FetchMBWorkFlowEvent implements MusterGetWorkflowEvent {
+  const factory FetchMBWorkFlowEvent(
+      {required final String tenantId,
+      required final String mbNumber}) = _$FetchMBWorkFlowEvent;
+
+  String get tenantId;
+  String get mbNumber;
+  @JsonKey(ignore: true)
+  _$$FetchMBWorkFlowEventCopyWith<_$FetchMBWorkFlowEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -296,6 +468,7 @@ class _$DisposeMusterRollWorkflowEvent
     required TResult Function(
             String tenantId, String musterRollNumber, String musterSentBackCode)
         get,
+    required TResult Function(String tenantId, String mbNumber) fetch,
     required TResult Function() dispose,
   }) {
     return dispose();
@@ -307,6 +480,7 @@ class _$DisposeMusterRollWorkflowEvent
     TResult? Function(String tenantId, String musterRollNumber,
             String musterSentBackCode)?
         get,
+    TResult? Function(String tenantId, String mbNumber)? fetch,
     TResult? Function()? dispose,
   }) {
     return dispose?.call();
@@ -318,6 +492,7 @@ class _$DisposeMusterRollWorkflowEvent
     TResult Function(String tenantId, String musterRollNumber,
             String musterSentBackCode)?
         get,
+    TResult Function(String tenantId, String mbNumber)? fetch,
     TResult Function()? dispose,
     required TResult orElse(),
   }) {
@@ -331,6 +506,7 @@ class _$DisposeMusterRollWorkflowEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(GetMusterWorkflowEvent value) get,
+    required TResult Function(FetchMBWorkFlowEvent value) fetch,
     required TResult Function(DisposeMusterRollWorkflowEvent value) dispose,
   }) {
     return dispose(this);
@@ -340,6 +516,7 @@ class _$DisposeMusterRollWorkflowEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GetMusterWorkflowEvent value)? get,
+    TResult? Function(FetchMBWorkFlowEvent value)? fetch,
     TResult? Function(DisposeMusterRollWorkflowEvent value)? dispose,
   }) {
     return dispose?.call(this);
@@ -349,6 +526,7 @@ class _$DisposeMusterRollWorkflowEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GetMusterWorkflowEvent value)? get,
+    TResult Function(FetchMBWorkFlowEvent value)? fetch,
     TResult Function(DisposeMusterRollWorkflowEvent value)? dispose,
     required TResult orElse(),
   }) {

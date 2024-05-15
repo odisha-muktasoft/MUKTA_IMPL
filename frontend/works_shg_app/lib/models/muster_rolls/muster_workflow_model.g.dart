@@ -63,11 +63,22 @@ Map<String, dynamic> _$$_ProcessInstancesToJson(_$_ProcessInstances instance) =>
 _$_NextActions _$$_NextActionsFromJson(Map<String, dynamic> json) =>
     _$_NextActions(
       action: json['action'] as String?,
+      uuid: json['uuid'] as String?,
+      currentState: json['currentState'] as String?,
+      nextState: json['nextState'] as String?,
+      tenantId: json['tenantId'] as String?,
+      roles:
+          (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$_NextActionsToJson(_$_NextActions instance) =>
     <String, dynamic>{
       'action': instance.action,
+      'uuid': instance.uuid,
+      'currentState': instance.currentState,
+      'nextState': instance.nextState,
+      'tenantId': instance.tenantId,
+      'roles': instance.roles,
     };
 
 _$_WorkflowDocument _$$_WorkflowDocumentFromJson(Map<String, dynamic> json) =>
@@ -77,6 +88,11 @@ _$_WorkflowDocument _$$_WorkflowDocumentFromJson(Map<String, dynamic> json) =>
       fileStoreId: json['fileStoreId'] as String?,
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
+      fileStore: json['fileStore'] as String?,
+      documentAdditionalDetails: json['additionalDetails'] == null
+          ? null
+          : DocumentAdditionalDetails.fromJson(
+              json['additionalDetails'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_WorkflowDocumentToJson(_$_WorkflowDocument instance) =>
@@ -85,6 +101,24 @@ Map<String, dynamic> _$$_WorkflowDocumentToJson(_$_WorkflowDocument instance) =>
       'documentUid': instance.documentUid,
       'fileStoreId': instance.fileStoreId,
       'id': instance.id,
+      'tenantId': instance.tenantId,
+      'fileStore': instance.fileStore,
+      'additionalDetails': instance.documentAdditionalDetails,
+    };
+
+_$_DocumentAdditionalDetails _$$_DocumentAdditionalDetailsFromJson(
+        Map<String, dynamic> json) =>
+    _$_DocumentAdditionalDetails(
+      fileName: json['fileName'] as String?,
+      fileType: json['fileType'] as String?,
+      tenantId: json['tenantId'] as String?,
+    );
+
+Map<String, dynamic> _$$_DocumentAdditionalDetailsToJson(
+        _$_DocumentAdditionalDetails instance) =>
+    <String, dynamic>{
+      'fileName': instance.fileName,
+      'fileType': instance.fileType,
       'tenantId': instance.tenantId,
     };
 

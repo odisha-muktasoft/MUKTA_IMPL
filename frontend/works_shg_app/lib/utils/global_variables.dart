@@ -4,6 +4,7 @@ import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/localization/selected_localization_model.dart';
 import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/models/init_mdms/global_config_model.dart';
@@ -104,6 +105,8 @@ class GlobalVariables {
   static String? authToken;
   static Map<String, dynamic>? userRequestModel;
   static Map<String, String> downloadUrl = {};
+  static RoleType roleType= RoleType.none;
+  static String? tenantId;
 }
 
 PackageInfo? packageInfo;
