@@ -164,7 +164,7 @@ class MBLogic {
               (mbDetailResponse.period?.endDate ?? 00),
           startDate: e.additionalDetail?.startDate ??
               (mbDetailResponse.period?.startDate ?? 00),
-          entryDate:index == 0 && type == MBScreen.update? e.entryDate:DateTime.now().millisecondsSinceEpoch,
+          entryDate:index == 0 && type == MBScreen.update? (e.entryDate==0&&e.entryDate==null)?e.entryDate:DateTime.now().millisecondsSinceEpoch:DateTime.now().millisecondsSinceEpoch,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
           // to be chnaged

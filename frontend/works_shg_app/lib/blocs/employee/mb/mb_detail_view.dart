@@ -485,7 +485,7 @@ class MeasurementDetailBloc
                   referenceId: e.referenceId,
                   physicalRefNumber: e.physicalRefNumber,
                   measures: e.measures,
-                  documents: e.documents,
+                  documents: e.documents?.map((e) => e).toList(),
                 );
               } else {
                 return e;
@@ -563,11 +563,11 @@ class MeasurementDetailBloc
                   musterRollNumber: e.musterRollNumber,
                   endDate: e.endDate,
                   startDate: e.startDate,
-                  entryDate: e.endDate,
+                  entryDate: e.entryDate,
                   referenceId: e.referenceId,
                   physicalRefNumber: e.physicalRefNumber,
                   measures: e.measures,
-                  documents: updatedDocuments,
+                  documents: updatedDocuments.map((e) => e).toList(),
                 );
               } else {
                 return e;
@@ -576,7 +576,7 @@ class MeasurementDetailBloc
           ).toList();
 
 //
-
+print(newData);
           emit(
             value.copyWith(
               data: newData,

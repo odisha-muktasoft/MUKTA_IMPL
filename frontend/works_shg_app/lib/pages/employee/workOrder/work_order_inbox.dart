@@ -263,23 +263,9 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                               ),
                                             )
                                           : const SizedBox.shrink(),
-
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                              onPressed: () {
-                                                Conversion.openSortingModal(
-                                                  context,
-                                                  listData:
-                                                      Conversion.sortWorkOrder,
-                                                  sortType: SortType.woSort,
-                                                );
-                                              },
-                                              icon: SvgPicture.asset(
-                                                  Constants.sort)),
-                                          Text(
+                                      //
+                                      TextButton.icon(
+                                          label: Text(
                                             t.translate(
                                                 i18.measurementBook.sort),
                                             style: DigitTheme
@@ -292,8 +278,50 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                   .burningOrange,
                                             ),
                                           ),
-                                        ],
-                                      ),
+
+                                          // color: const DigitColors()
+                                          //     .burningOrange,
+                                          onPressed: () {
+                                            Conversion.openSortingModal(
+                                              context,
+                                              listData:
+                                                  Conversion.sortWorkOrder,
+                                              sortType: SortType.woSort,
+                                            );
+                                          },
+                                          icon:
+                                              SvgPicture.asset(Constants.sort)),
+
+                                      // Row(
+                                      //   children: [
+                                      //     IconButton(
+                                      //         color: const DigitColors()
+                                      //             .burningOrange,
+                                      //         onPressed: () {
+                                      //           Conversion.openSortingModal(
+                                      //             context,
+                                      //             listData:
+                                      //                 Conversion.sortWorkOrder,
+                                      //             sortType: SortType.woSort,
+                                      //           );
+                                      //         },
+                                      //         icon: SvgPicture.asset(
+                                      //             Constants.sort)),
+                                      //     Text(
+                                      //       t.translate(
+                                      //           i18.measurementBook.sort),
+                                      //       style: DigitTheme
+                                      //           .instance
+                                      //           .mobileTheme
+                                      //           .textTheme
+                                      //           .labelLarge!
+                                      //           .copyWith(
+                                      //         color: const DigitColors()
+                                      //             .burningOrange,
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -311,7 +339,6 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                     child: EmptyImage(
                                       align: Alignment.center,
                                       label: "Work order not Found",
-                                      
                                     ),
                                   );
                                 },
