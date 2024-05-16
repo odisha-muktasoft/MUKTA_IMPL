@@ -26,10 +26,12 @@ class Login {
   String get enteredMobileNotRegistered =>
       'ENTERED_MOBILE_NO_NOT_REGISTERED_AS_CBO';
   String get pleaseEnterMobile => 'ENTER_REGISTERED_MOBILE';
+  String get forgotPasswordMsg => "CORE_COMMON_FORGOT_MESSAGE";
 }
 
 class Common {
   const Common();
+  String get empLoginError=>"ES_INVALID_LOGIN_CREDENTIALS";
   String get continueLabel => 'CORE_COMMON_CONTINUE';
   String get nameLabel => 'CORE_COMMON_NAME';
   String get continueToLogin => 'CONTINUE_TO_LOGIN';
