@@ -39,7 +39,7 @@ class MobileView extends StatelessWidget {
                                     bottom: cardBottomPosition,
                                     child: Container(
                                         margin:
-                                            const EdgeInsets.only(bottom: 24),
+                                            const EdgeInsets.only(bottom:0),
                                         width:
                                             MediaQuery.of(context).size.width,
                                         // height: MediaQuery.of(context).size.height + 20,

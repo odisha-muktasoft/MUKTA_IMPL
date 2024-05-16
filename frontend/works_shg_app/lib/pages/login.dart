@@ -1,10 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
+import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -40,6 +44,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   final FocusNode _numberFocus = FocusNode();
   String selectTenantId = "";
 
+  bool iconVisibility = false;
   List<DigitRowCardModel> btns = [
     const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
     const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
@@ -135,42 +140,6 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                           userpassword: userPasswordController)
                     ]),
               ),
-              // btns.first.isSelected
-              //     ? cboLogin(loginContext)
-              //     : employeeLogin(loginContext, data,
-              //         userName: userNameController,
-              //         userpassword: userPasswordController),
-              // const SizedBox(height: 16),
-              // DigitRowCard(
-              //   onChanged: (value) {
-              //     userIdController.clear();
-              //     userNameController.clear();
-              //     userPasswordController.clear();
-              //     setState(() {
-              //       final m = btns.map((e) {
-              //         if (e.label == value.label) {
-              //           final s = DigitRowCardModel(
-              //               label: e.label, value: e.value, isSelected: true);
-              //           return s;
-              //         } else {
-              //           final k = DigitRowCardModel(
-              //               label: e.label, value: e.value, isSelected: false);
-              //           return k;
-              //         }
-              //       }).toList();
-              //       btns.clear();
-              //       btns.addAll(m);
-              //     });
-              //   },
-              //   rowItems: btns,
-              //   width: MediaQuery.of(context).size.width > 720
-              //       ? (MediaQuery.of(context).size.width / (2 * 3)) - 20
-              //       : (MediaQuery.of(context).size.width / 2) - 16 * 2,
-              // ),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-
               _tabController.index == 0
                   ? BlocListener<OTPBloc, OTPBlocState>(
                       listener: (context, state) {
@@ -214,8 +183,10 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                             error: () {
                               Notifiers.getToastMessage(
                                   context,
-                                  AppLocalizations.of(context)
-                                      .translate(i18.login.invalidOTP),
+                                  AppLocalizations.of(context).translate(
+                                      _tabController.index == 0
+                                          ? i18.login.invalidOTP
+                                          : i18.common.empLoginError),
                                   'ERROR');
                             },
                             orElse: () => Container());
@@ -260,9 +231,10 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       context: context,
       builder: (context) {
         return AlertDialog(
-          contentPadding: const EdgeInsets.all(5.0),
-          titlePadding: const EdgeInsets.only(top: 8.0, left: 5.0, bottom: 8.0),
-          title:  Text(t.translate(i18.login.forgotPassword)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+          titlePadding:
+              const EdgeInsets.only(top: 16.0, left: 5.0, bottom: 2.0),
+          title: Text(t.translate(i18.login.forgotPassword)),
           content: SizedBox(
             width: MediaQuery.sizeOf(context).width,
             height: 120,
@@ -271,15 +243,14 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0, top: 8.0),
+                  padding: const EdgeInsets.only(bottom: 12.0, top: 0.0),
                   child: Text(
-                    "Please use MUKTAsoft web login to reset the password",
-                    style:
-                        DigitTheme.instance.mobileTheme.textTheme.labelMedium,
+                    t.translate(i18.login.forgotPasswordMsg),
+                    style: DigitTheme.instance.mobileTheme.textTheme.titleSmall,
                   ),
                 ),
                 DigitElevatedButton(
-                  child:  Text(t.translate(i18.common.oK)),
+                  child: Text(t.translate(i18.common.oK)),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -294,7 +265,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
 
   SizedBox cboLogin(BuildContext loginContext) {
     return SizedBox(
-      height: 340,
+      height: (MediaQuery.sizeOf(loginContext).height) * 0.7,
       child: SingleChildScrollView(
         child: DigitTextField(
           label:
@@ -345,8 +316,8 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                     child: MobileView(
                       getLoginCard(t, context, state),
                       GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
-                      logoBottomPosition: constraints.maxHeight / 8,
-                      cardBottomPosition: constraints.maxHeight / 3,
+                      logoBottomPosition: (constraints.maxHeight / 8) + 50,
+                      cardBottomPosition: (constraints.maxHeight / 3),
                     ),
                   );
                 } else {
@@ -364,7 +335,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
       {required TextEditingController userName,
       required TextEditingController userpassword}) {
     return SizedBox(
-      height: 340,
+      height: (MediaQuery.sizeOf(context).height) * 0.7,
       child: Column(
         children: [
           DigitTextField(
@@ -381,11 +352,27 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
             onChange: (value) {},
           ),
           DigitTextField(
+            maxLines: 1,
             label:
                 '${AppLocalizations.of(context).translate(i18.login.loginPassword)}*',
             controller: userpassword,
             isRequired: true,
-
+            obscureText: iconVisibility,
+            suffixIcon: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      iconVisibility = !iconVisibility;
+                    });
+                  },
+                  icon: Icon(
+                    iconVisibility
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off_rounded,
+                    size: 30,
+                  )),
+            ),
             //  focusNode: _numberFocus,
             validator: (val) {
               if (val!.trim().isEmpty || val!.trim() == "") {
@@ -407,6 +394,22 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
               valueMapper: (value) {
                 return t.translate(Conversion.convertToTenant(value!.code!));
               }),
+
+          // CustomDropdown<TenantListModel>(
+          //   value: null,
+          //   onChanged: (value) {
+          //    setState(() {
+          //         selectTenantId = value?.code ?? "";
+          //       });
+          //   },
+          //   data: data!.initMdmsModel!.tenant!.tenantListModel!,
+          //   t: t,
+          //   valueMapper: (TenantListModel value) {
+          //     return t.translate(
+          //       Conversion.convertToTenant(value!.code!),
+          //     );
+          //   },
+          // ),
           DigitIconButton(
             iconText: t.translate(i18.login.forgotPassword),
             onPressed: () {
@@ -418,3 +421,129 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
     );
   }
 }
+
+// // custom drop down
+// class CustomDropdown<T> extends StatefulWidget {
+//   final List<TenantListModel> data;
+//   final AppLocalizations t;
+//   final ValueChanged<T?>? onChanged;
+//   final T? value;
+//   final String Function(TenantListModel value) valueMapper;
+//   const CustomDropdown({
+//     Key? key,
+//     required this.data,
+//     required this.t,
+//     this.onChanged,
+//     this.value,
+//     required this.valueMapper,
+//   }) : super(key: key);
+
+//   // @override
+//   // _CustomDropdownState createState() => _CustomDropdownState();
+
+//   @override
+//   State<StatefulWidget> createState() {
+//     return _CustomDropdown();
+//   }
+// }
+
+// class _CustomDropdown extends State<CustomDropdown> {
+//   final LayerLink _layerLink = LayerLink();
+//   OverlayEntry? _overlayEntry;
+//   String? _selectedValue;
+//   final GlobalKey _dropdownKey = GlobalKey();
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return CompositedTransformTarget(
+//       link: _layerLink,
+//       child: GestureDetector(
+//         key: _dropdownKey,
+//         onTap: _toggleDropdown,
+//         child: Container(
+//           width: MediaQuery.sizeOf(context).width,
+//           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+//           decoration: BoxDecoration(
+//             border: Border.all(color: Colors.grey),
+//             borderRadius: BorderRadius.circular(5),
+//           ),
+//           child: Text(widget.value ?? 'Select an item'),
+//         ),
+//       ),
+//     );
+//   }
+
+//   void _toggleDropdown() {
+//     if (_overlayEntry == null) {
+//       _overlayEntry = _createOverlayEntry();
+//       Overlay.of(context)!.insert(_overlayEntry!);
+//     } else {
+//       _overlayEntry?.remove();
+//       _overlayEntry = null;
+//     }
+//   }
+
+//   OverlayEntry _createOverlayEntry() {
+//     RenderBox renderBox =
+//         _dropdownKey.currentContext!.findRenderObject() as RenderBox;
+//     Size size = renderBox.size;
+//     Offset offset = renderBox.localToGlobal(Offset.zero);
+
+//     return OverlayEntry(
+//       builder: (context) => Stack(
+//         children: [
+//           // This GestureDetector will catch taps outside the dropdown
+//           Positioned.fill(
+//             child: GestureDetector(
+//               onTap: () {
+//                 _overlayEntry?.remove();
+//                 _overlayEntry = null;
+//               },
+//               child: Container(
+//                 color: Colors.transparent,
+//               ),
+//             ),
+//           ),
+//           Positioned(
+//             left: offset.dx,
+//             top: offset.dy + size.height + 5.0,
+//             width: size.width, // Set the width to match the parent
+//             child: Material(
+//               elevation: 4.0,
+//               child: SizedBox(
+//                 height: 260.0, // Set the maximum height for the dropdown
+//                 child: ListView(
+//                   padding: EdgeInsets.zero,
+//                   shrinkWrap: true,
+//                   children: _buildDropdownItems(),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   List<Widget> _buildDropdownItems() {
+//     return widget.data.map((TenantListModel x) {
+//       return DropdownMenuItem(
+//         child:ListTile(
+//         title: Text(widget.valueMapper(x)
+//             // widget.t.translate(Conversion.convertToTenant(x!.code!))
+//             ),
+//         onTap: () {
+//           widget.onChanged!(x);
+//           _overlayEntry?.remove();
+//           _overlayEntry = null;
+//         },
+//       ));
+//     }).toList();
+//   }
+
+//   @override
+//   void dispose() {
+//     _overlayEntry?.remove();
+//     super.dispose();
+//   }
+// }

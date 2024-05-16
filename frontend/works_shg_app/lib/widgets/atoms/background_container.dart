@@ -16,6 +16,7 @@ class BackgroundContainer extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child: widget);
+        child: widget,
+        );
   }
 }
