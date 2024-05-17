@@ -33,25 +33,25 @@ class _WOFilterPageState extends State<WOFilterPage> {
   List<OrganisationModel>? orgId; // Initialize ward list
   // List<statusMap.StatusMap> workflow = []; // Initialize workflow list
 
-  TextEditingController mbNumber = TextEditingController();
+  TextEditingController woNumber = TextEditingController();
   TextEditingController projectId = TextEditingController();
   TextEditingController projectName = TextEditingController();
   bool workShow = true;
   bool project = true;
 
-  String genderKey = 'gender';
+  String orgNumberKey = 'gender';
   String genderController = '';
   @override
   void initState() {
     super.initState();
 
-    mbNumber.addListener(mbNumberUpload);
+    woNumber.addListener(mbNumberUpload);
     projectId.addListener(projectIdUpload);
     projectName.addListener(projectNameUpload);
   }
 
   void mbNumberUpload() {
-    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+    if (woNumber.text != "" || projectId.text != "" || projectName.text != "") {
       setState(() {
         workShow = false;
       });
@@ -63,7 +63,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
   }
 
   void projectIdUpload() {
-    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+    if (woNumber.text != "" || projectId.text != "" || projectName.text != "") {
       setState(() {
         workShow = false;
       });
@@ -75,7 +75,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
   }
 
   void projectNameUpload() {
-    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+    if (woNumber.text != "" || projectId.text != "" || projectName.text != "") {
       setState(() {
         workShow = false;
       });
@@ -89,11 +89,11 @@ class _WOFilterPageState extends State<WOFilterPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    mbNumber.removeListener(mbNumberUpload);
+    woNumber.removeListener(mbNumberUpload);
     projectId.removeListener(projectIdUpload);
     projectName.removeListener(projectNameUpload);
 
-    mbNumber.dispose();
+    woNumber.dispose();
     projectId.dispose();
     projectName.dispose();
 
@@ -154,9 +154,9 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                   onPressed: () async {
                                     Map<String, dynamic> s;
                                     String? k;
-                                    if (formGroup.value[genderKey] != null) {
+                                    if (formGroup.value[orgNumberKey] != null) {
                                       OrganisationModel data =
-                                          formGroup.value[genderKey]!
+                                          formGroup.value[orgNumberKey]!
                                               as OrganisationModel;
                                       k = data.orgNumber;
                                     }
@@ -165,7 +165,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                       "tenantId": GlobalVariables.tenantId ??
                                           GlobalVariables.organisationListModel!
                                               .organisations!.first.tenantId,
-                                      "contractNumber": mbNumber.text,
+                                      "contractNumber": woNumber.text,
                                       // "orgIds": orgId != null
                                       //     ? orgId!
                                       //         .map((e) => e.orgNumber)
@@ -219,9 +219,9 @@ class _WOFilterPageState extends State<WOFilterPage> {
                           ),
 
                           DigitTextField(
-                            // label: t.translate(i18.measurementBook.mbNumber),
-                            label: "Work Order Number",
-                            controller: mbNumber,
+                             label: t.translate(i18.measurementBook.workOrderNumber),
+                            // label: "Work Order Number",
+                            controller: woNumber,
                           ),
 
                           // DigitDropdown<OrganisationModel>(
@@ -270,7 +270,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                             label: "Organization Name",
                             menuItems:
                                 location!.organisations!.map((e) => e).toList(),
-                            formControlName: genderKey,
+                            formControlName: orgNumberKey,
                             valueMapper: (value) {
                               return value.name!;
                             },
@@ -287,7 +287,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
   }
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
-        genderKey: FormControl<OrganisationModel>(value: null),
+        orgNumberKey: FormControl<OrganisationModel>(value: null),
       });
 
   String convertToWard(String input) {

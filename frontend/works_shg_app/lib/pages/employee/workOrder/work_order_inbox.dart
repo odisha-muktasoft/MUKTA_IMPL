@@ -335,10 +335,10 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  return const Center(
+                                  return  Center(
                                     child: EmptyImage(
                                       align: Alignment.center,
-                                      label: "Work order not Found",
+                                      label: t.translate(i18.common.workOrderNotFound),
                                     ),
                                   );
                                 },

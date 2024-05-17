@@ -531,11 +531,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                             controller: _tabController,
                             children: [
                               value.sor!.isEmpty
-                                  ? const Card(
+                                  ?  Card(
                                       child: Center(
                                           child: EmptyImage(
                                         align: Alignment.center,
-                                        label: "No Data Found",
+                                        label: t.translate(i18.common.notFound),
                                       )),
                                     )
                                   : ListView.builder(

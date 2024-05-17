@@ -31,6 +31,8 @@ class Login {
 
 class Common {
   const Common();
+  String get workOrderNotFound=>"COMMON_WO_NOT_FOUND";
+  String get notFound=>"ES_COMMON_NO_DATA";
   String get empLoginError=>"ES_INVALID_LOGIN_CREDENTIALS";
   String get continueLabel => 'CORE_COMMON_CONTINUE';
   String get nameLabel => 'CORE_COMMON_NAME';

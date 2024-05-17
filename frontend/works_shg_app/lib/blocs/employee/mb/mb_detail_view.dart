@@ -64,7 +64,7 @@ class MeasurementDetailBloc
       List<FilteredMeasurements> data;
       if (event.screenType == MBScreen.create && res.allMeasurements is! List) {
         data = MBLogic.formContract(mbDetailResponse: res);
-        print("object");
+        
       } else {
         data = MBLogic.getMeasureList(mbDetailResponse: res, type: event.screenType,);
       }
@@ -72,7 +72,7 @@ class MeasurementDetailBloc
       // final List<FilteredMeasurements> data =
       //     MBLogic.getMeasureList(mbDetailResponse: res);
       List<List<List<SorObject>>> sorList = MBLogic.getSors(data);
-      print("object");
+     
       emit(
         MeasurementDetailState.loaded(
           null,
