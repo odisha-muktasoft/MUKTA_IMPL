@@ -782,6 +782,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     .documentUid))
                                                         .toList()
                                                     : null,
+                                                    
                                                 assignee:
                                                     e.assignes?.first.name,
                                                 mobileNumber: e.assignes != null
@@ -858,11 +859,15 @@ class _MBDetailPageState extends State<MBDetailPage>
       return {
         t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
 
-        t.translate(i18.measurementBook.measurementPeriod): s.first.entryDate !=
+        t.translate(i18.measurementBook.measurementPeriod): "${s.first.startDate !=
                 null
             ? DateFormat('dd/MM/yyyy')
-                .format(DateTime.fromMillisecondsSinceEpoch(s.first.entryDate!))
-            : "NA",
+                .format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!))
+            : "NA"}-${s.first.endDate !=
+                null
+            ? DateFormat('dd/MM/yyyy')
+                .format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!))
+            : "NA"}",
         t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
                 .contracts!.first.contractAdditionalDetails?.projectDesc ??
             "NA",
@@ -874,11 +879,15 @@ class _MBDetailPageState extends State<MBDetailPage>
         t.translate(i18.measurementBook.mbNumber): s.first.mbNumber ?? "NA",
         t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
 
-        t.translate(i18.measurementBook.measurementPeriod): s.first.entryDate !=
+         t.translate(i18.measurementBook.measurementPeriod): "${s.first.startDate !=
                 null
             ? DateFormat('dd/MM/yyyy')
-                .format(DateTime.fromMillisecondsSinceEpoch(s.first.entryDate!))
-            : "NA",
+                .format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!))
+            : "NA"}-${s.first.endDate !=
+                null
+            ? DateFormat('dd/MM/yyyy')
+                .format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!))
+            : "NA"}",
         t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
                 .contracts!.first.contractAdditionalDetails?.projectDesc ??
             "NA",

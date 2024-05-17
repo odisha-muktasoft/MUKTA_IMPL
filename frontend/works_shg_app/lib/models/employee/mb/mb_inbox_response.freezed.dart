@@ -2958,6 +2958,9 @@ mixin _$BusinessObject {
   Contract? get contract => throw _privateConstructorUsedError;
   @JsonKey(name: 'serviceSla')
   int? get serviceSla => throw _privateConstructorUsedError;
+  @JsonKey(name: 'additionalDetails')
+  MeasurementAdditionalDetail? get measurementAdditionalDetail =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2972,16 +2975,26 @@ abstract class $BusinessObjectCopyWith<$Res> {
       _$BusinessObjectCopyWithImpl<$Res, BusinessObject>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'measurementNumber') String? measurementNumber,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'measures') List<Measure>? measures,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') Contract? contract,
-      @JsonKey(name: 'serviceSla') int? serviceSla});
+      {@JsonKey(name: 'measurementNumber')
+          String? measurementNumber,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
+      @JsonKey(name: 'contract')
+          Contract? contract,
+      @JsonKey(name: 'serviceSla')
+          int? serviceSla,
+      @JsonKey(name: 'additionalDetails')
+          MeasurementAdditionalDetail? measurementAdditionalDetail});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $ContractCopyWith<$Res>? get contract;
+  $MeasurementAdditionalDetailCopyWith<$Res>? get measurementAdditionalDetail;
 }
 
 /// @nodoc
@@ -3004,6 +3017,7 @@ class _$BusinessObjectCopyWithImpl<$Res, $Val extends BusinessObject>
     Object? auditDetails = freezed,
     Object? contract = freezed,
     Object? serviceSla = freezed,
+    Object? measurementAdditionalDetail = freezed,
   }) {
     return _then(_value.copyWith(
       measurementNumber: freezed == measurementNumber
@@ -3034,6 +3048,10 @@ class _$BusinessObjectCopyWithImpl<$Res, $Val extends BusinessObject>
           ? _value.serviceSla
           : serviceSla // ignore: cast_nullable_to_non_nullable
               as int?,
+      measurementAdditionalDetail: freezed == measurementAdditionalDetail
+          ? _value.measurementAdditionalDetail
+          : measurementAdditionalDetail // ignore: cast_nullable_to_non_nullable
+              as MeasurementAdditionalDetail?,
     ) as $Val);
   }
 
@@ -3060,6 +3078,19 @@ class _$BusinessObjectCopyWithImpl<$Res, $Val extends BusinessObject>
       return _then(_value.copyWith(contract: value) as $Val);
     });
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $MeasurementAdditionalDetailCopyWith<$Res>? get measurementAdditionalDetail {
+    if (_value.measurementAdditionalDetail == null) {
+      return null;
+    }
+
+    return $MeasurementAdditionalDetailCopyWith<$Res>(
+        _value.measurementAdditionalDetail!, (value) {
+      return _then(_value.copyWith(measurementAdditionalDetail: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -3071,18 +3102,29 @@ abstract class _$$_BusinessObjectCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'measurementNumber') String? measurementNumber,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'measures') List<Measure>? measures,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') Contract? contract,
-      @JsonKey(name: 'serviceSla') int? serviceSla});
+      {@JsonKey(name: 'measurementNumber')
+          String? measurementNumber,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
+      @JsonKey(name: 'contract')
+          Contract? contract,
+      @JsonKey(name: 'serviceSla')
+          int? serviceSla,
+      @JsonKey(name: 'additionalDetails')
+          MeasurementAdditionalDetail? measurementAdditionalDetail});
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   @override
   $ContractCopyWith<$Res>? get contract;
+  @override
+  $MeasurementAdditionalDetailCopyWith<$Res>? get measurementAdditionalDetail;
 }
 
 /// @nodoc
@@ -3103,6 +3145,7 @@ class __$$_BusinessObjectCopyWithImpl<$Res>
     Object? auditDetails = freezed,
     Object? contract = freezed,
     Object? serviceSla = freezed,
+    Object? measurementAdditionalDetail = freezed,
   }) {
     return _then(_$_BusinessObject(
       measurementNumber: freezed == measurementNumber
@@ -3133,6 +3176,10 @@ class __$$_BusinessObjectCopyWithImpl<$Res>
           ? _value.serviceSla
           : serviceSla // ignore: cast_nullable_to_non_nullable
               as int?,
+      measurementAdditionalDetail: freezed == measurementAdditionalDetail
+          ? _value.measurementAdditionalDetail
+          : measurementAdditionalDetail // ignore: cast_nullable_to_non_nullable
+              as MeasurementAdditionalDetail?,
     ));
   }
 }
@@ -3147,7 +3194,8 @@ class _$_BusinessObject implements _BusinessObject {
       @JsonKey(name: 'measures') final List<Measure>? measures,
       @JsonKey(name: 'auditDetails') this.auditDetails,
       @JsonKey(name: 'contract') this.contract,
-      @JsonKey(name: 'serviceSla') this.serviceSla})
+      @JsonKey(name: 'serviceSla') this.serviceSla,
+      @JsonKey(name: 'additionalDetails') this.measurementAdditionalDetail})
       : _measures = measures;
 
   factory _$_BusinessObject.fromJson(Map<String, dynamic> json) =>
@@ -3182,10 +3230,13 @@ class _$_BusinessObject implements _BusinessObject {
   @override
   @JsonKey(name: 'serviceSla')
   final int? serviceSla;
+  @override
+  @JsonKey(name: 'additionalDetails')
+  final MeasurementAdditionalDetail? measurementAdditionalDetail;
 
   @override
   String toString() {
-    return 'BusinessObject(measurementNumber: $measurementNumber, id: $id, referenceId: $referenceId, measures: $measures, auditDetails: $auditDetails, contract: $contract, serviceSla: $serviceSla)';
+    return 'BusinessObject(measurementNumber: $measurementNumber, id: $id, referenceId: $referenceId, measures: $measures, auditDetails: $auditDetails, contract: $contract, serviceSla: $serviceSla, measurementAdditionalDetail: $measurementAdditionalDetail)';
   }
 
   @override
@@ -3204,7 +3255,11 @@ class _$_BusinessObject implements _BusinessObject {
             (identical(other.contract, contract) ||
                 other.contract == contract) &&
             (identical(other.serviceSla, serviceSla) ||
-                other.serviceSla == serviceSla));
+                other.serviceSla == serviceSla) &&
+            (identical(other.measurementAdditionalDetail,
+                    measurementAdditionalDetail) ||
+                other.measurementAdditionalDetail ==
+                    measurementAdditionalDetail));
   }
 
   @JsonKey(ignore: true)
@@ -3217,7 +3272,8 @@ class _$_BusinessObject implements _BusinessObject {
       const DeepCollectionEquality().hash(_measures),
       auditDetails,
       contract,
-      serviceSla);
+      serviceSla,
+      measurementAdditionalDetail);
 
   @JsonKey(ignore: true)
   @override
@@ -3235,13 +3291,23 @@ class _$_BusinessObject implements _BusinessObject {
 
 abstract class _BusinessObject implements BusinessObject {
   const factory _BusinessObject(
-      {@JsonKey(name: 'measurementNumber') final String? measurementNumber,
-      @JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'referenceId') final String? referenceId,
-      @JsonKey(name: 'measures') final List<Measure>? measures,
-      @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') final Contract? contract,
-      @JsonKey(name: 'serviceSla') final int? serviceSla}) = _$_BusinessObject;
+          {@JsonKey(name: 'measurementNumber')
+              final String? measurementNumber,
+          @JsonKey(name: 'id')
+              final String? id,
+          @JsonKey(name: 'referenceId')
+              final String? referenceId,
+          @JsonKey(name: 'measures')
+              final List<Measure>? measures,
+          @JsonKey(name: 'auditDetails')
+              final AuditDetails? auditDetails,
+          @JsonKey(name: 'contract')
+              final Contract? contract,
+          @JsonKey(name: 'serviceSla')
+              final int? serviceSla,
+          @JsonKey(name: 'additionalDetails')
+              final MeasurementAdditionalDetail? measurementAdditionalDetail}) =
+      _$_BusinessObject;
 
   factory _BusinessObject.fromJson(Map<String, dynamic> json) =
       _$_BusinessObject.fromJson;
@@ -3267,6 +3333,9 @@ abstract class _BusinessObject implements BusinessObject {
   @override
   @JsonKey(name: 'serviceSla')
   int? get serviceSla;
+  @override
+  @JsonKey(name: 'additionalDetails')
+  MeasurementAdditionalDetail? get measurementAdditionalDetail;
   @override
   @JsonKey(ignore: true)
   _$$_BusinessObjectCopyWith<_$_BusinessObject> get copyWith =>

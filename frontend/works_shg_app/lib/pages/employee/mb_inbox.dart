@@ -488,11 +488,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                   .mbInboxResponse
                                                   .items?[index]
                                                   .businessObject
-                                                  ?.measures
-                                                  ?.first
-                                                  .measureAdditionalDetails
-                                                  ?.mbAmount
-                                                  ?.roundToDouble()
+                                                  ?.measurementAdditionalDetail?.totalAmount?.roundToDouble()
                                                   .toString() ??
                                               "0.0"
                                       // "SLA Days remaining": mbInboxResponse

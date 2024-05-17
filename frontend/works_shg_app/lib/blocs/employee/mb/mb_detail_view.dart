@@ -77,16 +77,45 @@ class MeasurementDetailBloc
         MeasurementDetailState.loaded(
           null,
           event.screenType == MBScreen.create ? false : true,
-          res.allMeasurements! is List
+          res.allMeasurements is List
               ? res.allMeasurements
                   .map<Measurement>((dynamic item) {
-                    if (item is Measurement) {
-                      return item;
-                    } else {
-                      // Assuming there's a conversion method or constructor for Measurement
-                      return Measurement.fromJson(
-                          item); // Adjust this based on your actual implementation
-                    }
+                   if (item is Map) {
+             
+              return Measurement(
+                id: item['id'],
+                tenantId: item['tenantId'],
+                measurementNumber: item['measurementNumber'],
+                physicalRefNumber: item['physicalRefNumber'],
+                referenceId: item['referenceId'],
+                entryDate: item['entryDate'],
+                isActive: item['isActive'],
+                wfStatus: item['wfStatus'],
+                auditDetails: AuditDetails(
+                  createdBy: item['auditDetails']['createdBy'],
+                  lastModifiedBy: item['auditDetails']['lastModifiedBy'],
+                  createdTime: item['auditDetails']['createdTime'],
+                  lastModifiedTime: item['auditDetails']['lastModifiedTime'],
+                ),
+                additionalDetail: MeasurementAdditionalDetail(
+                  endDate: item['additionalDetails']['endDate'],
+                  sorAmount: double.parse(item['additionalDetails']['sorAmount'].toString()).toDouble(),
+                  startDate: item['additionalDetails']['startDate'],
+                  totalAmount: double.parse(item['additionalDetails']['totalAmount'].toString()).toDouble(),
+                  nonSorAmount: double.parse(item['additionalDetails']['nonSorAmount'].toString()).toDouble(),
+                  musterRollNumber: item['additionalDetails']['musterRollNumber'],
+                ),
+                measures: (item['measures'] as List)
+                    .map<Measure>((e) => Measure.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+                documents: (item['documents'] as List)
+                    .map<WorkflowDocument>((e) => WorkflowDocument.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+              );
+            } else {
+              // Assuming there's a conversion method or constructor for Measurement
+              return Measurement.fromJson(item as Map<String, dynamic>);
+            }
                   })
                   .toList()
                   .first

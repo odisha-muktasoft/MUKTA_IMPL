@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:collection/collection.dart';
+import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'dart:async';
 import 'dart:convert';
 import '../../../models/employee/mb/filtered_Measures.dart';
@@ -135,36 +136,65 @@ class MBLogic {
     required MBScreen type,
   }) {
     final List<Measurement> allMeasurements =
-        mbDetailResponse.allMeasurements is List
-            ? mbDetailResponse.allMeasurements.map<Measurement>((dynamic item) {
-                if (item is Measurement) {
-                  return item;
-                } else {
-                  // Assuming there's a conversion method or constructor for Measurement
-                  return Measurement.fromJson(
-                      item); // Adjust this based on your actual implementation
-                }
-              }).toList()
-            : [];
+    mbDetailResponse.allMeasurements is List
+        ? (mbDetailResponse.allMeasurements as List).map<Measurement>((item) {
+            if (item is Map) {
+             
+              return Measurement(
+                id: item['id'],
+                tenantId: item['tenantId'],
+                measurementNumber: item['measurementNumber'],
+                physicalRefNumber: item['physicalRefNumber'],
+                referenceId: item['referenceId'],
+                entryDate: item['entryDate'],
+                isActive: item['isActive'],
+                wfStatus: item['wfStatus'],
+                auditDetails: AuditDetails(
+                  createdBy: item['auditDetails']['createdBy'],
+                  lastModifiedBy: item['auditDetails']['lastModifiedBy'],
+                  createdTime: item['auditDetails']['createdTime'],
+                  lastModifiedTime: item['auditDetails']['lastModifiedTime'],
+                ),
+                additionalDetail: MeasurementAdditionalDetail(
+                  endDate: item['additionalDetails']['endDate'],
+                  sorAmount: double.parse(item['additionalDetails']['sorAmount'].toString()).toDouble(),
+                  startDate: item['additionalDetails']['startDate'],
+                  totalAmount: double.parse(item['additionalDetails']['totalAmount'].toString()).toDouble(),
+                  nonSorAmount: double.parse(item['additionalDetails']['nonSorAmount'].toString()).toDouble(),
+                  musterRollNumber: item['additionalDetails']['musterRollNumber'],
+                ),
+                measures: (item['measures'] as List)
+                    .map<Measure>((e) => Measure.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+                documents: (item['documents'] as List)
+                    .map<WorkflowDocument>((e) => WorkflowDocument.fromJson(e as Map<String, dynamic>))
+                    .toList(),
+              );
+            } else {
+              // Assuming there's a conversion method or constructor for Measurement
+              return Measurement.fromJson(item as Map<String, dynamic>);
+            }
+          }).toList()
+        : [];
 
     final data = allMeasurements.mapIndexed((index, e) {
       FilteredMeasurements datak = FilteredMeasurements(
           documents: e.documents?.map((e) => e).toList(),
-          id: index == 0 && type == MBScreen.update? e.id:null,
-          totalSorAmount: index == 0 && type == MBScreen.update
-              ? e.additionalDetail?.sorAmount ?? 0.0
-              : 0.0,
-          totalNorSorAmount: index == 0 && type == MBScreen.update
-              ? e.additionalDetail?.nonSorAmount ?? 0.0
-              : 0.0,
-          totalAmount: index == 0 && type == MBScreen.update
-              ? e.additionalDetail?.totalAmount ?? 0.0
-              : 0.0,
+          id:   e.id,
+          totalSorAmount:  e.additionalDetail?.sorAmount ?? 0.0
+              ,
+          totalNorSorAmount:  e.additionalDetail?.nonSorAmount ?? 0.0
+              ,
+          totalAmount:   e.additionalDetail?.totalAmount ?? 0.0
+              ,
           endDate: e.additionalDetail?.endDate ??
               (mbDetailResponse.period?.endDate ?? 00),
           startDate: e.additionalDetail?.startDate ??
               (mbDetailResponse.period?.startDate ?? 00),
-          entryDate:index == 0 && type == MBScreen.update? (e.entryDate==0&&e.entryDate==null)?e.entryDate:DateTime.now().millisecondsSinceEpoch:DateTime.now().millisecondsSinceEpoch,
+          entryDate:   (e.entryDate != 0 && e.entryDate != null)
+                  ? e.entryDate
+                  : DateTime.now().millisecondsSinceEpoch
+              ,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
           // to be chnaged
@@ -173,16 +203,14 @@ class MBLogic {
           musterRollNumber: mbDetailResponse.musterRolls is List
               ? mbDetailResponse.musterRolls?.first["musterRollNumber"] ?? ""
               : "",
-          mbNumber: 
-          index == 0 && type == MBScreen.create?null:e.measurementNumber,
+          mbNumber:  e.measurementNumber,
           wfStatus: e.wfStatus,
           tenantId: e.tenantId,
           measures: e.measures?.map((e) {
             FilteredMeasurementsMeasure filteredMeasurementsMeasure =
                 FilteredMeasurementsMeasure(
-              mbAmount: index == 0 && type == MBScreen.update
-                  ? e.measureAdditionalDetails?.mbAmount
-                  : 0.0,
+              mbAmount:  e.measureAdditionalDetails?.mbAmount
+                  ,
               type: e.measureAdditionalDetails?.type,
               length: e.length,
               breath: e.breadth,
@@ -203,19 +231,20 @@ class MBLogic {
                           e.measureAdditionalDetails!.measureLineItems!
                               .isNotEmpty)
                       ? e.measureAdditionalDetails!.measureLineItems!.map((e) {
-                          if (index == 0 && type == MBScreen.create) {
-                            MeasureLineItem measureLineItem = MeasureLineItem(
-                              width:  0.0,
-                              height:  0.0,
-                              length:  0.0,
-                              number:  0.0,
-                              quantity: 0.0,
-                              measurelineitemNo: e.measurelineitemNo,
-                            );
-                            return measureLineItem;
-                          } else {
-                            return e;
-                          }
+                          // if (index == 0 && type == MBScreen.create) {
+                          //   MeasureLineItem measureLineItem = MeasureLineItem(
+                          //     width: 0.0,
+                          //     height: 0.0,
+                          //     length: 0.0,
+                          //     number: 0.0,
+                          //     quantity: 0.0,
+                          //     measurelineitemNo: e.measurelineitemNo,
+                          //   );
+                          //   return measureLineItem;
+                          // } else {
+                          //   return e;
+                          // }
+                          return e;
                         }).toList()
                       // testing null pre[null]
                       : [
@@ -280,7 +309,6 @@ class MBLogic {
       if (e.id == contractLineItemRef) {
         FilteredMeasurementsEstimate filteredMeasurementsEstimate =
             FilteredMeasurementsEstimate(
-            
           id: e.id,
           sorId: e.sorId,
           category: e.category,

@@ -250,6 +250,10 @@ _$_BusinessObject _$$_BusinessObjectFromJson(Map<String, dynamic> json) =>
           ? null
           : Contract.fromJson(json['contract'] as Map<String, dynamic>),
       serviceSla: json['serviceSla'] as int?,
+      measurementAdditionalDetail: json['additionalDetails'] == null
+          ? null
+          : MeasurementAdditionalDetail.fromJson(
+              json['additionalDetails'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
@@ -261,6 +265,7 @@ Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
       'auditDetails': instance.auditDetails,
       'contract': instance.contract,
       'serviceSla': instance.serviceSla,
+      'additionalDetails': instance.measurementAdditionalDetail,
     };
 
 _$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(

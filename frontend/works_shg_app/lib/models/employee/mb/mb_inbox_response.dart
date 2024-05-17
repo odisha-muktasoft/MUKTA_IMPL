@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 
 part 'mb_inbox_response.freezed.dart';
 part 'mb_inbox_response.g.dart';
@@ -186,6 +187,7 @@ class BusinessObject with _$BusinessObject {
     @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
     @JsonKey(name: 'contract') Contract? contract,
     @JsonKey(name: 'serviceSla') int? serviceSla,
+    @JsonKey(name: 'additionalDetails')MeasurementAdditionalDetail? measurementAdditionalDetail,
   }) = _BusinessObject;
 
   factory BusinessObject.fromJson(
