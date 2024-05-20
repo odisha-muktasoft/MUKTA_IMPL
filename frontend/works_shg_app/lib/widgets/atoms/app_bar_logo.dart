@@ -39,7 +39,7 @@ class AppBarLogo extends StatelessWidget {
                   ),
                   Text(
                      GlobalVariables.roleType==RoleType.employee?
-                     GlobalVariables.userRequestModel!['mobileNumber']:
+                     GlobalVariables.userRequestModel!['id'].toString():
                     GlobalVariables.organisationListModel?.organisations?.first
                             .orgNumber ??
                         '',

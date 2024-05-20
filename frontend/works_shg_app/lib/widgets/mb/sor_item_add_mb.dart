@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/theme.dart';
 import 'package:works_shg_app/widgets/mb/multi_line_items.dart';
 
 import '../../models/employee/mb/filtered_Measures.dart';
 import '../../utils/notifiers.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class HorizontalCardListDialog extends StatefulWidget {
   final List<FilteredMeasurementsMeasure>? lineItems;
@@ -16,14 +20,15 @@ class HorizontalCardListDialog extends StatefulWidget {
   final dynamic noOfUnit;
   final dynamic cummulativePrevQty;
   final String sorId;
-  
+
   const HorizontalCardListDialog(
       {super.key,
       this.lineItems,
       required this.index,
       required this.type,
       this.noOfUnit,
-      this.cummulativePrevQty, required this.sorId});
+      this.cummulativePrevQty,
+      required this.sorId});
 
   @override
   State<HorizontalCardListDialog> createState() =>
@@ -38,7 +43,6 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
     lineItems = widget.lineItems;
     _scrollController = PageController(initialPage: 0);
     super.initState();
-    
   }
 
   void _scrollForward() {
@@ -65,16 +69,28 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     return BlocListener<MeasurementDetailBloc, MeasurementDetailState>(
+      listenWhen: (previous, current) =>
+          ((previous != current) || (previous == current)),
       listener: (context, state) {
         // TODO: implement listener
         state.maybeMap(
           orElse: () => null,
           loaded: (value) {
-            if (value.warningMsg != null) {
-              SystemChannels.textInput.invokeMethod('TextInput.hide');
-              Notifiers.getToastMessage(
-                  context, value.warningMsg.toString(), 'ERROR');
+            if (value.warningMsg != null && value.qtyErrorMsg == 2) {
+              // SystemChannels.textInput.invokeMethod('TextInput.hide');
+              Notifiers.getToastMessage(context,
+                  t.translate(i18.measurementBook.mbQtyErrMsg), 'ERROR');
+              context
+                  .read<MeasurementDetailBloc>()
+                  .add(const UpdateMsgCodeEvent(updateCode: 1));
+            } else if (value.qtyErrorMsg == 1) {
+              // Navigator.of(context).pop();
+            } else if (value.qtyErrorMsg == 0 || value.qtyErrorMsg == -2) {
+              Navigator.of(context).pop();
+            } else {
+              // Navigator.of(context).pop();
             }
           },
         );
@@ -104,7 +120,17 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              context.read<MeasurementDetailBloc>().add( CancelUpdateEvent(cancelUpdate: true, filteredMeasurementsMeasureId: null, sorId: widget.sorId,type: widget.type,));
+                              context
+                                  .read<MeasurementDetailBloc>()
+                                  .add(CancelUpdateEvent(
+                                    cancelUpdate: true,
+                                    filteredMeasurementsMeasureId: null,
+                                    sorId: widget.sorId,
+                                    type: widget.type,
+                                  ));
+                              // context
+                              //     .read<MeasurementDetailBloc>()
+                              //     .add(const UpdateMsgCodeEvent(updateCode: 0));
                               context.router.pop();
                             },
                             icon: Icon(
@@ -132,7 +158,8 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               type: widget.type,
                               viewMode: value.viewStatus,
                               noOfUnit: widget.noOfUnit,
-                              cummulativePrevQty: widget.cummulativePrevQty, index: index,
+                              cummulativePrevQty: widget.cummulativePrevQty,
+                              index: index,
                             );
                           },
                           itemCount: lineItems?.length,
@@ -153,9 +180,15 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                   child: DigitOutLineButton(
                                     label: "Close",
                                     onPressed: () {
-                                      context.read<MeasurementDetailBloc>().add( CancelUpdateEvent(cancelUpdate: true, filteredMeasurementsMeasureId: null, sorId: widget.sorId, type: widget.type,
-                                      ));
-                                      Navigator.of(context).pop();
+                                      context
+                                          .read<MeasurementDetailBloc>()
+                                          .add(CancelUpdateEvent(
+                                            cancelUpdate: true,
+                                            filteredMeasurementsMeasureId: null,
+                                            sorId: widget.sorId,
+                                            type: widget.type,
+                                          ));
+                                      context.router.pop();
                                     },
                                   ),
                                 ),
@@ -166,8 +199,14 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       //SubmitLineEvent
-                                       context.read<MeasurementDetailBloc>().add(const SubmitLineEvent(cummulativePrevQty: null, noOfUnit: null, sorId: '', type: ''));
-                                      Navigator.of(context).pop();
+                                      context.read<MeasurementDetailBloc>().add(
+                                          SubmitLineEvent(
+                                              cummulativePrevQty:
+                                                  widget.cummulativePrevQty,
+                                              noOfUnit: widget.noOfUnit,
+                                              sorId: widget.sorId,
+                                              type: widget.type));
+                                      // Navigator.of(context).pop();
                                     },
                                     child: const Text('Submit'),
                                   ),
@@ -207,7 +246,8 @@ class CardWidget extends StatefulWidget {
     required this.type,
     required this.viewMode,
     this.noOfUnit,
-    this.cummulativePrevQty, required this.index,
+    this.cummulativePrevQty,
+    required this.index,
   });
 
   @override
@@ -228,6 +268,7 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
     return Container(
       // width: MediaQuery.sizeOf(context).width-200,
       decoration: BoxDecoration(
@@ -255,17 +296,101 @@ class _CardWidgetState extends State<CardWidget> {
                   style: DigitTheme.instance.mobileTheme.textTheme.displayLarge,
                 ),
                 Text(
-                  'Item ${widget.index+1}',
+                  '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
-                DigitTableCard(element: {
-                  "Is Deduction": (widget.filteredMeasurementsMeasure!.contracts!
-                      .first.estimates!.first.isDeduction!=null && widget.filteredMeasurementsMeasure!.contracts!
-                      .first.estimates!.first.isDeduction!) ?"Yes":"No",
-                  "Description": widget.filteredMeasurementsMeasure!.contracts!
-                      .first.estimates!.first.description,
-                }),
+                // DigitTableCard(element: {
+                //   t.translate(i18.measurementBook.isDeduction): (widget
+                //                   .filteredMeasurementsMeasure!
+                //                   .contracts!
+                //                   .first
+                //                   .estimates!
+                //                   .first
+                //                   .isDeduction !=
+                //               null &&
+                //           widget.filteredMeasurementsMeasure!.contracts!.first
+                //               .estimates!.first.isDeduction!)
+                //       ? "Yes"
+                //       : "No",
+                //   // t.translate(i18.measurementBook.description): widget.filteredMeasurementsMeasure!.contracts!
+                //   //     .first.estimates!.first.description,
+                // }),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: SizedBox(
+                    height: 30,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: Text(
+                              t.translate(i18.measurementBook.isDeduction),
+                              style: theme.textTheme.displayMedium?.copyWith(),
+                            )),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            (widget
+                                            .filteredMeasurementsMeasure!
+                                            .contracts!
+                                            .first
+                                            .estimates!
+                                            .first
+                                            .isDeduction !=
+                                        null &&
+                                    widget
+                                        .filteredMeasurementsMeasure!
+                                        .contracts!
+                                        .first
+                                        .estimates!
+                                        .first
+                                        .isDeduction!)
+                                ? t.translate(i18.measurementBook.yes)
+                                : t.translate(i18.measurementBook.no),
+                            style: theme.textTheme.labelSmall?.copyWith(),
+                            maxLines: 1,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 3.0),
+                  child: SizedBox(
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            t.translate(
+                              i18.measurementBook.description,
+                            ),
+                            style: theme.textTheme.displayMedium?.copyWith(),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            widget.filteredMeasurementsMeasure!.contracts!.first
+                                    .estimates!.first.description ??
+                                "",
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            maxLines: 3,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.40,
@@ -299,52 +424,55 @@ class _CardWidgetState extends State<CardWidget> {
                                   viewMode: widget.viewMode,
                                 ),
                               ),
-                              !widget.viewMode?
-                              DigitIconButton(
-                                icon: IconData(Icons.add.codePoint),
-                                iconText: "Add Measurements",
-                                onPressed: () {
-                                  context.read<MeasurementDetailBloc>().add(
-                                        AddToMeasurementLineEvent(
-                                          sorId: widget
-                                              .filteredMeasurementsMeasure!
-                                              .contracts!
-                                              .first
-                                              .estimates!
-                                              .first
-                                              .sorId!,
-                                          type: widget
-                                              .filteredMeasurementsMeasure!
-                                              .contracts!
-                                              .first
-                                              .estimates!
-                                              .first
-                                              .category!,
-                                          index: 0,
-                                          measurementLineIndex: 0,
-                                          height: widget
-                                              .filteredMeasurementsMeasure
-                                              ?.height,
-                                          length: widget
-                                              .filteredMeasurementsMeasure
-                                              ?.length,
-                                          width: widget
-                                              .filteredMeasurementsMeasure
-                                              ?.breath,
-                                          number: widget
-                                              .filteredMeasurementsMeasure
-                                              ?.numItems,
-                                          quantity: widget
-                                              .filteredMeasurementsMeasure
-                                              ?.height,
-                                          filteredMeasurementMeasureId: widget
-                                              .filteredMeasurementsMeasure!.id!,
-                                          single: true,
-                                        ),
-                                      );
-                                },
-                              )
-                           :const SizedBox.shrink(),
+                              !widget.viewMode
+                                  ? DigitIconButton(
+                                      icon: IconData(Icons.add.codePoint),
+                                      iconText: "Add Measurements",
+                                      onPressed: () {
+                                        context
+                                            .read<MeasurementDetailBloc>()
+                                            .add(
+                                              AddToMeasurementLineEvent(
+                                                sorId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .sorId!,
+                                                type: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .category!,
+                                                index: 0,
+                                                measurementLineIndex: 0,
+                                                height: widget
+                                                    .filteredMeasurementsMeasure
+                                                    ?.height,
+                                                length: widget
+                                                    .filteredMeasurementsMeasure
+                                                    ?.length,
+                                                width: widget
+                                                    .filteredMeasurementsMeasure
+                                                    ?.breath,
+                                                number: widget
+                                                    .filteredMeasurementsMeasure
+                                                    ?.numItems,
+                                                quantity: widget
+                                                    .filteredMeasurementsMeasure
+                                                    ?.height,
+                                                filteredMeasurementMeasureId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .id!,
+                                                single: true,
+                                              ),
+                                            );
+                                      },
+                                    )
+                                  : const SizedBox.shrink(),
                             ],
                           )
                         : ListView.builder(
@@ -586,7 +714,7 @@ class _CardWidgetState extends State<CardWidget> {
                                                 width: data?.width.toString(),
                                                 quantity:
                                                     data?.quantity.toString(),
-                                                number: data?.height.toString(),
+                                                number: data?.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -669,7 +797,8 @@ class _CardWidgetState extends State<CardWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top:4.0,left: 8.0,right: 8.0,bottom: 4.0),
+            padding: const EdgeInsets.only(
+                top: 4.0, left: 8.0, right: 8.0, bottom: 4.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

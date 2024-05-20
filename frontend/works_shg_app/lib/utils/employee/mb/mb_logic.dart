@@ -76,8 +76,8 @@ class MBLogic {
         mbNumber: null,
         wfStatus: null,
         tenantId: mbDetailResponse!.contract!.tenantId,
-        endDate: 0,
-        startDate: 0,
+        endDate: mbDetailResponse.period?.endDate??0,
+        startDate: mbDetailResponse.period?.startDate??0,
         entryDate: DateTime.now().millisecondsSinceEpoch,
         referenceId: mbDetailResponse!.contract!.contractNumber,
         id: null,
@@ -316,14 +316,16 @@ class MBLogic {
           description: e.description,
           unitRate: e.unitRate,
           noOfunit: e.noOfunit != null
-              ? double.parse((e.noOfunit!.toDouble()).toStringAsFixed(2))
+              ? e.isDeduction==true?
+              -double.parse((e.noOfunit!.toDouble()).toStringAsFixed(4))
+              :double.parse((e.noOfunit!.toDouble()).toStringAsFixed(4))
               : 0,
           uom: e.uom,
           length: e.length != null ? e.length!.toInt() : 0,
           width: e.width != null ? e.width!.toInt() : 0,
           height: e.height != null ? e.height!.toInt() : 0,
           quantity:
-              e.quantity != null ? e.quantity!.toInt() : e.noOfunit!.toInt(),
+              e.quantity != null ? e.quantity!.toDouble() : e.noOfunit!.toDouble(),
           isDeduction: e.isDeduction,
         );
 
@@ -780,7 +782,10 @@ class MBLogic {
           in sorObject.filteredMeasurementsMeasure) {
         double sum = 0.0;
         for (int j = 0; j < measure.measureLineItems!.length; j++) {
-          sum += double.parse(measure.measureLineItems![j].quantity.toString());
+          sum += measure.contracts?.first.estimates?.first.isDeduction==true?
+          -double.parse(measure.measureLineItems![j].quantity.toString()):
+          double.parse(measure.measureLineItems![j].quantity.toString())
+          ;
         }
         // Create a new instance of FilteredMeasurementsMeasure with updated numItems
         FilteredMeasurementsMeasure updatedMeasure =
@@ -803,7 +808,12 @@ class MBLogic {
           contracts: measure.contracts,
         );
         totalAmount = totalAmount +
-            double.parse((sum * measure.contracts!.first.unitRate!).toString());
+            double.parse(
+              measure.contracts?.first.estimates?.first.isDeduction==true?
+              (sum * measure.contracts!.first.unitRate!).toString()
+              :
+              (sum * measure.contracts!.first.unitRate!).toString()
+              );
         updatedMeasures.add(updatedMeasure);
       }
       // Create a new SorObject instance with the updated list

@@ -33,6 +33,7 @@ class MeasurementDetailBloc
     on<CancelUpdateEvent>(cancelUpdate);
     on<SubmitLineEvent>(updatePriceSOR);
     on<MeasurementUploadDocumentBlocEvent>(modifyDocument);
+     on<UpdateMsgCodeEvent>(updateMSGMode);
   }
   FutureOr<void> getMBDetail(
     MeasurementDetailBookBlocEvent event,
@@ -44,78 +45,83 @@ class MeasurementDetailBloc
       emit(const MeasurementDetailState.loading());
       final MBDetailResponse res = await MBRepository(client.init())
           .fetchMbDetail(url: Urls.measurementService.measurementDetail, body: {
-        // "contractNumber": "WO/2023-24/001379",
-        // "tenantId": "od.testing",
-        // "measurementNumber": "MB/2023-24/000214",
-        // "key": "View",
         "contractNumber": event.contractNumber,
         "tenantId": GlobalVariables.tenantId,
         "measurementNumber": event.measurementNumber,
         "key": "View",
       });
 
-      // final kk = jsonEncode(res.allMeasurements!.first!.copyWith(
-      //     workflow: const WorkFlow(
-      //   action: "Submit",
-      //   assignees: ["NESK"],
-      //   comment: "loading",
-      // )));
-      // print(kk);
       List<FilteredMeasurements> data;
       if (event.screenType == MBScreen.create && res.allMeasurements is! List) {
         data = MBLogic.formContract(mbDetailResponse: res);
-        
       } else {
-        data = MBLogic.getMeasureList(mbDetailResponse: res, type: event.screenType,);
+        data = MBLogic.getMeasureList(
+          mbDetailResponse: res,
+          type: event.screenType,
+        );
       }
 
-      // final List<FilteredMeasurements> data =
-      //     MBLogic.getMeasureList(mbDetailResponse: res);
       List<List<List<SorObject>>> sorList = MBLogic.getSors(data);
-     
+
       emit(
         MeasurementDetailState.loaded(
+          0,
           null,
-          event.screenType == MBScreen.create ? false : true,
+
+          event.screenType == MBScreen.create ? false : data.first.wfStatus=="DRAFTED"?false: true,
           res.allMeasurements is List
               ? res.allMeasurements
                   .map<Measurement>((dynamic item) {
-                   if (item is Map) {
-             
-              return Measurement(
-                id: item['id'],
-                tenantId: item['tenantId'],
-                measurementNumber: item['measurementNumber'],
-                physicalRefNumber: item['physicalRefNumber'],
-                referenceId: item['referenceId'],
-                entryDate: item['entryDate'],
-                isActive: item['isActive'],
-                wfStatus: item['wfStatus'],
-                auditDetails: AuditDetails(
-                  createdBy: item['auditDetails']['createdBy'],
-                  lastModifiedBy: item['auditDetails']['lastModifiedBy'],
-                  createdTime: item['auditDetails']['createdTime'],
-                  lastModifiedTime: item['auditDetails']['lastModifiedTime'],
-                ),
-                additionalDetail: MeasurementAdditionalDetail(
-                  endDate: item['additionalDetails']['endDate'],
-                  sorAmount: double.parse(item['additionalDetails']['sorAmount'].toString()).toDouble(),
-                  startDate: item['additionalDetails']['startDate'],
-                  totalAmount: double.parse(item['additionalDetails']['totalAmount'].toString()).toDouble(),
-                  nonSorAmount: double.parse(item['additionalDetails']['nonSorAmount'].toString()).toDouble(),
-                  musterRollNumber: item['additionalDetails']['musterRollNumber'],
-                ),
-                measures: (item['measures'] as List)
-                    .map<Measure>((e) => Measure.fromJson(e as Map<String, dynamic>))
-                    .toList(),
-                documents: (item['documents'] as List)
-                    .map<WorkflowDocument>((e) => WorkflowDocument.fromJson(e as Map<String, dynamic>))
-                    .toList(),
-              );
-            } else {
-              // Assuming there's a conversion method or constructor for Measurement
-              return Measurement.fromJson(item as Map<String, dynamic>);
-            }
+                    if (item is Map) {
+                      return Measurement(
+                        id: item['id'],
+                        tenantId: item['tenantId'],
+                        measurementNumber: item['measurementNumber'],
+                        physicalRefNumber: item['physicalRefNumber'],
+                        referenceId: item['referenceId'],
+                        entryDate: item['entryDate'],
+                        isActive: item['isActive'],
+                        wfStatus: item['wfStatus'],
+                        auditDetails: AuditDetails(
+                          createdBy: item['auditDetails']['createdBy'],
+                          lastModifiedBy: item['auditDetails']
+                              ['lastModifiedBy'],
+                          createdTime: item['auditDetails']['createdTime'],
+                          lastModifiedTime: item['auditDetails']
+                              ['lastModifiedTime'],
+                        ),
+                        additionalDetail: MeasurementAdditionalDetail(
+                          endDate: item['additionalDetails']['endDate'],
+                          sorAmount: double.parse(item['additionalDetails']
+                                      ['sorAmount']
+                                  .toString())
+                              .toDouble(),
+                          startDate: item['additionalDetails']['startDate'],
+                          totalAmount: double.parse(item['additionalDetails']
+                                      ['totalAmount']
+                                  .toString())
+                              .toDouble(),
+                          nonSorAmount: double.parse(item['additionalDetails']
+                                      ['nonSorAmount']
+                                  .toString())
+                              .toDouble(),
+                          musterRollNumber: item['additionalDetails']
+                              ['musterRollNumber'],
+                        ),
+                        measures: (item['measures'] as List)
+                            .map<Measure>((e) =>
+                                Measure.fromJson(e as Map<String, dynamic>))
+                            .toList(),
+                        documents: (item['documents'] as List)
+                            .map<WorkflowDocument>((e) =>
+                                WorkflowDocument.fromJson(
+                                    e as Map<String, dynamic>))
+                            .toList(),
+                      );
+                    } else {
+                      // Assuming there's a conversion method or constructor for Measurement
+                      return Measurement.fromJson(item as Map<String, dynamic>);
+                    }
                   })
                   .toList()
                   .first
@@ -144,18 +150,6 @@ class MeasurementDetailBloc
           print(event.sorId);
           print(event.type);
           List<MeasureLineItem> mk = [];
-          // MeasureLineItem ml = MeasureLineItem(
-          //   width: event.width,
-          //   height: event.height,
-          //   length: event.length,
-          //   number: event.number,
-          //   quantity: (calulateQuantity(
-          //       height: event.height,
-          //       width: event.width,
-          //       length: event.length,
-          //       number: event.number)),
-          //   measurelineitemNo: event.measurementLineIndex,
-          // );
 
           if (event.single) {
             MeasureLineItem mm = const MeasureLineItem(
@@ -178,13 +172,6 @@ class MeasurementDetailBloc
             );
             mk = [mm];
           }
-
-          // final measurementLineIndex = 0;
-          // final sorID = "SOR_000143";
-          // final filteredMeasurementsMeasureId =
-          //     "594d0557-9bc5-467b-9ff1-babf76e6a24e";
-// List<SorObject> sorObjects, String sorId,
-//       String filteredMeasurementsMeasureId, int measurementLineIndex, MeasureLineItem updatedMeasurementLine
 
           if (event.type != "NON-SOR") {
             List<SorObject> data = MBLogic.addMeasurementLine(
@@ -229,72 +216,77 @@ class MeasurementDetailBloc
       state.maybeMap(
         orElse: () => null,
         loaded: (value) {
-          double target = MBLogic.calculateTotalQuantityAndSkip(
-            value.sor!,
-            event.sorId,
-            event.filteredMeasurementMeasureId!,
-            event.measurementLineIndex!,
+          // double target = MBLogic.calculateTotalQuantityAndSkip(
+          //   value.sor!,
+          //   event.sorId,
+          //   event.filteredMeasurementMeasureId!,
+          //   event.measurementLineIndex!,
+          // );
+          // print("money: $target");
+          // print(event.sorId);
+          // print(event.type);
+
+          // double currentLineQty = double.parse(calulateQuantity(
+          //         height: event.height,
+          //         width: event.width,
+          //         length: event.length,
+          //         number: event.number)
+          //     .toString());
+
+          // if ((currentLineQty + target) <=
+          //     (double.parse(event.noOfUnit.toString()) -
+          //         double.parse(event.cummulativePrevQty.toString()))) {
+          //
+          MeasureLineItem ml = MeasureLineItem(
+            width: event.width,
+            height: event.height,
+            length: event.length,
+            number: event.number,
+            quantity: calulateQuantity(
+              height: event.height.toString(),
+              width: event.width.toString(),
+              length: event.length.toString(),
+              number: event.number.toString(),
+            ),
+            measurelineitemNo: event.measurementLineIndex,
           );
-          print("money: $target");
-          print(event.sorId);
-          print(event.type);
 
-          double currentLineQty = double.parse(calulateQuantity(
-                  height: event.height,
-                  width: event.width,
-                  length: event.length,
-                  number: event.number)
-              .toString());
-
-          if ((currentLineQty + target) <=
-              (double.parse(event.noOfUnit.toString()) -
-                  double.parse(event.cummulativePrevQty.toString()))) {
-            MeasureLineItem ml = MeasureLineItem(
-              width: event.width,
-              height: event.height,
-              length: event.length,
-              number: event.number,
-              quantity: calulateQuantity(
-                  height: event.height,
-                  width: event.width,
-                  length: event.length,
-                  number: event.number),
-              measurelineitemNo: event.measurementLineIndex,
+          if (event.type != "NON-SOR") {
+            List<SorObject> data = MBLogic.updateMeasurementLine(
+              value.sor!,
+              event.sorId,
+              event.filteredMeasurementMeasureId!,
+              event.measurementLineIndex!,
+              ml,
             );
 
-            if (event.type != "NON-SOR") {
-              List<SorObject> data = MBLogic.updateMeasurementLine(
-                value.sor!,
-                event.sorId,
-                event.filteredMeasurementMeasureId!,
-                event.measurementLineIndex!,
-                ml,
-              );
-
-              emit(value.copyWith(
-                sor: data,
-                warningMsg: null,
-              ));
-            } else {
-              List<SorObject> data = MBLogic.updateMeasurementLine(
-                value.nonSor!,
-                event.sorId,
-                event.filteredMeasurementMeasureId!,
-                event.measurementLineIndex!,
-                ml,
-              );
-
-              emit(value.copyWith(
-                nonSor: data,
-                warningMsg: null,
-              ));
-            }
-          } else {
             emit(value.copyWith(
-              warningMsg:
-                  "The current quantity of MB entry should not exceed the approved quantity minus the consumed quantity.",
+              sor: data,
+              warningMsg: null,
+              qtyErrorMsg: 1,
+            ));
+          } else {
+            List<SorObject> data = MBLogic.updateMeasurementLine(
+              value.nonSor!,
+              event.sorId,
+              event.filteredMeasurementMeasureId!,
+              event.measurementLineIndex!,
+              ml,
+            );
+
+            emit(value.copyWith(
+              nonSor: data,
+              warningMsg: null,
+              qtyErrorMsg: 1,
             ));
           }
+          //
+          // } else {
+          //   emit(value.copyWith(
+          //     warningMsg:
+          //         "The current quantity of MB entry should not exceed the approved quantity minus the consumed quantity.",
+          //   ));
+          // }
         },
       );
     } catch (e) {
@@ -341,10 +333,38 @@ class MeasurementDetailBloc
             TotalEstimate sorData = MBLogic.calculateTotalQuantity(
                 s, "sorId", "filteredMeasurementsMeasureId", 0);
 
+                List<FilteredMeasurements> newData = value.data.mapIndexed(
+              (index, e) {
+                if (index == 0) {
+                  return FilteredMeasurements(
+                    tenantId: e.tenantId,
+                    id: e.id,
+                    wfStatus: e.wfStatus,
+                    mbNumber: e.mbNumber,
+                    totalAmount: (e.totalNorSorAmount!+sorData.totalAmount),
+                    totalNorSorAmount: e.totalNorSorAmount,
+                    totalSorAmount: sorData.totalAmount,
+                    musterRollNumber: e.musterRollNumber,
+                    endDate: e.endDate,
+                    startDate: e.startDate,
+                    entryDate: e.entryDate,
+                    referenceId: e.referenceId,
+                    physicalRefNumber: e.physicalRefNumber,
+                    measures: e.measures,
+                    documents: e.documents?.map((e) => e).toList(),
+                  );
+                } else {
+                  return e;
+                }
+              },
+            ).toList();
+
             emit(
               value.copyWith(
+                data: newData,
                 warningMsg: null,
                 sor: sorData.sorObjectList,
+                qtyErrorMsg: -1,
               ),
             );
           } else {
@@ -353,10 +373,40 @@ class MeasurementDetailBloc
 
             TotalEstimate nonSorData = MBLogic.calculateTotalQuantity(
                 ns, "sorId", "filteredMeasurementsMeasureId", 0);
+
+                 List<FilteredMeasurements> newData = value.data.mapIndexed(
+              (index, e) {
+                if (index == 0) {
+                  return FilteredMeasurements(
+                    tenantId: e.tenantId,
+                    id: e.id,
+                    wfStatus: e.wfStatus,
+                    mbNumber: e.mbNumber,
+                    totalAmount: (nonSorData.totalAmount+e.totalSorAmount!),
+                    totalNorSorAmount: nonSorData.totalAmount,
+                    totalSorAmount: e.totalSorAmount,
+                    musterRollNumber: e.musterRollNumber,
+                    endDate: e.endDate,
+                    startDate: e.startDate,
+                    entryDate: e.entryDate,
+                    referenceId: e.referenceId,
+                    physicalRefNumber: e.physicalRefNumber,
+                    measures: e.measures,
+                    documents: e.documents?.map((e) => e).toList(),
+                  );
+                } else {
+                  return e;
+                }
+              },
+            ).toList();
+
             emit(
               value.copyWith(
+                data: newData,
                 warningMsg: null,
                 nonSor: nonSorData.sorObjectList,
+                qtyErrorMsg: -1,
+                
               ),
             );
           }
@@ -452,9 +502,7 @@ class MeasurementDetailBloc
         (height == '0.0' &&
             width == '0.0' &&
             length == '0.0' &&
-            number == '0.0') ||
-        (height == 0 && width == 0 && length == 0 && number == 0) ||
-        (height == 0.0 && width == 0.0 && length == 0.0 && number == 0.0)) {
+            number == '0.0')) {
       return 0;
     } else {
       if (height == '0' || height == '0.0') {
@@ -469,13 +517,20 @@ class MeasurementDetailBloc
       if (number == '0' || number == '0.0') {
         number = 1;
       }
+      double h = double.parse(height.toString());
 
-      return double.parse((double.parse(height.toString()) *
-                  double.parse(width.toString()) *
-                  double.parse(length.toString()) *
-                  double.parse(number.toString()))
-              .toString())
-          .toString();
+      double n = double.parse(number.toString());
+      double w = double.parse(width.toString());
+      double l = double.parse(length.toString());
+
+      return double.parse((h * n * w * l).toString()).toStringAsFixed(4);
+      // return double.parse(
+      //   (double.parse(height.toString()) *
+      //             double.parse(width.toString()) *
+      //             double.parse(length.toString()) *
+      //             double.parse(number.toString()))
+      //         .toString())
+      //     .toStringAsFixed(3);
     }
   }
 
@@ -494,44 +549,118 @@ class MeasurementDetailBloc
           TotalEstimate nonSorData = MBLogic.calculateTotalQuantity(
               value.nonSor!, "sorId", "filteredMeasurementsMeasureId", 0);
 
-//update data
+// TODO:Testing purpose
 
-          List<FilteredMeasurements> newData = value.data.mapIndexed(
-            (index, e) {
-              if (index == 0) {
-                return FilteredMeasurements(
-                  tenantId: e.tenantId,
-                  id: e.id,
-                  wfStatus: e.wfStatus,
-                  mbNumber: e.mbNumber,
-                  totalAmount: (sorData.totalAmount + nonSorData.totalAmount),
-                  totalNorSorAmount: nonSorData.totalAmount,
-                  totalSorAmount: sorData.totalAmount,
-                  musterRollNumber: e.musterRollNumber,
-                  endDate: e.endDate,
-                  startDate: e.startDate,
-                  entryDate: e.entryDate,
-                  referenceId: e.referenceId,
-                  physicalRefNumber: e.physicalRefNumber,
-                  measures: e.measures,
-                  documents: e.documents?.map((e) => e).toList(),
-                );
-              } else {
-                return e;
-              }
-            },
-          ).toList();
+          print(sorData);
+
+          final ss = event.type=="NonSor"? nonSorData.sorObjectList
+              .firstWhere((element) => element.sorId == event.sorId)
+              .filteredMeasurementsMeasure
+              .fold(0.0, (sum, element) {
+            double m = double.parse(element.numItems.toString()).toDouble();
+            return sum + m;
+          }):
+           sorData.sorObjectList
+              .firstWhere((element) => element.sorId == event.sorId)
+              .filteredMeasurementsMeasure
+              .fold(0.0, (sum, element) {
+            double m = double.parse(element.numItems.toString()).toDouble();
+            return sum + m;
+          });
+          ;
+
+          print(ss);
+
+          if (ss <=
+                  ((double.parse(event.noOfUnit.toString()) -
+                      double.parse(event.cummulativePrevQty.toString()))) &&
+              ss >= 0) {
+            List<FilteredMeasurements> newData = value.data.mapIndexed(
+              (index, e) {
+                if (index == 0) {
+                  return FilteredMeasurements(
+                    tenantId: e.tenantId,
+                    id: e.id,
+                    wfStatus: e.wfStatus,
+                    mbNumber: e.mbNumber,
+                    totalAmount: (sorData.totalAmount + nonSorData.totalAmount),
+                    totalNorSorAmount: nonSorData.totalAmount,
+                    totalSorAmount: sorData.totalAmount,
+                    musterRollNumber: e.musterRollNumber,
+                    endDate: e.endDate,
+                    startDate: e.startDate,
+                    entryDate: e.entryDate,
+                    referenceId: e.referenceId,
+                    physicalRefNumber: e.physicalRefNumber,
+                    measures: e.measures,
+                    documents: e.documents?.map((e) => e).toList(),
+                  );
+                } else {
+                  return e;
+                }
+              },
+            ).toList();
 
 //
 
-          emit(
-            value.copyWith(
-              data: newData,
-              warningMsg: null,
-              sor: sorData.sorObjectList,
-              nonSor: nonSorData.sorObjectList,
-            ),
-          );
+            emit(
+              value.copyWith(
+                data: newData,
+                warningMsg: null,
+                sor: sorData.sorObjectList,
+                nonSor: nonSorData.sorObjectList,
+                qtyErrorMsg: value.qtyErrorMsg==0?-2:0,
+              ),
+            );
+          } else {
+            emit(value.copyWith(
+              qtyErrorMsg: 2,
+              warningMsg:
+                  "mbQtyErrMsg",
+            ));
+          }
+
+// end of this
+
+//update data
+// previous algo [working prevoius]
+//           List<FilteredMeasurements> newData = value.data.mapIndexed(
+//             (index, e) {
+//               if (index == 0) {
+//                 return FilteredMeasurements(
+//                   tenantId: e.tenantId,
+//                   id: e.id,
+//                   wfStatus: e.wfStatus,
+//                   mbNumber: e.mbNumber,
+//                   totalAmount: (sorData.totalAmount + nonSorData.totalAmount),
+//                   totalNorSorAmount: nonSorData.totalAmount,
+//                   totalSorAmount: sorData.totalAmount,
+//                   musterRollNumber: e.musterRollNumber,
+//                   endDate: e.endDate,
+//                   startDate: e.startDate,
+//                   entryDate: e.entryDate,
+//                   referenceId: e.referenceId,
+//                   physicalRefNumber: e.physicalRefNumber,
+//                   measures: e.measures,
+//                   documents: e.documents?.map((e) => e).toList(),
+//                 );
+//               } else {
+//                 return e;
+//               }
+//             },
+//           ).toList();
+
+// //
+
+//           emit(
+//             value.copyWith(
+//               data: newData,
+//               warningMsg: null,
+//               sor: sorData.sorObjectList,
+//               nonSor: nonSorData.sorObjectList,
+//             ),
+//           );
+// end of previoud algo 
         },
       );
     } on DioError catch (e) {
@@ -605,11 +734,12 @@ class MeasurementDetailBloc
           ).toList();
 
 //
-print(newData);
+          print(newData);
           emit(
             value.copyWith(
               data: newData,
               warningMsg: null,
+              qtyErrorMsg: 0,
             ),
           );
         },
@@ -617,6 +747,30 @@ print(newData);
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
+    }
+  }
+
+
+
+// update view mode
+  FutureOr<void> updateMSGMode(
+    UpdateMsgCodeEvent event,
+    MeasurementDetailBlocEventEmitter emit,
+  ) async {
+    try {
+      state.maybeMap(
+        orElse: () => null,
+        loaded: (value) {
+          emit(
+            value.copyWith(
+              qtyErrorMsg: event.updateCode,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+      // emit(MeasurementDetailState.error(e.toString()));
     }
   }
 }
@@ -691,6 +845,12 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     int? measurementLineIndex,
     String? filteredMeasurementMeasureId,
   }) = SubmitLineEvent;
+
+  // update msg code
+
+  const factory MeasurementDetailBlocEvent.updateMsgCode({
+    required int updateCode,
+  }) = UpdateMsgCodeEvent;
 }
 
 @freezed
@@ -700,6 +860,7 @@ class MeasurementDetailState with _$MeasurementDetailState {
   const factory MeasurementDetailState.initial() = _Initial;
   const factory MeasurementDetailState.loading() = _Loading;
   const factory MeasurementDetailState.loaded(
+    int qtyErrorMsg,
     String? warningMsg,
     bool viewStatus,
     dynamic rawData,

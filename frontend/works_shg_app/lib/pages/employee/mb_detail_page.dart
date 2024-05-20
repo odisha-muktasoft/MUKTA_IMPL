@@ -227,7 +227,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           loaded: (mbWorkFlow) {
                             final g = mbWorkFlow
                                 .musterWorkFlowModel?.processInstances;
-
+                               
                             return FloatActionCard(
                               actions: () {
                                 DigitActionDialog.show(
@@ -300,7 +300,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         estimateStatus != "INWORKFLOW") &&
                                     (value.data.length >= 2
                                         ? value.data[1].wfStatus == "APPROVED"
-                                        : false)) {
+                                        : true)) {
                                   DigitActionDialog.show(
                                     context,
                                     widget: CommonButtonCard(
@@ -368,7 +368,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     estimateStatus,
                                     (value.data.length >= 2
                                         ? value.data[1].wfStatus == "APPROVED"
-                                        : false));
+                                        : true));
                               },
                               totalAmountText: t
                                   .translate(i18.measurementBook.totalMbAmount),
@@ -925,6 +925,7 @@ class _MBDetailPageState extends State<MBDetailPage>
       },
     ).toList();
     double noOfQty = line.fold(0.0, (sum, obj) {
+      
       int m = double.parse(obj.noOfunit!.toString()).toInt();
       return sum + m;
     });
@@ -1038,7 +1039,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         false) {
                       m = obj.mbAmount ?? 0.0;
                     } else {
-                      m = -(obj.mbAmount ?? 0.0);
+                      m = (obj.mbAmount ?? 0.0);
                     }
 
                     return double.parse(double.parse(

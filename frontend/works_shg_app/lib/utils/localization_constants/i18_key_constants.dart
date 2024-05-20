@@ -424,5 +424,10 @@ class MeasurementBook {
 
   String get cboName => "CBO_NAME";
   String get sortBy => "SORT_BY";
+ String get mbQtyErrMsg=>"MB_MEASUREMENT_QTY_ERROR";
+ String get isDeduction=>"MB_IS_DEDUCTION";
+ String get item=>"MB_ITEM";
+ String get yes=>"MB_YES";
+ String get no=>"MB_NO";
 
 }
