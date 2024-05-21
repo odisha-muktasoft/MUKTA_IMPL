@@ -49,9 +49,13 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
             tenantId: GlobalVariables.tenantId!,
           ),
         );
+         context.read<WageSeekerLocationBloc>().add(
+          LocationEventWageSeeker(tenantId: GlobalVariables.tenantId!),
+        );
     context.read<ORGSearchBloc>().add(
           SearchMbORGEvent(tenantId: GlobalVariables.tenantId!),
         );
+       
     super.initState();
     _scrollController.addListener(_scrollListener);
   }
@@ -224,14 +228,12 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             ),
                                           ),
 
-                                          // color: const DigitColors()
-                                          //     .burningOrange,
+                                          
                                           onPressed: () {
-                                            // context.router
-                                            //     .push(const MBFilterRoute());
+                                          
                                             context.router
                                                 .push(const WOFilterRoute());
-                                            //  final result=   await filterDialog(context);
+                                            
                                           },
                                           icon: const Icon(
                                             Icons.filter_alt,
@@ -488,30 +490,30 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                       ),
                                     ),
                                     items: {
-                                      "Work Order Number": value
+                                      t.translate(i18.measurementBook.workOrderNumberInbox): value
                                               .contracts?[index]
                                               .contractNumber ??
                                           "",
-                                      "Project Description": value
+                                     t.translate(i18.measurementBook.projectDescription): value
                                               .contracts?[index]
                                               .additionalDetails
                                               ?.projectDesc ??
                                           "",
-                                      "CBO Name": value.contracts?[index]
+                                      t.translate(i18.measurementBook.cboName): value.contracts?[index]
                                               ?.additionalDetails?.cboName ??
                                           "",
-                                      "CBO Role": value
+                                      t.translate(i18.measurementBook.cboRole): value
                                               .contracts?[index]
                                               ?.additionalDetails
                                               ?.cboOrgNumber ??
                                           "",
-                                      "Officer In-charge name": value
+                                      t.translate(i18.measurementBook.officerInChargeName): value
                                               .contracts?[index]
                                               .additionalDetails
                                               ?.officerInChargeName
                                               ?.name ??
                                           "NA",
-                                      "Start Date": value.contracts?[index]
+                                      t.translate(i18.common.startDate): value.contracts?[index]
                                                   .startDate !=
                                               null
                                           ? DateFormat('dd/MM/yyyy').format(
@@ -521,7 +523,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                               .startDate! ??
                                                           0))
                                           : "NA",
-                                      "End Date": value
+                                      t.translate(i18.common.endDate): value
                                                   .contracts?[index].endDate !=
                                               null
                                           ? DateFormat('dd/MM/yyyy').format(
@@ -531,12 +533,12 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                               .endDate! ??
                                                           0))
                                           : "NA",
-                                      "Work value (Rs)":
+                                       t.translate(i18.measurementBook.workValue):
                                           NumberFormat('##,##,##,##,###')
                                               .format(value.contracts?[index]
                                                       ?.totalContractedAmount ??
                                                   0),
-                                      "Status": t.translate(
+                                      t.translate(i18.common.status): t.translate(
                                           "WF_WORK_ORDER_STATE_${value.contracts?[index].wfStatus}")
                                     },
                                   );
@@ -559,28 +561,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
     );
   }
 
-  Future<dynamic> filterDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.only(top: AppBar().preferredSize.height),
-          title: const Text("sd"),
-          contentPadding: EdgeInsets.zero,
-          content: Card(
-            child: SizedBox(
-              height: double.maxFinite,
-              width: MediaQuery.of(context).size.width,
-              child: const Center(
-                child: Text("Loading"),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+ 
 }
 
 class MyHeaderDelegate extends SliverPersistentHeaderDelegate {

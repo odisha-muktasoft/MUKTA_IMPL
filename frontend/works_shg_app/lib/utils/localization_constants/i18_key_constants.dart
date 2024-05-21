@@ -31,6 +31,8 @@ class Login {
 
 class Common {
   const Common();
+  String get photoInfo=>"WORKS_DOC_UPLOAD_HINT";
+  String get searchCriteria=>"ES_COMMON_MIN_SEARCH_CRITERIA_MSG";
   String get workOrderNotFound=>"COMMON_WO_NOT_FOUND";
   String get notFound=>"ES_COMMON_NO_DATA";
   String get empLoginError=>"ES_INVALID_LOGIN_CREDENTIALS";
@@ -437,5 +439,11 @@ class MeasurementBook {
 String get heightLabel=>"MB_LABEL_HEIGHT";
 String get addMeasurement=>"MB_ADD_MEASUREMENT";
  
+ String get workOrderNumberInbox=>"MB_WORK_ORDER_NUMBER";
+ String get cboRole=>"CBO_ROLE";
+ String get officerInChargeName=>"OFFICER_INCHARGE";
+ String get workValue=>"MB_WORK_VALUE";
+ String get workSitePhotos=>"MB_WORK_SITE_PHOTO";
+ String get noDocumentFound=>"NO_DOCUMENT_FOUND";
 
 }

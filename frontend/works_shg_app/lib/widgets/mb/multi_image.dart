@@ -9,6 +9,7 @@ import 'package:path/path.dart' as path;
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
+import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -88,7 +89,13 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           files = paths.map((e) => File(e.path ?? '')).toList();
         }
 
-        uploadFiles(files);
+        if (_selectedFiles.length >= 5) {
+          Notifiers.getToastMessage(
+              context, "You can only upload up to 5 files.", 'ERROR');
+          return;
+        } else {
+          uploadFiles(files);
+        }
       }
     } on PlatformException catch (e) {
       print("Unsupported operation" + e.toString());
@@ -165,7 +172,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
               child: Text(
                   widget.headerType == MediaType.mbConfim
                       ? "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}"
-                      : "Worksite photos",
+                      : "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
@@ -198,8 +205,11 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                         )),
                     onPressed: () => selectDocumentOrImage(),
                     child: Text(
-                      //"${AppLocalizations.of(context).translate(i18.common.accountNo)}",
-                      "Choose File",
+                      widget.headerType == MediaType.mbConfim
+                          ? "${AppLocalizations.of(context).translate(i18.common.chooseFile)}"
+                          : "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
+                      //TODO:[lavel change]
+                      // "Choose File",
                       style: TextStyle(
                           color: Theme.of(context).primaryColorDark,
                           fontSize: 16),

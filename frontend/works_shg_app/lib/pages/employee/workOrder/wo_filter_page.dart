@@ -142,6 +142,15 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                 child: DigitOutLineButton(
                                   label: t.translate(i18.measurementBook.clear),
                                   onPressed: () {
+                                    context.read<WorkOrderInboxBloc>().add(
+                                          WorkOrderInboxBlocCreateEvent(
+                                            businessService: "MB",
+                                            limit: 10,
+                                            moduleName: 'contract-service',
+                                            offset: 0,
+                                            tenantId: GlobalVariables.tenantId!,
+                                          ),
+                                        );
                                     context.router.pop();
                                   },
                                 ),
@@ -152,7 +161,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                   child: Text(
                                       t.translate(i18.measurementBook.filter)),
                                   onPressed: () async {
-                                    Map<String, dynamic> s;
+                                    Map<String, dynamic> payload;
                                     String? selectedOrgId;
                                     if (formGroup.value[orgNumberKey] != null) {
                                       OrganisationModel data =
@@ -161,7 +170,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                       selectedOrgId = data.id;
                                     }
 
-                                    s = {
+                                    payload = {
                                       "tenantId": GlobalVariables.tenantId ??
                                           GlobalVariables.organisationListModel!
                                               .organisations!.first.tenantId,
@@ -172,7 +181,9 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                       //         .toList()
                                       //     : [],
                                       "ward": ward,
-                                      "orgIds": selectedOrgId != null ? [selectedOrgId] : [],
+                                      "orgIds": selectedOrgId != null
+                                          ? [selectedOrgId]
+                                          : [],
                                       "wfStatus": ["ACCEPTED"],
                                       "pagination": {
                                         "limit": "10",
@@ -184,7 +195,9 @@ class _WOFilterPageState extends State<WOFilterPage> {
 
                                     context.read<WorkOrderInboxBloc>().add(
                                         WorkOrderInboxSearchBlocEvent(
-                                            data: s, limit: 10, offset: 0));
+                                            data: payload,
+                                            limit: 10,
+                                            offset: 0));
                                     context.router.pop();
                                   },
                                 ),
@@ -198,6 +211,15 @@ class _WOFilterPageState extends State<WOFilterPage> {
                             children: [
                               IconButton(
                                   onPressed: () {
+                                    context.read<WorkOrderInboxBloc>().add(
+                                          WorkOrderInboxBlocCreateEvent(
+                                            businessService: "MB",
+                                            limit: 10,
+                                            moduleName: 'contract-service',
+                                            offset: 0,
+                                            tenantId: GlobalVariables.tenantId!,
+                                          ),
+                                        );
                                     context.router.pop();
                                   },
                                   icon: const Icon(Icons.close)),
@@ -218,51 +240,11 @@ class _WOFilterPageState extends State<WOFilterPage> {
                               ),
                             ],
                           ),
-
                           DigitTextField(
                             label: t
                                 .translate(i18.measurementBook.workOrderNumber),
-                            // label: "Work Order Number",
                             controller: woNumber,
                           ),
-
-                          // DigitDropdown<OrganisationModel>(
-                          //   onChanged: (value) {
-                          //     if (orgId != null) {
-                          //       setState(() {
-                          //         orgId!.add(value!);
-                          //         project = false;
-                          //       });
-                          //     } else {
-                          //       orgId = [];
-                          //       if (orgId != null) {
-                          //         setState(() {
-                          //           orgId!.add(value!);
-                          //           project = false;
-                          //         });
-                          //       }
-                          //     }
-                          //   },
-                          //   value: (orgId != null && orgId!.isNotEmpty)
-                          //       ? orgId!.first
-                          //       : null,
-                          //   //value: null,
-                          //   label: "Organization Name",
-                          //   // label: t.translate(i18.common.orgSubType),
-                          //   // menuItems: organization!
-                          //   //     .tenantBoundaryList!
-                          //   //     .first
-                          //   //     .boundaryList!
-                          //   //     .map((e) => e.code.toString())
-                          //   //     .toList(),
-                          //   menuItems:
-                          //       organization!.organisations!.map((e) => e).toList(),
-                          //   valueMapper: (value) {
-                          //     return value.name!;
-                          //     // return value.toString();
-                          //   },
-                          // )
-
                           DigitSearchDropdown<OrganisationModel>(
                             suggestionsCallback: (items, pattern) {
                               return items
@@ -280,7 +262,6 @@ class _WOFilterPageState extends State<WOFilterPage> {
                               return value.name!;
                             },
                           ),
-
                           BlocBuilder<WageSeekerLocationBloc,
                               WageSeekerLocationState>(
                             builder: (context, value) {
@@ -306,6 +287,9 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                     },
                                   );
                                 },
+                                loading: (value) {
+                                  return const SizedBox.shrink();
+                                },
                               );
                             },
                           )
@@ -313,6 +297,24 @@ class _WOFilterPageState extends State<WOFilterPage> {
                       ),
                     );
                   }),
+            );
+          },
+          loading: () {
+            return Scaffold(
+              appBar: AppBar(
+                titleSpacing: 0,
+                title: const AppBarLogo(),
+              ),
+              drawer: DrawerWrapper(
+                Drawer(
+                  child: SideBar(
+                    module: CommonMethods.getLocaleModules(),
+                  ),
+                ),
+              ),
+              body: const Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
             );
           },
         );

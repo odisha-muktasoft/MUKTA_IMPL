@@ -634,7 +634,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           extensions: const [
                                             'jpg',
                                             'png',
-                                            'jpeg'
+                                            'jpeg',
                                           ],
                                           moduleName: 'works',
                                           headerType: MediaType.mbDetail,
@@ -646,70 +646,97 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       ? !value.viewStatus
                                           ? Card(
                                               child: Center(
-                                                child: FilePickerDemo(
-                                                  callBack: (List<
-                                                              FileStoreModel>?
-                                                          g,
-                                                      List<WorkflowDocument>?
-                                                          l) {
-                                                    context
-                                                        .read<
-                                                            MeasurementDetailBloc>()
-                                                        .add(
-                                                          MeasurementUploadDocumentBlocEvent(
-                                                            tenantId: '',
-                                                            workflowDocument:
-                                                                l!,
-                                                          ),
-                                                        );
-                                                    print(g);
-                                                  },
-                                                  extensions: const [
-                                                    'jpg',
-                                                    'png',
-                                                    'jpeg'
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FilePickerDemo(
+                                                      callBack: (List<
+                                                                  FileStoreModel>?
+                                                              g,
+                                                          List<WorkflowDocument>?
+                                                              l) {
+                                                        context
+                                                            .read<
+                                                                MeasurementDetailBloc>()
+                                                            .add(
+                                                              MeasurementUploadDocumentBlocEvent(
+                                                                tenantId: '',
+                                                                workflowDocument:
+                                                                    l!,
+                                                              ),
+                                                            );
+                                                      },
+                                                      extensions: const [
+                                                        'jpg',
+                                                        'png',
+                                                        'jpeg',
+                                                        'pdf',
+                                                        'xls',
+                                                      ],
+                                                      moduleName: 'works',
+                                                      headerType:
+                                                          MediaType.mbDetail,
+                                                    ),
+                                                    // TODO:[text change]
+                                                    Text(t.translate(
+                                                        i18.common.photoInfo)),
                                                   ],
-                                                  moduleName: 'works',
-                                                  headerType:
-                                                      MediaType.mbDetail,
                                                 ),
                                               ),
                                             )
-                                          : const Card(
+                                          : Card(
                                               child: Center(
                                               child: EmptyImage(
                                                 align: Alignment.center,
-                                                label: "No Document Found",
+                                                label: t.translate(i18
+                                                    .measurementBook
+                                                    .noDocumentFound),
                                               ),
                                             ))
                                       : !value.viewStatus
                                           ? Card(
                                               child: Center(
-                                                child: FilePickerDemo(
-                                                  callBack: (List<
-                                                              FileStoreModel>?
-                                                          g,
-                                                      List<WorkflowDocument>?
-                                                          l) {
-                                                    context
-                                                        .read<
-                                                            MeasurementDetailBloc>()
-                                                        .add(
-                                                          MeasurementUploadDocumentBlocEvent(
-                                                            tenantId: '',
-                                                            workflowDocument:
-                                                                l!,
-                                                          ),
-                                                        );
-                                                  },
-                                                  extensions: const [
-                                                    'jpg',
-                                                    'png',
-                                                    'jpeg'
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    FilePickerDemo(
+                                                      callBack: (List<
+                                                                  FileStoreModel>?
+                                                              g,
+                                                          List<WorkflowDocument>?
+                                                              l) {
+                                                        context
+                                                            .read<
+                                                                MeasurementDetailBloc>()
+                                                            .add(
+                                                              MeasurementUploadDocumentBlocEvent(
+                                                                tenantId: '',
+                                                                workflowDocument:
+                                                                    l!,
+                                                              ),
+                                                            );
+                                                      },
+                                                      extensions: const [
+                                                        'jpg',
+                                                        'png',
+                                                        'jpeg',
+                                                        'pdf',
+                                                        'xls',
+                                                      ],
+                                                      moduleName: 'works',
+                                                      headerType:
+                                                          MediaType.mbDetail,
+                                                    ),
+                                                    // TODO:[text change]
+                                                    Text(t.translate(
+                                                        i18.common.photoInfo)),
                                                   ],
-                                                  moduleName: 'works',
-                                                  headerType:
-                                                      MediaType.mbDetail,
                                                 ),
                                               ),
                                             )
@@ -945,8 +972,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                       magic.first.contracts!.first.estimates!.first.name,
                   t.translate(i18.measurementBook.unit): line[0].uom,
                   t.translate(i18.measurementBook.rate): line[0].unitRate,
-                  "Approved Quantity": noOfQty,
+                  t.translate(i18.measurementBook.approvedQty): noOfQty,
                   // t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
+                  //TODO:[localization]
                   "Consumed Quantity\n(Upto previous entry)":
                       //  t.translate(i18.measurementBook.consumedQty):
                       preSorNonSor == null
@@ -1227,6 +1255,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                             } else {
                               show = "existing MB";
                             }
+
+                            //TODO:[localization change]
                             Notifiers.getToastMessage(
                                 context,
                                 "MB can not be created as the $show in progress",
