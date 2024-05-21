@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_components/widgets/atoms/digit_action_dialog.dart';
@@ -14,7 +13,6 @@ import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../utils/common_methods.dart';
-import '../../utils/constants.dart';
 import '../../utils/employee/mb/mb_logic.dart';
 import '../../widgets/Back.dart';
 import '../../widgets/SideBar.dart';

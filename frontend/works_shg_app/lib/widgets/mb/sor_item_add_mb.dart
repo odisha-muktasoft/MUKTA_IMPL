@@ -178,7 +178,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               children: [
                                 Expanded(
                                   child: DigitOutLineButton(
-                                    label: "Close",
+                                    label: t.translate(i18.common.close),
                                     onPressed: () {
                                       context
                                           .read<MeasurementDetailBloc>()
@@ -208,7 +208,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                               type: widget.type));
                                       // Navigator.of(context).pop();
                                     },
-                                    child: const Text('Submit'),
+                                    child: Text(t.translate(i18.common.submit)),
                                   ),
                                 ),
                               ],
@@ -427,7 +427,8 @@ class _CardWidgetState extends State<CardWidget> {
                               !widget.viewMode
                                   ? DigitIconButton(
                                       icon: IconData(Icons.add.codePoint),
-                                      iconText: "Add Measurements",
+                                      iconText: t.translate(
+                                          i18.measurementBook.addMeasurement),
                                       onPressed: () {
                                         context
                                             .read<MeasurementDetailBloc>()
@@ -490,7 +491,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   // TO add line items
                                   return DigitIconButton(
                                     icon: IconData(Icons.add.codePoint),
-                                    iconText: "Add Measurements",
+                                    iconText: t.translate(
+                                        i18.measurementBook.addMeasurement),
                                     onPressed: () {
                                       context.read<MeasurementDetailBloc>().add(
                                             AddToMeasurementLineEvent(

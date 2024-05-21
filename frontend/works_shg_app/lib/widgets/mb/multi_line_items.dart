@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
+
 
 class MultiLineItems extends StatefulWidget {
   final void Function(String?, dynamic) fieldValue;
@@ -102,6 +106,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
 
   @override
   Widget build(BuildContext context) {
+    final t= AppLocalizations.of(context);
     return Container(
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
@@ -113,7 +118,8 @@ class _MultiLineItemsState extends State<MultiLineItems> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           DigitTextField(
-            label: "Number",
+            textInputType: TextInputType.number,
+            label: t.translate(i18.measurementBook.numberLabel),
             controller: numberController,
             isDisabled: widget.viewMode,
           ),
@@ -125,7 +131,8 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
-                    label: "Length",
+                    
+                    label: t.translate(i18.measurementBook.lengthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
                     controller: lengthController,
@@ -137,7 +144,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
-                    label: "Width",
+                    label: t.translate(i18.measurementBook.widthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
                     controller: widthController,
@@ -149,7 +156,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
-                    label: "Height",
+                    label: t.translate(i18.measurementBook.heightLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
                     controller: heightController,
@@ -159,7 +166,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             ],
           ),
           DigitTextField(
-            label: "Quantity",
+            label: t.translate(i18.measurementBook.quantityLabel),
             isDisabled: true,
             controller: quantityController..text = widget.quantity!,
           ),

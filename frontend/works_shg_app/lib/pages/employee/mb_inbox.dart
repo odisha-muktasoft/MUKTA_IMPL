@@ -11,7 +11,6 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
-import 'package:works_shg_app/widgets/mb/radio_button_sheet.dart';
 
 import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -32,35 +31,6 @@ class MeasurementBookInboxPage extends StatefulWidget {
 }
 
 class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
-  // @override
-  // Widget build(BuildContext context) {
-  //   var t = AppLocalizations.of(context);
-  //   return BlocBuilder<LocalizationBloc, LocalizationState>(
-  //     builder: (context, state) {
-  //       return Scaffold(
-  //         appBar: AppBar(
-  //           titleSpacing: 0,
-  //           title: const AppBarLogo(),
-  //         ),
-  //         drawer: DrawerWrapper(
-  //           Drawer(
-  //             child: SideBar(
-  //               module: CommonMethods.getLocaleModules(),
-  //             ),
-  //           ),
-  //         ),
-  //      body: SingleChildScrollView(
-  //       child: Column(
-  //         children: [
-  //           const Back(),
-  //         ],
-  //       ),
-  //      ),
-  //       );
-  //     },
-  //   );
-  // }
-
   final ScrollController _scrollController = ScrollController();
   List<String> items = []; // List to hold items
   int pageCount = 0; // Initial page count
@@ -154,7 +124,6 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                 loaded: (value) {
                   if (value.mbInboxResponse.items!.length > 19) {
                     return TextButton.icon(
-                      
                       style: TextButton.styleFrom(
                         backgroundColor: const DigitColors().white,
                         shape: RoundedRectangleBorder(
@@ -220,7 +189,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   },
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 17.0),
                                   child: Text(
                                     "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.totalCount ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
@@ -229,7 +198,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8.0, top: 10.0),
+                                      left: 0.0, right: 8.0, top: 10.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -258,30 +227,18 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                     color: const DigitColors()
                                                         .burningOrange,
                                                   ),
+                                                  textDirection:
+                                                      TextDirection.ltr,
                                                 ),
-
-                                                // color: const DigitColors()
-                                                //     .burningOrange,
                                                 onPressed: () {
                                                   context.router.push(
                                                       const MBFilterRoute());
-                                                  //  final result=   await filterDialog(context);
                                                 },
                                                 icon: const Icon(
                                                   Icons.filter_alt,
+                                                  textDirection:
+                                                      TextDirection.ltr,
                                                 )),
-                                            // Text(
-                                            //   "Filter",
-                                            //   style: DigitTheme
-                                            //       .instance
-                                            //       .mobileTheme
-                                            //       .textTheme
-                                            //       .labelLarge!
-                                            //       .copyWith(
-                                            //     color: const DigitColors()
-                                            //         .burningOrange,
-                                            //   ),
-                                            // ),
                                             mbInboxResponse.search
                                                 ? IconButton(
                                                     onPressed: () {
@@ -377,7 +334,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   // Display items
 
                                   return const Center(
-                                    child:   EmptyImage(
+                                    child: EmptyImage(
                                       align: Alignment.center,
                                       label: "Measurement Number not Found",
                                     ),
@@ -488,15 +445,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                   .mbInboxResponse
                                                   .items?[index]
                                                   .businessObject
-                                                  ?.measurementAdditionalDetail?.totalAmount?.roundToDouble()
+                                                  ?.measurementAdditionalDetail
+                                                  ?.totalAmount
+                                                  ?.roundToDouble()
                                                   .toString() ??
                                               "0.0"
-                                      // "SLA Days remaining": mbInboxResponse
-                                      //         .mbInboxResponse
-                                      //         .items?[index]
-                                      //         .businessObject
-                                      //         ?.serviceSla ??
-                                      //     "0"
                                     },
                                     show: true,
                                     sla: mbInboxResponse
@@ -531,30 +484,30 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
     );
   }
 
-  Future<dynamic> filterDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          titlePadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.only(top: AppBar().preferredSize.height),
-          title: const Text("sd"),
-          contentPadding: EdgeInsets.zero,
-          content: Card(
-            child: SizedBox(
-              height: double.maxFinite,
-              width: MediaQuery.of(context).size.width,
-              child: const Center(
-                child: Text("Loading"),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  // TODO:[unused code]
 
- 
+  // Future<dynamic> filterDialog(BuildContext context) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         titlePadding: EdgeInsets.zero,
+  //         insetPadding: EdgeInsets.only(top: AppBar().preferredSize.height),
+  //         title: const Text("sd"),
+  //         contentPadding: EdgeInsets.zero,
+  //         content: Card(
+  //           child: SizedBox(
+  //             height: double.maxFinite,
+  //             width: MediaQuery.of(context).size.width,
+  //             child: const Center(
+  //               child: Text("Loading"),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }
 
 class MyHeaderDelegate extends SliverPersistentHeaderDelegate {

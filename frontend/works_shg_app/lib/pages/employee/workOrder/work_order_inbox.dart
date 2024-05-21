@@ -196,7 +196,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                   },
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
+                                  padding: const EdgeInsets.only(left: 20.0),
                                   child: Text(
                                     "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
@@ -205,7 +205,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 8.0, right: 8.0, top: 10.0),
+                                      left: 4.0, right: 8.0, top: 10.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -335,10 +335,11 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  return  Center(
+                                  return Center(
                                     child: EmptyImage(
                                       align: Alignment.center,
-                                      label: t.translate(i18.common.workOrderNotFound),
+                                      label: t.translate(
+                                          i18.common.workOrderNotFound),
                                     ),
                                   );
                                 },

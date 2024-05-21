@@ -82,7 +82,8 @@ class MBRepository {
       );
 
       //return res.data;
-      return Measurement.fromJson(res.data);
+      print(res.data['measurements']);
+      return Measurement.fromJson(res.data['measurements'][0]);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;

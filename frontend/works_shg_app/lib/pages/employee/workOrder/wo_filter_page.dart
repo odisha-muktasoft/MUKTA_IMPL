@@ -32,7 +32,7 @@ class WOFilterPage extends StatefulWidget {
 class _WOFilterPageState extends State<WOFilterPage> {
   List<OrganisationModel>? orgId; // Initialize ward list
   // List<statusMap.StatusMap> workflow = []; // Initialize workflow list
-
+  List<String> ward = [];
   TextEditingController woNumber = TextEditingController();
   TextEditingController projectId = TextEditingController();
   TextEditingController projectName = TextEditingController();
@@ -110,7 +110,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           orElse: () {
             return const SizedBox.shrink();
           },
-          loaded: (location) {
+          loaded: (organization) {
             return Scaffold(
               appBar: AppBar(
                 titleSpacing: 0,
@@ -153,12 +153,12 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                       t.translate(i18.measurementBook.filter)),
                                   onPressed: () async {
                                     Map<String, dynamic> s;
-                                    String? k;
+                                    String? selectedOrgId;
                                     if (formGroup.value[orgNumberKey] != null) {
                                       OrganisationModel data =
                                           formGroup.value[orgNumberKey]!
                                               as OrganisationModel;
-                                      k = data.orgNumber;
+                                      selectedOrgId = data.id;
                                     }
 
                                     s = {
@@ -171,7 +171,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                       //         .map((e) => e.orgNumber)
                                       //         .toList()
                                       //     : [],
-                                      "orgIds": k != null ? [k] : [],
+                                      "ward": ward,
+                                      "orgIds": selectedOrgId != null ? [selectedOrgId] : [],
                                       "wfStatus": ["ACCEPTED"],
                                       "pagination": {
                                         "limit": "10",
@@ -219,7 +220,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
                           ),
 
                           DigitTextField(
-                             label: t.translate(i18.measurementBook.workOrderNumber),
+                            label: t
+                                .translate(i18.measurementBook.workOrderNumber),
                             // label: "Work Order Number",
                             controller: woNumber,
                           ),
@@ -247,14 +249,14 @@ class _WOFilterPageState extends State<WOFilterPage> {
                           //   //value: null,
                           //   label: "Organization Name",
                           //   // label: t.translate(i18.common.orgSubType),
-                          //   // menuItems: location!
+                          //   // menuItems: organization!
                           //   //     .tenantBoundaryList!
                           //   //     .first
                           //   //     .boundaryList!
                           //   //     .map((e) => e.code.toString())
                           //   //     .toList(),
                           //   menuItems:
-                          //       location!.organisations!.map((e) => e).toList(),
+                          //       organization!.organisations!.map((e) => e).toList(),
                           //   valueMapper: (value) {
                           //     return value.name!;
                           //     // return value.toString();
@@ -264,17 +266,49 @@ class _WOFilterPageState extends State<WOFilterPage> {
                           DigitSearchDropdown<OrganisationModel>(
                             suggestionsCallback: (items, pattern) {
                               return items
-                                  .where((obj) => obj.name!.contains(pattern))
+                                  .where((obj) => obj.name!
+                                      .toLowerCase()
+                                      .contains(pattern.toLowerCase()))
                                   .toList();
                             },
-                            label: "Organization Name",
-                            menuItems:
-                                location!.organisations!.map((e) => e).toList(),
+                            label: t.translate(i18.measurementBook.cboName),
+                            menuItems: organization!.organisations!
+                                .map((e) => e)
+                                .toList(),
                             formControlName: orgNumberKey,
                             valueMapper: (value) {
                               return value.name!;
                             },
                           ),
+
+                          BlocBuilder<WageSeekerLocationBloc,
+                              WageSeekerLocationState>(
+                            builder: (context, value) {
+                              return value.maybeMap(
+                                orElse: () => const SizedBox.shrink(),
+                                loaded: (location) {
+                                  return DigitDropdown(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        ward.add(value!);
+                                      });
+                                    },
+                                    value: ward.isNotEmpty ? ward.first : null,
+                                    label: t.translate(i18.common.ward),
+                                    menuItems: location.location!
+                                        .tenantBoundaryList!.first.boundaryList!
+                                        .map((e) => e.code.toString())
+                                        .toList(),
+                                    valueMapper: (value) {
+                                      return t.translate(
+                                          convertToWard(value.toString()));
+                                      // return value.toString();
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          )
                         ],
                       ),
                     );

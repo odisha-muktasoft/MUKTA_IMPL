@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/employee/estimate/estimate.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
@@ -120,6 +121,25 @@ class _MBDetailPageState extends State<MBDetailPage>
 
     return MultiBlocListener(
       listeners: [
+        BlocListener<MeasurementCrudBloc, MeasurementCrudState>(
+          listener: (context, state) {
+            state.maybeMap(
+              orElse: () => {},
+              loaded: (value) {
+                String msg =
+                    "WF_MB_ACTION_${value.measurement?.workflow?.action}";
+                Notifiers.getToastMessage(
+                    context,
+                    "Measurement Book has been ${t.translate(msg)} successfully",
+                    'SUCCESS');
+              },
+              error: (value) {
+                Notifiers.getToastMessage(
+                    context, value.error.toString(), 'ERROR');
+              },
+            );
+          },
+        ),
         BlocListener<MusterGetWorkflowBloc, MusterGetWorkflowState>(
           listener: (context, state) {
             state.maybeMap(
@@ -227,7 +247,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           loaded: (mbWorkFlow) {
                             final g = mbWorkFlow
                                 .musterWorkFlowModel?.processInstances;
-                               
+
                             return FloatActionCard(
                               actions: () {
                                 DigitActionDialog.show(
@@ -531,7 +551,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             controller: _tabController,
                             children: [
                               value.sor!.isEmpty
-                                  ?  Card(
+                                  ? Card(
                                       child: Center(
                                           child: EmptyImage(
                                         align: Alignment.center,
@@ -681,7 +701,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 l!,
                                                           ),
                                                         );
-                                                    print(g);
                                                   },
                                                   extensions: const [
                                                     'jpg',
@@ -782,7 +801,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     .documentUid))
                                                         .toList()
                                                     : null,
-                                                    
                                                 assignee:
                                                     e.assignes?.first.name,
                                                 mobileNumber: e.assignes != null
@@ -819,23 +837,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 },
                               )
                             : const SizedBox.shrink(),
-
-                        // image
-
-                        // FilePickerDemo(
-                        //   callBack: (List<FileStoreModel>? g,
-                        //       List<WorkflowDocument>? l) {
-                        //     context.read<MeasurementDetailBloc>().add(
-                        //           MeasurementUploadDocumentBlocEvent(
-                        //             tenantId: '',
-                        //             workflowDocument: l!,
-                        //           ),
-                        //         );
-                        //     print(g);
-                        //   },
-                        //   extensions: const ['jpg', 'png', 'jpeg'],
-                        //   moduleName: 'works',
-                        // ),
                       ],
                     ),
                   );
@@ -859,15 +860,8 @@ class _MBDetailPageState extends State<MBDetailPage>
       return {
         t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
 
-        t.translate(i18.measurementBook.measurementPeriod): "${s.first.startDate !=
-                null
-            ? DateFormat('dd/MM/yyyy')
-                .format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!))
-            : "NA"}-${s.first.endDate !=
-                null
-            ? DateFormat('dd/MM/yyyy')
-                .format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!))
-            : "NA"}",
+        t.translate(i18.measurementBook.measurementPeriod):
+            "${s.first.startDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!)) : "NA"}-${s.first.endDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!)) : "NA"}",
         t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
                 .contracts!.first.contractAdditionalDetails?.projectDesc ??
             "NA",
@@ -879,15 +873,8 @@ class _MBDetailPageState extends State<MBDetailPage>
         t.translate(i18.measurementBook.mbNumber): s.first.mbNumber ?? "NA",
         t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
 
-         t.translate(i18.measurementBook.measurementPeriod): "${s.first.startDate !=
-                null
-            ? DateFormat('dd/MM/yyyy')
-                .format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!))
-            : "NA"}-${s.first.endDate !=
-                null
-            ? DateFormat('dd/MM/yyyy')
-                .format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!))
-            : "NA"}",
+        t.translate(i18.measurementBook.measurementPeriod):
+            "${s.first.startDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!)) : "NA"}-${s.first.endDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!)) : "NA"}",
         t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
                 .contracts!.first.contractAdditionalDetails?.projectDesc ??
             "NA",
@@ -925,7 +912,6 @@ class _MBDetailPageState extends State<MBDetailPage>
       },
     ).toList();
     double noOfQty = line.fold(0.0, (sum, obj) {
-      
       int m = double.parse(obj.noOfunit!.toString()).toInt();
       return sum + m;
     });
@@ -1268,7 +1254,6 @@ class _MBDetailPageState extends State<MBDetailPage>
     );
   }
 }
-
 
 class CustomTab extends StatelessWidget {
   final String text;

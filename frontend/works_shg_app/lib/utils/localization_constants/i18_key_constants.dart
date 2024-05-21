@@ -394,6 +394,12 @@ class MeasurementBook {
   String get mbHistory => "MB_HISTORY";
   String get workOrderNumber => "MB_SEARCH_REFERENCE_NUMBER";
   String get measurementPeriod => "MB_MEASUREMENT_PERIOD";
+  String get yes=>"MB_YES";
+ String get no=>"MB_NO";
+ String get widthLabel=>"MB_WIDTH";
+ String get lengthLabel=>"MB_LENGTH";
+ 
+ String get quantityLabel=>"MB_QUANTITY";
 
   // I updated
   String get totalSorAmount => "MB_TOTAL_SOR_AMT";
@@ -414,6 +420,7 @@ class MeasurementBook {
   String get workOrderInbox => "MB_WORK_ORDER_INBOX";
   String get filter => "MB_FILTER";
   String get clear => "MB_CLEAR";
+  String get numberLabel=>"MB_LABEL_NUMBER";
 
 // sort
 
@@ -427,7 +434,8 @@ class MeasurementBook {
  String get mbQtyErrMsg=>"MB_MEASUREMENT_QTY_ERROR";
  String get isDeduction=>"MB_IS_DEDUCTION";
  String get item=>"MB_ITEM";
- String get yes=>"MB_YES";
- String get no=>"MB_NO";
+String get heightLabel=>"MB_LABEL_HEIGHT";
+String get addMeasurement=>"MB_ADD_MEASUREMENT";
+ 
 
 }
