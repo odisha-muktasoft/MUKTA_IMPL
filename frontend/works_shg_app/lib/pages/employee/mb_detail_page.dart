@@ -561,11 +561,20 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                                           preSorNonSor: value.preSor == null
                                               ? null
-                                              : value.preSor!
-                                                  .firstWhere((element) =>
-                                                      element.sorId ==
-                                                      value.sor![index].sorId)
-                                                  .filteredMeasurementsMeasure,
+                                              : value.preSor!.firstWhereOrNull(
+                                                          (element) =>
+                                                              element.sorId ==
+                                                              value.sor![index]
+                                                                  .sorId) ==
+                                                      null
+                                                  ? null
+                                                  : value.preSor!
+                                                      .firstWhereOrNull(
+                                                          (element) =>
+                                                              element.sorId ==
+                                                              value.sor![index]
+                                                                  .sorId)!
+                                                      .filteredMeasurementsMeasure,
                                           // value.preSor![index]
                                           //     .filteredMeasurementsMeasure,
                                           type: "sor",
@@ -601,11 +610,25 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           preSorNonSor: value.preNonSor == null
                                               ? null
                                               : value.preNonSor!
-                                                  .firstWhere((element) =>
-                                                      element.sorId ==
-                                                      value
-                                                          .nonSor![index].sorId)
-                                                  .filteredMeasurementsMeasure,
+                                                          .firstWhereOrNull(
+                                                              (element) =>
+                                                                  element
+                                                                      .sorId ==
+                                                                  value
+                                                                      .nonSor![
+                                                                          index]
+                                                                      .sorId) !=
+                                                      null
+                                                  ? value.preNonSor!
+                                                      .firstWhereOrNull(
+                                                          (element) =>
+                                                              element.sorId ==
+                                                              value
+                                                                  .nonSor![
+                                                                      index]
+                                                                  .sorId)!
+                                                      .filteredMeasurementsMeasure
+                                                  : null,
                                           // : value.preNonSor![index]
                                           //     .filteredMeasurementsMeasure,
                                           type: "NonSor",
@@ -954,7 +977,7 @@ class _MBDetailPageState extends State<MBDetailPage>
       return sum + m;
     });
 
-    final double preConumed = preSorNonSor!.fold(0.0, (sum, obj) {
+    final double preConumed = preSorNonSor==null?0.0:preSorNonSor!.fold(0.0, (sum, obj) {
       double m = obj.contracts!.first.estimates!.first.isDeduction == true
           ? -(obj.cumulativeValue!)
           : (obj.cumulativeValue!);
