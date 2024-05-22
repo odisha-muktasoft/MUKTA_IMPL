@@ -126,11 +126,13 @@ class _MBDetailPageState extends State<MBDetailPage>
             state.maybeMap(
               orElse: () => {},
               loaded: (value) {
-                String msg =
-                    "WF_MB_ACTION_${value.measurement?.workflow?.action}";
+                //TODO:[text change]
+                // String msg =
+                //     "WF_MB_ACTION_${value.measurement?.workflow?.action}";
                 Notifiers.getToastMessage(
                     context,
-                    "Measurement Book has been ${t.translate(msg)} successfully",
+                    t.translate(
+                        "WF_UPDATE_SUCCESS_MB_${value.measurement?.workflow?.action}"),
                     'SUCCESS');
               },
               error: (value) {
@@ -344,25 +346,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       context,
                                       "MB can not be created as the $show in progress",
                                       'ERROR');
-
-                                  // if (value.data[1].wfStatus != "APPROVED") {
-                                  //   Notifiers.getToastMessage(
-                                  //       context,
-                                  //       "MB can not be created as the existing MB in progress",
-                                  //       'ERROR');
-                                  // }
                                 }
-
-                                // DigitActionDialog.show(
-                                //   context,
-                                //   widget: CommonButtonCard(
-                                //     g: null,
-                                //     contractNumber: widget.contractNumber,
-                                //     mbNumber: widget.mbNumber,
-                                //     type: widget.type,
-                                //     bs: bk,
-                                //   ),
-                                // );
                               },
                               // amount: sorprice.toString(),
                               amount: value.data.first.totalAmount!
@@ -583,11 +567,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       itemCount: value.sor!.length,
                                     ),
                               value.nonSor!.isEmpty
-                                  ? const Card(
+                                  ? Card(
                                       child: Center(
                                         child: EmptyImage(
                                           align: Alignment.center,
-                                          label: "No Data Found",
+                                          label:
+                                              t.translate(i18.common.notFound),
                                         ),
                                       ),
                                     )
@@ -681,8 +666,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           MediaType.mbDetail,
                                                     ),
                                                     // TODO:[text change]
-                                                    Text(t.translate(
-                                                        i18.common.photoInfo)),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(4),
+                                                      // color: DigitColors().pacificBlue,
+                                                      child: Text(t.translate(
+                                                          i18.common
+                                                              .photoInfo)),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -734,8 +725,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           MediaType.mbDetail,
                                                     ),
                                                     // TODO:[text change]
-                                                    Text(t.translate(
-                                                        i18.common.photoInfo)),
+                                                    Container(
+                                                      padding:
+                                                          EdgeInsets.all(4),
+                                                      //  color: DigitColors().curiousBlue,
+                                                      child: Text(t.translate(
+                                                          i18.common
+                                                              .photoInfo)),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -918,7 +915,7 @@ class _MBDetailPageState extends State<MBDetailPage>
       case 1:
         return nonSork == 0 ? 300 : nonSork * 500;
       case 2:
-        return photo == 0 ? 300 : photo * 240;
+        return photo == 0 ? 350 : photo * 240;
       default:
         return 300.0;
     }
