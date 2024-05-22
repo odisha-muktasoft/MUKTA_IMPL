@@ -133,7 +133,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          (widget.totalCount != 1)
+          (widget.totalCount != 1 && !widget.viewMode)
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.end,
