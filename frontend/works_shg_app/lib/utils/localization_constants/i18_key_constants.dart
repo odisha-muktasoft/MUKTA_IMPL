@@ -446,5 +446,8 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get workSitePhotos=>"MB_WORK_SITE_PHOTO";
  String get noDocumentFound=>"NO_DOCUMENT_FOUND";
  String get delete=>"MB_DELETE";
+ String get preConsumedKey=>"MB_CONSUMED_QUANT_KEY";
+ String get preConsumedPre=>"MB_CONSUMED_QUANT_KEY_PRE";
+
 
 }

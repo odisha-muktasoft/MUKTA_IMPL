@@ -457,20 +457,23 @@ class _MBDetailPageState extends State<MBDetailPage>
                             children: [
                               CommonMBCard(
                                 items: primaryItems(t, value.data, widget.type),
-                                widget: CommonTextButtonUnderline(
-                                  label: t.translate(
-                                      i18.measurementBook.mbShowHistory),
-                                  onPressed: () {
-                                    context.router.push(
-                                      MBHistoryBookRoute(
-                                        contractNumber: widget.contractNumber,
-                                        mbNumber: widget.mbNumber,
-                                        tenantId: widget.tenantId,
-                                        type: widget.type,
-                                      ),
-                                    );
-                                  },
-                                ),
+                                widget: value.data.length > 1
+                                    ? CommonTextButtonUnderline(
+                                        label: t.translate(
+                                            i18.measurementBook.mbShowHistory),
+                                        onPressed: () {
+                                          context.router.push(
+                                            MBHistoryBookRoute(
+                                              contractNumber:
+                                                  widget.contractNumber,
+                                              mbNumber: widget.mbNumber,
+                                              tenantId: widget.tenantId,
+                                              type: widget.type,
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : const SizedBox.shrink(),
                                 show: false,
                                 sla: 1,
                               ),
@@ -558,10 +561,13 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                                           preSorNonSor: value.preSor == null
                                               ? null
-                                              : 
-                                              value.preSor!.firstWhere((element) => element.sorId==value.sor![index].sorId).filteredMeasurementsMeasure,
-                                              // value.preSor![index]
-                                              //     .filteredMeasurementsMeasure,
+                                              : value.preSor!
+                                                  .firstWhere((element) =>
+                                                      element.sorId ==
+                                                      value.sor![index].sorId)
+                                                  .filteredMeasurementsMeasure,
+                                          // value.preSor![index]
+                                          //     .filteredMeasurementsMeasure,
                                           type: "sor",
                                           sorNonSorId: value.sor![index].sorId!,
                                         );
@@ -593,10 +599,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           // .filteredMeasurementsMeasure,
 
                                           preSorNonSor: value.preNonSor == null
-                                              ? null:
-                                              value.preNonSor!.firstWhere((element) => element.sorId==value.nonSor![index].sorId).filteredMeasurementsMeasure,
-                                              // : value.preNonSor![index]
-                                              //     .filteredMeasurementsMeasure,
+                                              ? null
+                                              : value.preNonSor!
+                                                  .firstWhere((element) =>
+                                                      element.sorId ==
+                                                      value
+                                                          .nonSor![index].sorId)
+                                                  .filteredMeasurementsMeasure,
+                                          // : value.preNonSor![index]
+                                          //     .filteredMeasurementsMeasure,
                                           type: "NonSor",
                                           sorNonSorId:
                                               value.nonSor![index].sorId!,
@@ -943,22 +954,13 @@ class _MBDetailPageState extends State<MBDetailPage>
       return sum + m;
     });
 
-   final double preConumed=preSorNonSor!.fold(0.0, (sum, obj) {
-                              double m = obj.contracts!.first.estimates!.first
-                                          .isDeduction ==
-                                      true
-                                  ? -(obj.cumulativeValue!)
-                                  : (obj.cumulativeValue!);
-                              return sum + m.toDouble();
-                            }); 
-    // double consumed = magic.fold(0.0, (sum, obj) {
-    //   double m = obj.cumulativeValue!;
-    //   return sum + m.toDouble();
-    // });
-    // double consumed = preSor_NonSor!.fold(0.0, (sum, obj) {
-    //   double m = obj.cumulativeValue!;
-    //   return sum + m.toDouble();
-    // });
+    final double preConumed = preSorNonSor!.fold(0.0, (sum, obj) {
+      double m = obj.contracts!.first.estimates!.first.isDeduction == true
+          ? -(obj.cumulativeValue!)
+          : (obj.cumulativeValue!);
+      return sum + m.toDouble();
+    });
+
     return Card(
       child: SizedBox(
         height: 480,
@@ -984,20 +986,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                   t.translate(i18.measurementBook.approvedQty): noOfQty,
                   // t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
                   //TODO:[localization]
-                  "Consumed Quantity\n(Upto previous entry)":
+                  "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
                       //  t.translate(i18.measurementBook.consumedQty):
-                      preSorNonSor == null
-                          ? 0
-                          :preConumed
-                          // : preSorNonSor!.fold(0.0, (sum, obj) {
-                          //     double m = obj.contracts!.first.estimates!.first
-                          //                 .isDeduction ==
-                          //             true
-                          //         ? -(obj.cumulativeValue!)
-                          //         : (obj.cumulativeValue!);
-                          //     return sum + m.toDouble();
-                          //   }),
-                  // "Consumed Quantity\n(current entry)": magic[0].currentValue!.toDouble(),
+                      preSorNonSor == null ? 0.0 : preConumed
                 },
               ),
               DigitTextField(
@@ -1040,11 +1031,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ? 0
                               // : preSorNonSor!.first.cumulativeValue,
                               : preSorNonSor!.fold(0.0, (sum, obj) {
-                                  double m = obj.contracts!.first.estimates!.first
-                                          .isDeduction ==
-                                      true
-                                  ? -(obj.cumulativeValue!)
-                                  : (obj.cumulativeValue!);
+                                  double m = obj.contracts!.first.estimates!
+                                              .first.isDeduction ==
+                                          true
+                                      ? -(obj.cumulativeValue!)
+                                      : (obj.cumulativeValue!);
                                   return sum + m.toDouble();
                                 }),
                           sorId: sorNonSorId,
