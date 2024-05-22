@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 enum LanguageEnum { en_IN, or_IN }
 class Constants {
+  static const String deleteIcon='assets/svg/delete.svg';
   static const String mdmsApiEndPoint = 'egov-mdms-service/v1/_search';
   static final navKey = GlobalKey<NavigatorState>();
   static const userMobileNumberKey = 'mobileNumber';

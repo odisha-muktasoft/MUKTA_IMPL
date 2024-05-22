@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-
 
 class MultiLineItems extends StatefulWidget {
   final void Function(String?, dynamic) fieldValue;
@@ -15,6 +18,12 @@ class MultiLineItems extends StatefulWidget {
   final String? quantity;
   final String? height;
   final bool viewMode;
+  final String sorId;
+  final String type;
+  final int index;
+  final int measurementIndex;
+  final String filteredMeasurementMeasureId;
+  final int totalCount;
 
   const MultiLineItems({
     super.key,
@@ -25,6 +34,12 @@ class MultiLineItems extends StatefulWidget {
     this.width,
     required this.fieldValue,
     required this.viewMode,
+    required this.sorId,
+    required this.type,
+    required this.index,
+    required this.measurementIndex,
+    required this.filteredMeasurementMeasureId,
+    required this.totalCount,
   });
 
   @override
@@ -41,6 +56,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   @override
   void initState() {
     super.initState();
+
     // Initialize text controllers and set initial values
     numberController = TextEditingController(text: widget.number.toString());
     lengthController = TextEditingController(text: widget.length.toString());
@@ -106,7 +122,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
 
   @override
   Widget build(BuildContext context) {
-    final t= AppLocalizations.of(context);
+    final t = AppLocalizations.of(context);
     return Container(
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
@@ -117,10 +133,41 @@ class _MultiLineItemsState extends State<MultiLineItems> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          (widget.totalCount != 1)
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Directionality(
+                      textDirection: TextDirection.rtl,
+                      child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(0),
+                        ),
+                        onPressed: () {
+                          context
+                              .read<MeasurementDetailBloc>()
+                              .add(DeleteMeasurementLineEvent(
+                                filteredMeasurementMeasureId:
+                                    widget.filteredMeasurementMeasureId,
+                                index: widget.index,
+                                measurementLineIndex: widget.measurementIndex,
+                                sorId: widget.sorId,
+                                type: widget.type,
+                              ));
+                        },
+                        icon: SvgPicture.asset(Constants.deleteIcon),
+                        label: Text(t.translate(i18.measurementBook.delete)),
+                      ),
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
           DigitTextField(
             textInputType: TextInputType.number,
             label: t.translate(i18.measurementBook.numberLabel),
-            controller: numberController,
+            controller: numberController..text = widget.number.toString()..selection=TextSelection.collapsed(offset: numberController.text.length
+                      ),
             isDisabled: widget.viewMode,
           ),
           Row(
@@ -131,11 +178,12 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
-                    
                     label: t.translate(i18.measurementBook.lengthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: lengthController,
+                    controller: lengthController
+                      ..text = widget.length.toString()..selection=TextSelection.collapsed(offset: lengthController.text.length
+                      ),
                   ),
                 ),
               ),
@@ -147,7 +195,8 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     label: t.translate(i18.measurementBook.widthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: widthController,
+                    controller: widthController..text = widget.width.toString()..selection=TextSelection.collapsed(offset: widthController.text.length
+                      ),
                   ),
                 ),
               ),
@@ -159,7 +208,9 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     label: t.translate(i18.measurementBook.heightLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: heightController,
+                    controller: heightController
+                      ..text = widget.height.toString()..selection=TextSelection.collapsed(offset: heightController.text.length
+                      ),
                   ),
                 ),
               ),
@@ -168,7 +219,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
           DigitTextField(
             label: t.translate(i18.measurementBook.quantityLabel),
             isDisabled: true,
-            controller: quantityController..text = widget.quantity!,
+            controller: quantityController..text = widget.quantity!..selection.end,
           ),
         ],
       ),

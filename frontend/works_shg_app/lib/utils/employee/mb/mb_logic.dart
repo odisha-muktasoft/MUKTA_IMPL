@@ -830,6 +830,60 @@ class MBLogic {
 
     return TotalEstimate(totalAmount, updatedSorObjects);
   }
+
+
+// delete measurementLineItem from the list
+
+static List<SorObject> deleteMeasurementLine(
+  List<SorObject> sorObjects,
+  String sorId,
+  String filteredMeasurementsMeasureId,
+  int measurementLineIndex,
+) {
+  return sorObjects.map((sorObject) {
+    if (sorObject.sorId == sorId) {
+      final List<FilteredMeasurementsMeasure> updatedFilteredMeasurementsMeasureList = sorObject
+          .filteredMeasurementsMeasure
+          .map((filteredMeasurementsMeasure) {
+        if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+          // final List<MeasureLineItem> updatedMeasurementLineItems = List.from(filteredMeasurementsMeasure.measureLineItems ?? []);
+          
+          // // if (measurementLineIndex >= 0 && measurementLineIndex < updatedMeasurementLineItems.length) {
+          // //   updatedMeasurementLineItems.removeAt(measurementLineIndex);
+          // // }
+
+          final List<MeasureLineItem> updatedMeasurementLineItems = (filteredMeasurementsMeasure.measureLineItems ?? [])
+              .where((item) => item.measurelineitemNo != measurementLineIndex) // Assuming MeasureLineItem has a name property
+              .toList();
+
+            // final List<MeasureLineItem> updatedMeasurementLineItemx=   updatedMeasurementLineItems.mapIndexed((index,e){
+            //   return MeasureLineItem(
+            //     width: e.width,
+            //     height: e.height,
+            //     length: e.length,
+            //     number: e.number,
+            //     quantity: e.quantity,
+            //     measurelineitemNo: index,
+            //   );
+            // }).toList();
+
+          return filteredMeasurementsMeasure.copyWith(
+             measureLineItems: updatedMeasurementLineItems,
+            // measureLineItems: updatedMeasurementLineItemx,
+          );
+        }
+        return filteredMeasurementsMeasure;
+      }).toList();
+
+      return sorObject.copyWith(
+        filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
+      );
+    }
+    return sorObject;
+  }).toList();
+}
+
+
 }
 
 class TotalEstimate {

@@ -445,5 +445,6 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get workValue=>"MB_WORK_VALUE";
  String get workSitePhotos=>"MB_WORK_SITE_PHOTO";
  String get noDocumentFound=>"NO_DOCUMENT_FOUND";
+ String get delete=>"MB_DELETE";
 
 }

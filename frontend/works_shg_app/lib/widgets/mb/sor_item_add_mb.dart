@@ -422,6 +422,13 @@ class _CardWidgetState extends State<CardWidget> {
                                       .filteredMeasurementsMeasure?.length
                                       .toString(),
                                   viewMode: widget.viewMode,
+                                  filteredMeasurementMeasureId:
+                                      widget.filteredMeasurementsMeasure!.id!,
+                                  index: 0,
+                                  measurementIndex: 0,
+                                  sorId: widget.filteredMeasurementsMeasure!
+                                      .contracts!.first.estimates!.first.sorId!,
+                                  type: widget.type, totalCount: 1,
                                 ),
                               ),
                               !widget.viewMode
@@ -449,7 +456,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: 0,
-                                                measurementLineIndex: 0,
+                                                measurementLineIndex: widget
+                                                        .filteredMeasurementsMeasure!
+                                                        .measureLineItems!
+                                                        .last
+                                                        .measurelineitemNo +
+                                                    1,
                                                 height: widget
                                                     .filteredMeasurementsMeasure
                                                     ?.height,
@@ -510,14 +522,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                   .estimates!
                                                   .first
                                                   .category!,
-                                              index: widget
-                                                  .filteredMeasurementsMeasure!
-                                                  .measureLineItems!
-                                                  .length,
+                                              index: index,
                                               measurementLineIndex: widget
-                                                  .filteredMeasurementsMeasure!
-                                                  .measureLineItems!
-                                                  .length,
+                                                      .filteredMeasurementsMeasure!
+                                                      .measureLineItems!
+                                                      .last
+                                                      .measurelineitemNo +
+                                                  1,
                                               // index: 0,
                                               //         measurementLineIndex: 0,
                                               height: 0,
@@ -566,7 +577,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: index,
-                                                measurementLineIndex: index,
+                                                measurementLineIndex:
+                                                    data!.measurelineitemNo!,
                                                 height: data?.height.toString(),
                                                 length: data?.length.toString(),
                                                 width: data?.width.toString(),
@@ -603,7 +615,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: index,
-                                                measurementLineIndex: index,
+                                                measurementLineIndex:
+                                                    data!.measurelineitemNo!,
                                                 height: data?.height.toString(),
                                                 length: p1.toString(),
                                                 width: data?.width.toString(),
@@ -639,7 +652,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: index,
-                                                measurementLineIndex: index,
+                                                measurementLineIndex:
+                                                    data!.measurelineitemNo!,
                                                 height: data?.height.toString(),
                                                 length: data?.length.toString(),
                                                 width: p1.toString(),
@@ -675,7 +689,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: index,
-                                                measurementLineIndex: index,
+                                                measurementLineIndex:
+                                                    data!.measurelineitemNo!,
                                                 height: data?.height.toString(),
                                                 length: data?.length.toString(),
                                                 width: data?.width.toString(),
@@ -710,7 +725,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: index,
-                                                measurementLineIndex: index,
+                                                measurementLineIndex:
+                                                    data!.measurelineitemNo!,
                                                 height: p1.toString(),
                                                 length: data?.length.toString(),
                                                 width: data?.width.toString(),
@@ -746,7 +762,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .first
                                                     .category!,
                                                 index: index,
-                                                measurementLineIndex: index,
+                                                measurementLineIndex:
+                                                    data!.measurelineitemNo!,
                                                 height: data?.height.toString(),
                                                 length: data?.length.toString(),
                                                 width: data?.width.toString(),
@@ -789,6 +806,16 @@ class _CardWidgetState extends State<CardWidget> {
                                           .toString()
                                       : data?.length.toString(),
                                   viewMode: widget.viewMode,
+                                  filteredMeasurementMeasureId:
+                                      widget.filteredMeasurementsMeasure!.id!,
+                                  index: index,
+                                  measurementIndex: data!.measurelineitemNo!,
+                                  sorId: widget.filteredMeasurementsMeasure!
+                                      .contracts!.first.estimates!.first.sorId!,
+                                  type: widget.type,
+                                  totalCount: widget.filteredMeasurementsMeasure
+                                          ?.measureLineItems?.length ??
+                                      0,
                                 ),
                               ); // Render your item here
                             },
