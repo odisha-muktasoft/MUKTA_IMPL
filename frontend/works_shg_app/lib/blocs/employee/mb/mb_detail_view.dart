@@ -67,6 +67,8 @@ class MeasurementDetailBloc
 
       List<List<List<SorObject>>> sorList = MBLogic.getSors(data);
 
+      print(sorList);
+
       emit(
         MeasurementDetailState.loaded(
           0,

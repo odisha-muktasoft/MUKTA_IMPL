@@ -558,8 +558,10 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                                           preSorNonSor: value.preSor == null
                                               ? null
-                                              : value.preSor![index]
-                                                  .filteredMeasurementsMeasure,
+                                              : 
+                                              value.preSor!.firstWhere((element) => element.sorId==value.sor![index].sorId).filteredMeasurementsMeasure,
+                                              // value.preSor![index]
+                                              //     .filteredMeasurementsMeasure,
                                           type: "sor",
                                           sorNonSorId: value.sor![index].sorId!,
                                         );
@@ -591,9 +593,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           // .filteredMeasurementsMeasure,
 
                                           preSorNonSor: value.preNonSor == null
-                                              ? null
-                                              : value.preNonSor![index]
-                                                  .filteredMeasurementsMeasure,
+                                              ? null:
+                                              value.preNonSor!.firstWhere((element) => element.sorId==value.nonSor![index].sorId).filteredMeasurementsMeasure,
+                                              // : value.preNonSor![index]
+                                              //     .filteredMeasurementsMeasure,
                                           type: "NonSor",
                                           sorNonSorId:
                                               value.nonSor![index].sorId!,
@@ -939,6 +942,15 @@ class _MBDetailPageState extends State<MBDetailPage>
       int m = double.parse(obj.noOfunit!.toString()).toInt();
       return sum + m;
     });
+
+   final double preConumed=preSorNonSor!.fold(0.0, (sum, obj) {
+                              double m = obj.contracts!.first.estimates!.first
+                                          .isDeduction ==
+                                      true
+                                  ? -(obj.cumulativeValue!)
+                                  : (obj.cumulativeValue!);
+                              return sum + m.toDouble();
+                            }); 
     // double consumed = magic.fold(0.0, (sum, obj) {
     //   double m = obj.cumulativeValue!;
     //   return sum + m.toDouble();
@@ -976,10 +988,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                       //  t.translate(i18.measurementBook.consumedQty):
                       preSorNonSor == null
                           ? 0
-                          : preSorNonSor!.fold(0.0, (sum, obj) {
-                              double m = obj.cumulativeValue!;
-                              return sum + m.toDouble();
-                            }),
+                          :preConumed
+                          // : preSorNonSor!.fold(0.0, (sum, obj) {
+                          //     double m = obj.contracts!.first.estimates!.first
+                          //                 .isDeduction ==
+                          //             true
+                          //         ? -(obj.cumulativeValue!)
+                          //         : (obj.cumulativeValue!);
+                          //     return sum + m.toDouble();
+                          //   }),
                   // "Consumed Quantity\n(current entry)": magic[0].currentValue!.toDouble(),
                 },
               ),
@@ -1023,7 +1040,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ? 0
                               // : preSorNonSor!.first.cumulativeValue,
                               : preSorNonSor!.fold(0.0, (sum, obj) {
-                                  double m = obj.cumulativeValue!;
+                                  double m = obj.contracts!.first.estimates!.first
+                                          .isDeduction ==
+                                      true
+                                  ? -(obj.cumulativeValue!)
+                                  : (obj.cumulativeValue!);
                                   return sum + m.toDouble();
                                 }),
                           sorId: sorNonSorId,
