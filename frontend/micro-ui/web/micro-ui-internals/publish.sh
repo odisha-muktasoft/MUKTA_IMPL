@@ -30,6 +30,9 @@ cd "$BASEDIR/packages/modules/AttendenceMgmt" &&  rm -rf node_modules &&  rm -rf
 msg "Building and publishing Expenditure module"
 cd "$BASEDIR/packages/modules/Expenditure" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
+msg "Building and publishing RateAnalysis module"
+cd "$BASEDIR/packages/modules/RateAnalysis" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
+
 msg "Building and publishing Contracts module"
 cd "$BASEDIR/packages/modules/Contracts" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
