@@ -56,18 +56,7 @@ const ViewUtilTable = (props) => {
     localePrefix: "ES_COMMON_UOM",
   };
 
-  // if (mode?.includes("CREATE")) {
-  //   fields = watch?.(tableKey);
-  //   append = (val) => {
-  //     setFormValue([...fields, val]);
-  //   };
-  //   remove = (index) => {
-  //     if (fields?.length == 1) {
-  //       fields = JSON.parse(JSON.stringify([defaultSOR]));
-  //       setFormValue([...fields]);
-  //     } else setFormValue([...fields.filter((e, ind) => ind != index)]);
-  //   };
-  // }
+  
   const setFormValue = useCallback(
     (value) => {
       setValue(tableKey, value);
