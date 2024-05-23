@@ -189,10 +189,148 @@ class _HomePage extends State<HomePage> {
           context.router.push(
             const WorkOderInboxRoute(),
           );
-          //ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("CBO")));
+          
         },
       )
     ];
+
+/// TODO:[ref from health]
+    //  final state = context.read<AuthBloc>().state;
+    // if (state is! AuthAuthenticatedState) {
+    //   return [];
+    // }
+
+    // final Map<String, Widget> homeItemsMap = {
+    //   i18.home.beneficiaryLabel: HomeItemCard(
+    //     icon: Icons.all_inbox,
+    //     label: i18.home.beneficiaryLabel,
+    //     onPressed: () async {
+    //       final searchBloc = context.read<SearchHouseholdsBloc>();
+    //       await context.router.push(
+    //         SearchBeneficiaryRoute(),
+    //       );
+    //       searchBloc.add(const SearchHouseholdsClearEvent());
+    //     },
+    //   ),
+    //   i18.home.manageStockLabel: HomeItemCard(
+    //     icon: Icons.store_mall_directory,
+    //     label: i18.home.manageStockLabel,
+    //     onPressed: () => context.router.push(ManageStocksRoute()),
+    //   ),
+    //   i18.home.stockReconciliationLabel: HomeItemCard(
+    //     icon: Icons.menu_book,
+    //     label: i18.home.stockReconciliationLabel,
+    //     onPressed: () => context.router.push(StockReconciliationRoute()),
+    //   ),
+    //   i18.home.warehouseManagerCheckList: HomeItemCard(
+    //     icon: Icons.menu_book,
+    //     label: i18.home.warehouseManagerCheckList,
+    //     onPressed: () => context.router.push(ChecklistWrapperRoute()),
+    //   ),
+    //   i18.home.healthFacilitySupervisorCheckList: HomeItemCard(
+    //     icon: Icons.menu_book,
+    //     label: i18.home.healthFacilitySupervisorCheckList,
+    //     onPressed: () => context.router.push(ChecklistWrapperRoute()),
+    //   ),
+    //   i18.home.myCheckList: HomeItemCard(
+    //     icon: Icons.menu_book,
+    //     label: i18.home.myCheckList,
+    //     onPressed: () => context.router.push(ChecklistWrapperRoute()),
+    //   ),
+    //   i18.home.fileComplaint: HomeItemCard(
+    //     icon: Icons.announcement,
+    //     label: i18.home.fileComplaint,
+    //     onPressed: () =>
+    //         context.router.push(const ComplaintsInboxWrapperRoute()),
+    //   ),
+    //   i18.home.syncDataLabel: StreamBuilder<Map<String, dynamic>?>(
+    //     stream: FlutterBackgroundService().on('serviceRunning'),
+    //     builder: (context, snapshot) {
+    //       return HomeItemCard(
+    //         icon: Icons.sync_alt,
+    //         label: i18.home.syncDataLabel,
+    //         onPressed: () async {
+    //           if (snapshot.data?['enablesManualSync'] == true) {
+    //             if (context.mounted) _attemptSyncUp(context);
+    //           } else {
+    //             if (context.mounted) {
+    //               DigitToast.show(
+    //                 context,
+    //                 options: DigitToastOptions(
+    //                   localizations
+    //                       .translate(i18.common.coreCommonSyncInProgress),
+    //                   false,
+    //                   Theme.of(context),
+    //                 ),
+    //               );
+    //             }
+    //           }
+    //         },
+    //       );
+    //     },
+    //   ),
+    //   i18.home.viewReportsLabel: HomeItemCard(
+    //     icon: Icons.announcement,
+    //     label: i18.home.viewReportsLabel,
+    //     onPressed: () {
+    //       context.router.push(
+    //         InventoryReportSelectionRoute(),
+    //       );
+    //     },
+    //   ),
+    //   'DB': HomeItemCard(
+    //     icon: Icons.table_chart,
+    //     label: 'DB',
+    //     onPressed: () {
+    //       Navigator.of(context).push(
+    //         MaterialPageRoute(
+    //           builder: (context) => DriftDbViewer(
+    //             context.read<LocalSqlDataStore>(),
+    //           ),
+    //         ),
+    //       );
+    //     },
+    //   ),
+
+    //   // attendance
+    //   i18.attendance.viewAttendanceLabel: HomeItemCard(
+    //     icon: Icons.table_chart,
+    //     label: i18.attendance.viewAttendanceLabel,
+    //     onPressed: () {
+    //       context.router.push(
+    //         const TrackAttendanceWrapperRoute(),
+    //       );
+    //     },
+    //   ),
+    // };
+
+    // final homeItemsLabel = <String>[
+    //   i18.home.beneficiaryLabel,
+    //   i18.home.manageStockLabel,
+    //   i18.home.stockReconciliationLabel,
+    //   i18.home.healthFacilitySupervisorCheckList,
+    //   i18.home.warehouseManagerCheckList,
+    //   i18.home.myCheckList,
+    //   i18.home.fileComplaint,
+    //   i18.home.syncDataLabel,
+    //   i18.home.viewReportsLabel,
+    //   'DB',
+    //   // attendance
+    //   i18.attendance.viewAttendanceLabel,
+    // ];
+
+    // final List<String> filteredLabels = homeItemsLabel
+    //     .where((element) => state.actionsWrapper.actions
+    //         .map((e) => e.displayName)
+    //         .toList()
+    //         .contains(element))
+    //     .toList();
+
+    // final List<Widget> widgetList =
+    //     filteredLabels.map((label) => homeItemsMap[label]!).toList();
+
+    // return widgetList;
+
   }
 
 //

@@ -448,6 +448,8 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get delete=>"MB_DELETE";
  String get preConsumedKey=>"MB_CONSUMED_QUANT_KEY";
  String get preConsumedPre=>"MB_CONSUMED_QUANT_KEY_PRE";
+ String get mbWorkOrderLabel=>"MB_WORK_ORDERS";
+ String get mbMeasurementNumber=>"ACTION_TEST_5MEASUREMENT";
 
 
 }
