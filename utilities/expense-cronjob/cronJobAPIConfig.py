@@ -43,7 +43,7 @@ def getContracts(requestInfo, tenantId, contractStatus):
                         contracts.append(contract)
                         contractNumberSet.add(contract_number)
                 offset = limit * pageNo
-                pageNo += 1
+                pageNo = pageNo+1
             else:
                 hasMoreRecords = False
         return contracts
