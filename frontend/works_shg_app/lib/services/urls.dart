@@ -52,6 +52,7 @@ class InitServices {
   const InitServices();
   String get mdms => 'egov-mdms-service/v1/_search';
   String get localizationSearch => 'localization/messages/v1/_search';
+  String get empHomeConfig=>'access/v1/actions/mdms/_get';
 }
 
 class UserServices {

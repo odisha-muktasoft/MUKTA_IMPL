@@ -2,8 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:works_shg_app/Env/app_config.dart';
+import 'package:works_shg_app/Env/env_config.dart';
 import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
+import 'package:works_shg_app/utils/global_variables.dart';
 
+import '../../../models/employee/homeconfig/homeConfigModel.dart';
 import '../../../models/mdms/location_mdms.dart';
 import '../../../models/muster_rolls/business_service_workflow.dart';
 import '../../../models/screen_config/home_screen_config.dart';
@@ -48,6 +53,58 @@ class CommonRepository {
 
       return HomeScreenConfigModel.fromJson(
         json.decode(response.toString())['MdmsRes'],
+      );
+    } on DioError catch (ex) {
+      // Assuming there will be an errorMessage property in the JSON object
+      rethrow;
+    }
+  }
+  // emp mb home screen
+
+  Future<HomeConfigModel> getEmpHomeConfig({
+    required String apiEndPoint,
+    required String tenantId,
+    required List<String> roleCodes,
+    required String actionMaster,
+    required bool enabled,
+  }) async {
+    try {
+      Dio client=Dio();
+       
+    client.options.baseUrl =
+        kIsWeb && !kDebugMode ? apiBaseUrl : envConfig.variables.baseUrl;
+      var response = await client.post(apiEndPoint,
+          data: {
+            "roleCodes": roleCodes,
+            "tenantId": tenantId,
+            "actionMaster": actionMaster,
+            "enabled": enabled,
+             "RequestInfo": {
+       
+          "apiId":  'Rainmaker',
+          
+          "ts": DateTime.now().millisecondsSinceEpoch,
+          "action":  "_search",
+         
+          "msgId": "",
+          "authToken": GlobalVariables.authToken,
+        "userInfo": null
+          },
+          }
+         
+          // options: Options(extra: {
+          //   "accessToken": GlobalVariables.authToken,
+          //   "userInfo": GlobalVariables.userRequestModel,
+          //   "msgId": "1716438902833|en_IN",
+          //   "plainAccessRequest": {},
+          //   "ts": DateTime.now().millisecondsSinceEpoch
+          // })
+          
+          );
+
+print(response);
+      return HomeConfigModel.fromJson(
+        response.data
       );
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object

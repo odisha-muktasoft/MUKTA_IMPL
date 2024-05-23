@@ -188,8 +188,11 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   t.translate(i18.measurementBook.mbStatus):
                                       k[adjustedIndex].wfStatus,
                                 },
-                                widget: CommonTextButtonUnderline(
-                                  label: 'View Muster Roll',
+                                widget:(k[adjustedIndex]
+                                            .musterRollNumber==null || k[adjustedIndex]
+                                            .musterRollNumber
+                                            .toString()=="")? const SizedBox.shrink():CommonTextButtonUnderline(
+                                  label: t.translate(i18.home.musterRoll),
                                   onPressed: () {
                                     context.router.push(
                                       SHGInboxRoute(

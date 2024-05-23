@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/models/app_config/app_config_model.dart';
+import 'package:works_shg_app/models/employee/homeconfig/homeConfigModel.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -42,12 +43,18 @@ class _HomePage extends State<HomePage> {
   }
 
   afterViewBuild() async {
-    context.read<ORGSearchBloc>().add(
-          SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber']),
-        );
-    context.read<HomeScreenBloc>().add(
-          const GetHomeScreenConfigEvent(),
-        );
+    if (GlobalVariables.roleType == RoleType.cbo) {
+      context.read<ORGSearchBloc>().add(
+            SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber']),
+          );
+      context.read<HomeScreenBloc>().add(
+            const GetHomeScreenConfigEvent(),
+          );
+    } else {
+      context.read<HomeScreenBloc>().add(
+            const GetEmpHomeScreenConfigEvent(),
+          );
+    }
   }
 
   @override
@@ -72,7 +79,8 @@ class _HomePage extends State<HomePage> {
           return localState.maybeMap(
             orElse: () => const SizedBox.shrink(),
             loaded: (value) {
-              Languages selectedLan=  value.languages!.firstWhere((element) => element.isSelected);
+              Languages selectedLan =
+                  value.languages!.firstWhere((element) => element.isSelected);
               return BlocBuilder<AuthBloc, AuthState>(
                 builder: (context, state) {
                   return state.maybeMap(
@@ -122,21 +130,50 @@ class _HomePage extends State<HomePage> {
                                             shg_loader.Loaders.circularLoader(
                                                 context),
                                         loaded: (List<CBOHomeScreenConfigModel>?
-                                            cboHomeScreenConfig) {
+                                                cboHomeScreenConfig,
+                                            HomeConfigModel? homeConfigModel) {
                                           // role based config
-
-                                          return cboBasedLayout(
+                                          if (value.roleType == RoleType.cbo) {
+                                            return cboBasedLayout(
                                               cboHomeScreenConfig,
                                               t,
                                               context,
-                                              selectedLan,);
+                                              selectedLan,
+                                            );
+                                          } else {
+                                            return empBasedLayout(
+                                                context, homeConfigModel!);
+                                          }
                                         });
                                   },
                                 );
                               });
                         }));
                       } else {
-                        return empBasedLayout(context);
+                        return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
+                          builder: (context, config) {
+                            return config.maybeWhen(
+                                orElse: () => Container(),
+                                loading: () =>
+                                    shg_loader.Loaders.circularLoader(context),
+                                loaded: (List<CBOHomeScreenConfigModel>?
+                                        cboHomeScreenConfig,
+                                    HomeConfigModel? homeConfigModel) {
+                                  // role based config
+                                  if (value.roleType == RoleType.cbo) {
+                                    return cboBasedLayout(
+                                      cboHomeScreenConfig,
+                                      t,
+                                      context,
+                                      selectedLan,
+                                    );
+                                  } else {
+                                    return empBasedLayout(
+                                        context, homeConfigModel!);
+                                  }
+                                });
+                          },
+                        );
                       }
                     },
                     orElse: () {
@@ -150,15 +187,16 @@ class _HomePage extends State<HomePage> {
         }));
   }
 
-  ScrollableContent empBasedLayout(BuildContext context) {
+  ScrollableContent empBasedLayout(
+      BuildContext context, HomeConfigModel homeConfigModel) {
     return ScrollableContent(
       slivers: [
         SliverGrid(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              return _getItems(context).elementAt(index);
+              return _getItems(context, homeConfigModel).elementAt(index);
             },
-            childCount: 2,
+            childCount: _getItems(context, homeConfigModel).length,
           ),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 145,
@@ -170,9 +208,34 @@ class _HomePage extends State<HomePage> {
   }
 // data
 
-  List<Widget> _getItems(BuildContext context) {
-    return [
-      HomeItemCard(
+  List<Widget> _getItems(
+      BuildContext context, HomeConfigModel homeConfigModel) {
+    // return [
+    //   HomeItemCard(
+    //     icon: SvgPicture.asset(Constants.mbIcon),
+    //     label: 'Measurement Books',
+    //     onPressed: () {
+    //       context.router.push(
+    //         const MeasurementBookInboxRoute(),
+    //       );
+    //       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
+    //     },
+    //   ),
+    //   HomeItemCard(
+    //     icon: SvgPicture.asset(Constants.workOrderIcon),
+    //     label: 'Work Orders',
+    //     onPressed: () {
+    //       context.router.push(
+    //         const WorkOderInboxRoute(),
+    //       );
+    //     },
+    //   )
+    // ];
+
+    /// TODO:[ref from health]
+
+    final Map<String, Widget> homeItemsMap = {
+      i18.measurementBook.mbMeasurementNumber: HomeItemCard(
         icon: SvgPicture.asset(Constants.mbIcon),
         label: 'Measurement Books',
         onPressed: () {
@@ -182,155 +245,39 @@ class _HomePage extends State<HomePage> {
           // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
         },
       ),
-      HomeItemCard(
+      i18.measurementBook.mbWorkOrderLabel: HomeItemCard(
         icon: SvgPicture.asset(Constants.workOrderIcon),
         label: 'Work Orders',
         onPressed: () {
           context.router.push(
             const WorkOderInboxRoute(),
           );
-          
         },
       )
+    };
+
+    // mukta
+    final homeItemsLabel = <String>[
+      i18.measurementBook.mbMeasurementNumber,
+      i18.measurementBook.mbWorkOrderLabel,
     ];
 
-/// TODO:[ref from health]
-    //  final state = context.read<AuthBloc>().state;
-    // if (state is! AuthAuthenticatedState) {
-    //   return [];
-    // }
 
-    // final Map<String, Widget> homeItemsMap = {
-    //   i18.home.beneficiaryLabel: HomeItemCard(
-    //     icon: Icons.all_inbox,
-    //     label: i18.home.beneficiaryLabel,
-    //     onPressed: () async {
-    //       final searchBloc = context.read<SearchHouseholdsBloc>();
-    //       await context.router.push(
-    //         SearchBeneficiaryRoute(),
-    //       );
-    //       searchBloc.add(const SearchHouseholdsClearEvent());
-    //     },
-    //   ),
-    //   i18.home.manageStockLabel: HomeItemCard(
-    //     icon: Icons.store_mall_directory,
-    //     label: i18.home.manageStockLabel,
-    //     onPressed: () => context.router.push(ManageStocksRoute()),
-    //   ),
-    //   i18.home.stockReconciliationLabel: HomeItemCard(
-    //     icon: Icons.menu_book,
-    //     label: i18.home.stockReconciliationLabel,
-    //     onPressed: () => context.router.push(StockReconciliationRoute()),
-    //   ),
-    //   i18.home.warehouseManagerCheckList: HomeItemCard(
-    //     icon: Icons.menu_book,
-    //     label: i18.home.warehouseManagerCheckList,
-    //     onPressed: () => context.router.push(ChecklistWrapperRoute()),
-    //   ),
-    //   i18.home.healthFacilitySupervisorCheckList: HomeItemCard(
-    //     icon: Icons.menu_book,
-    //     label: i18.home.healthFacilitySupervisorCheckList,
-    //     onPressed: () => context.router.push(ChecklistWrapperRoute()),
-    //   ),
-    //   i18.home.myCheckList: HomeItemCard(
-    //     icon: Icons.menu_book,
-    //     label: i18.home.myCheckList,
-    //     onPressed: () => context.router.push(ChecklistWrapperRoute()),
-    //   ),
-    //   i18.home.fileComplaint: HomeItemCard(
-    //     icon: Icons.announcement,
-    //     label: i18.home.fileComplaint,
-    //     onPressed: () =>
-    //         context.router.push(const ComplaintsInboxWrapperRoute()),
-    //   ),
-    //   i18.home.syncDataLabel: StreamBuilder<Map<String, dynamic>?>(
-    //     stream: FlutterBackgroundService().on('serviceRunning'),
-    //     builder: (context, snapshot) {
-    //       return HomeItemCard(
-    //         icon: Icons.sync_alt,
-    //         label: i18.home.syncDataLabel,
-    //         onPressed: () async {
-    //           if (snapshot.data?['enablesManualSync'] == true) {
-    //             if (context.mounted) _attemptSyncUp(context);
-    //           } else {
-    //             if (context.mounted) {
-    //               DigitToast.show(
-    //                 context,
-    //                 options: DigitToastOptions(
-    //                   localizations
-    //                       .translate(i18.common.coreCommonSyncInProgress),
-    //                   false,
-    //                   Theme.of(context),
-    //                 ),
-    //               );
-    //             }
-    //           }
-    //         },
-    //       );
-    //     },
-    //   ),
-    //   i18.home.viewReportsLabel: HomeItemCard(
-    //     icon: Icons.announcement,
-    //     label: i18.home.viewReportsLabel,
-    //     onPressed: () {
-    //       context.router.push(
-    //         InventoryReportSelectionRoute(),
-    //       );
-    //     },
-    //   ),
-    //   'DB': HomeItemCard(
-    //     icon: Icons.table_chart,
-    //     label: 'DB',
-    //     onPressed: () {
-    //       Navigator.of(context).push(
-    //         MaterialPageRoute(
-    //           builder: (context) => DriftDbViewer(
-    //             context.read<LocalSqlDataStore>(),
-    //           ),
-    //         ),
-    //       );
-    //     },
-    //   ),
+    final List<String> filteredLabels = homeItemsLabel
+        .where((element) => homeConfigModel.homeActions
+            .map((e) {
+              if (e.parentModule=="cards") {
+                return e.displayName;
+              }
+            })
+            .toList()
+            .contains(element))
+        .toList();
 
-    //   // attendance
-    //   i18.attendance.viewAttendanceLabel: HomeItemCard(
-    //     icon: Icons.table_chart,
-    //     label: i18.attendance.viewAttendanceLabel,
-    //     onPressed: () {
-    //       context.router.push(
-    //         const TrackAttendanceWrapperRoute(),
-    //       );
-    //     },
-    //   ),
-    // };
+    final List<Widget> widgetList =
+        filteredLabels.map((label) => homeItemsMap[label]!).toList();
 
-    // final homeItemsLabel = <String>[
-    //   i18.home.beneficiaryLabel,
-    //   i18.home.manageStockLabel,
-    //   i18.home.stockReconciliationLabel,
-    //   i18.home.healthFacilitySupervisorCheckList,
-    //   i18.home.warehouseManagerCheckList,
-    //   i18.home.myCheckList,
-    //   i18.home.fileComplaint,
-    //   i18.home.syncDataLabel,
-    //   i18.home.viewReportsLabel,
-    //   'DB',
-    //   // attendance
-    //   i18.attendance.viewAttendanceLabel,
-    // ];
-
-    // final List<String> filteredLabels = homeItemsLabel
-    //     .where((element) => state.actionsWrapper.actions
-    //         .map((e) => e.displayName)
-    //         .toList()
-    //         .contains(element))
-    //     .toList();
-
-    // final List<Widget> widgetList =
-    //     filteredLabels.map((label) => homeItemsMap[label]!).toList();
-
-    // return widgetList;
-
+    return widgetList;
   }
 
 //
@@ -371,18 +318,15 @@ class _HomePage extends State<HomePage> {
                                   SvgPicture.asset(Constants.muktaIcon)
                                 ],
                               ),
-                              ButtonLink(t.translate(e.label ?? ''),
-                                  getRoute(e.key.toString(), context,selectedLan))
+                              ButtonLink(
+                                  t.translate(e.label ?? ''),
+                                  getRoute(
+                                      e.key.toString(), context, selectedLan))
                             ],
                           );
                         } else {
-                          return ButtonLink(
-                              t.translate(e.label ?? ''),
-                              getRoute(
-                                e.key.toString(),
-                                context,
-                                selectedLan
-                              ));
+                          return ButtonLink(t.translate(e.label ?? ''),
+                              getRoute(e.key.toString(), context, selectedLan));
                         }
                       }).toList() ??
                       []),

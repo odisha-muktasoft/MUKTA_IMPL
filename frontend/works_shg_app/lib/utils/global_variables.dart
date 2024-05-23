@@ -107,6 +107,7 @@ class GlobalVariables {
   static Map<String, String> downloadUrl = {};
   static RoleType roleType= RoleType.none;
   static String? tenantId;
+  static List<String>roles=[];
 }
 
 PackageInfo? packageInfo;

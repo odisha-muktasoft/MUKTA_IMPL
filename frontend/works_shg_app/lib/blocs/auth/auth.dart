@@ -57,6 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GlobalVariables.tenantId = userDetailsModel.userRequestModel?.tenantId;
       GlobalVariables.userRequestModel =
           jsonDecode(jsonEncode(userDetailsModel.userRequestModel));
+       GlobalVariables.roles=   userDetailsModel.userRequestModel!.rolesModel!.map((e) => e.code!).toList();
       if (kIsWeb) {
         html.window.sessionStorage['accessToken' ?? ''] =
             jsonEncode(userDetailsModel.access_token);
@@ -125,6 +126,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GlobalVariables.authToken = null;
       GlobalVariables.tenantId = null;
       GlobalVariables.roleType = RoleType.none;
+      GlobalVariables.roles=[];
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
     } on DioError catch (e) {
@@ -152,6 +154,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       GlobalVariables.authToken = null;
       GlobalVariables.tenantId = null;
       GlobalVariables.roleType = RoleType.none;
+      GlobalVariables.roles=[];
       emit(const AuthState.loaded(null, null, RoleType.none));
       emit(const AuthState.initial());
     } on DioError catch (e) {
