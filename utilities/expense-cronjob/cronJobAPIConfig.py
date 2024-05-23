@@ -40,11 +40,10 @@ def getContracts(requestInfo, tenantId, contractStatus):
                     contract_number = contract.get("contractNumber")
                     # Check if the contract number is not already added
                     if contract_number not in contractNumberSet:
-                        contracts = contracts + contractsData
-                        # Add the contract number to the set
+                        contracts.append(contract)
                         contractNumberSet.add(contract_number)
                 offset = limit * pageNo
-                pageNo = pageNo + 1
+                pageNo += 1
             else:
                 hasMoreRecords = False
         return contracts
