@@ -69,43 +69,26 @@ class CommonRepository {
     required bool enabled,
   }) async {
     try {
-      Dio client=Dio();
-       
-    client.options.baseUrl =
-        kIsWeb && !kDebugMode ? apiBaseUrl : envConfig.variables.baseUrl;
-      var response = await client.post(apiEndPoint,
-          data: {
-            "roleCodes": roleCodes,
-            "tenantId": tenantId,
-            "actionMaster": actionMaster,
-            "enabled": enabled,
-             "RequestInfo": {
-       
-          "apiId":  'Rainmaker',
-          
+      Dio client = Dio();
+
+      client.options.baseUrl =
+          kIsWeb && !kDebugMode ? apiBaseUrl : envConfig.variables.baseUrl;
+      var response = await client.post(apiEndPoint, data: {
+        "roleCodes": roleCodes,
+        "tenantId": tenantId,
+        "actionMaster": actionMaster,
+        "enabled": enabled,
+        "RequestInfo": {
+          "apiId": 'Rainmaker',
           "ts": DateTime.now().millisecondsSinceEpoch,
-          "action":  "_search",
-         
+          "action": "_search",
           "msgId": "",
           "authToken": GlobalVariables.authToken,
-        "userInfo": null
-          },
-          }
-         
-          // options: Options(extra: {
-          //   "accessToken": GlobalVariables.authToken,
-          //   "userInfo": GlobalVariables.userRequestModel,
-          //   "msgId": "1716438902833|en_IN",
-          //   "plainAccessRequest": {},
-          //   "ts": DateTime.now().millisecondsSinceEpoch
-          // })
-          
-          );
+          "userInfo": null
+        },
+      });
 
-print(response);
-      return HomeConfigModel.fromJson(
-        response.data
-      );
+      return HomeConfigModel.fromJson(response.data);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
