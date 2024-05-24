@@ -239,35 +239,46 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                           ?.apply(color: const DigitColors().black),
                     ),
                     DigitReactiveDropdown<String>(
+                      
                       label: t.translate(i18.wageSeeker.identityDocumentLabel),
-                      menuItems: [
+                      //TODO:[temp commented for adhar release ]
+                      // menuItems: [
+                      //   "AADHAAR",
+                      //   "Election Photo Identity Card(EPIC)",
+                      //   "Driving License",
+                      //   "Ration Card under TPDS"
+                      // ].map((e) => e.toString()).toList(),
+                       menuItems: [
                         "AADHAAR",
-                        "Election Photo Identity Card(EPIC)",
-                        "Driving License",
-                        "Ration Card under TPDS"
+                        
                       ].map((e) => e.toString()).toList(),
                       isRequired: true,
                       formControlName: identityDocument,
                       valueMapper: (value) => t.translate('CORE_COMMON_$value'),
                       onChanged: (value) {
-                        adharSelect(value);
+                        //TODO:[temp comment for release]
+                       // adharSelect(value);
                       },
                     ),
                     DigitTextFormField(
                       onChanged: (p0) {
-                        if (adhar) {
-                          adharSelect("AADHAAR");
-                        }
-                        isVerifyDone(false);
-                        context
-                            .read<WageSeekerCreateBloc>()
-                            .add(const CreateWageSeekerDisposeEvent());
+                        //TODO:[aadhar temporarily commented for release]
+                        // if (adhar) {
+                        //   adharSelect("AADHAAR");
+                        // }
+                        // isVerifyDone(false);
+                        // context
+                        //     .read<WageSeekerCreateBloc>()
+                        //     .add(const CreateWageSeekerDisposeEvent());
                       },
                       formControlName: aadhaarNoKey,
                       label: t.translate(i18.wageSeeker.identityNumberLabel),
                       isRequired: true,
-                      minLength: adhar ? 12 : null,
-                      maxLength: adhar ? 12 : null,
+                      //TODO:[temp commented for release]
+                      // minLength: adhar ? 12 : null,
+                      // maxLength: adhar ? 12 : null,
+                       minLength: adhar ? 12 : 12,
+                      maxLength: adhar ? 12 : 12,
                       keyboardType: TextInputType.number,
                       inputFormatter: [
                         FilteringTextInputFormatter.allow(RegExp("[0-9]"))
@@ -292,13 +303,14 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                     ),
                     DigitTextFormField(
                       onChanged: (p0) {
-                        if (adhar) {
-                          adharSelect("AADHAAR");
-                        }
-                        isVerifyDone(false);
-                        context
-                            .read<WageSeekerCreateBloc>()
-                            .add(const CreateWageSeekerDisposeEvent());
+                        //TODO:[temp commented for release]
+                        // if (adhar) {
+                        //   adharSelect("AADHAAR");
+                        // }
+                        // isVerifyDone(false);
+                        // context
+                        //     .read<WageSeekerCreateBloc>()
+                        //     .add(const CreateWageSeekerDisposeEvent());
                       },
                       formControlName: nameKey,
                       isRequired: true,
@@ -569,7 +581,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
               Validators.maxLength(128)
             ]),
         identityDocument: FormControl<String>(
-            value: individualDetails.documentType,
+            value: individualDetails.documentType??"AADHAAR",
             validators: [
               Validators.required,
             ]),
