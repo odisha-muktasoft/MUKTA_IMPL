@@ -450,6 +450,8 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get preConsumedPre=>"MB_CONSUMED_QUANT_KEY_PRE";
  String get mbWorkOrderLabel=>"MB_WORK_ORDERS";
  String get mbMeasurementNumber=>"ACTION_TEST_5MEASUREMENT";
+ String get mbCbo=>"MB_CBO";
+ String get mbEmployee=>"MB_EMPLOYEE";
 
 
 }

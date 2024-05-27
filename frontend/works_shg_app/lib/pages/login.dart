@@ -475,7 +475,7 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
   final FocusNode _numberFocus = FocusNode();
   String selectTenantId = "";
 
-  bool iconVisibility = false;
+  bool iconVisibility = true;
   List<DigitRowCardModel> btns = [
     const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
     const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
@@ -545,15 +545,15 @@ class _LoginPage extends State<LoginPage> with SingleTickerProviderStateMixin {
                   controller: _tabController,
                   labelColor: const DigitColors().burningOrange,
                   unselectedLabelColor: Colors.black,
-                  tabs: const [
+                  tabs:  [
                     Tab(
                       child: Text(
-                        "CBO",
+                         AppLocalizations.of(loginContext).translate(i18.measurementBook.mbCbo),
                       ),
                     ),
                     Tab(
                       child: Text(
-                        "Employee",
+                        AppLocalizations.of(loginContext).translate(i18.measurementBook.mbEmployee),
                       ),
                     ),
                   ]),

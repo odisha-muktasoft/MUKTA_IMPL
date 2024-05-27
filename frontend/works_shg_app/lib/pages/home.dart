@@ -237,7 +237,7 @@ class _HomePage extends State<HomePage> {
     final Map<String, Widget> homeItemsMap = {
       i18.measurementBook.mbMeasurementNumber: HomeItemCard(
         icon: SvgPicture.asset(Constants.mbIcon),
-        label: 'Measurement Books',
+        label: i18.measurementBook.mbMeasurementNumber,
         onPressed: () {
           context.router.push(
             const MeasurementBookInboxRoute(),
@@ -247,7 +247,7 @@ class _HomePage extends State<HomePage> {
       ),
       i18.measurementBook.mbWorkOrderLabel: HomeItemCard(
         icon: SvgPicture.asset(Constants.workOrderIcon),
-        label: 'Work Orders',
+        label: i18.measurementBook.mbWorkOrderLabel,
         onPressed: () {
           context.router.push(
             const WorkOderInboxRoute(),
