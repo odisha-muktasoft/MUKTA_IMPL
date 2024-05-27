@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/pages/bills/my_bills.dart';
 import 'package:works_shg_app/pages/employee/mb_filter_page.dart';
+import 'package:works_shg_app/pages/employee/mb_muster_screen.dart';
 import 'package:works_shg_app/pages/employee/workOrder/wo_filter_page.dart';
 import 'package:works_shg_app/pages/org_profile.dart';
 import 'package:works_shg_app/pages/time_extension_request/create_time_extension.dart';
@@ -83,28 +84,26 @@ part 'app_router.gr.dart';
 
         // mb for employee
 
+        // MeasurementBookInboxPage
+        AutoRoute(
+          page: MeasurementBookInboxPage,
+          path: 'measurement-inbox',
+        ),
+        AutoRoute(page: MBFilterPage, path: 'mb-filter'),
+        AutoRoute(page: MBDetailPage, path: 'mb-detail'),
+        AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
+         AutoRoute(page: MBMusterScreenPage, path: 'mb-muster-screen'),
+        AutoRoute(page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
        
-              // MeasurementBookInboxPage
-              AutoRoute(
-                  page: MeasurementBookInboxPage,
-                  path: 'measurement-inbox',
-                  ),
-              AutoRoute(page: MBFilterPage, path: 'mb-filter'),
-              AutoRoute(page: MBDetailPage, path: 'mb-detail'),
-              AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
-              AutoRoute(
-                  page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
-          
 
         // work order -employee
 
-              AutoRoute(
-                  page: WorkOderInboxPage,
-                  path: 'workOrder-inbox',
-                  ),
-              AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
-              AutoRoute(page:WOFilterPage,path: 'wo-filter' ),
-          
+        AutoRoute(
+          page: WorkOderInboxPage,
+          path: 'workOrder-inbox',
+        ),
+        AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
+        AutoRoute(page: WOFilterPage, path: 'wo-filter'),
       ],
     ),
   ],

@@ -187,6 +187,7 @@ mixin _$ProcessInstances {
   String? get businessId => throw _privateConstructorUsedError;
   String? get action => throw _privateConstructorUsedError;
   AuditDetails? get auditDetails => throw _privateConstructorUsedError;
+  Assigner? get assigner => throw _privateConstructorUsedError;
   List<Assignees>? get assignes => throw _privateConstructorUsedError;
   List<WorkflowDocument>? get documents => throw _privateConstructorUsedError;
   String? get comment => throw _privateConstructorUsedError;
@@ -213,6 +214,7 @@ abstract class $ProcessInstancesCopyWith<$Res> {
       String? businessId,
       String? action,
       AuditDetails? auditDetails,
+      Assigner? assigner,
       List<Assignees>? assignes,
       List<WorkflowDocument>? documents,
       String? comment,
@@ -220,6 +222,7 @@ abstract class $ProcessInstancesCopyWith<$Res> {
       @JsonKey(name: 'state') WorkflowState? workflowState});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
+  $AssignerCopyWith<$Res>? get assigner;
   $WorkflowStateCopyWith<$Res>? get workflowState;
 }
 
@@ -242,6 +245,7 @@ class _$ProcessInstancesCopyWithImpl<$Res, $Val extends ProcessInstances>
     Object? businessId = freezed,
     Object? action = freezed,
     Object? auditDetails = freezed,
+    Object? assigner = freezed,
     Object? assignes = freezed,
     Object? documents = freezed,
     Object? comment = freezed,
@@ -273,6 +277,10 @@ class _$ProcessInstancesCopyWithImpl<$Res, $Val extends ProcessInstances>
           ? _value.auditDetails
           : auditDetails // ignore: cast_nullable_to_non_nullable
               as AuditDetails?,
+      assigner: freezed == assigner
+          ? _value.assigner
+          : assigner // ignore: cast_nullable_to_non_nullable
+              as Assigner?,
       assignes: freezed == assignes
           ? _value.assignes
           : assignes // ignore: cast_nullable_to_non_nullable
@@ -310,6 +318,18 @@ class _$ProcessInstancesCopyWithImpl<$Res, $Val extends ProcessInstances>
 
   @override
   @pragma('vm:prefer-inline')
+  $AssignerCopyWith<$Res>? get assigner {
+    if (_value.assigner == null) {
+      return null;
+    }
+
+    return $AssignerCopyWith<$Res>(_value.assigner!, (value) {
+      return _then(_value.copyWith(assigner: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $WorkflowStateCopyWith<$Res>? get workflowState {
     if (_value.workflowState == null) {
       return null;
@@ -336,6 +356,7 @@ abstract class _$$_ProcessInstancesCopyWith<$Res>
       String? businessId,
       String? action,
       AuditDetails? auditDetails,
+      Assigner? assigner,
       List<Assignees>? assignes,
       List<WorkflowDocument>? documents,
       String? comment,
@@ -344,6 +365,8 @@ abstract class _$$_ProcessInstancesCopyWith<$Res>
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
+  @override
+  $AssignerCopyWith<$Res>? get assigner;
   @override
   $WorkflowStateCopyWith<$Res>? get workflowState;
 }
@@ -365,6 +388,7 @@ class __$$_ProcessInstancesCopyWithImpl<$Res>
     Object? businessId = freezed,
     Object? action = freezed,
     Object? auditDetails = freezed,
+    Object? assigner = freezed,
     Object? assignes = freezed,
     Object? documents = freezed,
     Object? comment = freezed,
@@ -396,6 +420,10 @@ class __$$_ProcessInstancesCopyWithImpl<$Res>
           ? _value.auditDetails
           : auditDetails // ignore: cast_nullable_to_non_nullable
               as AuditDetails?,
+      assigner: freezed == assigner
+          ? _value.assigner
+          : assigner // ignore: cast_nullable_to_non_nullable
+              as Assigner?,
       assignes: freezed == assignes
           ? _value._assignes
           : assignes // ignore: cast_nullable_to_non_nullable
@@ -430,6 +458,7 @@ class _$_ProcessInstances implements _ProcessInstances {
       this.businessId,
       this.action,
       this.auditDetails,
+      this.assigner,
       final List<Assignees>? assignes,
       final List<WorkflowDocument>? documents,
       this.comment,
@@ -454,6 +483,8 @@ class _$_ProcessInstances implements _ProcessInstances {
   final String? action;
   @override
   final AuditDetails? auditDetails;
+  @override
+  final Assigner? assigner;
   final List<Assignees>? _assignes;
   @override
   List<Assignees>? get assignes {
@@ -492,7 +523,7 @@ class _$_ProcessInstances implements _ProcessInstances {
 
   @override
   String toString() {
-    return 'ProcessInstances(tenantId: $tenantId, businessService: $businessService, id: $id, businessId: $businessId, action: $action, auditDetails: $auditDetails, assignes: $assignes, documents: $documents, comment: $comment, nextActions: $nextActions, workflowState: $workflowState)';
+    return 'ProcessInstances(tenantId: $tenantId, businessService: $businessService, id: $id, businessId: $businessId, action: $action, auditDetails: $auditDetails, assigner: $assigner, assignes: $assignes, documents: $documents, comment: $comment, nextActions: $nextActions, workflowState: $workflowState)';
   }
 
   @override
@@ -510,6 +541,8 @@ class _$_ProcessInstances implements _ProcessInstances {
             (identical(other.action, action) || other.action == action) &&
             (identical(other.auditDetails, auditDetails) ||
                 other.auditDetails == auditDetails) &&
+            (identical(other.assigner, assigner) ||
+                other.assigner == assigner) &&
             const DeepCollectionEquality().equals(other._assignes, _assignes) &&
             const DeepCollectionEquality()
                 .equals(other._documents, _documents) &&
@@ -530,6 +563,7 @@ class _$_ProcessInstances implements _ProcessInstances {
       businessId,
       action,
       auditDetails,
+      assigner,
       const DeepCollectionEquality().hash(_assignes),
       const DeepCollectionEquality().hash(_documents),
       comment,
@@ -558,6 +592,7 @@ abstract class _ProcessInstances implements ProcessInstances {
           final String? businessId,
           final String? action,
           final AuditDetails? auditDetails,
+          final Assigner? assigner,
           final List<Assignees>? assignes,
           final List<WorkflowDocument>? documents,
           final String? comment,
@@ -580,6 +615,8 @@ abstract class _ProcessInstances implements ProcessInstances {
   String? get action;
   @override
   AuditDetails? get auditDetails;
+  @override
+  Assigner? get assigner;
   @override
   List<Assignees>? get assignes;
   @override
@@ -2032,5 +2069,266 @@ abstract class _WorkflowActions implements WorkflowActions {
   @override
   @JsonKey(ignore: true)
   _$$_WorkflowActionsCopyWith<_$_WorkflowActions> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+Assigner _$AssignerFromJson(Map<String, dynamic> json) {
+  return _Assigner.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Assigner {
+  String? get emailId => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
+  String? get mobileNumber => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get tenantId => throw _privateConstructorUsedError;
+  String? get uuid => throw _privateConstructorUsedError;
+  String? get userName => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $AssignerCopyWith<Assigner> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AssignerCopyWith<$Res> {
+  factory $AssignerCopyWith(Assigner value, $Res Function(Assigner) then) =
+      _$AssignerCopyWithImpl<$Res, Assigner>;
+  @useResult
+  $Res call(
+      {String? emailId,
+      int? id,
+      String? mobileNumber,
+      String? name,
+      String? tenantId,
+      String? uuid,
+      String? userName});
+}
+
+/// @nodoc
+class _$AssignerCopyWithImpl<$Res, $Val extends Assigner>
+    implements $AssignerCopyWith<$Res> {
+  _$AssignerCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? emailId = freezed,
+    Object? id = freezed,
+    Object? mobileNumber = freezed,
+    Object? name = freezed,
+    Object? tenantId = freezed,
+    Object? uuid = freezed,
+    Object? userName = freezed,
+  }) {
+    return _then(_value.copyWith(
+      emailId: freezed == emailId
+          ? _value.emailId
+          : emailId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_AssignerCopyWith<$Res> implements $AssignerCopyWith<$Res> {
+  factory _$$_AssignerCopyWith(
+          _$_Assigner value, $Res Function(_$_Assigner) then) =
+      __$$_AssignerCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String? emailId,
+      int? id,
+      String? mobileNumber,
+      String? name,
+      String? tenantId,
+      String? uuid,
+      String? userName});
+}
+
+/// @nodoc
+class __$$_AssignerCopyWithImpl<$Res>
+    extends _$AssignerCopyWithImpl<$Res, _$_Assigner>
+    implements _$$_AssignerCopyWith<$Res> {
+  __$$_AssignerCopyWithImpl(
+      _$_Assigner _value, $Res Function(_$_Assigner) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? emailId = freezed,
+    Object? id = freezed,
+    Object? mobileNumber = freezed,
+    Object? name = freezed,
+    Object? tenantId = freezed,
+    Object? uuid = freezed,
+    Object? userName = freezed,
+  }) {
+    return _then(_$_Assigner(
+      emailId: freezed == emailId
+          ? _value.emailId
+          : emailId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      uuid: freezed == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Assigner implements _Assigner {
+  const _$_Assigner(
+      {this.emailId,
+      this.id,
+      this.mobileNumber,
+      this.name,
+      this.tenantId,
+      this.uuid,
+      this.userName});
+
+  factory _$_Assigner.fromJson(Map<String, dynamic> json) =>
+      _$$_AssignerFromJson(json);
+
+  @override
+  final String? emailId;
+  @override
+  final int? id;
+  @override
+  final String? mobileNumber;
+  @override
+  final String? name;
+  @override
+  final String? tenantId;
+  @override
+  final String? uuid;
+  @override
+  final String? userName;
+
+  @override
+  String toString() {
+    return 'Assigner(emailId: $emailId, id: $id, mobileNumber: $mobileNumber, name: $name, tenantId: $tenantId, uuid: $uuid, userName: $userName)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Assigner &&
+            (identical(other.emailId, emailId) || other.emailId == emailId) &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.mobileNumber, mobileNumber) ||
+                other.mobileNumber == mobileNumber) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId) &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, emailId, id, mobileNumber, name, tenantId, uuid, userName);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_AssignerCopyWith<_$_Assigner> get copyWith =>
+      __$$_AssignerCopyWithImpl<_$_Assigner>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_AssignerToJson(
+      this,
+    );
+  }
+}
+
+abstract class _Assigner implements Assigner {
+  const factory _Assigner(
+      {final String? emailId,
+      final int? id,
+      final String? mobileNumber,
+      final String? name,
+      final String? tenantId,
+      final String? uuid,
+      final String? userName}) = _$_Assigner;
+
+  factory _Assigner.fromJson(Map<String, dynamic> json) = _$_Assigner.fromJson;
+
+  @override
+  String? get emailId;
+  @override
+  int? get id;
+  @override
+  String? get mobileNumber;
+  @override
+  String? get name;
+  @override
+  String? get tenantId;
+  @override
+  String? get uuid;
+  @override
+  String? get userName;
+  @override
+  @JsonKey(ignore: true)
+  _$$_AssignerCopyWith<_$_Assigner> get copyWith =>
       throw _privateConstructorUsedError;
 }

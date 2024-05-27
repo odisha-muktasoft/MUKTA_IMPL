@@ -249,6 +249,17 @@ class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    MBMusterScreenRoute.name: (routeData) {
+      final args = routeData.argsAs<MBMusterScreenRouteArgs>();
+      return MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: MBMusterScreenPage(
+          key: args.key,
+          tenantId: args.tenantId,
+          musterRollNumber: args.musterRollNumber,
+        ),
+      );
+    },
     MBTypeConfirmationRoute.name: (routeData) {
       final args = routeData.argsAs<MBTypeConfirmationRouteArgs>();
       return MaterialPageX<dynamic>(
@@ -412,6 +423,11 @@ class _$AppRouter extends RootStackRouter {
             RouteConfig(
               MBHistoryBookRoute.name,
               path: 'mb-history',
+              parent: AuthenticatedRouteWrapper.name,
+            ),
+            RouteConfig(
+              MBMusterScreenRoute.name,
+              path: 'mb-muster-screen',
               parent: AuthenticatedRouteWrapper.name,
             ),
             RouteConfig(
@@ -1065,6 +1081,45 @@ class MBHistoryBookRouteArgs {
   @override
   String toString() {
     return 'MBHistoryBookRouteArgs{key: $key, contractNumber: $contractNumber, mbNumber: $mbNumber, tenantId: $tenantId, type: $type}';
+  }
+}
+
+/// generated route for
+/// [MBMusterScreenPage]
+class MBMusterScreenRoute extends PageRouteInfo<MBMusterScreenRouteArgs> {
+  MBMusterScreenRoute({
+    Key? key,
+    required String tenantId,
+    required String musterRollNumber,
+  }) : super(
+          MBMusterScreenRoute.name,
+          path: 'mb-muster-screen',
+          args: MBMusterScreenRouteArgs(
+            key: key,
+            tenantId: tenantId,
+            musterRollNumber: musterRollNumber,
+          ),
+        );
+
+  static const String name = 'MBMusterScreenRoute';
+}
+
+class MBMusterScreenRouteArgs {
+  const MBMusterScreenRouteArgs({
+    this.key,
+    required this.tenantId,
+    required this.musterRollNumber,
+  });
+
+  final Key? key;
+
+  final String tenantId;
+
+  final String musterRollNumber;
+
+  @override
+  String toString() {
+    return 'MBMusterScreenRouteArgs{key: $key, tenantId: $tenantId, musterRollNumber: $musterRollNumber}';
   }
 }
 

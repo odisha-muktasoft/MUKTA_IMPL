@@ -76,8 +76,8 @@ class MBLogic {
         mbNumber: null,
         wfStatus: null,
         tenantId: mbDetailResponse!.contract!.tenantId,
-        endDate: mbDetailResponse.period?.endDate??0,
-        startDate: mbDetailResponse.period?.startDate??0,
+        endDate: mbDetailResponse.period?.endDate ?? 0,
+        startDate: mbDetailResponse.period?.startDate ?? 0,
         entryDate: DateTime.now().millisecondsSinceEpoch,
         referenceId: mbDetailResponse!.contract!.contractNumber,
         id: null,
@@ -135,11 +135,10 @@ class MBLogic {
     required MBDetailResponse mbDetailResponse,
     required MBScreen type,
   }) {
-    final List<Measurement> allMeasurements =
-    mbDetailResponse.allMeasurements is List
+    final List<Measurement> allMeasurements = mbDetailResponse.allMeasurements
+            is List
         ? (mbDetailResponse.allMeasurements as List).map<Measurement>((item) {
             if (item is Map) {
-             
               return Measurement(
                 id: item['id'],
                 tenantId: item['tenantId'],
@@ -156,18 +155,27 @@ class MBLogic {
                   lastModifiedTime: item['auditDetails']['lastModifiedTime'],
                 ),
                 additionalDetail: MeasurementAdditionalDetail(
-                  endDate: item['additionalDetails']['endDate'],
-                  sorAmount: double.parse(item['additionalDetails']['sorAmount'].toString()).toDouble(),
-                  startDate: item['additionalDetails']['startDate'],
-                  totalAmount: double.parse(item['additionalDetails']['totalAmount'].toString()).toDouble(),
-                  nonSorAmount: double.parse(item['additionalDetails']['nonSorAmount'].toString()).toDouble(),
-                  musterRollNumber: item['additionalDetails']['musterRollNumber'],
+                  endDate: item['additionalDetails']==null?0:item['additionalDetails']['endDate'],
+                  sorAmount:item['additionalDetails']==null?0.0: double.parse(
+                          item['additionalDetails']['sorAmount'].toString())
+                      .toDouble(),
+                  startDate: item['additionalDetails']==null?1:item['additionalDetails']['startDate'],
+                  totalAmount:item['additionalDetails']==null?0.0: double.parse(
+                          item['additionalDetails']['totalAmount'].toString())
+                      .toDouble(),
+                  nonSorAmount:item['additionalDetails']==null?0.0: double.parse(
+                          item['additionalDetails']['nonSorAmount'].toString())
+                      .toDouble(),
+                  musterRollNumber: item['additionalDetails']==null?null:item['additionalDetails']
+                      ['musterRollNumber'],
                 ),
                 measures: (item['measures'] as List)
-                    .map<Measure>((e) => Measure.fromJson(e as Map<String, dynamic>))
+                    .map<Measure>(
+                        (e) => Measure.fromJson(e as Map<String, dynamic>))
                     .toList(),
                 documents: (item['documents'] as List)
-                    .map<WorkflowDocument>((e) => WorkflowDocument.fromJson(e as Map<String, dynamic>))
+                    .map<WorkflowDocument>((e) =>
+                        WorkflowDocument.fromJson(e as Map<String, dynamic>))
                     .toList(),
               );
             } else {
@@ -180,37 +188,38 @@ class MBLogic {
     final data = allMeasurements.mapIndexed((index, e) {
       FilteredMeasurements datak = FilteredMeasurements(
           documents: e.documents?.map((e) => e).toList(),
-          id:   e.id,
-          totalSorAmount:  e.additionalDetail?.sorAmount ?? 0.0
-              ,
-          totalNorSorAmount:  e.additionalDetail?.nonSorAmount ?? 0.0
-              ,
-          totalAmount:   e.additionalDetail?.totalAmount ?? 0.0
-              ,
+          id: e.id,
+          totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
+          totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
+          totalAmount: e.additionalDetail?.totalAmount ?? 0.0,
           endDate: e.additionalDetail?.endDate ??
               (mbDetailResponse.period?.endDate ?? 00),
           startDate: e.additionalDetail?.startDate ??
               (mbDetailResponse.period?.startDate ?? 00),
-          entryDate:   (e.entryDate != 0 && e.entryDate != null)
-                  ? e.entryDate
-                  : DateTime.now().millisecondsSinceEpoch
-              ,
+          entryDate: (e.entryDate != 0 && e.entryDate != null)
+              ? e.entryDate
+              : DateTime.now().millisecondsSinceEpoch,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
           // to be chnaged
           //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
           // musterRollNumber: mbDetailResponse.musterRolls?.first.musterRollNumber??"",
           musterRollNumber: mbDetailResponse.musterRolls is List
-              ? mbDetailResponse.musterRolls?.first["musterRollNumber"] ?? ""
-              : "",
-          mbNumber:  e.measurementNumber,
+              // ? (mbDetailResponse.musterRolls as List<Map<String, dynamic>>).firstWhere(
+              //     (m) => m['startDate'] == e.additionalDetail?.startDate,
+              //     orElse: () => null,
+
+              //     )['startDate']
+              ? convertList(
+                  mbDetailResponse.musterRolls, e.additionalDetail?.startDate)
+              : null,
+          mbNumber: e.measurementNumber,
           wfStatus: e.wfStatus,
           tenantId: e.tenantId,
           measures: e.measures?.map((e) {
             FilteredMeasurementsMeasure filteredMeasurementsMeasure =
                 FilteredMeasurementsMeasure(
-              mbAmount:  e.measureAdditionalDetails?.mbAmount
-                  ,
+              mbAmount: e.measureAdditionalDetails?.mbAmount,
               type: e.measureAdditionalDetails?.type,
               length: e.length,
               breath: e.breadth,
@@ -316,16 +325,17 @@ class MBLogic {
           description: e.description,
           unitRate: e.unitRate,
           noOfunit: e.noOfunit != null
-              ? e.isDeduction==true?
-              -double.parse((e.noOfunit!.toDouble()).toStringAsFixed(4))
-              :double.parse((e.noOfunit!.toDouble()).toStringAsFixed(4))
+              ? e.isDeduction == true
+                  ? -double.parse((e.noOfunit!.toDouble()).toStringAsFixed(4))
+                  : double.parse((e.noOfunit!.toDouble()).toStringAsFixed(4))
               : 0,
           uom: e.uom,
           length: e.length != null ? e.length!.toInt() : 0,
           width: e.width != null ? e.width!.toInt() : 0,
           height: e.height != null ? e.height!.toInt() : 0,
-          quantity:
-              e.quantity != null ? e.quantity!.toDouble() : e.noOfunit!.toDouble(),
+          quantity: e.quantity != null
+              ? e.quantity!.toDouble()
+              : e.noOfunit!.toDouble(),
           isDeduction: e.isDeduction,
         );
 
@@ -782,10 +792,9 @@ class MBLogic {
           in sorObject.filteredMeasurementsMeasure) {
         double sum = 0.0;
         for (int j = 0; j < measure.measureLineItems!.length; j++) {
-          sum += measure.contracts?.first.estimates?.first.isDeduction==true?
-          -double.parse(measure.measureLineItems![j].quantity.toString()):
-          double.parse(measure.measureLineItems![j].quantity.toString())
-          ;
+          sum += measure.contracts?.first.estimates?.first.isDeduction == true
+              ? -double.parse(measure.measureLineItems![j].quantity.toString())
+              : double.parse(measure.measureLineItems![j].quantity.toString());
         }
         // Create a new instance of FilteredMeasurementsMeasure with updated numItems
         FilteredMeasurementsMeasure updatedMeasure =
@@ -809,11 +818,9 @@ class MBLogic {
         );
         totalAmount = totalAmount +
             double.parse(
-              measure.contracts?.first.estimates?.first.isDeduction==true?
-              (sum * measure.contracts!.first.unitRate!).toString()
-              :
-              (sum * measure.contracts!.first.unitRate!).toString()
-              );
+                measure.contracts?.first.estimates?.first.isDeduction == true
+                    ? (sum * measure.contracts!.first.unitRate!).toString()
+                    : (sum * measure.contracts!.first.unitRate!).toString());
         updatedMeasures.add(updatedMeasure);
       }
       // Create a new SorObject instance with the updated list
@@ -831,30 +838,33 @@ class MBLogic {
     return TotalEstimate(totalAmount, updatedSorObjects);
   }
 
-
 // delete measurementLineItem from the list
 
-static List<SorObject> deleteMeasurementLine(
-  List<SorObject> sorObjects,
-  String sorId,
-  String filteredMeasurementsMeasureId,
-  int measurementLineIndex,
-) {
-  return sorObjects.map((sorObject) {
-    if (sorObject.sorId == sorId) {
-      final List<FilteredMeasurementsMeasure> updatedFilteredMeasurementsMeasureList = sorObject
-          .filteredMeasurementsMeasure
-          .map((filteredMeasurementsMeasure) {
-        if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
-          // final List<MeasureLineItem> updatedMeasurementLineItems = List.from(filteredMeasurementsMeasure.measureLineItems ?? []);
-          
-          // // if (measurementLineIndex >= 0 && measurementLineIndex < updatedMeasurementLineItems.length) {
-          // //   updatedMeasurementLineItems.removeAt(measurementLineIndex);
-          // // }
+  static List<SorObject> deleteMeasurementLine(
+    List<SorObject> sorObjects,
+    String sorId,
+    String filteredMeasurementsMeasureId,
+    int measurementLineIndex,
+  ) {
+    return sorObjects.map((sorObject) {
+      if (sorObject.sorId == sorId) {
+        final List<FilteredMeasurementsMeasure>
+            updatedFilteredMeasurementsMeasureList = sorObject
+                .filteredMeasurementsMeasure
+                .map((filteredMeasurementsMeasure) {
+          if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
+            // final List<MeasureLineItem> updatedMeasurementLineItems = List.from(filteredMeasurementsMeasure.measureLineItems ?? []);
 
-          final List<MeasureLineItem> updatedMeasurementLineItems = (filteredMeasurementsMeasure.measureLineItems ?? [])
-              .where((item) => item.measurelineitemNo != measurementLineIndex) // Assuming MeasureLineItem has a name property
-              .toList();
+            // // if (measurementLineIndex >= 0 && measurementLineIndex < updatedMeasurementLineItems.length) {
+            // //   updatedMeasurementLineItems.removeAt(measurementLineIndex);
+            // // }
+
+            final List<MeasureLineItem> updatedMeasurementLineItems =
+                (filteredMeasurementsMeasure.measureLineItems ?? [])
+                    .where((item) =>
+                        item.measurelineitemNo !=
+                        measurementLineIndex) // Assuming MeasureLineItem has a name property
+                    .toList();
 
             // final List<MeasureLineItem> updatedMeasurementLineItemx=   updatedMeasurementLineItems.mapIndexed((index,e){
             //   return MeasureLineItem(
@@ -867,23 +877,46 @@ static List<SorObject> deleteMeasurementLine(
             //   );
             // }).toList();
 
-          return filteredMeasurementsMeasure.copyWith(
-             measureLineItems: updatedMeasurementLineItems,
-            // measureLineItems: updatedMeasurementLineItemx,
-          );
-        }
-        return filteredMeasurementsMeasure;
-      }).toList();
+            return filteredMeasurementsMeasure.copyWith(
+              measureLineItems: updatedMeasurementLineItems,
+              // measureLineItems: updatedMeasurementLineItemx,
+            );
+          }
+          return filteredMeasurementsMeasure;
+        }).toList();
 
-      return sorObject.copyWith(
-        filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
-      );
+        return sorObject.copyWith(
+          filteredMeasurementsMeasure: updatedFilteredMeasurementsMeasureList,
+        );
+      }
+      return sorObject;
+    }).toList();
+  }
+
+  
+
+  static String? convertList(List<dynamic> dynamicList, int? id) {
+    List<Map<String, dynamic>> convertedList = [];
+
+    for (var item in dynamicList) {
+      if (item is Map<String, dynamic>) {
+        convertedList.add(item);
+      } else {
+        // Handle cases where items in the dynamic list are not maps
+        // You might want to skip these or convert them if possible
+      }
     }
-    return sorObject;
-  }).toList();
-}
+    if (id == null) {
+      return null;
+    } else {
+     
 
+       Map<String,dynamic>? data={};
+      data= convertedList.firstWhereOrNull((element) => int.parse( element['startDate'].toString())==id);
 
+      return data==null?null:data['musterRollNumber'];
+    }
+  }
 }
 
 class TotalEstimate {

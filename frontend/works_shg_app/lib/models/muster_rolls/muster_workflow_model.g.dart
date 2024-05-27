@@ -30,6 +30,9 @@ _$_ProcessInstances _$$_ProcessInstancesFromJson(Map<String, dynamic> json) =>
       auditDetails: json['auditDetails'] == null
           ? null
           : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
+      assigner: json['assigner'] == null
+          ? null
+          : Assigner.fromJson(json['assigner'] as Map<String, dynamic>),
       assignes: (json['assignes'] as List<dynamic>?)
           ?.map((e) => Assignees.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -53,6 +56,7 @@ Map<String, dynamic> _$$_ProcessInstancesToJson(_$_ProcessInstances instance) =>
       'businessId': instance.businessId,
       'action': instance.action,
       'auditDetails': instance.auditDetails,
+      'assigner': instance.assigner,
       'assignes': instance.assignes,
       'documents': instance.documents,
       'comment': instance.comment,
@@ -178,4 +182,25 @@ _$_WorkflowActions _$$_WorkflowActionsFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_WorkflowActionsToJson(_$_WorkflowActions instance) =>
     <String, dynamic>{
       'roles': instance.roles,
+    };
+
+_$_Assigner _$$_AssignerFromJson(Map<String, dynamic> json) => _$_Assigner(
+      emailId: json['emailId'] as String?,
+      id: json['id'] as int?,
+      mobileNumber: json['mobileNumber'] as String?,
+      name: json['name'] as String?,
+      tenantId: json['tenantId'] as String?,
+      uuid: json['uuid'] as String?,
+      userName: json['userName'] as String?,
+    );
+
+Map<String, dynamic> _$$_AssignerToJson(_$_Assigner instance) =>
+    <String, dynamic>{
+      'emailId': instance.emailId,
+      'id': instance.id,
+      'mobileNumber': instance.mobileNumber,
+      'name': instance.name,
+      'tenantId': instance.tenantId,
+      'uuid': instance.uuid,
+      'userName': instance.userName,
     };

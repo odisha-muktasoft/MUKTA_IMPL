@@ -25,6 +25,7 @@ class ProcessInstances with _$ProcessInstances {
     String? businessId,
     String? action,
     AuditDetails? auditDetails,
+    Assigner? assigner,
     List<Assignees>? assignes,
     List<WorkflowDocument>? documents,
     String? comment,
@@ -133,4 +134,24 @@ class WorkflowActions with _$WorkflowActions {
     Map<String, dynamic> json,
   ) =>
       _$WorkflowActionsFromJson(json);
+}
+
+
+
+@freezed
+class Assigner with _$Assigner {
+  const factory Assigner({
+    String? emailId,
+    int? id,
+    String? mobileNumber,
+    String? name,
+    String? tenantId,
+    String? uuid,
+    String? userName,
+  }) = _Assigner;
+
+  factory Assigner.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$AssignerFromJson(json);
 }

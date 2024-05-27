@@ -62,7 +62,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 return const SizedBox.shrink();
               },
               loaded: (value) {
-                final k = value.data;
+                final k = value.data.where((element) => element.wfStatus=="APPROVED").toList();
                 return Scaffold(
                   bottomNavigationBar: widget.type == MBScreen.create
                       ? const SizedBox.shrink()
@@ -92,25 +92,28 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                       .toString(),
                                   openButtonSheet: () {
                                     _openBottomSheet(
-                                      t,
-                                      context,
-                                      value.data.first.totalSorAmount!,
-                                      value.data.first.totalNorSorAmount!,
-                                      value.data.first.totalAmount!,
-                                      g,
-                                      widget.contractNumber,
-                                      widget.mbNumber,
-                                      (g != null &&
-                                      (g.first.nextActions != null &&
-                                          g.first.nextActions!.isEmpty)) ? false : true
-                                    );
+                                        t,
+                                        context,
+                                        value.data.first.totalSorAmount!,
+                                        value.data.first.totalNorSorAmount!,
+                                        value.data.first.totalAmount!,
+                                        g,
+                                        widget.contractNumber,
+                                        widget.mbNumber,
+                                        (g != null &&
+                                                (g.first.nextActions != null &&
+                                                    g.first.nextActions!
+                                                        .isEmpty))
+                                            ? false
+                                            : true);
                                   },
                                   totalAmountText: t.translate(
                                       i18.measurementBook.totalMbAmount),
-                                  showAction:
-                                      (g != null &&
-                                      (g.first.nextActions != null &&
-                                          g.first.nextActions!.isEmpty)) ? false : true,
+                                  showAction: (g != null &&
+                                          (g.first.nextActions != null &&
+                                              g.first.nextActions!.isEmpty))
+                                      ? false
+                                      : true,
                                 );
                               },
                             );
@@ -166,9 +169,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             final adjustedIndex = widget.type == MBScreen.update
-                                ? index + 1
-                                : index + 1;
-                            if (adjustedIndex < k.length) {
+                                ? index 
+                                : index ;
+                            if (adjustedIndex <=k.length) {
                               return CommonMBCard(
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))}-${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
@@ -188,23 +191,25 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   t.translate(i18.measurementBook.mbStatus):
                                       k[adjustedIndex].wfStatus,
                                 },
-                                widget:(k[adjustedIndex]
-                                            .musterRollNumber==null || k[adjustedIndex]
-                                            .musterRollNumber
-                                            .toString()=="")? const SizedBox.shrink():CommonTextButtonUnderline(
-                                  label: t.translate(i18.home.musterRoll),
-                                  onPressed: () {
-                                    context.router.push(
-                                      SHGInboxRoute(
-                                        tenantId: widget.tenantId!,
-                                        musterRollNo: k[adjustedIndex]
-                                            .musterRollNumber
-                                            .toString(),
-                                        sentBackCode: "PENDINGFORCORRECTION",
+                                widget: (k[adjustedIndex].musterRollNumber ==
+                                            null ||
+                                        k[adjustedIndex]
+                                                .musterRollNumber
+                                                .toString() ==
+                                            "")
+                                    ? const SizedBox.shrink()
+                                    : CommonTextButtonUnderline(
+                                        label: t.translate(i18.home.musterRoll),
+                                        onPressed: () {
+                                          context.router
+                                              .push(MBMusterScreenRoute(
+                                            musterRollNumber: k[adjustedIndex]
+                                                .musterRollNumber
+                                                .toString(),
+                                            tenantId: widget.tenantId!,
+                                          ));
+                                        },
                                       ),
-                                    );
-                                  },
-                                ),
                                 show: false,
                               );
                             } else {
@@ -212,7 +217,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             }
                           },
                           childCount: widget.type == MBScreen.update
-                              ? k.length - 1
+                              ? k.length 
                               : k.length,
                         ),
                       ),
@@ -364,23 +369,22 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
               const SizedBox(
                 height: 15,
               ),
-              showBtn?
-              DigitElevatedButton(
-                  child: Text(t.translate(i18.measurementBook.mbAction)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    DigitActionDialog.show(
-                      context,
-                      widget: CommonButtonCard(
-                        g: processInstances,
-                        contractNumber: contractNumber,
-                        mbNumber: mbNumber,
-                        type: widget.type,
-                      ),
-                    );
-                  }):
-                 const  SizedBox.shrink()
-                  ,
+              showBtn
+                  ? DigitElevatedButton(
+                      child: Text(t.translate(i18.measurementBook.mbAction)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        DigitActionDialog.show(
+                          context,
+                          widget: CommonButtonCard(
+                            g: processInstances,
+                            contractNumber: contractNumber,
+                            mbNumber: mbNumber,
+                            type: widget.type,
+                          ),
+                        );
+                      })
+                  : const SizedBox.shrink(),
             ],
           ),
         );

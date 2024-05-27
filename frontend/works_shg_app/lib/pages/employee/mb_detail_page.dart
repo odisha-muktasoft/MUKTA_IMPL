@@ -9,6 +9,7 @@ import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -841,7 +842,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     loaded: (value) {
                                       final timeLineAttributes = value
                                           .musterWorkFlowModel!
-                                          .processInstances!
+                                          .processInstances!.where((element) => element.action!=Constants.saveAsDraft).toList()
                                           .mapIndexed((i, e) =>
                                               DigitTimelineOptions(
                                                 title: t.translate(
@@ -863,9 +864,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         .toList()
                                                     : null,
                                                 assignee:
-                                                    e.assignes?.first.name,
-                                                mobileNumber: e.assignes != null
-                                                    ? '+91-${e.assignes?.first.mobileNumber}'
+                                                    e.assigner?.name,
+                                                mobileNumber: e.assigner != null
+                                                    ? '+91-${e.assigner?.mobileNumber}'
                                                     : null,
                                               ))
                                           .toList();

@@ -100,21 +100,21 @@ class MeasurementDetailBloc
                               ['lastModifiedTime'],
                         ),
                         additionalDetail: MeasurementAdditionalDetail(
-                          endDate: item['additionalDetails']['endDate'],
-                          sorAmount: double.parse(item['additionalDetails']
+                          endDate: item['additionalDetails']==null?0:item['additionalDetails']['endDate'],
+                          sorAmount:item['additionalDetails']==null?0.0: double.parse(item['additionalDetails']
                                       ['sorAmount']
                                   .toString())
                               .toDouble(),
-                          startDate: item['additionalDetails']['startDate'],
-                          totalAmount: double.parse(item['additionalDetails']
+                          startDate: item['additionalDetails']==null?1:item['additionalDetails']['startDate'],
+                          totalAmount:item['additionalDetails']==null?0.0: double.parse(item['additionalDetails']
                                       ['totalAmount']
                                   .toString())
                               .toDouble(),
-                          nonSorAmount: double.parse(item['additionalDetails']
+                          nonSorAmount:item['additionalDetails']==null?0.0: double.parse(item['additionalDetails']
                                       ['nonSorAmount']
                                   .toString())
                               .toDouble(),
-                          musterRollNumber: item['additionalDetails']
+                          musterRollNumber:item['additionalDetails']==null?null: item['additionalDetails']
                               ['musterRollNumber'],
                         ),
                         measures: (item['measures'] as List)
