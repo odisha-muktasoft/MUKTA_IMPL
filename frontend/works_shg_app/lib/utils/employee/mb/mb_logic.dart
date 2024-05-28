@@ -642,9 +642,9 @@ class MBLogic {
           'targetId': measure.targetId,
           //TODO:[if the numItems is o.o then breath and height and length should be 0.0 and if numItems morethan 0.0 then length,breath and height should be 1]
           // start of old code clean working
-          // 'breadth':measure.numItems==0.0?0.0: measure.breadth,
-          // 'length':measure.numItems==0.0?0.0: measure.length,
-          // 'height':measure.numItems==0.0?0.0:measure.height,
+          // 'breadth': measure.breadth,
+          // 'length': measure.length,
+          // 'height':measure.height,
           // end of old code clean working
           'breadth':measure.numItems==0.0?0.0: 1.0,
           'length':measure.numItems==0.0?0.0: 1.0,
