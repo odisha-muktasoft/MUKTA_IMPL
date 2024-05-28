@@ -208,8 +208,14 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                   ),
                                 ),
                                 Padding(
+                                  padding: const EdgeInsets.only(left:20.0,top: 5.0),
+                                  child: Text(t.translate(i18.measurementBook.searchHint),
+                                  style:DigitTheme.instance.mobileTheme.textTheme.bodyLarge,
+                                  ),
+                                ),
+                                Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 4.0, right: 8.0, top: 10.0),
+                                      left: 4.0, right: 8.0, top: 2.0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -330,7 +336,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               ],
                             ),
                           ),
-                          height: 150,
+                          height: 200,
                         ),
                       ),
                       value.contracts!.isEmpty

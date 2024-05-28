@@ -31,6 +31,7 @@ class Login {
 
 class Common {
   const Common();
+  String get comments=>"WF_COMMON_COMMENTS";
   String get photoInfo=>"WORKS_DOC_UPLOAD_HINT";
   String get searchCriteria=>"ES_COMMON_MIN_SEARCH_CRITERIA_MSG";
   String get workOrderNotFound=>"COMMON_WO_NOT_FOUND";
@@ -452,6 +453,8 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbMeasurementNumber=>"ACTION_TEST_5MEASUREMENT";
  String get mbCbo=>"MB_CBO";
  String get mbEmployee=>"MB_EMPLOYEE";
+ String get mbPhotoInfo=>"MEASUREMENT_UPLOAD_BANNER_LABEL";
+ String get searchHint=>"MB_SEARCH_HINT";
 
 
 }

@@ -8,6 +8,7 @@ import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/blocs/muster_rolls/muster_roll_pdf.dart';
 import 'package:works_shg_app/blocs/muster_rolls/search_muster_roll.dart';
+import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/models/track_attendance_payload.dart';
@@ -43,6 +44,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
   List<TrackAttendanceTableData> newList = [];
   List<TableDataRow> tableData = [];
   List<String> dates = [];
+  List<DigitTimelineOptions> timeLineAttributes = [];
 
   @override
   void initState() {
@@ -64,6 +66,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
     // TODO: implement dispose
     newList.clear();
     tableData.clear();
+    timeLineAttributes.clear();
     super.dispose();
   }
 
@@ -255,56 +258,182 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                 return state.maybeMap(
                                   orElse: SizedBox.shrink,
                                   loaded: (value) {
-                                    final timeLineAttributes = value
+                                    // final modifiedData = value
+                                    //     .musterWorkFlowModel!.processInstances!
+                                    //     .where((element) =>
+                                    //         element.action !=
+                                    //         Constants.saveAsDraft)
+                                    //     .toList();
+                                    // if (modifiedData
+                                    //             .first
+                                    //             .nextActions !=
+                                    //         null ||
+                                    //    modifiedData
+                                    //             .first
+                                    //             .nextActions !=
+                                    //         [] ||
+                                    //     modifiedData
+                                    //         .first
+                                    //         .nextActions!
+                                    //         .isNotEmpty) {
+                                    //   modifiedData.insert(
+                                    //       0,
+                                    //       value.musterWorkFlowModel!
+                                    //           .processInstances!.first);
+                                    // }
+
+                                    // final timeLineAttributes = modifiedData
+                                    //     .mapIndexed((i, e) =>
+                                    //         DigitTimelineOptions(
+                                    //           title: t.translate(i == 0
+                                    //               ? e.workflowState?.state ==
+                                    //                       "EDIT_RE_SUBMIT"
+                                    //                   ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                    //                   : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                    //               : 'WF_MB_STATUS_${e.action}'),
+                                    //           subTitle:
+                                    //               DateFormats.getTimeLineDate(e
+                                    //                       .auditDetails
+                                    //                       ?.lastModifiedTime ??
+                                    //                   0),
+                                    //           isCurrentState: i == 0,
+                                    //           comments: e.comment,
+                                    //           documents: e.documents != null
+                                    //               ? e.documents
+                                    //                   ?.map((d) =>
+                                    //                       FileStoreModel(
+                                    //                           name: '',
+                                    //                           fileStoreId: d
+                                    //                               .documentUid))
+                                    //                   .toList()
+                                    //               : null,
+                                    //           assignee: e.assigner?.name,
+                                    //           mobileNumber: e.assigner != null
+                                    //               ? '+91-${e.assigner?.mobileNumber}'
+                                    //               : null,
+                                    //         ))
+                                    //     .toList();
+                                    List<ProcessInstances> modifiedData = value
                                         .musterWorkFlowModel!.processInstances!
+                                        .where((element) =>
+                                            element.action !=
+                                            Constants.saveAsDraft)
+                                        .toList();
+                                    // ..insert(0, value
+                                    // .musterWorkFlowModel!
+                                    // .processInstances!.first);
+                                    if (modifiedData.isNotEmpty &&
+                                        (modifiedData.first.nextActions !=
+                                                null &&
+                                            modifiedData.first.nextActions!
+                                                .isNotEmpty)) {
+                                      modifiedData = [
+                                        ...[modifiedData.first],
+                                        ...modifiedData
+                                      ];
+                                    }
+                                    timeLineAttributes.clear();
+                                    timeLineAttributes = modifiedData
                                         .mapIndexed((i, e) =>
                                             DigitTimelineOptions(
-                                              title: t.translate(
-                                                  '${e.workflowState?.state}'),
-                                              subTitle:
-                                                  DateFormats.getTimeLineDate(e
+                                              title: t.translate((i == 0 &&
+                                                      e.action == "APPROVE")
+                                                  ? e.workflowState?.state ==
+                                                          "EDIT_RE_SUBMIT"
+                                                      ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                      : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                  : i == 0
+                                                      ? e.workflowState
+                                                                  ?.state ==
+                                                              "EDIT_RE_SUBMIT"
+                                                          ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                          : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                      : 'WF_MB_STATUS_${e.action}'),
+                                              subTitle: (i == 0 &&
+                                                      e.action == "APPROVE")
+                                                  ? DateFormats.getTimeLineDate(e
                                                           .auditDetails
                                                           ?.lastModifiedTime ??
-                                                      0),
+                                                      0)
+                                                  : i != 0
+                                                      ? DateFormats
+                                                          .getTimeLineDate(e
+                                                                  .auditDetails
+                                                                  ?.lastModifiedTime ??
+                                                              0)
+                                                      : null,
                                               isCurrentState: i == 0,
-                                              comments: e.comment,
-                                              documents: e.documents != null
-                                                  ? e.documents
-                                                      ?.map((d) =>
-                                                          FileStoreModel(
-                                                              name: '',
-                                                              fileStoreId: d
-                                                                  .documentUid))
-                                                      .toList()
-                                                  : null,
-                                              assignee: e.assigner?.name,
-                                              mobileNumber: e.assigner != null
-                                                  ? '+91-${e.assigner?.mobileNumber}'
-                                                  : null,
+                                              comments: (i == 0 &&
+                                                      e.action == "APPROVE")
+                                                  ? e.comment
+                                                  : i != 0
+                                                      ? e.comment
+                                                      : null,
+                                              documents: (i == 0 &&
+                                                      e.action == "APPROVE")
+                                                  ? e.documents != null
+                                                      ? e.documents
+                                                          ?.map((d) =>
+                                                              FileStoreModel(
+                                                                  name: '',
+                                                                  fileStoreId: d
+                                                                      .documentUid))
+                                                          .toList()
+                                                      : null
+                                                  : i != 0
+                                                      ? e.documents != null
+                                                          ? e.documents
+                                                              ?.map((d) =>
+                                                                  FileStoreModel(
+                                                                      name: '',
+                                                                      fileStoreId:
+                                                                          d.documentUid))
+                                                              .toList()
+                                                          : null
+                                                      : null,
+                                              assignee: (i == 0 &&
+                                                      e.action == "APPROVE")
+                                                  ? e.assigner?.name
+                                                  : i != 0
+                                                      ? e.assigner?.name
+                                                      : null,
+                                              mobileNumber: (i == 0 &&
+                                                      e.action == "APPROVE")
+                                                  ? e.assigner != null
+                                                      ? '+91-${e.assigner?.mobileNumber}'
+                                                      : null
+                                                  : i != 0
+                                                      ? e.assigner != null
+                                                          ? '+91-${e.assigner?.mobileNumber}'
+                                                          : null
+                                                      : null,
                                             ))
                                         .toList();
-                                    return DigitCard(
-                                      child: ExpansionTile(
-                                        title: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: Text(
-                                            t.translate(
-                                                i18.common.workflowTimeline),
-                                            style: DigitTheme
-                                                .instance
-                                                .mobileTheme
-                                                .textTheme
-                                                .headlineMedium,
-                                          ),
-                                        ),
-                                        children: [
-                                          DigitTimeline(
-                                            timelineOptions: timeLineAttributes,
-                                          ),
-                                        ],
-                                      ),
-                                    );
+                                    return timeLineAttributes.isNotEmpty
+                                        ? DigitCard(
+                                            child: ExpansionTile(
+                                              title: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 8.0),
+                                                child: Text(
+                                                  t.translate(i18
+                                                      .common.workflowTimeline),
+                                                  style: DigitTheme
+                                                      .instance
+                                                      .mobileTheme
+                                                      .textTheme
+                                                      .headlineMedium,
+                                                ),
+                                              ),
+                                              children: [
+                                                DigitTimeline(
+                                                  timelineOptions:
+                                                      timeLineAttributes,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        : const SizedBox.shrink();
                                     //
                                   },
                                 );

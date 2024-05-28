@@ -187,7 +187,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                           ? double.parse(
                                               (k[adjustedIndex].totalAmount!)
                                                   .toStringAsFixed(2))
-                                          : '0.0',
+                                          : '0.00',
                                   t.translate(i18.measurementBook.mbStatus):
                                       k[adjustedIndex].wfStatus,
                                 },
@@ -275,7 +275,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount!.toDouble().roundToDouble().toString(),
+                      totalSorAmount!.toDouble().toStringAsFixed(2).toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -306,7 +306,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount!.toDouble().roundToDouble().toString(),
+                      totalNonSorAmount!.toDouble().toStringAsFixed(2).toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),

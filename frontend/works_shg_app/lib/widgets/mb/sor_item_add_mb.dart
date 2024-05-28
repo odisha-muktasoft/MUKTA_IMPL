@@ -300,22 +300,7 @@ class _CardWidgetState extends State<CardWidget> {
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
-                // DigitTableCard(element: {
-                //   t.translate(i18.measurementBook.isDeduction): (widget
-                //                   .filteredMeasurementsMeasure!
-                //                   .contracts!
-                //                   .first
-                //                   .estimates!
-                //                   .first
-                //                   .isDeduction !=
-                //               null &&
-                //           widget.filteredMeasurementsMeasure!.contracts!.first
-                //               .estimates!.first.isDeduction!)
-                //       ? "Yes"
-                //       : "No",
-                //   // t.translate(i18.measurementBook.description): widget.filteredMeasurementsMeasure!.contracts!
-                //   //     .first.estimates!.first.description,
-                // }),
+                
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: SizedBox(
@@ -432,11 +417,42 @@ class _CardWidgetState extends State<CardWidget> {
                                 ),
                               ),
                               !widget.viewMode
-                                  ? DigitIconButton(
-                                      icon: IconData(Icons.add.codePoint),
-                                      iconText: t.translate(
-                                          i18.measurementBook.addMeasurement),
-                                      onPressed: () {
+                                  ? GestureDetector(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.add_circle,
+                                            size: 30,
+                                            color: const DigitColors()
+                                                .burningOrange,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:4.0),
+                                            child: Text(
+                                              
+                                              t.translate(
+                                                i18.measurementBook
+                                                    .addMeasurement,
+                                              ),
+                                              style: DigitTheme
+                                                  .instance
+                                                  .mobileTheme
+                                                  .textTheme!
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                      color: const DigitColors()
+                                                          .burningOrange,
+                                                          
+                                                          ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      onTap: () {
                                         context
                                             .read<MeasurementDetailBloc>()
                                             .add(
@@ -501,48 +517,79 @@ class _CardWidgetState extends State<CardWidget> {
                                     widget.filteredMeasurementsMeasure!
                                         .measureLineItems!.length) {
                                   // TO add line items
-                                  return DigitIconButton(
-                                    icon: IconData(Icons.add.codePoint),
-                                    iconText: t.translate(
-                                        i18.measurementBook.addMeasurement),
-                                    onPressed: () {
-                                      context.read<MeasurementDetailBloc>().add(
-                                            AddToMeasurementLineEvent(
-                                              sorId: widget
-                                                  .filteredMeasurementsMeasure!
-                                                  .contracts!
-                                                  .first
-                                                  .estimates!
-                                                  .first
-                                                  .sorId!,
-                                              type: widget
-                                                  .filteredMeasurementsMeasure!
-                                                  .contracts!
-                                                  .first
-                                                  .estimates!
-                                                  .first
-                                                  .category!,
-                                              index: index,
-                                              measurementLineIndex: widget
-                                                      .filteredMeasurementsMeasure!
-                                                      .measureLineItems!
-                                                      .last
-                                                      .measurelineitemNo +
-                                                  1,
-                                              // index: 0,
-                                              //         measurementLineIndex: 0,
-                                              height: 0,
-                                              length: 0,
-                                              width: 0,
-                                              number: 0,
-                                              quantity: 0,
-                                              filteredMeasurementMeasureId: widget
-                                                  .filteredMeasurementsMeasure!
-                                                  .id!,
-                                              single: false,
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 1.0),
+                                    child: GestureDetector(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.add_circle,
+                                            size: 30,
+                                            color: const DigitColors()
+                                                .burningOrange,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:4.0),
+                                            child: Text(
+                                              t.translate(i18.measurementBook
+                                                  .addMeasurement),
+                                              style: DigitTheme
+                                                  .instance
+                                                  .mobileTheme
+                                                  .textTheme!
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                      color: const DigitColors()
+                                                          .burningOrange),
                                             ),
-                                          );
-                                    },
+                                          ),
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        context
+                                            .read<MeasurementDetailBloc>()
+                                            .add(
+                                              AddToMeasurementLineEvent(
+                                                sorId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .sorId!,
+                                                type: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .category!,
+                                                index: index,
+                                                measurementLineIndex: widget
+                                                        .filteredMeasurementsMeasure!
+                                                        .measureLineItems!
+                                                        .last
+                                                        .measurelineitemNo +
+                                                    1,
+                                                // index: 0,
+                                                //         measurementLineIndex: 0,
+                                                height: 0,
+                                                length: 0,
+                                                width: 0,
+                                                number: 0,
+                                                quantity: 0,
+                                                filteredMeasurementMeasureId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .id!,
+                                                single: false,
+                                              ),
+                                            );
+                                      },
+                                    ),
                                   );
                                 }
                               }

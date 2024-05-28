@@ -224,7 +224,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   return const SizedBox.shrink();
                 },
                 loaded: (value) {
-                  double sorprice = 0.0;
+                  double sorprice = 0.00;
 
                   for (int i = 0; i < value.sor!.length; i++) {
                     final key = value.sor![i];
@@ -642,25 +642,37 @@ class _MBDetailPageState extends State<MBDetailPage>
                               widget.type == MBScreen.create
                                   ? Card(
                                       child: Center(
-                                        child: FilePickerDemo(
-                                          callBack: (List<FileStoreModel>? g,
-                                              List<WorkflowDocument>? l) {
-                                            context
-                                                .read<MeasurementDetailBloc>()
-                                                .add(
-                                                  MeasurementUploadDocumentBlocEvent(
-                                                    tenantId: '',
-                                                    workflowDocument: l!,
-                                                  ),
-                                                );
-                                          },
-                                          extensions: const [
-                                            'jpg',
-                                            'png',
-                                            'jpeg',
+                                        child: Column(
+                                          children: [
+                                            FilePickerDemo(
+                                              callBack: (List<FileStoreModel>?
+                                                      g,
+                                                  List<WorkflowDocument>? l) {
+                                                context
+                                                    .read<
+                                                        MeasurementDetailBloc>()
+                                                    .add(
+                                                      MeasurementUploadDocumentBlocEvent(
+                                                        tenantId: '',
+                                                        workflowDocument: l!,
+                                                      ),
+                                                    );
+                                              },
+                                              extensions: const [
+                                                'jpg',
+                                                'png',
+                                                'jpeg',
+                                              ],
+                                              moduleName: 'works',
+                                              headerType: MediaType.mbDetail,
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.all(4),
+                                              //  color: DigitColors().curiousBlue,
+                                              child: Text(t.translate(
+                                                  i18.measurementBook.mbPhotoInfo)),
+                                            ),
                                           ],
-                                          moduleName: 'works',
-                                          headerType: MediaType.mbDetail,
                                         ),
                                       ),
                                     )
@@ -709,8 +721,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           EdgeInsets.all(4),
                                                       // color: DigitColors().pacificBlue,
                                                       child: Text(t.translate(
-                                                          i18.common
-                                                              .photoInfo)),
+                                                          i18.measurementBook
+                                                              .mbPhotoInfo)),
                                                     ),
                                                   ],
                                                 ),
@@ -768,8 +780,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           EdgeInsets.all(4),
                                                       //  color: DigitColors().curiousBlue,
                                                       child: Text(t.translate(
-                                                          i18.common
-                                                              .photoInfo)),
+                                                          i18.measurementBook
+                                                              .mbPhotoInfo)),
                                                     ),
                                                   ],
                                                 ),
@@ -840,59 +852,127 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   return state.maybeMap(
                                     orElse: SizedBox.shrink,
                                     loaded: (value) {
-                                      final timeLineAttributes = value
+
+                                   List<ProcessInstances>    modifiedData = value
                                           .musterWorkFlowModel!
-                                          .processInstances!.where((element) => element.action!=Constants.saveAsDraft).toList()
+                                          .processInstances!
+                                          .where((element) =>
+                                              element.action !=
+                                              Constants.saveAsDraft)
+                                          .toList();
+                                      // ..insert(0, value
+                                      // .musterWorkFlowModel!
+                                      // .processInstances!.first);
+                                      if (modifiedData.isNotEmpty &&
+                                          (modifiedData.first.nextActions !=
+                                                  null &&
+                                              modifiedData.first.nextActions!.isNotEmpty
+                                                  )) {
+                                        
+
+                                                modifiedData=[...[modifiedData.first],...modifiedData];
+                                      }
+                                      timeLineAttributes.clear();
+
+                                      timeLineAttributes = modifiedData
                                           .mapIndexed((i, e) =>
                                               DigitTimelineOptions(
-                                                title: t.translate(
-                                                    '${e.workflowState?.state}'),
-                                                subTitle: DateFormats
-                                                    .getTimeLineDate(e
+                                                title: t.translate((i == 0 && e.action=="APPROVE")
+                                                    ? e.workflowState?.state ==
+                                                            "EDIT_RE_SUBMIT"
+                                                        ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                        : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                    : i==0?
+                                                    e.workflowState?.state ==
+                                                            "EDIT_RE_SUBMIT"
+                                                        ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                        : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                        :
+                                                     'WF_MB_STATUS_${e.action}'),
+                                                subTitle: (i == 0 && e.action=="APPROVE")?
+                                                DateFormats.getTimeLineDate(e
                                                             .auditDetails
                                                             ?.lastModifiedTime ??
-                                                        0),
+                                                        0)
+                                                :
+                                                 i != 0
+                                                    ? DateFormats.getTimeLineDate(e
+                                                            .auditDetails
+                                                            ?.lastModifiedTime ??
+                                                        0)
+                                                    : null,
                                                 isCurrentState: i == 0,
-                                                comments: e.comment,
-                                                documents: e.documents != null
-                                                    ? e.documents
-                                                        ?.map((d) =>
-                                                            FileStoreModel(
-                                                                name: '',
-                                                                fileStoreId: d
-                                                                    .documentUid))
-                                                        .toList()
+                                                comments:(i == 0 && e.action=="APPROVE")?
+                                                e.comment:
+                                                    i != 0 ? e.comment : null,
+                                                documents:(i == 0 && e.action=="APPROVE")?
+                                                e.documents != null
+                                                        ? e.documents
+                                                            ?.map((d) =>
+                                                                FileStoreModel(
+                                                                    name: '',
+                                                                    fileStoreId:
+                                                                        d.documentUid))
+                                                            .toList()
+                                                        : null
+                                                :
+                                                 i != 0
+                                                    ? e.documents != null
+                                                        ? e.documents
+                                                            ?.map((d) =>
+                                                                FileStoreModel(
+                                                                    name: '',
+                                                                    fileStoreId:
+                                                                        d.documentUid))
+                                                            .toList()
+                                                        : null
                                                     : null,
                                                 assignee:
-                                                    e.assigner?.name,
-                                                mobileNumber: e.assigner != null
-                                                    ? '+91-${e.assigner?.mobileNumber}'
+                                                (i == 0 && e.action=="APPROVE")?
+                                                 e.assigner?.name
+                                                    :
+                                                 i != 0
+                                                    ? e.assigner?.name
+                                                    : null,
+                                                mobileNumber:
+                                                (i == 0 && e.action=="APPROVE")?
+                                                 e.assigner != null
+                                                        ? '+91-${e.assigner?.mobileNumber}'
+                                                        :null:
+                                                 i != 0
+                                                    ? e.assigner != null
+                                                        ? '+91-${e.assigner?.mobileNumber}'
+                                                        : null
                                                     : null,
                                               ))
                                           .toList();
-                                      return DigitCard(
-                                        child: ExpansionTile(
-                                          title: Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Text(
-                                              t.translate(
-                                                  i18.common.workflowTimeline),
-                                              style: DigitTheme
-                                                  .instance
-                                                  .mobileTheme
-                                                  .textTheme
-                                                  .headlineMedium,
-                                            ),
-                                          ),
-                                          children: [
-                                            DigitTimeline(
-                                              timelineOptions:
-                                                  timeLineAttributes,
-                                            ),
-                                          ],
-                                        ),
-                                      );
+
+                                      return timeLineAttributes.isNotEmpty
+                                          ? DigitCard(
+                                              child: ExpansionTile(
+                                                title: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 8.0),
+                                                  child: Text(
+                                                    t.translate(i18.common
+                                                        .workflowTimeline),
+                                                    style: DigitTheme
+                                                        .instance
+                                                        .mobileTheme
+                                                        .textTheme
+                                                        .headlineMedium,
+                                                  ),
+                                                ),
+                                                children: [
+                                                  DigitTimeline(
+                                                    timelineOptions:
+                                                        timeLineAttributes,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : const SizedBox.shrink();
                                       //
                                     },
                                   );
@@ -973,17 +1053,19 @@ class _MBDetailPageState extends State<MBDetailPage>
         return e.contracts!.first.estimates!.first;
       },
     ).toList();
-    double noOfQty = line.fold(0.0, (sum, obj) {
+    double noOfQty = line.fold(0.0000, (sum, obj) {
       int m = double.parse(obj.noOfunit!.toString()).toInt();
-      return sum + m;
+      return  sum + m;
     });
 
-    final double preConumed = preSorNonSor==null?0.0:preSorNonSor!.fold(0.0, (sum, obj) {
-      double m = obj.contracts!.first.estimates!.first.isDeduction == true
-          ? -(obj.cumulativeValue!)
-          : (obj.cumulativeValue!);
-      return sum + m.toDouble();
-    });
+    final double preConumed = preSorNonSor == null
+        ? 0.0000
+        : preSorNonSor!.fold(0.0000, (sum, obj) {
+            double m = obj.contracts!.first.estimates!.first.isDeduction == true
+                ? -(obj.cumulativeValue!)
+                : (obj.cumulativeValue!);
+            return sum + m.toDouble();
+          });
 
     return Card(
       child: SizedBox(
@@ -1012,23 +1094,23 @@ class _MBDetailPageState extends State<MBDetailPage>
                   //TODO:[localization]
                   "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
                       //  t.translate(i18.measurementBook.consumedQty):
-                      preSorNonSor == null ? 0.0 : preConumed
+                      preSorNonSor == null ? 0.0000 : preConumed
                 },
               ),
               DigitTextField(
                 label: t.translate(i18.measurementBook.currentMBEntry),
                 controller: TextEditingController()
                   ..value
-                  ..text = double.parse((magic.fold(0.0, (sum, obj) {
+                  ..text = double.parse((magic.fold(0.0000, (sum, obj) {
                     dynamic m;
                     if (obj.contracts?.first.estimates?.first.isDeduction ==
                         false) {
-                      m = obj.measureLineItems!.fold(0.0, (sum, ob) {
+                      m = obj.measureLineItems!.fold(0.0000, (sum, ob) {
                         dynamic mk = ob.quantity!;
                         return sum + double.parse(mk.toString());
                       });
                     } else {
-                      m = -(obj.measureLineItems!.fold(0.0, (sum, ob) {
+                      m = -(obj.measureLineItems!.fold(0.0000, (sum, ob) {
                         dynamic mr = ob.quantity!;
                         return sum + double.parse(mr.toString());
                       }));
@@ -1038,7 +1120,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     //   return sum + double.parse(m.toString());
                     // });
                     return sum + double.parse(m.toString());
-                  })).toStringAsFixed(2))
+                  })).toStringAsFixed(4))
                       .toString(),
                 suffixIcon: GestureDetector(
                   onTap: () {
@@ -1052,9 +1134,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                           // noOfUnit: line[0].noOfunit,
                           noOfUnit: noOfQty,
                           cummulativePrevQty: preSorNonSor == null
-                              ? 0
+                              ? 0.0000
                               // : preSorNonSor!.first.cumulativeValue,
-                              : preSorNonSor!.fold(0.0, (sum, obj) {
+                              : preSorNonSor!.fold(0.0000, (sum, obj) {
                                   double m = obj.contracts!.first.estimates!
                                               .first.isDeduction ==
                                           true
@@ -1080,13 +1162,13 @@ class _MBDetailPageState extends State<MBDetailPage>
               DigitTextField(
                 controller: TextEditingController()
                   ..value
-                  ..text = (magic.fold(0.0, (sum, obj) {
+                  ..text = (magic.fold(0.0000, (sum, obj) {
                     dynamic m;
                     if (obj.contracts?.first.estimates?.first.isDeduction ==
                         false) {
-                      m = obj.mbAmount ?? 0.0;
+                      m = obj.mbAmount ?? 0.00;
                     } else {
-                      m = (obj.mbAmount ?? 0.0);
+                      m = (obj.mbAmount ?? 0.00);
                     }
 
                     return double.parse(double.parse(

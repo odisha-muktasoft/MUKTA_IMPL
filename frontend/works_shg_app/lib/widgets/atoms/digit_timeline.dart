@@ -134,12 +134,27 @@ class DigitTimeline extends StatelessWidget {
                               : const SizedBox.shrink(),
                           timelineOptions[index].comments != null &&
                                   timelineOptions[index].comments!.isNotEmpty
-                              ? Text(
-                                  timelineOptions[index].comments ?? '',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: const DigitColors().davyGray),
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate(i18.common.comments),
+                                      style: DigitTheme.instance.mobileTheme
+                                          .textTheme.headlineSmall
+                                          ?.apply(
+                                              color: const DigitColors().black),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Text(
+                                      timelineOptions[index].comments ?? '',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          color: const DigitColors().davyGray),
+                                    ),
+                                  ],
                                 )
                               : const SizedBox.shrink(),
                           timelineOptions[index].documents != null &&
