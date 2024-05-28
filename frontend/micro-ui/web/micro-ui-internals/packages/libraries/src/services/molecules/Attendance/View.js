@@ -1,28 +1,29 @@
+import { filter } from "lodash";
 import AttendanceService from "../../elements/Attendance";
 import { WorksService } from "../../elements/Works";
 
 const attendanceTypes = {
-  0 : 'zero',
-  1 : 'full',
-  0.5 : 'half'
- }
+  0: 'zero',
+  1: 'full',
+  0.5: 'half'
+}
 
 const getWeekDates = (data) => {
   let weekDates = {}
   const dayTimes = {
-    "mon":data?.startDate,
-    "sun":data?.endDate,
-    "tue":data?.startDate + (86400000*1),
-    "wed":data?.startDate + (86400000*2),
-    "thu":data?.startDate + (86400000*3),
-    "fri":data?.startDate + (86400000*4),
-    "sat":data?.startDate + (86400000*5),
-    "sun":data?.endDate
+    "mon": data?.startDate,
+    "sun": data?.endDate,
+    "tue": data?.startDate + (86400000 * 1),
+    "wed": data?.startDate + (86400000 * 2),
+    "thu": data?.startDate + (86400000 * 3),
+    "fri": data?.startDate + (86400000 * 4),
+    "sat": data?.startDate + (86400000 * 5),
+    "sun": data?.endDate
   }
   const weekTimes = Object.keys(dayTimes).map(key => {
     return dayTimes[key]
   })
-  if(data?.individualEntries?.length > 0) {
+  if (data?.individualEntries?.length > 0) {
     // const attendanceEntry = data?.individualEntries[1]?.attendanceEntries
     weekTimes?.forEach(item => {
       weekDates[`${Digit.DateUtils.getDayfromTimeStamp(item)}`] = Digit.DateUtils.ConvertTimestampToDate(item, 'MMM d')
@@ -33,7 +34,7 @@ const getWeekDates = (data) => {
 
 const getWeekAttendance = (data) => {
   let weekAttendance = {}
-  if(data?.length > 0) {
+  if (data?.length > 0) {
     data.forEach(item => {
       weekAttendance[`${Digit.DateUtils.getDayfromTimeStamp(item?.time)}`] = attendanceTypes[item.attendance]
     })
@@ -41,10 +42,10 @@ const getWeekAttendance = (data) => {
   return weekAttendance
 }
 
-const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
+const getAttendanceTableData = async (data, skills, t, expenseCalculations) => {
   let tableData = {}
-  
-  if(data?.individualEntries?.length > 0) {
+
+  if (data?.individualEntries?.length > 0) {
     data?.individualEntries.forEach((item, index) => {
       let tableRow = {}
       tableRow.id = item.id
@@ -52,14 +53,14 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
       tableRow.registerId = item?.additionalDetails?.userId || t("NA")
       tableRow.actualWorkingDays = item?.actualTotalAttendance || 0
       tableRow.nameOfIndividual = item?.additionalDetails?.userName || t("NA")
-      tableRow.guardianName = item?.additionalDetails?.fatherName  || t("NA")
-      tableRow.skill = skills[item?.additionalDetails?.skillCode]?.code || t("NA")
+      tableRow.guardianName = item?.additionalDetails?.fatherName || t("NA")
+      tableRow.skill = skills[item?.additionalDetails?.skillCode]?.description || t("NA")
       tableRow.amount = skills[item?.additionalDetails?.skillCode]?.amount * item?.actualTotalAttendance || 0
-      tableRow.modifiedAmount = expenseCalculations?.filter(data=>data?.payee?.identifier === item?.individualId)?.[0]?.lineItems?.[0]?.amount || 0;
+      tableRow.modifiedAmount = expenseCalculations?.filter(data => data?.payee?.identifier === item?.individualId)?.[0]?.lineItems?.[0]?.amount || 0;
       tableRow.modifiedWorkingDays = item?.modifiedTotalAttendance ? item?.modifiedTotalAttendance : item?.actualTotalAttendance
       tableRow.bankAccountDetails = {
-        accountNo : item?.additionalDetails?.bankDetails || t("NA"),
-        ifscCode : null
+        accountNo: item?.additionalDetails?.bankDetails || t("NA"),
+        ifscCode: null
       }
       tableRow.aadharNumber = item?.additionalDetails?.aadharNumber || t("NA")
       tableRow.attendence = getWeekAttendance(item?.attendanceEntries)
@@ -82,7 +83,7 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
     totalRow.bankAccountDetails = ""
     totalRow.aadharNumber = ""
     totalRow.attendence = { Sun: 0, Sat: 0, Fri: 0, Thu: 0, Wed: 0, Tue: 0, Mon: 0 }
-            
+
     tableData['total'] = totalRow
   }
   return tableData
@@ -91,20 +92,20 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
 const transformViewDataToApplicationDetails = async (t, data, skills) => {
 
   const expenseCalculatorPayload = {
-    criteria : {
+    criteria: {
       "tenantId": data?.musterRolls?.[0]?.tenantId,
-      "musterRollId": [ data?.musterRolls?.[0]?.id ]
+      "musterRollId": [data?.musterRolls?.[0]?.id]
     }
   }
 
-  let expenseCalculationsResponse  =  await WorksService.fetchEstimateExpenseCalculator(expenseCalculatorPayload);
+  let expenseCalculationsResponse = await WorksService.fetchEstimateExpenseCalculator(expenseCalculatorPayload);
   let expenseCalculations = expenseCalculationsResponse?.calculation?.estimates?.[0]?.calcDetails;
 
-  if(data?.musterRolls?.length === 0) throw new Error('No data found');
-  
+  if (data?.musterRolls?.length === 0) throw new Error('No data found');
+
   const musterRoll = data.musterRolls[0]
   const attendanceTableData = await getAttendanceTableData(musterRoll, skills, t, expenseCalculations)
-  
+
   const totalAmount = expenseCalculationsResponse?.calculation?.totalAmount;
   const weekDates = getWeekDates(musterRoll)
   const registrationDetails = {
@@ -124,35 +125,76 @@ const transformViewDataToApplicationDetails = async (t, data, skills) => {
 
   return {
     applicationDetails,
-    applicationData: {totalAmount,...musterRoll},
+    applicationData: { totalAmount, ...musterRoll },
   }
 };
 
 const workflowDataDetails = async (tenantId, businessIds) => {
-    const response = await Digit.WorkflowService.getByBusinessId(tenantId, businessIds);
-    return response
+  const response = await Digit.WorkflowService.getByBusinessId(tenantId, businessIds);
+  return response
 }
 
 const getWageSeekerSkills = async (data) => {
-  const skills = {}
-  const skillResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "common-masters", [{"name": "WageSeekerSkills"}])
-  const labourChangesResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "expense", [{"name": "LabourCharges"}])
-  skillResponse?.['common-masters']?.WageSeekerSkills.forEach(item => {
-    let amount = labourChangesResponse?.["expense"]?.LabourCharges?.find(charge => charge?.code === item?.code && charge?.effectiveFrom < data?.musterRolls?.[0]?.auditDetails?.createdTime && (charge?.effectiveTo == null || charge?.effectiveTo > data?.musterRolls?.[0]?.auditDetails?.createdTime))?.amount
-    let skillWithAmount = {...item, amount}
-    skills[item.code] = skillWithAmount
-  })
-  return skills
-}
+  const tenantId = Digit.ULBService.getStateId();
+  const skills = {};
+  console.log(data, " ddddddddddddddddddd")
+  // const skillCode = data?.musterRolls?.[0]?.additionalDetails?.skillCode;
+  // console.log(skillCode, " skkkkkkkkkkkkkkkkkkkkkkkkk")
+
+  const requestCriteria = {
+    url: "/mdms-v2/v1/_search",
+    body: {
+      MdmsCriteria: {
+        tenantId: tenantId,
+        moduleDetails: [
+          {
+            moduleName: "WORKS-SOR",
+            masterDetails: [
+              {
+                name: "SOR"
+                //filter: `$[?((@.description=~/.*${searchText}.*/i || @.id=~/.*${searchText}.*/i )&& @.sorType == '${stateData?.SORType}' ${subtypeCondition}  ${variantCondition})]`,
+              },
+            ],
+          },
+        ],
+      },
+    },
+  };
+  console.log(requestCriteria, " rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+ // const { isLoading: isSkillsLoading, data: skillResponse } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+ let skillResponse = await Digit.CustomService.getResponse(requestCriteria)
+  console.log(skillResponse, " ssssssssssssssssssssssssssssssssssrrrrrrrrrrrrrrrrrrrrrrrr")
+  
+
+  // Check if the response contains the necessary data and extract descriptions
+  if (skillResponse?.MdmsRes?.['WORKS-SOR']?.SOR) {
+    skillResponse.MdmsRes['WORKS-SOR'].SOR.forEach(skill => {
+      skills[skill.id] = { description: skill.description };
+    });
+  }
+  return skills;
+};
+
+// const getWageSeekerSkills = async (data) => {
+//   const skills = {}
+//   const skillResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "common-masters", [{"name": "WageSeekerSkills"}])
+//   const labourChangesResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "expense", [{"name": "LabourCharges"}])
+//   skillResponse?.['common-masters']?.WageSeekerSkills.forEach(item => {
+//     let amount = labourChangesResponse?.["expense"]?.LabourCharges?.find(charge => charge?.code === item?.code && charge?.effectiveFrom < data?.musterRolls?.[0]?.auditDetails?.createdTime && (charge?.effectiveTo == null || charge?.effectiveTo > data?.musterRolls?.[0]?.auditDetails?.createdTime))?.amount
+//     let skillWithAmount = {...item, amount}
+//     skills[item.code] = skillWithAmount
+//   })
+//   return skills
+// }
 
 export const fetchAttendanceDetails = async (t, tenantId, searchParams) => {
   try {
     const response = await AttendanceService.search(tenantId, searchParams);
     // const workflowDetails = await workflowDataDetails(tenantId, searchParams.musterRollNumber);
     const skills = await getWageSeekerSkills(response)
-    
+
     return transformViewDataToApplicationDetails(t, response, skills)
   } catch (error) {
-      throw new Error(error?.response?.data?.Errors[0].message);
+    throw new Error(error?.response?.data?.Errors[0].message);
   }
 };
