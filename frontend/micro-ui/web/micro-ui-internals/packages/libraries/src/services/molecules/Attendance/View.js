@@ -53,7 +53,7 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
       tableRow.actualWorkingDays = item?.actualTotalAttendance || 0
       tableRow.nameOfIndividual = item?.additionalDetails?.userName || t("NA")
       tableRow.guardianName = item?.additionalDetails?.fatherName  || t("NA")
-      tableRow.skill = skills[item?.additionalDetails?.skillCode]?.code || t("NA")
+      tableRow.skill = skills[item?.additionalDetails?.skillCode]?.description || t("NA")
       tableRow.amount = skills[item?.additionalDetails?.skillCode]?.amount * item?.actualTotalAttendance || 0
       tableRow.modifiedAmount = expenseCalculations?.filter(data=>data?.payee?.identifier === item?.individualId)?.[0]?.lineItems?.[0]?.amount || 0;
       tableRow.modifiedWorkingDays = item?.modifiedTotalAttendance ? item?.modifiedTotalAttendance : item?.actualTotalAttendance
@@ -134,16 +134,49 @@ const workflowDataDetails = async (tenantId, businessIds) => {
 }
 
 const getWageSeekerSkills = async (data) => {
-  const skills = {}
-  const skillResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "common-masters", [{"name": "WageSeekerSkills"}])
-  const labourChangesResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "expense", [{"name": "LabourCharges"}])
-  skillResponse?.['common-masters']?.WageSeekerSkills.forEach(item => {
-    let amount = labourChangesResponse?.["expense"]?.LabourCharges?.find(charge => charge?.code === item?.code && charge?.effectiveFrom < data?.musterRolls?.[0]?.auditDetails?.createdTime && (charge?.effectiveTo == null || charge?.effectiveTo > data?.musterRolls?.[0]?.auditDetails?.createdTime))?.amount
-    let skillWithAmount = {...item, amount}
-    skills[item.code] = skillWithAmount
-  })
-  return skills
-}
+  const tenantId = Digit.ULBService.getStateId();
+  const skills = {};
+
+  const requestCriteria = {
+    url: "/mdms-v2/v1/_search",
+    body: {
+      MdmsCriteria: {
+        tenantId: tenantId,
+        moduleDetails: [
+          {
+            moduleName: "WORKS-SOR",
+            masterDetails: [
+              {
+                name: "SOR"
+              },
+            ],
+          },
+        ],
+      },
+    },
+  };
+ let skillResponse = await Digit.CustomService.getResponse(requestCriteria)
+
+
+  if (skillResponse?.MdmsRes?.['WORKS-SOR']?.SOR) {
+    skillResponse.MdmsRes['WORKS-SOR'].SOR.forEach(skill => {
+      skills[skill.id] = { description: skill.description };
+    });
+  }
+  return skills;
+};
+
+// const getWageSeekerSkills = async (data) => {
+//   const skills = {}
+//   const skillResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "common-masters", [{"name": "WageSeekerSkills"}])
+//   const labourChangesResponse = await Digit.MDMSService.getMultipleTypesWithFilter(Digit.ULBService.getStateId(), "expense", [{"name": "LabourCharges"}])
+//   skillResponse?.['common-masters']?.WageSeekerSkills.forEach(item => {
+//     let amount = labourChangesResponse?.["expense"]?.LabourCharges?.find(charge => charge?.code === item?.code && charge?.effectiveFrom < data?.musterRolls?.[0]?.auditDetails?.createdTime && (charge?.effectiveTo == null || charge?.effectiveTo > data?.musterRolls?.[0]?.auditDetails?.createdTime))?.amount
+//     let skillWithAmount = {...item, amount}
+//     skills[item.code] = skillWithAmount
+//   })
+//   return skills
+// }
 
 export const fetchAttendanceDetails = async (t, tenantId, searchParams) => {
   try {
