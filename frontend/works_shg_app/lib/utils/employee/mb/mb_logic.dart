@@ -640,8 +640,15 @@ class MBLogic {
           'description': measure.description,
           'comments': measure.comments,
           'targetId': measure.targetId,
-          'breadth': measure.breadth,
-          'length': measure.length,
+          //TODO:[if the numItems is o.o then breath and height and length should be 0.0 and if numItems morethan 0.0 then length,breath and height should be 1]
+          // start of old code clean working
+          // 'breadth':measure.numItems==0.0?0.0: measure.breadth,
+          // 'length':measure.numItems==0.0?0.0: measure.length,
+          // 'height':measure.numItems==0.0?0.0:measure.height,
+          // end of old code clean working
+          'breadth':measure.numItems==0.0?0.0: 1.0,
+          'length':measure.numItems==0.0?0.0: 1.0,
+          'height':measure.numItems==0.0?0.0:1.0,
           'isActive': measure.isActive,
           'referenceId': measure.referenceId,
           'numItems': measure.numItems,
@@ -652,16 +659,7 @@ class MBLogic {
             'type': measure.measureAdditionalDetails?.type,
             'mbAmount': measure.measureAdditionalDetails?.mbAmount,
             'measureLineItems':
-                measure.measureAdditionalDetails!.measureLineItems?.map((item) {
-              return {
-                'width': item.width,
-                'height': item.height,
-                'length': item.length,
-                'number': item.number,
-                'quantity': item.quantity,
-                'measurelineitemNo': item.measurelineitemNo,
-              };
-            }).toList(),
+                measureListFilter(measure),
           },
         };
       }).toList(),
@@ -917,6 +915,46 @@ class MBLogic {
       return data==null?null:data['musterRollNumber'];
     }
   }
+
+
+static List<dynamic> measureListFilter(Measure measure){
+
+//  final List<Map<String,dynamic>?> ?data=measure.measureAdditionalDetails!.measureLineItems?.map((item) {
+//                   if(item.number!=0&&item.width!=0&&item.height!=0&&item.length!=0&&item.quantity!=0){
+//               return {
+//                 'width': item.width,
+//                 'height': item.height,
+//                 'length': item.length,
+//                 'number': item.number,
+//                 'quantity': item.quantity,
+//                 'measurelineitemNo': item.measurelineitemNo,
+//               };
+//                   }
+//             }).toList();
+final List<Map<String, dynamic>>? data = measure.measureAdditionalDetails?.measureLineItems?.map((item) {
+  if (item.number != 0 && item.width != 0 && item.height != 0 && item.length != 0 && item.quantity != 0) {
+    return {
+      'width': item.width,
+      'height': item.height,
+      'length': item.length,
+      'number': item.number,
+      'quantity': item.quantity,
+      'measurelineitemNo': item.measurelineitemNo,
+    };
+  }
+  return null;
+}).where((element) => element != null).toList()?.cast<Map<String, dynamic>>();
+
+            if (data==null || data.isEmpty) {
+              return [];
+              
+            } else {
+              return data;
+            }
+
+  
+}
+
 }
 
 class TotalEstimate {

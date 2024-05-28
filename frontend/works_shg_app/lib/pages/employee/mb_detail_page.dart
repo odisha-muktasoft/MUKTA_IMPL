@@ -269,7 +269,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   // amount: sorprice.toString(),
                                   amount: value.data.first.totalAmount != null
                                       ? value.data.first.totalAmount!
-                                          .toDouble()
+                                          .roundToDouble()
                                           .toStringAsFixed(2)
                                       : "0.00",
                                   openButtonSheet: () {
@@ -371,7 +371,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   // amount: sorprice.toString(),
                                   amount: value.data.first.totalAmount != null
                                       ? value.data.first.totalAmount!
-                                          .toDouble()
+                                          .roundToDouble()
                                           .toStringAsFixed(2)
                                       : "0.00",
                                   openButtonSheet: () {
@@ -1388,7 +1388,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                mbAmount!.toDouble().toStringAsFixed(2),
+                                mbAmount!.roundToDouble().toStringAsFixed(2),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),
@@ -1432,21 +1432,31 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                             );
                           } else {
-                            String show = "";
-                            if (workorderStatus != "ACTIVE") {
-                              show = "time extension";
-                            } else if (estimateStatus == "INWORKFLOW") {
-                              show = "estimate revision";
-                            } else {
-                              show = "existing MB";
-                            }
-
-                            //TODO:[localization change]
-                            Notifiers.getToastMessage(
-                                context,
-                                "MB can not be created as the $show in progress",
-                                'ERROR');
+                             if (workorderStatus != "ACTIVE") {
+                                        Notifiers.getToastMessage(
+                                            context,
+                                            t.translate(i18
+                                                .workOrder.timeExtensionError),
+                                            'ERROR');
+                                      } else if (estimateStatus ==
+                                          "INWORKFLOW") {
+                                        Notifiers.getToastMessage(
+                                            context,
+                                            t.translate(i18.workOrder
+                                                .estimateRevisionError),
+                                            'ERROR');
+                                      } else {
+                                        Notifiers.getToastMessage(
+                                            context,
+                                            t.translate(i18.workOrder
+                                                .existingMBCreateError),
+                                            'ERROR');
+                                      }
                           }
+                                      // Notifiers.getToastMessage(
+                                      //     context,
+                                      //     "MB can not be created as the $show in progress",
+                                      //     'ERROR');
                         }
 
 // before

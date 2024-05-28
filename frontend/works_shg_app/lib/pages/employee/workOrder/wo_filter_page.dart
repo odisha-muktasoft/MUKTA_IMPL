@@ -184,7 +184,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                       "orgIds": selectedOrgId != null
                                           ? [selectedOrgId]
                                           : [],
-                                      "wfStatus": ["ACCEPTED"],
+                                      "wfStatus": ["ACCEPTED","APPROVED"],
                                       "pagination": {
                                         "limit": "10",
                                         "offSet": 0,

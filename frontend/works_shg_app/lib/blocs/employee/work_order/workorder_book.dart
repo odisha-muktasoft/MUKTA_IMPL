@@ -57,7 +57,7 @@ class WorkOrderInboxBloc
                     GlobalVariables
                         .organisationListModel!.organisations!.first.tenantId,
                 "orgIds": [],
-                "wfStatus": ["ACCEPTED"],
+                "wfStatus": ["ACCEPTED","APPROVED"],
                 "pagination": {
                   "limit": "10",
                   "offSet": event.offset.toString(),
@@ -169,7 +169,7 @@ class WorkOrderInboxBloc
                 .organisationListModel!.organisations!.first.tenantId,
         "contractNumber": event.contractNumber,
         "orgIds": [],
-        "wfStatus": ["ACCEPTED"],
+        "wfStatus": ["ACCEPTED","APPROVED"],
         "pagination": {
           "limit": "10",
           "offSet": event.offset.toString(),

@@ -100,22 +100,33 @@ class MeasurementDetailBloc
                               ['lastModifiedTime'],
                         ),
                         additionalDetail: MeasurementAdditionalDetail(
-                          endDate: item['additionalDetails']==null?0:item['additionalDetails']['endDate'],
-                          sorAmount:item['additionalDetails']==null?0.0: double.parse(item['additionalDetails']
-                                      ['sorAmount']
-                                  .toString())
-                              .toDouble(),
-                          startDate: item['additionalDetails']==null?1:item['additionalDetails']['startDate'],
-                          totalAmount:item['additionalDetails']==null?0.0: double.parse(item['additionalDetails']
-                                      ['totalAmount']
-                                  .toString())
-                              .toDouble(),
-                          nonSorAmount:item['additionalDetails']==null?0.0: double.parse(item['additionalDetails']
-                                      ['nonSorAmount']
-                                  .toString())
-                              .toDouble(),
-                          musterRollNumber:item['additionalDetails']==null?null: item['additionalDetails']
-                              ['musterRollNumber'],
+                          endDate: item['additionalDetails'] == null
+                              ? 0
+                              : item['additionalDetails']['endDate'],
+                          sorAmount: item['additionalDetails'] == null
+                              ? 0.0
+                              : double.parse(item['additionalDetails']
+                                          ['sorAmount']
+                                      .toString())
+                                  .toDouble(),
+                          startDate: item['additionalDetails'] == null
+                              ? 1
+                              : item['additionalDetails']['startDate'],
+                          totalAmount: item['additionalDetails'] == null
+                              ? 0.0
+                              : double.parse(item['additionalDetails']
+                                          ['totalAmount']
+                                      .toString())
+                                  .toDouble(),
+                          nonSorAmount: item['additionalDetails'] == null
+                              ? 0.0
+                              : double.parse(item['additionalDetails']
+                                          ['nonSorAmount']
+                                      .toString())
+                                  .toDouble(),
+                          musterRollNumber: item['additionalDetails'] == null
+                              ? null
+                              : item['additionalDetails']['musterRollNumber'],
                         ),
                         measures: (item['measures'] as List)
                             .map<Measure>((e) =>

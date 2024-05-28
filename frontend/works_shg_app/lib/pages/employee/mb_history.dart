@@ -89,7 +89,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                     );
                                   },
                                   amount: value.data.first.totalAmount != null
-                                      ? value.data.first.totalAmount!
+                                      ? value.data.first.totalAmount!.roundToDouble()
                                           .toStringAsFixed(2)
                                       : "0.00",
                                   openButtonSheet: () {
@@ -361,7 +361,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                mbAmount!.toDouble().toStringAsFixed(2),
+                                mbAmount!.roundToDouble().toStringAsFixed(2),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),
