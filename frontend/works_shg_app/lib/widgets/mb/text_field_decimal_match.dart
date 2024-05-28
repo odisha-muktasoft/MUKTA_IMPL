@@ -4,24 +4,34 @@ class DecimalTextInputFormatter extends TextInputFormatter {
   final int decimalRange;
 
   DecimalTextInputFormatter({required this.decimalRange})
-      : assert(decimalRange > 0);
+      : assert(decimalRange >= 0, 'Decimal range must be non-negative');
 
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    String text = newValue.text;
-
-    if (text == '') {
+    if (newValue.text == '') {
       return newValue;
     }
 
-    // Regex to match a number with up to `decimalRange` decimal places.
-    RegExp regExp = RegExp(r'^\d*\.?\d{0,' + decimalRange.toString() + r'}$');
+    final int newTextLength = newValue.text.length;
+    final int selectionIndex = newValue.selection.end;
 
-    if (regExp.hasMatch(text)) {
-      return newValue;
+    String newText = newValue.text;
+
+    // Validate decimal places
+    if (newText.contains('.') &&
+        newText.substring(newText.indexOf('.') + 1).length > decimalRange) {
+      return oldValue;
     }
 
-    return oldValue;
+    // Prevent leading dot
+    if (newText.startsWith('.')) {
+      newText = '0$newText';
+    }
+
+    return TextEditingValue(
+      text: newText,
+      selection: TextSelection.collapsed(offset: selectionIndex),
+    );
   }
 }

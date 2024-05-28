@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
@@ -9,6 +10,7 @@ import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/mb/text_field_decimal_match.dart';
 
 class MultiLineItems extends StatefulWidget {
   final void Function(String?, dynamic) fieldValue;
@@ -164,10 +166,15 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 )
               : const SizedBox.shrink(),
           DigitTextField(
+            inputFormatter: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
+            ],
             textInputType: TextInputType.number,
             label: t.translate(i18.measurementBook.numberLabel),
-            controller: numberController..text = widget.number.toString()..selection=TextSelection.collapsed(offset: numberController.text.length
-                      ),
+            controller: numberController
+              ..text = widget.number.toString()
+              ..selection =
+                  TextSelection.collapsed(offset: numberController.text.length),
             isDisabled: widget.viewMode,
           ),
           Row(
@@ -178,12 +185,17 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
+                    inputFormatter: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d{0,4}')),
+                    ],
                     label: t.translate(i18.measurementBook.lengthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
                     controller: lengthController
-                      ..text = widget.length.toString()..selection=TextSelection.collapsed(offset: lengthController.text.length
-                      ),
+                      ..text = widget.length.toString()
+                      ..selection = TextSelection.collapsed(
+                          offset: lengthController.text.length),
                   ),
                 ),
               ),
@@ -192,11 +204,17 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
+                    inputFormatter: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d{0,4}')),
+                    ],
                     label: t.translate(i18.measurementBook.widthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: widthController..text = widget.width.toString()..selection=TextSelection.collapsed(offset: widthController.text.length
-                      ),
+                    controller: widthController
+                      ..text = widget.width.toString()
+                      ..selection = TextSelection.collapsed(
+                          offset: widthController.text.length),
                   ),
                 ),
               ),
@@ -205,21 +223,31 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
+                    inputFormatter: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d{0,4}')),
+                    ],
                     label: t.translate(i18.measurementBook.heightLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
                     controller: heightController
-                      ..text = widget.height.toString()..selection=TextSelection.collapsed(offset: heightController.text.length
-                      ),
+                      ..text = widget.height.toString()
+                      ..selection = TextSelection.collapsed(
+                          offset: heightController.text.length),
                   ),
                 ),
               ),
             ],
           ),
           DigitTextField(
+            inputFormatter: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
+            ],
             label: t.translate(i18.measurementBook.quantityLabel),
             isDisabled: true,
-            controller: quantityController..text = widget.quantity!..selection.end,
+            controller: quantityController
+              ..text = double.parse( widget.quantity!).toStringAsFixed(4)
+              ..selection.end,
           ),
         ],
       ),

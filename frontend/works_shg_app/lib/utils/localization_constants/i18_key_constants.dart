@@ -231,6 +231,11 @@ class WorkOrder {
   String get errTimeExtReqAlreadyRaised => 'ERR_TIME_EXT_REQ_ALREADY_RAISED';
   String get closureRequests => 'WORKS_CLOSURE_REQUESTS';
   String get timeExtRequests => 'WORKS_TIME_EXT_REQUESTS';
+
+  String get estimateRevisionError=>"WORKS_REVISION_ESTIMATE_IN_WORKFLOW_CREATE_MEASUREMENT";
+  String get timeExtensionError=>"WORKS_TIME_EXTENSION_IN_WORKFLOW_CREATE_MEASUREMENT";
+  String get existingMBCreateError=>"MB_EXISTING_IN_WORKFLOW_CREATE_MEASUREMENT";
+
 }
 
 class MyBills {

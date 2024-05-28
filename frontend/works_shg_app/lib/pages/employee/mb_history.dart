@@ -62,7 +62,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 return const SizedBox.shrink();
               },
               loaded: (value) {
-                final k = value.data.where((element) => element.wfStatus=="APPROVED").toList();
+                final k = value.data
+                    .where((element) => element.wfStatus == "APPROVED")
+                    .toList();
                 return Scaffold(
                   bottomNavigationBar: widget.type == MBScreen.create
                       ? const SizedBox.shrink()
@@ -86,10 +88,10 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                       ),
                                     );
                                   },
-                                  amount: value.data.first.totalAmount!
-                                      .toDouble()
-                                      .roundToDouble()
-                                      .toString(),
+                                  amount: value.data.first.totalAmount != null
+                                      ? value.data.first.totalAmount!
+                                          .toStringAsFixed(2)
+                                      : "0.00",
                                   openButtonSheet: () {
                                     _openBottomSheet(
                                         t,
@@ -168,10 +170,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            final adjustedIndex = widget.type == MBScreen.update
-                                ? index 
-                                : index ;
-                            if (adjustedIndex <=k.length) {
+                            final adjustedIndex =
+                                widget.type == MBScreen.update ? index : index;
+                            if (adjustedIndex <= k.length) {
                               return CommonMBCard(
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))}-${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
@@ -184,9 +185,10 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                               k[adjustedIndex].entryDate!)),
                                   t.translate(i18.measurementBook.mbAmount):
                                       k[adjustedIndex].totalAmount != null
-                                          ? double.parse(
-                                              (k[adjustedIndex].totalAmount!)
-                                                  .toStringAsFixed(2))
+                                          ? double.parse((k[adjustedIndex]
+                                                      .totalAmount!)
+                                                  .toString())
+                                              .toStringAsFixed(2)
                                           : '0.00',
                                   t.translate(i18.measurementBook.mbStatus):
                                       k[adjustedIndex].wfStatus,
@@ -217,7 +219,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             }
                           },
                           childCount: widget.type == MBScreen.update
-                              ? k.length 
+                              ? k.length
                               : k.length,
                         ),
                       ),
@@ -306,7 +308,10 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount!.toDouble().toStringAsFixed(2).toString(),
+                      totalNonSorAmount!
+                          .toDouble()
+                          .toStringAsFixed(2)
+                          .toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -356,7 +361,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                mbAmount!.toDouble().roundToDouble().toString(),
+                                mbAmount!.toDouble().toStringAsFixed(2),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),
