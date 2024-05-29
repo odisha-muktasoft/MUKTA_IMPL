@@ -170,9 +170,10 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                  widget.headerType == MediaType.mbConfim
-                      ? "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}"
-                      : "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                  widget.headerType == MediaType.mbConfim ||widget.headerType == MediaType.mbDetail
+                   
+                      ? "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}"
+                      : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
@@ -205,7 +206,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                         )),
                     onPressed: () => selectDocumentOrImage(),
                     child: Text(
-                      widget.headerType == MediaType.mbConfim
+                      widget.headerType == MediaType.mbConfim ||  widget.headerType == MediaType.mbDetail 
                           ? "${AppLocalizations.of(context).translate(i18.common.chooseFile)}"
                           : "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
                       //TODO:[lavel change]
