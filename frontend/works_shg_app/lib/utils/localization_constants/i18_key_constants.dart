@@ -460,6 +460,7 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbEmployee=>"MB_EMPLOYEE";
  String get mbPhotoInfo=>"MEASUREMENT_UPLOAD_BANNER_LABEL";
  String get searchHint=>"MB_SEARCH_HINT";
+ String get projectId=>"MB_PROJECT_ID";
 
 
 }
