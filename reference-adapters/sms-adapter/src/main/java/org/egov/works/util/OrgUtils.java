@@ -96,7 +96,7 @@ public class OrgUtils {
     }
 
     private StringBuilder getOrgRequestURL() {
-        return new StringBuilder(configs.getOrgHost()).append(configs.getOrgSearchPath());
+        return new StringBuilder(configs.getOrganisationServiceHost()).append(configs.getOrganisationServiceEndpoint());
 
     }
 }

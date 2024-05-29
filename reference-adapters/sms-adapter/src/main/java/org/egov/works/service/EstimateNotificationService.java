@@ -169,10 +169,10 @@ public class EstimateNotificationService {
         List<String> boundaries = new ArrayList<>();
         List<String> boundaryTypes = new ArrayList<>();
         try {
-            projectNumber = JsonPath.read(projectRes, PROJECT_NUMBER);
-            projectNames = JsonPath.read(projectRes, PROJECT_NAME);
-            boundaries = JsonPath.read(projectRes, PROJECT_BOUNDARY);
-            boundaryTypes = JsonPath.read(projectRes, PROJECT_BOUNDARY_TYPE);
+            projectNumber = JsonPath.read(projectRes, PROJECT_ID_CODE);
+            projectNames = JsonPath.read(projectRes, PROJECT_NAME_CODE);
+            boundaries = JsonPath.read(projectRes, PROJECT_BOUNDARY_CODE);
+            boundaryTypes = JsonPath.read(projectRes, PROJECT_BOUNDARY_TYPE_CODE);
 
         } catch (Exception e) {
             throw new CustomException("PARSING_ERROR", "Failed to parse project response");
