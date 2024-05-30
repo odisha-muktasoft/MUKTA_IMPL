@@ -204,7 +204,7 @@ config:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-pa"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
-    - name: "builds/mukta_impl/utilities/transformer-cronjob"
+  - name: "builds/mukta_impl/utilities/transformer-cronjob"
     build:
       - work-dir: "utilities/transformer-cronjob"
         image-name: "transformer-cronjob"
