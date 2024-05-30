@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
 
 const SORDetailsTemplate = ( props ) => {
+    //new component only
     const { t } = useTranslation();
     const [stateData, setStateData] = useState({});
     const [selectedSOR, setSelectedSOR] = useState(null);
@@ -55,10 +56,17 @@ const SORDetailsTemplate = ( props ) => {
          
         setFormValue(formData);
         setSORDetails(formData);
-        setStateData({...stateData, SORSubType:props?.config?.sorType});
+        setStateData({...stateData});
 
       setSelectedSOR(null);
     };
+
+    const remove = (row) => {
+        let newSORDetails = SORDetails?.filter((ob) => ob?.sorCode !== row?.sorCode);
+        setFormValue(newSORDetails);
+        setSORDetails(newSORDetails);
+        setStateData({...stateData});
+        }
 
     const cellContainerStyle = { display: "flex", flexDirection: "column" };
     const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
@@ -100,72 +108,115 @@ const SORDetailsTemplate = ( props ) => {
         "LABOUR" : "L"
     }
 
-    const renderBody = useMemo(() => {
-        let i = 0;
-        return SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => {
-          return (
-             (
-              <tr key={index}>
-                <td>{++i}</td>
-                
-                <td>{row?.id}</td>
+    const getStyles = (index) => {
+        let obj = {};
+        switch (index) {
+          case 1:
+            obj = { width: "1rem" };
+            break;
+          case 2:
+            obj = { width: "12rem" };
+            break;
+          case 3:
+            obj = { width: "70rem" };
+            break;
+          case 4:
+            obj = { width: "10rem" };
+            break;
+          case 5:
+            obj = { width: "15rem" };
+            break;
+          case 6:
+            obj = { width: "18rem" };
+            break;
+          case 7:
+            obj = { width: "10rem" };
+            break;
+          case 8:
+            obj = { width: "3%" };
+            break;
+          default:
+            obj = { width: "1rem" };
+            break;
+        }
+        return obj;
+      };
 
-                <td>{row?.description}</td>
+    const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
+      sno: index + 1,
+      sorCode: row?.sorCode,
+      description: row?.description,
+      uom: row?.uom,
+    }));
 
-                <td>{row?.uom}</td>
-    
-                <td /*style={getStyles(3)}*/>
-                  <div style={cellContainerStyle}>
-                    <TextInput
-                      style={{ marginBottom: "0px" }}
-                      //name={`${SORDetails[index]}.quantity`}
-                      onChange={(e) => {
-                        let newSOR = SORDetails?.map((obj) => {
-                            if(obj?.id === row?.id)
-                            return {...obj, quantity : e.target.value}
-                        })
-                        setFormValue([...newSOR]);
-                        setSORDetails([...newSOR]);
-                        
-                      }}
-                      inputRef={register({
-                        required: true,
-                        //pattern: /^[a-zA-Z0-9_ .$%@#\/ ]*$/,
-                      })}
-                      // disable={isInputDisabled(`${formFieldName}.${row.key}.name`)}
-                      disable={false}
-                    />
-                  </div>
-                  <div style={errorContainerStyles}>
-                    {/* {errors && errors?.[formFieldName]?.[row.key]?.percentage?.type === "pattern" && (
-                          <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>)}
-                      {errors && errors?.[formFieldName]?.[row.key]?.percentage?.type === "required" && (
-                          <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>)} */}
-                  </div>
-                </td>
-    
-                <td /*style={getStyles(5)}*/>
-                  <div style={cellContainerStyle}>
-                    {
-                      <span onClick={() => {}/*removeRow(row)*/} className="icon-wrapper">
-                        <DeleteIcon fill={"#FF9100"} />
-                      </span>
-                    }
-                  </div>
-                  <div style={errorContainerStyles}></div>
-                </td>
-              </tr>
-            )
-          );
-        });
-      }, [SORDetails, formData]);
+    // const renderBody = useMemo(() => {
+    //     let i = 0;
+    //     if(SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0){
+    //         return SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => {
+    //         return (
+    //             (
+    //             <tr key={index}>
+    //                 <td style={getStyles(1)}>{++i}</td>
+                    
+    //                 <td style={getStyles(3)}>{row?.sorCode}</td>
+
+    //                 <td style={getStyles(2)}>{row?.description}</td>
+
+    //                 <td style={getStyles(4)}>{row?.uom}</td>
+        
+    //                 <td style={getStyles(5)}>
+    //                 <div style={cellContainerStyle}>
+    //                     <TextInput
+    //                     style={{ marginBottom: "0px" }}
+    //                     //name={`${SORDetails[index]}.quantity`}
+    //                     onChange={(e) => {
+    //                         let newSOR = SORDetails?.map((obj) => {
+    //                             if(obj?.id === row?.id)
+    //                             return {...obj, quantity : e.target.value}
+    //                         })
+    //                         setFormValue([...newSOR]);
+    //                         setSORDetails([...newSOR]);
+                            
+    //                     }}
+    //                     inputRef={register({
+    //                         required: true,
+    //                         //pattern: /^[a-zA-Z0-9_ .$%@#\/ ]*$/,
+    //                     })}
+    //                     // disable={isInputDisabled(`${formFieldName}.${row.key}.name`)}
+    //                     disable={false}
+    //                     />
+    //                 </div>
+    //                 <div style={errorContainerStyles}>
+    //                     {/* {errors && errors?.[formFieldName]?.[row.key]?.percentage?.type === "pattern" && (
+    //                         <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>)}
+    //                     {errors && errors?.[formFieldName]?.[row.key]?.percentage?.type === "required" && (
+    //                         <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>)} */}
+    //                 </div>
+    //                 </td>
+        
+    //                 <td /*style={getStyles(5)}*/>
+    //                 <div style={cellContainerStyle}>
+    //                     {
+    //                     <span onClick={() => {}/*removeRow(row)*/} className="icon-wrapper">
+    //                         <DeleteIcon fill={"#FF9100"} />
+    //                     </span>
+    //                     }
+    //                 </div>
+    //                 <div style={errorContainerStyles}></div>
+    //                 </td>
+    //             </tr>
+    //             )
+    //         );
+    //         });
+    //     }
+    //   }, [SORDetails, formData]);
 
     return (
       <div>
         <div className="search-sor-container">
         <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
         <div className="search-sor-button"> 
-        <SearchBar stateData={{...stateData,SORType:SORTypeCodes[props?.config?.sorType]} } selectedSOR={selectedSOR} setSelectedSOR={setSelectedSOR} />
+        <SearchBar stateData={{...stateData,SORType:SORTypeCodes[props?.config?.sorType]} } selectedSOR={selectedSOR} setSelectedSOR={setSelectedSOR} placeholder={t("RA_SEARCH_BAR_PLACEHOLDER")} />
         <Button
           label={t("RA_ADD_SOR")}
           onButtonClick={buttonClick}
@@ -177,13 +228,56 @@ const SORDetailsTemplate = ( props ) => {
         <table className="table reports-table sub-work-table">
           <thead>
             <tr>
-              {columns.map((column, index) => (
+              {SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 && columns.map((column, index) => (
                 <th key={index}>{column.label}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {renderBody}
+            {/*renderBody*/}
+            {sortedRows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {columns.map((column, columnIndex) => (
+                  <td key={columnIndex} style={getStyles(columnIndex+1)}>
+                    {column?.key === "quantity" ? (
+                   <div style={cellContainerStyle}>
+                   <TextInput
+                   style={{ marginBottom: "0px" }}
+                   //name={`${SORDetails[index]}.quantity`}
+                   onChange={(e) => {
+                       let newSOR = SORDetails?.map((obj) => {
+                           if(obj?.id === row?.id)
+                           return {...obj, quantity : e.target.value}
+                       })
+                       setFormValue([...newSOR]);
+                       setSORDetails([...newSOR]);
+                       
+                   }}
+                   inputRef={register({
+                       required: true,
+                       //pattern: /^[a-zA-Z0-9_ .$%@#\/ ]*$/,
+                   })}
+                   // disable={isInputDisabled(`${formFieldName}.${row.key}.name`)}
+                   disable={false}
+                   />
+               </div>
+                    ) : (
+                      row[column.key]
+                    )}
+                  </td>
+                ))}
+                <td /*style={getStyles(5)}*/>
+                    <div style={cellContainerStyle}>
+                        {
+                        <span onClick={() => remove(row)} className="icon-wrapper">
+                            <DeleteIcon fill={"#FF9100"} />
+                        </span>
+                        }
+                    </div>
+                    <div style={errorContainerStyles}></div>
+                </td>
+              </tr>
+            ))}
           </tbody>
           </table>
         {showToast?.show && (
