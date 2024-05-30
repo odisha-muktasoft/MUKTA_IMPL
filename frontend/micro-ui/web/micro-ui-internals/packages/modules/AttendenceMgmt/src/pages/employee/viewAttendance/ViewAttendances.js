@@ -78,7 +78,7 @@ const ViewAttendance = () => {
         ])
     }, [data])
 
-  if(isLoading || approverLoading || isMbValidationLoading) return <Loader />
+  if(isLoading || approverLoading /*|| isMbValidationLoading*/ ) return <Loader />
   return (
     <React.Fragment>
       <div className={"employee-application-details"} >
