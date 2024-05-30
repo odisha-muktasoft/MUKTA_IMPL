@@ -10,12 +10,16 @@ import EmployeeApp from "./pages/employee"
 // import MeasurementHistory from "./components/MBHistoryTable";
 
 import ViewRateAnalysis from "./pages/employee/ViewRateAnalysis";
+import CreateRateAnalysis from "./pages/employee/CreateRateAnalysis";
+import SORDetailsTemplate from "./components/SORDetailsTemplate";
+import searchSor from "../../Estimate/src/pageComponents/searchSor";
+import ExtraCharges from "./components/ExtraCharges";
 
 const RateAnalysisModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
   const language = Digit.StoreData.getCurrentLanguage();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const moduleCode = ["measurement", "common-masters", "workflow", tenantId];
+  const moduleCode = ["rateanalysis", "common-masters", "workflow", tenantId];
   const { isLoading, data: store } = Digit.Services.useStore({
     stateCode,
     moduleCode,
@@ -39,6 +43,10 @@ const componentsToRegister = {
   // MeasurementHistory
   ViewRateAnalysis,
   RateAnalysisModule,
+  CreateRateAnalysis,
+  SORDetailsTemplate,
+  searchSor,
+  ExtraCharges
 };
 
 export const initRateAnalysisComponents = () => {

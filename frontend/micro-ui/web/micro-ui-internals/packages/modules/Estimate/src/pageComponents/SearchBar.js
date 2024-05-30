@@ -15,7 +15,7 @@ const SearchBar = (props) => {
       url: "/mdms-v2/v1/_search",
       body: {
         MdmsCriteria: {
-          tenantId: tenantId,
+          tenantId: props?.placeholder ? tenantId?.split(".")[0] : tenantId,
           moduleDetails: [
             {
               moduleName: "WORKS-SOR",
@@ -77,7 +77,7 @@ const SearchBar = (props) => {
 
   return (
     <div className={"search-bar-sor"}>
-      <TextInput type="text" name={"Search"} placeholder="Type any SOR description..." value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
+      <TextInput type="text" name={"Search"} placeholder={props?.placeholder ? props?.placeholder : "Type any SOR description..."} value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
       {suggestions?.length > 0 && (
       <ul
         className="suggestions-sor" style={{zIndex:"100", maxHeight:"33rem", overflow:"auto"}}

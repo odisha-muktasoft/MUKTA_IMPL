@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { PrivateRoute, BreadCrumb } from "@egovernments/digit-ui-react-components";
 import { Switch, useLocation } from "react-router-dom";
 import ViewRateAnalysis from "./ViewRateAnalysis";
+import CreateRateAnalysis from "./CreateRateAnalysis";
 
 const RateAnalysisBreadCumbs = ({ location }) => {
   const { t } = useTranslation();
@@ -16,9 +17,9 @@ const RateAnalysisBreadCumbs = ({ location }) => {
     },
 
     {
-      path: `/${window.contextPath}/employee/contracts/create-time-extension-response`,
-      content: fromScreen ? `${t(fromScreen)} / ${t("BREAD_TE_RESPONSE")}` : t("BREAD_TE_RESPONSE"),
-      show: location.pathname.includes("/contracts/create-time-extension-response") ? true : false,
+      path: `/${window.contextPath}/employee/rateanalysis/create-rate-analysis`,
+      content: fromScreen ? `${t(fromScreen)} / ${t("RA_CREATE_RA")}` : t("RA_CREATE_RA"),
+      show: location.pathname.includes("/rateanalysis/create-rate-analysis") ? true : false,
       isBack: fromScreen && true,
     },
   ];
@@ -40,7 +41,7 @@ const App = ({ path }) => {
   
       switch (true) {
         case screenType?.includes("/create"):
-          return { marginLeft: "0px" };
+          return { marginLeft: "1rem" };
   
         case screenType?.includes("/view"):
           return { marginLeft: "4px" };
@@ -70,6 +71,7 @@ const App = ({ path }) => {
             </div>
   
             <PrivateRoute path={`${path}/view-rate-analysis`} component={() => <ViewRateAnalysis />} />
+            <PrivateRoute path={`${path}/create-rate-analysis`} component={() => <CreateRateAnalysis />} />
   
            {/* <PrivateRoute path={`${path}/search-contract`} component={() => <SearchContractDetails />} />
             <PrivateRoute path={`${path}/contract-details`} component={() => <ViewContractDetails />} />
