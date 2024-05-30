@@ -155,19 +155,30 @@ class MBLogic {
                   lastModifiedTime: item['auditDetails']['lastModifiedTime'],
                 ),
                 additionalDetail: MeasurementAdditionalDetail(
-                  endDate: item['additionalDetails']==null?0:item['additionalDetails']['endDate'],
-                  sorAmount:item['additionalDetails']==null?0.0: double.parse(
-                          item['additionalDetails']['sorAmount'].toString())
-                      .toDouble(),
-                  startDate: item['additionalDetails']==null?1:item['additionalDetails']['startDate'],
-                  totalAmount:item['additionalDetails']==null?0.0: double.parse(
-                          item['additionalDetails']['totalAmount'].toString())
-                      .toDouble(),
-                  nonSorAmount:item['additionalDetails']==null?0.0: double.parse(
-                          item['additionalDetails']['nonSorAmount'].toString())
-                      .toDouble(),
-                  musterRollNumber: item['additionalDetails']==null?null:item['additionalDetails']
-                      ['musterRollNumber'],
+                  endDate: item['additionalDetails'] == null
+                      ? 0
+                      : item['additionalDetails']['endDate'],
+                  sorAmount: item['additionalDetails'] == null
+                      ? 0.0
+                      : double.parse(
+                              item['additionalDetails']['sorAmount'].toString())
+                          .toDouble(),
+                  startDate: item['additionalDetails'] == null
+                      ? 1
+                      : item['additionalDetails']['startDate'],
+                  totalAmount: item['additionalDetails'] == null
+                      ? 0.0
+                      : double.parse(item['additionalDetails']['totalAmount']
+                              .toString())
+                          .toDouble(),
+                  nonSorAmount: item['additionalDetails'] == null
+                      ? 0.0
+                      : double.parse(item['additionalDetails']['nonSorAmount']
+                              .toString())
+                          .toDouble(),
+                  musterRollNumber: item['additionalDetails'] == null
+                      ? null
+                      : item['additionalDetails']['musterRollNumber'],
                 ),
                 measures: (item['measures'] as List)
                     .map<Measure>(
@@ -302,6 +313,7 @@ class MBLogic {
                 contractLineItemRef: e.contractLineItemRef,
                 unitRate: e.unitRate,
                 status: e.status,
+                wfStatus: mb.contract?.wfStatus,
                 estimates: getEstimate(e.estimateLineItemId!, mb));
 
         return filteredMeasurementsContract;
@@ -314,12 +326,16 @@ class MBLogic {
 
   static List<FilteredMeasurementsEstimate> getEstimate(
       String contractLineItemRef, MBDetailResponse mb) {
-    final alldata = mb.estimate?.estimateDetails?.map((e) {
+    final alldata = mb.estimate?.estimateDetails?.mapIndexed((index, e) {
       if (e.id == contractLineItemRef) {
         FilteredMeasurementsEstimate filteredMeasurementsEstimate =
             FilteredMeasurementsEstimate(
           id: e.id,
-          sorId: e.sorId,
+          //TODO:[hard code for non-sor id 45 then we are changing it to other mumber]
+          // previous code
+//sorId: e.sorId,
+          //end of it
+          sorId: e.sorId == "45" ? (index + 1).toString() : e.sorId,
           category: e.category,
           name: e.name,
           description: e.description,
@@ -337,6 +353,8 @@ class MBLogic {
               ? e.quantity!.toDouble()
               : e.noOfunit!.toDouble(),
           isDeduction: e.isDeduction,
+          status: mb.estimate?.status,
+          wfStatus: mb.estimate?.wfStatus,
         );
 
         return filteredMeasurementsEstimate;
@@ -646,9 +664,9 @@ class MBLogic {
           // 'length': measure.length,
           // 'height':measure.height,
           // end of old code clean working
-          'breadth':measure.numItems==0.0?0.0: 1.0,
-          'length':measure.numItems==0.0?0.0: 1.0,
-          'height':measure.numItems==0.0?0.0:1.0,
+          'breadth': measure.numItems == 0.0 ? 0.0 : 1.0,
+          'length': measure.numItems == 0.0 ? 0.0 : 1.0,
+          'height': measure.numItems == 0.0 ? 0.0 : 1.0,
           'isActive': measure.isActive,
           'referenceId': measure.referenceId,
           'numItems': measure.numItems,
@@ -658,8 +676,7 @@ class MBLogic {
           'additionalDetails': {
             'type': measure.measureAdditionalDetails?.type,
             'mbAmount': measure.measureAdditionalDetails?.mbAmount,
-            'measureLineItems':
-                measureListFilter(measure),
+            'measureLineItems': measureListFilter(measure),
           },
         };
       }).toList(),
@@ -891,8 +908,6 @@ class MBLogic {
     }).toList();
   }
 
-  
-
   static String? convertList(List<dynamic> dynamicList, int? id) {
     List<Map<String, dynamic>> convertedList = [];
 
@@ -907,18 +922,15 @@ class MBLogic {
     if (id == null) {
       return null;
     } else {
-     
+      Map<String, dynamic>? data = {};
+      data = convertedList.firstWhereOrNull(
+          (element) => int.parse(element['startDate'].toString()) == id);
 
-       Map<String,dynamic>? data={};
-      data= convertedList.firstWhereOrNull((element) => int.parse( element['startDate'].toString())==id);
-
-      return data==null?null:data['musterRollNumber'];
+      return data == null ? null : data['musterRollNumber'];
     }
   }
 
-
-static List<dynamic> measureListFilter(Measure measure){
-
+  static List<dynamic> measureListFilter(Measure measure) {
 //  final List<Map<String,dynamic>?> ?data=measure.measureAdditionalDetails!.measureLineItems?.map((item) {
 //                   if(item.number!=0&&item.width!=0&&item.height!=0&&item.length!=0&&item.quantity!=0){
 //               return {
@@ -931,30 +943,35 @@ static List<dynamic> measureListFilter(Measure measure){
 //               };
 //                   }
 //             }).toList();
-final List<Map<String, dynamic>>? data = measure.measureAdditionalDetails?.measureLineItems?.map((item) {
-  if (item.number != 0 && item.width != 0 && item.height != 0 && item.length != 0 && item.quantity != 0) {
-    return {
-      'width': item.width,
-      'height': item.height,
-      'length': item.length,
-      'number': item.number,
-      'quantity': item.quantity,
-      'measurelineitemNo': item.measurelineitemNo,
-    };
+    final List<Map<String, dynamic>>? data =
+        measure.measureAdditionalDetails?.measureLineItems
+            ?.map((item) {
+              if (item.number != 0 &&
+                  item.width != 0 &&
+                  item.height != 0 &&
+                  item.length != 0 &&
+                  item.quantity != 0) {
+                return {
+                  'width': item.width,
+                  'height': item.height,
+                  'length': item.length,
+                  'number': item.number,
+                  'quantity': item.quantity,
+                  'measurelineitemNo': item.measurelineitemNo,
+                };
+              }
+              return null;
+            })
+            .where((element) => element != null)
+            .toList()
+            ?.cast<Map<String, dynamic>>();
+
+    if (data == null || data.isEmpty) {
+      return [];
+    } else {
+      return data;
+    }
   }
-  return null;
-}).where((element) => element != null).toList()?.cast<Map<String, dynamic>>();
-
-            if (data==null || data.isEmpty) {
-              return [];
-              
-            } else {
-              return data;
-            }
-
-  
-}
-
 }
 
 class TotalEstimate {

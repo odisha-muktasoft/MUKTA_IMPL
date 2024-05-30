@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_check.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/work_orders/work_order_pdf.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -121,47 +123,94 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
         ),
         drawer: DrawerWrapper(
             Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
-        bottomNavigationBar: BlocBuilder<SearchIndividualWorkBloc,
-              SearchIndividualWorkState>(
+        bottomNavigationBar:
+            BlocBuilder<SearchIndividualWorkBloc, SearchIndividualWorkState>(
           builder: (context, state) {
+            return state.maybeMap(
+                orElse: () => const SizedBox.shrink(),
+                loaded: (value) => GlobalVariables.roleType == RoleType.employee
+                    ? BlocListener<MeasurementCheckBloc, MeasurementCheckState>(
+                        listener: (context, measureMentState) {
+                          measureMentState.maybeMap(
+                            orElse: () => const SizedBox.shrink(),
+                            loaded: (value) {
+                              if (value.estimateStatus == true &&
+                                  value.workOrderStatus == true &&
+                                  value.existingMB == true) {
+                                context.router.push(MBDetailRoute(
+                                  contractNumber: value.workOrderNumber ?? "",
+                                  mbNumber: "",
+                                  tenantId: GlobalVariables.tenantId,
+                                  type: MBScreen.create,
+                                ));
+                              } else {
+                                if (value.workOrderStatus == false) {
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                          i18.workOrder.timeExtensionError),
+                                      'ERROR');
+                                } else if (value.estimateStatus == false) {
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                          i18.workOrder.estimateRevisionError),
+                                      'ERROR');
+                                } else {
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                          i18.workOrder.existingMBCreateError),
+                                      'ERROR');
+                                }
+                                // Notifiers.getToastMessage(
+                                //     context,
+                                //     "MB can not be created as the $show in progress",
+                                //     'ERROR');
+                              }
+                            },
+                          );
 
-            return state.maybeMap(orElse:() => const SizedBox.shrink(),
-            loaded: (value) => 
-             GlobalVariables.roleType == RoleType.employee
-          
-            ?  SizedBox(
-                height: 60,
-                child: DigitCard(
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.all(0),
-                  child: DigitElevatedButton(
-                    onPressed: () {
-                      context.router.push(MBDetailRoute(
-                        contractNumber: widget.contractNumber!,
-                        mbNumber: "",
-                        tenantId: GlobalVariables.tenantId,
-                        type: MBScreen.create,
-                      ));
-                    },
-                    child: Center(
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 4.0, horizontal: 4.0),
-                          child: Text(t.translate(i18.measurementBook.createMb),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                                color:
-                                    DigitTheme.instance.colorScheme.onPrimary,
-                              ))),
-                    ),
-                  ),
-                ),
-              )
-            : cboBottomNavigationBar(t)
-            );
-            },
+                          // TODO: implement listener
+                        },
+                        child: SizedBox(
+                          height: 60,
+                          child: DigitCard(
+                            padding: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(0),
+                            child: DigitElevatedButton(
+                              onPressed: () {
+                               
+                                context
+                                    .read<MeasurementCheckBloc>()
+                                    .add(MeasurementCheckEvent(
+                                      tenantId: GlobalVariables.tenantId!,
+                                      contractNumber: widget.contractNumber!,
+                                      measurementNumber: "",
+                                      screenType: MBScreen.create,
+                                    ));
+                              },
+                              child: Center(
+                                child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 4.0),
+                                    child: Text(
+                                        t.translate(
+                                            i18.measurementBook.createMb),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16,
+                                          color: DigitTheme
+                                              .instance.colorScheme.onPrimary,
+                                        ))),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : cboBottomNavigationBar(t));
+          },
         ),
         body: GlobalVariables.roleType == RoleType.employee
             ? empScrollableContent(t)

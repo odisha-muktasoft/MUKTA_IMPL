@@ -19,6 +19,7 @@ import 'package:works_shg_app/blocs/attendance/search_projects/search_projects.d
 import 'package:works_shg_app/blocs/attendance/skills/skills_bloc.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
 import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
+import 'package:works_shg_app/blocs/employee/mb/mb_check.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/muster_rolls/create_muster.dart';
 import 'package:works_shg_app/blocs/muster_rolls/muster_roll_estimate.dart';
@@ -198,6 +199,7 @@ class _MainApplicationState extends State<MainApplication> {
 
     return MultiBlocProvider(
       providers: [
+         BlocProvider(create:(context)=>MeasurementCheckBloc()),
 
         BlocProvider(create:(context)=>EstimateBloc()),
         BlocProvider(

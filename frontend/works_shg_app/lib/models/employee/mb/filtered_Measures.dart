@@ -77,6 +77,7 @@ class FilteredMeasurementsContract with _$FilteredMeasurementsContract {
       String ?   contractLineItemRef,
        double?   unitRate,
         String?  status,
+        String? wfStatus,
         ContractAdditionalDetails? contractAdditionalDetails,
          List<FilteredMeasurementsEstimate>? estimates 
   }) = _FilteredMeasurementsContract;
@@ -106,6 +107,8 @@ class FilteredMeasurementsEstimate with _$FilteredMeasurementsEstimate {
     dynamic height,
     dynamic quantity,
     bool? isDeduction,
+    String? wfStatus,
+    String? status,
   }) = _FilteredMeasurementsEstimate;
 
   factory FilteredMeasurementsEstimate.fromJson(

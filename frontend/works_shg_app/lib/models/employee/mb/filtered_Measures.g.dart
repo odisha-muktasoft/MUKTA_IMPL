@@ -104,6 +104,7 @@ _$_FilteredMeasurementsContract _$$_FilteredMeasurementsContractFromJson(
       contractLineItemRef: json['contractLineItemRef'] as String?,
       unitRate: (json['unitRate'] as num?)?.toDouble(),
       status: json['status'] as String?,
+      wfStatus: json['wfStatus'] as String?,
       contractAdditionalDetails: json['contractAdditionalDetails'] == null
           ? null
           : ContractAdditionalDetails.fromJson(
@@ -122,6 +123,7 @@ Map<String, dynamic> _$$_FilteredMeasurementsContractToJson(
       'contractLineItemRef': instance.contractLineItemRef,
       'unitRate': instance.unitRate,
       'status': instance.status,
+      'wfStatus': instance.wfStatus,
       'contractAdditionalDetails': instance.contractAdditionalDetails,
       'estimates': instance.estimates,
     };
@@ -142,6 +144,8 @@ _$_FilteredMeasurementsEstimate _$$_FilteredMeasurementsEstimateFromJson(
       height: json['height'],
       quantity: json['quantity'],
       isDeduction: json['isDeduction'] as bool?,
+      wfStatus: json['wfStatus'] as String?,
+      status: json['status'] as String?,
     );
 
 Map<String, dynamic> _$$_FilteredMeasurementsEstimateToJson(
@@ -160,4 +164,6 @@ Map<String, dynamic> _$$_FilteredMeasurementsEstimateToJson(
       'height': instance.height,
       'quantity': instance.quantity,
       'isDeduction': instance.isDeduction,
+      'wfStatus': instance.wfStatus,
+      'status': instance.status,
     };

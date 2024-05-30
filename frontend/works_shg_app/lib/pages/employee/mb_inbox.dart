@@ -82,7 +82,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   businessService: "MB",
                   limit: 10,
                   moduleName: 'measurement-module',
-                  offset: s,
+                  offset: value.data['inbox']!['offset']+10,
                   tenantId: GlobalVariables.tenantId!,
                 ),
               );
@@ -205,6 +205,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
+                                          setState(() {
+                                            pageCount = 0;
+                                          });
                                           context.router
                                               .push(const MBFilterRoute());
                                         },
@@ -448,8 +451,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                   ?.measurementAdditionalDetail
                                                   ?.totalAmount
                                                   ?.roundToDouble()
-                                                  .toString() ??
-                                              "0.0"
+                                                  .toStringAsFixed(2) ??
+                                              "0.00"
                                     },
                                     show: true,
                                     sla: mbInboxResponse
