@@ -145,7 +145,7 @@ public class EstimateNotificationService {
 
 
         // fetch project details - project name and location
-        Map<String, String> projectDetails = getProjectDetails(request);
+        Map<String, String> projectDetails = projectServiceUtil.getProjectDetails(request.getRequestInfo(), request.getEstimate());
 
 
         //get location name from boundary type
@@ -158,32 +158,6 @@ public class EstimateNotificationService {
         smsDetails.putAll(locationName);
 
         return smsDetails;
-    }
-
-    private Map<String, String> getProjectDetails(EstimateRequest request) {
-        Object projectRes = projectServiceUtil.getProjectDetails(request.getRequestInfo(), request.getEstimate());
-
-        Map<String, String> projectDetails = new HashMap<>();
-        List<String> projectNumber = new ArrayList<>();
-        List<String> projectNames = new ArrayList<>();
-        List<String> boundaries = new ArrayList<>();
-        List<String> boundaryTypes = new ArrayList<>();
-        try {
-            projectNumber = JsonPath.read(projectRes, PROJECT_NUMBER);
-            projectNames = JsonPath.read(projectRes, PROJECT_NAME);
-            boundaries = JsonPath.read(projectRes, PROJECT_BOUNDARY);
-            boundaryTypes = JsonPath.read(projectRes, PROJECT_BOUNDARY_TYPE);
-
-        } catch (Exception e) {
-            throw new CustomException("PARSING_ERROR", "Failed to parse project response");
-        }
-
-        projectDetails.put(PROJECT_NAME, projectNames.get(0));
-        projectDetails.put(PROJECT_BOUNDARY, boundaries.get(0));
-        projectDetails.put(PROJECT_BOUNDARY_TYPE, boundaryTypes.get(0));
-        projectDetails.put(PROJECT_NUMBER, projectNumber.get(0));
-
-        return projectDetails;
     }
 
     private String getMessage(EstimateRequest request) {
