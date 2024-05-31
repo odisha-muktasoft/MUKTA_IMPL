@@ -101,7 +101,7 @@ public class MeasurementServiceUtil {
 
         List<String> projectNumber = new ArrayList<>();
         try {
-            projectNumber = JsonPath.read(projectRes, PROJECT_NUMBER);
+            projectNumber = JsonPath.read(projectRes, PROJECT_NUMBER_CODE);
         } catch (Exception e) {
             throw new CustomException(PARSING_ERROR_CODE, PARSING_ERROR_MSG);
         }
