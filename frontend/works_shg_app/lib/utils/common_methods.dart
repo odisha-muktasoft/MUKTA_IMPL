@@ -216,7 +216,7 @@ class CommonMethods {
   static String getLocaleModules() {
     return GlobalVariables.roleType == RoleType.cbo
         ? 'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.organisationListModel!.organisations!.first.tenantId.toString()},rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}'
-        : 'rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}';
+        : 'rainmaker-measurement,rainmaker-common,rainmaker-common-masters,rainmaker-contracts,rainmaker-expenditure,rainmaker-workflow,rainmaker-attendencemgmt,rainmaker-${GlobalVariables.stateInfoListModel!.code.toString()}';
   }
 
   static DateTime firstDayOfWeek(DateTime date) {

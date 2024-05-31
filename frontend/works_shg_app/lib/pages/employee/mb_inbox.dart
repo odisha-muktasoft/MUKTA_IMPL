@@ -76,7 +76,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
     state.maybeMap(
       orElse: () => {},
       loaded: (value) {
-        if (value.search) {
+        if (value.search && value.data.length==1) {
           context.read<MeasurementInboxBloc>().add(
                 MeasurementBookInboxSearchRepeatBlocEvent(
                   businessService: "MB",
@@ -109,7 +109,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return BlocBuilder<LocalizationBloc, LocalizationState>(
-      builder: (context, state) {
+      builder: (context, localizationState) {
         return Scaffold(
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
