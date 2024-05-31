@@ -614,7 +614,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               //     .filteredMeasurementsMeasure,
                                               type: "sor",
                                               sorNonSorId:
-                                                  value.sor![index].sorId!,
+                                                  value.sor![index].sorId!, cardLevel: t.translate(i18.measurementBook.mbSor),
                                             );
                                           },
                                           itemCount: value.sor!.length,
@@ -670,7 +670,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               //     .filteredMeasurementsMeasure,
                                               type: "NonSor",
                                               sorNonSorId:
-                                                  value.nonSor![index].sorId!,
+                                                  value.nonSor![index].sorId!, cardLevel: t.translate(i18.measurementBook.mbNonSor),
                                             );
                                           },
                                           itemCount: value.nonSor!.length,
@@ -753,8 +753,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             'jpg',
                                                             'png',
                                                             'jpeg',
-                                                            'pdf',
-                                                            'xls',
+                                                            
                                                           ],
                                                           moduleName: 'works',
                                                           headerType: MediaType
@@ -816,8 +815,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             'jpg',
                                                             'png',
                                                             'jpeg',
-                                                            'pdf',
-                                                            'xls',
+                                                            
                                                           ],
                                                           moduleName: 'works',
                                                           headerType: MediaType
@@ -826,7 +824,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         // TODO:[text change]
                                                         Container(
                                                           padding:
-                                                              EdgeInsets.all(4),
+                                                              const EdgeInsets.all(4),
                                                           //  color: DigitColors().curiousBlue,
                                                           child: Text(
                                                               t.translate(i18
@@ -1107,9 +1105,9 @@ class _MBDetailPageState extends State<MBDetailPage>
       case 1:
         return nonSork == 0 ? 300 : nonSork * 500;
       case 2:
-        return photo == 0 ? 350 : photo * 240;
+        return photo == 0 ? 350 : photo * 310;
       default:
-        return 300.0;
+        return 350.0;
     }
   }
 
@@ -1121,6 +1119,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     List<FilteredMeasurementsMeasure>? preSorNonSor,
     required String type,
     required String sorNonSorId,
+     required String cardLevel,
   }) {
     List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
@@ -1154,7 +1153,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  "${type.toUpperCase()}${index + 1}",
+                  "${cardLevel.toUpperCase()} ${index + 1}",
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
