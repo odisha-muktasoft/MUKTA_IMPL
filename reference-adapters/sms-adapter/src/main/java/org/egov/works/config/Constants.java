@@ -45,7 +45,6 @@ public class Constants {
     public static final String CONTRACTS_ACCEPT_CREATOR_LOCALIZATION_CODE = "CONTRACTS_NOTIFICATION_TO_CREATOR_WORKFLOW_ACCEPT_ACTION";
 
     //Project service Constants
-    public static final String PROJECT_ID_CODE = "$.Project.*.projectNumber";
     public static final String PROJECT_NAME_CODE ="$.Project.*.name";
     public static final String PROJECT_NAME = "projectName";
     public static final String PROJECT_NUMBER_CODE = "$.Project.*.projectNumber";
