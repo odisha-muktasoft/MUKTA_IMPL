@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -6,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
+
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
-    as i18;
+   as i18;
 
 import '../../data/repositories/core_repo/core_repository.dart';
 import '../../models/file_store/file_store_model.dart';
@@ -25,6 +27,7 @@ class FilePickerDemo extends StatefulWidget {
   final List<String>? extensions;
   final GlobalKey? contextKey;
   final MediaType headerType;
+  final List<dynamic>? fromServerFile;
 
   const FilePickerDemo(
       {Key? key,
@@ -32,7 +35,7 @@ class FilePickerDemo extends StatefulWidget {
       this.moduleName,
       this.extensions,
       this.contextKey,
-      required this.headerType})
+      required this.headerType,  this.fromServerFile})
       : super(key: key);
   @override
   FilePickerDemoState createState() => FilePickerDemoState();
@@ -52,6 +55,15 @@ class FilePickerDemoState extends State<FilePickerDemo> {
   @override
   void initState() {
     super.initState();
+    if(widget.fromServerFile!=null ||widget.fromServerFile==[])
+    {
+        for (var element in widget.fromServerFile!) {
+            _selectedFiles.add(DraftModeImage(name: 
+              (element as WorkflowDocument).documentAdditionalDetails!.fileName!
+             ) );
+         }
+      // _selectedFiles.addAll(widget.fromServerFile!);
+    }
     _controller.addListener(() => _extension = _controller.text);
   }
 
@@ -89,7 +101,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           files = paths.map((e) => File(e.path ?? '')).toList();
         }
 
-        if (_selectedFiles.length >= 5) {
+        if (_selectedFiles.length>5 || files.length > 5) {
           Notifiers.getToastMessage(
               context, "You can only upload up to 5 files.", 'ERROR');
           return;
@@ -429,4 +441,13 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       ],
     );
   }
+}
+
+
+class DraftModeImage {
+  String name;
+  DraftModeImage({
+    required this.name,
+  });
+
 }

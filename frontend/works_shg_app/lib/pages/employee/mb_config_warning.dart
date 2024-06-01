@@ -26,6 +26,8 @@ import '../../utils/employee/mb/mb_logic.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class MBTypeConfirmationPage extends StatefulWidget {
   final NextActions? nextActions;
@@ -348,27 +350,37 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         widget.nextActions!.action != "EDIT/RE-SUBMIT"
                             ? SizedBox(
                                 height: 300,
-                                child: FilePickerDemo(
-                                  callBack: (List<FileStoreModel>? g,
-                                      List<WorkflowDocument>? l) {
-                                    final supportDocumentData = l!.map(
-                                      (e) {
-                                        return WorkFlowSupportDocument(
-                                          documentType: e.documentType,
-                                          documentUid: e.fileStore,
-                                          fileName: e.documentAdditionalDetails
-                                              ?.fileName,
-                                          fileStoreId: e.fileStore,
-                                          tenantId: e.tenantId,
-                                        );
+                                child: Column(
+                                  children: [
+                                    FilePickerDemo(
+                                      callBack: (List<FileStoreModel>? g,
+                                          List<WorkflowDocument>? l) {
+                                        final supportDocumentData = l!.map(
+                                          (e) {
+                                            return WorkFlowSupportDocument(
+                                              documentType: e.documentType,
+                                              documentUid: e.fileStore,
+                                              fileName: e.documentAdditionalDetails
+                                                  ?.fileName,
+                                              fileStoreId: e.fileStore,
+                                              tenantId: e.tenantId,
+                                            );
+                                          },
+                                        ).toList();
+                                        supportDocument.addAll(supportDocumentData);
+                                        print(supportDocument);
                                       },
-                                    ).toList();
-                                    supportDocument.addAll(supportDocumentData);
-                                    print(supportDocument);
-                                  },
-                                  extensions: const ['jpg', 'png', 'jpeg'],
-                                  moduleName: 'works',
-                                  headerType: MediaType.mbConfim,
+                                      extensions: const ['jpg', 'png', 'jpeg'],
+                                      moduleName: 'works',
+                                      headerType: MediaType.mbConfim,
+                                    ),
+                                 Container(
+                                      padding: const EdgeInsets.all(4),
+                                      //  color: DigitColors().curiousBlue,
+                                      child: Text(t.translate(
+                                          i18.measurementBook.mbPhotoInfo)),
+                                    ),
+                                  ],
                                 ),
                               )
                             : const SizedBox.shrink(),
@@ -520,27 +532,43 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         widget.stateActions!.action != "CREATE"
                             ? SizedBox(
                                 height: 300,
-                                child: FilePickerDemo(
-                                  callBack: (List<FileStoreModel>? g,
-                                      List<WorkflowDocument>? l) {
-                                    final supportDocumentData = l!.map(
-                                      (e) {
-                                        return WorkFlowSupportDocument(
-                                          documentType: e.documentType,
-                                          documentUid: e.fileStore,
-                                          fileName: e.documentAdditionalDetails
-                                              ?.fileName,
-                                          fileStoreId: e.fileStore,
-                                          tenantId: e.tenantId,
-                                        );
+                                child: Column(
+                                  children: [
+                                    FilePickerDemo(
+                                      callBack: (List<FileStoreModel>? g,
+                                          List<WorkflowDocument>? l) {
+                                        final supportDocumentData = l!.map(
+                                          (e) {
+                                            return WorkFlowSupportDocument(
+                                              documentType: e.documentType,
+                                              documentUid: e.fileStore,
+                                              fileName: e
+                                                  .documentAdditionalDetails
+                                                  ?.fileName,
+                                              fileStoreId: e.fileStore,
+                                              tenantId: e.tenantId,
+                                            );
+                                          },
+                                        ).toList();
+                                        supportDocument
+                                            .addAll(supportDocumentData);
                                       },
-                                    ).toList();
-                                    supportDocument.addAll(supportDocumentData);
-                                    print(supportDocument);
-                                  },
-                                  extensions: const ['jpg', 'png', 'jpeg'],
-                                  moduleName: 'works',
-                                  headerType: MediaType.mbConfim,
+                                      extensions: const [
+                                        'jpg',
+                                        'png',
+                                        'jpeg',
+                                        'pdf'
+                                      ],
+                                      moduleName: 'works',
+                                      headerType: MediaType.mbConfim,
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(4),
+                                      //  color: DigitColors().curiousBlue,
+                                      child: Text(t.translate(
+                                          i18.measurementBook.mbPhotoInfo)),
+                                    ),
+                                  ],
                                 ),
                               )
                             : const SizedBox.shrink(),

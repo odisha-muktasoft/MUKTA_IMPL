@@ -555,7 +555,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               height: tabViewHeight(
                                 value.sor!.length,
                                 value.nonSor!.length,
-                                widget.type == MBScreen.create
+                                widget.type == MBScreen.create || value.data.first.wfStatus=="DRAFTED"
                                     ? 0
                                     : value.rawData.documents != null &&
                                             value.rawData.documents!.isEmpty
@@ -681,6 +681,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             child: Column(
                                               children: [
                                                 FilePickerDemo(
+                                                  
                                                   callBack: (List<
                                                               FileStoreModel>?
                                                           g,
@@ -732,6 +733,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               .center,
                                                       children: [
                                                         FilePickerDemo(
+                                                          fromServerFile: value.data.first.documents,
                                                           callBack: (List<
                                                                       FileStoreModel>?
                                                                   g,
@@ -794,6 +796,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               .center,
                                                       children: [
                                                         FilePickerDemo(
+                                                          fromServerFile:value.data.first.documents,
                                                           callBack: (List<
                                                                       FileStoreModel>?
                                                                   g,
