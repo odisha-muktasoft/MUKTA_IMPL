@@ -26,7 +26,7 @@ print(thirty_days_ago_millis)
 
 def extract_data():
     beneficiary_ids = set()
-    pi_index_name = os.getenv("ES_TRANSFORMER_PI_INDEX")
+    pi_index_name = os.getenv("ES_PI_INDEX")
     query = {
         "size": 10000, 
             "query": {
@@ -77,6 +77,8 @@ def extract_data():
 transformed_bulk_data = []
 
 def transform_data(data):
+    ES_TRANSFORMER_PI_INDEX = os.getenv("ES_TRANSFORMER_PI_INDEX")
+
     for pi in data:
         beneficiary_details = pi["_source"]["Data"]["beneficiaryDetails"]
 
@@ -104,7 +106,7 @@ def transform_data(data):
             transformed_data["Data"]["gender"] = gender_vs_beneficiary_map[beneficiary_id] if beneficiary_id in gender_vs_beneficiary_map else None
 
             index_id = f"{transformed_data['Data']['id']}{transformed_data['Data']['beneficiaryDetails']['id']}{transformed_data['Data']['beneficiaryDetails']['beneficiaryId']}"
-            index_query = {"index": { "_index" : "transform-ifms-pi-index" ,"_id": index_id}}
+            index_query = {"index": { "_index" : ES_TRANSFORMER_PI_INDEX ,"_id": index_id}}
             data_object = transformed_data
 
             transformed_bulk_data.append(json.dumps(index_query))
