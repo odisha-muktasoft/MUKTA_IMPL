@@ -466,7 +466,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                       if (widget.type == MBScreen.create) {
                         mm = null;
                       } else {
-                        mm = value.rawData.documents
+                        mm = value.data.first.documents
                             ?.map((d) => FileStoreModel(
                                   name: d.documentAdditionalDetails?.fileName,
                                   fileStoreId: d.fileStore,
@@ -583,10 +583,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 widget.type == MBScreen.create ||
                                         value.data.first.wfStatus == "DRAFTED"
                                     ? 0
-                                    : value.rawData.documents != null &&
-                                            value.rawData.documents!.isEmpty
+                                    : value.data.first.documents != null &&
+                                            value.data.first.documents!.isEmpty
                                         ? 0
-                                        : value.rawData.documents!.length,
+                                        : 
+                                        !value.viewStatus?0:
+                                        value.data.first.documents!.length,
                               ),
                               child: TabBarView(
                                 controller: _tabController,
@@ -711,6 +713,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             child: Column(
                                               children: [
                                                 FilePickerDemo(
+                                                  fromServerFile: value
+                                                              .data
+                                                              .first
+                                                              .documents,
                                                   callBack: (List<
                                                               FileStoreModel>?
                                                           g,
@@ -732,7 +738,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                     'png',
                                                     'jpeg',
                                                   ],
-                                                  moduleName: 'works',
+                                                  moduleName: 'img_measurement_book',
                                                   headerType:
                                                       MediaType.mbDetail,
                                                 ),
@@ -748,8 +754,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             ),
                                           ),
                                         )
-                                      : value.rawData.documents != null &&
-                                              value.rawData.documents!.isEmpty
+                                      : value.data.first.documents != null &&
+                                              value.data.first.documents!.isEmpty
                                           ? !value.viewStatus
                                               ? Card(
                                                   child: Center(
@@ -788,7 +794,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             'png',
                                                             'jpeg',
                                                           ],
-                                                          moduleName: 'works',
+                                                          moduleName: 'img_measurement_book',
                                                           headerType: MediaType
                                                               .mbDetail,
                                                         ),
@@ -854,7 +860,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             'png',
                                                             'jpeg',
                                                           ],
-                                                          moduleName: 'works',
+                                                          moduleName: 'img_measurement_book',
                                                           headerType: MediaType
                                                               .mbDetail,
                                                         ),
@@ -928,7 +934,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               ])),
                                                     );
                                                   },
-                                                  itemCount: value.rawData
+                                                  itemCount: value.data.first
                                                       .documents!.length),
                                 ],
                               ),
@@ -1143,7 +1149,7 @@ class _MBDetailPageState extends State<MBDetailPage>
       case 1:
         return nonSork == 0 ? 300 : nonSork * 500;
       case 2:
-        return photo == 0 ? 350 : photo * 310;
+        return photo == 0 ? 350 : ((photo * 270)-(photo*20));
       default:
         return 350.0;
     }

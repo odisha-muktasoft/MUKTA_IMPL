@@ -567,23 +567,35 @@ class MeasurementDetailBloc
   }) {
     //return  field==0?1:field;
 
-    if ((height == '0' && width == '0' && length == '0' && number == '0') ||
-        (height == '0.0' &&
-            width == '0.0' &&
-            length == '0.0' &&
-            number == '0.0')) {
+    height = double.parse((height == "" || height==".") ? "0.0" : height.toString())
+        .toStringAsFixed(4);
+    width =
+        double.parse((width == "" || width==".") ? "0.0" : width.toString()).toStringAsFixed(4);
+    length = double.parse((length == "" || length=="." )? "0.0" : length.toString())
+        .toStringAsFixed(4);
+    number = double.parse((number == "" || number==".") ? "0.0" : number.toString())
+        .toStringAsFixed(4);
+
+    if ((height == '0.0000' &&
+            width == '0.0000' &&
+            length == '0.0000' &&
+            number == '0.0000') ||
+        (height == '0.0000' &&
+            width == '0.0000' &&
+            length == '0.0000' &&
+            number == '0.0000')) {
       return 0;
     } else {
-      if (height == '0' || height == '0.0') {
+      if (height == '0.0000') {
         height = 1;
       }
-      if (width == '0' || width == '0.0') {
+      if (width == '0.0000') {
         width = 1;
       }
-      if (length == '0' || length == '0.0') {
+      if (length == '0.0000') {
         length = 1;
       }
-      if (number == '0' || number == '0.0') {
+      if (number == '0.0000') {
         number = 1;
       }
       double h = double.parse(height.toString());
@@ -764,17 +776,13 @@ class MeasurementDetailBloc
               updatedDocuments = List.from(event.workflowDocument);
             } else {
               // Iterate over each new document
-              for (WorkflowDocument document in event.workflowDocument) {
-                // Find and replace the document with the same id, or add the new document
-                // int index = updatedDocuments.indexWhere((doc) => doc.id == document.id);
-                // if (index != -1) {
-                //   updatedDocuments[index] = document;
-                // } else {
-                //   updatedDocuments.add(document);
-                // }
+              // for (WorkflowDocument document in event.workflowDocument) {
+               
 
-                updatedDocuments.add(document);
-              }
+              //   updatedDocuments.add(document);
+              // }
+              updatedDocuments.clear();
+               updatedDocuments = List.from(event.workflowDocument);
             }
           }
 

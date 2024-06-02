@@ -78,7 +78,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
 
     debouncer.run(() {
       widget.fieldValue(
-          "Number", numberController.text == "" ? '0' : numberController.text);
+          "Number", numberController.text);
     });
   }
 
@@ -86,7 +86,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     final debouncer = Debouncer(milliseconds: 500);
     debouncer.run(() {
       widget.fieldValue(
-          "Length", lengthController.text == "" ? '0' : lengthController.text);
+          "Length",  lengthController.text);
     });
   }
 
@@ -94,7 +94,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     final debouncer = Debouncer(milliseconds: 500);
     debouncer.run(() {
       widget.fieldValue(
-          "Width", widthController.text == "" ? '0' : widthController.text);
+          "Width",  widthController.text);
     });
   }
 
@@ -102,7 +102,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     final debouncer = Debouncer(milliseconds: 500);
     debouncer.run(() {
       widget.fieldValue(
-          "Height", heightController.text == "" ? '0' : heightController.text);
+          "Height", heightController.text);
     });
   }
 
