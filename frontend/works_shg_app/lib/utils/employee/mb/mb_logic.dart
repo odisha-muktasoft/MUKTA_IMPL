@@ -635,7 +635,7 @@ class MBLogic {
         'action': measurement.workflow?.action,
         'comment': measurement.workflow?.comment,
         'assignees': measurement.workflow?.assignees,
-        'documents': measurement.workflow?.documents!.map((e) {
+        'documents': measurement.workflow?.documents?.map((e) {
           return {
             "documentType": e.documentType,
             "documentUid": e.documentUid,

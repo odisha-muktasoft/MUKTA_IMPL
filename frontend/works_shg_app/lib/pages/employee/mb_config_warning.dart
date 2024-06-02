@@ -360,25 +360,34 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                             return WorkFlowSupportDocument(
                                               documentType: e.documentType,
                                               documentUid: e.fileStore,
-                                              fileName: e.documentAdditionalDetails
+                                              fileName: e
+                                                  .documentAdditionalDetails
                                                   ?.fileName,
                                               fileStoreId: e.fileStore,
                                               tenantId: e.tenantId,
                                             );
                                           },
                                         ).toList();
-                                        supportDocument.addAll(supportDocumentData);
+                                        supportDocument
+                                            .addAll(supportDocumentData);
                                         print(supportDocument);
                                       },
-                                      extensions: const ['jpg', 'png', 'jpeg'],
+                                      extensions: const [
+                                        'jpg',
+                                        'png',
+                                        'jpeg',
+                                        'pdf',
+                                        'xls',
+                                        'doc'
+                                      ],
                                       moduleName: 'works',
                                       headerType: MediaType.mbConfim,
                                     ),
-                                 Container(
+                                    Container(
                                       padding: const EdgeInsets.all(4),
                                       //  color: DigitColors().curiousBlue,
-                                      child: Text(t.translate(
-                                          i18.measurementBook.mbPhotoInfo)),
+                                      child: Text(
+                                          t.translate(i18.common.photoInfo)),
                                     ),
                                   ],
                                 ),
@@ -557,7 +566,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         'jpg',
                                         'png',
                                         'jpeg',
-                                        'pdf'
+                                        'pdf',
+                                        'xls',
+                                        'doc'
                                       ],
                                       moduleName: 'works',
                                       headerType: MediaType.mbConfim,
@@ -565,8 +576,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       //  color: DigitColors().curiousBlue,
-                                      child: Text(t.translate(
-                                          i18.measurementBook.mbPhotoInfo)),
+                                      child: Text(
+                                          t.translate(i18.common.photoInfo)),
                                     ),
                                   ],
                                 ),

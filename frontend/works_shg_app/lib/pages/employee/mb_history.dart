@@ -175,7 +175,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             if (adjustedIndex <= k.length) {
                               return CommonMBCard(
                                 headLabel:
-                                    "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))}-${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
+                                    "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                 items: {
                                   t.translate(i18.measurementBook.mbNumber):
                                       k[adjustedIndex].mbNumber,

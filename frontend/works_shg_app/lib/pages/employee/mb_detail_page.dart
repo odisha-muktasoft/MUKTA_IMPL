@@ -131,6 +131,31 @@ class _MBDetailPageState extends State<MBDetailPage>
                 //TODO:[text change]
                 // String msg =
                 //     "WF_MB_ACTION_${value.measurement?.workflow?.action}";
+
+                if (value.measurement!.wfStatus == "DRAFTED") {
+                  context.read<MusterGetWorkflowBloc>().add(
+                        //hard coded
+                        FetchMBWorkFlowEvent(
+                            tenantId: GlobalVariables.tenantId!,
+                            mbNumber: widget.mbNumber!),
+                      );
+
+                  context.read<MeasurementDetailBloc>().add(
+                        MeasurementDetailBookBlocEvent(
+                          tenantId: widget.tenantId!,
+                          contractNumber: widget.contractNumber,
+                          measurementNumber: widget.mbNumber,
+                          screenType: widget.type,
+                        ),
+                      );
+                  Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).popUntil(
+                    (route) => route is! PopupRoute,
+                  );
+                }
+
                 Notifiers.getToastMessage(
                     context,
                     t.translate(
@@ -555,7 +580,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                               height: tabViewHeight(
                                 value.sor!.length,
                                 value.nonSor!.length,
-                                widget.type == MBScreen.create || value.data.first.wfStatus=="DRAFTED"
+                                widget.type == MBScreen.create ||
+                                        value.data.first.wfStatus == "DRAFTED"
                                     ? 0
                                     : value.rawData.documents != null &&
                                             value.rawData.documents!.isEmpty
@@ -614,7 +640,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               //     .filteredMeasurementsMeasure,
                                               type: "sor",
                                               sorNonSorId:
-                                                  value.sor![index].sorId!, cardLevel: t.translate(i18.measurementBook.mbSor),
+                                                  value.sor![index].sorId!,
+                                              cardLevel: t.translate(
+                                                  i18.measurementBook.mbSor),
                                             );
                                           },
                                           itemCount: value.sor!.length,
@@ -670,7 +698,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               //     .filteredMeasurementsMeasure,
                                               type: "NonSor",
                                               sorNonSorId:
-                                                  value.nonSor![index].sorId!, cardLevel: t.translate(i18.measurementBook.mbNonSor),
+                                                  value.nonSor![index].sorId!,
+                                              cardLevel: t.translate(
+                                                  i18.measurementBook.mbNonSor),
                                             );
                                           },
                                           itemCount: value.nonSor!.length,
@@ -681,7 +711,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             child: Column(
                                               children: [
                                                 FilePickerDemo(
-                                                  
                                                   callBack: (List<
                                                               FileStoreModel>?
                                                           g,
@@ -733,7 +762,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               .center,
                                                       children: [
                                                         FilePickerDemo(
-                                                          fromServerFile: value.data.first.documents,
+                                                          fromServerFile: value
+                                                              .data
+                                                              .first
+                                                              .documents,
                                                           callBack: (List<
                                                                       FileStoreModel>?
                                                                   g,
@@ -755,7 +787,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             'jpg',
                                                             'png',
                                                             'jpeg',
-                                                            
                                                           ],
                                                           moduleName: 'works',
                                                           headerType: MediaType
@@ -764,7 +795,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         // TODO:[text change]
                                                         Container(
                                                           padding:
-                                                              EdgeInsets.all(4),
+                                                              const EdgeInsets
+                                                                  .all(4),
                                                           // color: DigitColors().pacificBlue,
                                                           child: Text(
                                                               t.translate(i18
@@ -796,7 +828,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               .center,
                                                       children: [
                                                         FilePickerDemo(
-                                                          fromServerFile:value.data.first.documents,
+                                                          fromServerFile: value
+                                                              .data
+                                                              .first
+                                                              .documents,
                                                           callBack: (List<
                                                                       FileStoreModel>?
                                                                   g,
@@ -818,7 +853,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             'jpg',
                                                             'png',
                                                             'jpeg',
-                                                            
                                                           ],
                                                           moduleName: 'works',
                                                           headerType: MediaType
@@ -827,7 +861,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         // TODO:[text change]
                                                         Container(
                                                           padding:
-                                                              const EdgeInsets.all(4),
+                                                              const EdgeInsets
+                                                                  .all(4),
                                                           //  color: DigitColors().curiousBlue,
                                                           child: Text(
                                                               t.translate(i18
@@ -1078,7 +1113,7 @@ class _MBDetailPageState extends State<MBDetailPage>
         t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
 
         t.translate(i18.measurementBook.measurementPeriod):
-            "${s.first.startDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!)) : "NA"}-${s.first.endDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!)) : "NA"}",
+            "${s.first.startDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!)) : "NA"} - ${s.first.endDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!)) : "NA"}",
         t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
                 .contracts!.first.contractAdditionalDetails?.projectDesc ??
             "NA",
@@ -1091,7 +1126,7 @@ class _MBDetailPageState extends State<MBDetailPage>
         t.translate(i18.common.musterRollId): s.first.musterRollNumber ?? "NA",
 
         t.translate(i18.measurementBook.measurementPeriod):
-            "${s.first.startDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!)) : "NA"}-${s.first.endDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!)) : "NA"}",
+            "${s.first.startDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.startDate!)) : "NA"} - ${s.first.endDate != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(s.first.endDate!)) : "NA"}",
         t.translate(i18.attendanceMgmt.projectDesc): s.first.measures!.first
                 .contracts!.first.contractAdditionalDetails?.projectDesc ??
             "NA",
@@ -1122,7 +1157,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     List<FilteredMeasurementsMeasure>? preSorNonSor,
     required String type,
     required String sorNonSorId,
-     required String cardLevel,
+    required String cardLevel,
   }) {
     List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
@@ -1434,31 +1469,29 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                             );
                           } else {
-                             if (workorderStatus != "ACTIVE") {
-                                        Notifiers.getToastMessage(
-                                            context,
-                                            t.translate(i18
-                                                .workOrder.timeExtensionError),
-                                            'ERROR');
-                                      } else if (estimateStatus ==
-                                          "INWORKFLOW") {
-                                        Notifiers.getToastMessage(
-                                            context,
-                                            t.translate(i18.workOrder
-                                                .estimateRevisionError),
-                                            'ERROR');
-                                      } else {
-                                        Notifiers.getToastMessage(
-                                            context,
-                                            t.translate(i18.workOrder
-                                                .existingMBCreateError),
-                                            'ERROR');
-                                      }
+                            if (workorderStatus != "ACTIVE") {
+                              Notifiers.getToastMessage(
+                                  context,
+                                  t.translate(i18.workOrder.timeExtensionError),
+                                  'ERROR');
+                            } else if (estimateStatus == "INWORKFLOW") {
+                              Notifiers.getToastMessage(
+                                  context,
+                                  t.translate(
+                                      i18.workOrder.estimateRevisionError),
+                                  'ERROR');
+                            } else {
+                              Notifiers.getToastMessage(
+                                  context,
+                                  t.translate(
+                                      i18.workOrder.existingMBCreateError),
+                                  'ERROR');
+                            }
                           }
-                                      // Notifiers.getToastMessage(
-                                      //     context,
-                                      //     "MB can not be created as the $show in progress",
-                                      //     'ERROR');
+                          // Notifiers.getToastMessage(
+                          //     context,
+                          //     "MB can not be created as the $show in progress",
+                          //     'ERROR');
                         }
 
 // before
