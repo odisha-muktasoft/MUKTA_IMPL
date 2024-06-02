@@ -5,15 +5,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
+import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
-   as i18;
+    as i18;
 
 import '../../data/repositories/core_repo/core_repository.dart';
 import '../../models/file_store/file_store_model.dart';
@@ -35,7 +37,8 @@ class FilePickerDemo extends StatefulWidget {
       this.moduleName,
       this.extensions,
       this.contextKey,
-      required this.headerType,  this.fromServerFile})
+      required this.headerType,
+      this.fromServerFile})
       : super(key: key);
   @override
   FilePickerDemoState createState() => FilePickerDemoState();
@@ -55,13 +58,17 @@ class FilePickerDemoState extends State<FilePickerDemo> {
   @override
   void initState() {
     super.initState();
-    if(widget.fromServerFile!=null ||widget.fromServerFile==[])
-    {
-        for (var element in widget.fromServerFile!) {
-            _selectedFiles.add(DraftModeImage(name: 
-              (element as WorkflowDocument).documentAdditionalDetails!.fileName!
-             ) );
-         }
+    if (widget.fromServerFile != null || widget.fromServerFile == []) {
+      for (var element in widget.fromServerFile!) {
+        _selectedFiles.add(
+          DraftModeImage(
+            name: (element as WorkflowDocument)
+                .documentAdditionalDetails!
+                .fileName!)
+                );
+
+                ss.add(element);
+      }
       // _selectedFiles.addAll(widget.fromServerFile!);
     }
     _controller.addListener(() => _extension = _controller.text);
@@ -101,7 +108,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           files = paths.map((e) => File(e.path ?? '')).toList();
         }
 
-        if (_selectedFiles.length>5 || files.length > 5) {
+        if (_selectedFiles.length > 5 || files.length > 5) {
           Notifiers.getToastMessage(
               context, "You can only upload up to 5 files.", 'ERROR');
           return;
@@ -134,6 +141,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
         ss.clear();
         for (int i = 0; i < files.length; i++) {
           ss.add(WorkflowDocument(
+            isActive: true,
               tenantId: _fileStoreList[i].tenantId,
               fileStore: _fileStoreList[i].fileStoreId,
               documentType: path.extension(files[i].path),
@@ -144,7 +152,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                 tenantId: _fileStoreList[i].tenantId,
               )));
         }
-
+        //  _selectedFiles.addAll(ss);
         widget.callBack(_fileStoreList, ss);
       }
     } catch (e) {
@@ -182,8 +190,8 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                  widget.headerType == MediaType.mbConfim ||widget.headerType == MediaType.mbDetail
-                   
+                  widget.headerType == MediaType.mbConfim ||
+                          widget.headerType == MediaType.mbDetail
                       ? "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}"
                       : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
                   textAlign: TextAlign.left,
@@ -218,7 +226,8 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                         )),
                     onPressed: () => selectDocumentOrImage(),
                     child: Text(
-                      widget.headerType == MediaType.mbConfim ||  widget.headerType == MediaType.mbDetail 
+                      widget.headerType == MediaType.mbConfim ||
+                              widget.headerType == MediaType.mbDetail
                           ? "${AppLocalizations.of(context).translate(i18.common.chooseFile)}"
                           : "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
                       //TODO:[lavel change]
@@ -290,6 +299,18 @@ class FilePickerDemoState extends State<FilePickerDemo> {
   void onClickOfClear(int index) {
     setState(() {
       _selectedFiles.removeAt(index);
+     // ss.removeAt(index);
+      WorkflowDocument sk=ss[index];
+      ss[index]=WorkflowDocument(
+        documentType: sk.documentType,
+        documentUid: sk.documentUid,
+        fileStore: sk.fileStore,
+        fileStoreId: sk.fileStoreId,
+        id: sk.id,
+        tenantId: sk.tenantId,
+        documentAdditionalDetails: sk.documentAdditionalDetails,
+        isActive: false,
+      );
       fileUploading = FileUploadStatus.NOT_ACTIVE;
       if (index < _fileStoreList.length) _fileStoreList.removeAt(index);
     });
@@ -306,24 +327,48 @@ class FilePickerDemoState extends State<FilePickerDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return Center(
-          child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-              child: SingleChildScrollView(
-                child: Container(
-                  key: widget.contextKey,
-                  margin: constraints.maxWidth > 760
-                      ? const EdgeInsets.only(
-                          top: 5.0, bottom: 5, right: 10, left: 10)
-                      : const EdgeInsets.only(
-                          top: 5.0, bottom: 5, right: 0, left: 0),
-                  child: constraints.maxWidth > 760
-                      ? Row(children: _getConatiner(constraints, context))
-                      : Column(children: _getConatiner(constraints, context)),
-                ),
-              )));
-    });
+    return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+      builder: (context, state) {
+return state.maybeMap(orElse: () => const SizedBox.shrink(),
+loaded: (value) {
+//  _selectedFiles.clear();
+//   ss.clear();
+//    for (var element in value.data.first.documents??[]) {
+
+//         _selectedFiles.add(DraftModeImage(
+//             name: (element as WorkflowDocument)
+//                 .documentAdditionalDetails!
+//                 .fileName!));
+              
+//             ss.add(element)   ;
+//       }
+
+  return LayoutBuilder(builder: (context, constraints) {
+          return Center(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      key: widget.contextKey,
+                      margin: constraints.maxWidth > 760
+                          ? const EdgeInsets.only(
+                              top: 5.0, bottom: 5, right: 10, left: 10)
+                          : const EdgeInsets.only(
+                              top: 5.0, bottom: 5, right: 0, left: 0),
+                      child: constraints.maxWidth > 760
+                          ? Row(children: _getConatiner(constraints, context))
+                          : Column(
+                              children: _getConatiner(constraints, context)),
+                    ),
+                  )));
+        });
+  
+},
+);
+
+        
+      },
+    );
   }
 
   Future<void> selectDocumentOrImage() async {
@@ -443,11 +488,9 @@ class FilePickerDemoState extends State<FilePickerDemo> {
   }
 }
 
-
 class DraftModeImage {
   String name;
   DraftModeImage({
     required this.name,
   });
-
 }

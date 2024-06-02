@@ -781,6 +781,7 @@ class MeasurementDetailBloc
 
               //   updatedDocuments.add(document);
               // }
+             
               updatedDocuments.clear();
                updatedDocuments = List.from(event.workflowDocument);
             }

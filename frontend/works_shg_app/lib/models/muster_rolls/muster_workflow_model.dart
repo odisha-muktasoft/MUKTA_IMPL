@@ -65,6 +65,7 @@ class WorkflowDocument with _$WorkflowDocument {
     String? id,
     String? tenantId,
     String? fileStore,
+    bool? isActive,
     @JsonKey(name: 'additionalDetails')
         DocumentAdditionalDetails? documentAdditionalDetails,
   }) = _WorkflowDocument;

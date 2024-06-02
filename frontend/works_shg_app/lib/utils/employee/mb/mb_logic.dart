@@ -605,6 +605,7 @@ class MBLogic {
       "documents": measurement.documents != null
           ? measurement.documents!.map((e) {
               return {
+                "isActive":e.isActive,
                 "fileStore": e.fileStore,
                 "id": e.id,
                 "documentUid": e.documentUid,

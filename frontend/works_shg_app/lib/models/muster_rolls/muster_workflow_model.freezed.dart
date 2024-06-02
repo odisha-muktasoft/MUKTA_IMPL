@@ -898,6 +898,7 @@ mixin _$WorkflowDocument {
   String? get id => throw _privateConstructorUsedError;
   String? get tenantId => throw _privateConstructorUsedError;
   String? get fileStore => throw _privateConstructorUsedError;
+  bool? get isActive => throw _privateConstructorUsedError;
   @JsonKey(name: 'additionalDetails')
   DocumentAdditionalDetails? get documentAdditionalDetails =>
       throw _privateConstructorUsedError;
@@ -921,6 +922,7 @@ abstract class $WorkflowDocumentCopyWith<$Res> {
       String? id,
       String? tenantId,
       String? fileStore,
+      bool? isActive,
       @JsonKey(name: 'additionalDetails')
           DocumentAdditionalDetails? documentAdditionalDetails});
 
@@ -946,6 +948,7 @@ class _$WorkflowDocumentCopyWithImpl<$Res, $Val extends WorkflowDocument>
     Object? id = freezed,
     Object? tenantId = freezed,
     Object? fileStore = freezed,
+    Object? isActive = freezed,
     Object? documentAdditionalDetails = freezed,
   }) {
     return _then(_value.copyWith(
@@ -973,6 +976,10 @@ class _$WorkflowDocumentCopyWithImpl<$Res, $Val extends WorkflowDocument>
           ? _value.fileStore
           : fileStore // ignore: cast_nullable_to_non_nullable
               as String?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
       documentAdditionalDetails: freezed == documentAdditionalDetails
           ? _value.documentAdditionalDetails
           : documentAdditionalDetails // ignore: cast_nullable_to_non_nullable
@@ -1009,6 +1016,7 @@ abstract class _$$_WorkflowDocumentCopyWith<$Res>
       String? id,
       String? tenantId,
       String? fileStore,
+      bool? isActive,
       @JsonKey(name: 'additionalDetails')
           DocumentAdditionalDetails? documentAdditionalDetails});
 
@@ -1033,6 +1041,7 @@ class __$$_WorkflowDocumentCopyWithImpl<$Res>
     Object? id = freezed,
     Object? tenantId = freezed,
     Object? fileStore = freezed,
+    Object? isActive = freezed,
     Object? documentAdditionalDetails = freezed,
   }) {
     return _then(_$_WorkflowDocument(
@@ -1060,6 +1069,10 @@ class __$$_WorkflowDocumentCopyWithImpl<$Res>
           ? _value.fileStore
           : fileStore // ignore: cast_nullable_to_non_nullable
               as String?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
       documentAdditionalDetails: freezed == documentAdditionalDetails
           ? _value.documentAdditionalDetails
           : documentAdditionalDetails // ignore: cast_nullable_to_non_nullable
@@ -1078,6 +1091,7 @@ class _$_WorkflowDocument implements _WorkflowDocument {
       this.id,
       this.tenantId,
       this.fileStore,
+      this.isActive,
       @JsonKey(name: 'additionalDetails') this.documentAdditionalDetails});
 
   factory _$_WorkflowDocument.fromJson(Map<String, dynamic> json) =>
@@ -1096,12 +1110,14 @@ class _$_WorkflowDocument implements _WorkflowDocument {
   @override
   final String? fileStore;
   @override
+  final bool? isActive;
+  @override
   @JsonKey(name: 'additionalDetails')
   final DocumentAdditionalDetails? documentAdditionalDetails;
 
   @override
   String toString() {
-    return 'WorkflowDocument(documentType: $documentType, documentUid: $documentUid, fileStoreId: $fileStoreId, id: $id, tenantId: $tenantId, fileStore: $fileStore, documentAdditionalDetails: $documentAdditionalDetails)';
+    return 'WorkflowDocument(documentType: $documentType, documentUid: $documentUid, fileStoreId: $fileStoreId, id: $id, tenantId: $tenantId, fileStore: $fileStore, isActive: $isActive, documentAdditionalDetails: $documentAdditionalDetails)';
   }
 
   @override
@@ -1120,6 +1136,8 @@ class _$_WorkflowDocument implements _WorkflowDocument {
                 other.tenantId == tenantId) &&
             (identical(other.fileStore, fileStore) ||
                 other.fileStore == fileStore) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
             (identical(other.documentAdditionalDetails,
                     documentAdditionalDetails) ||
                 other.documentAdditionalDetails == documentAdditionalDetails));
@@ -1127,8 +1145,16 @@ class _$_WorkflowDocument implements _WorkflowDocument {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, documentType, documentUid,
-      fileStoreId, id, tenantId, fileStore, documentAdditionalDetails);
+  int get hashCode => Object.hash(
+      runtimeType,
+      documentType,
+      documentUid,
+      fileStoreId,
+      id,
+      tenantId,
+      fileStore,
+      isActive,
+      documentAdditionalDetails);
 
   @JsonKey(ignore: true)
   @override
@@ -1152,6 +1178,7 @@ abstract class _WorkflowDocument implements WorkflowDocument {
           final String? id,
           final String? tenantId,
           final String? fileStore,
+          final bool? isActive,
           @JsonKey(name: 'additionalDetails')
               final DocumentAdditionalDetails? documentAdditionalDetails}) =
       _$_WorkflowDocument;
@@ -1171,6 +1198,8 @@ abstract class _WorkflowDocument implements WorkflowDocument {
   String? get tenantId;
   @override
   String? get fileStore;
+  @override
+  bool? get isActive;
   @override
   @JsonKey(name: 'additionalDetails')
   DocumentAdditionalDetails? get documentAdditionalDetails;

@@ -93,6 +93,7 @@ _$_WorkflowDocument _$$_WorkflowDocumentFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
       fileStore: json['fileStore'] as String?,
+      isActive: json['isActive'] as bool?,
       documentAdditionalDetails: json['additionalDetails'] == null
           ? null
           : DocumentAdditionalDetails.fromJson(
@@ -107,6 +108,7 @@ Map<String, dynamic> _$$_WorkflowDocumentToJson(_$_WorkflowDocument instance) =>
       'id': instance.id,
       'tenantId': instance.tenantId,
       'fileStore': instance.fileStore,
+      'isActive': instance.isActive,
       'additionalDetails': instance.documentAdditionalDetails,
     };
 
