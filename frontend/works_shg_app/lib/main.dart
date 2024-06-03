@@ -320,7 +320,7 @@ class _MainApplicationState extends State<MainApplication> {
           return BlocBuilder<AuthBloc, AuthState>(
             builder: (context, authState) {
               return MaterialApp.router(
-                title: 'MUKTA CBO App',
+                title: 'MUKTASoft App',
                 supportedLocales: appInitState.initMdmsModel != null
                     ? appInitState.digitRowCardItems!.map((e) {
                         final results = e.value.split('_');

@@ -7,7 +7,7 @@
    <application
         android:allowBackup="false"
         android:fullBackupContent="false"
-        android:label="MUKTA CBO App"
+        android:label="MUKTASoft App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
