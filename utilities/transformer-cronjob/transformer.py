@@ -133,7 +133,7 @@ def create_gender_vs_beneficiary_map(beneficiary_ids : set):
         # docs = index_batch(url= ES_INDIVIDUAL_SEARCH, query = query).json()["hits"]["hits"]
         docs = es.search(index=individual_index, body=query)["hits"]["hits"]
         for item in docs:
-            gender_vs_beneficiary_map[item["_source"]["Data"]["id"]] = item["_source"]["Data"]["gender"] if "gender" in item["Data"] else None
+            gender_vs_beneficiary_map[item["_source"]["Data"]["id"]] = item["_source"]["Data"]["gender"] if "gender" in item["_source"]["Data"] else None
 
     return None
 
