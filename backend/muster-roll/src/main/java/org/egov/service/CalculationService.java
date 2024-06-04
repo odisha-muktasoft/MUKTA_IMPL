@@ -214,6 +214,10 @@ public class CalculationService {
 
 			}
 		}
+        if (isCreate){
+            individualEntries.removeIf(individualEntry -> individualEntry.getAttendanceEntries()==null);
+        }
+
        
         musterRoll.setIndividualEntries(individualEntries);
         log.debug("CalculationService::createAttendance::Individuals::size::"+musterRoll.getIndividualEntries().size());
