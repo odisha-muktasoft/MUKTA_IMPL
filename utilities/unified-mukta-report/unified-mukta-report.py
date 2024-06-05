@@ -400,18 +400,23 @@ def getFailedPayments():
                 response = response.json()
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
                     for pi in response['paymentInstructions']:
-                        temp = {}
-                        temp['ULB'] = pi['tenantId']
-                        # temp['projectid'] = pi['id']
-                        temp['paymentInstuctionId'] = pi['jitBillNo']
-                        temp['billId'] = pi['additionalDetails']['billNumber'][0]
-                        temp['date'] = pi['auditDetails']['createdTime']
+                        # Extract data from the PI level
+                        pi_data = {
+                            'ULB': pi['tenantId'],
+                            'paymentInstructionId': pi['jitBillNo'],
+                            'billId': pi['additionalDetails']['billNumber'][0],
+                            'date': pi['auditDetails']['createdTime']
+                        }
                         for beneficiary in pi['beneficiaryDetails']:
-                            temp['beneficiaryId'] = beneficiary['beneficiaryNumber']
-                            # temp['beneficiaryName'] = beneficiary['beneficiaryName']
-                            temp['type'] = beneficiary['beneficiaryType']
-                            temp['amount'] = beneficiary['amount']
-                        data.append(temp)
+                            # Extract data from the beneficiary level
+                            beneficiary_data = {
+                                'beneficiaryId': beneficiary['beneficiaryNumber'],
+                                'type': beneficiary['beneficiaryType'],
+                                'amount': beneficiary['amount']
+                            }
+                            # Combine PI data and beneficiary data
+                            combined_data = {**pi_data, **beneficiary_data}
+                            data.append(combined_data)
                 else:
                     break
             else:
