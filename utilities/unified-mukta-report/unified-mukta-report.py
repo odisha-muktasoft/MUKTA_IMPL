@@ -92,7 +92,6 @@ def getProjectData():
     except Exception as e:
         raise e
 
-
 def getBillData():
     data = []
     print("Getting Bill Data")
@@ -259,7 +258,7 @@ if __name__ == '__main__':
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
 
-        
+
     except Exception as ex:
         logging.error("Exception occured on main.", exc_info=True)
         raise(ex)
