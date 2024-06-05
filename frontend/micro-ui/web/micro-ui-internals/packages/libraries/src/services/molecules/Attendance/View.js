@@ -45,7 +45,7 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
   let tableData = {}
   
   if(data?.individualEntries?.length > 0) {
-    data?.individualEntries.forEach((item, index) => {
+    data?.individualEntries.filter((ob) => ob?.attendanceEntries !== null)?.forEach((item, index) => {
       let tableRow = {}
       tableRow.id = item.id
       tableRow.sno = index + 1
