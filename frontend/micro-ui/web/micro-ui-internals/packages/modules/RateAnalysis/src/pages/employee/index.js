@@ -72,6 +72,7 @@ const App = ({ path }) => {
   
             <PrivateRoute path={`${path}/view-rate-analysis`} component={() => <ViewRateAnalysis />} />
             <PrivateRoute path={`${path}/create-rate-analysis`} component={() => <CreateRateAnalysis />} />
+            <PrivateRoute path={`${path}/update-rate-analysis`} component={() => <CreateRateAnalysis isUpdate={true} />} />
   
            {/* <PrivateRoute path={`${path}/search-contract`} component={() => <SearchContractDetails />} />
             <PrivateRoute path={`${path}/contract-details`} component={() => <ViewContractDetails />} />

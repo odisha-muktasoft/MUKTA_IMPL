@@ -1,39 +1,35 @@
 import React, { Fragment, useState, useEffect, useMemo } from "react";
-import { AddIcon, DeleteIcon, RemoveIcon, TextInput, CardLabelError, Dropdown, Loader, TextArea,InputTextAmount } from "@egovernments/digit-ui-react-components";
+import {
+  AddIcon,
+  DeleteIcon,
+  RemoveIcon,
+  TextInput,
+  CardLabelError,
+  Dropdown,
+  Loader,
+  TextArea,
+  InputTextAmount
+} from "@egovernments/digit-ui-react-components";
 import { Controller } from "react-hook-form";
 import _ from "lodash";
 
-const ExtraCharges = ({ control, watch,config, ...props }) => {
-  const populators = config?.populators
-  
+const ExtraCharges = ({ control, watch, config, ...props }) => {
+  const populators = config?.populators;
 
   const formFieldName = "extraCharges"; // this will be the key under which the data for this table will be present on onFormSubmit
   const initialState = [
     {
       key: 1,
+      description: "",
+      applicableOn: "",
+      calculationType: "",
+      figure: "",
       isShow: true,
     },
   ];
 
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
-
-  const [rows, setRows] = useState(
-    formData?.[formFieldName]?.length > 2
-      ? formData?.[formFieldName]
-          ?.map((row, index) => {
-            return row
-              ? {
-                  key: index,
-                  isShow:row?.isActive ? row?.isActive : !(row?.estimatedAmount==="0"),
-                }
-              : {
-                key: index + 1000,
-                isShow: false,
-              };
-          })
-          ?.filter((row) => row)
-      : initialState
-  );
+  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
   const getStyles = (index) => {
     let obj = {};
@@ -68,6 +64,7 @@ const ExtraCharges = ({ control, watch,config, ...props }) => {
     }
     return obj;
   };
+
   const columns = [
     t("RA_SNO"),
     t("RA_DESCRIPTION"),
@@ -75,6 +72,7 @@ const ExtraCharges = ({ control, watch,config, ...props }) => {
     t("RA_CALCULATION_TYPE"),
     t("RA_FIGURE"),
   ];
+
   const renderHeader = () => {
     return columns?.map((key, index) => {
       return (
@@ -86,71 +84,55 @@ const ExtraCharges = ({ control, watch,config, ...props }) => {
     });
   };
 
-  const removeRow = (row) => {
-    const countRows = rows.reduce((acc,row)=> {
-      return row.isShow ? acc+1 : acc
-    },0)
-    if(countRows === 1) {
-      //clear the 1st rows data
-     
-      formData?.[formFieldName]?.map((row,index) => {
-        if(row) {
-          setValue(`${formFieldName}.${index}.description`,'')
-          setValue(`${formFieldName}.${index}.rate`,"0")
-          setValue(`${formFieldName}.${index}.uom`,'')
-          setValue(`${formFieldName}.${index}.estimatedQuantity`,'')
-          setValue(`${formFieldName}.${index}.estimatedAmount`,"0")
-        }
-      })
-      
-      return 
-    }
-    
-    //make a new state here which doesn't have this key
-    const updatedState = rows.map((e) => {
-      if (e.key === row.key) {
-        return {
-          key: e.key,
-          isShow: false,
-        };
-      }
-      return e;
-    });
-    setValue(`${formFieldName}.${row.key}.estimatedAmount`, 0);
-    setRows((prev) => updatedState);
+  const removeRow = (rowIndex) => {
+    const updatedRows = rows.map((row, index) =>
+      index === rowIndex ? { ...row, isShow: false } : row
+    );
+    setRows(updatedRows);
   };
+
   const addRow = () => {
-    const obj = {
-      key: null,
+    const newRow = {
+      key: rows.length + 1,
+      description: "",
+      applicableOn: "",
+      calculationType: "",
+      figure: "",
       isShow: true,
     };
-    obj.key = rows[rows.length - 1].key + 1;
-    setRows((prev) => [...prev, obj]);
+    setRows([...rows, newRow]);
+  };
+
+  const getCalculationType = () => {
+    return [
+      { code: "PERCENTAGE", name: "percentage" },
+      { code: "FIXED", name: "fixed" }
+    ];
   };
 
   const getDropDownDataFromMDMS = (t, row, inputName, props, register, optionKey = "name", options = []) => {
-    const { isLoading, data } = Digit.Hooks.useCustomMDMS(
-      Digit.ULBService.getStateId(),
-      options?.mdmsConfig?.moduleName,
-      [{ name: options?.mdmsConfig?.masterName }],
-      {
-        select: (data) => {
-          const optionsData = _.get(data, `${options?.mdmsConfig?.moduleName}.${options?.mdmsConfig?.masterName}`, []);
-          return optionsData.filter((opt) => opt?.active).map((opt) => ({ ...opt, name: `${options?.mdmsConfig?.localePrefix}_${opt.code}` }));
+    const requestCriteria = {
+      url: "/mdms-v2/v2/_search",
+      body: {
+        MdmsCriteria: {
+          tenantId: "pg",
+          schemaCode: "WORKS-SOR.Overhead",
         },
-        enabled: options?.mdmsConfig ? true : false,
-      }
-    );
+      },
+      changeQueryName: "sorOverhead"
+    };
+
+    let { isLoading, data } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+
+    data = data?.mdms?.map((ob) => (ob?.data));
 
     if (isLoading) {
       return <Loader />;
-      //show MDMS data if options are not provided. Options are in use here for pre defined options from config.
-      //Usage example : dependent dropdown
-    } else
+    } else {
       return (
         <Dropdown
           inputRef={register()}
-          option={options?.mdmsConfig ? data : options}
+          option={data}
           selected={props?.value}
           optionKey={optionKey}
           t={t}
@@ -162,169 +144,168 @@ const ExtraCharges = ({ control, watch,config, ...props }) => {
           style={{ marginBottom: "0px" }}
         />
       );
+    }
   };
 
-  const setAmountField = (e, row) => {
-    const quantity = parseFloat(watch(`${formFieldName}.${row.key}.estimatedQuantity`));
-    const ratePerUnit = parseFloat(watch(`${formFieldName}.${row.key}.rate`));
-    if (!ratePerUnit || !quantity) {
-      setValue(`${formFieldName}.${row.key}.estimatedAmount`, 0);
-      return;
-    }
-    const amountToSet = parseFloat(quantity * ratePerUnit).toFixed(2);
-    setValue(`${formFieldName}.${row.key}.estimatedAmount`, amountToSet);
+  const setAmountField = (e, rowIndex) => {
+    const updatedRows = rows.map((row, index) =>
+      index === rowIndex ? { ...row, figure: e.target.value } : row
+    );
+    setRows(updatedRows);
+    setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
   };
 
   const cellContainerStyle = { display: "flex", flexDirection: "column" };
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
+
   const renderBody = useMemo(() => {
     let i = 0;
-    return rows.map((row, index) => {
+    return rows.map((row, rowIndex) => {
       if (row.isShow) i++;
       return row.isShow && (
-          <tr key={index} style={!row?.isShow ? {display:'none'}: {}}>
-            <td style={getStyles(1)}>{i}</td>
+        <tr key={rowIndex} style={!row?.isShow ? { display: 'none' } : {}}>
+          <td style={getStyles(1)}>{i}</td>
 
-            <td style={getStyles(2)}>
-              <div style={cellContainerStyle}>
-                <div>
-                  <TextArea
-                    style={{ marginBottom: "0px", wordWrap: "break-word" }}
-                    name={`${formFieldName}.${row.key}.description`}
-                    inputRef={register({
-                        maxLength:{
-                          value:512,
-                          message:t(`WORKS_PATTERN_ERR`)
-                        },
-                        required:true
-                    })}
-                  />
-                </div>
-                <div style={errorContainerStyles}>
-                  {errors && errors?.[formFieldName]?.[row.key]?.description?.type === "pattern" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>
-                  )}
-                  {errors && errors?.[formFieldName]?.[row.key]?.description?.type === "maxLength" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_DESC_LENGTH_EXCEEDED_512`)}</CardLabelError>
-                  )}
-                  {errors && errors?.[formFieldName]?.[row.key]?.description?.type === "required" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
-                  )}
-                </div>
+          <td style={getStyles(2)}>
+            <div style={cellContainerStyle}>
+              <div>
+                <TextArea
+                  style={{ marginBottom: "0px", wordWrap: "break-word" }}
+                  name={`${formFieldName}[${rowIndex}].description`}
+                  value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                  inputRef={register({
+                    maxLength: {
+                      value: 512,
+                      message: t(`WORKS_PATTERN_ERR`)
+                    },
+                    required: false
+                  })}
+                />
               </div>
-            </td>
-
-            <td style={getStyles(3)}>
-              <div style={cellContainerStyle}>
-                <div>
-                  <Controller
-                    control={control}
-                    name={`${formFieldName}.${row.key}.applicableOn`}
-                    rules={{
-                      required: true,
-                      pattern: /^[a-zA-Z0-9_ .$@#\/ ]*$/,
-                    }}
-                    render={(props) =>
-                      getDropDownDataFromMDMS(t, row, "uom", props, register, "name", {
-                        mdmsConfig: {
-                          masterName: "uom",
-                          moduleName: "common-masters",
-                          localePrefix: "ES_COMMON_UOM",
-                        },
-                      })
-                    }
-                  />
-                </div>
-                <div style={errorContainerStyles}>
-                  {errors && errors?.[formFieldName]?.[row.key]?.uom?.type === "pattern" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>
-                  )}
-                  {errors && errors?.[formFieldName]?.[row.key]?.uom?.type === "required" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
-                  )}
-                </div>
-              </div>
-            </td>
-
-            <td style={getStyles(4)}>
-              <div style={cellContainerStyle}>
-                <div>
-                  <Controller
-                    control={control}
-                    name={`${formFieldName}.${row.key}.calculationType`}
-                    rules={{
-                      required: true,
-                      pattern: /^[a-zA-Z0-9_ .$@#\/ ]*$/,
-                    }}
-                    render={(props) =>
-                      getDropDownDataFromMDMS(t, row, "uom", props, register, "name", {
-                        mdmsConfig: {
-                          masterName: "uom",
-                          moduleName: "common-masters",
-                          localePrefix: "ES_COMMON_UOM",
-                        },
-                      })
-                    }
-                  />
-                </div>
-                <div style={errorContainerStyles}>
-                  {errors && errors?.[formFieldName]?.[row.key]?.uom?.type === "pattern" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>
-                  )}
-                  {errors && errors?.[formFieldName]?.[row.key]?.uom?.type === "required" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
-                  )}
-                </div>
-              </div>
-            </td>
-
-            <td style={getStyles(5)}>
-              <div style={cellContainerStyle}>
-                <div>
-                  <TextInput
-                    style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
-                    name={`${formFieldName}.${row.key}.figure`}
-                    inputRef={register({
-                      required: true,
-                      // pattern: /^[0-9]*$/,
-                      max:populators?.quantity?.max,
-                      pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
-                    })}
-                    onChange={(e) => setAmountField(e, row)}
-                  />
-                </div>
-                <div style={errorContainerStyles}>
-                  {errors && errors?.[formFieldName]?.[row.key]?.estimatedQuantity?.type === "pattern" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_QT_ERR`)}</CardLabelError>
-                  )}
-                  {errors && errors?.[formFieldName]?.[row.key]?.estimatedQuantity?.type === "max" && (
-                    <CardLabelError style={errorCardStyle}>{t(`${populators?.quantity?.error}`)}</CardLabelError>
-                  )}
-                  {errors && errors?.[formFieldName]?.[row.key]?.estimatedQuantity?.type === "required" && (
-                    <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
-                  )}
-                </div>
-              </div>
-            </td>
-
-            <td style={getStyles(8)}>
-              <div style={cellContainerStyle}>
-                { (
-                  <span onClick={() => rows.length > 1 ? removeRow(row) : {}} className="icon-wrapper">
-                    <DeleteIcon fill={rows.length > 1? "#FF9100" :"#B1B4B6" } />
-                  </span>
+              <div style={errorContainerStyles}>
+                {errors && errors?.[formFieldName]?.[rowIndex]?.description?.type === "pattern" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>
+                )}
+                {errors && errors?.[formFieldName]?.[rowIndex]?.description?.type === "maxLength" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_DESC_LENGTH_EXCEEDED_512`)}</CardLabelError>
+                )}
+                {errors && errors?.[formFieldName]?.[rowIndex]?.description?.type === "required" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
                 )}
               </div>
-              <div style={errorContainerStyles}></div>
-            </td>
-          </tr>
-        
+            </div>
+          </td>
+
+          <td style={getStyles(3)}>
+            <div style={cellContainerStyle}>
+              <div>
+                <Controller
+                  control={control}
+                  name={`${formFieldName}[${rowIndex}].applicableOn`}
+                  defaultValue={row.applicableOn}
+                  rules={{
+                    required: false,
+                    pattern: /^[a-zA-Z0-9_ .$@#\/ ]*$/,
+                  }}
+                  render={(props) =>
+                    getDropDownDataFromMDMS(t, row, "applicableOn", props, register, "description")
+                  }
+                />
+              </div>
+              <div style={errorContainerStyles}>
+                {errors && errors?.[formFieldName]?.[rowIndex]?.uom?.type === "pattern" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>
+                )}
+                {errors && errors?.[formFieldName]?.[rowIndex]?.uom?.type === "required" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
+                )}
+              </div>
+            </div>
+          </td>
+
+          <td style={getStyles(4)}>
+            <div style={cellContainerStyle}>
+              <div>
+                <Controller
+                  control={control}
+                  name={`${formFieldName}[${rowIndex}].calculationType`}
+                  rules={{
+                    required: false,
+                    pattern: /^[a-zA-Z0-9_ .$@#\/ ]*$/,
+                  }}
+                  render={(props) => (
+                    <Dropdown
+                      inputRef={register()}
+                      option={getCalculationType()}
+                      selected={props?.value || row?.calculationType}
+                      optionKey={"name"}
+                      t={t}
+                      select={(e) => {
+                        props.onChange(e);
+                      }}
+                      onBlur={props?.onBlur}
+                      optionCardStyles={{ maxHeight: "15rem" }}
+                      style={{ marginBottom: "0px" }}
+                    />
+                  )}
+                />
+              </div>
+              <div style={errorContainerStyles}>
+                {errors && errors?.[formFieldName]?.[rowIndex]?.uom?.type === "pattern" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_PATTERN_ERR`)}</CardLabelError>
+                )}
+                {errors && errors?.[formFieldName]?.[rowIndex]?.uom?.type === "required" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
+                )}
+              </div>
+            </div>
+          </td>
+
+          <td style={getStyles(5)}>
+            <div style={cellContainerStyle}>
+              <div>
+                <TextInput
+                  style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
+                  name={`${formFieldName}[${rowIndex}].figure`}
+                  value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  inputRef={register({
+                    required: false,
+                    max: populators?.quantity?.max,
+                    pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
+                  })}
+                  onChange={(e) => setAmountField(e, rowIndex)}
+                />
+              </div>
+              <div style={errorContainerStyles}>
+                {errors && errors?.[formFieldName]?.[rowIndex]?.estimatedQuantity?.type === "pattern" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_QT_ERR`)}</CardLabelError>
+                )}
+                {errors && errors?.[formFieldName]?.[rowIndex]?.estimatedQuantity?.type === "max" && (
+                  <CardLabelError style={errorCardStyle}>{t(`${populators?.quantity?.error}`)}</CardLabelError>
+                )}
+                {errors && errors?.[formFieldName]?.[rowIndex]?.estimatedQuantity?.type === "required" && (
+                  <CardLabelError style={errorCardStyle}>{t(`WORKS_REQUIRED_ERR`)}</CardLabelError>
+                )}
+              </div>
+            </div>
+          </td>
+
+          <td style={getStyles(8)}>
+            <div style={cellContainerStyle}>
+              {(
+                <span onClick={() => rows.length > 1 ? removeRow(rowIndex) : {}} className="icon-wrapper">
+                  <DeleteIcon fill={rows.length > 1 ? "#FF9100" : "#B1B4B6"} />
+                </span>
+              )}
+            </div>
+            <div style={errorContainerStyles}></div>
+          </td>
+        </tr>
       );
     });
-  }, [rows,formData])
+  }, [rows, formData]);
 
-  
   return (
     <table className="table reports-table sub-work-table">
       <thead>
@@ -333,14 +314,12 @@ const ExtraCharges = ({ control, watch,config, ...props }) => {
       <tbody>
         {renderBody}
         <tr>
-          {/* <td style={getStyles(1)}></td> */}
           <td colSpan={7} style={{ textAlign: "center" }} onClick={addRow}>
             <span>
               <AddIcon fill={"#F47738"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
               <label style={{ marginLeft: "10px", fontWeight: "600", color: "#F47738" }}>{t("RA_ADD_ITEM")}</label>
             </span>
           </td>
-          {/* <td style={getStyles(1)}></td> */}
         </tr>
       </tbody>
     </table>

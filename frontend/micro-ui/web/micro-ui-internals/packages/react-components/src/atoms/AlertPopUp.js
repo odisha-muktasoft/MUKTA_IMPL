@@ -23,7 +23,7 @@ const AlertPopUp = ({setIsPopupOpen,setShowModal,t,label,...props}) => {
                     style={{width:"45%"}}
                     label={t("CANCEL")}
                     variation="secondary"
-                    onButtonClick={() => {
+                    onButtonClick={props?.onButtonClickCancel ? props?.onButtonClickCancel : () => {
                         setIsPopupOpen(false);
                         setShowModal(false);
                     }}
@@ -33,7 +33,7 @@ const AlertPopUp = ({setIsPopupOpen,setShowModal,t,label,...props}) => {
                     style={{width:"45%"}}
                     label={t("CONFIRM")}
                     variation="primary"
-                    onButtonClick={() => {
+                    onButtonClick={props?.onButtonClickConfirm ? props?.onButtonClickConfirm : () => {
                         setIsPopupOpen(false);
                         setShowModal(true);
                     }}

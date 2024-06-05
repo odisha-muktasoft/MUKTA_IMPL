@@ -1,20 +1,14 @@
-import { Loader, FormComposerV2, Header, Toast, ActionBar, Menu, SubmitBar, WorkflowModal } from "@egovernments/digit-ui-react-components";
+import { Loader, FormComposerV2, Header, Toast, ActionBar, Menu, SubmitBar, WorkflowModal, AlertPopUp } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import { CreateConfig } from "../../configs/RateAnalysisCreateConfig";
-import { getDefaultValues } from "../../utils/transformData";
+import { getDefaultValues, transformRequestBody } from "../../utils/transformData";
 import getModalConfig from "../../../../Measurement/src/pages/employee/config";
 import { deepCompare } from "../../utils/transformData";
-import _ from "lodash";
-
-const updateData = (data, formState, tenantId) => {
-  const SOR = data?.SORtable || formState?.SOR;
-  const NONSOR = data?.NONSORtable || formState?.NONSOR;
-  return { ...formState, ...data, SOR, NONSOR, tenantId };
-};
 
 const CreateRateAnalysis = ({ props }) => {
+  
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const history = useHistory();
@@ -26,11 +20,11 @@ const CreateRateAnalysis = ({ props }) => {
   const [defaultState, setDefaultState] = useState({ SORDetails:[], extraCharges:[] });
   const [showToast, setShowToast] = useState({display: false, error: false});
   const [errorMessage, setErrorMessage] = useState("");
-  const [displayMenu, setDisplayMenu] = useState(false);
   const [config, setConfig] = useState({});
   const [approvers, setApprovers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
   const [selectedApprover, setSelectedApprover] = useState({});
+  const [ isPopupOpen, setIsPopupOpen] = useState(false);
+  let isUpdate = window.location.href.includes("update") || props?.isUpdate
 
 
   const getFormAccessors = useCallback((accessors) => {
@@ -44,34 +38,23 @@ const CreateRateAnalysis = ({ props }) => {
   const mbNumber = searchparams.get("mbNumber");
 
   // use this for call create or update
-  // const reqCriteria = {
-  //   url: props?.isUpdate ? `/measurement-service/v1/_update` : `/measurement-service/v1/_create`,
-  //   params: {},
-  //   body: {},
-  //   config: {
-  //     enabled: false,
-  //   },
-  // };
+  const reqCriteria = {
+    url: isUpdate? `/mdms-v2/v2/_update/WORKS-SOR.Composition` : `/mdms-v2/v2/_create/WORKS-SOR.Composition`,
+    params: {},
+    body: {},
+    config: {
+      enabled: false,
+    },
+  };
 
-  // const mutation = Digit.Hooks.useCustomAPIMutationHook(reqCriteria);
+  const mutation = Digit.Hooks.useCustomAPIMutationHook(reqCriteria);
 
-  // for MDMS service
+  // for MDMS service for SOR 
   const requestCriteria = {
     url: "/mdms-v2/v2/_search",
     body: {
     MdmsCriteria: {
         tenantId: tenantId,
-        // moduleDetails: [
-        // {
-        //     moduleName: "WORKS-SOR",
-        //     masterDetails: [
-        //     {
-        //         name: "SOR",
-        //         filter: `[?(@.sorId=='${queryStrings?.sorid}')]`,
-        //     },
-        //     ],
-        // },
-        // ],
         schemaCode: "WORKS-SOR.SOR",
         uniqueIdentifiers : [`${queryStrings?.sorid}`],
     },
@@ -81,53 +64,78 @@ const CreateRateAnalysis = ({ props }) => {
 
 const { isLoading, data : data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
 
-  const { isLoading: approverLoading, isError, error, data: employeeDatav1 } = Digit.Hooks.hrms.useHRMSSearch(
-    { roles: rolesForThisAction, isActive: true },
-    Digit.ULBService.getCurrentTenantId(),
-    null,
-    null,
-    { enabled: true }
-  );
+  // for MDMS service for SOR Composition
+  const requestCriteriaMDMS = {
+    url: "/mdms-v2/v2/_search",
+    body: {
+    MdmsCriteria: {
+        tenantId: tenantId.split(".")?.[0],
+        schemaCode: "WORKS-SOR.Composition",
+        uniqueIdentifiers : [`${queryStrings?.compositionid}`],
+    },
+    },
+    changeQueryName:"sorComposition"
+};
 
-  employeeDatav1?.Employees.map((emp) => (emp.nameOfEmp = emp?.user?.name || "NA"));
+const { isLoading : isCompositionLoading, data : compositionData} = Digit.Hooks.useCustomAPIHook(requestCriteriaMDMS);
 
-  
+//for MDMS service to call SOR data for BasicSORDetails
+const requestCriteriaSOR = {
+  url: "/mdms-v2/v2/_search",
+  body: {
+  MdmsCriteria: {
+      tenantId: tenantId,
+      limit:100,
+      schemaCode: "WORKS-SOR.SOR",
+      uniqueIdentifiers : compositionData?.mdms?.[0]?.data?.basicSorDetails?.map((ob) => ob?.sorId),
+  },
+  },
+  config:{
+    enabled:compositionData?.mdms?.length > 0 ? true : false
+  },
+  changeQueryName:"allSORdata"
+};
+
+const { isLoading: isSORLoading, data :allSORData} = Digit.Hooks.useCustomAPIHook(requestCriteriaSOR);
+
+//for MDMS service to call Overhead data for extracharges
+const requestCriteriaOverhead = {
+  url: "/mdms-v2/v2/_search",
+  body: {
+  MdmsCriteria: {
+      tenantId: tenantId,
+      limit:100,
+      schemaCode: "WORKS-SOR.Overhead",
+      uniqueIdentifiers : compositionData?.mdms?.[0]?.data?.additionalCharges?.map((ob) => ob?.applicableOn),
+  },
+  },
+  config:{
+    enabled:compositionData?.mdms?.length > 0 ? true : false
+  },
+  changeQueryName:"allOverheadData"
+};
+
+const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCustomAPIHook(requestCriteriaOverhead);
 
   // fetch the required data........
   useEffect(() => {
     const fetchRequiredData = () => {
       if (data) {
-        const defaultValues = getDefaultValues(data?.mdms?.[0], t, mbNumber);
+        const defaultValues = getDefaultValues(data?.mdms?.[0], t, mbNumber, compositionData?.mdms?.[0],allSORData,allOverheadData,isUpdate || props?.isUpdate);
         setState({
-          //SOR: defaultValues?.SOR,
-          //NONSOR: defaultValues?.NONSOR,
-          //SORtable : defaultValues?.SOR,
-          //NONSORtable: defaultValues?.NONSOR,
-          SORDetails : [],
+          currentDate : [new Date().toISOString().split("T")[0]],
+          SORDetails : defaultValues?.SORDetails || [],
           ...defaultValues?.SORData,
-          extraCharges:[],
-          //period: data?.period,
-          //musterRollNumber: data?.musterRollNumber,
-          //uploadedDocs: defaultValues?.uploadedDocs,
-          //documents : defaultValues?.documents,
+          extraCharges:defaultValues?.extraCharges,
         });
         setDefaultState({
-          //SOR: defaultValues?.SOR,
-          //NONSOR: defaultValues?.NONSOR,
-          //SORtable : defaultValues?.SOR,
-          //NONSORtable: defaultValues?.NONSOR,
-          SORDetails : [],
+          currentDate : [new Date().toISOString().split("T")[0]],
+          SORDetails : defaultValues?.SORDetails || [],
           sordata: data?.mdms?.[0],
-          extraCharges:[],
-          //estimate: data?.estimate,
-          //contractDetails: defaultValues?.contractDetails,
-          //uploadedDocs: defaultValues?.uploadedDocs,
-          //documents : defaultValues?.documents,
+          extraCharges:defaultValues?.extraCharges,
         });
-        //createState?.accessors?.setValue?.("SOR", defaultValues?.SOR);
-        //createState?.accessors?.setValue?.("NONSOR", defaultValues?.NONSOR);
-        createState?.accessors?.setValue?.("SORDetails", []);
-        createState?.accessors?.setValue?.("extraCharges", []);
+        createState?.accessors?.setValue?.("SORDetails", defaultValues?.SORDetails || []);
+        createState?.accessors?.setValue?.("extraCharges", defaultValues?.extraCharges || []);
         createState?.accessors?.setValue?.("sordata", data?.mdms?.[0]);
         if (data?.period?.type == "error") {
           setErrorMessage(data?.period?.message);
@@ -136,11 +144,8 @@ const { isLoading, data : data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
       }
     };
     fetchRequiredData();
-  }, [data]);
+  }, [data,allSORData,compositionData,allOverheadData]);
 
-  useEffect(() => {
-    setApprovers(employeeDatav1?.Employees?.length > 0 ? employeeDatav1?.Employees.filter((emp) => emp?.nameOfEmp !== "NA") : []);
-  }, [employeeDatav1]);
   useEffect(() => {
     setConfig(
       getModalConfig({
@@ -148,73 +153,45 @@ const { isLoading, data : data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
         approvers,
         selectedApprover,
         setSelectedApprover,
-        approverLoading,
+        //approverLoading,
         isEdit : props?.isUpdate,
       })
     );
   }, [approvers]);
 
-  // action to be performed....
-  let actionMB = [
-    {
-      name: "SUBMIT",
-    },
-    {
-      name: "SAVE_AS_DRAFT",
-    },
-  ];
-
-  function onActionSelect(action = "SUBMIT") {
-    if (createState?.period?.type == "error") {
-      setErrorMessage(createState?.period?.message);
-      setShowToast({display:true, error:true});
-      return null;
-    }
-    if (action?.name === "SUBMIT") {
-      createState.workflowAction = "SUBMIT";
-      setShowModal(true);
-      //handleCreateMeasurement(createState, action);
-    }
-    if (action?.name === "SAVE_AS_DRAFT") {
-      createState.workflowAction = "SAVE_AS_DRAFT";
-      handleCreateRateAnalysis(createState, action);
-    }
-  }
-
   // Handle form submission
   const handleCreateRateAnalysis = async (data, action) => {
-    setShowModal(false);
-    if (props?.isUpdate) {
-      data.id = props?.data?.[0].id;
-      data.measurementNumber = props?.data?.[0].measurementNumber;
-      data.wfStatus = props?.data?.[0]?.wfStatus;
+    if(createState?.SORDetails?.length <= 0)
+    {
+      setErrorMessage("SOR details are mandatory");
+      setShowToast({display:true, error:true});
+      return;
     }
 
     if(selectedApprover)
       data.selectedApprover = selectedApprover;
-    // Create the measurement payload with transformed data
-    const measurements = transformData(updateData(data, createState, tenantId));
-    //call the createMutation for MB and route to response page on onSuccess or show error
+
+    // Create the rateanalysis payload with transformRequestBody data
+    const rateComposition = await transformRequestBody(data, createState, tenantId, compositionData, isUpdate);
+
+    //call the createMutation for Rate Analysis and route to view page on onSuccess or show error
     const onError = (resp) => {
       setErrorMessage(resp?.response?.data?.Errors?.[0]?.message);
       setShowToast({display:true, error:true});
     };
     const onSuccess = (resp) => {
-      if(action?.name === "SAVE_AS_DRAFT")
-      {
-        setErrorMessage(t("MB_APPLICATION_IS_SUCCESSFULLY_DRAFTED"));
+    
+        if(isUpdate) setErrorMessage(`${t("RA_SUCCESS_UPDATE_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_UPDATE_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
+        else setErrorMessage(`${t("RA_SUCCESS_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
         setShowToast({display:true, error:false});
-        setTimeout(() => {history.push(`/${window.contextPath}/employee/measurement/update?tenantId=${resp.measurements[0].tenantId}&workOrderNumber=${contractNumber}&mbNumber=${resp.measurements[0].measurementNumber}`)}, 3000);;
-      }
-      else
-        history.push(`/${window.contextPath}/employee/measurement/response?mbreference=${resp.measurements[0].measurementNumber}`);
+        setTimeout(() => {history.push(`/${window.contextPath}/employee/rateAnalysis/view-rate-analysis?sorId=${resp?.mdms[0]?.data?.sorId}&fromeffective=${resp?.mdms?.[0]?.data?.effectiveFrom}`)}, 3000);;
     };
     mutation.mutate(
       {
         params: {},
-        body: { ...measurements },
+        body: { ...rateComposition },
         config: {
-          enabled: true,
+          enabled: rateComposition? true : false,
         },
       },
       {
@@ -236,33 +213,38 @@ const { isLoading, data : data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
     }
   }, [showToast]);
 
-  // useEffect(() => {
-  //   if (!_.isEqual(sessionFormData, createState)) {
-  //     // setSessionFormData({ ...createState });
-  //   }
-  //   console.log(createState,"formdata",sessionFormData)
-  // }, [createState]);
-
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
     if (deepCompare(formData,createState)) {
       setState({ ...createState, ...formData })
     }
   };
-  actionMB = actionMB && (props?.isUpdate) && props?.data && props?.data?.[0]?.wfStatus==="SENT_BACK" ? actionMB?.filter((ob) => ob?.name !== "SAVE_AS_DRAFT") : actionMB;
+
+  const validateRateAnalysis =() => {
+    //validate if no data has been changed for edit
+    if(!(deepCompare(createState?.SORDetails,compositionData?.mdms?.[0]?.data.basicSorDetails)))
+    {
+      setErrorMessage("The rate analysis has not been modified as there were no changes done.");
+      setShowToast({display:true, error:false});
+    }
+    else
+    {
+      setIsPopupOpen(true)
+    }
+  }
 
   // if data is still loading return loader
-  if (isLoading || !defaultState?.sordata || approverLoading) {
+  if (isLoading || !defaultState?.sordata || isCompositionLoading || isSORLoading || isOverheadLoading) {
     return <Loader />;
   }
 
   // else render form and data
   return (
     <div>
-      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={(_data) => handleCreateRateAnalysis({..._data,...createState},"SUBMIT")} config={config} />}
+      {isPopupOpen && <AlertPopUp t={t} label={"Existing rate analysis is edited.Do you want to update existing rate analysis for <SORCode> effective from <effective date>? Please confirm to complete the action."} setIsPopupOpen={setIsPopupOpen} onButtonClickConfirm={(_data) => handleCreateRateAnalysis({..._data,...createState},"SUBMIT")} onButtonClickCancel={() => { setIsPopupOpen(false)}}/>}
       <Header className="works-header-view modify-header">{t("RA_CREATE_RATE_ANALYSIS")}</Header>
       <FormComposerV2
         label={t("MB_SUBMIT_BAR")}
-        config={CreateConfig({ defaultValue: defaultState?.sordata, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
+        config={CreateConfig({ defaultValue: defaultState, isUpdate, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
           return {
             ...config,
             body: config.body.filter((a) => !a.hideInEmployee),
@@ -270,17 +252,13 @@ const { isLoading, data : data} = Digit.Hooks.useCustomAPIHook(requestCriteria);
         })}
         getFormAccessors={getFormAccessors}
         defaultValues={{ ...createState }}
-        onSubmit={onActionSelect}
+        onSubmit={(_data) => isUpdate && isUpdate !== undefined? validateRateAnalysis() : handleCreateRateAnalysis({..._data,...createState},"SUBMIT")}
         fieldStyle={{ marginRight: 0 }}
         showMultipleCardsWithoutNavs={true}
         onFormValueChange={onFormValueChange}
         noBreakLine={true}
       />
       {showToast?.display && <Toast error={showToast?.error} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
-      <ActionBar>
-        {displayMenu ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
-        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
-      </ActionBar>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-export const CreateConfig = ({ defaultValue, measurement }) => {
+export const CreateConfig = ({ defaultValue, isUpdate, measurement }) => {
     return {
       CreateConfig: [
         {
@@ -135,31 +135,20 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
               subHead: "",
               //forOnlyUpdate : "",
               body: [
-                // {
-                //   type: "component",
-                //   component: "MeasurementHistory",
-                //   withoutLabel: true,
-                //   key: "MeasurementHistory",
-                //   useFieldArray: true,
-                //   "customProps" : {
-                //     "contractNumber" : defaultValue?.contractNumber,
-                //     "measurementNumber" : measurement?.measurementNumber
-                //   }
-                // },
                 {
                   "inline": true,
                   "label": "RA_DATE",
                   "isMandatory": true,
-                  "key": "effective_form_date",
+                  "key": "effective_from_date",
                   "type": "date",
-                  "disable": false,
+                  "disable": isUpdate ? true : false,
                   // "preProcess" : {
                   //   "updateDependent" : ["populators.validation.max"]
                   // },
                   "populators": {
-                    "name": "effective_form_date",
+                    "name": "effective_from_date",
                     "validation":{
-                      "max":"currentDate"
+                      "min":defaultValue?.currentDate
                     }
                   }
                 },
@@ -170,19 +159,8 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                   "key": "analysis_qty_defined",
                   "type": "text",
                   "disable": false,
-                  // "preProcess": {
-                  //   "convertStringToRegEx": [
-                  //     "populators.validation.pattern"
-                  //   ]
-                  // },
                   "populators": {
                     "name": "analysis_qty_defined",
-                    // "error": "PROJECT_PATTERN_ERR_MSG_PROJECT_NAME",
-                    // "validation": {
-                    //   "pattern": "^[a-zA-Z0-9\\/{ \\/ .\\- _$@#\\' } ]*$",
-                    //   "minlength": 2,
-                    //   "maxlength" : 128
-                    // }
                   }
                 },
               ],
@@ -199,6 +177,9 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                   mode: "CREATE",
                   sorType : "LABOUR",
                   useFieldArray: true,
+                  customProps:{
+                    SORDetails:defaultValue?.SORDetails,
+                  }
                 },
               ],
             },
@@ -214,6 +195,9 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                   mode: "CREATE",
                   sorType : "MATERIAL",
                   useFieldArray: true,
+                  customProps:{
+                    SORDetails:defaultValue?.SORDetails,
+                  }
                 },
               ],
             },
@@ -229,6 +213,9 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                   mode: "CREATE",
                   sorType : "MACHINERY",
                   useFieldArray: true,
+                  customProps:{
+                    SORDetails:defaultValue?.SORDetails,
+                  }
                 },
               ],
             },
@@ -244,6 +231,9 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                   mode: "CREATE",
                   sorType : "EXTRACHARGES",
                   useFieldArray: true,
+                  // customProps:{
+                  //   extraCharges:defaultValue?.extraCharges,
+                  // }
                 },
               ],
             },
