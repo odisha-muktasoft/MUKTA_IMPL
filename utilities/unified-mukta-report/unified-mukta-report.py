@@ -10,6 +10,8 @@ import logging
 import calendar
 import time
 import os
+from datetime import datetime
+import pytz
 
 
 tenantids = ["od.jatni","od.athagarh"]
@@ -26,6 +28,21 @@ expenseHost = "http://localhost:8087"
 musterRollHost = "http://localhost:8091"
 projectHost = "http://localhost:8081"
 contractHost = "http://localhost:8084"
+
+def convert_epoch_to_indian_time(epoch_time):
+    # Convert epoch time to seconds
+    epoch_time_seconds = epoch_time / 1000
+    
+    # Define the timezone for India
+    india_tz = pytz.timezone('Asia/Kolkata')
+    
+    # Convert epoch time to datetime object
+    dt = datetime.fromtimestamp(epoch_time_seconds, tz=india_tz)
+    
+    # Format the datetime object to "mm-dd-yyyy"
+    formatted_time = dt.strftime('%m-%d-%Y')
+    
+    return formatted_time
 
 def getWorkOrderData():
     data = []
@@ -50,8 +67,11 @@ def getWorkOrderData():
                             temp['ULB'] = tenantid
                             temp['projectId'] = contract['additionalDetails']['projectId']
                             temp['CBO'] = contract['additionalDetails']['cboName']
-                            temp['creationDate'] = contract['auditDetails']['createdTime']
+                            temp['creation_Date'] = convert_epoch_to_indian_time(contract['auditDetails']['createdTime'])
                             temp['WorkOrderId'] = contract['contractNumber']
+                            temp['wfStatus'] = contract['wfStatus']
+                            temp['last_Modified_Date'] = convert_epoch_to_indian_time(contract['auditDetails']['lastModifiedTime'])
+                            temp['valueOfWorkOrder'] = contract['totalContractedAmount']
                             data.append(temp)
                     else:
                         break
@@ -120,9 +140,9 @@ def getBillData():
                             if bill['businessService'] == "EXPENSE.WAGES":
                                 temp['musterRollNumber'] = bill['billDetails'][0]['referenceId']
                             temp['billAmount'] = bill['totalAmount']
-                            temp['creationDate'] = bill['auditDetails']['createdTime']
+                            temp['creation_Date'] = convert_epoch_to_indian_time(bill['auditDetails']['createdTime'])
                             temp['wfStatus'] = bill['wfStatus']
-                            temp['lastModifiedTime'] = bill['auditDetails']['lastModifiedTime']
+                            temp['last_Modified_Date'] = convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime'])
                             data.append(temp)
                     else:
                         break
@@ -157,9 +177,9 @@ def getMusterRollData():
                         temp['musterRollId'] = roll['musterRollNumber']
                         temp['startDate'] = roll['startDate']
                         temp['endDate'] = roll['endDate']
-                        temp['creationDate'] = roll['auditDetails']['createdTime']
+                        temp['creation_Date'] = convert_epoch_to_indian_time(roll['auditDetails']['createdTime'])
                         temp['musterRollStatus'] = roll['musterRollStatus']
-                        temp['lastModifiedTime'] = roll['auditDetails']['lastModifiedTime']
+                        temp['last_Modified_Date'] = convert_epoch_to_indian_time(roll['auditDetails']['lastModifiedTime'])
                         temp['No of Wage Seekers'] = len(roll['individualEntries'])
                         data.append(temp)
                 else:
@@ -192,7 +212,7 @@ def getFailedPayments():
                             'ULB': pi['tenantId'],
                             'paymentInstructionId': pi['jitBillNo'],
                             'billId': pi['additionalDetails']['billNumber'][0],
-                            'date': pi['auditDetails']['createdTime']
+                            'date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
                         }
                         for beneficiary in pi['beneficiaryDetails']:
                             # Extract data from the beneficiary level
