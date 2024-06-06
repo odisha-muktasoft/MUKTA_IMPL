@@ -26,6 +26,7 @@ expenseHost = "http://localhost:8087"
 musterRollHost = "http://localhost:8091"
 projectHost = "http://localhost:8081"
 contractHost = "http://localhost:8084"
+individualHost = "http://localhost:8093"
 
 
 
@@ -195,6 +196,23 @@ def getMusterRollData():
     except Exception as e:
         raise e
 
+def getbeneficiaryNameIND(id, tenantid):
+    try:
+        host = individualHost + "/individual/v1/_search" + "?tenantId=" + tenantid + "&limit=1" + "&offset=0"
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_payload = {"Individual":{"id": [id]},"RequestInfo": request_payload}
+        response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response and response['Individual'] and len(response['Individual'])>0:
+                return response['Individual'][0]['name']['givenName']
+            else:
+                return "NA"
+        else:
+            return "NA"
+    except Exception as e:
+        raise e
 
 def getFailedPayments(payment_number):
     data = []
@@ -220,7 +238,13 @@ def getFailedPayments(payment_number):
                             'billId': pi['additionalDetails']['billNumber'][0],
                             'date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
                         }
+                        tenantId = pi['tenantId']
                         for beneficiary in pi['beneficiaryDetails']:
+                            beneficiary_name = 'NA'
+                            if beneficiary['beneficiaryType'] == 'IND':
+                                beneficiary_name = getbeneficiaryNameIND(beneficiary['beneficiaryId'], tenantId)
+                            # if beneficiary['beneficiaryType'] == 'ORG':
+                            #     beneficiary_name = getbeneficiaryNameORG(beneficiary['beneficiaryId'])
                             # Extract account number and IFSC code from bankAccountId
                             account_info = beneficiary['bankAccountId'].split('@')
                             account_number = account_info[0] if len(account_info) > 0 else ''
@@ -229,6 +253,7 @@ def getFailedPayments(payment_number):
                             # Extract data from the beneficiary level
                             beneficiary_data = {
                                 'beneficiaryId': beneficiary['beneficiaryNumber'],
+                                'beneficiaryName': beneficiary_name,
                                 'type': beneficiary['beneficiaryType'],
                                 'accountNumber': account_number,
                                 'ifscCode': ifsc_code    
