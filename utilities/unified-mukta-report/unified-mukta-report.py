@@ -361,30 +361,30 @@ if __name__ == '__main__':
         musterRoll_filename = f'musterRoll_{current_date}.csv'
         project_filename = f'project_{current_date}.csv'
         
-        # # Process work order data
-        # workOrder_data = getWorkOrderData()
-        # workOrder_file_path = os.path.join(directory, workOrder_filename)
-        # writeDataToCSV(workOrder_data, workOrder_file_path)
+        # Process work order data
+        workOrder_data = getWorkOrderData()
+        workOrder_file_path = os.path.join(directory, workOrder_filename)
+        writeDataToCSV(workOrder_data, workOrder_file_path)
         
         # Process failed payments data
         failed_payments_data = getFailedPaymentsDataFromExpense()
         failed_payments_file_path = os.path.join(directory, failedPayments_filename)
         writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # # Process bill data
-        # bill_data = getBillData()
-        # bill_file_path = os.path.join(directory, bill_filename)
-        # writeDataToCSV(bill_data, bill_file_path)
+        # Process bill data
+        bill_data = getBillData()
+        bill_file_path = os.path.join(directory, bill_filename)
+        writeDataToCSV(bill_data, bill_file_path)
         
-        # # Process muster roll data
-        # muster_Data = getMusterRollData()
-        # muster_file_path = os.path.join(directory, musterRoll_filename)
-        # writeDataToCSV(muster_Data, muster_file_path)
+        # Process muster roll data
+        muster_Data = getMusterRollData()
+        muster_file_path = os.path.join(directory, musterRoll_filename)
+        writeDataToCSV(muster_Data, muster_file_path)
         
-        # # Process project data
-        # project_data = getProjectData()
-        # project_file_path = os.path.join(directory, project_filename)
-        # writeDataToCSV(project_data, project_file_path)
+        # Process project data
+        project_data = getProjectData()
+        project_file_path = os.path.join(directory, project_filename)
+        writeDataToCSV(project_data, project_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
