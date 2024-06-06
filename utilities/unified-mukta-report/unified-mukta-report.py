@@ -68,14 +68,14 @@ def getWorkOrderData():
                     if response and response['contracts'] and len(response['contracts'])>0:
                         for contract in response['contracts']:
                             temp = {}
-                            temp['ULB'] = tenantid
-                            temp['projectId'] = contract['additionalDetails']['projectId']
-                            temp['CBO'] = contract['additionalDetails']['cboName']
-                            temp['creation_Date'] = convert_epoch_to_indian_time(contract['auditDetails']['createdTime'])
-                            temp['WorkOrderId'] = contract['contractNumber']
-                            temp['wfStatus'] = contract['wfStatus']
-                            temp['last_Modified_Date'] = convert_epoch_to_indian_time(contract['auditDetails']['lastModifiedTime'])
-                            temp['valueOfWorkOrder'] = contract['totalContractedAmount']
+                            temp['ULB Name'] = tenantid
+                            temp['Project ID'] = contract['additionalDetails']['projectId']
+                            temp['CBO Name'] = contract['additionalDetails']['cboName']
+                            temp['Work Order Creation Date'] = convert_epoch_to_indian_time(contract['auditDetails']['createdTime'])
+                            temp['Work Order ID'] = contract['contractNumber']
+                            temp['Workflow Status'] = contract['wfStatus']
+                            temp['Last Modified Date'] = convert_epoch_to_indian_time(contract['auditDetails']['lastModifiedTime'])
+                            temp['Value Of Work Order'] = contract['totalContractedAmount']
                             data.append(temp)
                     else:
                         break
@@ -107,8 +107,8 @@ def getProjectData():
                     if response and response["Project"] and len(response["Project"])>0:
                         for project in response["Project"]: 
                             temp = {}
-                            temp['ULB'] = project['tenantId']
-                            temp['projectid'] = project['projectNumber']
+                            temp['ULB Name'] = project['tenantId']
+                            temp['Project ID'] = project['projectNumber']
                             data.append(temp)
                     else:
                         break        
@@ -138,17 +138,17 @@ def getBillData():
                     if response and response['bills'] and len(response['bills'])>0:
                         for bill in response['bills']:
                             temp = {}
-                            temp['ULB'] = tenantid
-                            temp['projectId'] = bill['additionalDetails']['projectId']
-                            temp['billId'] = bill['billNumber']
-                            temp['billType'] = bill['businessService']
-                            temp['musterRollNumber'] = "NA"
+                            temp['ULB Name'] = tenantid
+                            temp['Project ID'] = bill['additionalDetails']['projectId']
+                            temp['Bill ID'] = bill['billNumber']
+                            temp['Bill Type'] = bill['businessService']
+                            temp['Muster roll Number'] = "NA"
                             if bill['businessService'] == "EXPENSE.WAGES":
-                                temp['musterRollNumber'] = bill['billDetails'][0]['referenceId']
-                            temp['billAmount'] = bill['totalAmount']
-                            temp['creation_Date'] = convert_epoch_to_indian_time(bill['auditDetails']['createdTime'])
-                            temp['wfStatus'] = bill['wfStatus']
-                            temp['last_Modified_Date'] = convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime'])
+                                temp['Muster roll Number'] = bill['billDetails'][0]['referenceId']
+                            temp['Bill Amount in rs'] = bill['totalAmount']
+                            temp['Bill Creation Date'] = convert_epoch_to_indian_time(bill['auditDetails']['createdTime'])
+                            temp['Workflow status'] = bill['wfStatus']
+                            temp['Last Modified Date'] = convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime'])
                             data.append(temp)
                     else:
                         break
@@ -179,15 +179,37 @@ def getMusterRollData():
                     if response and response['musterRolls'] and len(response['musterRolls'])>0:
                         for roll in response['musterRolls']:
                             temp = {}
-                            temp['ULB'] = tenantid
-                            temp['projectId'] = roll['additionalDetails']['projectId']
-                            temp['musterRollId'] = roll['musterRollNumber']
-                            temp['startDate'] = convert_epoch_to_indian_time(roll['startDate'])
-                            temp['endDate'] = convert_epoch_to_indian_time(roll['endDate'])
-                            temp['creation_Date'] = convert_epoch_to_indian_time(roll['auditDetails']['createdTime'])
-                            temp['musterRollStatus'] = roll['musterRollStatus']
-                            temp['last_Modified_Date'] = convert_epoch_to_indian_time(roll['auditDetails']['lastModifiedTime'])
-                            temp['No of Wage Seekers'] = len(roll['individualEntries'])
+                            temp['ULB Name'] = tenantid
+                            temp['Project ID'] = roll['additionalDetails']['projectId']
+                            temp['Muster roll ID'] = roll['musterRollNumber']
+                            temp['Start date'] = convert_epoch_to_indian_time(roll['startDate'])
+                            temp['End date'] = convert_epoch_to_indian_time(roll['endDate'])
+                            temp['Submission date'] = convert_epoch_to_indian_time(roll['auditDetails']['createdTime'])
+                            temp['Muster roll Status'] = roll['musterRollStatus']
+                            temp['Last Modified Date'] = convert_epoch_to_indian_time(roll['auditDetails']['lastModifiedTime'])
+                            idleDays = 0
+                            daysEngaged = 0
+                            wageSeekersEngaged = 0
+                            males = 0
+                            females = 0
+                            others = 0
+                            for entry in roll['individualEntries']:
+                                daysEngaged += entry['actualTotalAttendance']
+                                idleDays += (7 - entry['actualTotalAttendance'])
+                                if entry['actualTotalAttendance'] != 0:
+                                    wageSeekersEngaged += 1
+                                if entry['additionalDetails']['gender'] == "MALE":
+                                    males += 1
+                                elif entry['additionalDetails']['gender'] == "FEMALE":
+                                    females += 1
+                                else:
+                                    others += 1
+                            temp['No of IdleDays'] = idleDays
+                            temp['No of person days Engaged'] = daysEngaged
+                            temp['No of wage seekers engaged'] = wageSeekersEngaged
+                            temp['No of male'] = males
+                            temp['No of female'] = females
+                            temp['Others'] = others    
                             data.append(temp)
                     else:
                         break
@@ -264,11 +286,11 @@ def getFailedPayments(payment_number):
                     project_id = getProjectIdfromContract(contract_number, tenantId)
                     # Extract data from the PI level
                     pi_data = {
-                        'ULB': pi['tenantId'],
-                        'projectId': project_id,
-                        'paymentInstructionId': pi['jitBillNo'],
-                        'billId': pi['additionalDetails']['billNumber'][0],
-                        'date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
+                        'ULB Name': pi['tenantId'],
+                        'Project ID': project_id,
+                        'Payment Instruction ID': pi['jitBillNo'],
+                        'Bill ID': pi['additionalDetails']['billNumber'][0],
+                        'Payment Creation Date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
                     }
                     for beneficiary in pi['beneficiaryDetails']:
                         beneficiary_name = 'NA'
@@ -283,11 +305,11 @@ def getFailedPayments(payment_number):
 
                         # Extract data from the beneficiary level
                         beneficiary_data = {
-                            'beneficiaryId': beneficiary['beneficiaryNumber'],
-                            'beneficiaryName': beneficiary_name,
-                            'type': beneficiary['beneficiaryType'],
-                            'accountNumber': account_number,
-                            'ifscCode': ifsc_code    
+                            'Beneficiary ID': beneficiary['beneficiaryNumber'],
+                            'Beneficiary Name': beneficiary_name,
+                            'Type Of Beneficiary': beneficiary['beneficiaryType'],
+                            'Account Number': account_number,
+                            'IFSC Code': ifsc_code    
                         }
                         # Combine PI data and beneficiary data
                         combined_data = {**pi_data, **beneficiary_data}
