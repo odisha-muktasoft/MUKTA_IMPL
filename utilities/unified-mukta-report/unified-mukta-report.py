@@ -26,6 +26,7 @@ expenseHost = "http://localhost:8087"
 musterRollHost = "http://localhost:8091"
 projectHost = "http://localhost:8081"
 contractHost = "http://localhost:8084"
+individualHost = "http://localhost:8093"
 
 
 
@@ -195,6 +196,23 @@ def getMusterRollData():
     except Exception as e:
         raise e
 
+def getbeneficiaryNameIND(id, tenantid):
+    try:
+        host = individualHost + "/individual/v1/_search" + "?tenantId=" + tenantid + "&limit=1" + "&offset=0"
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_payload = {"Individual":{"id": [id]},"RequestInfo": request_payload}
+        response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response and response['Individual'] and len(response['Individual'])>0:
+                return response['Individual'][0]['name']['givenName']
+            else:
+                return "NA"
+        else:
+            return "NA"
+    except Exception as e:
+        raise e
 
 def getFailedPayments(payment_number):
     data = []
@@ -220,7 +238,13 @@ def getFailedPayments(payment_number):
                             'billId': pi['additionalDetails']['billNumber'][0],
                             'date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
                         }
+                        tenantId = pi['tenantId']
                         for beneficiary in pi['beneficiaryDetails']:
+                            beneficiary_name = 'NA'
+                            if beneficiary['beneficiaryType'] == 'IND':
+                                beneficiary_name = getbeneficiaryNameIND(beneficiary['beneficiaryId'], tenantId)
+                            # if beneficiary['beneficiaryType'] == 'ORG':
+                            #     beneficiary_name = getbeneficiaryNameORG(beneficiary['beneficiaryId'])
                             # Extract account number and IFSC code from bankAccountId
                             account_info = beneficiary['bankAccountId'].split('@')
                             account_number = account_info[0] if len(account_info) > 0 else ''
@@ -229,6 +253,7 @@ def getFailedPayments(payment_number):
                             # Extract data from the beneficiary level
                             beneficiary_data = {
                                 'beneficiaryId': beneficiary['beneficiaryNumber'],
+                                'beneficiaryName': beneficiary_name,
                                 'type': beneficiary['beneficiaryType'],
                                 'accountNumber': account_number,
                                 'ifscCode': ifsc_code    
@@ -305,30 +330,30 @@ if __name__ == '__main__':
         musterRoll_filename = f'musterRoll_{current_date}.csv'
         project_filename = f'project_{current_date}.csv'
         
-        # Process work order data
-        workOrder_data = getWorkOrderData()
-        workOrder_file_path = os.path.join(directory, workOrder_filename)
-        writeDataToCSV(workOrder_data, workOrder_file_path)
+        # # Process work order data
+        # workOrder_data = getWorkOrderData()
+        # workOrder_file_path = os.path.join(directory, workOrder_filename)
+        # writeDataToCSV(workOrder_data, workOrder_file_path)
         
         # Process failed payments data
         failed_payments_data = getFailedPaymentsDataFromExpense()
         failed_payments_file_path = os.path.join(directory, failedPayments_filename)
         writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # Process bill data
-        bill_data = getBillData()
-        bill_file_path = os.path.join(directory, bill_filename)
-        writeDataToCSV(bill_data, bill_file_path)
+        # # Process bill data
+        # bill_data = getBillData()
+        # bill_file_path = os.path.join(directory, bill_filename)
+        # writeDataToCSV(bill_data, bill_file_path)
         
-        # Process muster roll data
-        muster_Data = getMusterRollData()
-        muster_file_path = os.path.join(directory, musterRoll_filename)
-        writeDataToCSV(muster_Data, muster_file_path)
+        # # Process muster roll data
+        # muster_Data = getMusterRollData()
+        # muster_file_path = os.path.join(directory, musterRoll_filename)
+        # writeDataToCSV(muster_Data, muster_file_path)
         
-        # Process project data
-        project_data = getProjectData()
-        project_file_path = os.path.join(directory, project_filename)
-        writeDataToCSV(project_data, project_file_path)
+        # # Process project data
+        # project_data = getProjectData()
+        # project_file_path = os.path.join(directory, project_filename)
+        # writeDataToCSV(project_data, project_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
