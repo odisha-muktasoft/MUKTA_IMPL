@@ -13,6 +13,7 @@ import os
 import pytz
 import pytz
 from datetime import datetime
+import re
 
 
 tenantids = ["od.jatni","od.athagarh"]
@@ -214,6 +215,33 @@ def getbeneficiaryNameIND(id, tenantid):
     except Exception as e:
         raise e
 
+def getProjectIdfromContract(contract_number, tenantid):
+    try:
+        host = contractHost + "/contract/v1/_search"
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_payload = {"tenantId": tenantid,"contractNumber": contract_number,"RequestInfo": request_payload}
+        response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response and response['contracts'] and len(response['contracts'])>0:
+                return response['contracts'][0]['additionalDetails']['projectId']
+            else:
+                return "NA"
+        else:
+            return "NA"
+    except Exception as e:
+        raise e
+    
+def extract_contract_number(reference_id):
+    # Define the regular expression pattern to match the contract number
+    pattern = r'WO/\d{4}-\d{2}/\d{6}'
+    match = re.search(pattern, reference_id)
+    if match:
+        return match.group(0)
+    return None
+
+
 def getFailedPayments(payment_number):
     data = []
     try:
@@ -230,37 +258,40 @@ def getFailedPayments(payment_number):
             if response and response.status_code and response.status_code in [200, 202]:
                 response = response.json()
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
-                    for pi in response['paymentInstructions']:
-                        # Extract data from the PI level
-                        pi_data = {
-                            'ULB': pi['tenantId'],
-                            'paymentInstructionId': pi['jitBillNo'],
-                            'billId': pi['additionalDetails']['billNumber'][0],
-                            'date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
-                        }
-                        tenantId = pi['tenantId']
-                        for beneficiary in pi['beneficiaryDetails']:
-                            beneficiary_name = 'NA'
-                            if beneficiary['beneficiaryType'] == 'IND':
-                                beneficiary_name = getbeneficiaryNameIND(beneficiary['beneficiaryId'], tenantId)
-                            # if beneficiary['beneficiaryType'] == 'ORG':
-                            #     beneficiary_name = getbeneficiaryNameORG(beneficiary['beneficiaryId'])
-                            # Extract account number and IFSC code from bankAccountId
-                            account_info = beneficiary['bankAccountId'].split('@')
-                            account_number = account_info[0] if len(account_info) > 0 else ''
-                            ifsc_code = account_info[1] if len(account_info) > 1 else ''
+                    pi = response['paymentInstructions'][0]
+                    tenantId = pi['tenantId']
+                    contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
+                    project_id = getProjectIdfromContract(contract_number, tenantId)
+                    # Extract data from the PI level
+                    pi_data = {
+                        'ULB': pi['tenantId'],
+                        'projectId': project_id,
+                        'paymentInstructionId': pi['jitBillNo'],
+                        'billId': pi['additionalDetails']['billNumber'][0],
+                        'date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime'])
+                    }
+                    for beneficiary in pi['beneficiaryDetails']:
+                        beneficiary_name = 'NA'
+                        if beneficiary['beneficiaryType'] == 'IND':
+                            beneficiary_name = getbeneficiaryNameIND(beneficiary['beneficiaryId'], tenantId)
+                        # if beneficiary['beneficiaryType'] == 'ORG':
+                        #     beneficiary_name = getbeneficiaryNameORG(beneficiary['beneficiaryId'])
+                        # Extract account number and IFSC code from bankAccountId
+                        account_info = beneficiary['bankAccountId'].split('@')
+                        account_number = account_info[0] if len(account_info) > 0 else ''
+                        ifsc_code = account_info[1] if len(account_info) > 1 else ''
 
-                            # Extract data from the beneficiary level
-                            beneficiary_data = {
-                                'beneficiaryId': beneficiary['beneficiaryNumber'],
-                                'beneficiaryName': beneficiary_name,
-                                'type': beneficiary['beneficiaryType'],
-                                'accountNumber': account_number,
-                                'ifscCode': ifsc_code    
-                            }
-                            # Combine PI data and beneficiary data
-                            combined_data = {**pi_data, **beneficiary_data}
-                            data.append(combined_data)
+                        # Extract data from the beneficiary level
+                        beneficiary_data = {
+                            'beneficiaryId': beneficiary['beneficiaryNumber'],
+                            'beneficiaryName': beneficiary_name,
+                            'type': beneficiary['beneficiaryType'],
+                            'accountNumber': account_number,
+                            'ifscCode': ifsc_code    
+                        }
+                        # Combine PI data and beneficiary data
+                        combined_data = {**pi_data, **beneficiary_data}
+                        data.append(combined_data)
                 else:
                     break
             else:
@@ -330,30 +361,30 @@ if __name__ == '__main__':
         musterRoll_filename = f'musterRoll_{current_date}.csv'
         project_filename = f'project_{current_date}.csv'
         
-        # Process work order data
-        workOrder_data = getWorkOrderData()
-        workOrder_file_path = os.path.join(directory, workOrder_filename)
-        writeDataToCSV(workOrder_data, workOrder_file_path)
+        # # Process work order data
+        # workOrder_data = getWorkOrderData()
+        # workOrder_file_path = os.path.join(directory, workOrder_filename)
+        # writeDataToCSV(workOrder_data, workOrder_file_path)
         
         # Process failed payments data
         failed_payments_data = getFailedPaymentsDataFromExpense()
         failed_payments_file_path = os.path.join(directory, failedPayments_filename)
         writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # Process bill data
-        bill_data = getBillData()
-        bill_file_path = os.path.join(directory, bill_filename)
-        writeDataToCSV(bill_data, bill_file_path)
+        # # Process bill data
+        # bill_data = getBillData()
+        # bill_file_path = os.path.join(directory, bill_filename)
+        # writeDataToCSV(bill_data, bill_file_path)
         
-        # Process muster roll data
-        muster_Data = getMusterRollData()
-        muster_file_path = os.path.join(directory, musterRoll_filename)
-        writeDataToCSV(muster_Data, muster_file_path)
+        # # Process muster roll data
+        # muster_Data = getMusterRollData()
+        # muster_file_path = os.path.join(directory, musterRoll_filename)
+        # writeDataToCSV(muster_Data, muster_file_path)
         
-        # Process project data
-        project_data = getProjectData()
-        project_file_path = os.path.join(directory, project_filename)
-        writeDataToCSV(project_data, project_file_path)
+        # # Process project data
+        # project_data = getProjectData()
+        # project_file_path = os.path.join(directory, project_filename)
+        # writeDataToCSV(project_data, project_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
