@@ -434,21 +434,23 @@ def getSuccessData(payment_number):
             if response and response.status_code and response.status_code in [200, 202]:
                 response = response.json()
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
-                    pi = response['paymentInstructions'][0]
-                    tenantId = pi['tenantId']
-                    contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
-                    project_id = getProjectIdfromContract(contract_number, tenantId)
-                    # Extract data from the PI level
-                    pi_data = {
-                        'ULB Name': format_tenant_id(pi['tenantId']),
-                        'Project ID': project_id,
-                        'Bill ID': pi['additionalDetails']['billNumber'][0],
-                        'Payment Instruction ID': pi['jitBillNo'],
-                        'Payment Creation Date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime']),
-                        'Payment Status': pi['piStatus'],
-                        'Total bill amount': pi['grossAmount']
-                    }
-                    data.append(pi_data)
+                    for pi in response['paymentInstructions']:
+                        if pi['piStatus'] != 'FAILED':
+                            tenantId = pi['tenantId']
+                            contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
+                            project_id = getProjectIdfromContract(contract_number, tenantId)
+                            # Extract data from the PI level
+                            pi_data = {
+                                'ULB Name': format_tenant_id(pi['tenantId']),
+                                'Project ID': project_id,
+                                'Bill ID': pi['additionalDetails']['billNumber'][0],
+                                'Payment Instruction ID': pi['jitBillNo'],
+                                'Payment Creation Date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime']),
+                                'Payment Status': pi['piStatus'],
+                                'Total bill amount': pi['grossAmount']
+                            }
+                            data.append(pi_data)
+                            break
                 else:
                     break
             else:
@@ -524,30 +526,30 @@ if __name__ == '__main__':
         project_filename = f'project_{current_date}.csv'
         success_payments_filename = f'success_payments_{current_date}.csv'
         
-        # Process work order data
-        workOrder_data = getWorkOrderData()
-        workOrder_file_path = os.path.join(directory, workOrder_filename)
-        writeDataToCSV(workOrder_data, workOrder_file_path)
+        # # Process work order data
+        # workOrder_data = getWorkOrderData()
+        # workOrder_file_path = os.path.join(directory, workOrder_filename)
+        # writeDataToCSV(workOrder_data, workOrder_file_path)
         
-        # Process failed payments data
-        failed_payments_data = getFailedPaymentsDataFromExpense()
-        failed_payments_file_path = os.path.join(directory, failedPayments_filename)
-        writeDataToCSV(failed_payments_data, failed_payments_file_path)
+        # # Process failed payments data
+        # failed_payments_data = getFailedPaymentsDataFromExpense()
+        # failed_payments_file_path = os.path.join(directory, failedPayments_filename)
+        # writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # Process bill data
-        bill_data = getBillData()
-        bill_file_path = os.path.join(directory, bill_filename)
-        writeDataToCSV(bill_data, bill_file_path)
+        # # Process bill data
+        # bill_data = getBillData()
+        # bill_file_path = os.path.join(directory, bill_filename)
+        # writeDataToCSV(bill_data, bill_file_path)
         
-        # Process muster roll data
-        muster_Data = getMusterRollData()
-        muster_file_path = os.path.join(directory, musterRoll_filename)
-        writeDataToCSV(muster_Data, muster_file_path)
+        # # Process muster roll data
+        # muster_Data = getMusterRollData()
+        # muster_file_path = os.path.join(directory, musterRoll_filename)
+        # writeDataToCSV(muster_Data, muster_file_path)
         
-        # Process project data
-        project_data = getProjectData()
-        project_file_path = os.path.join(directory, project_filename)
-        writeDataToCSV(project_data, project_file_path)
+        # # Process project data
+        # project_data = getProjectData()
+        # project_file_path = os.path.join(directory, project_filename)
+        # writeDataToCSV(project_data, project_file_path)
 
         # Process Success/Partial Payments
         success_payments_data = getSuccessPaymentsDataFromExpense()
