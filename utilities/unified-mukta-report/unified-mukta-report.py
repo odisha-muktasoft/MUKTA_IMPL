@@ -87,6 +87,7 @@ def getWorkOrderData():
                 api_payload = {"tenantId": tenantid,"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
+                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['contracts'] and len(response['contracts'])>0:
@@ -137,8 +138,12 @@ def getProjectData():
                     if response and response["Project"] and len(response["Project"])>0:
                         for project in response["Project"]: 
                             temp = {}
-                            temp['ULB Name'] = format_tenant_id(project['tenantId'])
+                            temp['ULB Name'] = format_tenant_id(tenantid)
+                            temp['Project Name'] = project['name']
                             temp['Project ID'] = project['projectNumber']
+                            temp['Project Type'] = project['projectType']
+                            temp['Ward no'] = project['address']['boundary']
+                            temp['Project Value'] = project['additionalDetails']['estimatedCostInRs']
                             data.append(temp)
                     else:
                         break        
@@ -185,6 +190,7 @@ def getBillData():
                 api_payload = {"billCriteria": {"tenantId": tenantid, "isPaymentStatusNull": "false"},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
+                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['bills'] and len(response['bills'])>0:
@@ -227,6 +233,7 @@ def getMusterRollData():
                 api_payload = {"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
+                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['musterRolls'] and len(response['musterRolls'])>0:
@@ -334,6 +341,7 @@ def getFailedPayments(payment_number):
                 response = response.json()
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
                     pi = response['paymentInstructions'][0]
+                    print(pi['jitBillNo'])
                     tenantId = pi['tenantId']
                     contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
                     project_id = getProjectIdfromContract(contract_number, tenantId)
@@ -391,6 +399,7 @@ def getFailedPaymentsDataFromExpense():
                 api_payload = {"paymentCriteria": {"tenantId": tenantid, "status": "FAILED"},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
+                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['payments'] and len(response['payments'])>0:
@@ -406,6 +415,84 @@ def getFailedPaymentsDataFromExpense():
 
     except Exception as e:
         raise e
+    
+
+def getSuccessData(payment_number):
+    data = []
+    try:
+        host = piSearchHost + "/mukta-ifix-adapter/v1/pi/_search"
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_limit = 100
+        api_offset = 0
+        print("Getting Success Payments")
+        while True:
+            api_payload = {"criteria": {"payment_number": payment_number},"pagination": {"limit": api_limit,"offSet": api_offset,"sortBy": "createdtime","order": "DESC"},"RequestInfo": request_payload}
+            response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+            api_offset = api_offset + api_limit
+            print(api_offset)
+            if response and response.status_code and response.status_code in [200, 202]:
+                response = response.json()
+                if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
+                    pi = response['paymentInstructions'][0]
+                    tenantId = pi['tenantId']
+                    contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
+                    project_id = getProjectIdfromContract(contract_number, tenantId)
+                    # Extract data from the PI level
+                    pi_data = {
+                        'ULB Name': format_tenant_id(pi['tenantId']),
+                        'Project ID': project_id,
+                        'Bill ID': pi['additionalDetails']['billNumber'][0],
+                        'Payment Instruction ID': pi['jitBillNo'],
+                        'Payment Creation Date': convert_epoch_to_indian_time(pi['auditDetails']['createdTime']),
+                        'Payment Status': pi['piStatus'],
+                        'Total bill amount': pi['grossAmount']
+                    }
+                    data.append(pi_data)
+                else:
+                    break
+            else:
+                break
+        return data
+
+    except Exception as e:
+        raise e
+
+
+def getSuccessPaymentsDataFromExpense():
+    data = []
+    print("Getting Success Payments Data")
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            host = expenseHost + "/expense/payment/v1/_search"
+            request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+            headers = {"Content-Type": "application/json"}
+            api_limit = 10
+            api_offset = 0
+            statuses = ["SUCCESSFUL", "PARTIAL"]
+            for status in statuses:
+                while True:
+                    api_payload = {"paymentCriteria": {"tenantId": tenantid, "status": status},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
+                    response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+                    api_offset = api_offset + api_limit
+                    print(api_offset)
+                    if response and response.status_code and response.status_code in [200, 202]:
+                        response = response.json()
+                        if response and response['payments'] and len(response['payments'])>0:
+                            for payment in response['payments']:
+                                payment_number = payment['paymentNumber']
+                                payment_data = getSuccessData(payment_number)
+                                data.extend(payment_data)
+                        else:
+                            break
+                    else:
+                        break
+        return data
+
+    except Exception as e:
+        raise e
+        
 
 
 def writeDataToCSV(data, filename):
@@ -435,6 +522,7 @@ if __name__ == '__main__':
         bill_filename = f'bill_{current_date}.csv'
         musterRoll_filename = f'musterRoll_{current_date}.csv'
         project_filename = f'project_{current_date}.csv'
+        success_payments_filename = f'success_payments_{current_date}.csv'
         
         # Process work order data
         workOrder_data = getWorkOrderData()
@@ -460,6 +548,11 @@ if __name__ == '__main__':
         project_data = getProjectData()
         project_file_path = os.path.join(directory, project_filename)
         writeDataToCSV(project_data, project_file_path)
+
+        # Process Success/Partial Payments
+        success_payments_data = getSuccessPaymentsDataFromExpense()
+        success_payments_file_path = os.path.join(directory, success_payments_filename)
+        writeDataToCSV(success_payments_data, success_payments_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
