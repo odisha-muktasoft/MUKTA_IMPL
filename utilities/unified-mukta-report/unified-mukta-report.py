@@ -67,7 +67,6 @@ def getWorkflowDates(bussinessId, tenantId):
                     elif processInstance['action'] == "VERIFY_AND_FORWARD":
                         data['verifyDate'] = processInstance['auditDetails']['createdTime']
             
-        print(data)
         return data
     except Exception as e:  
         raise e
