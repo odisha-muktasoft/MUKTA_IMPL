@@ -4,19 +4,34 @@ import { useTranslation } from "react-i18next";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
 import { has4DecimalPlaces } from "../utils/transformData";
 
+
+import { calculateTotalAmount } from "../utils/transformData";
+
 const SORDetailsTemplate = (props) => {
+  //new component only
   const { t } = useTranslation();
+  
+
+  const { pageType, arrayData, register, setValue, watch,  emptyTableMsg } = props;
   const [stateData, setStateData] = useState({});
   const [selectedSOR, setSelectedSOR] = useState(null);
   const [SORDetails, setSORDetails] = useState([]);
   const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
-  const { register, setValue, watch } = props;
+  
   let formData = watch("SORDetails");
 
   useEffect(() => {
+    setSORDetails(arrayData?arrayData:[])
+
+  }, [arrayData]);
+
+  
+  
+
+  //setting the value for search sor in the statedata
+  useEffect(() => {
     register("searchSor", stateData);
   }, []);
-
   useEffect(() => {
     setStateData({
       ...stateData,
@@ -66,6 +81,10 @@ const SORDetailsTemplate = (props) => {
     { label: t("RA_QTY"), key: "quantity" },
   ];
 
+  if (pageType === "VIEW") {
+    columns.splice(4, 0, { label: t("RA_BASIC_RATE"), key: "basicRate" });
+    columns.push({ label: t("RA_AMT"), key: "amount" });
+  }
   const transformSOR = (sor) => {
     const transformedSOR = {
       sNo: 1,
@@ -110,13 +129,16 @@ const SORDetailsTemplate = (props) => {
         obj = { width: "10rem" };
         break;
       case 5:
-        obj = { width: "15rem" };
+        obj = pageType==="VIEW"?
+        { width: "15rem" , textAlign: "right"}:{width: "15rem"};
         break;
       case 6:
-        obj = { width: "18rem" };
+        obj = pageType==="VIEW"?
+        { width: "16rem" , textAlign: "right"}:{width: "15rem"};
         break;
       case 7:
-        obj = { width: "10rem" };
+        obj = pageType==="VIEW"?
+        { width: "14rem" , textAlign: "right" }:{ width: "10rem" };
         break;
       case 8:
         obj = { width: "3%" };
@@ -128,13 +150,18 @@ const SORDetailsTemplate = (props) => {
     return obj;
   };
 
+  console.log(SORDetails);
   const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
     sno: index + 1,
     sorCode: row?.sorCode,
     description: row?.description,
     uom: row?.uom,
     quantity: row?.quantity,
+    ...(pageType === 'VIEW' ? { amount: row?.amount,basicRate:row?.basicRate } : {})
   }));
+
+  console.log(sortedRows);
+  
 
   useEffect(() => {
     if (window.location.href.includes("update") && props?.config?.customProps?.SORDetails?.length > 0) {
@@ -142,30 +169,45 @@ const SORDetailsTemplate = (props) => {
     }
   }, [props?.config?.customProps?.SORDetails]);
 
+  
+
   return (
-    <div>
+    <div
+     style={{
+      paddingRight:"4%"
+     }}
+    >
       <div className="search-sor-container">
         <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
-        <div className="search-sor-button">
-          <SearchBar stateData={{ ...stateData, SORType: SORTypeCodes[props?.config?.sorType] }} selectedSOR={selectedSOR} setSelectedSOR={setSelectedSOR} placeholder={t("RA_SEARCH_BAR_PLACEHOLDER")} />
-          <Button label={t("RA_ADD_SOR")} onButtonClick={buttonClick} style={{ padding: "revert" }} className={"add-sor-button"} />
-        </div>
+        {pageType !== "VIEW" && (
+          <div className="search-sor-button">
+            <SearchBar
+              stateData={{ ...stateData, SORType: SORTypeCodes[props?.config?.sorType] }}
+              selectedSOR={selectedSOR}
+              setSelectedSOR={setSelectedSOR}
+              placeholder={t("RA_SEARCH_BAR_PLACEHOLDER")}
+            />
+            <Button label={t("RA_ADD_SOR")} onButtonClick={buttonClick} style={{ padding: "revert" }} className={"add-sor-button"} />
+          </div>
+        )}
       </div>
       <table className="table reports-table sub-work-table">
         <thead>
           <tr>
-            {SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
-              columns.map((column, index) => (
-                <th key={index}>{column.label}</th>
-              ))}
+            {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
+      columns.map((column, index) => <th key={index}>{column.label}</th>)*/}
+      {columns.map((column, index) => <th key={index}>{column.label}</th>)}
           </tr>
         </thead>
         <tbody>
-          {sortedRows.map((row, rowIndex) => (
+          {/*renderBody*/}
+          {
+            sortedRows.length>0?
+            sortedRows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {columns.map((column, columnIndex) => (
                 <td key={columnIndex} style={getStyles(columnIndex + 1)}>
-                  {column?.key === "quantity" ? (
+                  {column?.key === "quantity" && pageType !== "VIEW" ? (
                     <div style={cellContainerStyle}>
                       <TextInput
                         style={{ marginBottom: "0px" }}
@@ -194,20 +236,43 @@ const SORDetailsTemplate = (props) => {
                   )}
                 </td>
               ))}
-              <td>
-                <div style={cellContainerStyle}>
-                  <span onClick={() => remove(row)} className="icon-wrapper">
-                    <DeleteIcon fill={"#FF9100"} />
-                  </span>
-                </div>
-                <div style={errorContainerStyles}></div>
-              </td>
+              {pageType !== "VIEW" && (
+                <td /*style={getStyles(5)}*/>
+                  <div style={cellContainerStyle}>
+                    {
+                      <span onClick={() => remove(row)} className="icon-wrapper">
+                        <DeleteIcon fill={"#FF9100"} />
+                      </span>
+                    }
+                  </div>
+                  <div style={errorContainerStyles}></div>
+                </td>
+              )}
             </tr>
-          ))}
+          )):<td colSpan={8} style={{ textAlign: "center" }}>
+          {t(emptyTableMsg)}
+          </td>
+        }
+
+          {(sortedRows.length>0&& pageType === "VIEW" )&& (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "right" }}>
+                {t("RA_TOTAL")}
+              </td>
+              <td style={{ textAlign: "right" }}
+              >{calculateTotalAmount(arrayData)}</td>
+            </tr>
+          )}
         </tbody>
       </table>
       {showToast?.show && (
-        <Toast labelstyle={{ width: "100%" }} error={showToast?.error} label={t(showToast?.label)} isDleteBtn={true} onClose={() => setShowToast({ show: false, label: "", error: false })} />
+        <Toast
+          labelstyle={{ width: "100%" }}
+          error={showToast?.error}
+          label={t(showToast?.label)}
+          isDleteBtn={true}
+          onClose={() => setShowToast({ show: false, label: "", error: false })}
+        />
       )}
     </div>
   );

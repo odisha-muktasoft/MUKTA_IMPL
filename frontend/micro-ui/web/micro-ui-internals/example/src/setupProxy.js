@@ -92,7 +92,8 @@ module.exports = function (app) {
     "/measurement-service/",
     "/mukta-mukta-services/",
     "/mdms-v2/",
-    "/egov-idgen/"
+    "/egov-idgen/",
+    "/rate-analysis/v1/_calculate"
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

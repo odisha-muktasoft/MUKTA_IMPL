@@ -280,6 +280,11 @@ expense:{
     search : "/measurement-service/v1/_search",
     update : "/measurement-service/v1/_update"
   }
+  ,
+
+  rateAnalysis:{
+    search:"/rate-analysis/v1/_calculate",
+  }
 };
 
 export default Urls;

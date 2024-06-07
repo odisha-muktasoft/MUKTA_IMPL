@@ -1,7 +1,7 @@
 import { Loader } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
-import EmployeeApp from "./pages/employee"
+import EmployeeApp from "./pages/employee";
 // import MeasurementCard from "./components/MeasurementCard";
 // import MeasureTable from "./components/MeasureTable";
 // import MeasureCard from "./components/MeasureCard";
@@ -14,6 +14,12 @@ import CreateRateAnalysis from "./pages/employee/CreateRateAnalysis";
 import SORDetailsTemplate from "./components/SORDetailsTemplate";
 import searchSor from "../../Estimate/src/pageComponents/searchSor";
 import ExtraCharges from "./components/ExtraCharges";
+import RateAmountGroup from "./components/rateAmountGroup";
+import RateCardWithRightButton from "./components/ratecardbutton";
+import TableWithOutHead from "./components/specficAmountTable";
+import ViewTotalAmount from "./components/viewTotalAmount";
+import WrapperSORDetailsTemplate from "./components/sor_wrapper";
+import ExtraChargesViewTable from "./components/extra_charges_view_table";
 
 const RateAnalysisModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
@@ -46,7 +52,16 @@ const componentsToRegister = {
   CreateRateAnalysis,
   SORDetailsTemplate,
   searchSor,
-  ExtraCharges
+  ExtraCharges,
+  RateAmountGroup,
+  RateCardWithRightButton,
+  TableWithOutHead,
+  ViewTotalAmount,
+  WrapperSORDetailsTemplate,
+  ExtraChargesViewTable,
+
+
+
 };
 
 export const initRateAnalysisComponents = () => {

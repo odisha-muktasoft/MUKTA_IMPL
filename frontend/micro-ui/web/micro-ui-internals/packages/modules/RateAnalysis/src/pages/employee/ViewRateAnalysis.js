@@ -1,90 +1,107 @@
-import { Header, Card, Loader, ViewComposer, MultiLink } from "@egovernments/digit-ui-react-components";
+import { Header, ActionBar, SubmitBar, Menu, Card, Loader, ViewComposer, MultiLink } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-//import { data } from "../../configs/ViewMeasurementConfig";
+import { useHistory } from "react-router-dom";
+
+import { viewRateAnalysisdataconfig } from "../../configs/viewRateAnalysisConfig";
 
 const ViewRateAnalysis = () => {
-  //const { t } = useTranslation();
-  //const tenantId = Digit.ULBService.getCurrentTenantId();
-  //const { workOrderNumber, mbNumber } = Digit.Hooks.useQueryParams();
-  //const [thumbnails, setThumbnails] = useState("")
-  debugger;
-//   const requestCriteria = {
-//     url: "/mukta-mukta-services/measurement/_search",
+  const { t } = useTranslation();
+  const history = useHistory();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
 
-//     body: {
-//       contractNumber: workOrderNumber,
-//       tenantId: tenantId,
-//       measurementNumber: mbNumber,
-//       key: "View"
-//     },
-//     changeQueryName:mbNumber,
-//   };
+  const userInfo = Digit.UserService.getUser();
+  const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
 
+  const queryStrings = Digit.Hooks.useQueryParams();
 
+  let dataPaylod = {
+    sorDetails: {
+      tenantId: tenantId,
+      sorCodes: [`${queryStrings?.sorId}`],
+      effectiveFrom: `${queryStrings.fromeffective}`,
+    },
+  };
 
-//   let { isLoading: isMeasurementLoading, data: allData } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+  let { isLoading, isError, data: applicationDetails, error } = Digit.Hooks.rateAnalysis.useViewRateAnalysisDetails(tenantId, dataPaylod);
 
+  //
 
-//   useEffect(() => {
-//     // if (!isMeasurementLoading) {
-//     //   allData = null;
-//     //   thumbnails = "";
-//     // }
-//     const fetchData = async () => {
-//       if (allData?.measurement != undefined || allData?.measurement != null) {
-//         const fileStoreIds = allData?.measurement?.documents.map((item) => item.fileStore);
+  let config = null;
+  useEffect(() => {}, [tenantId, isLoading, applicationDetails, queryStrings]);
 
-//         try {
-//           let thumbnailsData = await Digit.Utils.getThumbnails(fileStoreIds, tenantId);
-//           setThumbnails(thumbnailsData);
-//         } catch (error) {
-//           console.log(error);
-//         }
-//       }
-//     };
+  // console.log(queryStrings?.sorid)
+  const redirectToCreateBill = (contractType) => {
+    if (userRoles.includes("MDMS_STATE_ADMIN") === true) {
+      if (contractType === "CREATE_EDIT_RATE_ANALYSIS") {
+        history.push(
+          `/${window?.contextPath}/employee/rateanalysis/update-rate-analysis?compositionid=${applicationDetails?.rateAnalysisDetail.compositionId}&sorid=${queryStrings?.sorId}`
+        );
+      }
+    } else if (userRoles.includes("MDMS_CITY_ADMIN") === true) {
+      if (contractType === "CREATE_EDIT_RATE_ANALYSIS") {
+        //TODO:[need to add revise rate screen path]
+        // history.push(
+        //   `/${window?.contextPath}/employee/rateanalysis/update-rate-analysis?compositionid=${applicationDetails?.rateAnalysisDetail.compositionId}&sorid=${queryStrings?.sorId}`
+        // );
+      }
+    }
+    //rateanalysis/update-rate-analysis?compositionid=CMP_000017&sorid=SOR_000005
+  };
+  const [displayMenu, setDisplayMenu] = useState(false);
+  const actionULB = [];
 
-//     fetchData();
-//   }, [allData?.measurement, tenantId, isMeasurementLoading]);
-//   let config = null;
+  if (userRoles.includes("MDMS_STATE_ADMIN") === true) {
+    actionULB.push({
+      code: "CREATE_EDIT_RATE_ANALYSIS",
+      name: t("CREATE_EDIT_RATE_ANALYSIS"),
+    });
+  } else if (userRoles.includes("MDMS_CITY_ADMIN") === true) {
+    actionULB.push({
+      code: "REVISE_RATE_ANALYSIS",
+      name: t("REVISE_RATE_ANALYSIS"),
+    });
+  }
 
-//   //Getting project location for Measurement View Page
-//   let projectLocation = "NA";
-//   if(allData?.contract){  
-//     const { additionalDetails: { locality: projectLoc, ward: projectWard }} = allData?.contract;
-//     const headerLocale = Digit.Utils.locale.getTransformedLocale(Digit.ULBService.getCurrentTenantId());
-//     const Pward = projectWard ? t(`${headerLocale}_ADMIN_${projectWard}`) : "";
-//     const city = projectLoc ? t(`${headerLocale}_ADMIN_${projectLoc}`) : "";
-//     projectLocation = `${Pward ? Pward + ", " : ""}${city}`;
-//   }
+  function onActionSelect(action) {
+    if (action?.code === "CREATE_EDIT_RATE_ANALYSIS") {
+      redirectToCreateBill("CREATE_EDIT_RATE_ANALYSIS");
+    }
+    if (action?.code === "REVISE_RATE_ANALYSIS") {
+      redirectToCreateBill("REVISE_RATE_ANALYSIS");
+    }
+  }
 
-//   const HandleDownloadPdf = () => {
-//     Digit.Utils.downloadEgovPDF("measurementBook/measurement-book", { contractNumber : workOrderNumber, measurementNumber : mbNumber, tenantId }, `measurement-${mbNumber}.pdf`);
-//   };
+  config = viewRateAnalysisdataconfig(
+    applicationDetails?.groupedByHead,
+    applicationDetails?.rateAnalysisDetail,
+    queryStrings?.sorId,
+    t,
+    applicationDetails?.infoCard
+  );
 
-//   config = data(allData?.contract, allData?.estimate, allData?.measurement, allData?.allMeasurements, thumbnails, projectLocation , allData?.period, allData?.musterRollNumber, allData?.musterRolls);
+  if (isLoading) {
+    return <Loader />;
+  }
 
-//   if (isMeasurementLoading && config != null) {
-//     return <Loader />;
-//   }
-//   return (
-//     <React.Fragment>
-//       <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-//         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
-//           {t("MB_VIEW_MEASUREMENT_BOOK")}
-//         </Header>
-//         <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
-//       </div>
-//       <ViewComposer data={config} isLoading={false} />
-//     </React.Fragment>
-//   );
-
-
-return <React.Fragment>
-<div>
-<p>welcome to view rate analysis</p>
-</div>
-</React.Fragment>
+  return (
+    <React.Fragment>
+      {
+        <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+          {
+            <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+              {t("RA_VIEW_RATE_HEADER")}
+            </Header>
+          }
+        </div>
+      }
+      <ViewComposer data={config} isLoading={false} />
+      <ActionBar>
+        {displayMenu ? <Menu localeKeyPrefix={"WORKS"} options={actionULB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
+        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+      </ActionBar>
+    </React.Fragment>
+  );
 };
 
 export default ViewRateAnalysis;

@@ -163,7 +163,7 @@ const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCu
   const handleCreateRateAnalysis = async (data, action) => {
     if(createState?.SORDetails?.length <= 0)
     {
-      setErrorMessage("SOR details are mandatory");
+      setErrorMessage(t("RA_SOR_DETAILS_MANDATORY"));
       setShowToast({display:true, error:true});
       return;
     }
@@ -223,7 +223,7 @@ const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCu
     //validate if no data has been changed for edit
     if(!(deepCompare(createState?.SORDetails,compositionData?.mdms?.[0]?.data.basicSorDetails)))
     {
-      setErrorMessage("The rate analysis has not been modified as there were no changes done.");
+      setErrorMessage(t("RA_NO_CHANGE_IN_SOR"));
       setShowToast({display:true, error:false});
     }
     else
@@ -240,10 +240,10 @@ const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCu
   // else render form and data
   return (
     <div>
-      {isPopupOpen && <AlertPopUp t={t} label={"Existing rate analysis is edited.Do you want to update existing rate analysis for <SORCode> effective from <effective date>? Please confirm to complete the action."} setIsPopupOpen={setIsPopupOpen} onButtonClickConfirm={(_data) => handleCreateRateAnalysis({..._data,...createState},"SUBMIT")} onButtonClickCancel={() => { setIsPopupOpen(false)}}/>}
+      {isPopupOpen && <AlertPopUp t={t} label={"Existing rate analysis is edited.Do you want to update existing rate analysis? Please confirm to complete the action."} setIsPopupOpen={setIsPopupOpen} onButtonClickConfirm={(_data) => handleCreateRateAnalysis({..._data,...createState},"SUBMIT")} onButtonClickCancel={() => { setIsPopupOpen(false)}}/>}
       <Header className="works-header-view modify-header">{t("RA_CREATE_RATE_ANALYSIS")}</Header>
       <FormComposerV2
-        label={t("MB_SUBMIT_BAR")}
+        label={t("RA_SUBMIT_BAR")}
         config={CreateConfig({ defaultValue: defaultState, isUpdate, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
           return {
             ...config,
