@@ -18,7 +18,6 @@ import re
 
 tenantids = ["od.jatni","od.athagarh"]
 estimateHost = "http://localhost:8082"
-processInstanceHost = "http://localhost:8083"
 expenseCalculatorHost =  "http://localhost:8085"
 wmsHost = "http://localhost:9085"
 mdmsHost = "http://localhost:8019"
@@ -28,6 +27,8 @@ musterRollHost = "http://localhost:8091"
 projectHost = "http://localhost:8081"
 contractHost = "http://localhost:8084"
 individualHost = "http://localhost:8093"
+userHost = "http://localhost:8098"
+processInstanceHost = "http://localhost:8099"
 
 
 
@@ -46,6 +47,30 @@ def convert_epoch_to_indian_time(epoch_time):
     
     return formatted_time
 
+def format_tenant_id(tenant_id):
+    # Extract the relevant part of the tenant ID and capitalize it
+    return tenant_id.split('.')[1].capitalize()
+
+def getWorkflowDates(bussinessId, tenantId):
+    data = {}
+    try:
+        host = processInstanceHost + "/egov-workflow-v2/egov-wf/process/_search?tenantId="+tenantId+"&businessIds="+ bussinessId +"&history=true"
+        request_payload = {"RequestInfo": {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11","userName": "MUKTAUAT","name": "MUKTAUAT","mobileNumber": "9036774122","emailId": None,"locale": None,"type": "EMPLOYEE","roles": [{"name": "ESTIMATE APPROVER","code": "ESTIMATE_APPROVER","tenantId": "od.testing"},{"name": "WORK ORDER CREATOR","code": "WORK_ORDER_CREATOR","tenantId": "od.testing"},{"name": "Organization viewer","code": "ORG_VIEWER","tenantId": "od.testing"},{"name": "MB_VERIFIER","code": "MB_VERIFIER","tenantId": "od.testing"},{"name": "ESTIMATE CREATOR","code": "ESTIMATE_CREATOR","tenantId": "od.testing"},{"name": "MDMS Admin","code": "MDMS_ADMIN","tenantId": "od.testing"},{"name": "MB_VIEWER","code": "MB_VIEWER","tenantId": "od.testing"},{"name": "State Dashboard Admin","code": "STADMIN","tenantId": "od.testing"},{"name": "MUKTA Admin","code": "MUKTA_ADMIN","tenantId": "od.testing"},{"name": "Employee Common","code": "EMPLOYEE_COMMON","tenantId": "od.testing"},{"name": "TECHNICAL SANCTIONER","code": "TECHNICAL_SANCTIONER","tenantId": "od.testing"},{"name": "BILL_CREATOR","code": "BILL_CREATOR","tenantId": "od.testing"},{"name": "BILL_ACCOUNTANT","code": "BILL_ACCOUNTANT","tenantId": "od.testing"},{"name": "WORK_ORDER_VIEWER","code": "WORK_ORDER_VIEWER","tenantId": "od.testing"},{"name": "BILL_VERIFIER","code": "BILL_VERIFIER","tenantId": "od.testing"},{"name": "ESTIMATE VERIFIER","code": "ESTIMATE_VERIFIER","tenantId": "od.testing"},{"name": "MUSTER ROLL APPROVER","code": "MUSTER_ROLL_APPROVER","tenantId": "od.testing"},{"name": "ESTIMATE VIEWER","code": "ESTIMATE_VIEWER","tenantId": "od.testing"},{"name": "WORK ORDER APPROVER","code": "WORK_ORDER_APPROVER","tenantId": "od.testing"},{"name": "MB_APPROVER","code": "MB_APPROVER","tenantId": "od.testing"},{"name": "MDMS CITY ADMIN","code": "MDMS_CITY_ADMIN","tenantId": "od.testing"},{"name": "OFFICER IN CHARGE","code": "OFFICER_IN_CHARGE","tenantId": "od.testing"},{"name": "PROJECT CREATOR","code": "PROJECT_CREATOR","tenantId": "od.testing"},{"name": "BILL_VIEWER","code": "BILL_VIEWER","tenantId": "od.testing"},{"name": "WORK ORDER VERIFIER","code": "WORK_ORDER_VERIFIER","tenantId": "od.testing"},{"name": "PROJECT VIEWER","code": "PROJECT_VIEWER","tenantId": "od.testing"},{"name": "BILL_APPROVER","code": "BILL_APPROVER","tenantId": "od.testing"},{"name": "MB_CREATOR","code": "MB_CREATOR","tenantId": "od.testing"},{"name": "MUSTER ROLL VERIFIER","code": "MUSTER_ROLL_VERIFIER","tenantId": "od.testing"},{"name": "HRMS Admin","code": "HRMS_ADMIN","tenantId": "od.testing"}],"active": True,"tenantId": "od.testing","permanentCity": "Testing"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}}
+        headers = {"Content-Type": "application/json"}
+        response = requests.post(host,headers=headers,data=json.dumps(request_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response and response['ProcessInstances'] and len(response['ProcessInstances'])>0:
+                for processInstance in response['ProcessInstances']:
+                    if processInstance['action'] == "APPROVE":
+                        data['approveDate'] = processInstance['auditDetails']['createdTime']
+                    elif processInstance['action'] == "VERIFY_AND_FORWARD":
+                        data['verifyDate'] = processInstance['auditDetails']['createdTime']
+            
+        print(data)
+        return data
+    except Exception as e:  
+        raise e
 
 
 def getWorkOrderData():
@@ -67,16 +92,22 @@ def getWorkOrderData():
                     response = response.json()
                     if response and response['contracts'] and len(response['contracts'])>0:
                         for contract in response['contracts']:
-                            temp = {}
-                            temp['ULB Name'] = tenantid
-                            temp['Project ID'] = contract['additionalDetails']['projectId']
-                            temp['CBO Name'] = contract['additionalDetails']['cboName']
-                            temp['Work Order Creation Date'] = convert_epoch_to_indian_time(contract['auditDetails']['createdTime'])
-                            temp['Work Order ID'] = contract['contractNumber']
-                            temp['Workflow Status'] = contract['wfStatus']
-                            temp['Last Modified Date'] = convert_epoch_to_indian_time(contract['auditDetails']['lastModifiedTime'])
-                            temp['Value Of Work Order'] = contract['totalContractedAmount']
-                            data.append(temp)
+                            if contract['status'] == "ACTIVE":
+                                temp = {}
+                                workflowDates = getWorkflowDates(contract['contractNumber'], tenantid)
+                                temp['ULB Name'] = format_tenant_id(tenantid)
+                                temp['Project ID'] = contract['additionalDetails']['projectId']
+                                temp['CBO Name'] = contract['additionalDetails']['cboName']
+                                temp['Work Order Creation Date'] = convert_epoch_to_indian_time(contract['auditDetails']['createdTime'])
+                                temp['Work Order ID'] = contract['contractNumber']
+                                temp['Work order Verification Date'] = convert_epoch_to_indian_time(workflowDates['verifyDate'])
+                                temp['Work order Approval Date'] = convert_epoch_to_indian_time(workflowDates['approveDate'])
+                                temp['Workflow Status'] = contract['wfStatus']
+                                temp['Last Modified Date'] = convert_epoch_to_indian_time(contract['auditDetails']['lastModifiedTime'])
+                                temp['Value Of Work Order'] = contract['totalContractedAmount']
+                                data.append(temp)
+                            else:
+                                continue
                     else:
                         break
                 else:
@@ -107,7 +138,7 @@ def getProjectData():
                     if response and response["Project"] and len(response["Project"])>0:
                         for project in response["Project"]: 
                             temp = {}
-                            temp['ULB Name'] = project['tenantId']
+                            temp['ULB Name'] = format_tenant_id(project['tenantId'])
                             temp['Project ID'] = project['projectNumber']
                             data.append(temp)
                     else:
@@ -115,6 +146,28 @@ def getProjectData():
                 else:
                     break
         return data
+    except Exception as e:
+        raise e
+
+def format_business_service(business_service):
+    # Extract the part after the dot and capitalize it
+    return business_service.split('.')[1].capitalize() if '.' in business_service else business_service
+
+def getUserName(id):
+    try:
+        host = userHost + "/user/_search"
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_payload = {"uuid": [id],"RequestInfo": request_payload}
+        response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response and response['user'] and len(response['user'])>0:
+                return response['user'][0]['name']
+            else:
+                return "NA"
+        else:
+            return "NA"
     except Exception as e:
         raise e
 
@@ -138,14 +191,15 @@ def getBillData():
                     if response and response['bills'] and len(response['bills'])>0:
                         for bill in response['bills']:
                             temp = {}
-                            temp['ULB Name'] = tenantid
+                            temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = bill['additionalDetails']['projectId']
                             temp['Bill ID'] = bill['billNumber']
-                            temp['Bill Type'] = bill['businessService']
+                            temp['Bill Type'] = format_business_service(bill['businessService'])
                             temp['Muster roll Number'] = "NA"
                             if bill['businessService'] == "EXPENSE.WAGES":
                                 temp['Muster roll Number'] = bill['billDetails'][0]['referenceId']
                             temp['Bill Amount in rs'] = bill['totalAmount']
+                            temp['Prepared by (Engineer Name)'] = getUserName(bill['auditDetails']['createdBy'])
                             temp['Bill Creation Date'] = convert_epoch_to_indian_time(bill['auditDetails']['createdTime'])
                             temp['Workflow status'] = bill['wfStatus']
                             temp['Last Modified Date'] = convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime'])
@@ -179,7 +233,7 @@ def getMusterRollData():
                     if response and response['musterRolls'] and len(response['musterRolls'])>0:
                         for roll in response['musterRolls']:
                             temp = {}
-                            temp['ULB Name'] = tenantid
+                            temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = roll['additionalDetails']['projectId']
                             temp['Muster roll ID'] = roll['musterRollNumber']
                             temp['Start date'] = convert_epoch_to_indian_time(roll['startDate'])
@@ -286,7 +340,7 @@ def getFailedPayments(payment_number):
                     project_id = getProjectIdfromContract(contract_number, tenantId)
                     # Extract data from the PI level
                     pi_data = {
-                        'ULB Name': pi['tenantId'],
+                        'ULB Name': format_tenant_id(pi['tenantId']),
                         'Project ID': project_id,
                         'Payment Instruction ID': pi['jitBillNo'],
                         'Bill ID': pi['additionalDetails']['billNumber'][0],
