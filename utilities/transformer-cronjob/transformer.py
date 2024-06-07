@@ -27,10 +27,10 @@ gender_vs_beneficiary_map = {}
 current_time_millis = int(time.time() * 1000)
 
 # 3 hour ago in milliseconds 
-thirty_days_ago_millis = current_time_millis - (3 * 60 * 60 * 1000)
+three_hours_ago_millis = current_time_millis - (3 * 60 * 60 * 1000)
 
 print(current_time_millis)
-print(thirty_days_ago_millis)
+print(three_hours_ago_millis)
 
 def send_to_kafka(producer, topic, message):
     try:
@@ -54,7 +54,7 @@ def extract_data():
                         {
                             "range": {
                                 "Data.auditDetails.lastModifiedTime": {
-                                "gte": thirty_days_ago_millis,
+                                "gte": three_hours_ago_millis,
                                 "lte": current_time_millis
                                 }
                             }
