@@ -48,16 +48,28 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
+        
     context.read<MusterRollSearchBloc>().add(MbSearchMusterRollEvent(
         musterRollNumner: widget.musterRollNumber, tenantId: widget.tenantId));
     context.read<MusterGetWorkflowBloc>().add(
-          GetMusterWorkflowEvent(
+          FetchMBWorkFlowEvent(
               tenantId: widget.tenantId,
-              musterRollNumber: widget.musterRollNumber,
-              musterSentBackCode: "PENDINGFORVERIFICATION"),
+               mbNumber: widget.musterRollNumber),
         );
+   
+   //TODO:[if bug comes then we will uncomment this ]
+   // context.read<MusterRollSearchBloc>().add(MbSearchMusterRollEvent(
+    //     musterRollNumner: widget.musterRollNumber, tenantId: widget.tenantId));
+    // context.read<MusterGetWorkflowBloc>().add(
+    //       GetMusterWorkflowEvent(
+    //           tenantId: widget.tenantId,
+    //           musterRollNumber: widget.musterRollNumber,
+    //           musterSentBackCode: "PENDINGFORVERIFICATION"),
+    //     );
+
+
+    //end
+
     super.initState();
   }
 
