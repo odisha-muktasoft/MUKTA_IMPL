@@ -12,6 +12,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/ButtonLink.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
+import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 
 import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
@@ -133,17 +134,17 @@ class _HomePage extends State<HomePage> {
                                                 cboHomeScreenConfig,
                                             HomeConfigModel? homeConfigModel) {
                                           // role based config
-                                          if (value.roleType == RoleType.cbo) {
+                                          // if (value.roleType == RoleType.cbo) {
                                             return cboBasedLayout(
                                               cboHomeScreenConfig,
                                               t,
                                               context,
                                               selectedLan,
                                             );
-                                          } else {
-                                            return empBasedLayout(
-                                                context, homeConfigModel!);
-                                          }
+                                          // } else {
+                                          //   return empBasedLayout(
+                                          //       context, homeConfigModel!,t);
+                                          // }
                                         });
                                   },
                                 );
@@ -169,7 +170,7 @@ class _HomePage extends State<HomePage> {
                                     );
                                   } else {
                                     return empBasedLayout(
-                                        context, homeConfigModel!);
+                                        context, homeConfigModel!,t);
                                   }
                                 });
                           },
@@ -187,51 +188,40 @@ class _HomePage extends State<HomePage> {
         }));
   }
 
-  ScrollableContent empBasedLayout(
-      BuildContext context, HomeConfigModel homeConfigModel) {
-    return ScrollableContent(
-      slivers: [
-        SliverGrid(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return _getItems(context, homeConfigModel).elementAt(index);
-            },
-            childCount: _getItems(context, homeConfigModel).length,
+  Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,AppLocalizations t) {
+    final List<Widget> cards = _getItems(context, homeConfigModel);
+    if (cards.isNotEmpty) {
+      return ScrollableContent(
+        slivers: [
+          SliverGrid(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              // return _getItems(context, homeConfigModel).elementAt(index);
+              return cards.elementAt(index);
+            }, childCount: cards.length
+                // childCount: _getItems(context, homeConfigModel).length,
+                ),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 145,
+              childAspectRatio: 104 / 128,
+            ),
           ),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 145,
-            childAspectRatio: 104 / 128,
+        ],
+      );
+    } else {
+      return Center(
+          child: Card(
+        child: Center(
+          child: EmptyImage(
+            align: Alignment.center,
+            label: t.translate(i18.common.notFound),
           ),
         ),
-      ],
-    );
+      ));
+    }
   }
-// data
 
   List<Widget> _getItems(
       BuildContext context, HomeConfigModel homeConfigModel) {
-    // return [
-    //   HomeItemCard(
-    //     icon: SvgPicture.asset(Constants.mbIcon),
-    //     label: 'Measurement Books',
-    //     onPressed: () {
-    //       context.router.push(
-    //         const MeasurementBookInboxRoute(),
-    //       );
-    //       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
-    //     },
-    //   ),
-    //   HomeItemCard(
-    //     icon: SvgPicture.asset(Constants.workOrderIcon),
-    //     label: 'Work Orders',
-    //     onPressed: () {
-    //       context.router.push(
-    //         const WorkOderInboxRoute(),
-    //       );
-    //     },
-    //   )
-    // ];
-
     /// TODO:[ref from health]
 
     final Map<String, Widget> homeItemsMap = {
@@ -262,11 +252,10 @@ class _HomePage extends State<HomePage> {
       i18.measurementBook.mbWorkOrderLabel,
     ];
 
-
     final List<String> filteredLabels = homeItemsLabel
         .where((element) => homeConfigModel.homeActions
             .map((e) {
-              if (e.parentModule=="cards") {
+              if (e.parentModule == "cards") {
                 return e.displayName;
               }
             })

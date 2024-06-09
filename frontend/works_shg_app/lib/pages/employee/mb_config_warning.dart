@@ -356,7 +356,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     FilePickerDemo(
                                       callBack: (List<FileStoreModel>? g,
                                           List<WorkflowDocument>? l) {
-                                        final supportDocumentData = l!.map(
+                                        final supportDocumentData = l!
+                                            .where((element) =>
+                                                element.isActive == true)
+                                            .toList()
+                                            .map(
                                           (e) {
                                             return WorkFlowSupportDocument(
                                               documentType: e.documentType,
@@ -369,6 +373,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                             );
                                           },
                                         ).toList();
+                                        supportDocument.clear();
                                         supportDocument
                                             .addAll(supportDocumentData);
                                         setState(() {});
@@ -551,7 +556,12 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     FilePickerDemo(
                                       callBack: (List<FileStoreModel>? g,
                                           List<WorkflowDocument>? l) {
-                                        final supportDocumentData = l!.map(
+                                        final supportDocumentData = l!
+                                        .where((element) =>
+                                                element.isActive == true)
+                                            .toList()
+                                        
+                                        .map(
                                           (e) {
                                             return WorkFlowSupportDocument(
                                               documentType: e.documentType,
@@ -564,6 +574,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                             );
                                           },
                                         ).toList();
+                                        supportDocument.clear();
                                         supportDocument
                                             .addAll(supportDocumentData);
                                         setState(() {});

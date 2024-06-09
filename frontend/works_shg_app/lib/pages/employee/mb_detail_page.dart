@@ -1221,7 +1221,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Text(
-                  "${cardLevel.toUpperCase()} ${index + 1}",
+                  "$cardLevel ${index + 1}",
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
@@ -1237,71 +1237,116 @@ class _MBDetailPageState extends State<MBDetailPage>
                           : double.parse(line[0].unitRate!.toString())
                               .toStringAsFixed(2),
                   t.translate(i18.measurementBook.approvedQty): noOfQty,
-                  // t.translate(i18.measurementBook.approvedQty): line[0].noOfunit,
+
                   //TODO:[localization]
                   "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
                       //  t.translate(i18.measurementBook.consumedQty):
                       preSorNonSor == null ? "0.0000" : preConumed
                 },
               ),
-              DigitTextField(
-                label: t.translate(i18.measurementBook.currentMBEntry),
-                controller: TextEditingController()
-                  ..value
-                  ..text = (magic.fold(0.0, (sum, obj) {
-                    double m;
-                    if (obj.contracts?.first.estimates?.first.isDeduction ==
-                        false) {
-                      m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-                        double mk = double.parse(ob.quantity!.toString());
-                        return subSum + mk;
-                      });
-                    } else {
-                      m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-                        double mr = double.parse(ob.quantity!.toString());
-                        return subSum + mr;
-                      });
-                      m = -m;
-                    }
-                    return sum + m;
-                  })).toStringAsFixed(4),
-                suffixIcon: GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: ctx,
-                      builder: (_) {
-                        return HorizontalCardListDialog(
-                          lineItems: magic,
-                          index: index,
-                          type: type,
-                          // noOfUnit: line[0].noOfunit,
-                          noOfUnit: noOfQty,
-                          cummulativePrevQty: preSorNonSor == null
-                              ? 0.0000
-                              // : preSorNonSor!.first.cumulativeValue,
-                              : preSorNonSor!.fold(0.0000, (sum, obj) {
-                                  double m = obj.contracts!.first.estimates!
-                                              .first.isDeduction ==
-                                          true
-                                      ? -(obj.cumulativeValue!)
-                                      : (obj.cumulativeValue!);
-                                  return sum + m.toDouble();
-                                }),
-                          sorId: sorNonSorId,
-                        );
-                      },
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Icon(
-                      Icons.add_circle,
-                      size: 30,
-                      color: const DigitColors().burningOrange,
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(t.translate(i18.measurementBook.currentMBEntry),
+                        style: Theme.of(context).textTheme.labelSmall),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const DigitColors().cloudGray,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            (magic.fold(0.0, (sum, obj) {
+                              double m;
+                              if (obj.contracts?.first.estimates?.first
+                                      .isDeduction ==
+                                  false) {
+                                m = obj.measureLineItems!.fold(0.0,
+                                    (subSum, ob) {
+                                  double mk =
+                                      double.parse(ob.quantity!.toString());
+                                  return subSum + mk;
+                                });
+                              } else {
+                                m = obj.measureLineItems!.fold(0.0,
+                                    (subSum, ob) {
+                                  double mr =
+                                      double.parse(ob.quantity!.toString());
+                                  return subSum + mr;
+                                });
+                                m = -m;
+                              }
+                              return sum + m;
+                            })).toStringAsFixed(4),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            maxLines: 3,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: ctx,
+                              builder: (_) {
+                                return HorizontalCardListDialog(
+                                  lineItems: magic,
+                                  index: index,
+                                  type: type,
+                                  // noOfUnit: line[0].noOfunit,
+                                  noOfUnit: noOfQty,
+                                  cummulativePrevQty: preSorNonSor == null
+                                      ? 0.0000
+                                      // : preSorNonSor!.first.cumulativeValue,
+                                      : preSorNonSor!.fold(0.0000, (sum, obj) {
+                                          double m = obj
+                                                      .contracts!
+                                                      .first
+                                                      .estimates!
+                                                      .first
+                                                      .isDeduction ==
+                                                  true
+                                              ? -(obj.cumulativeValue!)
+                                              : (obj.cumulativeValue!);
+                                          return sum + m.toDouble();
+                                        }),
+                                  sorId: sorNonSorId,
+                                );
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 0.0),
+                            child: Icon(
+                              Icons.add_circle,
+                              size: 30,
+                              color: const DigitColors().burningOrange,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
+                ],
               ),
+
+              // end
+
               DigitTextField(
                 controller: TextEditingController()
                   ..value
