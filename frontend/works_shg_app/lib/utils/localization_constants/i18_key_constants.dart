@@ -461,6 +461,9 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbPhotoInfo=>"MEASUREMENT_UPLOAD_BANNER_LABEL";
  String get searchHint=>"MB_SEARCH_HINT";
  String get projectId=>"MB_PROJECT_ID";
+ String get projectType=>"MB_PROJECT_TYPE";
+ String get mbcreateLabel=>"WORKS_SUBMIT_MEASUREMENT";
+ String get mbSubmitLabel=>"WORKS_MB_FORWARD";
 
 
 }

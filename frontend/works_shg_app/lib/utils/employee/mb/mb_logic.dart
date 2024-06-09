@@ -198,7 +198,18 @@ class MBLogic {
 
     final data = allMeasurements.mapIndexed((index, e) {
       FilteredMeasurements datak = FilteredMeasurements(
-          documents: e.documents?.map((e) => e).toList(),
+          documents: e.documents?.mapIndexed((index,e) => WorkflowDocument(
+            documentType: e.documentType,
+            documentUid: e.documentUid,
+            documentAdditionalDetails: e.documentAdditionalDetails,
+            fileStore: e.fileStore,
+            fileStoreId: e.fileStoreId,
+            id: e.id,
+            tenantId: e.tenantId,
+            isActive: true,
+            indexing: (index+1)
+
+          )).toList(),
           id: e.id,
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,

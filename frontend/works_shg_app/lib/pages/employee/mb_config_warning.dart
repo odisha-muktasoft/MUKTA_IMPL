@@ -263,7 +263,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
+                              padding: const EdgeInsets.only(left: 0.0),
                               child: Text(
                                 widget.nextActions!.action == "EDIT/RE-SUBMIT"
                                     ? t.translate("WORKS_UPDATE_AND_FORWARD")
@@ -349,6 +349,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         // ),
                         widget.nextActions!.action != "EDIT/RE-SUBMIT"
                             ? SizedBox(
+                                width: MediaQuery.sizeOf(context).width,
                                 height: 300,
                                 child: Column(
                                   children: [
@@ -370,6 +371,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         ).toList();
                                         supportDocument
                                             .addAll(supportDocumentData);
+                                        setState(() {});
                                         print(supportDocument);
                                       },
                                       extensions: const [
@@ -420,8 +422,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               flex: 2,
                               child: DigitElevatedButton(
                                 child: Text(
-                                  widget.stateActions!.action == "CREATE"
-                                      ? "Submit"
+                                  widget.stateActions!.action == "SUBMIT"
+                                      ? t.translate(
+                                          i18.measurementBook.mbSubmitLabel)
                                       : t.translate(
                                           "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
                                 ),
@@ -490,10 +493,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
+                              padding: const EdgeInsets.only(left: 0.0),
                               child: Text(
-                                widget.stateActions!.action == "CREATE"
-                                    ? t.translate("WORKS_CREATE")
+                                widget.stateActions!.action == "SUBMIT"
+                                    ? t.translate(
+                                        i18.measurementBook.mbcreateLabel)
                                     : t.translate(
                                         "WF_MB_ACTION_${widget.stateActions!.action}"),
                                 style: DigitTheme.instance.mobileTheme.textTheme
@@ -502,7 +506,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             ),
                           ],
                         ),
-                        (widget.stateActions!.action == "CREATE")
+                        (widget.stateActions!.action == "SUBMIT")
                             ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
                                 builder: (context, state) {
                                   return state.maybeMap(
@@ -538,8 +542,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           maxLines: 6,
                           controller: comment,
                         ),
-                        widget.stateActions!.action != "CREATE"
+                        widget.stateActions!.action != "SUBMIT"
                             ? SizedBox(
+                                width: MediaQuery.sizeOf(context).width,
                                 height: 300,
                                 child: Column(
                                   children: [
@@ -561,6 +566,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         ).toList();
                                         supportDocument
                                             .addAll(supportDocumentData);
+                                        setState(() {});
                                       },
                                       extensions: const [
                                         'jpg',

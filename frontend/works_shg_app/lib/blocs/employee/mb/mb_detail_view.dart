@@ -567,13 +567,17 @@ class MeasurementDetailBloc
   }) {
     //return  field==0?1:field;
 
-    height = double.parse((height == "" || height==".") ? "0.0" : height.toString())
+    height = double.parse(
+            (height == "" || height == ".") ? "0.0" : height.toString())
         .toStringAsFixed(4);
     width =
-        double.parse((width == "" || width==".") ? "0.0" : width.toString()).toStringAsFixed(4);
-    length = double.parse((length == "" || length=="." )? "0.0" : length.toString())
+        double.parse((width == "" || width == ".") ? "0.0" : width.toString())
+            .toStringAsFixed(4);
+    length = double.parse(
+            (length == "" || length == ".") ? "0.0" : length.toString())
         .toStringAsFixed(4);
-    number = double.parse((number == "" || number==".") ? "0.0" : number.toString())
+    number = double.parse(
+            (number == "" || number == ".") ? "0.0" : number.toString())
         .toStringAsFixed(4);
 
     if ((height == '0.0000' &&
@@ -764,28 +768,30 @@ class MeasurementDetailBloc
         loaded: (value) {
 //update data
 
-          List<WorkflowDocument> updatedDocuments = [
-            ...value.data.first.documents ?? []
-          ]; // Create a copy of existing documents
+          // List<WorkflowDocument> updatedDocuments = [
+          //   ...value.data.first.documents ?? []
+          // ]; // Create a copy of existing documents
 
 // Add or update the new documents
-          if (event.workflowDocument != null &&
-              event.workflowDocument.isNotEmpty) {
-            if (updatedDocuments.isEmpty) {
-              // If updatedDocuments is empty, assign event.workflowDocument directly
-              updatedDocuments = List.from(event.workflowDocument);
-            } else {
-              // Iterate over each new document
-              // for (WorkflowDocument document in event.workflowDocument) {
-               
+          // if (event.workflowDocument != null &&
+          //     event.workflowDocument.isNotEmpty) {
+          //   if (updatedDocuments.isEmpty) {
+          //     // If updatedDocuments is empty, assign event.workflowDocument directly
+          //     updatedDocuments = List.from(event.workflowDocument);
+          //   } else {
+          //     // Iterate over each new document
+          //     // for (WorkflowDocument document in event.workflowDocument) {
 
-              //   updatedDocuments.add(document);
-              // }
-             
-              updatedDocuments.clear();
-               updatedDocuments = List.from(event.workflowDocument);
-            }
-          }
+          //     //   updatedDocuments.add(document);
+          //     // }
+
+          //     updatedDocuments.clear();
+          //      updatedDocuments = List.from(event.workflowDocument);
+          //   }
+          // }
+          List<WorkflowDocument> updatedDocuments = [];
+
+          updatedDocuments = List.from(event.workflowDocument);
 
           List<FilteredMeasurements> newData = value.data.mapIndexed(
             (index, e) {

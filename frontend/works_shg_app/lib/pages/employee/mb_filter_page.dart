@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
+import 'package:works_shg_app/blocs/employee/mb/project_type.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'
     as statusMap;
+import 'package:works_shg_app/models/employee/mb/mb_project_type.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/Toast/toaster.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
@@ -35,7 +37,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
   TextEditingController mbNumber = TextEditingController();
   TextEditingController projectId = TextEditingController();
-  TextEditingController projectName = TextEditingController();
+  String projectName="";
   bool workShow = true;
   bool project = true;
 
@@ -47,11 +49,11 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
     mbNumber.addListener(mbNumberUpload);
     projectId.addListener(projectIdUpload);
-    projectName.addListener(projectNameUpload);
+   // projectName.addListener(projectNameUpload);
   }
 
   void mbNumberUpload() {
-    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+    if (mbNumber.text != "" || projectId.text != "" || projectName != "") {
       setState(() {
         workShow = false;
       });
@@ -63,7 +65,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
   }
 
   void projectIdUpload() {
-    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+    if (mbNumber.text != "" || projectId.text != "" || projectName != "") {
       setState(() {
         workShow = false;
       });
@@ -75,7 +77,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
   }
 
   void projectNameUpload() {
-    if (mbNumber.text != "" || projectId.text != "" || projectName.text != "") {
+    if (mbNumber.text != "" || projectId.text != "" || projectName != "") {
       setState(() {
         workShow = false;
       });
@@ -91,11 +93,11 @@ class _MBFilterPageState extends State<MBFilterPage> {
     // TODO: implement dispose
     mbNumber.removeListener(mbNumberUpload);
     projectId.removeListener(projectIdUpload);
-    projectName.removeListener(projectNameUpload);
+    //projectName.removeListener(projectNameUpload);
 
     mbNumber.dispose();
     projectId.dispose();
-    projectName.dispose();
+    //projectName.dispose();
 
     super.dispose();
   }
@@ -352,7 +354,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   } else {
                                                     if (mbNumber.text != "" &&
                                                         projectId.text == "" &&
-                                                        projectName.text ==
+                                                        projectName ==
                                                             "") {
                                                       s = {
                                                         "inbox": {
@@ -385,7 +387,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     } else if (mbNumber.text ==
                                                             "" &&
                                                         projectId.text != "" &&
-                                                        projectName.text ==
+                                                        projectName ==
                                                             "") {
                                                       s = {
                                                         "inbox": {
@@ -415,7 +417,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     } else if (mbNumber.text ==
                                                             "" &&
                                                         projectId.text == "" &&
-                                                        projectName.text !=
+                                                        projectName !=
                                                             "") {
                                                       s = {
                                                         "inbox": {
@@ -429,7 +431,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                                     .tenantId,
                                                             "projectType":
                                                                 projectName
-                                                                    .text,
+                                                                    ,
                                                           },
                                                           "processSearchCriteria":
                                                               {
@@ -460,7 +462,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                                 projectId.text,
                                                             "projectType":
                                                                 projectName
-                                                                    .text,
+                                                                    ,
                                                           },
                                                           "processSearchCriteria":
                                                               {
@@ -596,13 +598,53 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               controller: projectId,
                                             )
                                           : const SizedBox.shrink(),
-                                      project
-                                          ? DigitTextField(
-                                              label: t.translate(i18
-                                                  .measurementBook.projectName),
-                                              controller: projectName,
-                                            )
-                                          : const SizedBox.shrink(),
+// TODO:[change project name to projectType dropdown]
+
+                                      // project
+                                      //     ? DigitTextField(
+                                      //         label: t.translate(i18
+                                      //             .measurementBook.projectName),
+                                      //         controller: projectName,
+                                      //       )
+                                      //     : const SizedBox.shrink(),
+
+                                      BlocBuilder<ProjectTypeBloc,
+                                          ProjectTypeState>(
+                                        builder: (context, state) {
+                                          return state.maybeMap(
+                                            orElse: () =>
+                                                const SizedBox.shrink(),
+                                            loaded: (value) {
+                                              return DigitDropdown<ProjectType>(
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    projectName=value!.code!;
+                                                    workShow=false;
+                                                  });
+                                                },
+                                                value:null,
+                                                label: t.translate(i18.measurementBook.projectType),
+                                                menuItems: value
+                                                    .mbProjectType!
+                                                    .mdmsRes!
+                                                    .mbWorks!
+                                                    .projectType!,
+                                                valueMapper: (value) {
+                                                  return value.name!.trim();
+                                                },
+                                              );
+                                            },
+                                            error: (value) {
+                                              return const SizedBox.shrink();
+                                            },
+                                            loading: (value) {
+                                              return const SizedBox.shrink();
+                                            },
+                                          );
+                                        },
+                                      ),
+
+                                      // end of this
                                       workShow
                                           ? DigitDropdown(
                                               onChanged: (value) {

@@ -29,7 +29,7 @@ class FilePickerDemo extends StatefulWidget {
   final List<String>? extensions;
   final GlobalKey? contextKey;
   final MediaType headerType;
-  final List<dynamic>? fromServerFile;
+  final List<WorkflowDocument>? fromServerFile;
 
   const FilePickerDemo(
       {Key? key,
@@ -45,7 +45,7 @@ class FilePickerDemo extends StatefulWidget {
 }
 
 class FilePickerDemoState extends State<FilePickerDemo> {
-  List<dynamic> _selectedFiles = <dynamic>[];
+  List<WorkflowDocument> _selectedFiles = <WorkflowDocument>[];
   final List<FileStoreModel> _fileStoreList = <FileStoreModel>[];
   String? _extension;
   final bool _multiPick = true;
@@ -60,14 +60,16 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     super.initState();
     if (widget.fromServerFile != null || widget.fromServerFile == []) {
       for (var element in widget.fromServerFile!) {
-        _selectedFiles.add(
-          DraftModeImage(
-            name: (element as WorkflowDocument)
-                .documentAdditionalDetails!
-                .fileName!)
-                );
+        // _selectedFiles.add(
+        //   DraftModeImage(
+        //     name: (element as WorkflowDocument)
+        //         .documentAdditionalDetails!
+        //         .fileName!)
+        //         );
 
-                ss.add(element);
+        _selectedFiles.add(element);
+
+        ss.add(element);
       }
       // _selectedFiles.addAll(widget.fromServerFile!);
     }
@@ -98,9 +100,19 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           return;
         }
         if (_multiPick) {
-          _selectedFiles.addAll(paths);
+          if ((_selectedFiles
+                      .where((element) => element.isActive == true)
+                      .length! +
+                  paths.length) >
+              5) {
+            Notifiers.getToastMessage(
+                context, "You can only upload up to 5 files.", 'ERROR');
+            return;
+          } else {
+            //  _selectedFiles.addAll(paths);
+          }
         } else {
-          _selectedFiles = paths;
+          //  _selectedFiles = paths;
         }
 
         List<File> files = [];
@@ -108,7 +120,9 @@ class FilePickerDemoState extends State<FilePickerDemo> {
           files = paths.map((e) => File(e.path ?? '')).toList();
         }
 
-        if (_selectedFiles.length > 5 || files.length > 5) {
+        if (_selectedFiles.where((element) => element.isActive == true).length >
+                5 ||
+            files.length > 5) {
           Notifiers.getToastMessage(
               context, "You can only upload up to 5 files.", 'ERROR');
           return;
@@ -130,31 +144,45 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       setState(() {
         fileUploading = FileUploadStatus.STARTED;
       });
+      _fileStoreList.clear();
       var response =
           await CoreRepository().uploadFiles(files, widget.moduleName!);
       setState(() {
         fileUploading = FileUploadStatus.COMPLETED;
       });
       _fileStoreList.addAll(response);
-      if (_selectedFiles.isNotEmpty) {
+      // if (_selectedFiles.isNotEmpty) {
 //List<WorkflowDocument>ss=[];
-        ss.clear();
-        for (int i = 0; i < files.length; i++) {
-          ss.add(WorkflowDocument(
+      ss.clear();
+      for (int i = 0; i < _fileStoreList.length; i++) {
+        ss.add(WorkflowDocument(
+            indexing: _selectedFiles.isEmpty?0:(_selectedFiles.last.indexing! + 1),
             isActive: true,
+            tenantId: _fileStoreList[i].tenantId,
+            fileStore: _fileStoreList[i].fileStoreId,
+            documentType: path.extension(files[i].path),
+            documentUid: path.basename(files[i].path),
+            documentAdditionalDetails: DocumentAdditionalDetails(
+              fileName: path.basename(files[i].path),
+              fileType: "img_measurement_book",
               tenantId: _fileStoreList[i].tenantId,
-              fileStore: _fileStoreList[i].fileStoreId,
-              documentType: path.extension(files[i].path),
-              documentUid: path.basename(files[i].path),
-              documentAdditionalDetails: DocumentAdditionalDetails(
-                fileName: path.basename(files[i].path),
-                fileType: "img_measurement_book",
-                tenantId: _fileStoreList[i].tenantId,
-              )));
-        }
-        //  _selectedFiles.addAll(ss);
-        widget.callBack(_fileStoreList, ss);
+            )));
+       _selectedFiles.add(WorkflowDocument(
+            indexing: _selectedFiles.isEmpty?0:(_selectedFiles.last.indexing! + 1),
+            isActive: true,
+            tenantId: _fileStoreList[i].tenantId,
+            fileStore: _fileStoreList[i].fileStoreId,
+            documentType: path.extension(files[i].path),
+            documentUid: path.basename(files[i].path),
+            documentAdditionalDetails: DocumentAdditionalDetails(
+              fileName: path.basename(files[i].path),
+              fileType: "img_measurement_book",
+              tenantId: _fileStoreList[i].tenantId,
+            )));
       }
+     
+      widget.callBack(_fileStoreList, _selectedFiles);
+      // }
     } catch (e) {
       setState(() {
         fileUploading = FileUploadStatus.NOT_ACTIVE;
@@ -180,7 +208,8 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     FilePicker.platform.getDirectoryPath().then((value) {});
   }
 
-  _getConatiner(constraints, context) {
+  _getConatiner(constraints, context, List<WorkflowDocument> filteredDocument) {
+    //final List<WorkflowDocument>filteredDocument=_selectedFiles.where((element) => element.isActive==true).toList();
     return [
       Container(
           width: constraints.maxWidth > 760
@@ -230,21 +259,28 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                               widget.headerType == MediaType.mbDetail
                           ? "${AppLocalizations.of(context).translate(i18.common.chooseFile)}"
                           : "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
-                      //TODO:[lavel change]
+                      //TODO:[level change]
                       // "Choose File",
                       style: TextStyle(
                           color: Theme.of(context).primaryColorDark,
                           fontSize: 16),
                     ),
                   )),
-              _selectedFiles.isNotEmpty
+              _selectedFiles
+                      .where((element) => element.isActive == true)
+                      .toList()
+                      .isNotEmpty
                   ? Expanded(
                       child: SingleChildScrollView(
                         child: Wrap(
                             direction: Axis.horizontal,
                             spacing: 3,
                             children: List.generate(
-                                _selectedFiles.length,
+                                _selectedFiles
+                                    .where(
+                                        (element) => element.isActive == true)
+                                    .toList()
+                                    .length,
                                 (index) => Wrap(
                                       direction: Axis.horizontal,
                                       crossAxisAlignment:
@@ -252,17 +288,22 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                                       spacing: 2,
                                       children: [
                                         Text(
-                                          _selectedFiles[index] is File
-                                              ? (path.basename(
-                                                  _selectedFiles[index].path))
-                                              : _selectedFiles[index].name,
+                                          filteredDocument[index] is File
+                                              ? (path.basename(filteredDocument[
+                                                      index]
+                                                  .documentAdditionalDetails!
+                                                  .fileName!))
+                                              : filteredDocument[index]
+                                                  .documentAdditionalDetails!
+                                                  .fileName!,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         IconButton(
                                             padding: const EdgeInsets.all(5),
-                                            onPressed: () =>
-                                                onClickOfClear(index),
+                                            onPressed: () => onClickOfClear(
+                                                filteredDocument[index]
+                                                    .indexing!),
                                             icon: const Icon(Icons.cancel))
                                       ],
                                     )).toList()),
@@ -296,25 +337,45 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     ];
   }
 
-  void onClickOfClear(int index) {
-    setState(() {
-      _selectedFiles.removeAt(index);
-     // ss.removeAt(index);
-      WorkflowDocument sk=ss[index];
-      ss[index]=WorkflowDocument(
-        documentType: sk.documentType,
-        documentUid: sk.documentUid,
-        fileStore: sk.fileStore,
-        fileStoreId: sk.fileStoreId,
-        id: sk.id,
-        tenantId: sk.tenantId,
-        documentAdditionalDetails: sk.documentAdditionalDetails,
+  void onClickOfClear(int id) {
+    //  WorkflowDocument sk = _selectedFiles[index];
+    //   _selectedFiles[index] = WorkflowDocument(
+    //     documentType: sk.documentType,
+    //     documentUid: sk.documentUid,
+    //     fileStore: sk.fileStore,
+    //     fileStoreId: sk.fileStoreId,
+    //     id: sk.id,
+    //     tenantId: sk.tenantId,
+    //     documentAdditionalDetails: sk.documentAdditionalDetails,
+    //     isActive: false,
+    //   );
+    //_selectedFiles.removeAt(index);
+    // ss.removeAt(index);
+    int index = _selectedFiles.indexWhere((item) => item.indexing == id);
+
+    // If the item is found, update its value
+    if (index != -1) {
+      _selectedFiles[index] = WorkflowDocument(
+        indexing: _selectedFiles[index].indexing,
+        documentType: _selectedFiles[index].documentType,
+        documentUid: _selectedFiles[index].documentUid,
+        fileStore: _selectedFiles[index].fileStore,
+        fileStoreId: _selectedFiles[index].fileStoreId,
+        id: _selectedFiles[index].id,
+        tenantId: _selectedFiles[index].tenantId,
+        documentAdditionalDetails:
+            _selectedFiles[index].documentAdditionalDetails,
         isActive: false,
       );
-      fileUploading = FileUploadStatus.NOT_ACTIVE;
-      if (index < _fileStoreList.length) _fileStoreList.removeAt(index);
-    });
-    widget.callBack(_fileStoreList, ss);
+    }
+
+    fileUploading = FileUploadStatus.NOT_ACTIVE;
+    if (index < _fileStoreList.length) _fileStoreList.removeAt(index);
+
+// setState(() {
+//   _selectedFiles=_selectedFiles;
+// });
+    widget.callBack(_fileStoreList, _selectedFiles);
   }
 
   void reset() {
@@ -329,44 +390,37 @@ class FilePickerDemoState extends State<FilePickerDemo> {
   Widget build(BuildContext context) {
     return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
       builder: (context, state) {
-return state.maybeMap(orElse: () => const SizedBox.shrink(),
-loaded: (value) {
-//  _selectedFiles.clear();
-//   ss.clear();
-//    for (var element in value.data.first.documents??[]) {
+        return state.maybeMap(
+          orElse: () => const SizedBox.shrink(),
+          loaded: (value) {
+            final List<WorkflowDocument> filteredDocument = _selectedFiles
+                .where((element) => element.isActive == true)
+                .toList();
 
-//         _selectedFiles.add(DraftModeImage(
-//             name: (element as WorkflowDocument)
-//                 .documentAdditionalDetails!
-//                 .fileName!));
-              
-//             ss.add(element)   ;
-//       }
-
-  return LayoutBuilder(builder: (context, constraints) {
-          return Center(
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: SingleChildScrollView(
-                    child: Container(
-                      key: widget.contextKey,
-                      margin: constraints.maxWidth > 760
-                          ? const EdgeInsets.only(
-                              top: 5.0, bottom: 5, right: 10, left: 10)
-                          : const EdgeInsets.only(
-                              top: 5.0, bottom: 5, right: 0, left: 0),
-                      child: constraints.maxWidth > 760
-                          ? Row(children: _getConatiner(constraints, context))
-                          : Column(
-                              children: _getConatiner(constraints, context)),
-                    ),
-                  )));
-        });
-  
-},
-);
-
-        
+            return LayoutBuilder(builder: (context, constraints) {
+              return Center(
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 0.0, right: 0.0),
+                      child: SingleChildScrollView(
+                        child: Container(
+                          key: widget.contextKey,
+                          margin: constraints.maxWidth > 760
+                              ? const EdgeInsets.only(
+                                  top: 5.0, bottom: 5, right: 10, left: 10)
+                              : const EdgeInsets.only(
+                                  top: 5.0, bottom: 5, right: 0, left: 0),
+                          child: constraints.maxWidth > 760
+                              ? Row(
+                                  children: _getConatiner(
+                                      constraints, context, filteredDocument))
+                              : Column(
+                                  children: _getConatiner(
+                                      constraints, context, filteredDocument)),
+                        ),
+                      )));
+            });
+          },
+        );
       },
     );
   }
@@ -448,11 +502,11 @@ loaded: (value) {
               Notifiers.getToastMessage(context, i18.common.fileSize, 'ERROR');
               return;
             }
-            if (_multiPick) {
-              _selectedFiles.addAll([file]);
-            } else {
-              _selectedFiles = [file];
-            }
+            // if (_multiPick) {
+            //   _selectedFiles.addAll([file]);
+            // } else {
+            //   _selectedFiles = [file];
+            // }
             uploadFiles(<File>[file]);
             return;
           } else {

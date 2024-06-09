@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:works_shg_app/blocs/employee/mb/project_type.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
@@ -38,6 +39,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
   @override
   void initState() {
+     context
+        .read<ProjectTypeBloc>()
+        .add(ProjectTypeEvent(tenantId: GlobalVariables.tenantId!));
+        
     context.read<MeasurementInboxBloc>().add(
           MeasurementBookInboxBlocEvent(
             businessService: "MB",
@@ -47,6 +52,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             tenantId: GlobalVariables.tenantId!,
           ),
         );
+
+        
 
     context.read<WageSeekerLocationBloc>().add(
           LocationEventWageSeeker(tenantId: GlobalVariables.tenantId!),
