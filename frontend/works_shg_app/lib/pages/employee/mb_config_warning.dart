@@ -190,7 +190,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             Expanded(
                               flex: 2,
                               child: DigitOutLineButton(
-                                label: "Cancel",
+                                label:
+                                    t.translate(i18.measurementBook.mbCancel),
                                 onPressed: () {
                                   context.router.pop();
                                 },
@@ -206,41 +207,56 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
                                 ),
                                 onPressed: () {
-                                  List<List<SorObject>> sorList = [
-                                    value.sor!,
-                                    value.nonSor!
-                                  ];
-                                  MBDetailResponse kkk =
-                                      MBLogic.getMbPayloadUpdate(
-                                    data: value.data,
-                                    sorList: sorList,
-                                    workFlow: WorkFlow(
-                                      action: widget.nextActions!.action,
-                                      comment: comment.text,
-                                      assignees: [selectedAssignee?.uuid ?? ""],
-                                      documents: supportDocument,
-                                    ),
-                                    type: widget.type,
-                                  );
+                                  if (widget.nextActions!.action == "REJECT" && comment.text=="" ) {
+                                    Notifiers.getToastMessage(
+                                      context,
+                                      // AppLocalizations.of(context)
+                                      //     .translate(i18.login.invalidOTP),
 
-                                  context.read<MeasurementCrudBloc>().add(
-                                        MeasurementUpdateBlocEvent(
-                                          measurement: kkk.measurement!,
-                                          tenantId: '',
-                                          workFlow: WorkFlow(
-                                            action: widget.nextActions!.action,
-                                            comment: comment.text,
-                                            assignees: [
-                                              selectedAssignee?.uuid ?? ""
-                                            ],
-                                            documents: supportDocument,
+                                      t.translate(
+                                          i18.common.allFieldsMandatory),
+                                      'ERROR',
+                                    );
+                                  } else {
+                                    List<List<SorObject>> sorList = [
+                                      value.sor!,
+                                      value.nonSor!
+                                    ];
+                                    MBDetailResponse kkk =
+                                        MBLogic.getMbPayloadUpdate(
+                                      data: value.data,
+                                      sorList: sorList,
+                                      workFlow: WorkFlow(
+                                        action: widget.nextActions!.action,
+                                        comment: comment.text,
+                                        assignees: [
+                                          selectedAssignee?.uuid ?? ""
+                                        ],
+                                        documents: supportDocument,
+                                      ),
+                                      type: widget.type,
+                                    );
+
+                                    context.read<MeasurementCrudBloc>().add(
+                                          MeasurementUpdateBlocEvent(
+                                            measurement: kkk.measurement!,
+                                            tenantId: '',
+                                            workFlow: WorkFlow(
+                                              action:
+                                                  widget.nextActions!.action,
+                                              comment: comment.text,
+                                              assignees: [
+                                                selectedAssignee?.uuid ?? ""
+                                              ],
+                                              documents: supportDocument,
+                                            ),
+                                            type: widget.type,
                                           ),
-                                          type: widget.type,
-                                        ),
-                                      );
-                                  // Navigator.of(context)
-                                  //     .popUntil((route) => route is HomeRoute);
-                                  // context.router.push(const HomeRoute());
+                                        );
+                                    // Navigator.of(context)
+                                    //     .popUntil((route) => route is HomeRoute);
+                                    // context.router.push(const HomeRoute());
+                                  }
                                 },
                               ),
                             )
@@ -417,7 +433,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             Expanded(
                               flex: 2,
                               child: DigitOutLineButton(
-                                label: "Cancel",
+                                label:
+                                    t.translate(i18.measurementBook.mbCancel),
                                 onPressed: () {
                                   context.router.pop();
                                 },
@@ -557,11 +574,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       callBack: (List<FileStoreModel>? g,
                                           List<WorkflowDocument>? l) {
                                         final supportDocumentData = l!
-                                        .where((element) =>
+                                            .where((element) =>
                                                 element.isActive == true)
                                             .toList()
-                                        
-                                        .map(
+                                            .map(
                                           (e) {
                                             return WorkFlowSupportDocument(
                                               documentType: e.documentType,

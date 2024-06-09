@@ -464,6 +464,7 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get projectType=>"MB_PROJECT_TYPE";
  String get mbcreateLabel=>"WORKS_SUBMIT_MEASUREMENT";
  String get mbSubmitLabel=>"WORKS_MB_FORWARD";
+ String get mbCancel=>"WORKS_MB_CANCEL";
 
 
 }
