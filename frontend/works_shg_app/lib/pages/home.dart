@@ -201,7 +201,7 @@ class _HomePage extends State<HomePage> {
                 // childCount: _getItems(context, homeConfigModel).length,
                 ),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 145,
+              maxCrossAxisExtent: 200,
               childAspectRatio: 104 / 128,
             ),
           ),
@@ -391,9 +391,11 @@ class HomeItemCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DigitCard(
+      
       onPressed: onPressed,
       padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
       child: Align(
+        
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

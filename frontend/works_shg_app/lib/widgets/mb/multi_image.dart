@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:digit_components/theme/colors.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -156,7 +157,9 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       ss.clear();
       for (int i = 0; i < _fileStoreList.length; i++) {
         ss.add(WorkflowDocument(
-            indexing: _selectedFiles.isEmpty?0:(_selectedFiles.last.indexing! + 1),
+            indexing: _selectedFiles.isEmpty
+                ? 0
+                : (_selectedFiles.last.indexing! + 1),
             isActive: true,
             tenantId: _fileStoreList[i].tenantId,
             fileStore: _fileStoreList[i].fileStoreId,
@@ -167,8 +170,10 @@ class FilePickerDemoState extends State<FilePickerDemo> {
               fileType: "img_measurement_book",
               tenantId: _fileStoreList[i].tenantId,
             )));
-       _selectedFiles.add(WorkflowDocument(
-            indexing: _selectedFiles.isEmpty?0:(_selectedFiles.last.indexing! + 1),
+        _selectedFiles.add(WorkflowDocument(
+            indexing: _selectedFiles.isEmpty
+                ? 0
+                : (_selectedFiles.last.indexing! + 1),
             isActive: true,
             tenantId: _fileStoreList[i].tenantId,
             fileStore: _fileStoreList[i].fileStoreId,
@@ -180,7 +185,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
               tenantId: _fileStoreList[i].tenantId,
             )));
       }
-     
+
       widget.callBack(_fileStoreList, _selectedFiles);
       // }
     } catch (e) {
@@ -212,22 +217,27 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     //final List<WorkflowDocument>filteredDocument=_selectedFiles.where((element) => element.isActive==true).toList();
     return [
       Container(
-          width: constraints.maxWidth > 760
-              ? MediaQuery.of(context).size.width / 3
-              : MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(top: 18, bottom: 3),
-          child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                  widget.headerType == MediaType.mbConfim ||
-                          widget.headerType == MediaType.mbDetail
-                      ? "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}"
-                      : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
-                      color: Theme.of(context).primaryColorDark)))),
+        width: constraints.maxWidth > 760
+            ? MediaQuery.of(context).size.width / 3
+            : MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.only(top: 18, bottom: 3),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            widget.headerType == MediaType.mbDetail
+                ? "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}"
+                : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 16,
+                color: widget.headerType == MediaType.mbDetail?
+                 const DigitColors().burningOrange
+                 : const DigitColors().black
+                 ),
+          ),
+        ),
+      ),
       Container(
           width: constraints.maxWidth > 760
               ? MediaQuery.of(context).size.width / 2.5
@@ -246,7 +256,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                         padding: MaterialStateProperty.all(
                             const EdgeInsets.symmetric(horizontal: 15)),
                         backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color(0XFFD6D5D4)),
+                            const Color.fromARGB(255, 228, 223, 220)),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                           const RoundedRectangleBorder(
@@ -262,8 +272,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                       //TODO:[level change]
                       // "Choose File",
                       style: TextStyle(
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 16),
+                          color: DigitColors().burningOrange, fontSize: 16),
                     ),
                   )),
               _selectedFiles
