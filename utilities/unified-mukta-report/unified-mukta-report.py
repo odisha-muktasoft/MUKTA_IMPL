@@ -28,7 +28,33 @@ USER_HOST = os.getenv('USER_HOST')
 WORKFLOW_HOST = os.getenv('WORKFLOW_HOST')
 
 
-tenantids = ["od.jatni","od.athagarh"]
+tenantids = [
+    "od.jatni",
+    "od.dhenkanal",
+    "od.balangir",
+    "od.balasore",
+    "od.padampur",
+    "od.bhadrak",
+    "od.boudhgarh",
+    "od.cuttack",
+    "od.athagarh",
+    "od.berhampur",
+    "od.hinjilicut",
+    "od.chatrapur",
+    "od.paradeep",
+    "od.jajpur",
+    "od.jharsuguda",
+    "od.kesinga",
+    "od.phulbani",
+    "od.keonjhargarh",
+    "od.jeypore",
+    "od.kotpad",
+    "od.baripada",
+    "od.puri",
+    "od.sambalpur",
+    "od.rourkela",
+    "od.bhubaneswar"
+]
 
 
 
