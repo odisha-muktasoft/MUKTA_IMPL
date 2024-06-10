@@ -328,9 +328,6 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                           : SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
-                                  
-
-                                  
                                   if (index ==
                                           (value.isLoading
                                               ? value.contracts!.length
@@ -384,16 +381,16 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             loaded: (value) {
                                               if (value.estimateStatus ==
                                                       true &&
-                                                      // TODO:[currently removed the workorder status]
+                                                  // TODO:[currently removed the workorder status]
                                                   // value.workOrderStatus ==
                                                   //     true &&
-                                                      //
+                                                  //
                                                   value.existingMB == true) {
                                                 context.router
                                                     .push(MBDetailRoute(
                                                   contractNumber:
-                                                      value.workOrderNumber ??
-                                                          "",
+                                                      value.workOrderNumber!
+                                                          ,
                                                   mbNumber: "",
                                                   tenantId:
                                                       GlobalVariables.tenantId,
@@ -411,8 +408,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                 // } else
 
                                                 // end of it
-                                                 if (value
-                                                        .estimateStatus ==
+                                                if (value.estimateStatus ==
                                                     false) {
                                                   Notifiers.getToastMessage(
                                                       context,
@@ -420,18 +416,19 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                           .estimateRevisionError),
                                                       'ERROR');
                                                 } else {
-                                                 
                                                   Notifiers.getToastMessage(
                                                       context,
                                                       t.translate(i18.workOrder
                                                           .existingMBCreateError),
                                                       'ERROR');
                                                 }
-                                               
                                               }
                                             },
+                                            error: (value) {
+                                              Notifiers.getToastMessage(context,
+                                                  value.error!, 'ERROR');
+                                            },
                                           );
-                                          // TODO: implement listener
                                         },
                                         child: DigitElevatedButton(
                                           child: Text(t.translate(
@@ -531,10 +528,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                           : "NA",
                                       t.translate(
                                               i18.measurementBook.workValue):
-                                          "${NumberFormat('##,##,##,##,###')
-                                              .format(value.contracts?[index]
-                                                      !.additionalDetails!.totalEstimatedAmount!.roundToDouble() ??
-                                                  0.00)}.00",
+                                          "${NumberFormat('##,##,##,##,###').format(value.contracts?[index]!.additionalDetails!.totalEstimatedAmount!.roundToDouble() ?? 0.00)}.00",
                                       t
                                           .translate(
                                               i18.common.status): t.translate(

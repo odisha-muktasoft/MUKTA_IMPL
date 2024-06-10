@@ -1,23 +1,17 @@
 //mb_detail_view
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
-import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
+import 'package:works_shg_app/data/repositories/employee_repository/estimate.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
-import '../../../models/employee/mb/filtered_Measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
-import '../../../models/muster_rolls/muster_workflow_model.dart';
 import '../../../services/urls.dart';
 import '../../../utils/employee/mb/mb_logic.dart';
 
@@ -45,6 +39,13 @@ class MeasurementCheckBloc
         "measurementNumber": event.measurementNumber,
         "key": "View",
       });
+      final resEstimate = await EstimateRepository(client.init()).loadEstimate(
+        url: Urls.estimateService.estimateSearch,
+        queryParameters: {
+          "tenantId": GlobalVariables.tenantId,
+          "estimateNumber": res.contract?.additionalDetails?.estimateNumber,
+        },
+      );
 
       bool? workOrderStatus;
       bool? estimateStatus;
@@ -54,7 +55,8 @@ class MeasurementCheckBloc
                 res.contract!.wfStatus == "ACCEPTED")
             ? true
             : false;
-        estimateStatus = res.estimate!.wfStatus == "APPROVED" ? true : false;
+        estimateStatus =
+            resEstimate.estimates?.first.wfStatus == "APPROVED" ? true : false;
 
         existingMB = true;
       } else {
@@ -62,7 +64,8 @@ class MeasurementCheckBloc
                 res.contract!.wfStatus == "ACCEPTED")
             ? true
             : false;
-        estimateStatus = res.estimate!.wfStatus == "APPROVED" ? true : false;
+        estimateStatus =
+            resEstimate.estimates?.first.wfStatus == "APPROVED" ? true : false;
 
         existingMB = (res.allMeasurements[0]['wfStatus'] == "APPROVED" ||
                 res.allMeasurements[0]['wfStatus'] == "REJECTED")

@@ -204,52 +204,52 @@ class _MBDetailPageState extends State<MBDetailPage>
             );
           },
         ),
-        BlocListener<SearchIndividualWorkBloc, SearchIndividualWorkState>(
-          listener: (context, state) {
-            state.maybeMap(
-              orElse: () => null,
-              loaded: (value) {
-                print(
-                    "individualWork${value.contractsModel!.contracts!.first.status!}");
-                setState(() {
-                  workorderStatus =
-                      value.contractsModel!.contracts!.first.status!;
-                });
+        // BlocListener<SearchIndividualWorkBloc, SearchIndividualWorkState>(
+        //   listener: (context, state) {
+        //     state.maybeMap(
+        //       orElse: () => null,
+        //       loaded: (value) {
+        //         print(
+        //             "individualWork${value.contractsModel!.contracts!.first.status!}");
+        //         setState(() {
+        //           workorderStatus =
+        //               value.contractsModel!.contracts!.first.status!;
+        //         });
 
-                context.read<EstimateBloc>().add(EstimateLoadBlocEvent(
-                      isActive: true,
-                      roles: value.contractsModel!.contracts!.first
-                          .additionalDetails!.estimateNumber!,
-                      tenantId: widget.tenantId!,
-                    ));
-              },
-            );
-          },
-        ),
-        BlocListener<EstimateBloc, EstimateState>(
-          listener: (context, estimateState) {
-            estimateState.maybeMap(
-              orElse: () => null,
-              loaded: (value) {
-                print(value.estimateDetailResponse?.estimates!.first.status!);
-                setState(() {
-                  estimateStatus =
-                      value.estimateDetailResponse!.estimates!.first.status!;
-                });
-                context.read<EmpHRMSBloc>().add(
-                      EmpHRMSLoadBlocEvent(
-                        isActive: true,
-                        roles: "MB_VERIFIER",
-                        tenantId: widget.tenantId!,
-                      ),
-                    );
-              },
-              error: (value) {
-                print(value.toString());
-              },
-            );
-          },
-        ),
+        //         context.read<EstimateBloc>().add(EstimateLoadBlocEvent(
+        //               isActive: true,
+        //               roles: value.contractsModel!.contracts!.first
+        //                   .additionalDetails!.estimateNumber!,
+        //               tenantId: widget.tenantId!,
+        //             ));
+        //       },
+        //     );
+        //   },
+        // ),
+        // BlocListener<EstimateBloc, EstimateState>(
+        //   listener: (context, estimateState) {
+        //     estimateState.maybeMap(
+        //       orElse: () => null,
+        //       loaded: (value) {
+        //         print(value.estimateDetailResponse?.estimates!.first.status!);
+        //         setState(() {
+        //           estimateStatus =
+        //               value.estimateDetailResponse!.estimates!.first.status!;
+        //         });
+        //         context.read<EmpHRMSBloc>().add(
+        //               EmpHRMSLoadBlocEvent(
+        //                 isActive: true,
+        //                 roles: "MB_VERIFIER",
+        //                 tenantId: widget.tenantId!,
+        //               ),
+        //             );
+        //       },
+        //       error: (value) {
+        //         print(value.toString());
+        //       },
+        //     );
+        //   },
+        // ),
       ],
       child: DefaultTabController(
         length: 3,
@@ -330,8 +330,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         workorderStatus,
                                         estimateStatus,
                                         (value.data.length >= 2
-                                            ? value.data[1].wfStatus ==
-                                                "APPROVED"
+                                            ?( value.data[1].wfStatus ==
+                                                "APPROVED" || value.data[1].wfStatus ==
+                                                "REJECTED" )
                                             : false));
                                   },
                                   totalAmountText: t.translate(
@@ -362,13 +363,13 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                                 return FloatActionCard(
                                   actions: () {
-                                    if ((estimateStatus != "INWORKFLOW") &&
-                                        (value.data.length >= 2
-                                            ? (value.data[1].wfStatus ==
-                                                    "APPROVED" ||
-                                                value.data[1].wfStatus ==
-                                                    "REJECTED")
-                                            : true)) {
+                                    // if ((estimateStatus != "INWORKFLOW") &&
+                                    //     (value.data.length >= 2
+                                    //         ? (value.data[1].wfStatus ==
+                                    //                 "APPROVED" ||
+                                    //             value.data[1].wfStatus ==
+                                    //                 "REJECTED")
+                                    //         : true)) {
                                       DigitActionDialog.show(
                                         context,
                                         widget: CommonButtonCard(
@@ -379,25 +380,22 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           bs: bk,
                                         ),
                                       );
-                                    } else {
-                                      if (estimateStatus == "INWORKFLOW") {
-                                        Notifiers.getToastMessage(
-                                            context,
-                                            t.translate(i18.workOrder
-                                                .estimateRevisionError),
-                                            'ERROR');
-                                      } else {
-                                        Notifiers.getToastMessage(
-                                            context,
-                                            t.translate(i18.workOrder
-                                                .existingMBCreateError),
-                                            'ERROR');
-                                      }
-                                      // Notifiers.getToastMessage(
-                                      //     context,
-                                      //     "MB can not be created as the $show in progress",
-                                      //     'ERROR');
-                                    }
+                                    // } else {
+                                    //   if (estimateStatus == "INWORKFLOW") {
+                                    //     Notifiers.getToastMessage(
+                                    //         context,
+                                    //         t.translate(i18.workOrder
+                                    //             .estimateRevisionError),
+                                    //         'ERROR');
+                                    //   } else {
+                                    //     Notifiers.getToastMessage(
+                                    //         context,
+                                    //         t.translate(i18.workOrder
+                                    //             .existingMBCreateError),
+                                    //         'ERROR');
+                                    //   }
+                                      
+                                    //}
                                   },
                                   // amount: sorprice.toString(),
                                   amount: value.data.first.totalAmount != null
@@ -424,8 +422,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         workorderStatus,
                                         estimateStatus,
                                         (value.data.length >= 2
-                                            ? value.data[1].wfStatus ==
-                                                "APPROVED"
+                                            ? (value.data[1].wfStatus ==
+                                                "APPROVED" ||value.data[1].wfStatus ==
+                                                "REJECTED")
                                             : true));
                                   },
                                   totalAmountText: t.translate(
@@ -487,7 +486,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Back(),
+                             Back(
+                              callback: () {
+                               context.router.popUntilRouteWithPath(
+                                widget.type==MBScreen.update?
+                                'measurement-inbox':
+                                'workOrder-inbox'
+                                );
+                              },
+                            ),
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
@@ -1537,9 +1544,42 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
                           );
                         } else {
-                          if ((estimateStatus != "INWORKFLOW") &&
-                              previousMBStatus) {
-                            DigitActionDialog.show(
+                          // if ((estimateStatus != "INWORKFLOW") &&
+                          //     previousMBStatus) {
+                          //   DigitActionDialog.show(
+                          //     context,
+                          //     widget: CommonButtonCard(
+                          //       g: processInstances,
+                          //       contractNumber: contractNumber,
+                          //       mbNumber: mbNumber,
+                          //       type: widget.type,
+                          //       bs: bs,
+                          //     ),
+                          //   );
+                          // }
+                          //  else {
+                          //   // if (workorderStatus != "ACTIVE") {
+                          //   //   Notifiers.getToastMessage(
+                          //   //       context,
+                          //   //       t.translate(i18.workOrder.timeExtensionError),
+                          //   //       'ERROR');
+                          //   // } else
+                          //   if (estimateStatus == "INWORKFLOW") {
+                          //     Notifiers.getToastMessage(
+                          //         context,
+                          //         t.translate(
+                          //             i18.workOrder.estimateRevisionError),
+                          //         'ERROR');
+                          //   } else {
+                          //     Notifiers.getToastMessage(
+                          //         context,
+                          //         t.translate(
+                          //             i18.workOrder.existingMBCreateError),
+                          //         'ERROR');
+                          //   }
+                          // }
+                         
+                         DigitActionDialog.show(
                               context,
                               widget: CommonButtonCard(
                                 g: processInstances,
@@ -1549,44 +1589,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 bs: bs,
                               ),
                             );
-                          } else {
-                            // if (workorderStatus != "ACTIVE") {
-                            //   Notifiers.getToastMessage(
-                            //       context,
-                            //       t.translate(i18.workOrder.timeExtensionError),
-                            //       'ERROR');
-                            // } else
-                            if (estimateStatus == "INWORKFLOW") {
-                              Notifiers.getToastMessage(
-                                  context,
-                                  t.translate(
-                                      i18.workOrder.estimateRevisionError),
-                                  'ERROR');
-                            } else {
-                              Notifiers.getToastMessage(
-                                  context,
-                                  t.translate(
-                                      i18.workOrder.existingMBCreateError),
-                                  'ERROR');
-                            }
-                          }
-                          // Notifiers.getToastMessage(
-                          //     context,
-                          //     "MB can not be created as the $show in progress",
-                          //     'ERROR');
                         }
 
 // before
-                        // DigitActionDialog.show(
-                        //   context,
-                        //   widget: CommonButtonCard(
-                        //     g: processInstances,
-                        //     contractNumber: contractNumber,
-                        //     mbNumber: mbNumber,
-                        //     type: widget.type,
-                        //     bs: bs,
-                        //   ),
-                        // );
+                       
                       })
                   : const SizedBox.shrink(),
             ],

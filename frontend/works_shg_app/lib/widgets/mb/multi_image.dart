@@ -229,12 +229,12 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                 : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
             textAlign: TextAlign.left,
             style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: widget.headerType == MediaType.mbDetail?
-                 const DigitColors().burningOrange
-                 : const DigitColors().black
-                 ),
+              fontWeight: FontWeight.w400,
+              fontSize: 16,
+              color: widget.headerType == MediaType.mbDetail
+                  ? const DigitColors().burningOrange
+                  : const DigitColors().black,
+            ),
           ),
         ),
       ),
