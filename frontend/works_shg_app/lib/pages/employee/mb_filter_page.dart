@@ -37,7 +37,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
   TextEditingController mbNumber = TextEditingController();
   TextEditingController projectId = TextEditingController();
-  String projectName="";
+  String projectName = "";
+  ProjectType? selectedType;
   bool workShow = true;
   bool project = true;
 
@@ -49,7 +50,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
     mbNumber.addListener(mbNumberUpload);
     projectId.addListener(projectIdUpload);
-   // projectName.addListener(projectNameUpload);
+    // projectName.addListener(projectNameUpload);
   }
 
   void mbNumberUpload() {
@@ -354,8 +355,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   } else {
                                                     if (mbNumber.text != "" &&
                                                         projectId.text == "" &&
-                                                        projectName ==
-                                                            "") {
+                                                        projectName == "") {
                                                       s = {
                                                         "inbox": {
                                                           "tenantId":
@@ -387,8 +387,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     } else if (mbNumber.text ==
                                                             "" &&
                                                         projectId.text != "" &&
-                                                        projectName ==
-                                                            "") {
+                                                        projectName == "") {
                                                       s = {
                                                         "inbox": {
                                                           "tenantId":
@@ -417,8 +416,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     } else if (mbNumber.text ==
                                                             "" &&
                                                         projectId.text == "" &&
-                                                        projectName !=
-                                                            "") {
+                                                        projectName != "") {
                                                       s = {
                                                         "inbox": {
                                                           "tenantId":
@@ -430,8 +428,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                                 GlobalVariables
                                                                     .tenantId,
                                                             "projectType":
-                                                                projectName
-                                                                    ,
+                                                                projectName,
                                                           },
                                                           "processSearchCriteria":
                                                               {
@@ -461,8 +458,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "projectId":
                                                                 projectId.text,
                                                             "projectType":
-                                                                projectName
-                                                                    ,
+                                                                projectName,
                                                           },
                                                           "processSearchCriteria":
                                                               {
@@ -607,42 +603,51 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       //         controller: projectName,
                                       //       )
                                       //     : const SizedBox.shrink(),
-
-                                      BlocBuilder<ProjectTypeBloc,
-                                          ProjectTypeState>(
-                                        builder: (context, state) {
-                                          return state.maybeMap(
-                                            orElse: () =>
-                                                const SizedBox.shrink(),
-                                            loaded: (value) {
-                                              return DigitDropdown<ProjectType>(
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    projectName=value!.code!;
-                                                    workShow=false;
-                                                  });
-                                                },
-                                                value:null,
-                                                label: t.translate(i18.measurementBook.projectType),
-                                                menuItems: value
-                                                    .mbProjectType!
-                                                    .mdmsRes!
-                                                    .mbWorks!
-                                                    .projectType!,
-                                                valueMapper: (value) {
-                                                  return value.name!.trim();
-                                                },
-                                              );
-                                            },
-                                            error: (value) {
-                                              return const SizedBox.shrink();
-                                            },
-                                            loading: (value) {
-                                              return const SizedBox.shrink();
-                                            },
-                                          );
-                                        },
-                                      ),
+                                      project
+                                          ? BlocBuilder<ProjectTypeBloc,
+                                              ProjectTypeState>(
+                                              builder: (context, state) {
+                                                return state.maybeMap(
+                                                  orElse: () =>
+                                                      const SizedBox.shrink(),
+                                                  loaded: (value) {
+                                                    return DigitDropdown<
+                                                        ProjectType>(
+                                                      onChanged: (value) {
+                                                        setState(() {
+                                                          projectName =
+                                                              value!.code!;
+                                                          selectedType = value;
+                                                          workShow = false;
+                                                        });
+                                                      },
+                                                      value: selectedType,
+                                                      label: t.translate(i18
+                                                          .measurementBook
+                                                          .projectType),
+                                                      menuItems: value
+                                                          .mbProjectType!
+                                                          .mdmsRes!
+                                                          .mbWorks!
+                                                          .projectType!,
+                                                      valueMapper: (value) {
+                                                        return value.name!
+                                                            .trim();
+                                                      },
+                                                    );
+                                                  },
+                                                  error: (value) {
+                                                    return const SizedBox
+                                                        .shrink();
+                                                  },
+                                                  loading: (value) {
+                                                    return const SizedBox
+                                                        .shrink();
+                                                  },
+                                                );
+                                              },
+                                            )
+                                          : const SizedBox.shrink(),
 
                                       // end of this
                                       workShow

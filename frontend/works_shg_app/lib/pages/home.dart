@@ -213,7 +213,7 @@ class _HomePage extends State<HomePage> {
         child: Center(
           child: EmptyImage(
             align: Alignment.center,
-            label: t.translate(i18.common.notFound),
+            label: t.translate(i18.measurementBook.noService),
           ),
         ),
       ));

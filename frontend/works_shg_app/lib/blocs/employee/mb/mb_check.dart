@@ -51,12 +51,12 @@ class MeasurementCheckBloc
       bool? estimateStatus;
       bool? existingMB;
       if (res.allMeasurements is! List) {
-        workOrderStatus = res.contract!.wfStatus == "APPROVED" ? true : false;
+        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||res.contract!.wfStatus == "ACCEPTED") ? true : false;
         estimateStatus = res.estimate!.wfStatus == "APPROVED" ? true : false;
 
-        existingMB = false;
+        existingMB = true;
       } else {
-        workOrderStatus = res.contract!.wfStatus == "APPROVED" ? true : false;
+        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||res.contract!.wfStatus == "ACCEPTED") ? true : false;
         estimateStatus = res.estimate!.wfStatus == "APPROVED" ? true : false;
 
         existingMB =

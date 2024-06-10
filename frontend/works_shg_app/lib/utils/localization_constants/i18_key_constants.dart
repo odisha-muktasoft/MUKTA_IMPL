@@ -465,6 +465,7 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbcreateLabel=>"WORKS_SUBMIT_MEASUREMENT";
  String get mbSubmitLabel=>"WORKS_MB_FORWARD";
  String get mbCancel=>"WORKS_MB_CANCEL";
+ String get noService=>"NO_SERVICE_AVAILABLE";
 
 
 }

@@ -74,7 +74,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   }
 
   void numberUpload() {
-    final debouncer = Debouncer(milliseconds: 500);
+    final debouncer = Debouncer(milliseconds: 250);
 
     debouncer.run(() {
       widget.fieldValue(
@@ -83,7 +83,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   }
 
   void lengthUpload() {
-    final debouncer = Debouncer(milliseconds: 500);
+    final debouncer = Debouncer(milliseconds: 250);
     debouncer.run(() {
       widget.fieldValue(
           "Length",  lengthController.text);
@@ -91,7 +91,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   }
 
   void widthUpload() {
-    final debouncer = Debouncer(milliseconds: 500);
+    final debouncer = Debouncer(milliseconds: 250);
     debouncer.run(() {
       widget.fieldValue(
           "Width",  widthController.text);
@@ -99,7 +99,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   }
 
   void heightUpload() {
-    final debouncer = Debouncer(milliseconds: 500);
+    final debouncer = Debouncer(milliseconds: 250);
     debouncer.run(() {
       widget.fieldValue(
           "Height", heightController.text);
