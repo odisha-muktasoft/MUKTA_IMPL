@@ -4,24 +4,43 @@ import time
 import os
 import copy
 from elasticsearch import Elasticsearch, helpers
+from confluent_kafka import Producer, KafkaException
 
 
 ES_HOST = os.getenv("ES_HOST_URL")
 ES_USERNAME = os.getenv("ES_USERNAME")
 ES_PASSWORD = os.getenv("ES_PASSWORD")
+TRANSFORMER_TOPIC = os.getenv("TRANSFORMER_PI_KAFKA_TOPIC")
+KAFKA_BROKER = os.getenv("KAFKA_BROKER")
+
+PRODUCER_CONFIG = {
+    "bootstrap.servers": KAFKA_BROKER,
+    'client.id': 'index-transformer-producer',
+}
 
 es = Elasticsearch([ES_HOST], http_auth=(ES_USERNAME, ES_PASSWORD), verify_certs=False)
+producer = Producer(PRODUCER_CONFIG)
 
 gender_vs_beneficiary_map = {}
 
 # Current time in milliseconds
 current_time_millis = int(time.time() * 1000)
 
-# 30 days ago in milliseconds 
-thirty_days_ago_millis = current_time_millis - (30 * 24 * 60 * 60 * 1000)
+# 3 hour ago in milliseconds 
+three_hours_ago_millis = current_time_millis - (3 * 60 * 60 * 1000)
 
 print(current_time_millis)
-print(thirty_days_ago_millis)
+print(three_hours_ago_millis)
+
+def send_to_kafka(producer, topic, message):
+    try:
+        print(f"Trying to push data to Kafka topic: {topic}")
+        producer.produce(topic, message)
+        print(f"Pushed data to Kafka topic: {topic}")
+    except KafkaException as e:
+        print(f"Failed to produce message: {e} in topic {topic}")
+    except Exception as e:
+        print(f"An error occurred: {e} while trying to push data to topic {topic}")
 
 
 def extract_data():
@@ -35,7 +54,7 @@ def extract_data():
                         {
                             "range": {
                                 "Data.auditDetails.lastModifiedTime": {
-                                "gte": thirty_days_ago_millis,
+                                "gte": three_hours_ago_millis,
                                 "lte": current_time_millis
                                 }
                             }
@@ -74,7 +93,6 @@ def extract_data():
     
     return pi_data
 
-transformed_bulk_data = []
 
 def transform_data(data):
     ES_TRANSFORMER_PI_INDEX = os.getenv("ES_TRANSFORMER_PI_INDEX")
@@ -105,14 +123,13 @@ def transform_data(data):
 
             transformed_data["Data"]["gender"] = gender_vs_beneficiary_map[beneficiary_id] if beneficiary_id in gender_vs_beneficiary_map else None
 
-            index_id = f"{transformed_data['Data']['id']}{transformed_data['Data']['beneficiaryDetails']['id']}{transformed_data['Data']['beneficiaryDetails']['beneficiaryId']}"
-            index_query = {"index": { "_index" : ES_TRANSFORMER_PI_INDEX ,"_id": index_id}}
-            data_object = transformed_data
+            # index_id = f"{transformed_data['Data']['id']}{transformed_data['Data']['beneficiaryDetails']['id']}{transformed_data['Data']['beneficiaryDetails']['beneficiaryId']}"
+            # index_query = {"index": { "_index" : ES_TRANSFORMER_PI_INDEX ,"_id": index_id}}
+            data_object = json.dumps(transformed_data)
 
-            transformed_bulk_data.append(json.dumps(index_query))
-            transformed_bulk_data.append(json.dumps(data_object))
+            send_to_kafka(producer, TRANSFORMER_TOPIC, data_object)
 
-    return None
+    producer.flush()
 
 
 def create_gender_vs_beneficiary_map(beneficiary_ids : set):
@@ -145,14 +162,6 @@ def main():
 
     transform_data(pi_data)
 
-    
-    req_body = '\n'.join(transformed_bulk_data) + '\n'
-    response = es.bulk(body=req_body)
-
-    if response["errors"]:
-        for item in response["items"]:
-            if "error" in item["index"]:
-                print(f"Insert/Update failed for document id {item['index']['_id']} for the reasom : {item['index']['error']}")
 
     return None
 
