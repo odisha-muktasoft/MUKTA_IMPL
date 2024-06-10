@@ -13,7 +13,7 @@ export const statusBasedNavigation = ( status, contractOrProjectNumber, measurem
         
     if(mode === "REVISION-ESTIMATE")
     {
-        linkTo = `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${tenantId}&revisionNumber=${measurementOrEstimateNumber}&projectNumber=${contractOrProjectNumber}&isEditRevisionEstimate=${true}`;
+        linkTo = `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${tenantId}&revisionNumber=${measurementOrEstimateNumber}&estimateNumber=${businessId}&projectNumber=${contractOrProjectNumber}&isEditRevisionEstimate=${true}`;
 
         if (status !== "DRAFT") {
             linkTo = `/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${measurementOrEstimateNumber}&estimateNumber=${businessId}&projectNumber=${contractOrProjectNumber}`;

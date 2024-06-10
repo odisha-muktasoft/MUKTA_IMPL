@@ -70,6 +70,23 @@ const searchSor = (props) => {
   const [showToast, setShowToast] = useState({show : false, label : "", error : false});
   const { register, setValue, watch } = props;
   let formData = watch("SOR");
+
+  useEffect(() => {
+    if(stateData?.SORType !== null)
+    {
+      setStateData({...stateData, SORSubType:null, SORVariant:null, selectedSor:null});
+      setSelectedSOR(null);
+    }
+  },[stateData?.SORType]);
+
+  useEffect(() => {
+    if(stateData?.SORSubType !== null)
+    {
+      setStateData({...stateData, SORVariant:null, selectedSor:null});
+      setSelectedSOR(null);
+    }
+  },[stateData?.SORSubType]);
+
   useEffect(() => {
     register("searchSor", stateData);
   }, []);

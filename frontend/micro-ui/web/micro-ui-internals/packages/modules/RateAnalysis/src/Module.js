@@ -18,7 +18,6 @@ import RateAmountGroup from "./components/rateAmountGroup";
 import RateCardWithRightButton from "./components/ratecardbutton";
 import TableWithOutHead from "./components/specficAmountTable";
 import ViewTotalAmount from "./components/viewTotalAmount";
-import WrapperSORDetailsTemplate from "./components/sor_wrapper";
 import ExtraChargesViewTable from "./components/extra_charges_view_table";
 import RAResponseBanner from "./pages/employee/RAResponseBanner";
 
@@ -58,7 +57,7 @@ const componentsToRegister = {
   RateCardWithRightButton,
   TableWithOutHead,
   ViewTotalAmount,
-  WrapperSORDetailsTemplate,
+ 
   ExtraChargesViewTable,
   RAResponseBanner
 };

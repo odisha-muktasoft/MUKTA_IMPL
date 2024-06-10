@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment, useRef }from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
 import { Menu, Header, ActionBar, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, Toast, MultiLink } from '@egovernments/digit-ui-react-components';
+import { isWorkEndInPreviousWeek } from '../../../utils';
 
 
 const ViewContractDetails = () => {
@@ -55,7 +56,22 @@ const ViewContractDetails = () => {
     const CreateTimeExtension = Digit.ComponentRegistryService.getComponent("CreateTimeExtension");
     const TermsAndConditions = Digit.ComponentRegistryService.getComponent("TermsAndConditions");
     const {isLoading : isContractLoading, data, isError : isContractError, isSuccess, error} = Digit.Hooks.contracts.useViewContractDetails(payload?.tenantId, payload, {}, {cacheTime : 0},revisedWONumber)
+    let verifiedRolesForAction = {
+        CREATE_TE : ["WORK_ORDER_CREATOR"],
+        CREATE_MB : ["MB_CREATOR"]
+    }
     //const {isLoading : isContractLoading, data } = Digit.Hooks.contracts.useViewContractDetails(payload?.tenantId, payload, {})
+
+    //mdms call for getting the allowed measurement validation date
+    const { isLoading: ismdmsLoading, data: mdmsData } = Digit.Hooks.useCustomMDMS(
+        tenantId?.split(".")[0],
+        "works",
+        [
+            {
+                "name": "MeasurementCriteria"
+            }
+        ]
+    );
 
     //fetching project data
     const { isLoading: isProjectLoading, data: project, isError : isProjectError } = Digit.Hooks.project.useProjectSearch({
@@ -110,7 +126,8 @@ const ViewContractDetails = () => {
     },[isProjectError]);
 
       useEffect(() => {
-        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "CREATE_TIME_EXTENSION_REQUEST")) {
+        let isCreeateTEUser = verifiedRolesForAction?.["CREATE_TE"].some(role => loggedInUserRoles.includes(role));
+        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "CREATE_TIME_EXTENSION_REQUEST") && isCreeateTEUser) {
             
             setActionsMenu((prevState => [...prevState,{
                 name:"CREATE_TIME_EXTENSION_REQUEST",
@@ -118,7 +135,8 @@ const ViewContractDetails = () => {
             }]))
         }
 
-        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST"))
+        let isCreeateMBUser = verifiedRolesForAction?.["CREATE_MB"].some(role => loggedInUserRoles.includes(role));
+        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
         setActionsMenu((prevState => [...prevState,{
             name:"CREATE_MEASUREMENT_REQUEST",
             action:"CREATE_MEASUREMENT"
@@ -144,6 +162,11 @@ const ViewContractDetails = () => {
         if(validationData && Object?.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.action))
         {
             setToast({show : true, label : t(`${validationData?.label}_${option?.action}`), error : validationData?.error});
+            return;
+        }
+        if(option?.action === "CREATE_MEASUREMENT" && isWorkEndInPreviousWeek(data?.applicationData?.endDate, mdmsData?.works?.MeasurementCriteria?.[0]?.measurementBookStartDate))
+        {
+            setToast({show : true, label : t(`MB_CREATION_NOT_POSSIBLE_WORK_END_DATE_PASSED`), error : true});
             return;
         }
         if (option?.name === "CREATE_PURCHASE_BILL") {

@@ -123,6 +123,15 @@ public class MusterRollServiceConfiguration {
     @Value("${works.contract.service.code}")
     private String contractServiceCode;
 
+    @Value("${kafka.topics.works.notification.sms.name}")
+    private String muktaNotificationTopic;
+
+    @Value("${sms.isAdditonalFieldRequired}")
+    private boolean isAdditonalFieldRequired;
+
+    @Value("${notification.sms.enabled}")
+    private boolean isSMSEnabled;
+
     @PostConstruct
     public void initialize() {
         TimeZone.setDefault(TimeZone.getTimeZone(timeZone));

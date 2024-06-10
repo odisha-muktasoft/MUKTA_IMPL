@@ -44,6 +44,17 @@ let defaultSOR = {
       ]
   };
 
+  function hasDecimalPlaces(number, decimalPlaces) {
+    if(number == "")
+    {  
+        return true;
+    }
+    var numStr = number.toString();
+    // Using regex to check if its accepting upto given decimal places
+    var regex = new RegExp(`^[0-9]+(\\.[0-9]{0,${decimalPlaces}})?$`);
+    return regex.test(numStr);
+  }
+
 const MeasureTable = (props) => {
   const { register, setValue, arrayProps = {}, config = {},watch } = props;
   let { key: tableKey, mode } = config;
@@ -62,7 +73,7 @@ const MeasureTable = (props) => {
     remove = (index)=>{
       if(fields?.length == 1)
       {
-        fields = [{...defaultSOR}];
+        fields = JSON.parse(JSON.stringify([defaultSOR]));
         setFormValue([...fields]);
       }
       else
@@ -109,6 +120,15 @@ const MeasureTable = (props) => {
   const { t } = useTranslation();
   const sum = parseFloat(fields?.reduce((acc, row) => acc + parseFloat(row?.amount), 0)?.toFixed?.(2)) || 0;
   let formattedSum =  isNaN(sum) ? 0 : parseFloat(sum)?.toFixed(2)
+
+  function checkIfDeletionisAllowed(row){
+    if(window.location.href.includes("create"))
+      return (mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && (row?.hasOwnProperty('originalQty'))) ) )
+    else if(window.location.href.includes("update"))
+      return (mode === "CREATERE" && row.originalQty);
+
+    return false;
+  }
 
   // register(tableKey)
 
@@ -241,13 +261,20 @@ const MeasureTable = (props) => {
         const field = fields[index] || {};
         field[key] = value;
         if(tableKey === "NONSOR" && key === "unitRate")
+        {  
           field["amount"] = (parseFloat(field[key]) * field["currentMBEntry"]) || 0
+        }
+
         fields[index] = { ...field };
+        if(tableKey === "NONSOR" && key === "unitRate" && !(hasDecimalPlaces(field[key],2)))
+        {
+          return;
+        }
         setFormValue(fields);
       }
     );
     return fields?.map((row, index) => {
-      const consumedQty = row.currentMBEntry;
+      const consumedQty = row.currentMBEntry || 0;
       const initialState = { tableState: row?.measures };
       const optionsData = UOMData?.map((obj) => ({ code: obj?.code, name: obj?.name }));
       if (isLoading) {
@@ -303,7 +330,7 @@ const MeasureTable = (props) => {
                 <td>{row.description}</td>
                 <td>{row.uom}</td>
                 <td>
-                  <Amount customStyle={{ textAlign: "right" }} value={row?.unitRate?.toFixed?.(2) || 0} t={t} roundOff={false}></Amount>
+                  <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.unitRate).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
                 </td>
               </>
             )}
@@ -313,7 +340,7 @@ const MeasureTable = (props) => {
                   <Amount customStyle={{ textAlign: "right" }} value={row?.originalQty?.toFixed?.(2) || 0} t={t} roundOff={false}></Amount>
                 </td>
                 <td>
-                  <Amount customStyle={{ textAlign: "right" }} value={row?.originalAmount || 0} t={t} roundOff={false}></Amount>
+                  <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(isNaN(row?.originalAmount) ? 0 : row?.originalAmount).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
                 </td>
               </>
             )}
@@ -341,6 +368,7 @@ const MeasureTable = (props) => {
                 <Button
                   className={"plus-button"}
                   onButtonClick={() => {
+                    if(mode === "CREATEALL" && (row?.category === "SOR" && row?.description || row?.category === "NON-SOR") || true){
                     const measure = {
                       sNo: 0,
                       targetId: 0,
@@ -358,6 +386,7 @@ const MeasureTable = (props) => {
                     const measures = fields?.[index]?.measures?.length > 0 ? fields?.[index]?.measures : [measure];
                     fields[index] = { ...fields[index], showMeasure: true, measures: measures };
                     setFormValue(fields);
+                  }
                   }}
                   label={"+"}
                 >
@@ -367,12 +396,12 @@ const MeasureTable = (props) => {
             </td>
 
             <td>
-              <Amount customStyle={{ textAlign: "right" }} value={parseFloat(row?.amount).toFixed(2) || 0} t={t} roundOff={false}></Amount>
+              <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.amount).toFixed(2), "number", undefined, true, undefined, 2)  || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
             </td>
             {(mode == "CREATEALL" || mode == "CREATERE") && (
               <td>
-                <span className="icon-wrapper" onClick={() => (mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && row?.showMeasure === false) ) ) ? "" : remove(index)}>
-                  <DeleteIcon fill={(mode === "CREATERE" && ((row?.category === "SOR" && !(row?.amountDetails))|| (row?.category === "NON-SOR" && row?.showMeasure === false) )) ? "lightgrey" : "#FF9100"} />
+                <span className="icon-wrapper" onClick={() => checkIfDeletionisAllowed(row) ? "" : remove(index)}>
+                  <DeleteIcon fill={checkIfDeletionisAllowed(row) ? "lightgrey" : "#FF9100"} />
                 </span>
               </td>
             )}

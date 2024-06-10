@@ -15,9 +15,11 @@ import org.egov.config.Configuration;
 import org.egov.repository.IdGenRepository;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.BulkUploadUtil;
+import org.egov.web.models.Mdms;
+import org.egov.web.models.MdmsCriteriaReqV2;
 import org.egov.web.models.MdmsRequest;
+import org.egov.web.models.MdmsResponseV2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,11 +52,30 @@ public class BulkUploadService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    ResourceLoader resourceLoader;
+    private ResourceLoader resourceLoader;
+
+    private static final String RESOURCE_LOCATION_FOR_WORKS_SOR = "classpath:Mdms.json";
+
+    private static final String RESOURCE_LOCATION_FOR_WORKS_SOR_RATES = "classpath:RatesMdmsRequest.json";
 
 
+    // Function to check if a row is empty
+    private boolean isRowNotEmpty(Row row) {
+        Iterator<Cell> cellIterator = row.iterator();
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            if (cell.getCellType() != CellType.BLANK) {
+                // If any cell in the row is not blank
+                return true;
+            }
+        }
+        // If all cells in the row are blank
+        return false;
+    }
 
-    public List<Map<String, Object>> bulkUpload(MultipartFile file, String schemaCode, String tenantId) throws IOException {
+    //    Function to read the file
+    public List<Map<String, Object>> readFile(MultipartFile file) throws IOException{
+
         List<Map<String, Object>> jsonData = new ArrayList<>();
 
         Path tempDir = Files.createTempDirectory("");
@@ -73,29 +94,47 @@ public class BulkUploadService {
             List<String> headers = getHeaders(headerRow);
 
             while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Map<String, Object> rowData = processRow(row, headers);
 
-                jsonData.add(rowData);
+                Row row = rowIterator.next();
+
+                // Checking if the row is not empty
+                if (isRowNotEmpty(row)) {
+                    Map<String, Object> rowData = processRow(row, headers);
+                    jsonData.add(rowData);
+                } else {
+                    // If the row is empty, break
+                    break;
+                }
+
             }
+
         }
+        if(jsonData.isEmpty()){
+            throw new CustomException("FILE_READING_FAILURE","File cannot be empty");
+        }
+
+        return jsonData;
+    }
+
+
+    public List<Map<String, Object>> bulkUpload(MultipartFile file, String schemaCode, String tenantId) throws IOException {
+
+//      Reading and getting data from file
+        List<Map<String, Object>> jsonData = readFile(file);
+
         MdmsRequest mdmsRequest;
 
         if(schemaCode.equals("WORKS-SOR.SOR")){
-            Resource classPathResource = resourceLoader.getResource("classpath:Mdms.json");
-            mdmsRequest=objectMapper.readValue(classPathResource.getInputStream(),MdmsRequest.class);
-            mdmsRequest.getMdms().setTenantId(tenantId);
+//            Getting MdmsRequest from json file
+            mdmsRequest = bulkUploadUtil.getMdmsRequest(tenantId, RESOURCE_LOCATION_FOR_WORKS_SOR);
             return createSOR( mdmsRequest,jsonData);
         }else{
-            Resource classPathResource = resourceLoader.getResource("classpath:RatesMdmsRequest.json");
-            mdmsRequest=objectMapper.readValue(classPathResource.getInputStream(),MdmsRequest.class);
-            mdmsRequest.getMdms().setTenantId(tenantId);
+//            Getting MdmsRequest from json file
+            mdmsRequest = bulkUploadUtil.getMdmsRequest(tenantId, RESOURCE_LOCATION_FOR_WORKS_SOR_RATES);
             return createSORRate(mdmsRequest,jsonData);
         }
 
-       // return jsonData;
     }
-
 
 
     private Map<String, Object> processRow(Row row, List<String> headers) {
@@ -111,7 +150,7 @@ public class BulkUploadService {
                 // Process nested structure recursively
                 List<Map<String, Object>> nestedData = new ArrayList<>();
                 for (int j = 0; j < nestingLevel; j++) {
-                        Row nestedRow = sheet.getRow(row.getRowNum() + j + 1); // Adjust row index
+                    Row nestedRow = sheet.getRow(row.getRowNum() + j + 1); // Adjust row index
                     Map<String, Object> nestedRowData = processRow(nestedRow, headers);
                     nestedData.add(nestedRowData);
                 }
@@ -209,25 +248,26 @@ public class BulkUploadService {
             mdmsRequest.getMdms().setData(jsonNode);
 
 
-           Object response= bulkUploadUtil.create(mdmsRequest,"WORKS-SOR.SOR");
-             map.put(sorId,response);
+            Object response= bulkUploadUtil.create(mdmsRequest,"WORKS-SOR.SOR");
+            map.put(sorId,response);
             mapList.add(map);
         });
 
         return mapList;
     }
 
-    private List<Map<String, Object>> createSORRate(MdmsRequest mdmsRequest, List<Map<String, Object>> jsonData) {
+    public List<Map<String, Object>> createSORRate(MdmsRequest mdmsRequest, List<Map<String, Object>> jsonData) {
 
         List<Map<String,Object>> list=new ArrayList<>();
 
         String tenantid=mdmsRequest.getMdms().getTenantId();
         ObjectMapper mapper = new ObjectMapper();
         List<Map<String,Object>> mapList=new ArrayList<>();
-            jsonData.forEach(entry ->{
+        jsonData.forEach(entry ->{
 
-                ObjectNode mainNode = mapper.createObjectNode();
-                ArrayNode amountDetailsArray = mapper.createArrayNode();
+            ObjectNode mainNode = mapper.createObjectNode();
+            ArrayNode amountDetailsArray = mapper.createArrayNode();
+
             entry.entrySet().stream().forEach(e->{
                 if(!Objects.equals(e.getKey(), "sorId") &&
                         !Objects.equals(e.getKey(), "total")&&
@@ -255,25 +295,31 @@ public class BulkUploadService {
                     mainNode.put("validTo",String.valueOf(convertDateToEpochDateTime((String) e.getValue())));
                 }
             });
-                mainNode.set("amountDetails",amountDetailsArray );
-                mainNode.put("type","lumpsum");
+            mainNode.set("amountDetails",amountDetailsArray );
+            mainNode.put("type","lumpsum");
 
-                if(!mainNode.get("amountDetails").isEmpty()){
-                    mdmsRequest.getMdms().setData(mainNode);
-                    System.out.println(mdmsRequest.toString());
-
-
-
-                    Object response= bulkUploadUtil.create(mdmsRequest,"WORKS-SOR.Rates");
-                }
+            if(!mainNode.get("amountDetails").isEmpty()){
+                mdmsRequest.getMdms().setData(mainNode);
+                System.out.println(mdmsRequest.toString());
 
 
 
+                Object response= bulkUploadUtil.create(mdmsRequest,"WORKS-SOR.Rates");
 
-                //Material Analysis=MA.1
-                //LH.2 = Labour Head
-                //MH.2 = Machinery Head
-                //Conveyance.4 = Conveyance
+
+                // Adding response to the list
+                Map<String, Object> responseMap = new HashMap<>();
+                responseMap.put("sorId", mainNode.get("sorId").asText());
+                responseMap.put("sorRateDetails", mainNode);
+                list.add(responseMap);
+
+            }
+
+
+            //Material Analysis=MA.1
+            //LH.2 = Labour Head
+            //MH.2 = Machinery Head
+            //Conveyance.4 = Conveyance
 
         });
 
@@ -282,7 +328,7 @@ public class BulkUploadService {
 
     }
 
-    private long convertDateToEpochDateTime(String dateString){
+    public long convertDateToEpochDateTime(String dateString){
         // Define the date format pattern
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
@@ -296,7 +342,70 @@ public class BulkUploadService {
     }
 
 
+    //    Code for Bulk Update
+    public List<Map<String, Object>> bulkUpdate(MultipartFile file, String mdmsSearchCriteria, String newValidToDate) throws IOException {
 
+        //        Reading new SOR Rates File
+        List<Map<String, Object>> fileData = readFile(file);
+
+        //        Getting sorIds from file to disable old SOR Rates
+        List<String> sorIds = getSorIdsToUpdate(fileData);
+
+        //        Parsing mdmsSearchCriteria to MdmsSearchCrtiteria of MDMS-V2
+        MdmsCriteriaReqV2 mdmsCriteriaReqV2 = bulkUploadUtil.getMdmsV2Request(mdmsSearchCriteria);
+
+        //        Updating... (Disabling Old SOR Rates) in MDMS-V2
+        updateValidToDate(sorIds, mdmsCriteriaReqV2, newValidToDate);
+
+        //        Uploading new SOR Rates to MDMS-V2
+        String tenantId = mdmsCriteriaReqV2.getMdmsCriteria().getTenantId();
+        MdmsRequest mdmsRequest = bulkUploadUtil.getMdmsRequest(tenantId, RESOURCE_LOCATION_FOR_WORKS_SOR_RATES);
+        return createSORRate(mdmsRequest,fileData);
+
+    }
+
+    private List<Mdms> getMdmsV2Data(MdmsCriteriaReqV2 mdmsCriteriaReqV2){
+
+//        Getting all the data from MDMS-V2
+        return bulkUploadUtil.search(mdmsCriteriaReqV2).getMdms();
+
+    }
+
+    private List<String> getSorIdsToUpdate(List<Map<String, Object>> jsonData){
+
+        List<String> sorIdsList = new ArrayList<>();
+
+        jsonData.forEach(jsonDatamap -> {
+
+//            Getting sorIds to be updated
+            String sorId = (String) jsonDatamap.get("sorId");
+            sorIdsList.add(sorId);
+
+        });
+
+        return sorIdsList;
+
+    }
+
+    private void updateValidToDate(List<String> sorIds, MdmsCriteriaReqV2 mdmsCriteriaReqV2, String newValidToDate){
+
+//        Getting Data from Mdms-v2 to update 'validTo' date
+        List<Mdms> mdmsDataList = getMdmsV2Data(mdmsCriteriaReqV2);
+
+//        Converting date format to epoc date format
+        long epocValidToDate = convertDateToEpochDateTime(newValidToDate);
+
+        for (Mdms mdms : mdmsDataList) {
+            ObjectNode dataNode = (ObjectNode) mdms.getData();
+
+//            Updating validTo date of SORs matching with sorId in file
+            if (sorIds.contains(dataNode.get("sorId").asText())) {
+                dataNode.put("validTo", String.valueOf(epocValidToDate));
+                MdmsRequest mdmsRequest = MdmsRequest.builder().requestInfo(mdmsCriteriaReqV2.getRequestInfo()).mdms(mdms).build();
+                MdmsResponseV2 mdmsResponseV2 = bulkUploadUtil.update(mdmsRequest);
+            }
+        }
+    }
 
 
 

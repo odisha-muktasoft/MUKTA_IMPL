@@ -60,10 +60,16 @@ public class NotificationService {
      */
     public void sendNotification(OrgRequest request, boolean isCreateOperation) {
 
-        if (isCreateOperation) {
-            pushNotificationForCreate(request);
-        } else {
-            pushNotificationForUpdate(request);
+        if(config.getIsSMSEnabled()) {
+            log.info("Notification is enabled for this service");
+
+            if (isCreateOperation) {
+                pushNotificationForCreate(request);
+            } else {
+                pushNotificationForUpdate(request);
+            }
+        }else{
+            log.info("Notification is not enabled for this service");
         }
     }
 
@@ -233,7 +239,7 @@ public class NotificationService {
      * @return
      */
     public String getMessage(OrgRequest request, String msgCode) {
-        String tenantId = request.getOrganisations().get(0).getTenantId();
+        String tenantId = request.getOrganisations().get(0).getTenantId().split("\\.")[0];
         RequestInfo requestInfo = request.getRequestInfo();
         String locale = "en_IN";
         if(requestInfo.getMsgId().split("\\|").length > 1)

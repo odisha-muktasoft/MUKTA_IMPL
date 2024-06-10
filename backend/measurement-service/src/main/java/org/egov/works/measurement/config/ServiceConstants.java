@@ -49,6 +49,7 @@ public class ServiceConstants {
     public static final String REJECTED_STATUS = "REJECTED";
     public static final String APPROVED_STATUS = "APPROVED";
     public static final String ACCEPTED_STATUS = "ACCEPTED";
+    public static final String APPROVE_ACTION = "APPROVE";
     public static final String REJECT_ACTION = "REJECT";
     public static final String SAVE_AS_DRAFT_ACTION = "SAVE_AS_DRAFT";
     public static final String SUBMIT_ACTION = "SUBMIT";
@@ -63,5 +64,11 @@ public class ServiceConstants {
     public static final String INWORKFLOW="INWORKFLOW";
 
     public static final String CONTRACT_REVISION_ESTIMATE="CONTRACT-REVISION-ESTIMATE";
+
+    public static final String OVERHEAD="OVERHEAD";
+
+    public  static final String SENT_BACK="SENT_BACK";
+    public static final String SEND_BACK_TO_ORIGINATOR="SEND_BACK_TO_ORIGINATOR";
+
 
 }

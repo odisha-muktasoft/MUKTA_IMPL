@@ -1,5 +1,6 @@
 package org.egov.service;
 
+import digit.models.coremodels.AuditDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
@@ -24,6 +25,8 @@ public class OrganisationEnrichmentService {
     private final IdgenUtil idgenUtil;
 
     private final Configuration config;
+
+
 
     @Autowired
     public OrganisationEnrichmentService(OrganisationUtil organisationUtil, IdgenUtil idgenUtil, Configuration config) {
@@ -190,6 +193,22 @@ public class OrganisationEnrichmentService {
         }
     }
 
+    public void enrichOrgCreateAuditDetails( RequestInfo requestInfo,Organisation organisation){
+            log.info("Inside EnrichOrgCreateAuditDetails method");
+            List<Organisation> orgList = organisationUtil.searchExistingOrganisation(requestInfo,organisation);
+            if(orgList != null && !orgList.isEmpty()) {
+                AuditDetails createdAuditDetails = new AuditDetails();
+                createdAuditDetails.setCreatedBy(orgList.get(0).getAuditDetails().getCreatedBy());
+                createdAuditDetails.setCreatedTime(orgList.get(0).getAuditDetails().getCreatedTime());
+                organisation.setAuditDetails(createdAuditDetails);
+            }else{
+                log.error("No Org Found with this orgNumber::{}", organisation.getOrgNumber());
+            }
+
+
+
+    }
+
     /**
      * Enrich the update organisation registry with ids,custom id, audit details
      *
@@ -199,6 +218,11 @@ public class OrganisationEnrichmentService {
         log.info("OrganisationEnrichmentService::enrichUpdateOrgRegistryWithoutWorkFlow");
         RequestInfo requestInfo = orgRequest.getRequestInfo();
         List<Organisation> organisationList = orgRequest.getOrganisations();
+
+        // Set the createdBy and createdTime of organisation
+        if(organisationList != null && !organisationList.isEmpty()) {
+            enrichOrgCreateAuditDetails(requestInfo, organisationList.get(0));
+        }
 
         //set the audit details for organisation
         organisationUtil.setAuditDetailsForOrganisation(requestInfo.getUserInfo().getUuid(), organisationList, Boolean.FALSE);

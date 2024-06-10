@@ -6,7 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:universal_html/html.dart' as html;
+import 'package:works_shg_app/data/schema/localization.dart';
 import 'package:works_shg_app/models/user_details/user_details_model.dart';
 import 'package:works_shg_app/services/urls.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -89,7 +91,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (kIsWeb) {
           html.window.sessionStorage.remove(e.value);
         } else {
-          await storage.delete(key: e.value);
+          
+          await Hive.box<KeyLocaleModel>('keyValueModel').clear();
+          await Hive.box<Localization>('localization').clear();
         }
       });
       await AuthRepository(client.init()).logOutUser(

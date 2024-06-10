@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BitField;
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -143,9 +145,9 @@ public class EstimateServiceValidator {
         }
     }
 
-    private void validateContractAndMeasurementBook(EstimateRequest estimateRequest, Estimate estimateForRevision, Map<String, String> errorMap) {
+    private void validateContractAndMeasurementBook(EstimateRequest estimateRequest, Estimate previousEstimate, Map<String, String> errorMap) {
         log.info("EstimateServiceValidator::validateContractAndMeasurementBook");
-        Object contractResponse = contractUtils.getContractDetails(estimateRequest.getRequestInfo(), estimateForRevision);
+        Object contractResponse = contractUtils.getContractDetails(estimateRequest.getRequestInfo(), previousEstimate);
         final String jsonPathForContractNumber = "$.contracts.*.contractNumber";
         List<Object> contractNumbers = null;
         try {
@@ -160,32 +162,88 @@ public class EstimateServiceValidator {
             log.info("Contract found for the given estimate");
             String contractNumber = contractNumbers.get(0).toString();
             Object measurementResponse = measurementUtils.getMeasurementDetails(estimateRequest, contractNumber);
-            validateMeasurement(measurementResponse, estimateRequest,contractResponse, errorMap);
+            validateMeasurement(measurementResponse, estimateRequest,previousEstimate,contractResponse, errorMap);
         }
     }
 
-    private void validateMeasurement(Object measurementResponse, EstimateRequest estimateRequest, Object contractResponse, Map<String, String> errorMap) {
+    private void validateMeasurement(Object measurementResponse, EstimateRequest estimateRequest,Estimate previousEstimate, Object contractResponse, Map<String, String> errorMap) {
         log.info("EstimateServiceValidator::validateMeasurement");
         List<EstimateDetail> estimateDetail = estimateRequest.getEstimate().getEstimateDetails();
+        List<EstimateDetail> previousEstimateDetail = previousEstimate.getEstimateDetails();
+        HashMap<String,EstimateDetail> previousEstimateDetailMap = new HashMap<>();
 
+        previousEstimateDetail.forEach(estimateDetail1 -> previousEstimateDetailMap.put(estimateDetail1.getId(),estimateDetail1));
         estimateDetail.forEach(estimateDetail1 -> {
-            if (!estimateDetail1.getCategory().equals(OVERHEAD_CODE) && estimateDetail1.getPreviousLineItemId() != null) {
-                validateMeasurementForEstimateDetail(estimateDetail1, measurementResponse, contractResponse, errorMap);
+            if(estimateDetail1.getPreviousLineItemId() != null && previousEstimateDetailMap.containsKey(estimateDetail1.getPreviousLineItemId()) && estimateDetail1.isActive()){
+                previousEstimateDetailMap.remove(estimateDetail1.getPreviousLineItemId());
             }
         });
+        validateMeasurementCumulativeValueForDeletedItems(previousEstimateDetailMap, measurementResponse, contractResponse, errorMap);
+        Map<String, List<EstimateDetail>> sorIdToEstimateDetailMap = new HashMap<>();
+        Map<String, BigDecimal> sorIdToCumulativeValueMap = new HashMap<>();
+        Map<String, BigDecimal> sorIdToCurrentValueMap = new HashMap<>();
+        Map<String, BigDecimal> sorIdToEstimateDetailtNoOfUnitMap = new HashMap<>();
+        estimateDetail.forEach(estimateDetail1 -> {
+
+            if (!estimateDetail1.getCategory().equals(OVERHEAD_CODE) ) {
+                sorIdToEstimateDetailMap.computeIfAbsent(estimateDetail1.getSorId(), k -> new ArrayList<>()).add(estimateDetail1);
+                Double noOfUnit=estimateDetail1.getIsDeduction()?estimateDetail1.getNoOfunit() * -1 :estimateDetail1.getNoOfunit();
+                sorIdToEstimateDetailtNoOfUnitMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(noOfUnit), BigDecimal::add);
+                fetchCummulativeAndCurrentValueOnSORLevel(estimateDetail1, measurementResponse, contractResponse, sorIdToCumulativeValueMap, sorIdToCurrentValueMap);
+            }
+        });
+
+        if (!sorIdToEstimateDetailMap.isEmpty()) {
+            for (Map.Entry<String, List<EstimateDetail>> entry : sorIdToEstimateDetailMap.entrySet()) {
+                String sorId = entry.getKey();
+                BigDecimal totalCurrentValueSorLevel=!sorIdToCurrentValueMap.isEmpty()&&sorIdToCurrentValueMap.get(sorId)!=null ?sorIdToCurrentValueMap.get(sorId):BigDecimal.ZERO;
+                BigDecimal totalCummulativeValueSorLevel=!sorIdToCumulativeValueMap.isEmpty()&&sorIdToCumulativeValueMap.get(sorId)!=null?sorIdToCumulativeValueMap.get(sorId):BigDecimal.ZERO;
+                BigDecimal totalNoOfUnitForEstimateDetailSorLevel=!sorIdToEstimateDetailtNoOfUnitMap.isEmpty()?sorIdToEstimateDetailtNoOfUnitMap.get(sorId): BigDecimal.ZERO;
+                BigDecimal measuredCummulativeValue= totalCummulativeValueSorLevel.subtract(totalCurrentValueSorLevel);
+                if (totalNoOfUnitForEstimateDetailSorLevel.compareTo(measuredCummulativeValue)<0) {
+                    errorMap.put(INVALID_ESTIMATE_DETAIL, "No of Unit should not be less than measurement book cumulative value");
+                }
+            }
+        }
     }
 
-    private void validateMeasurementForEstimateDetail(EstimateDetail estimateDetail1, Object measurementResponse, Object contractResponse, Map<String, String> errorMap) {
+    private void fetchCummulativeAndCurrentValueOnSORLevel(EstimateDetail estimateDetail1, Object measurementResponse, Object contractResponse, Map<String, BigDecimal> sorIdToCumulativeValueMap,
+                                                      Map<String, BigDecimal> sorIdToCurrentValueMap ) {
         String jsonPathForContractLineItemRef = "$.contracts[*].lineItems[?(@.estimateLineItemId=='{{}}')].contractLineItemRef";
+        if(estimateDetail1.getPreviousLineItemId()!=null){
+
         String contractLineItemRefId = getContractLineItemRefId(contractResponse, jsonPathForContractLineItemRef, estimateDetail1.getPreviousLineItemId());
 
         String jsonPathForMeasurementCumulativeValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].cumulativeValue";
-        List<Integer> measurementCumulativeValue = getMeasurementCumulativeValue(measurementResponse, jsonPathForMeasurementCumulativeValue, contractLineItemRefId);
+        List<Double> measurementCumulativeValue = getMeasurementCumulativeValue(measurementResponse, jsonPathForMeasurementCumulativeValue, contractLineItemRefId);
 
         if (measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()) {
             log.info("No measurement found for the given estimate");
         } else {
-            validateMeasurementCumulativeValue(measurementCumulativeValue, measurementResponse, contractLineItemRefId, estimateDetail1, errorMap);
+            Double cumulativeValue = measurementCumulativeValue.get(0);
+            cumulativeValue=estimateDetail1.getIsDeduction()?cumulativeValue * -1:cumulativeValue;
+            log.info("Sor Id To Cumulative Value Map created");
+            sorIdToCumulativeValueMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(cumulativeValue), BigDecimal::add);
+            fetchTotalCurrentValueOnSorLevel( measurementResponse, contractLineItemRefId, estimateDetail1, sorIdToCurrentValueMap);
+        }
+        }else{
+            log.info("New Line Item added in  Estimate");
+        }
+    }
+
+    private void validateMeasurementCumulativeValueForDeletedItems(HashMap<String,EstimateDetail> previousEstimateDetailMap, Object measurementResponse, Object contractResponse, Map<String, String> errorMap) {
+        String jsonPathForContractLineItemRef = "$.contracts[*].lineItems[?(@.estimateLineItemId=='{{}}')].contractLineItemRef";
+        String jsonPathForMeasurementCumulativeValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].cumulativeValue";
+        for(Map.Entry<String,EstimateDetail> entry : previousEstimateDetailMap.entrySet()){
+            String contractLineItemRefId = getContractLineItemRefId(contractResponse, jsonPathForContractLineItemRef, entry.getKey());
+            List<Double> measurementCumulativeValue = getMeasurementCumulativeValue(measurementResponse, jsonPathForMeasurementCumulativeValue, contractLineItemRefId);
+            if(measurementCumulativeValue == null || measurementCumulativeValue.isEmpty()){
+                log.info("No measurement found for the given estimate");
+            }else{
+                if(measurementCumulativeValue.get(0) != 0){
+                    errorMap.put("INVALID_ESTIMATE_DETAIL", "Measurement book cumulative value should be zero for deleted items");
+                }
+            }
         }
     }
 
@@ -199,30 +257,43 @@ public class EstimateServiceValidator {
         return contractLineItemRef.get(0);
     }
 
-    private List<Integer> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
-        List<Integer> measurementCumulativeValue;
+    private List<Double> getMeasurementCumulativeValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
+        List<Double> measurementCumulativeValue= new ArrayList<Double>();
+        List<Object> cummulativeValue;
+
         try {
-            measurementCumulativeValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
+            cummulativeValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
+        for(Object value:cummulativeValue){
+            if(value instanceof  Integer){
+                measurementCumulativeValue.add(new Double(value.toString()));
+            }else{
+                measurementCumulativeValue.add((Double) value);
+            }
+
+        }
+
         return measurementCumulativeValue;
     }
 
-    private void validateMeasurementCumulativeValue(List<Integer> measurementCumulativeValue, Object measurementResponse, String contractLineItemRefId, EstimateDetail estimateDetail1, Map<String, String> errorMap) {
+    private void fetchTotalCurrentValueOnSorLevel(Object measurementResponse,
+                                                    String contractLineItemRefId, EstimateDetail estimateDetail1,
+                                                    Map<String, BigDecimal> sorIdToCurrentValueMap) {
         String jsonPathForMeasurementWfStatus = "$.measurements[*].wfStatus";
         List<String> wfStatus = getMeasurementWfStatus(measurementResponse, jsonPathForMeasurementWfStatus);
 
-        Integer cumulativeValue = measurementCumulativeValue.get(0);
         if (!wfStatus.isEmpty() && !wfStatus.get(0).equalsIgnoreCase(ESTIMATE_APPROVED_STATUS)) {
             String jsonPathForMeasurementCurrentValue = "$.measurements[*].measures[?(@.targetId=='{{}}')].currentValue";
-            List<Integer> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
-            cumulativeValue = cumulativeValue - measurementCurrentValue.get(0);
+            List<Double> measurementCurrentValue = getMeasurementCurrentValue(measurementResponse, jsonPathForMeasurementCurrentValue, contractLineItemRefId);
+            Double currentValue = measurementCurrentValue.get(0);
+            currentValue=estimateDetail1.getIsDeduction()?currentValue * -1:currentValue;
+            log.info("Sor Id To currentValue Value Map created");
+            sorIdToCurrentValueMap.merge(estimateDetail1.getSorId(), BigDecimal.valueOf(currentValue), BigDecimal::add);
+
         }
 
-        if (estimateDetail1.getNoOfunit() < cumulativeValue) {
-            errorMap.put(INVALID_ESTIMATE_DETAIL, "No of Unit should not be less than measurement book cumulative value");
-        }
     }
 
     private List<String> getMeasurementWfStatus(Object measurementResponse, String jsonPath) {
@@ -235,13 +306,25 @@ public class EstimateServiceValidator {
         return wfStatus;
     }
 
-    private List<Integer> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
-        List<Integer> measurementCurrentValue;
+    private List<Double> getMeasurementCurrentValue(Object measurementResponse, String jsonPath, String contractLineItemRefId) {
+        List<Double> measurementCurrentValue= new ArrayList<Double>();
+        List<Object> currentValue;
+
         try {
-            measurementCurrentValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
+            currentValue = JsonPath.read(measurementResponse, jsonPath.replace("{{}}", contractLineItemRefId));
         } catch (Exception e) {
             throw new CustomException(JSONPATH_ERROR, "Failed to parse measurement search response");
         }
+
+        for(Object value:currentValue){
+            if(value instanceof  Integer){
+                measurementCurrentValue.add(new Double(value.toString()));
+            }else{
+                measurementCurrentValue.add((Double) value);
+            }
+
+        }
+
         return measurementCurrentValue;
     }
     private void validateMDMSDataForUOM(Estimate estimate, Object mdmsDataForUOM, Map<String, String> errorMap) {
@@ -314,14 +397,16 @@ public class EstimateServiceValidator {
             total = total.multiply(estimateDetail.getQuantity());
             allNull = false;
         }
-        return allNull ? null : total;
+        return allNull ? null : total.setScale(4, RoundingMode.HALF_UP);
     }
 
     private void validateTotalAgainstNoOfUnit(BigDecimal total, EstimateDetail estimateDetail) {
         if(total == null || total.doubleValue() == estimateDetail.getNoOfunit()){
             log.info("No of unit is valid");
         } else {
-            throw new CustomException("NO_OF_UNIT", "noOfUnit value is not correct");
+            log.error("No of unit is  not valid "+ "total:"+ total +"noOfUnit:"+ estimateDetail.getNoOfunit());
+            throw new CustomException("NO_OF_UNIT", "Oops! It appears that the calculated quantity is causing an issue. " +
+                    "Please contact the system administrator for assistance.");
         }
     }
 
@@ -381,7 +466,7 @@ public class EstimateServiceValidator {
 
         List<EstimateDetail> estimateDetails = estimate.getEstimateDetails();
         if (estimateDetails == null || estimateDetails.isEmpty()) {
-            errorMap.put("ESTIMATE_DETAILS", "Estimate detail is mandatory");
+            errorMap.put("ESTIMATE_DETAILS", "Please ensure that the estimate has a SOR or Non SOR item added." );
         } else {
             validateEstimateDetails(estimateDetails, errorMap);
         }
@@ -816,9 +901,9 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
         if (StringUtils.isBlank(id)) {
             errorMap.put("ESTIMATE_ID", "Estimate id is mandatory");
         } else {
-            estimateForRevision = validateEstimateFromDBAndFetchPreviousEstimate(request);
+            estimateForRevision = validateEstimateFromDBAndFetchPreviousEstimate(request,errorMap);
         }
-        validateRequestOnMDMSV1AndV2(request,errorMap,false,estimateForRevision);
+        //validateRequestOnMDMSV1AndV2(request,errorMap,false,estimateForRevision);
         validateProjectId(request);
         validateNoOfUnit(estimateDetails);
 
@@ -831,19 +916,38 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
             throw new CustomException(errorMap);
 
     }
-    private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request){
+    private Estimate validateEstimateFromDBAndFetchPreviousEstimate(EstimateRequest request, Map<String, String> errorMap){
         Estimate estimate = request.getEstimate();
-        String id = estimate.getId();
         List<String> ids = new ArrayList<>();
+        String id;
+        EstimateSearchCriteria previousEstimateSearchCriteria=new EstimateSearchCriteria();
+        EstimateSearchCriteria currentEstimateSearchCriteria;
+        Boolean isPreviousEstimateSearch = Boolean.FALSE;
+        if(request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService())){
+           id = estimate.getOldUuid();
+            ids.add(id);
+            previousEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).status(ESTIMATE_ACTIVE_STATUS).build();
+            isPreviousEstimateSearch=Boolean.TRUE;
+        }
+        id = estimate.getId();
         ids.add(id);
-        EstimateSearchCriteria searchCriteria = EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
-        List<Estimate> estimateList = estimateRepository.getEstimate(searchCriteria);
-        if (CollectionUtils.isEmpty(estimateList)) {
+        currentEstimateSearchCriteria =EstimateSearchCriteria.builder().ids(ids).tenantId(estimate.getTenantId()).build();
+
+        List<Estimate> previousEstimateList = estimateRepository.getEstimate(previousEstimateSearchCriteria);
+        List<Estimate> currentEstimateList=estimateRepository.getEstimate(currentEstimateSearchCriteria);
+        if (isPreviousEstimateSearch && CollectionUtils.isEmpty(previousEstimateList)) {
+            throw new CustomException("NO_ORIGINAL_ESTIMATE_FOUND", "The record that you are trying to update does not have any existing original estimate in the system");
+        }
+        if(CollectionUtils.isEmpty(currentEstimateList)){
             throw new CustomException("INVALID_ESTIMATE_MODIFY", "The record that you are trying to update does not exists in the system");
         }
         //check projectId is same or not, if project Id is not same throw validation error
-        Estimate estimateFromDB = estimateList.get(0);
-        if (!estimateFromDB.getProjectId().equals(estimate.getProjectId())) {
+        Estimate previousEstimateFromDB = previousEstimateList.get(0);
+        Estimate currentEstimate=currentEstimateList.get(0);
+        if (isPreviousEstimateSearch && !previousEstimateFromDB.getProjectId().equals(estimate.getProjectId())) {
+            throw new CustomException("INVALID_PROJECT_ID", "The project id is different than that is linked with given estimate id : " + id);
+        }
+        if (!currentEstimate.getProjectId().equals(estimate.getProjectId())) {
             throw new CustomException("INVALID_PROJECT_ID", "The project id is different than that is linked with given estimate id : " + id);
         }
         if(Boolean.TRUE.equals(estimateServiceUtil.isRevisionEstimate(request))){
@@ -853,19 +957,21 @@ private void validateMDMSData(Estimate estimate, Object mdmsData, Object mdmsDat
             if(estimate.getEstimateNumber() == null){
                 throw new CustomException("INVALID_ESTIMATE_NUMBER", "Estimate number is mandatory for revision estimate");
             }
-            if(!estimate.getRevisionNumber().equals(estimateFromDB.getRevisionNumber())){
+            if(!estimate.getRevisionNumber().equals(currentEstimate.getRevisionNumber())){
                 throw new CustomException("INVALID_REVISION_NUMBER", "revisionNumber is not valid");
             }
-            if(!estimate.getEstimateNumber().equals(estimateFromDB.getEstimateNumber())){
+            if(!estimate.getEstimateNumber().equals(previousEstimateFromDB.getEstimateNumber())){
                 throw new CustomException("INVALID_ESTIMATE_NUMBER", "estimateNumber is not valid");
             }
-            validatePreviousEstimateForUpdate(estimate, estimateFromDB);
+            validatePreviousEstimateForUpdate(estimate, currentEstimate);
         }
         if (ObjectUtils.isEmpty(estimate.getAuditDetails())) {
-            estimate.setAuditDetails(estimateFromDB.getAuditDetails());
+            estimate.setAuditDetails(currentEstimate.getAuditDetails());
         }
 
-        return estimateFromDB;
+        validateRequestOnMDMSV1AndV2(request,errorMap,false,currentEstimate);
+
+        return (request.getEstimate().getBusinessService()!=null && request.getEstimate().getBusinessService().equals(config.getRevisionEstimateBusinessService()))? previousEstimateFromDB:currentEstimate;
     }
 
     private void validatePreviousEstimateForUpdate(Estimate estimate, Estimate estimateFromDB) {

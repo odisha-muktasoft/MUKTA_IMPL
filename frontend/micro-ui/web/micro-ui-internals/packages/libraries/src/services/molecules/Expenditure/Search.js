@@ -250,18 +250,19 @@ export const BillsSearch = {
 
     const mbdetails = {
       title: "EXP_MB_DETAILES",
-      isMbDetails : true
+      isMbDetails : true,
+      mbValidationData : billData?.additionalDetails?.mbValidationData
   };
 
     const invoiceDetails = {
         title: "EXP_INVOICE_DETAILS",
         asSectionHeader: true,
         values: [
+            { title: "EXP_ORG_TYPE", value: billData?.additionalDetails?.organisationType?.name || t("COMMON_MASTERS_ORG_VEN") || "NA" },
             { title: "EXP_VENDOR_NAME", value: orgData?.name || "NA" },
             { title: "EXP_VENDOR_ID", value: orgData?.orgNumber || "NA" },
             { title: "EXP_INVOICE_NUMBER", value: billData?.additionalDetails?.invoiceNumber || "NA" },
             { title: "EXP_INVOICE_DATE", value: Digit.Utils.pt.convertEpochToDate(billData?.additionalDetails?.invoiceDate ) || "NA"}, 
-            { title: "EXP_MATERIALCOST_RS", value: Digit.Utils.dss.formatterWithoutRound(mcDetails.amount, "number") || "NA" }, 
             { title: "EXP_GST_RS", value: Digit.Utils.dss.formatterWithoutRound(gstDetails.amount,  "number") || "NA" },
         ]
     };
@@ -272,7 +273,8 @@ export const BillsSearch = {
         title: "EXP_BILL_DETAILS",
         asSectionHeader: true,
         values: [
-            { title: "EXP_BILL_AMOUNT", value: (Digit.Utils.dss.formatterWithoutRound(billAmount, "number")) || "NA" },
+          { title: "EXP_MATERIALCOST_RS", value: Digit.Utils.dss.formatterWithoutRound(mcDetails.amount, "number") || "NA" }, 
+          { title: "EXP_BILL_AMOUNT", value: (Digit.Utils.dss.formatterWithoutRound(billAmount, "number")) || "NA" },
         ]
     };
     //totalDeductions = sum of amount in the table
@@ -288,7 +290,7 @@ export const BillsSearch = {
         totalDeductions += lineItem?.amount;
 
         return [
-          index + 1,
+          ++index,
           t(`EXP_${lineItem?.headCode}`),
           percentageOrFixed,
           lineItem?.additionalDetails?.comments || "NA",

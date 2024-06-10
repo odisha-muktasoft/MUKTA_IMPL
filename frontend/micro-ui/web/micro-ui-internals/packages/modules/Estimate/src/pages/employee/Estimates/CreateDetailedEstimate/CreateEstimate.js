@@ -40,6 +40,7 @@ const CreateEstimate = ({props}) => {
   const [showToast, setShowToast] = useState(null);
   const [displayMenu, setDisplayMenu] = useState(false);
   const [actionSelected, setActionSelected] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   let { tenantId, projectNumber, isEdit,isCreateRevisionEstimate,isEditRevisionEstimate, estimateNumber, revisionNumber } = Digit.Hooks.useQueryParams();
   // const [ isFormReady,setIsFormReady ] = useState(isEdit ? false : true)
   const [isFormReady, setIsFormReady] = useState(true);
@@ -309,8 +310,9 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
   function validateNonSor(items) {
     //this is to check is any one param is present for non other param should also be present or removed alltogether
     for (const item of items) {
-      if (!item.description || !item.uom || item.unitRate === undefined || item.unitRate <= 0 || item.currentMBEntry === undefined || !item.currentMBEntry) {
+      if (!item.description || !item.uom || item.unitRate === undefined || item.unitRate <= 0 || item.currentMBEntry === undefined || (isCreateRevisionEstimate || isEditRevisionEstimate ? !(item?.currentMBEntry >= 0) : !item.currentMBEntry)) {
         setShowToast({ error: true, label: `${t("ERR_NONSOR_ITEM_IS_MISSING")} ${ item?.sNo}` });
+        setIsButtonDisabled(false);
         setShowModal(false);
         return false;
       }
@@ -320,6 +322,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           for (const measure of item.measures) {
               if (!measure.description) {
                   setShowToast({ error: true, label: `${t("ERR_ENTER_DESCRIPTION_IN_NONSOR")} ${ item?.sNo}` });
+                  setIsButtonDisabled(false);
                   setShowModal(false);
                   return false;
               }
@@ -335,13 +338,15 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if((!(data?.SORtable) && !(data?.NONSORtable)) || (data?.SORtable?.length <= 0 && data?.NONSORtable?.length <= 0) || (data?.SORtable?.length ===1 && data?.SORtable?.[0]?.category === "NON-SOR"))
     {  
       setShowToast({ error: true, label: "ERR_ATLEAST_SOR_OR_NON_SOR_PRESENT" });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
     //To validate that if SOR is present it should have measures
-    if(data?.SORtable?.filter((ob) => ob?.sorCode && (!(ob?.currentMBEntry)))?.length > 0)
+    if(data?.SORtable?.filter((ob) => ob?.sorCode && (isCreateRevisionEstimate || isEditRevisionEstimate ? ob?.currentMBEntry < 0 : !(ob?.currentMBEntry)))?.length > 0)
     {
       setShowToast({ error: true, label: "ERR_MB_AMOUNT_IS_NOT_RIGHT_FOR_SOR" });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -350,6 +355,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(descriptionpresent)
     {
       setShowToast({ error: true, label: `${t("ERR_ENTER_DESCRIPTION_IN_SOR")} ${descriptionpresent?.sorId || descriptionpresent?.sorCode}` });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -362,6 +368,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(negativeValuedObject)
     {
       setShowToast({ error: true, label: `${t("ERR_NEGATIVE_VALUE_IS_NOT_ALLOWED")} ${negativeValuedObject?.category}` });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -382,6 +389,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if(!documentValidated)
     {
       setShowToast({ error: true, label: `${t("ERR_DOCUMENT_IS_MANDATORY")}` });
+      setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
@@ -394,10 +402,11 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     //added this totalEst amount logic here because setValues in pageComponents don't work
     //after setting the value, in consequent renders value changes to undefined
     //check TotalEstAmount.js
-    let totalLabourAndMaterial = parseInt(getLabourMaterialAnalysisCost(_data,"LH")) + parseInt(getLabourMaterialAnalysisCost(_data,"MA")) + parseInt(getLabourMaterialAnalysisCost(_data,"MH")) || (_data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery);
+    let totalLabourAndMaterial = parseInt(getLabourMaterialAnalysisCost(_data,["LA"])) + parseInt(getLabourMaterialAnalysisCost(_data,["MA","RA","CA","EMF","DMF","ADC","LC"])) + parseInt(getLabourMaterialAnalysisCost(_data,["MHA"])) || (_data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery);
     //here check totalEst amount should be less than material+labour
     if (_data.totalEstimateAmount < totalLabourAndMaterial && action !== "DRAFT") {
       setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_MISMATCH" });
+      setIsButtonDisabled(false);
       closeToast();
       return;
     } 
@@ -437,10 +446,11 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
 }
 
   const onModalSubmit = async (_data, action) => {
+    setIsButtonDisabled(true);
     _data = Digit.Utils.trimStringsInObject(_data);
     const completeFormData = {
-      ..._data,
       ...inputFormData,
+      ..._data,
       selectedApprover,
       workflowAction : actionSelected || action,
       // selectedDept,
@@ -458,10 +468,18 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if ((isEdit || isEditRevisionEstimate) && (estimateNumber  || revisionNumber)) {
       await EstimateUpdateMutation(payload, {
         onError: async (error, variables) => {
+          setIsButtonDisabled(false);
           setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
           setTimeout(() => {
             setShowToast(false);
-          }, 5000);
+          }, 3000);
+          if(error?.toString().includes("not found in config for the businessId"))
+          {
+            if(isCreateRevisionEstimate || isEditRevisionEstimate)
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${revisionNumber}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+            else 
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+          }
         },
         onSuccess: async (responseData, variables) => {
           clearSessionFormData();
@@ -485,7 +503,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           {
             setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
             if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
             else
             setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
           }
@@ -496,6 +514,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     } else {
       await EstimateMutation(payload, {
         onError: async (error, variables) => {
+          setIsButtonDisabled(false);
           setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
           setTimeout(() => {
             setShowToast(false);
@@ -523,7 +542,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           {
             setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
             if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
             else
             setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
           }
@@ -599,7 +618,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
   if ((isEdit || isCreateRevisionEstimate || isEditRevisionEstimate) && Object.keys(sessionFormData).length === 0) return <Loader />;
   return (
     <Fragment>
-      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} />}
+      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} isDisabled={isButtonDisabled} />}
       <Header className="works-header-create" styles={{ marginLeft: "14px" }}>
         {isEdit ? (isCreateRevisionEstimate || isEditRevisionEstimate ? t("ACTION_TEST_EDIT_REVISION_ESTIMATE") : t("ACTION_TEST_EDIT_ESTIMATE")) : (isCreateRevisionEstimate || isEditRevisionEstimate ? t("ACTION_TEST_CREATE_REVISION_ESTIMATE") : t("ACTION_TEST_CREATE_ESTIMATE"))}
       </Header>
@@ -647,8 +666,8 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
         />
       )}
       <ActionBar>
-        {displayMenu ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
-        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+        {displayMenu && !isButtonDisabled ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
+        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />
       </ActionBar>
     </Fragment>
   );
