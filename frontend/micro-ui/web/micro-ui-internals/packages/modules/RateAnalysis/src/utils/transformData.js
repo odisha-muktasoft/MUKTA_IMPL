@@ -193,7 +193,9 @@ export const getRefactoreExtraChargesTableRows = (listData, sorType) => {
 
 export const calculateTotalAmount = (listData) => {
   let totalAmount = listData.reduce((sum, item) => sum + (item.amount || 0), 0);
-  return totalAmount;
+  //return totalAmount;
+
+  return Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(totalAmount)).toFixed(2),"number",undefined,true,undefined,2)
 };
 
 /* gross total amount calculation */
