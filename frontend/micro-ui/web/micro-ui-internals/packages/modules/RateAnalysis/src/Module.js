@@ -20,6 +20,7 @@ import TableWithOutHead from "./components/specficAmountTable";
 import ViewTotalAmount from "./components/viewTotalAmount";
 import WrapperSORDetailsTemplate from "./components/sor_wrapper";
 import ExtraChargesViewTable from "./components/extra_charges_view_table";
+import RAResponseBanner from "./pages/employee/RAResponseBanner";
 
 const RateAnalysisModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
@@ -59,9 +60,7 @@ const componentsToRegister = {
   ViewTotalAmount,
   WrapperSORDetailsTemplate,
   ExtraChargesViewTable,
-
-
-
+  RAResponseBanner
 };
 
 export const initRateAnalysisComponents = () => {

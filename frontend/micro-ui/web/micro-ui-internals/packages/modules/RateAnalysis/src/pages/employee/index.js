@@ -4,6 +4,7 @@ import { PrivateRoute, BreadCrumb } from "@egovernments/digit-ui-react-component
 import { Switch, useLocation } from "react-router-dom";
 import ViewRateAnalysis from "./ViewRateAnalysis";
 import CreateRateAnalysis from "./CreateRateAnalysis";
+import RAResponseBanner from "./RAResponseBanner";
 
 const RateAnalysisBreadCumbs = ({ location }) => {
   const { t } = useTranslation();
@@ -78,6 +79,7 @@ const App = ({ path }) => {
             <PrivateRoute path={`${path}/view-rate-analysis`} component={() => <ViewRateAnalysis />} />
             <PrivateRoute path={`${path}/create-rate-analysis`} component={() => <CreateRateAnalysis />} />
             <PrivateRoute path={`${path}/update-rate-analysis`} component={() => <CreateRateAnalysis isUpdate={true} />} />
+            <PrivateRoute path={`${path}/response`} component={() => <RAResponseBanner />} />
   
            {/* <PrivateRoute path={`${path}/search-contract`} component={() => <SearchContractDetails />} />
   const location = useLocation();

@@ -111,7 +111,7 @@ console.log(data,"data");
       data: {
         compositionId: composition_Id,
         sorId: data?.SORCode,
-        sorType: /*data?.SORType?.split("_")[2]*/"W",
+        sorType: "W",
         type: "SOR",
         quantity: parseFloat(data?.analysis_qty_defined),
         active: true,

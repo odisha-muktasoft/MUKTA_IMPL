@@ -117,6 +117,22 @@ const requestCriteriaOverhead = {
 
 const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCustomAPIHook(requestCriteriaOverhead);
 
+const requestCriteriaSORComposition = {
+  url: "/mdms-v2/v2/_search",
+  body: {
+  MdmsCriteria: {
+      tenantId: tenantId.split(".")?.[0],
+      schemaCode: "WORKS-SOR.Composition",
+      filters: {
+        sorId: queryStrings?.sorid
+    },
+  },
+  },
+  changeQueryName:"allsorComposition"
+};
+
+const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.Hooks.useCustomAPIHook(requestCriteriaSORComposition);
+
   // fetch the required data........
   useEffect(() => {
     const fetchRequiredData = () => {
@@ -168,6 +184,13 @@ const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCu
       return;
     }
 
+    if(!isUpdate && allcompositionData?.mdms?.length > 0 && Digit.Utils.date.convertDateToEpoch(createState?.effective_from_date) <= allcompositionData?.mdms?.sort((a, b) => b.data.effectiveFrom - a.data.effectiveFrom)[0].data.effectiveFrom)
+    {
+      setErrorMessage("Rate analysis cannot be added as a record with the same effective from date already exists.");
+      setShowToast({display:true, error:true});
+      return;
+    }
+
     if(selectedApprover)
       data.selectedApprover = selectedApprover;
 
@@ -181,10 +204,11 @@ const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCu
     };
     const onSuccess = (resp) => {
     
-        if(isUpdate) setErrorMessage(`${t("RA_SUCCESS_UPDATE_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_UPDATE_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
-        else setErrorMessage(`${t("RA_SUCCESS_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
-        setShowToast({display:true, error:false});
-        setTimeout(() => {history.push(`/${window.contextPath}/employee/rateAnalysis/view-rate-analysis?sorId=${resp?.mdms[0]?.data?.sorId}&fromeffective=${resp?.mdms?.[0]?.data?.effectiveFrom}`)}, 3000);;
+        // if(isUpdate) setErrorMessage(`${t("RA_SUCCESS_UPDATE_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_UPDATE_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
+        // else setErrorMessage(`${t("RA_SUCCESS_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
+        // setShowToast({display:true, error:false});
+        // setTimeout(() => {history.push(`/${window.contextPath}/employee/rateAnalysis/view-rate-analysis?sorId=${resp?.mdms[0]?.data?.sorId}&fromeffective=${resp?.mdms?.[0]?.data?.effectiveFrom}`)}, 3000);;
+        history.push(`/${window.contextPath}/employee/rateAnalysis/response?sorId=${resp?.mdms[0]?.data?.sorId}&fromeffective=${parseInt(resp?.mdms?.[0]?.data?.effectiveFrom)}&compositionId=${resp?.mdms[0]?.uniqueIdentifier}&isUpdate=${isUpdate}`)
     };
     mutation.mutate(
       {
@@ -233,7 +257,7 @@ const { isLoading: isOverheadLoading, data :allOverheadData} = Digit.Hooks.useCu
   }
 
   // if data is still loading return loader
-  if (isLoading || !defaultState?.sordata || isCompositionLoading || isSORLoading || isOverheadLoading) {
+  if (isLoading || !defaultState?.sordata || isCompositionLoading || isSORLoading || isOverheadLoading || isallCompositionLoading) {
     return <Loader />;
   }
 
