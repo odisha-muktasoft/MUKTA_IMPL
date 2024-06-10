@@ -52,7 +52,7 @@ class MeasurementDetailBloc
         "contractNumber": event.contractNumber,
         "tenantId": GlobalVariables.tenantId,
         "measurementNumber": event.measurementNumber,
-        "key": "View",
+        "key": event.screenType == MBScreen.create?"":"View",
       });
 
       List<FilteredMeasurements> data;

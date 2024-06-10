@@ -110,26 +110,20 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                       screenType: MBScreen.update,
                     ),
                   );
-              Navigator.of(context).pop();
-              Navigator.of(context).pop();
-              context.router.push(MBDetailRoute(
-                contractNumber: widget.contractNumber!,
-                mbNumber: value.measurement?.measurementNumber ?? '',
-                tenantId: GlobalVariables.tenantId,
-                type: MBScreen.update,
-              ));
-            }
-            // context.read<MeasurementDetailBloc>().add(
-            //       MeasurementDetailBookBlocEvent(
-            //         contractNumber: widget.contractNumber!,
-            //         measurementNumber: widget.mbNumber!,
-            //         tenantId: '', screenType: widget.type,
-            //       ),
-            //     );
-            //context.router.push(const HomeRoute());
-            // context.router.push( MBDetailRoute(contractNumber: widget.contractNumber!, mbNumber: widget.mbNumber!));
+              if (value.measurement!.wfStatus == "SUBMITTED") {
+                context.router.popUntilRouteWithPath('home');
+              } else {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
 
-            // Navigator.of(context).pop();
+                context.router.push(MBDetailRoute(
+                  contractNumber: widget.contractNumber!,
+                  mbNumber: value.measurement?.measurementNumber ?? '',
+                  tenantId: GlobalVariables.tenantId,
+                  type: MBScreen.update,
+                ));
+              }
+            }
           },
           loading: (value) {
             Navigator.of(
@@ -207,7 +201,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
                                 ),
                                 onPressed: () {
-                                  if (widget.nextActions!.action == "REJECT" && comment.text=="" ) {
+                                  if (widget.nextActions!.action == "REJECT" &&
+                                      comment.text == "") {
                                     Notifiers.getToastMessage(
                                       context,
                                       // AppLocalizations.of(context)

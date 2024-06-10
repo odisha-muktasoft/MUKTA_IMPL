@@ -384,8 +384,10 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             loaded: (value) {
                                               if (value.estimateStatus ==
                                                       true &&
-                                                  value.workOrderStatus ==
-                                                      true &&
+                                                      // TODO:[currently removed the workorder status]
+                                                  // value.workOrderStatus ==
+                                                  //     true &&
+                                                      //
                                                   value.existingMB == true) {
                                                 context.router
                                                     .push(MBDetailRoute(
@@ -398,14 +400,18 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                   type: MBScreen.create,
                                                 ));
                                               } else {
-                                                if (value.workOrderStatus ==
-                                                    false) {
-                                                  Notifiers.getToastMessage(
-                                                      context,
-                                                      t.translate(i18.workOrder
-                                                          .timeExtensionError),
-                                                      'ERROR');
-                                                } else if (value
+                                                // TODO:[currently removed the workorder status]
+                                                // if (value.workOrderStatus ==
+                                                //     false) {
+                                                //   Notifiers.getToastMessage(
+                                                //       context,
+                                                //       t.translate(i18.workOrder
+                                                //           .timeExtensionError),
+                                                //       'ERROR');
+                                                // } else
+
+                                                // end of it
+                                                 if (value
                                                         .estimateStatus ==
                                                     false) {
                                                   Notifiers.getToastMessage(

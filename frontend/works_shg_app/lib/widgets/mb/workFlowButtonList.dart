@@ -40,63 +40,63 @@ class CommonButtonCard extends StatelessWidget {
     var t = AppLocalizations.of(context);
     return BlocListener<MeasurementCrudBloc, MeasurementCrudState>(
       listener: (context, stateCrud) {
-        stateCrud.maybeMap(orElse: ()=>const SizedBox.shrink(),
-        loaded: (value) {
-          //  Navigator.of(
-          //     context,
-          //     rootNavigator: true,
-          //   ).popUntil(
-          //     (route) => route is! PopupRoute,
-          //   );
+        stateCrud.maybeMap(
+          orElse: () => const SizedBox.shrink(),
+          loaded: (value) {
+            //  Navigator.of(
+            //     context,
+            //     rootNavigator: true,
+            //   ).popUntil(
+            //     (route) => route is! PopupRoute,
+            //   );
 
-            
-          //   context.read<MusterGetWorkflowBloc>().add(
-          //         //hard coded
-          //         FetchMBWorkFlowEvent(
-          //             tenantId: GlobalVariables.tenantId!,
-          //             mbNumber: mbNumber!),
-          //       );
-          //   if (type == MBScreen.update) {
-          //     context.read<MeasurementDetailBloc>().add(
-          //           MeasurementDetailBookBlocEvent(
-          //             contractNumber: contractNumber!,
-          //             measurementNumber: mbNumber!,
-          //             tenantId: '',
-          //             screenType: type,
-          //           ),
-          //         );
-          //     Navigator.of(context).pop();
-          //   } else {
-          //     context.read<MeasurementDetailBloc>().add(
-          //           MeasurementDetailBookBlocEvent(
-          //             contractNumber: contractNumber!,
-          //             measurementNumber:
-          //                 value.measurement?.measurementNumber ?? '',
-          //             tenantId: '',
-          //             screenType: MBScreen.update,
-          //           ),
-          //         );
-          //     Navigator.of(context).pop();
-              
-          //     // context.router.push(MBDetailRoute(
-          //     //   contractNumber: contractNumber!,
-          //     //   mbNumber: value.measurement?.measurementNumber ?? '',
-          //     //   tenantId: GlobalVariables.tenantId,
-          //     //   type: MBScreen.update,
-          //     // ));
-          //   }
-        },
-        loading: (value) {
-           Navigator.of(
+            //   context.read<MusterGetWorkflowBloc>().add(
+            //         //hard coded
+            //         FetchMBWorkFlowEvent(
+            //             tenantId: GlobalVariables.tenantId!,
+            //             mbNumber: mbNumber!),
+            //       );
+            //   if (type == MBScreen.update) {
+            //     context.read<MeasurementDetailBloc>().add(
+            //           MeasurementDetailBookBlocEvent(
+            //             contractNumber: contractNumber!,
+            //             measurementNumber: mbNumber!,
+            //             tenantId: '',
+            //             screenType: type,
+            //           ),
+            //         );
+            //     Navigator.of(context).pop();
+            //   } else {
+            //     context.read<MeasurementDetailBloc>().add(
+            //           MeasurementDetailBookBlocEvent(
+            //             contractNumber: contractNumber!,
+            //             measurementNumber:
+            //                 value.measurement?.measurementNumber ?? '',
+            //             tenantId: '',
+            //             screenType: MBScreen.update,
+            //           ),
+            //         );
+            //     Navigator.of(context).pop();
+
+            //     // context.router.push(MBDetailRoute(
+            //     //   contractNumber: contractNumber!,
+            //     //   mbNumber: value.measurement?.measurementNumber ?? '',
+            //     //   tenantId: GlobalVariables.tenantId,
+            //     //   type: MBScreen.update,
+            //     // ));
+            //   }
+          },
+          loading: (value) {
+            Navigator.of(
               context,
               rootNavigator: true,
             ).popUntil(
               (route) => route is! PopupRoute,
             );
             Loaders.showLoadingDialog(context);
-        },
-        error: (value) {
-           Navigator.of(
+          },
+          error: (value) {
+            Navigator.of(
               context,
               rootNavigator: true,
             ).popUntil(
@@ -110,7 +110,7 @@ class CommonButtonCard extends StatelessWidget {
               value.error.toString(),
               'ERROR',
             );
-        },
+          },
         );
       },
       child: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
@@ -294,29 +294,81 @@ class CommonButtonCard extends StatelessWidget {
                                   //     // );
                                   //  // }
 
-                                  context.read<EmpHRMSBloc>().add(
-                                        EmpHRMSLoadBlocEvent(
-                                          isActive: true,
-                                          roles: "MB_VERIFIER",
-                                          tenantId: GlobalVariables.tenantId!,
-                                        ),
-                                      );
-
-                                  Navigator.of(context).pop();
-                                  context.router.push(
-                                    MBTypeConfirmationRoute(
-                                      nextActions: type == MBScreen.update
-                                          ? g!.first.nextActions![index]
-                                          : null,
-                                      contractNumber: contractNumber,
-                                      mbNumber: mbNumber,
+                                  if (bs!.first.workflowState!.first
+                                          .actions![index].action ==
+                                      "SAVE_AS_DRAFT") {
+                                    print("object");
+                                    List<List<SorObject>> sorList = [
+                                      value.sor!,
+                                      value.nonSor!
+                                    ];
+                                    MBDetailResponse kkk =
+                                        MBLogic.getMbPayloadUpdate(
+                                      data: value.data,
+                                      sorList: sorList,
+                                      workFlow: WorkFlow(
+                                        action: bs!.first.workflowState!.first
+                                                    .actions![index].action ==
+                                                "SAVE_AS_DRAFT"
+                                            ? "SAVE_AS_DRAFT"
+                                            : bs!.first.workflowState!.first
+                                                .actions![index].action,
+                                        documents: [],
+                                      ),
                                       type: type,
-                                      stateActions: type == MBScreen.create
-                                          ? bs!.first.workflowState!.first
-                                              .actions![index]
-                                          : null,
-                                    ),
-                                  );
+                                    );
+
+                                    context.read<MeasurementCrudBloc>().add(
+                                          MeasurementUpdateBlocEvent(
+                                            measurement: kkk.measurement!,
+                                            tenantId: '',
+                                            workFlow: WorkFlow(
+                                              action: bs!
+                                                          .first
+                                                          .workflowState!
+                                                          .first
+                                                          .actions![index]
+                                                          .action ==
+                                                      "SAVE_AS_DRAFT"
+                                                  ? "SAVE_AS_DRAFT"
+                                                  : bs!
+                                                      .first
+                                                      .workflowState!
+                                                      .first
+                                                      .actions![index]
+                                                      .action,
+                                              comment: "",
+                                              assignees: [""],
+                                              documents: [],
+                                            ),
+                                            type: type,
+                                          ),
+                                        );
+                                  } else {
+                                    context.read<EmpHRMSBloc>().add(
+                                          EmpHRMSLoadBlocEvent(
+                                            isActive: true,
+                                            roles: "MB_VERIFIER",
+                                            tenantId: GlobalVariables.tenantId!,
+                                          ),
+                                        );
+
+                                    Navigator.of(context).pop();
+                                    context.router.push(
+                                      MBTypeConfirmationRoute(
+                                        nextActions: type == MBScreen.update
+                                            ? g!.first.nextActions![index]
+                                            : null,
+                                        contractNumber: contractNumber,
+                                        mbNumber: mbNumber,
+                                        type: type,
+                                        stateActions: type == MBScreen.create
+                                            ? bs!.first.workflowState!.first
+                                                .actions![index]
+                                            : null,
+                                      ),
+                                    );
+                                  }
                                 },
                               );
                             },

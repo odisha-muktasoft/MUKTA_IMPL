@@ -135,7 +135,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                             orElse: () => const SizedBox.shrink(),
                             loaded: (value) {
                               if (value.estimateStatus == true &&
-                                  value.workOrderStatus == true &&
+                              // TODO:[currently removed the workorder status]
+                                //  value.workOrderStatus == true  &&
+                                  // end
+                                  
                                   value.existingMB == true) {
                                 context.router.push(MBDetailRoute(
                                   contractNumber: value.workOrderNumber ?? "",
@@ -144,13 +147,16 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                   type: MBScreen.create,
                                 ));
                               } else {
-                                if (value.workOrderStatus == false) {
-                                  Notifiers.getToastMessage(
-                                      context,
-                                      t.translate(
-                                          i18.workOrder.timeExtensionError),
-                                      'ERROR');
-                                } else if (value.estimateStatus == false) {
+                                // TODO:[currently removed the workorder status]
+                                // if (value.workOrderStatus == false) {
+                                //   Notifiers.getToastMessage(
+                                //       context,
+                                //       t.translate(
+                                //           i18.workOrder.timeExtensionError),
+                                //       'ERROR');
+                                // } else
+                                // end
+                                 if (value.estimateStatus == false) {
                                   Notifiers.getToastMessage(
                                       context,
                                       t.translate(

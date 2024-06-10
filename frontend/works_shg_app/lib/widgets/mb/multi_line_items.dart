@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,32 +78,28 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     final debouncer = Debouncer(milliseconds: 250);
 
     debouncer.run(() {
-      widget.fieldValue(
-          "Number", numberController.text);
+      widget.fieldValue("Number", numberController.text);
     });
   }
 
   void lengthUpload() {
     final debouncer = Debouncer(milliseconds: 250);
     debouncer.run(() {
-      widget.fieldValue(
-          "Length",  lengthController.text);
+      widget.fieldValue("Length", lengthController.text);
     });
   }
 
   void widthUpload() {
     final debouncer = Debouncer(milliseconds: 250);
     debouncer.run(() {
-      widget.fieldValue(
-          "Width",  widthController.text);
+      widget.fieldValue("Width", widthController.text);
     });
   }
 
   void heightUpload() {
     final debouncer = Debouncer(milliseconds: 250);
     debouncer.run(() {
-      widget.fieldValue(
-          "Height", heightController.text);
+      widget.fieldValue("Height", heightController.text);
     });
   }
 
@@ -239,15 +236,46 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               ),
             ],
           ),
-          DigitTextField(
-            inputFormatter: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
+          // DigitTextField(
+          //   inputFormatter: [
+          //     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
+          //   ],
+          //   label: t.translate(i18.measurementBook.quantityLabel),
+          //   isDisabled: true,
+          //   controller: quantityController
+          //     ..text = double.parse( widget.quantity!).toStringAsFixed(4)
+          //     ..selection.end,
+          // ),
+
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  t.translate(i18.measurementBook.quantityLabel),
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: const DigitColors().cloudGray, width: 2),
+                    color: DigitTheme.instance.colorScheme.background),
+                width: MediaQuery.sizeOf(context).width,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    double.parse(widget.quantity!).toStringAsFixed(4),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
             ],
-            label: t.translate(i18.measurementBook.quantityLabel),
-            isDisabled: true,
-            controller: quantityController
-              ..text = double.parse( widget.quantity!).toStringAsFixed(4)
-              ..selection.end,
           ),
         ],
       ),

@@ -46,21 +46,28 @@ class MeasurementCheckBloc
         "key": "View",
       });
 
-     
       bool? workOrderStatus;
       bool? estimateStatus;
       bool? existingMB;
       if (res.allMeasurements is! List) {
-        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||res.contract!.wfStatus == "ACCEPTED") ? true : false;
+        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||
+                res.contract!.wfStatus == "ACCEPTED")
+            ? true
+            : false;
         estimateStatus = res.estimate!.wfStatus == "APPROVED" ? true : false;
 
         existingMB = true;
       } else {
-        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||res.contract!.wfStatus == "ACCEPTED") ? true : false;
+        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||
+                res.contract!.wfStatus == "ACCEPTED")
+            ? true
+            : false;
         estimateStatus = res.estimate!.wfStatus == "APPROVED" ? true : false;
 
-        existingMB =
-            res.allMeasurements[0]['wfStatus'] == "APPROVED" ? true : false;
+        existingMB = (res.allMeasurements[0]['wfStatus'] == "APPROVED" ||
+                res.allMeasurements[0]['wfStatus'] == "REJECTED")
+            ? true
+            : false;
       }
 
       emit(

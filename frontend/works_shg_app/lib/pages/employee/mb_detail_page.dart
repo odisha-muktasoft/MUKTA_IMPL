@@ -134,7 +134,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                 // String msg =
                 //     "WF_MB_ACTION_${value.measurement?.workflow?.action}";
 
-                if (value.measurement!.wfStatus == "DRAFTED") {
+                if (value.measurement!.wfStatus == "DRAFTED" &&
+                    widget.type == MBScreen.update) {
                   context.read<MusterGetWorkflowBloc>().add(
                         //hard coded
                         FetchMBWorkFlowEvent(
@@ -156,6 +157,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                   ).popUntil(
                     (route) => route is! PopupRoute,
                   );
+                } else if ((value.measurement!.wfStatus == "DRAFTED") &&
+                    widget.type == MBScreen.create) {
+                       Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).popUntil(
+                    (route) => route is! PopupRoute,
+                  );
+                  context.router.popUntilRouteWithPath('home');
                 }
 
                 Notifiers.getToastMessage(
@@ -352,11 +362,12 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                                 return FloatActionCard(
                                   actions: () {
-                                    if ((workorderStatus == "ACTIVE" &&
-                                            estimateStatus != "INWORKFLOW") &&
+                                    if ((estimateStatus != "INWORKFLOW") &&
                                         (value.data.length >= 2
-                                            ? value.data[1].wfStatus ==
-                                                "APPROVED"
+                                            ? (value.data[1].wfStatus ==
+                                                    "APPROVED" ||
+                                                value.data[1].wfStatus ==
+                                                    "REJECTED")
                                             : true)) {
                                       DigitActionDialog.show(
                                         context,
@@ -369,14 +380,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       );
                                     } else {
-                                      if (workorderStatus != "ACTIVE") {
-                                        Notifiers.getToastMessage(
-                                            context,
-                                            t.translate(i18
-                                                .workOrder.timeExtensionError),
-                                            'ERROR');
-                                      } else if (estimateStatus ==
-                                          "INWORKFLOW") {
+                                      if (estimateStatus == "INWORKFLOW") {
                                         Notifiers.getToastMessage(
                                             context,
                                             t.translate(i18.workOrder
@@ -504,7 +508,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   t.translate(
                                       i18.measurementBook.primaryDetails),
                                   style: DigitTheme.instance.mobileTheme
-                                      .textTheme.headlineSmall,
+                                      .textTheme.headlineMedium,
                                 ),
                                 children: [
                                   CommonMBCard(
@@ -1385,6 +1389,9 @@ class _MBDetailPageState extends State<MBDetailPage>
     bool previousMBStatus,
   ) {
     showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       context: context,
@@ -1530,8 +1537,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
                           );
                         } else {
-                          if ((workorderStatus == "ACTIVE" &&
-                                  estimateStatus != "INWORKFLOW") &&
+                          if ((estimateStatus != "INWORKFLOW") &&
                               previousMBStatus) {
                             DigitActionDialog.show(
                               context,
@@ -1544,12 +1550,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                             );
                           } else {
-                            if (workorderStatus != "ACTIVE") {
-                              Notifiers.getToastMessage(
-                                  context,
-                                  t.translate(i18.workOrder.timeExtensionError),
-                                  'ERROR');
-                            } else if (estimateStatus == "INWORKFLOW") {
+                            // if (workorderStatus != "ACTIVE") {
+                            //   Notifiers.getToastMessage(
+                            //       context,
+                            //       t.translate(i18.workOrder.timeExtensionError),
+                            //       'ERROR');
+                            // } else
+                            if (estimateStatus == "INWORKFLOW") {
                               Notifiers.getToastMessage(
                                   context,
                                   t.translate(
@@ -1711,6 +1718,7 @@ class SORTableCard extends StatelessWidget {
                             child: Text(
                               element[e].toString(),
                               maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           )),
                         ],

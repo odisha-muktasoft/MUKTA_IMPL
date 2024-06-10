@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/molecules/mb/table_form_data.dart';
 
 class CommonMBCard extends StatelessWidget {
   
@@ -34,9 +35,11 @@ class CommonMBCard extends StatelessWidget {
           headLabel != null ? Text(headLabel!,
           style: DigitTheme.instance.mobileTheme.textTheme.headlineMedium,
           ) : const SizedBox.shrink(),
-          DigitTableCard(
+          TableFormCard(
             element: items,
           ),
+
+
           show
               ? Container(
                   padding: const EdgeInsets.only(bottom: 6),
