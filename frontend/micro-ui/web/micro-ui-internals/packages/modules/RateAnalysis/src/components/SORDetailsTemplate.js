@@ -150,7 +150,7 @@ const SORDetailsTemplate = (props) => {
     return obj;
   };
 
-  console.log(SORDetails);
+  
   const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
     sno: index + 1,
     sorCode: row?.sorCode,
@@ -160,7 +160,7 @@ const SORDetailsTemplate = (props) => {
     ...(pageType === 'VIEW' ? { amount: row?.amount,basicRate:row?.basicRate } : {})
   }));
 
-  console.log(sortedRows);
+  
   
 
   useEffect(() => {

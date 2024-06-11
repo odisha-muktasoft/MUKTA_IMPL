@@ -2,12 +2,6 @@ import { Loader } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
 import EmployeeApp from "./pages/employee";
-// import MeasurementCard from "./components/MeasurementCard";
-// import MeasureTable from "./components/MeasureTable";
-// import MeasureCard from "./components/MeasureCard";
-// import MeasureRow from "./components/MeasureRow";
-// import ViewOnlyCard from "./components/ViewOnlyCard";
-// import MeasurementHistory from "./components/MBHistoryTable";
 
 import ViewRateAnalysis from "./pages/employee/ViewRateAnalysis";
 import CreateRateAnalysis from "./pages/employee/CreateRateAnalysis";
@@ -40,13 +34,6 @@ const RateAnalysisModule = ({ stateCode, userType, tenants }) => {
 };
 
 const componentsToRegister = {
-  // MeasurementCard,
-  // MeasurementModule,
-  // MeasureCard,
-  // MeasureTable,
-  // MeasureRow,
-  // ViewOnlyCard,
-  // MeasurementHistory
   ViewRateAnalysis,
   RateAnalysisModule,
   CreateRateAnalysis,

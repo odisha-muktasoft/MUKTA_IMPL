@@ -58,8 +58,7 @@ export const StoreService = {
     const { MdmsRes } = await MdmsService.init(stateCode);
     const stateInfo = MdmsRes["common-masters"]?.StateInfo?.[0]||{};
     const uiHomePage = MdmsRes["common-masters"]?.uiHomePage?.[0]||{};
-    //will have to add the module in the mdms
-    console.log(MdmsRes?.tenant?.citymodule.push({active:true, code:"RateAnalysis", mode: "RateAnalysis", tenants: ["od.testing"] }),);
+    
     const localities = {};
     const revenue_localities = {};
     const initData = {
