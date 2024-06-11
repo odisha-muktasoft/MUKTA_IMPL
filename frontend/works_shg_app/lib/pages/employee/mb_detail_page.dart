@@ -134,7 +134,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 // String msg =
                 //     "WF_MB_ACTION_${value.measurement?.workflow?.action}";
 
-                if (value.measurement!.wfStatus == "DRAFTED" &&
+                if (
                     widget.type == MBScreen.update) {
                   context.read<MusterGetWorkflowBloc>().add(
                         //hard coded
@@ -157,9 +157,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                   ).popUntil(
                     (route) => route is! PopupRoute,
                   );
-                } else if ((value.measurement!.wfStatus == "DRAFTED") &&
+                } else if ((value.measurement!.wfStatus == "SUBMITTED") &&
                     widget.type == MBScreen.create) {
-                       Navigator.of(
+                  Navigator.of(
                     context,
                     rootNavigator: true,
                   ).popUntil(
@@ -167,6 +167,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                   );
                   context.router.popUntilRouteWithPath('home');
                 }
+                else if((value.measurement!.wfStatus == "DRAFTED") &&
+                    widget.type == MBScreen.create)
+                    {
+
+                      Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).popUntil(
+                    (route) => route is! PopupRoute,
+                  );
+                    }
 
                 Notifiers.getToastMessage(
                     context,
@@ -330,9 +341,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         workorderStatus,
                                         estimateStatus,
                                         (value.data.length >= 2
-                                            ?( value.data[1].wfStatus ==
-                                                "APPROVED" || value.data[1].wfStatus ==
-                                                "REJECTED" )
+                                            ? (value.data[1].wfStatus ==
+                                                    "APPROVED" ||
+                                                value.data[1].wfStatus ==
+                                                    "REJECTED")
                                             : false));
                                   },
                                   totalAmountText: t.translate(
@@ -370,16 +382,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     //             value.data[1].wfStatus ==
                                     //                 "REJECTED")
                                     //         : true)) {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                          bs: bk,
-                                        ),
-                                      );
+                                    DigitActionDialog.show(
+                                      context,
+                                      widget: CommonButtonCard(
+                                        g: g,
+                                        contractNumber: widget.contractNumber,
+                                        mbNumber: widget.mbNumber,
+                                        type: widget.type,
+                                        bs: bk,
+                                      ),
+                                    );
                                     // } else {
                                     //   if (estimateStatus == "INWORKFLOW") {
                                     //     Notifiers.getToastMessage(
@@ -394,7 +406,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     //             .existingMBCreateError),
                                     //         'ERROR');
                                     //   }
-                                      
+
                                     //}
                                   },
                                   // amount: sorprice.toString(),
@@ -423,8 +435,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         estimateStatus,
                                         (value.data.length >= 2
                                             ? (value.data[1].wfStatus ==
-                                                "APPROVED" ||value.data[1].wfStatus ==
-                                                "REJECTED")
+                                                    "APPROVED" ||
+                                                value.data[1].wfStatus ==
+                                                    "REJECTED")
                                             : true));
                                   },
                                   totalAmountText: t.translate(
@@ -486,13 +499,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                             Back(
+                            Back(
                               callback: () {
-                               context.router.popUntilRouteWithPath(
-                                widget.type==MBScreen.update?
-                                'measurement-inbox':
-                                'workOrder-inbox'
-                                );
+                                context.router.popUntilRouteWithPath(
+                                    widget.type == MBScreen.update
+                                        ? 'measurement-inbox'
+                                        : 'workOrder-inbox');
                               },
                             ),
                             Padding(
@@ -914,63 +926,121 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                     ),
                                                   ),
                                                 )
-                                              : ListView.builder(
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return InkWell(
-                                                      onTap: () =>
-                                                          CommonMethods()
-                                                              .onTapOfAttachment(
-                                                        mm![index],
-                                                        mm![index].tenantId!,
-                                                        context,
-                                                        roleType:
-                                                            RoleType.employee,
-                                                      ),
-                                                      child: Container(
-                                                          //width: 50,
-                                                          margin:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 5,
-                                                                  horizontal:
-                                                                      5),
-                                                          child: Wrap(
-                                                              runSpacing: 8,
-                                                              spacing: 5,
+                                              : DigitCard(
+                                                  child: ListView.builder(
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        if (index == 0) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        8.0),
+                                                            child: Column(
                                                               children: [
-                                                                Image.asset(
-                                                                  'assets/png/attachment.png',
-                                                                  height: 200,
+                                                                const DigitInfoCard(
+                                                                  title: "Info",
+                                                                  description:
+                                                                      "Please Tap on the Chip to view the Image",
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () =>
+                                                                      CommonMethods()
+                                                                          .onTapOfAttachment(
+                                                                    mm![index],
+                                                                    mm![index]
+                                                                        .tenantId!,
+                                                                    context,
+                                                                    roleType:
+                                                                        RoleType
+                                                                            .employee,
+                                                                  ),
+                                                                  child: Chip(
+                                                                    labelPadding:
+                                                                        const EdgeInsets.all(
+                                                                            10),
+                                                                    // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                                    label:
+                                                                        SizedBox(
+                                                                      width: MediaQuery.sizeOf(
+                                                                              context)
+                                                                          .width,
+                                                                      child:
+                                                                          Text(
+                                                                        AppLocalizations.of(context)
+                                                                            .translate(
+                                                                          mm![index]
+                                                                              .name
+                                                                              .toString(),
+                                                                        ),
+                                                                        maxLines:
+                                                                            3,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    bottom:
+                                                                        8.0),
+                                                            child: InkWell(
+                                                              onTap: () =>
+                                                                  CommonMethods()
+                                                                      .onTapOfAttachment(
+                                                                mm![index],
+                                                                mm![index]
+                                                                    .tenantId!,
+                                                                context,
+                                                                roleType: RoleType
+                                                                    .employee,
+                                                              ),
+                                                              child: Chip(
+                                                                labelPadding:
+                                                                    const EdgeInsets
+                                                                        .all(10),
+                                                                // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                                label: SizedBox(
                                                                   width: MediaQuery
                                                                           .sizeOf(
                                                                               context)
                                                                       .width,
-                                                                ),
-                                                                //         Image.network( CommonMethods().loadImg(mm![index].fileStoreId!,
-                                                                // mm![index].tenantId!,
-
-                                                                // roleType: RoleType.employee,),),
-                                                                Text(
-                                                                  AppLocalizations.of(
-                                                                          context)
-                                                                      .translate(mm![
-                                                                              index]
+                                                                  child: Text(
+                                                                    AppLocalizations.of(
+                                                                            context)
+                                                                        .translate(
+                                                                      mm![index]
                                                                           .name
-                                                                          .toString()),
-                                                                  maxLines: 2,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                )
-                                                              ])),
-                                                    );
-                                                  },
-                                                  itemCount: value.data.first
-                                                      .documents!.length),
+                                                                          .toString(),
+                                                                    ),
+                                                                    maxLines: 3,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      itemCount: value
+                                                          .data
+                                                          .first
+                                                          .documents!
+                                                          .length),
+                                                ),
                                 ],
                               ),
                             ),
@@ -1001,6 +1071,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                       .nextActions!
                                                       .isNotEmpty)) {
                                             modifiedData = [
+                                              ...[modifiedData.first],
+                                              ...modifiedData
+                                            ];
+                                          }
+                                          else if(modifiedData.isNotEmpty ){
+                                             modifiedData = [
                                               ...[modifiedData.first],
                                               ...modifiedData
                                             ];
@@ -1184,7 +1260,11 @@ class _MBDetailPageState extends State<MBDetailPage>
       case 1:
         return nonSork == 0 ? 300 : nonSork * 500;
       case 2:
-        return photo == 0 ? 350 : ((photo * 270) - (photo * 20));
+        return photo == 0
+            ? 350
+            : photo == 5
+                ? (photo * 90)
+                : (photo * 110) + 100;
       default:
         return 350.0;
     }
@@ -1578,21 +1658,20 @@ class _MBDetailPageState extends State<MBDetailPage>
                           //         'ERROR');
                           //   }
                           // }
-                         
-                         DigitActionDialog.show(
-                              context,
-                              widget: CommonButtonCard(
-                                g: processInstances,
-                                contractNumber: contractNumber,
-                                mbNumber: mbNumber,
-                                type: widget.type,
-                                bs: bs,
-                              ),
-                            );
+
+                          DigitActionDialog.show(
+                            context,
+                            widget: CommonButtonCard(
+                              g: processInstances,
+                              contractNumber: contractNumber,
+                              mbNumber: mbNumber,
+                              type: widget.type,
+                              bs: bs,
+                            ),
+                          );
                         }
 
 // before
-                       
                       })
                   : const SizedBox.shrink(),
             ],

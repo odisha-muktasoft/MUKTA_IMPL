@@ -336,6 +336,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           label: t.translate("WF_MODAL_COMMENTS"),
                           maxLines: 6,
                           controller: comment,
+                          isRequired: widget.nextActions!.action == "REJECT"?true:false,
                         ),
                         // SizedBox(
                         //   height: 300,
