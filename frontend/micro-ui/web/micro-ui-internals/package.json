@@ -9,8 +9,10 @@
     "packages/react-components",
     "packages/modules/*",
     "packages/modules/Estimate",
+    "packages/modules/Expenditure",
     "packages/modules/*",
-        "packages/Mukta"
+        "packages/Mukta",
+    "packages/modules/RateAnalysis"
   ],
   "author": "JaganKumar <jagan.kumar@egov.org.in>",
   "license": "MIT",
@@ -36,6 +38,7 @@
     "dev:mukta": "cd packages/Mukta && yarn start",
     "devD:works": "cd packages/modules/works && yarn start",
     "devD:expenditure": "cd packages/modules/Expenditure && yarn start",
+    "dev:rateAnalysis":"cd packages/modules/RateAnalysis && yarn start",
     "dev:example": "cd example && yarn start",
     "build": "run-p build:**",
     "buildD": "run-p buildD:**",
@@ -50,6 +53,7 @@
     "buildD:project": "cd packages/modules/Project && yarn build",
     "buildD:works": "cd packages/modules/works && yarn build",
     "build:expenditure": "cd packages/modules/Expenditure && yarn build",
+    "build:rateAnalysis":"cd packages/modules/RateAnalysis && yarn build",
     "deploy:jenkins": "./scripts/jenkins.sh",
     "clean": "rm -rf node_modules"
   },

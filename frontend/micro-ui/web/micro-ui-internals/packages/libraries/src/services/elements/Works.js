@@ -247,4 +247,16 @@ export const WorksService = {
       method: "POST",
       auth: true,
     }),
+
+    rateAnalysisSearch: ({ tenantId, filters }) => {
+      return Request({
+        url: Urls.rateAnalysis.search,
+        useCache: false,
+        data: filters,
+        method: "POST",
+        auth: true,
+        userService: false,
+        params: { tenantId },
+      });
+    },
 };

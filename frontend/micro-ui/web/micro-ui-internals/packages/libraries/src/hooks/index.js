@@ -168,6 +168,8 @@ import useMBDataForPB from "./expenditure/useMBDataForPB";
 import useViewMeasurement from "./measurement/useViewMeasurement";
 import useEstimateSearchValidation from "./mukta/useEstimateSearchValidation";
 import useTEorMBCreateValidation from "./mukta/useTEorMBCreateValidation";
+import fetchContractDetails from"./rateAnalysis/useviewcontractdetails";
+import useViewRateAnalysisDetails from "./rateAnalysis/useviewcontractdetails";
 
 const works = {
   useViewEstimateDetails,
@@ -330,6 +332,10 @@ const mukta = {
   useEstimateSearchValidation,
   useTEorMBCreateValidation
 }
+const rateAnalysis={
+  fetchContractDetails,
+  useViewRateAnalysisDetails
+}
 
 const Hooks = {
   useSessionStorage,
@@ -399,7 +405,8 @@ const Hooks = {
   bankAccount,
   paymentInstruction,
   measurement,
-  mukta
+  mukta,
+  rateAnalysis,
 };
 
 export default Hooks;
