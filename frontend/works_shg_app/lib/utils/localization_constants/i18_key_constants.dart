@@ -31,6 +31,7 @@ class Login {
 
 class Common {
   const Common();
+  String get noFileSelected=>"WORKS_NO_FILE_SELECTED";
   String get comments=>"WF_COMMON_COMMENTS";
   String get photoInfo=>"WORKS_DOC_UPLOAD_HINT";
   String get searchCriteria=>"ES_COMMON_MIN_SEARCH_CRITERIA_MSG";
@@ -466,6 +467,6 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbSubmitLabel=>"WORKS_MB_FORWARD";
  String get mbCancel=>"WORKS_MB_CANCEL";
  String get noService=>"NO_SERVICE_AVAILABLE";
-
+ String get infoImageTip=>"INFO_CARD_IMAGE";
 
 }

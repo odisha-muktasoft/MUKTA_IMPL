@@ -232,7 +232,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
               fontWeight: FontWeight.w400,
               fontSize: 16,
               color: widget.headerType == MediaType.mbDetail
-                  ? const DigitColors().burningOrange
+                  ? const DigitColors().black
                   : const DigitColors().black,
             ),
           ),
@@ -272,7 +272,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                       //TODO:[level change]
                       // "Choose File",
                       style: TextStyle(
-                          color: DigitColors().burningOrange, fontSize: 16),
+                          color: const DigitColors().burningOrange, fontSize: 16),
                     ),
                   )),
               _selectedFiles
@@ -318,10 +318,10 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                                     )).toList()),
                       ),
                     )
-                  : const Text(
-                      // "${AppLocalizations.of(context).translate(i18.common.backToHome)}",
-                      "No File Selected",
-                      style: TextStyle(color: Colors.black, fontSize: 16),
+                  :  Text(
+                       AppLocalizations.of(context).translate(i18.common.noFileSelected),
+                      
+                      style: const TextStyle(color: Colors.black, fontSize: 16),
                     ),
               Row(
                 children: [
@@ -540,7 +540,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       spacing: 8,
       children: [
         IconButton(
-            onPressed: () => callBack(label), iconSize: 45, icon: Icon(icon)),
+            onPressed: () => callBack(label), iconSize: 45, icon: Icon(icon,color: const DigitColors().burningOrange,)),
         Text(
           AppLocalizations.of(context).translate(label),
           textAlign: TextAlign.center,

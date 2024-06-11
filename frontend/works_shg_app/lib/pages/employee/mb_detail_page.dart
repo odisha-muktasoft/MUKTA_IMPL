@@ -942,10 +942,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                         8.0),
                                                             child: Column(
                                                               children: [
-                                                                const DigitInfoCard(
-                                                                  title: "Info",
+                                                                 DigitInfoCard(
+                                                                  title: t.translate(i18.common.info),
                                                                   description:
-                                                                      "Please Tap on the Chip to view the Image",
+                                                                      t.translate(i18.measurementBook.infoImageTip),
                                                                 ),
                                                                 InkWell(
                                                                   onTap: () =>
@@ -1263,8 +1263,8 @@ class _MBDetailPageState extends State<MBDetailPage>
         return photo == 0
             ? 350
             : photo == 5
-                ? (photo * 90)
-                : (photo * 110) + 100;
+                ? (photo * 110)
+                : (photo * 120) + 100;
       default:
         return 350.0;
     }

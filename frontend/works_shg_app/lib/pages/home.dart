@@ -201,8 +201,8 @@ class _HomePage extends State<HomePage> {
                 // childCount: _getItems(context, homeConfigModel).length,
                 ),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              childAspectRatio: 104 / 128,
+              maxCrossAxisExtent: 170,
+              childAspectRatio: 105 / 129,
             ),
           ),
         ],

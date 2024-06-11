@@ -64,7 +64,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     comment.dispose();
     super.dispose();
   }
@@ -333,10 +332,13 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               )
                             : const SizedBox.shrink(),
                         DigitTextField(
-                          label: t.translate("WF_MODAL_COMMENTS"),
+                          label:
+                              "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
                           maxLines: 6,
                           controller: comment,
-                          isRequired: widget.nextActions!.action == "REJECT"?true:false,
+                          isRequired: widget.nextActions!.action == "REJECT"
+                              ? true
+                              : false,
                         ),
                         // SizedBox(
                         //   height: 300,
