@@ -47,7 +47,7 @@ export const createEstimateConfig = () => {
                     //     populators: {
                     //       name: "projectType",
                     //       optionsKey: "name",
-                    //       optionbuttonClicksCustomStyle: {
+                    //       optionsCustomStyle: {
                     //         top: "2.3rem",
                     //       },
                     //       mdmsConfig: {
