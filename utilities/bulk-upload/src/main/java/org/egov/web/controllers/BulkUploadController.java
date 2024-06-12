@@ -29,6 +29,11 @@ public class BulkUploadController {
         return bulkUploadService.bulkUpdate(file, mdmsSearchCriteria, newValidToDate);
     }
 
+    @PostMapping("/_sorBulkUpdate")
+    public List<Map<String, Object>> sorBulkUpdate(@RequestParam("file") MultipartFile file, @Valid @RequestParam("mdmsSearchCriteria") String mdmsSearchCriteria) throws Exception{
+        return bulkUploadService.sorBulkUpdate(file, mdmsSearchCriteria);
+    }
+
 
 
 }
