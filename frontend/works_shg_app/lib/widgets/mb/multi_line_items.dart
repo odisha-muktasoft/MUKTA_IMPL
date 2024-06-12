@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:digit_components/digit_components.dart';
-import 'package:digit_components/widgets/digit_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +9,6 @@ import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/mb/text_field_decimal_match.dart';
 
 class MultiLineItems extends StatefulWidget {
   final void Function(String?, dynamic) fieldValue;
@@ -55,23 +52,55 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   late TextEditingController widthController;
   late TextEditingController heightController;
   late TextEditingController quantityController;
+  late FocusNode numberFocusNode;
+  late FocusNode lengthFocusNode;
+  late FocusNode widthFocusNode;
+  late FocusNode heightFocusNode;
 
   @override
   void initState() {
     super.initState();
 
     // Initialize text controllers and set initial values
-    numberController = TextEditingController(text: widget.number.toString());
-    lengthController = TextEditingController(text: widget.length.toString());
-    widthController = TextEditingController(text: widget.width.toString());
-    heightController = TextEditingController(text: widget.height.toString());
-    quantityController =
-        TextEditingController(text: widget.quantity.toString());
+    numberController = TextEditingController(
+        text:checkValue(widget.number.toString())
+            );
+    lengthController = TextEditingController(
+        text: checkValue(widget.length.toString())
+            );
+    widthController = TextEditingController(
+        text: checkValue(widget.width.toString())
+            );
+    heightController = TextEditingController(
+        text: checkValue(widget.height.toString()));
+
+    quantityController = TextEditingController(
+        text: checkValue(widget.quantity.toString())
+            );
 
     numberController.addListener(numberUpload);
     lengthController.addListener(lengthUpload);
     widthController.addListener(widthUpload);
     heightController.addListener(heightUpload);
+
+    numberFocusNode = FocusNode();
+    lengthFocusNode = FocusNode();
+    widthFocusNode = FocusNode();
+    heightFocusNode = FocusNode();
+  }
+
+  String checkValue(String value) {
+    switch (value) {
+      case "0.0":
+        return "";
+      case "0":
+        return "";
+      case "0.000":
+        return "";
+
+      default:
+        return value;
+    }
   }
 
   void numberUpload() {
@@ -104,6 +133,24 @@ class _MultiLineItemsState extends State<MultiLineItems> {
   }
 
   @override
+  void didUpdateWidget(covariant MultiLineItems oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (!numberFocusNode.hasFocus && oldWidget.number != widget.number) {
+      numberController.text = checkValue(widget.number.toString());
+    }
+    if (!lengthFocusNode.hasFocus && oldWidget.length != widget.length) {
+      lengthController.text = checkValue(widget.length.toString());
+    }
+    if (!widthFocusNode.hasFocus && oldWidget.width != widget.width) {
+      widthController.text =checkValue( widget.width.toString());
+    }
+    if (!heightFocusNode.hasFocus && oldWidget.height != widget.height) {
+      heightController.text = checkValue(widget.height.toString());
+    }
+  }
+
+  @override
   void dispose() {
     // Dispose text controllers
     numberController.removeListener(numberUpload);
@@ -116,6 +163,11 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     widthController.dispose();
     heightController.dispose();
     quantityController.dispose();
+
+    numberFocusNode.dispose();
+    lengthFocusNode.dispose();
+    widthFocusNode.dispose();
+    heightFocusNode.dispose();
     super.dispose();
   }
 
@@ -168,10 +220,8 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             ],
             textInputType: TextInputType.number,
             label: t.translate(i18.measurementBook.numberLabel),
-            controller: numberController
-              ..text = widget.number.toString()
-              ..selection =
-                  TextSelection.collapsed(offset: numberController.text.length),
+            controller: numberController,
+            focusNode: numberFocusNode,
             isDisabled: widget.viewMode,
           ),
           Row(
@@ -189,10 +239,8 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     label: t.translate(i18.measurementBook.lengthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: lengthController
-                      ..text = widget.length.toString()
-                      ..selection = TextSelection.collapsed(
-                          offset: lengthController.text.length),
+                    controller: lengthController,
+                    focusNode: lengthFocusNode,
                   ),
                 ),
               ),
@@ -208,10 +256,8 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     label: t.translate(i18.measurementBook.widthLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: widthController
-                      ..text = widget.width.toString()
-                      ..selection = TextSelection.collapsed(
-                          offset: widthController.text.length),
+                    controller: widthController,
+                    focusNode: widthFocusNode,
                   ),
                 ),
               ),
@@ -227,26 +273,13 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                     label: t.translate(i18.measurementBook.heightLabel),
                     isDisabled: widget.viewMode,
                     textInputType: TextInputType.number,
-                    controller: heightController
-                      ..text = widget.height.toString()
-                      ..selection = TextSelection.collapsed(
-                          offset: heightController.text.length),
+                    controller: heightController,
+                    focusNode: heightFocusNode,
                   ),
                 ),
               ),
             ],
           ),
-          // DigitTextField(
-          //   inputFormatter: [
-          //     FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
-          //   ],
-          //   label: t.translate(i18.measurementBook.quantityLabel),
-          //   isDisabled: true,
-          //   controller: quantityController
-          //     ..text = double.parse( widget.quantity!).toStringAsFixed(4)
-          //     ..selection.end,
-          // ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +300,10 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    double.parse(widget.quantity!).toStringAsFixed(4),
+                    checkValue(
+                      widget.quantity!.toString())==""?"":
+                    double.parse(checkValue(
+                      widget.quantity!.toString())).toStringAsFixed(4),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
