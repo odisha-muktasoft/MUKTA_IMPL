@@ -232,6 +232,7 @@ public class WageSeekerBillGeneratorService {
 			log.info("Create calculation for musterRoll [" + musterRollNumber + "]");
 			List<CalcDetail> calcDetails = new ArrayList<>();
 			List<IndividualEntry> individualEntries = musterRoll.getIndividualEntries();
+			individualEntries.removeIf(individualEntry -> individualEntry.getAttendanceEntries()==null);
 			String tenantId = musterRoll.getTenantId();
 			BigDecimal netPayableAmount = BigDecimal.ZERO;
 			Long musterRollCreatedTime = musterRoll.getAuditDetails().getCreatedTime();
