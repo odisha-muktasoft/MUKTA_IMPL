@@ -549,6 +549,7 @@ if __name__ == '__main__':
         logging.info('Report Started Generating')
 
         directory = '/home/admin1/Music'
+        # directory = '/mukta-report/muktareport'
         if not os.path.exists(directory):
             os.makedirs(directory)
         
