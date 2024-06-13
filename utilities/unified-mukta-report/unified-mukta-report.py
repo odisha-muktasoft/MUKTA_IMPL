@@ -88,7 +88,9 @@ def getWorkflowDates(bussinessId, tenantId):
             response = response.json()
             if response and response['ProcessInstances'] and len(response['ProcessInstances'])>0:
                 for processInstance in response['ProcessInstances']:
-                    if processInstance['action'] == "APPROVE":
+                    if processInstance['action'] == "ACCEPT":
+                        data['acceptDate'] = processInstance['auditDetails']['createdTime']
+                    elif processInstance['action'] == "APPROVE":
                         data['approveDate'] = processInstance['auditDetails']['createdTime']
                     elif processInstance['action'] == "VERIFY_AND_FORWARD":
                         data['verifyDate'] = processInstance['auditDetails']['createdTime']
@@ -119,6 +121,7 @@ def getWorkOrderData():
                     if response and response['contracts'] and len(response['contracts'])>0:
                         for contract in response['contracts']:
                             if contract['status'] == "ACTIVE":
+                                print("Contract Number: " + contract['contractNumber'])
                                 temp = {}
                                 workflowDates = getWorkflowDates(contract['contractNumber'], tenantid)
                                 temp['ULB Name'] = format_tenant_id(tenantid)
@@ -128,9 +131,10 @@ def getWorkOrderData():
                                 temp['Work Order ID'] = contract['contractNumber']
                                 temp['Work order Verification Date'] = convert_epoch_to_indian_time(workflowDates['verifyDate'])
                                 temp['Work order Approval Date'] = convert_epoch_to_indian_time(workflowDates['approveDate'])
+                                temp['Work Order Acceptance Date'] = convert_epoch_to_indian_time(workflowDates['acceptDate'])
+                                temp['Value Of Work Order'] = contract['totalContractedAmount']
                                 temp['Workflow Status'] = contract['wfStatus']
                                 temp['Last Modified Date'] = convert_epoch_to_indian_time(contract['auditDetails']['lastModifiedTime'])
-                                temp['Value Of Work Order'] = contract['totalContractedAmount']
                                 data.append(temp)
                             else:
                                 continue
@@ -163,6 +167,7 @@ def getProjectData():
                     response = response.json()
                     if response and response["Project"] and len(response["Project"])>0:
                         for project in response["Project"]: 
+                            print("Project Number: " + project['projectNumber'])
                             temp = {}
                             temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project Name'] = project['name']
@@ -221,6 +226,7 @@ def getBillData():
                     response = response.json()
                     if response and response['bills'] and len(response['bills'])>0:
                         for bill in response['bills']:
+                            print("Bill Number: " + bill['billNumber'])
                             temp = {}
                             temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = bill['additionalDetails']['projectId']
@@ -264,6 +270,7 @@ def getMusterRollData():
                     response = response.json()
                     if response and response['musterRolls'] and len(response['musterRolls'])>0:
                         for roll in response['musterRolls']:
+                            print("Muster Roll Number: " + roll['musterRollNumber'])
                             temp = {}
                             temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = roll['additionalDetails']['projectId']
@@ -280,13 +287,15 @@ def getMusterRollData():
                             females = 0
                             others = 0
                             for entry in roll['individualEntries']:
+                                print("Individual ID: " + entry['individualId'])
                                 daysEngaged += entry['actualTotalAttendance']
                                 idleDays += (7 - entry['actualTotalAttendance'])
                                 if entry['actualTotalAttendance'] != 0:
                                     wageSeekersEngaged += 1
-                                if entry['additionalDetails']['gender'] == "MALE":
+                                gender = entry['additionalDetails'].get('gender', 'NA')
+                                if gender == "MALE":
                                     males += 1
-                                elif entry['additionalDetails']['gender'] == "FEMALE":
+                                elif gender == "FEMALE":
                                     females += 1
                                 else:
                                     others += 1
@@ -367,7 +376,7 @@ def getFailedPayments(payment_number):
                 response = response.json()
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
                     pi = response['paymentInstructions'][0]
-                    print(pi['jitBillNo'])
+                    print("Payment Instruction ID: " + pi['jitBillNo'])
                     tenantId = pi['tenantId']
                     contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
                     project_id = getProjectIdfromContract(contract_number, tenantId)
@@ -431,6 +440,7 @@ def getFailedPaymentsDataFromExpense():
                     if response and response['payments'] and len(response['payments'])>0:
                         for payment in response['payments']:
                             payment_number = payment['paymentNumber']
+                            print("payment number: " + payment_number)
                             payment_data = getFailedPayments(payment_number)
                             data.extend(payment_data)
                     else:
@@ -462,6 +472,7 @@ def getSuccessData(payment_number):
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
                     for pi in response['paymentInstructions']:
                         if pi['piStatus'] != 'FAILED':
+                            print("Payment Instruction ID: " + pi['jitBillNo'])
                             tenantId = pi['tenantId']
                             contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
                             project_id = getProjectIdfromContract(contract_number, tenantId)
@@ -476,7 +487,6 @@ def getSuccessData(payment_number):
                                 'Total bill amount': pi['grossAmount']
                             }
                             data.append(pi_data)
-                            break
                 else:
                     break
             else:
@@ -510,6 +520,7 @@ def getSuccessPaymentsDataFromExpense():
                         if response and response['payments'] and len(response['payments'])>0:
                             for payment in response['payments']:
                                 payment_number = payment['paymentNumber']
+                                print("payment number: " + payment_number)
                                 payment_data = getSuccessData(payment_number)
                                 data.extend(payment_data)
                         else:
