@@ -225,6 +225,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             isDisabled: widget.viewMode,
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
@@ -245,7 +246,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 4.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
@@ -262,7 +263,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 0.0),
+                padding: const EdgeInsets.only(left: 4.0, right: 2.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(

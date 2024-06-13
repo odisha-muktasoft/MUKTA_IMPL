@@ -41,21 +41,21 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
   @override
   void initState() {
     lineItems = widget.lineItems;
-    _scrollController = PageController(initialPage: 0);
+    _scrollController = PageController(initialPage: 0,viewportFraction: 0.95);
     super.initState();
   }
 
   void _scrollForward() {
-    _scrollController.animateTo(
-      _scrollController.offset + MediaQuery.of(context).size.width,
+    _scrollController.nextPage(
+     // _scrollController.offset + MediaQuery.of(context).size.width,
       duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
   }
 
   void _scrollBackward() {
-    _scrollController.animateTo(
-      _scrollController.offset - MediaQuery.of(context).size.width,
+    _scrollController.previousPage(
+     // _scrollController.offset - MediaQuery.of(context).size.width,
       duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
@@ -147,19 +147,22 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                           controller: _scrollController,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            return CardWidget(
-                              backward: () {
-                                _scrollBackward();
-                              },
-                              forward: () {
-                                _scrollForward();
-                              },
-                              filteredMeasurementsMeasure: lineItems![index],
-                              type: widget.type,
-                              viewMode: value.viewStatus,
-                              noOfUnit: widget.noOfUnit,
-                              cummulativePrevQty: widget.cummulativePrevQty,
-                              index: index,
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: CardWidget(
+                                backward: () {
+                                  _scrollBackward();
+                                },
+                                forward: () {
+                                  _scrollForward();
+                                },
+                                filteredMeasurementsMeasure: lineItems![index],
+                                type: widget.type,
+                                viewMode: value.viewStatus,
+                                noOfUnit: widget.noOfUnit,
+                                cummulativePrevQty: widget.cummulativePrevQty,
+                                index: index,
+                              ),
                             );
                           },
                           itemCount: lineItems?.length,
@@ -276,7 +279,7 @@ class _CardWidgetState extends State<CardWidget> {
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.only(
-          left: 10.0, right: 10.0, bottom: 10.0, top: 16.0),
+          left: 2.5, right: 2.5, bottom: 10.0, top: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -872,6 +875,7 @@ class _CardWidgetState extends State<CardWidget> {
               ],
             ),
           ),
+          // button section
           Padding(
             padding: const EdgeInsets.only(
                 top: 4.0, left: 8.0, right: 8.0, bottom: 4.0),
