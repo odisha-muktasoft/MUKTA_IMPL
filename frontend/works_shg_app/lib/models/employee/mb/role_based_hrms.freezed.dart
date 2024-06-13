@@ -184,6 +184,8 @@ mixin _$HRMSEmployee {
   int? get dateOfAppointment => throw _privateConstructorUsedError;
   @JsonKey(name: 'employeeType')
   String? get employeeType => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user')
+  EmployeeUser? get employeeUser => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -203,7 +205,10 @@ abstract class $HRMSEmployeeCopyWith<$Res> {
       @JsonKey(name: 'code') String? code,
       @JsonKey(name: 'isActive') bool? isActive,
       @JsonKey(name: 'dateOfAppointment') int? dateOfAppointment,
-      @JsonKey(name: 'employeeType') String? employeeType});
+      @JsonKey(name: 'employeeType') String? employeeType,
+      @JsonKey(name: 'user') EmployeeUser? employeeUser});
+
+  $EmployeeUserCopyWith<$Res>? get employeeUser;
 }
 
 /// @nodoc
@@ -225,6 +230,7 @@ class _$HRMSEmployeeCopyWithImpl<$Res, $Val extends HRMSEmployee>
     Object? isActive = freezed,
     Object? dateOfAppointment = freezed,
     Object? employeeType = freezed,
+    Object? employeeUser = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -251,7 +257,23 @@ class _$HRMSEmployeeCopyWithImpl<$Res, $Val extends HRMSEmployee>
           ? _value.employeeType
           : employeeType // ignore: cast_nullable_to_non_nullable
               as String?,
+      employeeUser: freezed == employeeUser
+          ? _value.employeeUser
+          : employeeUser // ignore: cast_nullable_to_non_nullable
+              as EmployeeUser?,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $EmployeeUserCopyWith<$Res>? get employeeUser {
+    if (_value.employeeUser == null) {
+      return null;
+    }
+
+    return $EmployeeUserCopyWith<$Res>(_value.employeeUser!, (value) {
+      return _then(_value.copyWith(employeeUser: value) as $Val);
+    });
   }
 }
 
@@ -269,7 +291,11 @@ abstract class _$$_HRMSEmployeeCopyWith<$Res>
       @JsonKey(name: 'code') String? code,
       @JsonKey(name: 'isActive') bool? isActive,
       @JsonKey(name: 'dateOfAppointment') int? dateOfAppointment,
-      @JsonKey(name: 'employeeType') String? employeeType});
+      @JsonKey(name: 'employeeType') String? employeeType,
+      @JsonKey(name: 'user') EmployeeUser? employeeUser});
+
+  @override
+  $EmployeeUserCopyWith<$Res>? get employeeUser;
 }
 
 /// @nodoc
@@ -289,6 +315,7 @@ class __$$_HRMSEmployeeCopyWithImpl<$Res>
     Object? isActive = freezed,
     Object? dateOfAppointment = freezed,
     Object? employeeType = freezed,
+    Object? employeeUser = freezed,
   }) {
     return _then(_$_HRMSEmployee(
       id: freezed == id
@@ -315,6 +342,10 @@ class __$$_HRMSEmployeeCopyWithImpl<$Res>
           ? _value.employeeType
           : employeeType // ignore: cast_nullable_to_non_nullable
               as String?,
+      employeeUser: freezed == employeeUser
+          ? _value.employeeUser
+          : employeeUser // ignore: cast_nullable_to_non_nullable
+              as EmployeeUser?,
     ));
   }
 }
@@ -328,7 +359,8 @@ class _$_HRMSEmployee implements _HRMSEmployee {
       @JsonKey(name: 'code') this.code,
       @JsonKey(name: 'isActive') this.isActive,
       @JsonKey(name: 'dateOfAppointment') this.dateOfAppointment,
-      @JsonKey(name: 'employeeType') this.employeeType});
+      @JsonKey(name: 'employeeType') this.employeeType,
+      @JsonKey(name: 'user') this.employeeUser});
 
   factory _$_HRMSEmployee.fromJson(Map<String, dynamic> json) =>
       _$$_HRMSEmployeeFromJson(json);
@@ -351,10 +383,13 @@ class _$_HRMSEmployee implements _HRMSEmployee {
   @override
   @JsonKey(name: 'employeeType')
   final String? employeeType;
+  @override
+  @JsonKey(name: 'user')
+  final EmployeeUser? employeeUser;
 
   @override
   String toString() {
-    return 'HRMSEmployee(id: $id, uuid: $uuid, code: $code, isActive: $isActive, dateOfAppointment: $dateOfAppointment, employeeType: $employeeType)';
+    return 'HRMSEmployee(id: $id, uuid: $uuid, code: $code, isActive: $isActive, dateOfAppointment: $dateOfAppointment, employeeType: $employeeType, employeeUser: $employeeUser)';
   }
 
   @override
@@ -370,13 +405,15 @@ class _$_HRMSEmployee implements _HRMSEmployee {
             (identical(other.dateOfAppointment, dateOfAppointment) ||
                 other.dateOfAppointment == dateOfAppointment) &&
             (identical(other.employeeType, employeeType) ||
-                other.employeeType == employeeType));
+                other.employeeType == employeeType) &&
+            (identical(other.employeeUser, employeeUser) ||
+                other.employeeUser == employeeUser));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, uuid, code, isActive, dateOfAppointment, employeeType);
+  int get hashCode => Object.hash(runtimeType, id, uuid, code, isActive,
+      dateOfAppointment, employeeType, employeeUser);
 
   @JsonKey(ignore: true)
   @override
@@ -399,7 +436,8 @@ abstract class _HRMSEmployee implements HRMSEmployee {
           @JsonKey(name: 'code') final String? code,
           @JsonKey(name: 'isActive') final bool? isActive,
           @JsonKey(name: 'dateOfAppointment') final int? dateOfAppointment,
-          @JsonKey(name: 'employeeType') final String? employeeType}) =
+          @JsonKey(name: 'employeeType') final String? employeeType,
+          @JsonKey(name: 'user') final EmployeeUser? employeeUser}) =
       _$_HRMSEmployee;
 
   factory _HRMSEmployee.fromJson(Map<String, dynamic> json) =
@@ -424,7 +462,230 @@ abstract class _HRMSEmployee implements HRMSEmployee {
   @JsonKey(name: 'employeeType')
   String? get employeeType;
   @override
+  @JsonKey(name: 'user')
+  EmployeeUser? get employeeUser;
+  @override
   @JsonKey(ignore: true)
   _$$_HRMSEmployeeCopyWith<_$_HRMSEmployee> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+EmployeeUser _$EmployeeUserFromJson(Map<String, dynamic> json) {
+  return _EmployeeUser.fromJson(json);
+}
+
+/// @nodoc
+mixin _$EmployeeUser {
+  @JsonKey(name: 'correspondenceAddress')
+  String? get correspondenceAddress => throw _privateConstructorUsedError;
+  @JsonKey(name: 'mobileNumber')
+  String? get mobileNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'userName')
+  String? get userName => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EmployeeUserCopyWith<EmployeeUser> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EmployeeUserCopyWith<$Res> {
+  factory $EmployeeUserCopyWith(
+          EmployeeUser value, $Res Function(EmployeeUser) then) =
+      _$EmployeeUserCopyWithImpl<$Res, EmployeeUser>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'correspondenceAddress') String? correspondenceAddress,
+      @JsonKey(name: 'mobileNumber') String? mobileNumber,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'userName') String? userName});
+}
+
+/// @nodoc
+class _$EmployeeUserCopyWithImpl<$Res, $Val extends EmployeeUser>
+    implements $EmployeeUserCopyWith<$Res> {
+  _$EmployeeUserCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? correspondenceAddress = freezed,
+    Object? mobileNumber = freezed,
+    Object? name = freezed,
+    Object? userName = freezed,
+  }) {
+    return _then(_value.copyWith(
+      correspondenceAddress: freezed == correspondenceAddress
+          ? _value.correspondenceAddress
+          : correspondenceAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_EmployeeUserCopyWith<$Res>
+    implements $EmployeeUserCopyWith<$Res> {
+  factory _$$_EmployeeUserCopyWith(
+          _$_EmployeeUser value, $Res Function(_$_EmployeeUser) then) =
+      __$$_EmployeeUserCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'correspondenceAddress') String? correspondenceAddress,
+      @JsonKey(name: 'mobileNumber') String? mobileNumber,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'userName') String? userName});
+}
+
+/// @nodoc
+class __$$_EmployeeUserCopyWithImpl<$Res>
+    extends _$EmployeeUserCopyWithImpl<$Res, _$_EmployeeUser>
+    implements _$$_EmployeeUserCopyWith<$Res> {
+  __$$_EmployeeUserCopyWithImpl(
+      _$_EmployeeUser _value, $Res Function(_$_EmployeeUser) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? correspondenceAddress = freezed,
+    Object? mobileNumber = freezed,
+    Object? name = freezed,
+    Object? userName = freezed,
+  }) {
+    return _then(_$_EmployeeUser(
+      correspondenceAddress: freezed == correspondenceAddress
+          ? _value.correspondenceAddress
+          : correspondenceAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      mobileNumber: freezed == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userName: freezed == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_EmployeeUser implements _EmployeeUser {
+  const _$_EmployeeUser(
+      {@JsonKey(name: 'correspondenceAddress') this.correspondenceAddress,
+      @JsonKey(name: 'mobileNumber') this.mobileNumber,
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'userName') this.userName});
+
+  factory _$_EmployeeUser.fromJson(Map<String, dynamic> json) =>
+      _$$_EmployeeUserFromJson(json);
+
+  @override
+  @JsonKey(name: 'correspondenceAddress')
+  final String? correspondenceAddress;
+  @override
+  @JsonKey(name: 'mobileNumber')
+  final String? mobileNumber;
+  @override
+  @JsonKey(name: 'name')
+  final String? name;
+  @override
+  @JsonKey(name: 'userName')
+  final String? userName;
+
+  @override
+  String toString() {
+    return 'EmployeeUser(correspondenceAddress: $correspondenceAddress, mobileNumber: $mobileNumber, name: $name, userName: $userName)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_EmployeeUser &&
+            (identical(other.correspondenceAddress, correspondenceAddress) ||
+                other.correspondenceAddress == correspondenceAddress) &&
+            (identical(other.mobileNumber, mobileNumber) ||
+                other.mobileNumber == mobileNumber) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, correspondenceAddress, mobileNumber, name, userName);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_EmployeeUserCopyWith<_$_EmployeeUser> get copyWith =>
+      __$$_EmployeeUserCopyWithImpl<_$_EmployeeUser>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_EmployeeUserToJson(
+      this,
+    );
+  }
+}
+
+abstract class _EmployeeUser implements EmployeeUser {
+  const factory _EmployeeUser(
+      {@JsonKey(name: 'correspondenceAddress')
+          final String? correspondenceAddress,
+      @JsonKey(name: 'mobileNumber')
+          final String? mobileNumber,
+      @JsonKey(name: 'name')
+          final String? name,
+      @JsonKey(name: 'userName')
+          final String? userName}) = _$_EmployeeUser;
+
+  factory _EmployeeUser.fromJson(Map<String, dynamic> json) =
+      _$_EmployeeUser.fromJson;
+
+  @override
+  @JsonKey(name: 'correspondenceAddress')
+  String? get correspondenceAddress;
+  @override
+  @JsonKey(name: 'mobileNumber')
+  String? get mobileNumber;
+  @override
+  @JsonKey(name: 'name')
+  String? get name;
+  @override
+  @JsonKey(name: 'userName')
+  String? get userName;
+  @override
+  @JsonKey(ignore: true)
+  _$$_EmployeeUserCopyWith<_$_EmployeeUser> get copyWith =>
       throw _privateConstructorUsedError;
 }

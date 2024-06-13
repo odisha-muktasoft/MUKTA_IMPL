@@ -174,6 +174,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.type == MBScreen.update ? index : index;
                             if (adjustedIndex <= k.length) {
                               return CommonMBCard(
+                                padding: const EdgeInsets.only(left:8.0,top: 8.0,right: 8.0,bottom: 0),
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                 items: {

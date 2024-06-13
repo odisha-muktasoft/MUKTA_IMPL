@@ -26,10 +26,26 @@ class HRMSEmployee with _$HRMSEmployee {
     @JsonKey(name: 'isActive') bool? isActive,
     @JsonKey(name: 'dateOfAppointment') int? dateOfAppointment,
     @JsonKey(name: 'employeeType') String? employeeType,
+    @JsonKey(name: 'user')EmployeeUser? employeeUser,
   }) = _HRMSEmployee;
 
   factory HRMSEmployee.fromJson(
     Map<String, dynamic> json,
   ) =>
       _$HRMSEmployeeFromJson(json);
+}
+
+@freezed
+class EmployeeUser with _$EmployeeUser {
+  const factory EmployeeUser({
+    @JsonKey(name: 'correspondenceAddress') String? correspondenceAddress,
+    @JsonKey(name: 'mobileNumber') String? mobileNumber,
+    @JsonKey(name: 'name') String? name,
+    @JsonKey(name: 'userName') String? userName,
+  }) = _EmployeeUser;
+
+  factory EmployeeUser.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      _$EmployeeUserFromJson(json);
 }

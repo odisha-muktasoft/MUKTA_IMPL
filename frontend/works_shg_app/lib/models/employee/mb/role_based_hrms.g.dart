@@ -26,6 +26,9 @@ _$_HRMSEmployee _$$_HRMSEmployeeFromJson(Map<String, dynamic> json) =>
       isActive: json['isActive'] as bool?,
       dateOfAppointment: json['dateOfAppointment'] as int?,
       employeeType: json['employeeType'] as String?,
+      employeeUser: json['user'] == null
+          ? null
+          : EmployeeUser.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_HRMSEmployeeToJson(_$_HRMSEmployee instance) =>
@@ -36,4 +39,21 @@ Map<String, dynamic> _$$_HRMSEmployeeToJson(_$_HRMSEmployee instance) =>
       'isActive': instance.isActive,
       'dateOfAppointment': instance.dateOfAppointment,
       'employeeType': instance.employeeType,
+      'user': instance.employeeUser,
+    };
+
+_$_EmployeeUser _$$_EmployeeUserFromJson(Map<String, dynamic> json) =>
+    _$_EmployeeUser(
+      correspondenceAddress: json['correspondenceAddress'] as String?,
+      mobileNumber: json['mobileNumber'] as String?,
+      name: json['name'] as String?,
+      userName: json['userName'] as String?,
+    );
+
+Map<String, dynamic> _$$_EmployeeUserToJson(_$_EmployeeUser instance) =>
+    <String, dynamic>{
+      'correspondenceAddress': instance.correspondenceAddress,
+      'mobileNumber': instance.mobileNumber,
+      'name': instance.name,
+      'userName': instance.userName,
     };

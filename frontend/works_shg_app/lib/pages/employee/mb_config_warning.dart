@@ -287,7 +287,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         ),
                         (widget.nextActions!.action == "EDIT/RE-SUBMIT" ||
                                 widget.nextActions!.action ==
-                                    "VERIFY_AND_FORWARD")
+                                    "VERIFY_AND_FORWARD" ||
+                                widget.nextActions!.action == "SUBMIT" ||
+                                widget.nextActions!.action ==
+                                    "SEND_BACK_TO_ORIGINATOR")
                             ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
                                 builder: (context, state) {
                                   return state.maybeMap(
@@ -305,24 +308,37 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       // );
 
                                       //    selectedAssignee=selectedAssignee;
-
-                                      return DigitDropdown<HRMSEmployee>(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedAssignee = value!;
-                                          });
-                                        },
-                                        value: selectedAssignee,
-                                        label: t.translate("WF_MODAL_APPROVER"),
-                                        menuItems: value.hrmsEmployee!
-                                            .map((e) => e)
-                                            .toList(),
-                                        valueMapper: (value) {
-                                          return t
-                                              .translate(value.code.toString());
-                                          // return value.toString();
-                                        },
-                                      );
+                                      if (value.hrmsEmployee != null &&
+                                          value.hrmsEmployee!.isNotEmpty) {
+                                        return DigitDropdown<HRMSEmployee>(
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedAssignee = value!;
+                                            });
+                                          },
+                                          value: selectedAssignee,
+                                          label:
+                                              t.translate("WF_MODAL_APPROVER"),
+                                          menuItems: value.hrmsEmployee!
+                                              .map((e) => e)
+                                              .toList(),
+                                          valueMapper: (value) {
+                                            if (value
+                                                .employeeUser!=null) {
+                                              return t.translate(value
+                                                .employeeUser!.name
+                                                .toString());
+                                            } else {
+                                               return t.translate(
+                                                  value.code.toString());
+                                            }
+                                            
+                                            
+                                          },
+                                        );
+                                      } else {
+                                        return const SizedBox.shrink();
+                                      }
                                     },
                                     error: (value) {
                                       return const SizedBox.shrink();
@@ -361,7 +377,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         //     label: t.translate("CLICK_TO_ADD_PHOTO"),
                         //   ),
                         // ),
-                        widget.nextActions!.action != "EDIT/RE-SUBMIT"
+                        widget.nextActions!.action != "EDIT/RE-SUBMIT" &&
+                                widget.nextActions!.action != "SUBMIT"
                             ? SizedBox(
                                 width: MediaQuery.sizeOf(context).width,
                                 height: 300,
@@ -532,23 +549,36 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   return state.maybeMap(
                                     orElse: () => const SizedBox.shrink(),
                                     loaded: (value) {
-                                      return DigitDropdown<HRMSEmployee>(
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedAssignee = value!;
-                                          });
-                                        },
-                                        value: selectedAssignee,
-                                        label: t.translate("WF_MODAL_APPROVER"),
-                                        menuItems: value.hrmsEmployee!
-                                            .map((e) => e)
-                                            .toList(),
-                                        valueMapper: (value) {
-                                          return t
-                                              .translate(value.code.toString());
-                                          // return value.toString();
-                                        },
-                                      );
+                                      if (value.hrmsEmployee != null &&
+                                          value.hrmsEmployee!.isNotEmpty) {
+                                        return DigitDropdown<HRMSEmployee>(
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedAssignee = value!;
+                                            });
+                                          },
+                                          value: selectedAssignee,
+                                          label:
+                                              t.translate("WF_MODAL_APPROVER"),
+                                          menuItems: value.hrmsEmployee!
+                                              .map((e) => e)
+                                              .toList(),
+                                          valueMapper: (value) {
+                                            if (value.employeeUser != null) {
+                                              return t.translate(value
+                                                  .employeeUser!.name
+                                                  .toString());
+                                            } else {
+                                              return t.translate(
+                                                  value.code.toString());
+                                            }
+
+                                            // return value.toString();
+                                          },
+                                        );
+                                      } else {
+                                        return const SizedBox.shrink();
+                                      }
                                     },
                                     error: (value) {
                                       return const SizedBox.shrink();
@@ -562,7 +592,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           maxLines: 6,
                           controller: comment,
                         ),
-                        widget.stateActions!.action != "SUBMIT"
+                        widget.stateActions!.action != null
                             ? SizedBox(
                                 width: MediaQuery.sizeOf(context).width,
                                 height: 300,
