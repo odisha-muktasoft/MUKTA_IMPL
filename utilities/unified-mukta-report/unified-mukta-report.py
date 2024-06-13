@@ -115,7 +115,6 @@ def getWorkOrderData():
                 api_payload = {"tenantId": tenantid,"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
-                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['contracts'] and len(response['contracts'])>0:
@@ -162,7 +161,6 @@ def getProjectData():
                 api_payload = {"Projects": [{"tenantId": tenantid,"createdFrom": 1680307200000}],"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
-                print(api_offset)
                 if response.status_code in [200, 202]:
                     response = response.json()
                     if response and response["Project"] and len(response["Project"])>0:
@@ -221,7 +219,6 @@ def getBillData():
                 api_payload = {"billCriteria": {"tenantId": tenantid, "isPaymentStatusNull": "false"},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
-                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['bills'] and len(response['bills'])>0:
@@ -265,7 +262,6 @@ def getMusterRollData():
                 api_payload = {"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
-                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['musterRolls'] and len(response['musterRolls'])>0:
@@ -434,7 +430,6 @@ def getFailedPaymentsDataFromExpense():
                 api_payload = {"paymentCriteria": {"tenantId": tenantid, "status": "FAILED"},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                 response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                 api_offset = api_offset + api_limit
-                print(api_offset)
                 if response and response.status_code and response.status_code in [200, 202]:
                     response = response.json()
                     if response and response['payments'] and len(response['payments'])>0:
@@ -466,12 +461,11 @@ def getSuccessData(payment_number):
             api_payload = {"criteria": {"payment_number": payment_number},"pagination": {"limit": api_limit,"offSet": api_offset,"sortBy": "createdtime","order": "DESC"},"RequestInfo": request_payload}
             response = requests.post(host,headers=headers,data=json.dumps(api_payload))
             api_offset = api_offset + api_limit
-            print(api_offset)
             if response and response.status_code and response.status_code in [200, 202]:
                 response = response.json()
                 if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
                     for pi in response['paymentInstructions']:
-                        if pi['piStatus'] != 'FAILED':
+                        if pi['piStatus'] != 'FAILED' and pi.get('parentPiNumber') is None:
                             print("Payment Instruction ID: " + pi['jitBillNo'])
                             tenantId = pi['tenantId']
                             contract_number = extract_contract_number(pi['additionalDetails']['referenceId'][0])
@@ -514,7 +508,6 @@ def getSuccessPaymentsDataFromExpense():
                     api_payload = {"paymentCriteria": {"tenantId": tenantid, "status": status},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
                     response = requests.post(host,headers=headers,data=json.dumps(api_payload))
                     api_offset = api_offset + api_limit
-                    print(api_offset)
                     if response and response.status_code and response.status_code in [200, 202]:
                         response = response.json()
                         if response and response['payments'] and len(response['payments'])>0:
