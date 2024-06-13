@@ -46,3 +46,59 @@ export const getLabourMaterialAnalysisCost = (formData,categories) => {
 }
 
 
+export const transformStatementData = (data) => {
+  const nestedData = [];
+
+    const { sorDetails } = data;
+
+    console.log(sorDetails,"sordetais");
+    sorDetails.forEach((sorDetail, sorIndex) => {
+      const { lineItems } = sorDetail;
+
+      console.log(sorDetail,"sorrrr");
+      // Main SOR data
+      const mainSORRow = {
+        sNo: nestedData.length + 1,
+        sortype: "sortype",
+        code: sorDetail.sorId,
+        description: "Main SOR Description",  // Hardcoded
+        uom: "UOM",  // Hardcoded
+        rate: 0.00,  // Hardcoded
+        type: lineItems?.length == 0 ? sorDetail?.basicSorDetails?.[0]?.type : null,
+        estimatedQuantity: {
+          "M" : sorDetail.lineItems.filter((ob)=> ob?.sorType === "M").length > 0 ? sorDetail.lineItems.filter((ob)=> ob?.sorType === "M").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0) : sorDetail?.basicSorDetails?.[0]?.quantity || 0.00,
+          "L" : sorDetail.lineItems.filter((ob)=> ob?.sorType === "L").length > 0 ? sorDetail.lineItems.filter((ob)=> ob?.sorType === "L").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0) : sorDetail?.basicSorDetails?.[0]?.quantity || 0.00,
+          "MH" : sorDetail.lineItems.filter((ob)=> ob?.sorType === "MH").length > 0 ? sorDetail.lineItems.filter((ob)=> ob?.sorType === "L").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0) : sorDetail?.basicSorDetails?.[0]?.quantity || 0.00
+        },  // Hardcoded
+        estimatedAmount: sorDetail.lineItems.length > 0 ? sorDetail.lineItems.reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.amount || 0), 0) : sorDetail?.basicSorDetails?.[0]?.amount, // Sum of amounts in basicSorDetails
+        subrows: []  // Initialize subrows array
+      };
+
+      // Sub-table rows (line items)
+      lineItems.forEach((lineItem) => {
+        const { amountDetails } = lineItem;
+
+        amountDetails.forEach((detail) => {
+          const subrow = {
+            sNo: mainSORRow.subrows.length + 1,
+            code: lineItem?.sorId,
+            name: detail.name,
+            unit: detail.unit,
+            rate: detail.rate,
+            quantity: detail.quantity,
+            amount: detail.amount,
+            type: lineItem?.sorType
+          };
+          mainSORRow.subrows.push(subrow);
+        });
+      });
+
+      nestedData.push(mainSORRow);
+    });
+
+    console.log(nestedData);
+    debugger;
+  return nestedData;
+}
+
+
