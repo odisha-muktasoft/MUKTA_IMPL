@@ -645,8 +645,8 @@ class MBLogic {
       'physicalRefNumber': measurement.physicalRefNumber,
       'workflow': {
         'action': measurement.workflow?.action,
-        'comment': measurement.workflow?.comment,
-        'assignees': measurement.workflow?.assignees,
+        'comments': measurement.workflow?.comment,
+        'assignes': measurement.workflow?.assignees,
         'documents': measurement.workflow?.documents?.map((e) {
           return {
             "documentType": e.documentType,

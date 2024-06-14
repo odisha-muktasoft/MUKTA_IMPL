@@ -42,50 +42,7 @@ class CommonButtonCard extends StatelessWidget {
       listener: (context, stateCrud) {
         stateCrud.maybeMap(
           orElse: () => const SizedBox.shrink(),
-          loaded: (value) {
-            //  Navigator.of(
-            //     context,
-            //     rootNavigator: true,
-            //   ).popUntil(
-            //     (route) => route is! PopupRoute,
-            //   );
-
-            //   context.read<MusterGetWorkflowBloc>().add(
-            //         //hard coded
-            //         FetchMBWorkFlowEvent(
-            //             tenantId: GlobalVariables.tenantId!,
-            //             mbNumber: mbNumber!),
-            //       );
-            //   if (type == MBScreen.update) {
-            //     context.read<MeasurementDetailBloc>().add(
-            //           MeasurementDetailBookBlocEvent(
-            //             contractNumber: contractNumber!,
-            //             measurementNumber: mbNumber!,
-            //             tenantId: '',
-            //             screenType: type,
-            //           ),
-            //         );
-            //     Navigator.of(context).pop();
-            //   } else {
-            //     context.read<MeasurementDetailBloc>().add(
-            //           MeasurementDetailBookBlocEvent(
-            //             contractNumber: contractNumber!,
-            //             measurementNumber:
-            //                 value.measurement?.measurementNumber ?? '',
-            //             tenantId: '',
-            //             screenType: MBScreen.update,
-            //           ),
-            //         );
-            //     Navigator.of(context).pop();
-
-            //     // context.router.push(MBDetailRoute(
-            //     //   contractNumber: contractNumber!,
-            //     //   mbNumber: value.measurement?.measurementNumber ?? '',
-            //     //   tenantId: GlobalVariables.tenantId,
-            //     //   type: MBScreen.update,
-            //     // ));
-            //   }
-          },
+          loaded: (value) {},
           loading: (value) {
             Navigator.of(
               context,
@@ -208,13 +165,20 @@ class CommonButtonCard extends StatelessWidget {
                                       context.read<EmpHRMSBloc>().add(
                                             EmpHRMSLoadBlocEvent(
                                               isActive: true,
-                                              roles: g!
-                                                          .first
-                                                          .nextActions![index]
-                                                          .action !=
-                                                      "EDIT/RE-SUBMIT"
-                                                  ? data ?? "MB_VERIFIER"
-                                                  : "MB_VERIFIER",
+                                              // roles: g!
+                                              //             .first
+                                              //             .nextActions![index]
+                                              //             .action !=
+                                              //         "EDIT/RE-SUBMIT"
+                                              //     ? data ?? "MB_VERIFIER"
+                                              //     :
+
+                                              //     "MB_VERIFIER",
+                                              roles: fetchRoles(g!
+                                                      .first
+                                                      .nextActions![index]
+                                                      .action ??
+                                                  "MB_VERIFIER"),
                                               tenantId:
                                                   GlobalVariables.tenantId!,
                                             ),
@@ -259,41 +223,6 @@ class CommonButtonCard extends StatelessWidget {
                                         "WF_MB_ACTION_${bs!.first.workflowState!.first.actions![index].action}"),
                                 // label: g!.first.nextActions![index].action! ?? "",
                                 onPressed: () {
-                                  //   final data =
-                                  //       g?.first.nextActions![index].roles?.join(',');
-                                  //   if (g!.first.nextActions![index].action ==
-                                  //           "EDIT/RE-SUBMIT" &&
-                                  //       value.viewStatus) {
-                                  //     context.read<MeasurementDetailBloc>().add(
-                                  //           UpdateViewModeEvent(
-                                  //             updateView: !value.viewStatus,
-                                  //           ),
-                                  //         );
-
-                                  //     Navigator.of(context).pop();
-                                  //   } else {
-                                  //     // context.read<EmpHRMSBloc>().add(
-                                  //     //       EmpHRMSLoadBlocEvent(
-                                  //     //         isActive: true,
-                                  //     //         roles:
-                                  //     //             g!.first.nextActions![index].action !=
-                                  //     //                     "EDIT/RE-SUBMIT"
-                                  //     //                 ? data ?? "MB_VERIFIER"
-                                  //     //                 : "MB_VERIFIER",
-                                  //     //         tenantId:  GlobalVariables.tenantId!,
-                                  //     //       ),
-                                  //     //     );
-
-                                  //     //  Navigator.of(context).pop();
-                                  //     // context.router.push(
-                                  //     //   MBTypeConfirmationRoute(
-                                  //     //     nextActions: g!.first.nextActions![index],
-                                  //     //     contractNumber: contractNumber,
-                                  //     //     mbNumber: mbNumber, type: type,
-                                  //     //   ),
-                                  //     // );
-                                  //  // }
-
                                   if (bs!.first.workflowState!.first
                                           .actions![index].action ==
                                       "SAVE_AS_DRAFT") {
@@ -383,5 +312,21 @@ class CommonButtonCard extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String fetchRoles(String action) {
+    switch (action) {
+      case "EDIT/RE-SUBMIT":
+        return "MB_VERIFIER";
+      case "SUBMIT":
+        return "MB_VERIFIER";
+      case "VERIFY_AND_FORWARD":
+        return "MB_APPROVER";
+      case "SEND_BACK_TO_ORIGINATOR":
+        return "MB_CREATOR";
+
+      default:
+        return "MB_VERIFIER";
+    }
   }
 }

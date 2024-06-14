@@ -223,9 +223,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       workFlow: WorkFlow(
                                         action: widget.nextActions!.action,
                                         comment: comment.text,
-                                        assignees: [
-                                          selectedAssignee?.uuid ?? ""
-                                        ],
+                                        assignees:selectedAssignee!=null? selectedAssignee?.uuid!=null? [
+                                          selectedAssignee!.uuid!
+                                        ]:null:null,
                                         documents: supportDocument,
                                       ),
                                       type: widget.type,
@@ -239,9 +239,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               action:
                                                   widget.nextActions!.action,
                                               comment: comment.text,
-                                              assignees: [
-                                                selectedAssignee?.uuid ?? ""
-                                              ],
+                                              assignees: selectedAssignee!=null? selectedAssignee?.uuid!=null? [
+                                          selectedAssignee!.uuid!
+                                        ]:null:null,
                                               documents: supportDocument,
                                             ),
                                             type: widget.type,
@@ -480,7 +480,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           ? "SUBMIT"
                                           : widget.stateActions!.action,
                                       comment: comment.text,
-                                      assignees: [selectedAssignee?.uuid ?? ""],
+                                      assignees:selectedAssignee!=null? selectedAssignee?.uuid!=null? [
+                                          selectedAssignee!.uuid!
+                                        ]:null:null,
                                       documents: supportDocument,
                                     ),
                                     type: widget.type,
@@ -497,9 +499,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                 ? "SUBMIT"
                                                 : widget.stateActions!.action,
                                             comment: comment.text,
-                                            assignees: [
-                                              selectedAssignee?.uuid ?? ""
-                                            ],
+                                            assignees: selectedAssignee!=null? selectedAssignee?.uuid!=null? [
+                                          selectedAssignee!.uuid!
+                                        ]:null:null,
                                             documents: supportDocument,
                                           ),
                                           type: widget.type,
