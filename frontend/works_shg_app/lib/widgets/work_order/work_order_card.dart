@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/widgets/molecules/mb/table_form_data.dart';
 
 class WorkOrderCard extends StatefulWidget {
   final String? headLabel;
@@ -45,7 +46,7 @@ class _WorkOrderCardState extends State<WorkOrderCard> {
                   ],
                 )
               : const SizedBox.shrink(),
-          DigitTableCard(
+          TableFormCard(
             element: widget.items,
           ),
           data != null

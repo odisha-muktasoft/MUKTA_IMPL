@@ -468,5 +468,6 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get mbCancel=>"WORKS_MB_CANCEL";
  String get noService=>"NO_SERVICE_AVAILABLE";
  String get infoImageTip=>"INFO_CARD_IMAGE";
+ String get mbNotFound=>"MB_NUMBER_NOT_FOUND";
 
 }

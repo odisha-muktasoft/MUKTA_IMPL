@@ -343,10 +343,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 (BuildContext context, int index) {
                                   // Display items
 
-                                  return const Center(
+                                  return  Center(
                                     child: EmptyImage(
                                       align: Alignment.center,
-                                      label: "Measurement Number not Found",
+                                      label: t.translate(i18.measurementBook.mbNotFound),
                                     ),
                                   );
                                 },

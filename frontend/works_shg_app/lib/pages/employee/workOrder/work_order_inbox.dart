@@ -86,7 +86,18 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
       orElse: () => {},
       loaded: (value) {
         if (value.search && value.searchData['contractNumber'] == "") {
-          context.read<WorkOrderInboxBloc>().add(
+          // context.read<WorkOrderInboxBloc>().add(
+          //       WorkOrderInboxSearchRepeatBlocEvent(
+          //         businessService: "Contract",
+          //         limit: 10,
+          //         moduleName: 'contract-module',
+          //         offset: s,
+          //         tenantId: GlobalVariables.tenantId!,
+          //       ),
+          //     );
+          return;
+        } else if(value.search && value.searchData['contractNumber'] != ""){
+ context.read<WorkOrderInboxBloc>().add(
                 WorkOrderInboxSearchRepeatBlocEvent(
                   businessService: "Contract",
                   limit: 10,
@@ -95,12 +106,13 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   tenantId: GlobalVariables.tenantId!,
                 ),
               );
-        } else {
+        }
+        else {
           context.read<WorkOrderInboxBloc>().add(
                 WorkOrderInboxBlocCreateEvent(
                   businessService: "MB",
                   limit: 10,
-                  moduleName: 'measurement-module',
+                  moduleName: 'contract-service',
                   offset: s,
                   tenantId: GlobalVariables.tenantId!,
                 ),
@@ -342,7 +354,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
                                   return WorkOrderCard(
                                     widget1: CommonTextButtonUnderline(
-                                      label: 'View Details',
+                                      label: t.translate(i18.common.viewDetails),
                                       onPressed: () {
                                         // context
                                         //     .read<MeasurementDetailBloc>()

@@ -676,18 +676,18 @@ class MBLogic {
           // 'length': measure.length,
           // 'height':measure.height,
           // end of old code clean working
-          'breadth': measure.numItems == 0.0 ? 0.0 : 1.0,
-          'length': measure.numItems == 0.0 ? 0.0 : 1.0,
-          'height': measure.numItems == 0.0 ? 0.0 : 1.0,
+          'breadth': (measure.numItems == 0.0 ||measure.numItems! < 0.0) ? 0.0 : 1.0,
+          'length': (measure.numItems == 0.0 ||measure.numItems! < 0.0) ? 0.0 : 1.0,
+          'height': (measure.numItems == 0.0 ||measure.numItems! < 0.0) ? 0.0 : 1.0,
           'isActive': measure.isActive,
           'referenceId': measure.referenceId,
-          'numItems': measure.numItems,
+          'numItems': (measure.numItems! < 0.0)?(measure.numItems!*-1):measure.numItems,
           'id': measure.id,
           'cumulativeValue': measure.cumulativeValue,
           'currentValue': measure.currentValue,
           'additionalDetails': {
             'type': measure.measureAdditionalDetails?.type,
-            'mbAmount': measure.measureAdditionalDetails?.mbAmount,
+            'mbAmount': (measure.measureAdditionalDetails!.mbAmount!<0)?(measure.measureAdditionalDetails!.mbAmount!)*-1:measure.measureAdditionalDetails!.mbAmount,
             'measureLineItems': measureListFilter(measure),
           },
         };

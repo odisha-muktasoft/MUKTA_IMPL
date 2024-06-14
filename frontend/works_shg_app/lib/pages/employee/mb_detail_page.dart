@@ -134,8 +134,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 // String msg =
                 //     "WF_MB_ACTION_${value.measurement?.workflow?.action}";
 
-                if (
-                    widget.type == MBScreen.update) {
+                if (widget.type == MBScreen.update) {
                   context.read<MusterGetWorkflowBloc>().add(
                         //hard coded
                         FetchMBWorkFlowEvent(
@@ -166,18 +165,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                     (route) => route is! PopupRoute,
                   );
                   context.router.popUntilRouteWithPath('home');
-                }
-                else if((value.measurement!.wfStatus == "DRAFTED") &&
-                    widget.type == MBScreen.create)
-                    {
-
-                      Navigator.of(
+                } else if ((value.measurement!.wfStatus == "DRAFTED") &&
+                    widget.type == MBScreen.create) {
+                  Navigator.of(
                     context,
                     rootNavigator: true,
                   ).popUntil(
                     (route) => route is! PopupRoute,
                   );
-                    }
+                }
 
                 Notifiers.getToastMessage(
                     context,
@@ -939,13 +935,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 const EdgeInsets
                                                                         .only(
                                                                     bottom:
-                                                                        8.0),
+                                                                        0.0),
                                                             child: Column(
                                                               children: [
-                                                                 DigitInfoCard(
-                                                                  title: t.translate(i18.common.info),
-                                                                  description:
-                                                                      t.translate(i18.measurementBook.infoImageTip),
+                                                                DigitInfoCard(
+                                                                  title: t.translate(
+                                                                      i18.common
+                                                                          .info),
+                                                                  description: t
+                                                                      .translate(i18
+                                                                          .measurementBook
+                                                                          .infoImageTip),
                                                                 ),
                                                                 InkWell(
                                                                   onTap: () =>
@@ -994,7 +994,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 const EdgeInsets
                                                                         .only(
                                                                     bottom:
-                                                                        8.0),
+                                                                        2.0),
                                                             child: InkWell(
                                                               onTap: () =>
                                                                   CommonMethods()
@@ -1074,9 +1074,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               ...[modifiedData.first],
                                               ...modifiedData
                                             ];
-                                          }
-                                          else if(modifiedData.isNotEmpty ){
-                                             modifiedData = [
+                                          } else if (modifiedData.isNotEmpty) {
+                                            modifiedData = [
                                               ...[modifiedData.first],
                                               ...modifiedData
                                             ];
@@ -1264,7 +1263,7 @@ class _MBDetailPageState extends State<MBDetailPage>
             ? 350
             : photo == 5
                 ? (photo * 110)
-                : (photo * 120) + 100;
+                : (photo * 120) + 108;
       default:
         return 350.0;
     }
@@ -1300,6 +1299,18 @@ class _MBDetailPageState extends State<MBDetailPage>
             return double.parse((double.parse(sum) + m.toDouble()).toString())
                 .toStringAsFixed(4);
           });
+
+    final doubtamout = (magic.fold(0.0, (sum, obj) {
+      double m = 0.00;
+      if (obj.contracts?.first.estimates?.first.isDeduction == true) {
+        m = -(obj.mbAmount ?? 0.00); // Negate the amount for deductions
+      } else {
+        m = (obj.mbAmount ?? 0.00);
+      }
+      return sum + m;
+    })).toStringAsFixed(2);
+
+    print(doubtamout);
 
     return Card(
       child: SizedBox(
@@ -1442,10 +1453,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                 controller: TextEditingController()
                   ..value
                   ..text = (magic.fold(0.0, (sum, obj) {
-                    double m = obj.mbAmount ?? 0.00;
+                    double m = obj.mbAmount != null
+                        ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                            ? (obj.mbAmount! * (-1))
+                            : obj.mbAmount!
+                        : 0.00;
                     if (obj.contracts?.first.estimates?.first.isDeduction ==
                         true) {
-                      m = -m; // Negate the amount for deductions
+                      m = -(m); // Negate the amount for deductions
+                    } else {
+                      m = (m);
                     }
                     return sum + m;
                   })).toStringAsFixed(2),
