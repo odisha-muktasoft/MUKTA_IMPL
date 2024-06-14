@@ -182,6 +182,9 @@ class Period with _$Period {
   const factory Period({
     @JsonKey(name: 'startDate') int? startDate,
     @JsonKey(name: 'endDate') int? endDate,
+    @JsonKey(name:'message')String? message,
+    @JsonKey(name:'type')String? type,
+
   }) = _Period;
 
   factory Period.fromJson(

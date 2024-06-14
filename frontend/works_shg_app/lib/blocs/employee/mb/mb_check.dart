@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/data/repositories/employee_repository/estimate.dart';
+import 'package:works_shg_app/models/exception/custom_msg_exception.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
@@ -36,8 +37,8 @@ class MeasurementCheckBloc
           .fetchMbDetail(url: Urls.measurementService.measurementDetail, body: {
         "contractNumber": event.contractNumber,
         "tenantId": GlobalVariables.tenantId,
-        "measurementNumber": event.measurementNumber,
-        "key": "View",
+        // "measurementNumber": event.measurementNumber,
+        // "key": "View",
       });
       final resEstimate = await EstimateRepository(client.init()).loadEstimate(
         url: Urls.estimateService.estimateSearch,
@@ -50,39 +51,51 @@ class MeasurementCheckBloc
       bool? workOrderStatus;
       bool? estimateStatus;
       bool? existingMB;
-      if (res.allMeasurements is! List) {
-        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||
-                res.contract!.wfStatus == "ACCEPTED")
-            ? true
-            : false;
-        estimateStatus =
-            resEstimate.estimates?.first.wfStatus == "APPROVED" ? true : false;
-
-        existingMB = true;
+      if (res.period != null && res.period?.message != null) {
+        throw CustomException(res.period?.message! ?? "");
       } else {
-        workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||
-                res.contract!.wfStatus == "ACCEPTED")
-            ? true
-            : false;
-        estimateStatus =
-            resEstimate.estimates?.first.wfStatus == "APPROVED" ? true : false;
+        if (res.allMeasurements is! List) {
+          workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||
+                  res.contract!.wfStatus == "ACCEPTED")
+              ? true
+              : false;
+          estimateStatus = resEstimate.estimates?.first.wfStatus == "APPROVED"
+              ? true
+              : false;
 
-        existingMB = (res.allMeasurements[0]['wfStatus'] == "APPROVED" ||
-                res.allMeasurements[0]['wfStatus'] == "REJECTED")
-            ? true
-            : false;
+          existingMB = true;
+        } else {
+          workOrderStatus = (res.contract!.wfStatus == "APPROVED" ||
+                  res.contract!.wfStatus == "ACCEPTED")
+              ? true
+              : false;
+          estimateStatus = resEstimate.estimates?.first.wfStatus == "APPROVED"
+              ? true
+              : false;
+
+          existingMB = (res.allMeasurements[0]['wfStatus'] == "APPROVED" ||
+                  res.allMeasurements[0]['wfStatus'] == "REJECTED")
+              ? true
+              : false;
+        }
+
+        emit(
+          MeasurementCheckState.loaded(
+            workOrderStatus,
+            estimateStatus,
+            existingMB,
+            event.contractNumber,
+          ),
+        );
       }
-
-      emit(
-        MeasurementCheckState.loaded(
-          workOrderStatus,
-          estimateStatus,
-          existingMB,
-          event.contractNumber,
-        ),
-      );
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+      emit(MeasurementCheckState.error(e.toString()));
+    } on CustomException catch (e) {
+      emit(MeasurementCheckState.error(e.toString()));
+    } on Exception catch (e) {
+      // Handle all other types of exceptions
+
       emit(MeasurementCheckState.error(e.toString()));
     }
   }

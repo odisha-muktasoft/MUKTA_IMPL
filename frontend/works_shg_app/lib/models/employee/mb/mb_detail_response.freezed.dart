@@ -2628,6 +2628,10 @@ mixin _$Period {
   int? get startDate => throw _privateConstructorUsedError;
   @JsonKey(name: 'endDate')
   int? get endDate => throw _privateConstructorUsedError;
+  @JsonKey(name: 'message')
+  String? get message => throw _privateConstructorUsedError;
+  @JsonKey(name: 'type')
+  String? get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2641,7 +2645,9 @@ abstract class $PeriodCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'startDate') int? startDate,
-      @JsonKey(name: 'endDate') int? endDate});
+      @JsonKey(name: 'endDate') int? endDate,
+      @JsonKey(name: 'message') String? message,
+      @JsonKey(name: 'type') String? type});
 }
 
 /// @nodoc
@@ -2659,6 +2665,8 @@ class _$PeriodCopyWithImpl<$Res, $Val extends Period>
   $Res call({
     Object? startDate = freezed,
     Object? endDate = freezed,
+    Object? message = freezed,
+    Object? type = freezed,
   }) {
     return _then(_value.copyWith(
       startDate: freezed == startDate
@@ -2669,6 +2677,14 @@ class _$PeriodCopyWithImpl<$Res, $Val extends Period>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as int?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -2681,7 +2697,9 @@ abstract class _$$_PeriodCopyWith<$Res> implements $PeriodCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'startDate') int? startDate,
-      @JsonKey(name: 'endDate') int? endDate});
+      @JsonKey(name: 'endDate') int? endDate,
+      @JsonKey(name: 'message') String? message,
+      @JsonKey(name: 'type') String? type});
 }
 
 /// @nodoc
@@ -2696,6 +2714,8 @@ class __$$_PeriodCopyWithImpl<$Res>
   $Res call({
     Object? startDate = freezed,
     Object? endDate = freezed,
+    Object? message = freezed,
+    Object? type = freezed,
   }) {
     return _then(_$_Period(
       startDate: freezed == startDate
@@ -2706,6 +2726,14 @@ class __$$_PeriodCopyWithImpl<$Res>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as int?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -2715,7 +2743,9 @@ class __$$_PeriodCopyWithImpl<$Res>
 class _$_Period implements _Period {
   const _$_Period(
       {@JsonKey(name: 'startDate') this.startDate,
-      @JsonKey(name: 'endDate') this.endDate});
+      @JsonKey(name: 'endDate') this.endDate,
+      @JsonKey(name: 'message') this.message,
+      @JsonKey(name: 'type') this.type});
 
   factory _$_Period.fromJson(Map<String, dynamic> json) =>
       _$$_PeriodFromJson(json);
@@ -2726,10 +2756,16 @@ class _$_Period implements _Period {
   @override
   @JsonKey(name: 'endDate')
   final int? endDate;
+  @override
+  @JsonKey(name: 'message')
+  final String? message;
+  @override
+  @JsonKey(name: 'type')
+  final String? type;
 
   @override
   String toString() {
-    return 'Period(startDate: $startDate, endDate: $endDate)';
+    return 'Period(startDate: $startDate, endDate: $endDate, message: $message, type: $type)';
   }
 
   @override
@@ -2739,12 +2775,15 @@ class _$_Period implements _Period {
             other is _$_Period &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate));
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, startDate, endDate);
+  int get hashCode =>
+      Object.hash(runtimeType, startDate, endDate, message, type);
 
   @JsonKey(ignore: true)
   @override
@@ -2763,7 +2802,9 @@ class _$_Period implements _Period {
 abstract class _Period implements Period {
   const factory _Period(
       {@JsonKey(name: 'startDate') final int? startDate,
-      @JsonKey(name: 'endDate') final int? endDate}) = _$_Period;
+      @JsonKey(name: 'endDate') final int? endDate,
+      @JsonKey(name: 'message') final String? message,
+      @JsonKey(name: 'type') final String? type}) = _$_Period;
 
   factory _Period.fromJson(Map<String, dynamic> json) = _$_Period.fromJson;
 
@@ -2773,6 +2814,12 @@ abstract class _Period implements Period {
   @override
   @JsonKey(name: 'endDate')
   int? get endDate;
+  @override
+  @JsonKey(name: 'message')
+  String? get message;
+  @override
+  @JsonKey(name: 'type')
+  String? get type;
   @override
   @JsonKey(ignore: true)
   _$$_PeriodCopyWith<_$_Period> get copyWith =>

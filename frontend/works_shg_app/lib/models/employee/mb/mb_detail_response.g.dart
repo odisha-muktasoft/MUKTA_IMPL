@@ -217,11 +217,15 @@ Map<String, dynamic> _$$_MeasurementAdditionalDetailToJson(
 _$_Period _$$_PeriodFromJson(Map<String, dynamic> json) => _$_Period(
       startDate: json['startDate'] as int?,
       endDate: json['endDate'] as int?,
+      message: json['message'] as String?,
+      type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$_PeriodToJson(_$_Period instance) => <String, dynamic>{
       'startDate': instance.startDate,
       'endDate': instance.endDate,
+      'message': instance.message,
+      'type': instance.type,
     };
 
 _$_Estimate _$$_EstimateFromJson(Map<String, dynamic> json) => _$_Estimate(
