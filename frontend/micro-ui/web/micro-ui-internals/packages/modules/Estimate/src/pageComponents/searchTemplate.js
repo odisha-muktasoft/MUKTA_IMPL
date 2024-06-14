@@ -6,33 +6,44 @@ const fetchTemplateData = async (searchText, setShowToast) => {
   //method to fetch the data for estimate template
   const tenantId = Digit.ULBService.getCurrentTenantId();
   let requestCriteria = {
-    url: "/mdms-v2/v2/_search",
+    url: "/mdms-v2/v1/_search",
     body: {
       MdmsCriteria: {
-        tenantId: tenantId?.split(".")[0],
-        schemaCode: "WORKS.EstimateTemplate",
-        limit: 100,
-        offset: 0,
-        filters: {}
+        tenantId: tenantId,
+        // schemaCode: "WORKS.EstimateTemplate",
+        // limit: 100,
+        // offset: 0,
+        // filters: {}
+        "moduleDetails": [
+          {
+              "moduleName": "WORKS",
+              "masterDetails": [
+                  {
+                      "name": "EstimateTemplate",
+                      "filter": searchText?.startsWith("TMP_") ? `$[?(@.templateId=~/${searchText}/i   )]` : `$[?(@.templateName=~/.*${searchText}.*/i    )]`
+                  }
+              ]
+          }
+      ]
       }
     }
   };
 
   //either search with Template id or name
-  if (searchText.startsWith("TMP_")) {
-    requestCriteria.body.MdmsCriteria.filters.templateId = searchText;
-  } else if (searchText.length >= 3) {
-    requestCriteria.body.MdmsCriteria.filters.templateName = searchText;
-  } else {
-    setShowToast({ show: true, error: true, label: "WORKS_MINIMUM_CHAR_ERROR" });
-    return [];
-  }
+  // if (searchText.startsWith("TMP_")) {
+  //   requestCriteria.body.MdmsCriteria.filters.templateId = searchText;
+  // } else if (searchText.length >= 3) {
+  //   requestCriteria.body.MdmsCriteria.filters.templateName = searchText;
+  // } else {
+  //   setShowToast({ show: true, error: true, label: "WORKS_MINIMUM_CHAR_ERROR" });
+  //   return [];
+  // }
 
   try {
     const data = await Digit.CustomService.getResponse(requestCriteria);
-    if (data?.mdms?.length > 0) {
+    if (data?.MdmsRes?.WORKS?.EstimateTemplate?.length > 0) {
         setShowToast({ show: false, label: "", error: false })
-      return data?.mdms;
+      return data?.MdmsRes?.WORKS?.EstimateTemplate;
      } 
     //else {
     //   setShowToast({ show: true, error: true, label: "WORKS_TEMPLATE_NOT_FOUND_ERROR" });
@@ -116,7 +127,8 @@ const searchTemplate = (props) => {
   useEffect(() => {
     //if the text reaches minimun of 3 character it should search
     if (stateData.searchText.length >= 3) {
-      fetchTemplateData(stateData.searchText, setShowToast).then((resp) => setSuggestions(resp));
+      fetchTemplateData(stateData.searchText, setShowToast).then((resp) => {
+        setSuggestions(resp)});
     }
   }, [stateData.searchText]);
 
@@ -152,7 +164,7 @@ const buttonClick = async () => {
     // }
   
     // Transform SOR and non-SOR items
-    let transformedItems = stateData?.selectedTemplate?.data?.lineItems.map(item => ({
+    let transformedItems = stateData?.selectedTemplate?.lineItems.map(item => ({
       sNo: 1,
       description: item.description,
       uom: item.uom,
@@ -169,14 +181,14 @@ const buttonClick = async () => {
       sorId: item.sorCode,
     }));
 
-    transformedItems = transformedItems.filter(item => {
+    transformedItems = transformedItems?.filter(item => {
         if (item.category === "NON-SOR") return true; // Always include NON-SOR items
         return !formData.some(existingItem => existingItem.sorCode === item.sorCode);
       });
   
     try {
       // Fetch rates for SOR items
-      const sorItems = transformedItems.filter(item => item.category === "SOR");
+      const sorItems = transformedItems?.filter(item => item.category === "SOR") || [];
       for (const sor of sorItems) {
         const apiData = await fetchData(sor.sorCode, formData, setFormValue, setShowToast);
         if (apiData !== undefined && apiData?.[0]?.sorId === sor.sorId) {
@@ -191,11 +203,11 @@ const buttonClick = async () => {
       let updatedFormData = [...formData, ...transformedItems?.filter(item => item.category === "SOR")];
   
       // Remove any placeholder entries if present
-      updatedFormData = updatedFormData.filter(item => item.description);
+      updatedFormData = updatedFormData?.filter(item => item.description);
   
       setFormValue(updatedFormData);
       let updateNonsorFormdata = [...formNonSORdata, ...transformedItems?.filter(item => item.category === "NON-SOR")];
-      updateNonsorFormdata = updateNonsorFormdata.filter(item => item.description);
+      updateNonsorFormdata = updateNonsorFormdata?.filter(item => item.description);
       setNonSORFormValue(updateNonsorFormdata);
       setStateData({ ...stateData, SORSubType: null, SORVariant: null, selectedTemplate: null });
     } catch (error) {
@@ -206,12 +218,10 @@ const buttonClick = async () => {
   };
 
   const handleSelectOption = (option) => {
-    if (option?.id) {
       setStateData({...stateData, selectedTemplate:option});
-      setInputValue(option?.data?.templateName);
+      setInputValue(option?.templateName);
       setSelectedTemplate(option);
       setSuggestions([]);
-    }
   };
 
   return (
@@ -232,7 +242,7 @@ const buttonClick = async () => {
               <ul className="suggestions-sor" style={{ zIndex: "10", maxHeight: "33rem", overflow: "auto" }}>
                 {suggestions.map((option) => (
                   <li key={option.id} onClick={() => handleSelectOption(option)}>
-                    {option.data.templateName}
+                    {option?.templateName}
                   </li>
                 ))}
               </ul>
