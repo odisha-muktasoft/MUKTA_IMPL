@@ -469,5 +469,7 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get noService=>"NO_SERVICE_AVAILABLE";
  String get infoImageTip=>"INFO_CARD_IMAGE";
  String get mbNotFound=>"MB_NUMBER_NOT_FOUND";
+ String get imageLimit=>"MB_IMGAE_LIMIT";
+ String get imageSize=>"MB_FILE_SIZE";
 
 }

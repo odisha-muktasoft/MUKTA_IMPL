@@ -923,6 +923,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                   ),
                                                 )
                                               : DigitCard(
+                                                
                                                   child: ListView.builder(
                                                       physics:
                                                           const NeverScrollableScrollPhysics(),
@@ -935,7 +936,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 const EdgeInsets
                                                                         .only(
                                                                     bottom:
-                                                                        0.0),
+                                                                        8.0),
                                                             child: Column(
                                                               children: [
                                                                 DigitInfoCard(
@@ -994,7 +995,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 const EdgeInsets
                                                                         .only(
                                                                     bottom:
-                                                                        2.0),
+                                                                        8.0),
                                                             child: InkWell(
                                                               onTap: () =>
                                                                   CommonMethods()
@@ -1259,14 +1260,31 @@ class _MBDetailPageState extends State<MBDetailPage>
       case 1:
         return nonSork == 0 ? 300 : nonSork * 500;
       case 2:
-        return photo == 0
-            ? 350
-            : photo == 5
-                ? (photo * 110)
-                : (photo * 120) + 108;
+        return photoSize(photo);
       default:
         return 350.0;
     }
+  }
+
+ double photoSize(int photok){
+
+switch (photok) {
+  case 1:
+   return  (photok * 115) + 112;
+   case 2:
+   return  (photok * 100) + 88;
+   case 3:
+   return  (photok * 100) + 80;
+   case 4:
+   return  (photok * 90) + 80;
+   case 5:
+   return  (photok * 80) + 80;
+   
+    
+  default:
+  return 350;
+}
+     
   }
 
   Card sorCard(

@@ -94,12 +94,16 @@ class FilePickerDemoState extends State<FilePickerDemo> {
         for (var path in paths) {
           if (!(await CommonMethods.isValidFileSize(path.size)))
             isNotValidSize = true;
+          if (isNotValidSize) {
+            widget.headerType == MediaType.mbDetail
+                ? Notifiers.getToastMessage(
+                    context, i18.measurementBook.imageSize, 'ERROR')
+                : Notifiers.getToastMessage(
+                    context, i18.common.accountType, 'ERROR');
+            return;
+          }
         }
 
-        if (isNotValidSize) {
-          Notifiers.getToastMessage(context, i18.common.accountType, 'ERROR');
-          return;
-        }
         if (_multiPick) {
           if ((_selectedFiles
                       .where((element) => element.isActive == true)
@@ -107,7 +111,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                   paths.length) >
               5) {
             Notifiers.getToastMessage(
-                context, "You can only upload up to 5 files.", 'ERROR');
+                context, i18.measurementBook.imageLimit, 'ERROR');
             return;
           } else {
             //  _selectedFiles.addAll(paths);
@@ -125,7 +129,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                 5 ||
             files.length > 5) {
           Notifiers.getToastMessage(
-              context, "You can only upload up to 5 files.", 'ERROR');
+              context, i18.measurementBook.imageLimit, 'ERROR');
           return;
         } else {
           uploadFiles(files);
@@ -272,7 +276,8 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                       //TODO:[level change]
                       // "Choose File",
                       style: TextStyle(
-                          color: const DigitColors().burningOrange, fontSize: 16),
+                          color: const DigitColors().burningOrange,
+                          fontSize: 16),
                     ),
                   )),
               _selectedFiles
@@ -318,9 +323,9 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                                     )).toList()),
                       ),
                     )
-                  :  Text(
-                       AppLocalizations.of(context).translate(i18.common.noFileSelected),
-                      
+                  : Text(
+                      AppLocalizations.of(context)
+                          .translate(i18.common.noFileSelected),
                       style: const TextStyle(color: Colors.black, fontSize: 16),
                     ),
               Row(
@@ -540,7 +545,12 @@ class FilePickerDemoState extends State<FilePickerDemo> {
       spacing: 8,
       children: [
         IconButton(
-            onPressed: () => callBack(label), iconSize: 45, icon: Icon(icon,color: const DigitColors().burningOrange,)),
+            onPressed: () => callBack(label),
+            iconSize: 45,
+            icon: Icon(
+              icon,
+              color: const DigitColors().burningOrange,
+            )),
         Text(
           AppLocalizations.of(context).translate(label),
           textAlign: TextAlign.center,
