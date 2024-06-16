@@ -10,7 +10,6 @@
     "packages/modules/*",
     "packages/modules/Estimate",
     "packages/modules/Expenditure",
-    "packages/modules/*",
         "packages/Mukta",
     "packages/modules/RateAnalysis"
   ],
