@@ -3,8 +3,6 @@ import { AddIcon, TextInput, Amount, Button, Dropdown, Loader, DeleteIcon, TextA
 import React, { Fragment, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import UtilMeasureCard from "./util/UtilMeasureCard";
-
 let defaultSOR = {
   amount: 0,
   consumedQ: 0,
@@ -43,4 +41,3 @@ function hasDecimalPlaces(number, decimalPlaces) {
   var regex = new RegExp(`^[0-9]+(\\.[0-9]{0,${decimalPlaces}})?$`);
   return regex.test(numStr);
 }
-
