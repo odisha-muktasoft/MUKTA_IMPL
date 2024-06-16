@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { transformEstimateObjects } from "../../util/estimateConversion";
-import { transformStatementData } from "../../util/EstimateData";
+import { transformStatementData ,sortSorsBasedonType} from "../../util/EstimateData";
 
-export const data = (statementDetails) => {
-    debugger;
+export const data = (statementDetails,rawData) => {
+   
   const [viewData, setViewData] = useState({ SOR: [], NONSOR: [] });
-
-//   const documents = estimateDetails?.additionalDetails?.documents
-//     .filter((item) => item.fileStoreId) // Remove items without fileStoreId
-//     .map((item) => ({
-//       title: item.fileType || "NA",
-//       documentType: item.fileType || "NA",
-//       documentUid: item.documentUid || "NA",
-//       fileStoreId: item.fileStoreId || "NA",
-//     }));
-
-//     const Projectdocuments = projectDetails?.documents?.filter((item) => item?.fileStoreId)
-//     .map((item) => ({
-//       title: `PROJECT_${item.additionalDetails?.fileName}` || "NA",
-//       ...item
-//     }));
+  const [sorted, setSorted] = useState([]);
 
   const headerLocale = Digit.Utils.locale.getTransformedLocale(statementDetails?.tenantId);
   //const geoLocationValue = estimateDetails?.address?.latitude && estimateDetails?.address?.longitude ? `${estimateDetails?.address?.latitude}, ${estimateDetails?.address?.longitude}` : "NA";
-
+   let data=sortSorsBasedonType(rawData);
+ 
   useEffect(() => {
-    debugger;
+    
     const processArrays = () => {
       if (statementDetails && !(viewData?.nestedData)) {
         //Transforming the estimate search response according to formdata 
@@ -33,18 +20,14 @@ export const data = (statementDetails) => {
             nestedData: transformStatementData(statementDetails),
           //NONSOR: transformEstimateObjects(estimateDetails, "NON-SOR", {}, allDetailedEstimate),
         });
+       
+        
       }
     };
     processArrays();
-  }, [statementDetails]);
+  }, [statementDetails,sorted]);
 
-//   const getRedirectionCallback = () => {
-//     if(revisionNumber)
-//     window.location.href = `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${estimateDetails?.tenantId}&projectNumber=${estimateDetails?.additionalDetails?.projectNumber}&revisionNumber=${estimateDetails?.revisionNumber}&estimateNumber=${estimateDetails?.estimateNumber}&isEditRevisionEstimate=true`
-//     else
-//     window.location.href = `/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${estimateDetails?.tenantId}&projectNumber=${estimateDetails?.additionalDetails?.projectNumber}&estimateNumber=${estimateDetails?.estimateNumber}&isEdit=true`
-// }
-console.log(viewData);
+ 
   return {
     cards: [
       {
@@ -134,28 +117,30 @@ console.log(viewData);
           }
         ],
       },
-      {
-        navigationKey: "card1",
-        sections: [
-          {
-            type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
-            component: "GroupedTable",
-            props: {
-              config: {
-                key: "SOR",
-                mode: "VIEWES",
-              },
-              arrayProps: {
-                fields: viewData?.nestedData,
-                type: "M"
-              },
-              register: () => {},
-              setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
-            },
-          }
-        ],
-      },
+      // {
+      //   navigationKey: "card1",
+      //   sections: [
+      //     {
+      //       type: "COMPONENT",
+      //       cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+      //       component: "GroupedTable",
+      //       props: {
+      //         config: {
+      //           key: "SOR",
+      //           mode: "VIEWES",
+      //         },
+      //         arrayProps: {
+      //           fields: sorted.filter(item => item.type === 'M'),
+      //           type: "M"
+      //         },
+      //         register: () => {},
+      //         setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
+      //       },
+      //     }
+      //   ],
+      // },
+
+
     //   {
     //     navigationKey: "card1",
     //     sections: [

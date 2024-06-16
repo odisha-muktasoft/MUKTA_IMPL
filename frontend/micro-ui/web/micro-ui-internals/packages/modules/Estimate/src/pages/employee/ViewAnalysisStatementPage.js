@@ -448,7 +448,7 @@ const ViewAnalysisStatement = () => {
 //     },
 //   };
 
-  const config = data(statement?.[0]);
+  const config = data(statement?.[0],statement);
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
 

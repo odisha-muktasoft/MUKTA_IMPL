@@ -22,6 +22,7 @@ import UpdateDetailedEstimate from "./pages/employee/Estimates/CreateDetailedEst
 import CreateRevisionDetailedEstimate from "./pages/employee/Estimates/CreateDetailedEstimate/CreateRevisionDetailedEstimate";
 import UpdateRevisionDetailedEstimate from "./pages/employee/Estimates/CreateDetailedEstimate/UpdateRevisionDetailedEstimate";
 import EstimateMeasureTableWrapper from "./pageComponents/EstimateMeasureTableWrapper";
+import ViewStatement from "./components/ViewStatement";
 
 const EstimateModule = ({ stateCode, userType, tenants }) => {
     const { path, url } = useRouteMatch();
@@ -62,7 +63,9 @@ const componentsToRegister = {
     UpdateDetailedEstimate,
     CreateRevisionDetailedEstimate,
     UpdateRevisionDetailedEstimate,
-    EstimateMeasureTableWrapper
+    EstimateMeasureTableWrapper,
+    ViewStatement,
+    
 
 };
 

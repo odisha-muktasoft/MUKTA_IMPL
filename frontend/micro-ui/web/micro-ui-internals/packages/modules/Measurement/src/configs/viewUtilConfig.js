@@ -1,196 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { transformEstimateData, findMusterRollNumber } from "../utils/transformEstimateData";
+import { transformEstimateObjects } from "../../../Estimate/util/estimateConversion";
+import { transformStatementData, sortSorsBasedonType } from "../../../Estimate/util/EstimateData";
+import { sortedFIlteredData } from "../utils/view_utilization";
 
-export const viewUtilData = (
-  contract,
-  estimateDetails,
-  measurement,
-  allMeasurements,
-  thumbnails,
-  projectLocation,
-  period,
-  musterRollNumber,
-  musterRolls
-) => {
-  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [] });
+export const data = (statementDetails, rawData) => {
+  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [] });
 
-  useEffect(() => {
-    const processArrays = () => {
-      if (estimateDetails) {
-        setViewData({
-          SOR: transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements,true),
-          NONSOR: transformEstimateData(estimateDetails?.estimateDetails, contract, "NON-SOR", measurement, allMeasurements,true),
-        });
+  const headerLocale = Digit.Utils.locale.getTransformedLocale(statementDetails?.tenantId);
 
-       
-      }
-    };
-    processArrays();
-  }, [estimateDetails]);
-
-  let musterrollNumber = findMusterRollNumber(
-    musterRolls,
-    measurement?.measurementNumber,
-    measurement?.additionalDetails?.startDate,
-    measurement?.additionalDetails?.endDate
-  );
-
-  return {
-    cards: [
-      {
-        sections: [
-          {
-            type: "COMPONENT",
-            cardHeader: { value: "SOR Wise Machinery", inlineStyles: {} },
-            component: "ViewUtilTable",
-            props: {
-              config: {
-                key: "SOR",
-                mode: "VIEW",
-              },
-              arrayProps: {
-                fields: viewData?.SOR,
-              },
-              register: () => {},
-              setValue: (key, value) => setViewData((old) => ({ ...old, SOR: value })),
-            },
-          },
-        ],
-      },
-    ],
-    apiResponse: {},
-    additionalDetails: {},
-    horizontalNav: {
-      showNav: false,
-      configNavItems: [],
-      activeByDefault: "",
-    },
+  const processArrays = () => {
+    if (statementDetails && !viewData?.nestedData) {
+      setViewData({
+        nestedData: transformStatementData(statementDetails),
+        sorted: sortSorsBasedonType(rawData),
+      });
+    }
   };
-};
-
-//
-
-export const viewUtilSecondData = (
-  contract,
-  estimateDetails,
-  measurement,
-  allMeasurements,
-  thumbnails,
-  projectLocation,
-  period,
-  musterRollNumber,
-  musterRolls
-) => {
-  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [] });
 
   useEffect(() => {
-    const processArrays = () => {
-      if (estimateDetails) {
-        setViewData({
-          SOR: transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements),
-          NONSOR: transformEstimateData(estimateDetails?.estimateDetails, contract, "NON-SOR", measurement, allMeasurements),
-        });
-      }
-    };
     processArrays();
-  }, [estimateDetails]);
-
-  let musterrollNumber = findMusterRollNumber(
-    musterRolls,
-    measurement?.measurementNumber,
-    measurement?.additionalDetails?.startDate,
-    measurement?.additionalDetails?.endDate
-  );
-
-  return {
-    cards: [
-      // {
-      //   navigationKey: "card1",
-      //   sections: [
-      //     {
-      //       type: "COMPONENT",
-      //       cardHeader: { value: "MB_SORS", inlineStyles: {} },
-      //       component: "EstimateMeasureTableWrapper",
-      //       props: {
-      //         config: {
-      //           key: "SOR",
-      //           mode: "VIEWES",
-      //         },
-      //         arrayProps: {
-      //           fields: viewData?.SOR,
-      //         },
-      //         register: () => {},
-      //         setValue: (key, value) => setViewData((old) => ({ ...old, SOR: value })),
-      //       },
-      //     }
-      //   ],
-      // },
-
-      {
-        sections: [
-          {
-            type: "COMPONENT",
-            cardHeader: { value: "Machinery Wise Consolidation", inlineStyles: {} },
-            component: "ViewUtilTable",
-            props: {
-              type:true,
-              config: {
-                key: "SOR",
-                mode: "VIEW",
-              },
-              arrayProps: {
-                fields: viewData?.SOR,
-              },
-              register: () => {},
-              setValue: (key, value) => setViewData((old) => ({ ...old, SOR: value })),
-            },
-          },
-        ],
-      },
-    ],
-    apiResponse: {},
-    additionalDetails: {},
-    horizontalNav: {
-      showNav: false,
-      configNavItems: [],
-      activeByDefault: "",
-    },
-  };
-};
-
-// header
-
-export const viewUtilHeaderData = (
-  contract,
-  estimateDetails,
-  measurement,
-  allMeasurements,
-  thumbnails,
-  projectLocation,
-  period,
-  musterRollNumber,
-  musterRolls
-) => {
-  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [] });
-
-  useEffect(() => {
-    const processArrays = () => {
-      if (estimateDetails) {
-        setViewData({
-          SOR: transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements),
-          NONSOR: transformEstimateData(estimateDetails?.estimateDetails, contract, "NON-SOR", measurement, allMeasurements),
-        });
-      }
-    };
-    processArrays();
-  }, [estimateDetails]);
-
-  let musterrollNumber = findMusterRollNumber(
-    musterRolls,
-    measurement?.measurementNumber,
-    measurement?.additionalDetails?.startDate,
-    measurement?.additionalDetails?.endDate
-  );
+  }, [statementDetails, rawData]);
 
   return {
     cards: [
@@ -200,21 +29,153 @@ export const viewUtilHeaderData = (
             type: "DATA",
             values: [
               {
-                key: "EXP_MATERIALCOST_RS",
-                value: measurement?.measurementNumber,
-              },
-
-              {
-                key: "ESTIMATE_LABOUR_COST",
-                value: contract?.issueDate
-                  ? Digit.DateUtils.ConvertEpochToDate(contract?.issueDate)
-                  : Digit.DateUtils.ConvertEpochToDate(estimateDetails?.proposalDate),
+                key: "STATEMENT_MATERIAL",
+                value: 100,
               },
               {
-                key: "ESTIMATE_MACHINERY_COST",
-                value: contract?.additionalDetails?.projectName,
+                key: "STATEMENT_LABOUR",
+                value: 100,
+              },
+              {
+                key: "STATEMENT_MACHINERY",
+                value: 100,
               },
             ],
+          },
+        ],
+      },
+      {
+        navigationKey: "card1",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL", inlineStyles: {} },
+            component: "ViewStatement",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+                screenType: "UTILIZATION",
+              },
+              arrayProps: {
+                fields: viewData?.nestedData,
+                type: "M",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card2",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            component: "ViewStatement",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+                screenType: "UTILIZATION",
+              },
+              arrayProps: {
+                fields: viewData?.nestedData,
+                type: "L",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card3",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            component: "ViewStatement",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+                screenType: "UTILIZATION",
+              },
+              arrayProps: {
+                fields: viewData?.nestedData,
+                type: "MH",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card1",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL", inlineStyles: {} },
+            component: "GroupedTable",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+              },
+              arrayProps: {
+                fields: sortedFIlteredData(viewData?.sorted, "M"),
+                type: "M",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData(),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card2",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            component: "GroupedTable",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+              },
+              arrayProps: {
+                fields: sortedFIlteredData(viewData?.sorted, "L"),
+                type: "L",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData(),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card3",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            component: "GroupedTable",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+              },
+              arrayProps: {
+                fields: sortedFIlteredData(viewData?.sorted, "MH"),
+                type: "MH",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData(),
+            },
           },
         ],
       },
@@ -222,9 +183,25 @@ export const viewUtilHeaderData = (
     apiResponse: {},
     additionalDetails: {},
     horizontalNav: {
-      showNav: false,
-      configNavItems: [],
-      activeByDefault: "",
+      showNav: true,
+      configNavItems: [
+        {
+          name: "card1",
+          active: true,
+          code: "Material",
+        },
+        {
+          name: "card2",
+          active: true,
+          code: "Labour",
+        },
+        {
+          name: "card3",
+          active: true,
+          code: "Machinery",
+        },
+      ],
+      activeByDefault: "card1",
     },
   };
 };

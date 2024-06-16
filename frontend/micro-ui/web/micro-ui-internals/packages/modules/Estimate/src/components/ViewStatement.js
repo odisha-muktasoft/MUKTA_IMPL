@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Amount, Loader } from "@egovernments/digit-ui-react-components";
 
 const ViewStatement = (props) => {
-  const { data, isLoading, arrayProps, getData, getNestedData } = props;
+  const { data, isLoading, arrayProps, getData, getNestedData, config } = props;
   let nestedData = arrayProps?.fields || [];
   let type = arrayProps?.type || "W";
   const { t } = useTranslation();
@@ -13,17 +13,28 @@ const ViewStatement = (props) => {
     return total + (parseFloat(row.estimatedAmount) || 0);
   }, 0);
 
+  /* need to pass the screenType 
+     - TO render the column header
+  */
+  
   const renderHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
       { key: t("SOR Type/ Sub Type"), width: "12.5%" },
       { key: t("Code"), width: "12.5%" },
-      { key: t("description"), width: "30%" },
-      { key: t("uom"), width: "12.5%" },
-      { key: t("rate"), width: "12.5%" },
-      { key: t("estimated quantity"), width: "12.5%" },
-      { key: t("estimated amount"), width: "12.5%" }
+      { key: t("Description"), width: "30%" },
+      { key: t("Uom"), width: "12.5%" },
+      { key: t("Rate"), width: "12.5%" },
     ];
+
+    if (config?.screenType === "UTILIZATION") {
+      columns.push({ key: t("Consumed Quantity"), width: "12.5%" });
+      columns.push({ key: t("Amount"), width: "12.5%" });
+    } else {
+      columns.push({ key: t("estimated quantity"), width: "12.5%" });
+      columns.push({ key: t("estimated amount"), width: "12.5%" });
+    }
+
     return columns.map((col, index) => (
       <th key={index} style={{ width: col.width }}>
         {col.key}
@@ -39,7 +50,7 @@ const ViewStatement = (props) => {
       { key: t("Unit"), width: "14.28%" },
       { key: t("Rate"), width: "14.28%" },
       { key: t("quantity"), width: "14.28%" },
-      { key: t("Amount"), width: "14.28%" }
+      { key: t("Amount"), width: "14.28%" },
     ];
     return columns.map((col, index) => (
       <th key={index} style={{ width: col.width, padding: "10px", backgroundColor: "#A6A6A6" }}>
@@ -56,7 +67,7 @@ const ViewStatement = (props) => {
         <td style={{ width: "30%" }}>{subRow.name}</td>
         <td style={{ width: "14.28%" }}>{subRow.unit}</td>
         <td style={{ width: "14.28%" }}>
-          <Amount value={parseFloat(subRow.rate).toFixed(2)} t={t} />
+          <Amount value={subRow.rate} t={t} />
         </td>
         <td style={{ width: "14.28%" }}>
           <Amount value={parseFloat(subRow.quantity).toFixed(2)} t={t} />
@@ -86,51 +97,56 @@ const ViewStatement = (props) => {
   };
 
   const renderBody = () => {
-    return nestedData.filter((ob) => ob?.type ? ob?.type === type : true).map((row, index) => {
-      const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
-      return (
-        <React.Fragment key={index}>
-          <tr>
-            <td style={{ width: "5%" }}>{row.sNo}</td>
-            <td style={{ width: "12.5%", fontWeight: "500" }}>{row.sortype}</td>
-            <td style={{ width: "12.5%" }}>{row.code}</td>
-            <td style={{ width: "30%" }}>{row.description}</td>
-            <td style={{ width: "12.5%", fontWeight: "500" }}>{row.uom}</td>
-            <td style={{ width: "12.5%", fontWeight: "500" }}>
-              <Amount value={parseFloat(row.rate).toFixed(2)} t={t} />
-            </td>
-            <td style={{ width: "12.5%", fontWeight: "500" }}>
-              <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(2)} t={t} />
-            </td>
-            <td style={{ width: "12.5%", fontWeight: "500" }}>
-              <Amount value={parseFloat(row.estimatedAmount).toFixed(2)} t={t} />
-            </td>
-          </tr>
-          {subRows.length > 0 && (
-            <React.Fragment>
-              <tr>
-                <td style={{ borderBottom: "none" }}></td>
-                <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
-                  <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
-                </td>
-              </tr>
-              <tr>
-                <td style={{ borderTop: "none" }}></td>
-                <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
-                  <table className="table sub-table" style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}>
-                    <thead>
-                      <tr>{renderSubHeader()}</tr>
-                    </thead>
-                    <tbody>{renderSubBody(subRows)}</tbody>
-                    <tfoot>{renderSubFooter(subRows)}</tfoot>
-                  </table>
-                </td>
-              </tr>
-            </React.Fragment>
-          )}
-        </React.Fragment>
-      );
-    });
+    return nestedData
+      .filter((ob) => (ob?.type ? ob?.type === type : true))
+      .map((row, index) => {
+        const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
+        return (
+          <React.Fragment key={index}>
+            <tr>
+              <td style={{ width: "5%" }}>{row.sNo}</td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>{row.sortype}</td>
+              <td style={{ width: "12.5%" }}>{row.code}</td>
+              <td style={{ width: "30%" }}>{row.description}</td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>{row.uom}</td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>
+                <Amount value={parseFloat(row.rate).toFixed(2)} t={t} />
+              </td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>
+                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(2)} t={t} />
+              </td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>
+                <Amount value={parseFloat(row.estimatedAmount).toFixed(2)} t={t} />
+              </td>
+            </tr>
+            {subRows.length > 0 && (
+              <React.Fragment>
+                <tr>
+                  <td style={{ borderBottom: "none" }}></td>
+                  <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
+                    <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ borderTop: "none" }}></td>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
+                    <table
+                      className="table sub-table"
+                      style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
+                    >
+                      <thead>
+                        <tr>{renderSubHeader()}</tr>
+                      </thead>
+                      <tbody>{renderSubBody(subRows)}</tbody>
+                      <tfoot>{renderSubFooter(subRows)}</tfoot>
+                    </table>
+                  </td>
+                </tr>
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        );
+      });
   };
 
   return (

@@ -8,50 +8,74 @@ const GroupedTable = (props) => {
   let data = props?.arrayProps?.fields || [];
   let type = props?.arrayProps?.type || "W";
   // Function to calculate totals for a specific type (M, L, MH) within subrows
-  const calculateTypeTotal = (subrows, type) => {
-    return subrows.reduce((acc, subrow) => {
-      if (subrow.type === type) {
-        acc.quantity += parseFloat(subrow.quantity) || 0;
-        acc.amount += parseFloat(subrow.amount) || 0;
-      }
-      return acc;
-    }, { quantity: 0, amount: 0 });
-  };
+ 
 
   // Function to group by SORID and calculate totals for each type
   const groupAndCalculateTotals = () => {
-    const groupedData = {};
+    let groupedData = [];
 
     // Iterate through each item in data array
-    data.forEach(item => {
-      // Iterate through each subrow of the item
-      item.subrows.forEach(subrow => {
-        const { sNo, code, description, uom, rate, sortype } = item;
 
-        // Check if the SORID (code) exists in groupedData, if not, initialize it
-        if (!groupedData[subrow.code]) {
-          groupedData[subrow.code] = {
-            sNo,
-            code: subrow.code,
-            description: subrow.name, // Use subrow name for description
-            uom: subrow.unit, // Use subrow unit for UOM
-            rate: subrow.rate,
-            sortype,
-            totalQuantity: parseFloat(subrow.quantity) || 0,
-            totalAmount: parseFloat(subrow.amount) || 0
-          };
-        } else {
-          // If SORID already exists in groupedData, update totals
-          groupedData[subrow.code].totalQuantity += parseFloat(subrow.quantity) || 0;
-          groupedData[subrow.code].totalAmount += parseFloat(subrow.amount) || 0;
-        }
+    // Iterate through each subrow of the item
+
+    data.forEach((subrow, index) => {
+      
+      const { sNo, amount, description, quantity, type, sorId } = subrow;
+
+      // Check if the SORID (code) exists in groupedData, if not, initialize it
+
+      groupedData.push({
+        sNo: index,
+        code: sorId,
+        description: description, // Use subrow name for description
+        uom: "NOs", // Use subrow unit for UOM
+        rate: "23.6",
+        type,
+        totalQuantity: parseFloat(quantity) || 0,
+        totalAmount: parseFloat(amount) || 0,
       });
     });
 
     // Convert object to array of values
-    return Object.values(groupedData);
+
+    return sortedData(groupedData);
   };
 
+  const sortedData = (groupedDataList) => {
+    const grouped = {};
+
+    groupedDataList.forEach((item) => {
+      const { sNo, code, description, uom, rate, type, totalQuantity, totalAmount } = item;
+      if (!grouped[code]) {
+        grouped[code] = {
+          sNo: sNo,
+          code: code,
+          description: description,
+          type: type,
+          uom: uom,
+          totalAmount: 0,
+          totalQuantity: 0,
+        };
+      }
+      grouped[code].totalQuantity += totalQuantity;
+      if (totalAmount !== null) {
+        grouped[code].totalAmount += totalAmount;
+      }
+    });
+
+    const result = Object.values(grouped).map((item) => ({
+      uom: "NOs", // Use subrow unit for UOM
+      rate: "23.68",
+      sNo: item?.sNo,
+      code: item?.code,
+
+      description: item?.description,
+      type: item.type,
+      totalAmount: parseFloat(item.totalAmount.toFixed(2)),
+      totalQuantity: parseFloat(item.totalQuantity.toFixed()),
+    }));
+    return result;
+  };
   // Render table header
   const renderHeader = () => {
     const columns = [
@@ -60,9 +84,8 @@ const GroupedTable = (props) => {
       { key: t("Name"), width: "25%" },
       { key: t("UOM"), width: "10%" },
       { key: t("Rate"), width: "10%" },
-      { key: t("Total M Quantity"), width: "15%" },
-      { key: t("Total L Quantity"), width: "15%" },
-      { key: t("Total MH Quantity"), width: "15%" }
+      { key: t("Quantity"), width: "15%" },
+      { key: t("Amount"), width: "15%" },
     ];
     return (
       <tr>
@@ -79,9 +102,10 @@ const GroupedTable = (props) => {
   const renderBody = () => {
     const groupedData = groupAndCalculateTotals();
 
+    let sno = 0;
     return groupedData.map((row, index) => (
       <tr key={index}>
-        <td style={{ width: "5%" }}>{row.sNo}</td>
+        <td style={{ width: "5%" }}>{++sno}</td>
         <td style={{ width: "15%" }}>{row.code}</td>
         <td style={{ width: "25%" }}>{row.description}</td>
         <td style={{ width: "10%" }}>{row.uom}</td>
@@ -89,23 +113,35 @@ const GroupedTable = (props) => {
           <Amount value={parseFloat(row.rate).toFixed(2)} t={t} />
         </td>
         <td style={{ width: "15%" }}>
-          <Amount value={parseFloat(row.totalM).toFixed(2)} t={t} />
+          <Amount value={parseFloat(row.totalQuantity).toFixed(2)} t={t} />
         </td>
         <td style={{ width: "15%" }}>
-          <Amount value={parseFloat(row.totalL).toFixed(2)} t={t} />
+          <Amount value={parseFloat(row.totalAmount).toFixed(2)} t={t} />
         </td>
-        <td style={{ width: "15%" }}>
+        {/* <td style={{ width: "15%" }}>
           <Amount value={parseFloat(row.totalMH).toFixed(2)} t={t} />
-        </td>
+        </td>*/}
       </tr>
     ));
   };
-
+  console.log(groupAndCalculateTotals(),"blore")
   return (
     <React.Fragment>
-      <table className="table reports-table">
+      <table className="table reports-table reports-table sub-work-table">
         <thead>{renderHeader()}</thead>
-        <tbody>{renderBody()}</tbody>
+        <tbody>{renderBody()}
+        {
+          groupAndCalculateTotals().length>0&&
+        <tr>
+        <td colSpan={6} style={{ width: "25%", textAlign:"right" }}>Total Amount</td>
+        <td style={{ width: "10%" }}>{
+          
+          groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)
+        }</td>
+        </tr>
+        
+        }
+        </tbody>
       </table>
     </React.Fragment>
   );

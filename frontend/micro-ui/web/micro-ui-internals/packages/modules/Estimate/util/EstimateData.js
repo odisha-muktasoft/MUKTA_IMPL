@@ -97,8 +97,67 @@ export const transformStatementData = (data) => {
     });
 
     console.log(nestedData);
-    debugger;
+    
   return nestedData;
 }
 
+
+
+export const sortSorsBasedonType = (statement) => {
+  // Function to create the array of objects based on the requirement
+  
+  let resultArray = [];
+
+  statement.forEach(item => {
+      item.sorDetails.forEach(detail => {
+          let sorId = detail.lineItems.length > 0 ? detail.lineItems[0].sorId : detail.sorId;
+          let description = null;
+          let type = null;
+          let amount = null;
+          let quantity = null;
+
+          // If lineItems exist, use them; otherwise, use basicSorDetails
+          if (detail.lineItems.length > 0) {
+              detail.lineItems.forEach(line => {
+                  line.amountDetails.forEach(amountDetail => {
+                      description = amountDetail.name;
+                      type = amountDetail.type;
+                      amount = amountDetail.amount;
+                      quantity = amountDetail.quantity;
+
+                      resultArray.push({
+                          sorId,
+                          description,
+                          type,
+                          amount,
+                          quantity
+                      });
+                  });
+              });
+          } else {
+              detail.basicSorDetails.forEach(basic => {
+                  description = basic.name;
+                  type = basic.type;
+                  amount = basic.amount;
+                  quantity = basic.quantity;
+
+                  resultArray.push({
+                      sorId,
+                      description,
+                      type,
+                      amount,
+                      quantity
+                  });
+              });
+          }
+      });
+  });
+
+  return resultArray;
+
+
+// Create the array of objects based on the provided statement data
+
+
+}
 
