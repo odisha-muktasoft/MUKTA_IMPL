@@ -31,8 +31,8 @@ const ViewStatement = (props) => {
       columns.push({ key: t("Consumed Quantity"), width: "12.5%" });
       columns.push({ key: t("Amount"), width: "12.5%" });
     } else {
-      columns.push({ key: t("estimated quantity"), width: "12.5%" });
-      columns.push({ key: t("estimated amount"), width: "12.5%" });
+      columns.push({ key: t("Estimated Quantity"), width: "12.5%" });
+      columns.push({ key: t("Estimated Amount"), width: "12.5%" });
     }
 
     return columns.map((col, index) => (
@@ -45,11 +45,11 @@ const ViewStatement = (props) => {
   const renderSubHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("code"), width: "14.28%" },
+      { key: t("Code"), width: "14.28%" },
       { key: t("Name"), width: "30%" },
       { key: t("Unit"), width: "14.28%" },
       { key: t("Rate"), width: "14.28%" },
-      { key: t("quantity"), width: "14.28%" },
+      { key: t("Quantity"), width: "14.28%" },
       { key: t("Amount"), width: "14.28%" },
     ];
     return columns.map((col, index) => (
@@ -159,7 +159,7 @@ const ViewStatement = (props) => {
         <tfoot>
           <tr>
             <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
-              {t("Grand Total")}:
+              {t("Total")}:
             </td>
             <td style={{ textAlign: "right", fontWeight: "bold" }}>
               <Amount value={grandTotal.toFixed(2)} t={t} />

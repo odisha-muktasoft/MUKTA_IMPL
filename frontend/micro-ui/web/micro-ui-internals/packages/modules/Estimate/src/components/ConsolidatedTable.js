@@ -81,11 +81,11 @@ const GroupedTable = (props) => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
       { key: t("Code"), width: "15%" },
-      { key: t("Name"), width: "25%" },
-      { key: t("UOM"), width: "10%" },
-      { key: t("Rate"), width: "10%" },
-      { key: t("Quantity"), width: "15%" },
-      { key: t("Amount"), width: "15%" },
+      { key: t("CORE_COMMON_NAME"), width: "25%" },
+      { key: t("ACTION_TEST_COMMONMASTERUOM"), width: "10%" },
+      { key: t("MB_RATE"), width: "10%" },
+      { key: t("MB_QUANTITY"), width: "15%" },
+      { key: t("MB_ONLY_AMOUNT"), width: "15%" },
     ];
     return (
       <tr>
@@ -133,7 +133,7 @@ const GroupedTable = (props) => {
         {
           groupAndCalculateTotals().length>0&&
         <tr>
-        <td colSpan={6} style={{ width: "25%", textAlign:"right" }}>Total Amount</td>
+        <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" }}>{t("MB_AMOUNT_TOTAL")}</td>
         <td style={{ width: "10%" }}>{
           
           groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)

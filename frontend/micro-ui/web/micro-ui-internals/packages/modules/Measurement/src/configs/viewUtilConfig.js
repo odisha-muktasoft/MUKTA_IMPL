@@ -118,7 +118,7 @@ export const data = (statementDetails, rawData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
               config: {
@@ -140,7 +140,7 @@ export const data = (statementDetails, rawData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
               config: {
@@ -162,7 +162,7 @@ export const data = (statementDetails, rawData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
               config: {

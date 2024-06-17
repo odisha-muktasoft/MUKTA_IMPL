@@ -319,14 +319,16 @@ const ViewUtilization = () => {
   const config = data(statement?.[0], statement);
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
-
+  const HandleDownloadPdf = () => {
+    //Digit.Utils.downloadEgovPDF('workOrder/work-order',{contractId,tenantId},`WorkOrder-${contractId}.pdf`)
+}
   return (
     <div className={"employee-main-application-details"}>
-      <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+      <div className={"employee-application-details"} style={{ marginBottom: "15px" ,marginRight:"5px"  }}>
+        <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>
           {t("Utilization Statement")}
         </Header>
-        {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}
+         <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> 
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
