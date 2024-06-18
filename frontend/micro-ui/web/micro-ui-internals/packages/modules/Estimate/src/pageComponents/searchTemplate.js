@@ -1,5 +1,5 @@
 import { Button, TextInput, Toast } from "@egovernments/digit-ui-react-components";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 const fetchTemplateData = async (searchText, setShowToast) => {
@@ -20,13 +20,15 @@ const fetchTemplateData = async (searchText, setShowToast) => {
               "masterDetails": [
                   {
                       "name": "EstimateTemplate",
-                      "filter": searchText?.startsWith("TMP_") ? `$[?(@.templateId=~/${searchText}/i   )]` : `$[?(@.templateName=~/.*${searchText}.*/i    )]`
+                      "filter": `$[?(@.templateId=~/.*${searchText}.*/i  || @.templateName=~/.*${searchText}.*/i    )]`
                   }
               ]
           }
       ]
       }
-    }
+    },
+    useCache: false,
+    setTimeParam: false
   };
 
   //either search with Template id or name
@@ -51,13 +53,13 @@ const fetchTemplateData = async (searchText, setShowToast) => {
     // }
   } catch (error) {
     console.error(error);
-    setShowToast({ show: true, error: true, label: "WORKS_API_ERROR" });
+    setShowToast({ show: true, error: true, label: "TMP_API_ERROR" });
     return [];
   }
 };
 
 
-const fetchData = async (sorid, state, setState, setShowToast) => {
+const fetchData = async (sorid, state, setState, setShowToast,t) => {
     //fetch the data of SOR recieved from estimate template
     const tenantId = Digit.ULBService.getCurrentTenantId();
     if(sorid == null)
@@ -97,11 +99,17 @@ const fetchData = async (sorid, state, setState, setShowToast) => {
           return validFromInMillis <= currentDateInMillis
             && currentDateInMillis < validToInMillis;
         });
+        if(Rates.length <= 0)
+        {
+          //setShowToast({show: true, error: true, label:`${t(`TMP_RATE_NO_ACTIVE_RATE_ERROR`)} ${sorid}`});
+          return undefined;
+        }
         return Rates;
       }
       else
       {
-        setShowToast({show: true, error: true, label:"WORKS_RATE_NOT_FOUND_ERROR"});
+        //setShowToast({show: true, error: true, label:`${t(`TMP_RATE_NOT_FOUND_ERROR`)} ${sorid}`});
+        return undefined;
       }
     } catch (error) {
       // Handle any errors here
@@ -115,6 +123,7 @@ const searchTemplate = (props) => {
   const [selectedTemplate, setSelectedTemplate] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const menuRef = useRef();
   const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
   const { register, setValue, watch } = props;
   let formData = watch("SOR");
@@ -128,7 +137,15 @@ const searchTemplate = (props) => {
     //if the text reaches minimun of 3 character it should search
     if (stateData.searchText.length >= 3) {
       fetchTemplateData(stateData.searchText, setShowToast).then((resp) => {
-        setSuggestions(resp)});
+        if(resp && resp?.length > 0)
+        {   
+          setSuggestions(resp)
+        }
+        else
+        {
+        setSuggestions([{ templateName: t("TMP_NO_MATCHING_SOR") }]);
+        }
+      });
     }
   }, [stateData.searchText]);
 
@@ -136,6 +153,12 @@ const searchTemplate = (props) => {
     setStateData({ ...stateData, searchText: event.target.value });
     setInputValue(event.target.value);
   };
+
+  const closeMenu = () => {
+    setSuggestions([]);
+}
+
+  Digit.Hooks.useClickOutside(menuRef, closeMenu, suggestions);
 
   const setFormValue = useCallback(
     (value) => {
@@ -171,7 +194,7 @@ const buttonClick = async () => {
       category: item.lineItemType,
       approvedQuantity: item.quantity,
       consumedQ: 0,
-      sorType: item.sorType,
+      sorType: item.type,
       sorSubType: item.subType,
       sorCode: item.sorCode,
       currentMBEntry: 0,
@@ -189,18 +212,25 @@ const buttonClick = async () => {
     try {
       // Fetch rates for SOR items
       const sorItems = transformedItems?.filter(item => item.category === "SOR") || [];
+      let ratesErrorSorIds = [];
       for (const sor of sorItems) {
-        const apiData = await fetchData(sor.sorCode, formData, setFormValue, setShowToast);
+        const apiData = await fetchData(sor.sorCode, formData, setFormValue, setShowToast,t);
         if (apiData !== undefined && apiData?.[0]?.sorId === sor.sorId) {
           sor.unitRate = apiData?.[0]?.rate || 0;
           sor.amountDetails = apiData?.[0]?.amountDetails;
         } else {
+          ratesErrorSorIds.push(sor?.sorCode);
           console.error('Rates not available in fetchData response');
         }
       }
+
+      if(ratesErrorSorIds?.length > 0)
+      {
+        setShowToast({show: true, error: true, label:`${t(`TMP_RATE_NOT_FOUND_OR_ACTIVE_ERROR`)} ${ratesErrorSorIds.join(", ")} `});
+      }
   
       // Combine SOR and non-SOR items
-      let updatedFormData = [...formData, ...transformedItems?.filter(item => item.category === "SOR")];
+      let updatedFormData = [...formData, ...transformedItems?.filter(item => item.category === "SOR" && item?.amountDetails)];
   
       // Remove any placeholder entries if present
       updatedFormData = updatedFormData?.filter(item => item.description);
@@ -209,6 +239,7 @@ const buttonClick = async () => {
       let updateNonsorFormdata = [...formNonSORdata, ...transformedItems?.filter(item => item.category === "NON-SOR")];
       updateNonsorFormdata = updateNonsorFormdata?.filter(item => item.description);
       setNonSORFormValue(updateNonsorFormdata);
+      setInputValue("");
       setStateData({ ...stateData, SORSubType: null, SORVariant: null, selectedTemplate: null });
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -218,10 +249,14 @@ const buttonClick = async () => {
   };
 
   const handleSelectOption = (option) => {
-      setStateData({...stateData, selectedTemplate:option});
-      setInputValue(option?.templateName);
-      setSelectedTemplate(option);
-      setSuggestions([]);
+    //check if optionid is there or not
+      if(option?.templateId)
+      {
+        setStateData({...stateData, selectedTemplate:option});
+        setInputValue(option?.templateName);
+        setSelectedTemplate(option);
+        setSuggestions([]);
+      }
   };
 
   return (
@@ -229,7 +264,7 @@ const buttonClick = async () => {
       <div className="search-sor-container">
         <span className="search-sor-label">{t("ESTIMATE_SEARCH_TEMPLATE_LABEL")}</span>
         <div className="search-sor-button">
-          <div className={"search-bar-sor"} style={{ margin: "20px 1.4rem 0" }}>
+          <div className={"search-bar-sor"} style={{ margin: "20px 1.4rem 0" }} ref={menuRef}>
             <TextInput
               type="text"
               name={"Search"}
@@ -241,7 +276,7 @@ const buttonClick = async () => {
             {suggestions?.length > 0 && (
               <ul className="suggestions-sor" style={{ zIndex: "10", maxHeight: "33rem", overflow: "auto" }}>
                 {suggestions.map((option) => (
-                  <li key={option.id} onClick={() => handleSelectOption(option)}>
+                  <li key={option?.templateId} onClick={() => handleSelectOption(option)}>
                     {option?.templateName}
                   </li>
                 ))}
