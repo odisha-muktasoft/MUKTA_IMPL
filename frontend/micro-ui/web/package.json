@@ -12,7 +12,7 @@
     "micro-ui-internals/packages/react-components",
     "micro-ui-internals/packages/modules/Estimate",
     "micro-ui-internals/packages/modules/Expenditure",
-    "micro-ui-internals/packages/modules/Measurement",
+    "micro-ui-internals/packages/modules/*",
     "micro-ui-internals/packages/Mukta",
     "micro-ui-internals/packages/modules/RateAnalysis"
   ],
@@ -26,7 +26,7 @@
     "@egovernments/digit-ui-module-attendencemgmt": "0.4.1",
     "@egovernments/digit-ui-module-contracts": "0.4.1",
     "@egovernments/digit-ui-module-measurement":"0.2.0",
-    "@egovernments/digit-ui-module-estimate": "0.4.4",
+    "@egovernments/digit-ui-module-estimate": "0.4.5",
     "@egovernments/digit-ui-module-masters": "0.4.1",
     "@egovernments/digit-ui-module-project": "0.4.1",
     "@egovernments/digit-ui-module-expenditure": "0.4.1",
