@@ -80,7 +80,7 @@ const GroupedTable = (props) => {
   const renderHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("Code"), width: "15%" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "15%" },
       { key: t("CORE_COMMON_NAME"), width: "25%" },
       { key: t("ACTION_TEST_COMMONMASTERUOM"), width: "10%" },
       { key: t("MB_RATE"), width: "10%" },

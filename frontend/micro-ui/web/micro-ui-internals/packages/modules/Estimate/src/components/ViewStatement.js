@@ -21,7 +21,7 @@ const ViewStatement = (props) => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
       { key: t("SOR Type/ Sub Type"), width: "12.5%" },
-      { key: t("Code"), width: "12.5%" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "12.5%" },
       { key: t("Description"), width: "30%" },
       { key: t("Uom"), width: "12.5%" },
       { key: t("Rate"), width: "12.5%" },
@@ -45,7 +45,7 @@ const ViewStatement = (props) => {
   const renderSubHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("Code"), width: "14.28%" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "14.28%" },
       { key: t("Name"), width: "30%" },
       { key: t("Unit"), width: "14.28%" },
       { key: t("Rate"), width: "14.28%" },

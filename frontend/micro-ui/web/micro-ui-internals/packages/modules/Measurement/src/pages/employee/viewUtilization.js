@@ -296,6 +296,107 @@ const ViewUtilization = () => {
       additionalDetails: null,
     },
   ];
+
+//
+  // let statement = [
+  //   {
+  //     "id": "251c51eb-e970-4e01-a99a-70136c47a934",
+  //     "tenantId": "pb.jalandhar OR dwss",
+  //     "targetId": "461c51eb-e970-4e01-a99a-70136c47a934",
+  //     "additionalDetails": {},
+  //     "basicSorDetails": [
+  //       {
+  //         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  //         "amount": 1534,
+  //         "type": "Labour",
+  //         "quantity": 0,
+  //         "rate": 0
+  //       }
+  //     ],
+  //     "sorDetails": [
+  //       {
+  //         "id": "string",
+  //         "statementId": "string",
+  //         "sorId": "SOR-W1",
+  //         "additionalDetails": {
+  //           "sorDetails": {
+  //             "id": "SOR_000692",
+  //             "uom": "SQM",
+  //             "sorType": "W",
+  //             "quantity": 1.0,
+  //             "sorSubType": "PA",
+  //             "sorVariant": "TF",
+  //             "description": "Finishing walls with water proffing cement paint two coats with cost of cement paint"
+  //           },
+  //           "rateDetails": {
+  //             "rate": 654,
+  //             "sorId": "SOR_000692",
+  //             "validTo": "1709251200000",
+  //             "validFrom": "1709251200000",
+  //             "amountDetails": [
+  //                 {
+  //                     "type": "fixed",
+  //                     "heads": "CA.9",
+  //                     "amount": 98765
+  //                 }
+  //             ]
+  //           }
+  //         },
+  //         "basicSorDetails": [
+  //           {
+  //             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  //             "amount": 1534,
+  //             "type": "Labour",
+  //             "quantity": 0,
+  //             "rate": 0
+  //           }
+  //         ],
+  //         "lineItems": [
+  //           {
+  //             "id": "string",
+  //             "sorId": "SOR-1",
+  //             "sorType": "Labour",
+  //             "additionalDetails": {
+  //               "sorDetails": {
+  //                 "id": "SOR_000692",
+  //                 "uom": "SQM",
+  //                 "sorType": "W",
+  //                 "quantity": 1.0,
+  //                 "sorSubType": "PA",
+  //                 "sorVariant": "TF",
+  //                 "description": "Finishing walls with water proffing cement paint two coats with cost of cement paint"
+  //               },
+  //               "rateDetails": {
+  //                 "rate": 654,
+  //                 "sorId": "SOR_000692",
+  //                 "validTo": "1709251200000",
+  //                 "validFrom": "1709251200000",
+  //                 "amountDetails": [
+  //                     {
+  //                         "type": "fixed",
+  //                         "heads": "CA.9",
+  //                         "amount": 98765
+  //                     }
+  //                 ]
+  //               }
+  //             },
+  //             "basicSorDetails": [
+  //               {
+  //                 "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  //                 "amount": 1534,
+  //                 "type": "Labour",
+  //                 "quantity": 0,
+  //                 "rate": 0
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ]
+
+
   const history = useHistory();
   const [showActions, setShowActions] = useState(false);
   const { tenantId, estimateId } = Digit.Hooks.useQueryParams();
