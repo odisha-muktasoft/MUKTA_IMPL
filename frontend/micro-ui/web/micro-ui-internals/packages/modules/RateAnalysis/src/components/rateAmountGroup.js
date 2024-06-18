@@ -58,8 +58,9 @@ const RateAmountGroup = (props) => {
   useEffect(() => {
     
     //setExistingData(RatesData?.MdmsRes?.["WORKS-SOR"]?.Rates[0]?.rate===undefined?0.0:RatesData?.MdmsRes?.["WORKS-SOR"]?.Rates[0]?.rate);
-    setExistingData(RatesData?.mdms[0].data?.rate===undefined?0.0:RatesData?.mdms[0].data?.rate);
-    console.log(RatesData?.mdms[0].data?.rate,"wel");
+    setExistingData(RatesData?.mdms.length!==0?
+      RatesData?.mdms[0].data?.rate===undefined?0.0:RatesData?.mdms[0].data?.rate:0.0);
+   // console.log(RatesData?.mdms[0].data?.rate,"wel");
   }, [RatesData]);
 
   return (
