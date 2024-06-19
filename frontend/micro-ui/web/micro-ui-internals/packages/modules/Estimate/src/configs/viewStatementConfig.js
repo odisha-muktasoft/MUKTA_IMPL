@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { transformEstimateObjects } from "../../util/estimateConversion";
 import { transformStatementData ,sortSorsBasedonType} from "../../util/EstimateData";
+import { sortedFIlteredData } from "../../../Measurement/src/utils/view_utilization";
 
 export const data = (statementDetails,rawData) => {
    
-  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [] });
+  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [] });
   const [sorted, setSorted] = useState([]);
 
   const headerLocale = Digit.Utils.locale.getTransformedLocale(statementDetails?.tenantId);
   //const geoLocationValue = estimateDetails?.address?.latitude && estimateDetails?.address?.longitude ? `${estimateDetails?.address?.latitude}, ${estimateDetails?.address?.longitude}` : "NA";
-   let data=sortSorsBasedonType(rawData);
+  // let data=sortSorsBasedonType(rawData);
  
   useEffect(() => {
     
@@ -18,6 +19,7 @@ export const data = (statementDetails,rawData) => {
         //Transforming the estimate search response according to formdata 
         setViewData({
             nestedData: transformStatementData(statementDetails),
+            sorted: sortSorsBasedonType(rawData),
           //NONSOR: transformEstimateObjects(estimateDetails, "NON-SOR", {}, allDetailedEstimate),
         });
        
@@ -115,6 +117,72 @@ export const data = (statementDetails,rawData) => {
               setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
             },
           }
+        ],
+      },
+      {
+        navigationKey: "card1",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_CONSOLIDATION", inlineStyles: {} },
+            component: "GroupedTable",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+              },
+              arrayProps: {
+                fields: sortedFIlteredData(viewData?.sorted, "M"),
+                type: "M",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData(),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card2",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR_CONSOLIDATION", inlineStyles: {} },
+            component: "GroupedTable",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+              },
+              arrayProps: {
+                fields: sortedFIlteredData(viewData?.sorted, "L"),
+                type: "L",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData(),
+            },
+          },
+        ],
+      },
+      {
+        navigationKey: "card3",
+        sections: [
+          {
+            type: "COMPONENT",
+            cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_CONSOLIDATION", inlineStyles: {} },
+            component: "GroupedTable",
+            props: {
+              config: {
+                key: "SOR",
+                mode: "VIEWES",
+              },
+              arrayProps: {
+                fields: sortedFIlteredData(viewData?.sorted, "MH"),
+                type: "MH",
+              },
+              register: () => {},
+              setValue: (key, value) => setViewData(),
+            },
+          },
         ],
       },
       // {

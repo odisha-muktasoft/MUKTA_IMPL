@@ -59,11 +59,11 @@ export const transformStatementData = (data) => {
       // Main SOR data
       const mainSORRow = {
         sNo: nestedData.length + 1,
-        sortype: "sortype",
+        sortype: `WORKS_SOR_TYPE_${sorDetail?.additionalDetails?.sorDetails?.sorType}`,
         code: sorDetail.sorId,
-        description: "Main SOR Description",  // Hardcoded
-        uom: "UOM",  // Hardcoded
-        rate: 0.00,  // Hardcoded
+        description: sorDetail?.additionalDetails?.sorDetails?.description,  // Hardcoded
+        uom: sorDetail?.additionalDetails?.sorDetails?.uom,  // Hardcoded
+        rate: sorDetail?.additionalDetails?.rateDetails?.rate,  // Hardcoded
         type: lineItems?.length == 0 ? sorDetail?.basicSorDetails?.[0]?.type : null,
         estimatedQuantity: {
           "M" : sorDetail.lineItems.filter((ob)=> ob?.sorType === "M").length > 0 ? sorDetail.lineItems.filter((ob)=> ob?.sorType === "M").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0) : sorDetail?.basicSorDetails?.[0]?.quantity || 0.00,
@@ -76,7 +76,7 @@ export const transformStatementData = (data) => {
 
       // Sub-table rows (line items)
       lineItems.forEach((lineItem) => {
-        const { amountDetails } = lineItem;
+        const { amountDetails } = lineItem?.additionalDetails?.rateDetails;
 
         amountDetails.forEach((detail) => {
           const subrow = {
@@ -119,7 +119,7 @@ export const sortSorsBasedonType = (statement) => {
           // If lineItems exist, use them; otherwise, use basicSorDetails
           if (detail.lineItems.length > 0) {
               detail.lineItems.forEach(line => {
-                  line.amountDetails.forEach(amountDetail => {
+                  line.additionalDetails?.rateDetails?.amountDetails.forEach(amountDetail => {
                       description = amountDetail.name;
                       type = amountDetail.type;
                       amount = amountDetail.amount;
