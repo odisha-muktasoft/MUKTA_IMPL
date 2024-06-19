@@ -216,7 +216,7 @@ const SORDetailsTemplate = (props) => {
                         onChange={(e) => {
                           console.log(e,"e");
                           const { value } = e.target;
-                          if (has4DecimalPlaces(value)) {
+                          if (has4DecimalPlaces(parseFloat(value))) {
                             console.log(value,"valuee")
                             let newSOR = SORDetails?.map((obj) => {
                               console.log(obj,"jjjj")
@@ -229,6 +229,9 @@ const SORDetailsTemplate = (props) => {
                             setFormValue([...newSOR]);
                             //setValue("SORDetails",[...newSOR])
                             setSORDetails([...newSOR]);
+                          }
+                          else {
+                            e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
                           }
                         }}
                         inputRef={register({

@@ -268,7 +268,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                 <TextInput
                   style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
                   name={`${formFieldName}[${rowIndex}].figure`}
-                  value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  //value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.figure || row.figure) : null}
                   inputRef={register({
                     required: false,
                     max: populators?.quantity?.max,
