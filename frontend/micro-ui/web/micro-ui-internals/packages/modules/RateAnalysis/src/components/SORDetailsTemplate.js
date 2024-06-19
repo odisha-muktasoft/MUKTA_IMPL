@@ -42,7 +42,6 @@ const SORDetailsTemplate = (props) => {
 
   const setFormValue = useCallback(
     (value) => {
-      console.log(value,"inside formvalue");
       register("SORDetails", value);
     },
     [setValue]
@@ -170,7 +169,6 @@ const SORDetailsTemplate = (props) => {
     }
   }, [props?.config?.customProps?.SORDetails]);
 
-  console.log(SORDetails,"details");
 
   return (
     <div
@@ -214,18 +212,14 @@ const SORDetailsTemplate = (props) => {
                         style={{ marginBottom: "0px" }}
                         defaultValue={window.location.href.includes("update") ? row?.quantity : null}
                         onChange={(e) => {
-                          console.log(e,"e");
                           const { value } = e.target;
                           if (has4DecimalPlaces(parseFloat(value))) {
-                            console.log(value,"valuee")
                             let newSOR = SORDetails?.map((obj) => {
-                              console.log(obj,"jjjj")
                               if (obj?.sorCode === row?.sorCode) {
                                 return { ...obj, quantity: value };
                               }
                               return obj;
                             });
-                            console.log(newSOR,"newsorrr");
                             setFormValue([...newSOR]);
                             //setValue("SORDetails",[...newSOR])
                             setSORDetails([...newSOR]);
