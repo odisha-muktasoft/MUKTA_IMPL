@@ -12,6 +12,7 @@ import {
 } from "@egovernments/digit-ui-react-components";
 import { Controller } from "react-hook-form";
 import _ from "lodash";
+import { has4DecimalPlaces } from "../utils/transformData";
 
 const ExtraCharges = ({ control, watch, config, ...props }) => {
   const populators = config?.populators;
@@ -275,7 +276,16 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     max: populators?.quantity?.max,
                     pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                   })}
-                  onChange={(e) => setAmountField(e, rowIndex)}
+                  onChange={(e) => {
+                    if(has4DecimalPlaces(parseFloat(e?.target.value))){
+                      setAmountField(e, rowIndex)
+                    }
+                    else
+                    {
+                      e.target.value = e?.target.value.slice(0, e?.target.value.length - 1);
+                    }
+                  }
+                }
                 />
               </div>
               <div style={errorContainerStyles}>
