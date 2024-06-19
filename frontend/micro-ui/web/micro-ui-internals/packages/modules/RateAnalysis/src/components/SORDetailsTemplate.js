@@ -169,7 +169,6 @@ const SORDetailsTemplate = (props) => {
     }
   }, [props?.config?.customProps?.SORDetails]);
 
-  
 
   return (
     <div
@@ -211,10 +210,10 @@ const SORDetailsTemplate = (props) => {
                     <div style={cellContainerStyle}>
                       <TextInput
                         style={{ marginBottom: "0px" }}
-                        value={row?.quantity}
+                        defaultValue={window.location.href.includes("update") ? row?.quantity : null}
                         onChange={(e) => {
                           const { value } = e.target;
-                          if (has4DecimalPlaces(value)) {
+                          if (has4DecimalPlaces(parseFloat(value))) {
                             let newSOR = SORDetails?.map((obj) => {
                               if (obj?.sorCode === row?.sorCode) {
                                 return { ...obj, quantity: value };
@@ -222,7 +221,11 @@ const SORDetailsTemplate = (props) => {
                               return obj;
                             });
                             setFormValue([...newSOR]);
+                            //setValue("SORDetails",[...newSOR])
                             setSORDetails([...newSOR]);
+                          }
+                          else {
+                            e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
                           }
                         }}
                         inputRef={register({
