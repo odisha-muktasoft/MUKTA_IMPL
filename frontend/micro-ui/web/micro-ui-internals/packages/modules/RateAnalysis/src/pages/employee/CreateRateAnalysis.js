@@ -230,7 +230,8 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   };
   //remove Toast after 3s
   useEffect(() => {
-    if (showToast) {
+    console.log("inside toast")
+    if (showToast?.display) {
       setTimeout(() => {
         closeToast();
       }, 3000);
