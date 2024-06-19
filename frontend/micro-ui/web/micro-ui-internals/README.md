@@ -11,7 +11,7 @@ This repository contains source code for web implementation of the new Digit UI 
 
 #### Reference Docs
 
-###### Module wise reference docs
+###### Module wise reference doc
 
 | Module         | Reference Docs                                                                                               |
 | -------------- | ------------------------------------------------------------------------------------------------------------ |
