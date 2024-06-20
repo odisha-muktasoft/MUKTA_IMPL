@@ -19,283 +19,274 @@ import { data } from "../../configs/viewUtilConfig";
 import { useHistory } from "react-router-dom";
 
 const ViewUtilization = () => {
-  let statement = [
-    {
-      id: "bcb0188e-6dab-4ee5-8d28-6867c02b3884",
-      tenantId: "od.testing",
-      targetId: "a7933603-8254-467f-9ae8-4976ca876ffe",
-      statementType: "ANALYSIS",
-      basicSorDetails: [
-        {
-          id: null,
-          amount: 545.336044,
-          type: "L",
-          quantity: null,
-          rate: null,
-          name: null,
-          unit: null,
+    let statement = [
+      {
+        "id": "b17bdb3c-f0c4-4507-abaf-285d7afea03e",
+        "tenantId": "pg.citya",
+        "targetId": "654cca5a-9ff7-4508-bfe5-5fc49956e96a",
+        "statementType": "ANALYSIS",
+        "basicSorDetails": [
+          {
+            "id": null,
+            "amount": 157.98,
+            "type": "W",
+            "quantity": null
+          },
+          {
+            "id": null,
+            "amount": 280,
+            "type": "L",
+            "quantity": null
+          }
+        ],
+        "sorDetails": [
+          {
+            "id": "b22e7f9b-817f-4515-9392-d79d093b282d",
+            "statementId": "b17bdb3c-f0c4-4507-abaf-285d7afea03e",
+            "sorId": "SOR_000002",
+            "basicSorDetails": [
+              {
+                "id": "fae0aa76-bf46-449a-b7fe-964a7fc595c4",
+                "amount": 157.98,
+                "type": "W",
+                "quantity": null
+              },
+              {
+                "id": "ac6ed4b2-3f93-4210-bce5-c6140b0edf24",
+                "amount": 280,
+                "type": "L",
+                "quantity": null
+              }
+            ],
+            "lineItems": [
+              {
+                "id": "4452034c-7878-424f-8cb6-e243cad53890",
+                "sorId": "SOR_000009",
+                "sorType": "W",
+                "referenceId": "b22e7f9b-817f-4515-9392-d79d093b282d",
+                "basicSorDetails": [
+                  {
+                    "id": "0090b821-459f-4453-bbd3-e9ce45b67540",
+                    "amount": 157.2,
+                    "type": "W",
+                    "quantity": 0.4
+                  }
+                ],
+                "additionalDetails": {
+                  "rateDetails": {
+                    "id": null,
+                    "tenantId": null,
+                    "sorCode": null,
+                    "sorId": "SOR_000009",
+                    "sorType": null,
+                    "sorSubType": null,
+                    "sorVariant": null,
+                    "isBasicVariant": null,
+                    "uom": null,
+                    "quantity": null,
+                    "description": null,
+                    "rate": 393,
+                    "validFrom": "1702857600000",
+                    "validTo": null,
+                    "amountDetails": [
+                      {
+                        "id": null,
+                        "type": "fixed",
+                        "heads": "LA.2",
+                        "amount": 200
+                      }
+                    ]
+                  },
+                  "sorDetails": {
+                    "id": "SOR_000009",
+                    "uom": "CUM",
+                    "sorType": "W",
+                    "quantity": 1,
+                    "sorSubType": "CC",
+                    "sorVariant": "FF",
+                    "description": "C:C: (1:2:4) using 12 mm. size H.G. stone chips including the cost of all materials labour T&P sundries etc complete. (FF)"
+                  }
+                }
+              },
+              {
+                "id": "fb1cb28f-7f72-4a01-9880-2e122ac9538a",
+                "sorId": "SOR_000003",
+                "sorType": "W",
+                "referenceId": "b22e7f9b-817f-4515-9392-d79d093b282d",
+                "basicSorDetails": [
+                  {
+                    "id": "82bdac99-3407-4ca2-913d-d4a354a7a917",
+                    "amount": 0.78,
+                    "type": "W",
+                    "quantity": 0.0017
+                  }
+                ],
+                "additionalDetails": {
+                  "rateDetails": {
+                    "id": null,
+                    "tenantId": null,
+                    "sorCode": null,
+                    "sorId": "SOR_000003",
+                    "sorType": null,
+                    "sorSubType": null,
+                    "sorVariant": null,
+                    "isBasicVariant": null,
+                    "uom": null,
+                    "quantity": null,
+                    "description": null,
+                    "rate": 456,
+                    "validFrom": "1702944000000",
+                    "validTo": null,
+                    "amountDetails": [
+                      {
+                        "id": null,
+                        "type": "fixed",
+                        "heads": "RA.5",
+                        "amount": 200
+                      }
+                    ]
+                  },
+                  "sorDetails": {
+                    "id": "SOR_000003",
+                    "uom": "CUM",
+                    "sorType": "W",
+                    "quantity": 120,
+                    "sorSubType": "CC",
+                    "sorVariant": "GF",
+                    "description": "P.C.C. Grade M25  Using Batching plant, Transit Mixer and concrete pump (Data for 120.00 Cum) [First Floor]"
+                  }
+                }
+              },
+              {
+                "id": "e99f5df4-eb85-4677-ab86-98781f72e0fe",
+                "sorId": "SOR_0000011",
+                "sorType": "L",
+                "referenceId": "b22e7f9b-817f-4515-9392-d79d093b282d",
+                "basicSorDetails": [
+                  {
+                    "id": "71a91a81-8c70-4a57-b9e1-8474c54916d1",
+                    "amount": 280,
+                    "type": "L",
+                    "quantity": 0.4
+                  }
+                ],
+                "additionalDetails": {
+                  "rateDetails": {
+                    "id": null,
+                    "tenantId": null,
+                    "sorCode": null,
+                    "sorId": "SOR_0000011",
+                    "sorType": null,
+                    "sorSubType": null,
+                    "sorVariant": null,
+                    "isBasicVariant": null,
+                    "uom": null,
+                    "quantity": null,
+                    "description": null,
+                    "rate": 700,
+                    "validFrom": "1712580560000",
+                    "validTo": "null",
+                    "amountDetails": [
+                      {
+                        "id": "123",
+                        "type": "fixed",
+                        "heads": "FH.123",
+                        "amount": 700
+                      }
+                    ]
+                  },
+                  "sorDetails": {
+                    "id": "SOR_0000011",
+                    "uom": "NOs",
+                    "sorType": "L",
+                    "quantity": 1,
+                    "sorSubType": "S",
+                    "sorVariant": "NA",
+                    "description": "SKILLED FEMALE MULIA."
+                  }
+                }
+              }
+            ],
+            "tenantId": "pg.citya",
+            "isActive": true,
+            "additionalDetails": {
+              "rateDetails": {
+                "id": "2",
+                "tenantId": null,
+                "sorCode": null,
+                "sorId": "SOR_000002",
+                "sorType": null,
+                "sorSubType": null,
+                "sorVariant": null,
+                "isBasicVariant": null,
+                "uom": null,
+                "quantity": null,
+                "description": "Earth Work",
+                "rate": 439070.35,
+                "validFrom": "1698796800000",
+                "validTo": "1923609600000",
+                "amountDetails": [
+                  {
+                    "id": null,
+                    "type": "fixed",
+                    "heads": "LC.6",
+                    "amount": 4347.23
+                  },
+                  {
+                    "id": null,
+                    "type": "fixed",
+                    "heads": "RA.5",
+                    "amount": 15928
+                  },
+                  {
+                    "id": null,
+                    "type": "fixed",
+                    "heads": "CA.4",
+                    "amount": 32001.01
+                  },
+                  {
+                    "id": null,
+                    "type": "fixed",
+                    "heads": "MHA.3",
+                    "amount": 32001.01
+                  },
+                  {
+                    "id": null,
+                    "type": "fixed",
+                    "heads": "LA.2",
+                    "amount": 7095.84
+                  },
+                  {
+                    "id": null,
+                    "type": "fixed",
+                    "heads": "MA.1",
+                    "amount": 329936.45
+                  }
+                ]
+              },
+              "sorDetails": {
+                "id": "SOR_000002",
+                "uom": "CUM",
+                "sorType": "W",
+                "quantity": 120,
+                "sorSubType": "CC",
+                "sorVariant": "GF",
+                "description": "P.C.C. Grade M25  Using Batching plant, Transit Mixer and concrete pump (Data for 120.00 Cum)"
+              }
+            }
+          }
+        ],
+        "auditDetails": {
+          "createdBy": "45614d29-9a50-4970-aba5-81b380745f48",
+          "lastModifiedBy": "45614d29-9a50-4970-aba5-81b380745f48",
+          "createdTime": 1718713193272,
+          "lastModifiedTime": 1718713193272
         },
-        {
-          id: null,
-          amount: 445.117412,
-          type: "M",
-          quantity: null,
-          rate: null,
-          name: null,
-          unit: null,
-        },
-      ],
-      sorDetails: [
-        {
-          id: "4363a76b-17ad-422e-b4d5-67f6383f07cf",
-          statementId: "bcb0188e-6dab-4ee5-8d28-6867c02b3884",
-          sorId: "SOR_000206",
-          basicSorDetails: [
-            {
-              id: "0f0643e5-22f4-42bc-8149-dda3e89d2240",
-              amount: 500.049355,
-              type: "L",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-            {
-              id: "b929163d-48dc-4a90-9bed-a8a7f18f122d",
-              amount: 400.039484,
-              type: "M",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-          ],
-          lineItems: [
-            {
-              id: "ebc1cdf8-d5e0-4895-b92f-532d2eaec5e1",
-              sorId: "SOR_000437",
-              sorType: "L",
-              referenceId: "4363a76b-17ad-422e-b4d5-67f6383f07cf",
-              amountDetails: [
-                {
-                  id: "a949f22d-fca3-4035-b6d0-f71e95120de9",
-                  amount: 500.049355,
-                  type: "L",
-                  quantity: 500.049355,
-                  rate: 1,
-                  name: "Operator for Heavy construction Machineries",
-                  unit: "NOs",
-                },
-              ],
-            },
-            {
-              id: "5daac859-945a-472d-93c6-20f581291cc0",
-              sorId: "SOR_000183",
-              sorType: "M",
-              referenceId: "4363a76b-17ad-422e-b4d5-67f6383f07cf",
-              amountDetails: [
-                {
-                  id: "1c031f3c-e7e8-4bfe-b257-1d889333fd34",
-                  amount: 400.039484,
-                  type: "M",
-                  quantity: 400.039484,
-                  rate: 1,
-                  name: "Paver Finisher Mechanical",
-                  unit: "HOUR",
-                },
-              ],
-            },
-          ],
-          tenantId: "od.testing",
-        },
-        {
-          id: "022f559b-ef7b-49b6-b435-12d1562ab4db",
-          statementId: "bcb0188e-6dab-4ee5-8d28-6867c02b3884",
-          sorId: "SOR_000100",
-          basicSorDetails: [
-            {
-              id: null,
-              amount: null,
-              type: "M",
-              quantity: 2,
-              rate: null,
-              name: "Laterite Stone rough dressed",
-              unit: "CUM",
-            },
-          ],
-          lineItems: [],
-          tenantId: "od.testing",
-        },
-        {
-          id: "766cb65e-2885-4170-9453-492f2e6a4823",
-          statementId: "bcb0188e-6dab-4ee5-8d28-6867c02b3884",
-          sorId: "SOR_000200",
-          basicSorDetails: [
-            {
-              id: "c1646cdb-18f1-4bf0-84db-8bc802a58dbf",
-              amount: 40.242884,
-              type: "L",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-            {
-              id: "7e44cadf-3316-4550-9848-c9c9864366ac",
-              amount: 40.242884,
-              type: "M",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-          ],
-          lineItems: [
-            {
-              id: "c0ea97a5-4dd5-4240-9ce1-6ecfd6dc7c82",
-              sorId: "SOR_000437",
-              sorType: "L",
-              referenceId: "766cb65e-2885-4170-9453-492f2e6a4823",
-              amountDetails: [
-                {
-                  id: "02b3be34-cf09-40b5-b71e-658970852baf",
-                  amount: 40.242884,
-                  type: "L",
-                  quantity: 40.242884,
-                  rate: 1,
-                  name: "Operator for Heavy construction Machineries",
-                  unit: "NOs",
-                },
-              ],
-            },
-            {
-              id: "562cd5b7-a7a8-4540-b6ac-08cd78088fef",
-              sorId: "SOR_000183",
-              sorType: "M",
-              referenceId: "766cb65e-2885-4170-9453-492f2e6a4823",
-              amountDetails: [
-                {
-                  id: "156da5c5-5a29-46a6-bf59-7bdcdd30bb44",
-                  amount: 40.242884,
-                  type: "M",
-                  quantity: 40.242884,
-                  rate: 1,
-                  name: "Paver Finisher Mechanical",
-                  unit: "HOUR",
-                },
-              ],
-            },
-          ],
-          tenantId: "od.testing",
-        },
-        {
-          id: "4c70fcb1-a1ec-4499-af93-ab0474e9e26e",
-          statementId: "bcb0188e-6dab-4ee5-8d28-6867c02b3884",
-          sorId: "SOR_000252",
-          basicSorDetails: [
-            {
-              id: "0a5398b9-1d65-47d7-9a4b-9bb072452f53",
-              amount: 5.043805,
-              type: "L",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-            {
-              id: "f24fe848-4129-46c9-8f3b-24b876cbf430",
-              amount: 4.035044,
-              type: "M",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-          ],
-          lineItems: [
-            {
-              id: "e5fe803c-a559-46f1-8054-39cb6e037a3e",
-              sorId: "SOR_000437",
-              sorType: "L",
-              referenceId: "4c70fcb1-a1ec-4499-af93-ab0474e9e26e",
-              amountDetails: [
-                {
-                  id: "56eb7c52-afe5-48f4-86e9-41bb4236d5b1",
-                  amount: 5.043805,
-                  type: "L",
-                  quantity: 5.043805,
-                  rate: 1,
-                  name: "Operator for Heavy construction Machineries",
-                  unit: "NOs",
-                },
-              ],
-            },
-            {
-              id: "c8896301-2d38-4850-a6ae-653d6df86671",
-              sorId: "SOR_000183",
-              sorType: "M",
-              referenceId: "4c70fcb1-a1ec-4499-af93-ab0474e9e26e",
-              amountDetails: [
-                {
-                  id: "913170d3-bbcc-4224-8a27-626355a97c2f",
-                  amount: 4.035044,
-                  type: "M",
-                  quantity: 4.035044,
-                  rate: 1,
-                  name: "Paver Finisher Mechanical",
-                  unit: "HOUR",
-                },
-              ],
-            },
-          ],
-          tenantId: "od.testing",
-        },
-        {
-          id: "781b5fb4-d434-471e-8c19-7a2114422ed4",
-          statementId: "bcb0188e-6dab-4ee5-8d28-6867c02b3884",
-          sorId: "SOR_000734",
-          basicSorDetails: [
-            {
-              id: "ef89d49c-f695-4ed3-b0a6-7fa13e3ba254",
-              amount: 0.8,
-              type: "M",
-              quantity: null,
-              rate: null,
-              name: null,
-              unit: null,
-            },
-          ],
-          lineItems: [
-            {
-              id: "67e91c95-4c87-446a-8875-f8ba41409275",
-              sorId: "SOR_000074",
-              sorType: "M",
-              referenceId: "781b5fb4-d434-471e-8c19-7a2114422ed4",
-              amountDetails: [
-                {
-                  id: "f442e886-d433-4298-b97e-64a5c3754155",
-                  amount: 0.8,
-                  type: "M",
-                  quantity: 0.8,
-                  rate: 1,
-                  name: "Sand for filling and road blinding",
-                  unit: "CUM",
-                },
-              ],
-            },
-          ],
-          tenantId: "od.testing",
-        },
-      ],
-      auditDetails: {
-        createdBy: "45614d29-9a50-4970-aba5-81b380745f48",
-        lastModifiedBy: "45614d29-9a50-4970-aba5-81b380745f48",
-        createdTime: 1718184935842,
-        lastModifiedTime: 1718184935842,
-      },
-      additionalDetails: null,
-    },
-  ];
+        "additionalDetails": {
+          "estimateNumber": "ES/2024-25/000311"
+        }
+      }
+    ]
 
 //
   // let statement = [

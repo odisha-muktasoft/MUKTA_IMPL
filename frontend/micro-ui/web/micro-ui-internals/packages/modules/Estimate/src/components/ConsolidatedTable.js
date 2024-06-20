@@ -1,15 +1,18 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import { Amount } from "@egovernments/digit-ui-react-components";
 
 const GroupedTable = (props) => {
   const { t } = useTranslation();
-
+  const {emptyTableMsg}=props;
   let data = props?.arrayProps?.fields || [];
   let type = props?.arrayProps?.type || "W";
   // Function to calculate totals for a specific type (M, L, MH) within subrows
  
 
+  useEffect(()=>{},[
+    
+  ]);
   // Function to group by SORID and calculate totals for each type
   const groupAndCalculateTotals = () => {
     let groupedData = [];
@@ -20,7 +23,7 @@ const GroupedTable = (props) => {
 
     data.forEach((subrow, index) => {
       
-      const { sNo, amount, description, quantity, type, sorId } = subrow;
+      const { rate,sNo, amount, description, quantity, type, sorId ,uom} = subrow;
 
       // Check if the SORID (code) exists in groupedData, if not, initialize it
 
@@ -28,11 +31,11 @@ const GroupedTable = (props) => {
         sNo: index,
         code: sorId,
         description: description, // Use subrow name for description
-        uom: "NOs", // Use subrow unit for UOM
-        rate: "23.6",
+        uom: uom, // Use subrow unit for UOM
+        rate: rate,
         type,
-        totalQuantity: parseFloat(quantity) || 0,
-        totalAmount: parseFloat(amount) || 0,
+        totalQuantity: quantity || 0,
+        totalAmount: amount || 0,
       });
     });
 
@@ -42,6 +45,7 @@ const GroupedTable = (props) => {
   };
 
   const sortedData = (groupedDataList) => {
+    console.log("check",groupedDataList)
     const grouped = {};
 
     groupedDataList.forEach((item) => {
@@ -55,6 +59,7 @@ const GroupedTable = (props) => {
           uom: uom,
           totalAmount: 0,
           totalQuantity: 0,
+          rate:rate,
         };
       }
       grouped[code].totalQuantity += totalQuantity;
@@ -62,18 +67,20 @@ const GroupedTable = (props) => {
         grouped[code].totalAmount += totalAmount;
       }
     });
-
+    
     const result = Object.values(grouped).map((item) => ({
-      uom: "NOs", // Use subrow unit for UOM
-      rate: "23.68",
+      
+      uom: item?.uom, // Use subrow unit for UOM
+      rate: item?.rate,
       sNo: item?.sNo,
       code: item?.code,
 
       description: item?.description,
       type: item.type,
-      totalAmount: parseFloat(item.totalAmount.toFixed(2)),
-      totalQuantity: parseFloat(item.totalQuantity.toFixed()),
+      totalAmount: item.totalAmount,
+      totalQuantity: item.totalQuantity,
     }));
+   
     return result;
   };
   // Render table header
@@ -101,7 +108,7 @@ const GroupedTable = (props) => {
   // Render table body
   const renderBody = () => {
     const groupedData = groupAndCalculateTotals();
-
+       console.log("yyy",groupedData[0])
     let sno = 0;
     return groupedData.map((row, index) => (
       <tr key={index}>
@@ -110,10 +117,11 @@ const GroupedTable = (props) => {
         <td style={{ width: "25%" }}>{row.description}</td>
         <td style={{ width: "10%" }}>{row.uom}</td>
         <td style={{ width: "10%" }}>
-          <Amount value={parseFloat(row.rate).toFixed(2)} t={t} />
+          {<Amount value={parseFloat(row.rate).toFixed(2)} t={t} />}
         </td>
         <td style={{ width: "15%" }}>
-          <Amount value={parseFloat(row.totalQuantity).toFixed(2)} t={t} />
+          {/*<Amount value={row.totalQuantity} t={t} />*/}
+          {row.totalQuantity}
         </td>
         <td style={{ width: "15%" }}>
           <Amount value={parseFloat(row.totalAmount).toFixed(2)} t={t} />
@@ -124,7 +132,7 @@ const GroupedTable = (props) => {
       </tr>
     ));
   };
-  console.log(groupAndCalculateTotals(),"blore")
+  
   return (
     <React.Fragment>
       <table className="table reports-table reports-table sub-work-table">
@@ -140,6 +148,13 @@ const GroupedTable = (props) => {
         }</td>
         </tr>
         
+        }
+
+        {
+          groupAndCalculateTotals().length===0&&
+          <td colSpan={8} style={{ textAlign: "center" }}>
+          {t(emptyTableMsg)}
+          </td>
         }
         </tbody>
       </table>

@@ -278,7 +278,8 @@ expense:{
 
   measurement : {
     search : "/measurement-service/v1/_search",
-    update : "/measurement-service/v1/_update"
+    update : "/measurement-service/v1/_update",
+    utilizationCreate:"/statements/v1/utilization/_create",
   }
   ,
 

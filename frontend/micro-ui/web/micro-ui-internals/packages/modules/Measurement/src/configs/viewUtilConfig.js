@@ -95,7 +95,7 @@ export const data = (statementDetails, rawData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_MACHINERY", inlineStyles: {} },
             component: "ViewStatement",
             props: {
               config: {
@@ -121,6 +121,7 @@ export const data = (statementDetails, rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_MATERIAL_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -143,6 +144,7 @@ export const data = (statementDetails, rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_LABOUR_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_LABOUR_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -165,6 +167,7 @@ export const data = (statementDetails, rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_MACHINERY_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
