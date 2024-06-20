@@ -171,10 +171,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(2)}>
             <div style={cellContainerStyle}>
               <div>
-                <TextArea
+                <TextInput
                   style={{ marginBottom: "0px", wordWrap: "break-word" }}
                   name={`${formFieldName}[${rowIndex}].description`}
-                  value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                  //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
                   inputRef={register({
                     maxLength: {
                       value: 512,
