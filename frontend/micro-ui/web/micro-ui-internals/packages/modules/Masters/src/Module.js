@@ -22,6 +22,8 @@ import ViewOrganisation from "./pages/employee/Organisation/ViewOrganisation";
 import TransferCodeTable from "./components/TransferCodeTable";
 import MastersResponse from "./components/MastersResponse";
 
+import AadharValidationComponent from "./components/AadharValidationComponent";
+
 export const MastersModule = ({ stateCode, userType, tenants }) => {
 
   const { path, url } = useRouteMatch();
@@ -59,7 +61,9 @@ const componentsToRegister = {
   SearchOrganisation,
   ViewOrganisation,
   TransferCodeTable,
-  MastersResponse
+  MastersResponse,
+
+  AadharValidationComponent
 };
 
 export const initMastersComponents = () => {

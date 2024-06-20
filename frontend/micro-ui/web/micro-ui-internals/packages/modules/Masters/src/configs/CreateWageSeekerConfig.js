@@ -30,21 +30,60 @@ export const CreateWageSeekerConfig = {
               }
             },
             {
-              label: "ES_COMMON_AADHAR",
+              label: "WAGE_SEEKER_IDENTITY_DOCUMENT_LABEL",
+              isMandatory: false,
+              key: "basicDetails_doc",
+              type: "radioordropdown",
+              disable: false,
+              populators: {
+                name: "basicDetails_doc",
+                optionsKey: "name",
+                options: [ // These options are hardcoded, need to integrate with mdms once the new env is up
+                { code: "AADHAAR", name: "Aadhaar", active:true},
+                { code: "ELECTION_PHOTO", name: "Election Photo Identity Card (EPIC)", active: true},
+                { code: "DRIVING_LICENSE", name: "Driving License", active: true},
+                { code: "RATION_CARD", name: "Ration Card under TDPS", active: true},
+              ],
+                error: "WORKS_REQUIRED_ERR",
+                optionsCustomStyle : {
+                  top : "2.3rem"
+                }
+              }
+            },
+            {
+              label: "WAGE_SEEKER_IDENTITY_NUMBER_LABEL",
               isMandatory: true,
               key: "basicDetails_aadhar",
-              type: "text",
-              disable: false,
-              preProcess : {
-                updateDependent : ["populators.customStyle.pointerEvents", "populators.customClass"]
-              },
+              type: "component",
+              component: "AadharValidationComponent",
+              disable: true,
               populators: { 
-                name: "basicDetails_aadhar",
-                error: "WORKS_REQUIRED_ERR",
-                customStyle : {
-                  pointerEvents : "auto"
-                },
-                customClass : "field-value-no-border" 
+                name: "basicDetails_aadhar", 
+                error: "WORKS_REQUIRED_ERR"
+              }
+            },
+            {
+              label: "IS_AADHAAR_VERIFIED",
+              key: "basicDetails_isVerified",
+              type: "text",
+              disable: true,
+              populators: {
+                name: "basicDetails_isVerified",
+                customStyle: {
+                    display: "none"
+                }
+              }
+            },
+            {
+              "label": "AADHAAR_RESPONSE",
+              "key": "basicDetails_aadhaarResponse",
+              "type": "text",
+              "disable": true,
+              "populators": {
+                  "name": "basicDetails_aadhaarResponse",
+                  "customStyle": {
+                      "display": "none"
+                  }
               }
             },
             {
