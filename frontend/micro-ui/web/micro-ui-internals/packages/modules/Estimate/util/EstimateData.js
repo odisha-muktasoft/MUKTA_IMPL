@@ -69,15 +69,15 @@ export const transformStatementData = (data) => {
       estimatedQuantity: {
         M:
           sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
-            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "M").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0)
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "M").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
         L:
           sorDetail.lineItems.filter((ob) => ob?.sorType === "L").length > 0
-            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0)
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
         MH:
           sorDetail.lineItems.filter((ob) => ob?.sorType === "MH").length > 0
-            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.quantity || 0), 0)
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
       }, // Hardcoded
       estimatedAmount:
@@ -96,11 +96,11 @@ export const transformStatementData = (data) => {
           sNo: mainSORRow.subrows.length + 1,
           code: lineItem?.sorId,
           name: lineItem?.additionalDetails?.sorDetails?.description,
-          unit: detail.unit,
-          rate: detail.rate,
-          quantity: lineItem?.basicSorDetails[0]?.quantity,
-          amount: detail.amount,
-          type: lineItem?.sorType,
+          unit: lineItem?.additionalDetails?.sorDetails?.uom,
+          rate: lineItem?.additionalDetails?.rateDetails?.rate,
+          quantity: parseFloat(lineItem?.basicSorDetails[0]?.quantity),
+          amount: lineItem?.basicSorDetails[0]?.amount,
+          type: lineItem?.additionalDetails?.sorDetails?.sorType,
         };
         mainSORRow.subrows.push(subrow);
       });
@@ -133,7 +133,7 @@ export const sortSorsBasedonType = (statement) => {
           line.additionalDetails?.rateDetails?.amountDetails.forEach((amountDetail) => {
             description = line?.additionalDetails?.sorDetails?.description;
             type = line?.additionalDetails?.sorDetails?.sorType;
-            amount = amountDetail.amount;
+            amount = line?.basicSorDetails?.[0]?.amount;
             quantity = line?.basicSorDetails[0]?.quantity;
             uom = line?.additionalDetails?.sorDetails?.uom;
             rate = line.additionalDetails?.rateDetails?.rate;

@@ -70,7 +70,7 @@ const ViewStatement = (props) => {
           <Amount value={subRow.rate} t={t} />
         </td>
         <td style={{ width: "14.28%" }}>
-          <Amount value={parseFloat(subRow.quantity).toFixed(2)} t={t} />
+          <Amount value={parseFloat(subRow.quantity).toFixed(2)} t={t} sameDisplay={true} roundOff={false} />
         </td>
         <td style={{ width: "14.28%" }}>
           <Amount value={parseFloat(subRow.amount).toFixed(2)} t={t} />
@@ -113,7 +113,7 @@ const ViewStatement = (props) => {
                 <Amount value={parseFloat(row.rate).toFixed(2)} t={t} />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>
-                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(2)} t={t} />
+                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>
                 <Amount value={parseFloat(row.estimatedAmount).toFixed(2)} t={t} />

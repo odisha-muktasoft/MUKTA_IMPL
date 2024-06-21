@@ -97,6 +97,8 @@ module.exports = function (app) {
     "mukta-ifix-adapter",
     "/ifms-adapter",
     "/statements/v1/utilization/_create",
+    //look here
+    "statements/v1/analysis/_create",
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

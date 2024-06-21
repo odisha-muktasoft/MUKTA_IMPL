@@ -3,7 +3,7 @@ import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewD
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewStatementConfig";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const ViewAnalysisStatement = () => {
 
@@ -275,6 +275,11 @@ const ViewAnalysisStatement = () => {
           }
         }
       ]
+      //look here need to uncomment once api works fine and check if the data is coming proper
+      // const { state } = useLocation()
+      // console.log(state);
+      // debugger;
+      // let statement = state?.statement;
   const history = useHistory();
   const [showActions, setShowActions] = useState(false);
   const { tenantId, estimateId } = Digit.Hooks.useQueryParams();

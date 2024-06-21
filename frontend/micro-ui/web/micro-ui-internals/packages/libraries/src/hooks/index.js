@@ -107,6 +107,7 @@ import useCreateLOI from "./works/useCreateLOI";
 import useEstimateSearchWorks from "./works/useSearch";
 import useCreateEstimate from "./works/useCreateEstimate";
 import useCreateEstimateNew from "./works/useCreateEstimateNew";
+import useCreateAnalysisStatement from "./works/useCreateAnalysisStatement";
 import useSearchEstimate from "./works/useSearchEstimate";
 import useApplicationActionsLOI from "./works/useApplicationActions";
 import useApplicationActionsEstimate from "./works/useUpdateEstimate";
@@ -184,6 +185,8 @@ const works = {
   useSearchWORKS,
   useCreateEstimate,
   useCreateEstimateNew,
+  //look here to import and export
+  useCreateAnalysisStatement,
   useSearchEstimate,
   useApplicationActionsLOI,
   useUpdateEstimate:useUpdateEstimateWorks,

@@ -47,6 +47,8 @@ const Urls = {
     searchProject: "/project/v1/_search",
     wmsSearchProject: "/wms/project/_search",
     updateProject: "/project/v1/_update",
+    //look here add your own url
+    analysisStatementcreate : "/statements/v1/analysis/_create"
   },
 
   contracts: {
