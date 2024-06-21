@@ -9,8 +9,9 @@ const ViewStatement = (props) => {
   const { t } = useTranslation();
 
   // Calculate the grand total
+  
   const grandTotal = nestedData.reduce((total, row) => {
-    return total + (parseFloat(row.estimatedAmount) || 0);
+    return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
 
   /* need to pass the screenType 
@@ -80,10 +81,11 @@ const ViewStatement = (props) => {
   };
 
   const renderSubFooter = (subRows) => {
+   
     const subTotal = subRows.reduce((total, subRow) => {
       return total + (parseFloat(subRow.amount) || 0);
     }, 0);
-
+   
     return (
       <tr>
         <td colSpan={6} style={{ textAlign: "right", fontWeight: "400" }}>
@@ -116,7 +118,7 @@ const ViewStatement = (props) => {
                 <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>
-                <Amount value={parseFloat(row.estimatedAmount).toFixed(2)} t={t} />
+                <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} />
               </td>
             </tr>
             {subRows.length > 0 && (

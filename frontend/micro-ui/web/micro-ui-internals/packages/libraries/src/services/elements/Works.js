@@ -270,4 +270,15 @@ export const WorksService = {
       method: "POST",
       auth: true,
     }),
+     // added
+    createUtilizationStatement: (details) =>
+      Request({
+        url: Urls.works.utilizationCreate,
+        data: details,
+        useCache: false,
+        setTimeParam: false,
+        userService: true,
+        method: "POST",
+        auth: true,
+      }),
 };

@@ -80,10 +80,30 @@ export const transformStatementData = (data) => {
             ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
       }, // Hardcoded
-      estimatedAmount:
-        sorDetail.lineItems.length > 0
-          ? sorDetail.lineItems.reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.amount || 0), 0)
-          : sorDetail?.basicSorDetails?.[0]?.amount, // Sum of amounts in basicSorDetails
+
+      // TODO:[previous code]
+      // estimatedAmount:
+      //   sorDetail.lineItems.length > 0
+      //     ? sorDetail.lineItems.reduce((sum, detail) => sum + (detail.amountDetails?.[0]?.amount || 0), 0)
+      //     : sorDetail?.basicSorDetails?.[0]?.amount, // Sum of amounts in basicSorDetails
+
+      // end of the comment
+
+      estimatedAmount:{
+        M:
+          sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "M").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
+            : sorDetail?.basicSorDetails?.[0]?.amount || 0.0,
+        L:
+          sorDetail.lineItems.filter((ob) => ob?.sorType === "L").length > 0
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
+            : sorDetail?.basicSorDetails?.[0]?.amount || 0.0,
+        MH:
+          sorDetail.lineItems.filter((ob) => ob?.sorType === "MH").length > 0
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
+            : sorDetail?.basicSorDetails?.[0]?.amount || 0.0,
+      },
+
       subrows: [], // Initialize subrows array
     };
 

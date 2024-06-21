@@ -16,7 +16,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewUtilConfig";
-import { useHistory } from "react-router-dom";
+import { useHistory,useLocation } from "react-router-dom";
 
 const ViewUtilization = () => {
     let statement = [
@@ -398,6 +398,12 @@ const ViewUtilization = () => {
   const menuRef = useRef();
 
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
+
+  //look here need to uncomment once api works fine and check if the data is coming proper
+      // const { state } = useLocation()
+      // console.log(state);
+      // debugger;
+      // let statement = state?.statement;
 
   const closeMenu = () => {
     setShowActions(false);
