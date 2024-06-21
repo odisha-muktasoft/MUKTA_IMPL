@@ -418,7 +418,8 @@ const ViewUtilization = () => {
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
-    //Digit.Utils.downloadEgovPDF('workOrder/work-order',{contractId,tenantId},`WorkOrder-${contractId}.pdf`)
+    
+    Digit.Utils.downloadEgovPDF('rateAnalysisUtilization/rate-analysis-utilization',{tenantId,referenceId},`utilization-${referenceId}.pdf`)
 }
   return (
     <div className={"employee-main-application-details"}>
