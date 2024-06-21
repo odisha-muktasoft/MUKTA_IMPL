@@ -22,7 +22,7 @@ const RAResponseBanner = () => {
     // Get the value of the "compositionId" query parameter
     const compositionId = url.searchParams.get('compositionId');
     const sorId = url.searchParams.get('sorId');
-    const effectiveFrom = url.searchParams.get('effectiveFrom');
+    const effectiveFrom = url.searchParams.get('fromeffective');
     const isUpdate = url.searchParams.get('isUpdate');
 
     // Now you can work with the response object as needed
