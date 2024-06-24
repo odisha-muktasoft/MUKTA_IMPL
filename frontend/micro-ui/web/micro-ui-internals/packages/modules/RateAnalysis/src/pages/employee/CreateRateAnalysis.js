@@ -177,6 +177,12 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
 
   // Handle form submission
   const handleCreateRateAnalysis = async (data, action) => {
+    if(createState?.SORType !== "Works")
+    {
+      setErrorMessage(t("RA_ONLY_FOR_WORKS"));
+      setShowToast({display:true, error:true});
+      return;
+    }
     if(createState?.SORDetails?.length <= 0)
     {
       setErrorMessage(t("RA_SOR_DETAILS_MANDATORY"));
@@ -230,7 +236,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   };
   //remove Toast after 3s
   useEffect(() => {
-    if (showToast) {
+    if (showToast?.display) {
       setTimeout(() => {
         closeToast();
       }, 3000);
