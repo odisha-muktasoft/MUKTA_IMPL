@@ -10,7 +10,7 @@
     "packages/modules/*",
     "packages/modules/Estimate",
     "packages/modules/Expenditure",
-        "packages/Mukta",
+    "packages/Mukta",
     "packages/modules/RateAnalysis"
   ],
   "author": "JaganKumar <jagan.kumar@egov.org.in>",
