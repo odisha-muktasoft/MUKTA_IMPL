@@ -8,13 +8,14 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
     // Initialize categories with empty objects
     const categories = {
       Labour: [],
-      Machinery: [],
+      MachineryBasicRate: [],
       Conveyance: [],
       Royality: [],
       LabourCess: [],
       ExplorationMineralfund: [],
       DistrictMineralfund: [],
       AdditionalCharges: [],
+      MaterialBasicRate:[],
       //ExtraCharges: [],
     };
 
@@ -23,10 +24,10 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
       LA: "Labour",
       MA: "MaterialBasicRate",
       CA: "Conveyance",
-      RA: "Royalty",
+      RA: "Royality",
       LC: "LabourCess",
       EMF: "ExplorationMineralfund",
-      DMF: "DistrictMinerafund",
+      DMF: "DistrictMineralfund",
       ADC: "AdditionalCharges",
       MHA: "MachineryBasicRate",
       //
@@ -263,7 +264,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
               config: {
                 sorType: "ROYALITY_ON_MINERAL",
               },
-              arrayData: getRefactoredTableRows(viewData?.Royalty, "ROYALITY_ON_MINERAL"),
+              arrayData: getRefactoredTableRows(viewData?.Royality, "ROYALITY_ON_MINERAL"),
               watch: () => {},
               setValue: () => {},
               register: () => {},
@@ -313,7 +314,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
               config: {
                 sorType: "DISTRICT_MINERAL_FUND",
               },
-              arrayData: getRefactoredTableRows(viewData?.ExplorationMineralfund, "DISTRICT_MINERAL_FUND"),
+              arrayData: getRefactoredTableRows(viewData?.DistrictMineralfund, "DISTRICT_MINERAL_FUND"),
               watch: () => {},
               setValue: () => {},
               register: () => {},

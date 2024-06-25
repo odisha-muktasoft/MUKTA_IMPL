@@ -12,6 +12,7 @@ import {
 } from "@egovernments/digit-ui-react-components";
 import { Controller } from "react-hook-form";
 import _ from "lodash";
+import { has4DecimalPlaces } from "../utils/transformData";
 
 const ExtraCharges = ({ control, watch, config, ...props }) => {
   const populators = config?.populators;
@@ -170,10 +171,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(2)}>
             <div style={cellContainerStyle}>
               <div>
-                <TextArea
+                <TextInput
                   style={{ marginBottom: "0px", wordWrap: "break-word" }}
                   name={`${formFieldName}[${rowIndex}].description`}
-                  value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                  //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
                   inputRef={register({
                     maxLength: {
                       value: 512,
@@ -268,13 +270,23 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                 <TextInput
                   style={{ marginBottom: "0px", textAlign: "left", paddingRight: "1rem" }}
                   name={`${formFieldName}[${rowIndex}].figure`}
-                  value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  //value={formData?.extraCharges?.[rowIndex]?.figure || row.figure}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.figure || row.figure) : null}
                   inputRef={register({
                     required: false,
                     max: populators?.quantity?.max,
                     pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                   })}
-                  onChange={(e) => setAmountField(e, rowIndex)}
+                  onChange={(e) => {
+                    if(has4DecimalPlaces(parseFloat(e?.target.value))){
+                      setAmountField(e, rowIndex)
+                    }
+                    else
+                    {
+                      e.target.value = e?.target.value.slice(0, e?.target.value.length - 1);
+                    }
+                  }
+                }
                 />
               </div>
               <div style={errorContainerStyles}>

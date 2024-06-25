@@ -206,10 +206,10 @@ export const grossTotalAmountCalculation = (listData) => {
   const categories = [
     "Labour",
     "Conveyance",
-    "Royalty",
+    "Royality",
     "MaterialBasicRate",
     "MachineryBasicRate",
-    "DistrictMinerafund",
+    "DistrictMineralfund",
     "ExplorationMineralfund",
     "AdditionalCharges",
     "ExtraCharges"
