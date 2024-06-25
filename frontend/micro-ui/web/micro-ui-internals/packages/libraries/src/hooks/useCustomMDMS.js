@@ -41,6 +41,7 @@ const useCustomMDMS = (tenantId, moduleName, masterDetails = [], config = {}, md
           tenantId: Digit.ULBService.getCurrentTenantId(),
           schemaCode: mdmsv2?.schemaCode,
           isActive: true,
+          limit: 1000,
         },
       },
       config: {
