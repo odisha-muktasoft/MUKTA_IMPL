@@ -135,7 +135,8 @@ export const UICustomizations = {
       data.body.inbox.processSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
       const estimateNumber = data?.body?.inbox?.moduleSearchCriteria?.estimateNumber?.trim();
-      if (!(data?.body?.inbox?.moduleSearchCriteria?.estimateNumber?.includes("RE")) && estimateNumber) data.body.inbox.moduleSearchCriteria.estimateNumber = estimateNumber;
+      if (!data?.body?.inbox?.moduleSearchCriteria?.estimateNumber?.includes("RE") && estimateNumber)
+        data.body.inbox.moduleSearchCriteria.estimateNumber = estimateNumber;
       if (data?.body?.inbox?.moduleSearchCriteria?.estimateNumber?.includes("RE") && estimateNumber) {
         data.body.inbox.moduleSearchCriteria.revisionNumber = estimateNumber;
         delete data?.body?.inbox?.moduleSearchCriteria?.estimateNumber;
@@ -185,7 +186,15 @@ export const UICustomizations = {
                 {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
               </Link> */}
               {/* here the end condition will be update as backend will add bussinessservice in inbox apo response in business object*/}
-              {Digit.Utils.statusBasedNavigation(row?.ProcessInstance?.action, row?.businessObject?.additionalDetails?.projectNumber, value, row.ProcessInstance.tenantId, value, value?.includes("RE") || row?.businessObject?.businessService === "REVISION-ESTIMATE" ? "REVISION-ESTIMATE" : "ESTIMATE", row?.businessObject?.estimateNumber)}
+              {Digit.Utils.statusBasedNavigation(
+                row?.ProcessInstance?.action,
+                row?.businessObject?.additionalDetails?.projectNumber,
+                value,
+                row.ProcessInstance.tenantId,
+                value,
+                value?.includes("RE") || row?.businessObject?.businessService === "REVISION-ESTIMATE" ? "REVISION-ESTIMATE" : "ESTIMATE",
+                row?.businessObject?.estimateNumber
+              )}
             </span>
           );
         case "COMMON_ASSIGNEE":
@@ -392,7 +401,8 @@ export const UICustomizations = {
       delete data.body.inbox.moduleSearchCriteria.ward;
       if (ward) data.body.inbox.moduleSearchCriteria.ward = ward;
       let estimateId = data?.body?.inbox?.moduleSearchCriteria?.estimateId?.trim();
-      if (!(data?.body?.inbox?.moduleSearchCriteria?.estimateId?.includes("RE")) && estimateId) data.body.inbox.moduleSearchCriteria.estimateId = estimateId;
+      if (!data?.body?.inbox?.moduleSearchCriteria?.estimateId?.includes("RE") && estimateId)
+        data.body.inbox.moduleSearchCriteria.estimateId = estimateId;
       if (data?.body?.inbox?.moduleSearchCriteria?.estimateId?.includes("RE") && estimateId) {
         data.body.inbox.moduleSearchCriteria.revisionNumber = estimateId;
         delete data?.body?.inbox?.moduleSearchCriteria?.estimateId;
@@ -436,11 +446,19 @@ export const UICustomizations = {
       if (key === "ESTIMATE_SEARCH_ESTIMATE_NO") {
         return (
           <span className="link">
-              {/* <Link to={`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${row.ProcessInstance.tenantId}&estimateNumber=${value}`}>
+            {/* <Link to={`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${row.ProcessInstance.tenantId}&estimateNumber=${value}`}>
                 {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
               </Link> */}
-              {Digit.Utils.statusBasedNavigation(row?.ProcessInstance?.action, row?.businessObject?.additionalDetails?.projectNumber, row?.ProcessInstance?.businessId, row.ProcessInstance.tenantId, row?.ProcessInstance?.businessId, row?.businessObject?.businessService === "REVISION-ESTIMATE" ? "REVISION-ESTIMATE" : "ESTIMATE", row?.businessObject?.estimateNumber)}
-            </span>
+            {Digit.Utils.statusBasedNavigation(
+              row?.ProcessInstance?.action,
+              row?.businessObject?.additionalDetails?.projectNumber,
+              row?.ProcessInstance?.businessId,
+              row.ProcessInstance.tenantId,
+              row?.ProcessInstance?.businessId,
+              row?.businessObject?.businessService === "REVISION-ESTIMATE" ? "REVISION-ESTIMATE" : "ESTIMATE",
+              row?.businessObject?.estimateNumber
+            )}
+          </span>
         );
       }
       if (key === "ES_COMMON_PROJECT_NAME") {
@@ -599,16 +617,16 @@ export const UICustomizations = {
             t("ES_COMMON_NA")
           );
 
-          case "WORKS_PROJECT_NAME": 
-          { let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
+        case "WORKS_PROJECT_NAME": {
+          let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
           return (
-          <div class="tooltip">
-            <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>       
-              {String(t(value))}
-            </div>
-            {/* check condtion - if length greater than 20 */}
-            <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
-              {currentProject?.description}
+            <div class="tooltip">
+              <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
+                {String(t(value))}
+              </div>
+              {/* check condtion - if length greater than 20 */}
+              <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
+                {currentProject?.description}
               </span>
             </div>
           );
@@ -741,16 +759,16 @@ export const UICustomizations = {
             t("ES_COMMON_NA")
           );
 
-          case "WORKS_PROJECT_NAME": 
-          { let currentProject = searchResult?.filter((result) => result?.businessObject?.id === row?.businessObject?.id)[0];
-        return (
-          <div class="tooltip">
-            <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>        
-              {String(t(value))}
-            </div>
-            {/* check condtion - if length greater than 20 */}
-            <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
-              {currentProject?.businessObject?.description}
+        case "WORKS_PROJECT_NAME": {
+          let currentProject = searchResult?.filter((result) => result?.businessObject?.id === row?.businessObject?.id)[0];
+          return (
+            <div class="tooltip">
+              <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
+                {String(t(value))}
+              </div>
+              {/* check condtion - if length greater than 20 */}
+              <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
+                {currentProject?.businessObject?.description}
               </span>
             </div>
           );
@@ -871,7 +889,7 @@ export const UICustomizations = {
       }
 
       if (key === "CORE_COMMON_STATUS") {
-        return <span>{t(`WF_MR_STATUS_${value}`)}</span>
+        return <span>{t(`WF_MR_STATUS_${value}`)}</span>;
       }
 
       if (key === "MUSTER_WAGE_AMOUNT") {
@@ -924,9 +942,9 @@ export const UICustomizations = {
 
       const workOrderNumber = data?.body?.inbox?.moduleSearchCriteria?.workOrderNumber?.trim();
       if (workOrderNumber) data.body.inbox.moduleSearchCriteria.workOrderNumber = workOrderNumber;
-      if(workOrderNumber && workOrderNumber?.includes("TE")){
-         data.body.inbox.moduleSearchCriteria.revisedWorkOrderNumber = workOrderNumber;
-         delete data.body.inbox.moduleSearchCriteria.workOrderNumber;
+      if (workOrderNumber && workOrderNumber?.includes("TE")) {
+        data.body.inbox.moduleSearchCriteria.revisedWorkOrderNumber = workOrderNumber;
+        delete data.body.inbox.moduleSearchCriteria.workOrderNumber;
       }
 
       const projectId = data?.body?.inbox?.moduleSearchCriteria?.projectId?.trim();
@@ -964,7 +982,9 @@ export const UICustomizations = {
             <span className="link">
               <Link
                 to={
-                  row?.ProcessInstance?.businessService === businessServiceMap.revisedWO || row?.ProcessInstance?.businessId?.includes("TE") || row?.businessObject?.businessService === businessServiceMap?.revisedWO
+                  row?.ProcessInstance?.businessService === businessServiceMap.revisedWO ||
+                  row?.ProcessInstance?.businessId?.includes("TE") ||
+                  row?.businessObject?.businessService === businessServiceMap?.revisedWO
                     ? `/${window.contextPath}/employee/contracts/contract-details?tenantId=${row?.ProcessInstance.tenantId}&workOrderNumber=${row.businessObject.contractNumber}&revisedWONumber=${value}`
                     : `/${window.contextPath}/employee/contracts/contract-details?tenantId=${row?.ProcessInstance.tenantId}&workOrderNumber=${value}`
                 }
@@ -1000,20 +1020,18 @@ export const UICustomizations = {
     },
   },
   SearchContractConfig: {
-    preProcess: (data,defaultValues) => {
-      const startDate = Digit.Utils.pt.convertDateToEpoch(data.body.inbox?.moduleSearchCriteria?.createdFrom,'daystart');
-      const endDate = Digit.Utils.pt.convertDateToEpoch(data.body.inbox?.moduleSearchCriteria?.createdTo,'dayend');
+    preProcess: (data, defaultValues) => {
+      const startDate = Digit.Utils.pt.convertDateToEpoch(data.body.inbox?.moduleSearchCriteria?.createdFrom, "daystart");
+      const endDate = Digit.Utils.pt.convertDateToEpoch(data.body.inbox?.moduleSearchCriteria?.createdTo, "dayend");
       let workOrderNumber, revisedWorkOrderNumber;
-      if(data.body.inbox?.moduleSearchCriteria?.workOrderNumber?.includes("WO"))
+      if (data.body.inbox?.moduleSearchCriteria?.workOrderNumber?.includes("WO"))
         workOrderNumber = data.body.inbox?.moduleSearchCriteria?.workOrderNumber?.trim();
-      else
-        revisedWorkOrderNumber = data.body.inbox?.moduleSearchCriteria?.workOrderNumber?.trim();
-      
-      let status = data?.body?.inbox?.moduleSearchCriteria?.status?.[0]?.wfStatus
+      else revisedWorkOrderNumber = data.body.inbox?.moduleSearchCriteria?.workOrderNumber?.trim();
 
-       //Added the condition because to revised work order, it will have state as approved instead of pending for acceptance
-       if(status === "PENDING_FOR_ACCEPTANCE")
-       status = [status, "APPROVED"]
+      let status = data?.body?.inbox?.moduleSearchCriteria?.status?.[0]?.wfStatus;
+
+      //Added the condition because to revised work order, it will have state as approved instead of pending for acceptance
+      if (status === "PENDING_FOR_ACCEPTANCE") status = [status, "APPROVED"];
 
       const projectType = data.body.inbox?.moduleSearchCriteria?.projectType?.code;
       const projectName = data.body.inbox?.moduleSearchCriteria?.projectName?.trim();
@@ -1034,7 +1052,7 @@ export const UICustomizations = {
           startDate,
           endDate,
           status,
-          businessService
+          businessService,
         },
       };
 
@@ -1068,7 +1086,9 @@ export const UICustomizations = {
             <span className="link">
               <Link
                 to={
-                  row?.ProcessInstance?.businessService === businessServiceMap.revisedWO || row?.ProcessInstance?.businessId?.includes("TE") || row?.businessObject?.businessService === businessServiceMap?.revisedWO
+                  row?.ProcessInstance?.businessService === businessServiceMap.revisedWO ||
+                  row?.ProcessInstance?.businessId?.includes("TE") ||
+                  row?.businessObject?.businessService === businessServiceMap?.revisedWO
                     ? `/${window.contextPath}/employee/contracts/contract-details?tenantId=${row?.ProcessInstance?.tenantId}&workOrderNumber=${row.businessObject.contractNumber}&revisedWONumber=${value}`
                     : `/${window.contextPath}/employee/contracts/contract-details?tenantId=${row?.ProcessInstance?.tenantId}&workOrderNumber=${value}`
                 }
@@ -1547,7 +1567,11 @@ export const UICustomizations = {
         }
         return (
           <span className="link">
-            <Link to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row?.businessObject?.referenceId?.split("_")?.[0]}`}>
+            <Link
+              to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${
+                row?.businessObject?.referenceId?.split("_")?.[0]
+              }`}
+            >
               {String(value ? value : t("ES_COMMON_NA"))}
             </Link>
           </span>
@@ -1752,7 +1776,7 @@ export const UICustomizations = {
       if (key === "WORKS_PROJECT_NAME") {
         return (
           <div class="tooltip">
-              <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
+            <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
               {String(value ? value : t("ES_COMMON_NA"))}
             </div>
             {/* check condtion - if length greater than 20 */}
@@ -2096,7 +2120,7 @@ export const UICustomizations = {
       if (key === "WORKS_PROJECT_NAME") {
         return (
           <div class="tooltip">
-              <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
+            <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
               {String(value ? value : t("ES_COMMON_NA"))}
             </div>
             {/* check condtion - if length greater than 20 */}
@@ -2449,29 +2473,27 @@ export const UICustomizations = {
   },
 
   WMSSearchMeasurementConfig: {
-
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
-      if ((createdFrom === "" && createdTo !== "") || ( createdFrom!== "" && createdTo === ""))
+      if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
         return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
 
     preProcess: (data) => {
-
       let moduleSearchCriteria = data?.body?.inbox?.moduleSearchCriteria;
 
       moduleSearchCriteria = {
         ...(moduleSearchCriteria?.measurementNumber && { measurementNumber: moduleSearchCriteria?.measurementNumber?.trim() }),
-        ...(moduleSearchCriteria?.projectName && { projectName : moduleSearchCriteria?.projectName}),
-        ...(moduleSearchCriteria?.status && {status : moduleSearchCriteria?.status}),
-        ...(moduleSearchCriteria?.ward && {ward : moduleSearchCriteria?.ward}),
-        ...(moduleSearchCriteria?.referenceId && {referenceId : moduleSearchCriteria?.referenceId}),
-        ...(moduleSearchCriteria?.createdFrom && {createdFrom : Digit.Utils.pt.convertDateToEpoch(moduleSearchCriteria?.createdFrom)}),
-        ...(moduleSearchCriteria?.createdTo && {createdTo : Digit.Utils.pt.convertDateToEpoch(moduleSearchCriteria?.createdTo)})
-      }
+        ...(moduleSearchCriteria?.projectName && { projectName: moduleSearchCriteria?.projectName }),
+        ...(moduleSearchCriteria?.status && { status: moduleSearchCriteria?.status }),
+        ...(moduleSearchCriteria?.ward && { ward: moduleSearchCriteria?.ward }),
+        ...(moduleSearchCriteria?.referenceId && { referenceId: moduleSearchCriteria?.referenceId }),
+        ...(moduleSearchCriteria?.createdFrom && { createdFrom: Digit.Utils.pt.convertDateToEpoch(moduleSearchCriteria?.createdFrom) }),
+        ...(moduleSearchCriteria?.createdTo && { createdTo: Digit.Utils.pt.convertDateToEpoch(moduleSearchCriteria?.createdTo) }),
+      };
       data.body.inbox.moduleSearchCriteria = { ...moduleSearchCriteria };
       data.body.inbox.moduleSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -2486,7 +2508,13 @@ export const UICustomizations = {
           const contractNumber = row?.businessObject?.referenceId;
           return <span className="link">{Digit.Utils.statusBasedNavigation(state, contractNumber, value, tenantId, value)}</span>;
         case "MB_AMOUNT":
-          return value ? <span style={{ whiteSpace: "nowrap" }}>{Digit.Utils.dss.formatterWithoutRound(parseFloat(value).toFixed(2), "number", undefined, true, undefined, 2)}</span> : t("ES_COMMON_NA");
+          return value ? (
+            <span style={{ whiteSpace: "nowrap" }}>
+              {Digit.Utils.dss.formatterWithoutRound(parseFloat(value).toFixed(2), "number", undefined, true, undefined, 2)}
+            </span>
+          ) : (
+            t("ES_COMMON_NA")
+          );
         case "MB_STATUS":
           return <span>{t(value)}</span>;
         case "MASTERS_SOCIAL_CATEGORY":
@@ -2673,7 +2701,9 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link
-                to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${row.businessObject.tenantId}&billNumber=${value}&workOrderNumber=${row?.businessObject?.referenceId?.split("_")?.[0]}`}
+                to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${
+                  row.businessObject.tenantId
+                }&billNumber=${value}&workOrderNumber=${row?.businessObject?.referenceId?.split("_")?.[0]}`}
               >
                 {String(value ? value : t("ES_COMMON_NA"))}
               </Link>
@@ -2700,6 +2730,153 @@ export const UICustomizations = {
           link = `/${window.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${row[key]}`;
       });
       return link;
+    },
+  },
+  ViewScheduledJobsConfig: {
+    preProcess: (data) => {
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduledFrom, "daystart");
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduledTo);
+      const status = data.body.SearchCriteria?.status?.code;
+      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
+      data.body.SearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.SearchCriteria = {
+        ...data.body.SearchCriteria,
+        tenantId: Digit.ULBService.getCurrentTenantId(),
+        status,
+        scheduledFrom,
+        scheduledTo,
+      };
+      return data;
+    },
+    customValidationCheck: (data) => {
+      //checking both to and from date are present
+      const { scheduledFrom, scheduledTo } = data;
+      if (scheduledTo !== "" && scheduledFrom === "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (scheduledTo === "" && scheduledFrom !== "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+
+      return false;
+    },
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      //here we can add multiple conditions
+      //like if a cell is link then we return link
+      //first we can identify which column it belongs to then we can return relevant result
+      switch (key) {
+        case "RA_JOB_ID":
+          return value;
+
+        case "RA_SCHEDULED_ON":
+          return Digit.DateUtils.ConvertEpochToDate(value);
+
+        case "RA_RATE_EFFECTIVE_FROM": {
+          return Digit.DateUtils.ConvertEpochToDate(value);
+        }
+
+        case "RA_NO_OF_SOR_SCHEDULED":
+          return {value};
+
+        case "RA_SUCCESSFUL": {
+          let successfulCount = 0;
+          row.sorDetails.forEach((detail) => {
+            if (detail.status === "COMPLETED") {
+              successfulCount++;
+            }
+          });
+          return successfulCount;
+        }
+        case "RA_FAILED": {
+          let failedCount = 0;
+          value.forEach((detail) => {
+            if (detail.status === "FAILED") {
+              failedCount++;
+            }
+          });
+          return failedCount;
+        }
+
+        case "RA_STATUS":
+          return (
+            <div style={{ color: value === "FAILED" ? "#D4351C" : value === "COMPLETED" ? "#27AE60" : "#F47738" }}>
+              {value === "FAILED" ? "Failed" : value === "COMPLETED" ? "Completed" : value === "INPROGRESS" ? "In Progress" : "Scheduled"}
+            </div>
+          );
+
+        default:
+          return t("ES_COMMON_NA");
+      }
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
+    },
+  },
+  searchSORConfig: {
+    preProcess: (data) => {
+      const sortype = data.state.searchForm.sorType?.code;
+      const sorsubtype = data.state.searchForm.sorSubType?.code;
+      const sorvariant = data.state.searchForm.sorVariant?.code;
+      const sorcode = data.state.searchForm?.sorCode;
+
+      data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
+      data.body.MdmsCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+
+      const filters = {
+        sorType: sortype,
+        sorSubType: sorsubtype,
+        sorVariant: sorvariant,
+        ...(sorcode && { sorCode: sorcode }),
+      };
+
+      data.body.MdmsCriteria = {
+        tenantId: Digit.ULBService.getCurrentTenantId(),
+        filters: filters,
+      };
+
+      return data;
+    },
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      //here we can add multiple conditions
+      //like if a cell is link then we return link
+      //first we can identify which column it belongs to then we can return relevant result
+      const [sorData, setSorData] = Digit.Hooks.useSessionStorage("RA_SCHEDULE_JOBS_REQUEST_DATA", {});
+      const sorIds = searchResult.map((item) => item.id).filter((id) => id !== undefined);
+
+      // Updating session storage
+      React.useEffect(() => {
+        setSorData({
+          ...sorData,
+          sorIds: sorIds,
+        });
+      }, [searchResult]);
+
+      switch (key) {
+        case "RA_SOR_CODE":
+          return (
+            <span className="link">
+              <Link to={`/${window.contextPath}/workbench-ui/employee/workbench/mdms-view?moduleName=WORKS-SOR&masterName=SOR&uniqueIdentifier=${value}`}>
+                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              </Link>
+            </span>
+          );
+
+        case "RA_SOR_SUBTYPE":
+          return value;
+
+        case "RA_SOR_VARIANT": {
+          return value;
+        }
+
+        case "RA_SOR_DESCRIPTION":
+          return value;
+
+        default:
+          return t("ES_COMMON_NA");
+      }
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
     },
   },
 };
