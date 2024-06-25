@@ -8,7 +8,7 @@
     "packages/css",
     "packages/react-components",
     "packages/modules/*",
-    "packages/modules/Estimate",
+    "packages/modules/*",
     "packages/modules/Expenditure",
     "packages/Mukta",
     "packages/modules/RateAnalysis"
