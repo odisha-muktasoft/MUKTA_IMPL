@@ -17,10 +17,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   async function callCreateApi() {
     //look here add the condition for utlization statement and call your api
+    console.log("check",formData?.SORtable?.[0]?.estimateId)
     let payload = {
       statementRequest: {
         tenantId: tenantId,
-        id: isEstimate ? formData?.SORtable?.[0]?.estimateId : "need to add",
+        id: isEstimate ? formData?.SORtable?.[0]?.estimateId : measurement?.id,
       },
     };
 
@@ -35,7 +36,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               }, 5000);
             },
             onSuccess: async (responseData, variables) => {
-              clearSessionFormData();
+             // clearSessionFormData();
               console.log(responseData);
               // const state = {
               //   header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),

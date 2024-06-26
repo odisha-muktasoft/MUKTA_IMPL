@@ -98,7 +98,7 @@ module.exports = function (app) {
     "/ifms-adapter",
     
     //look here
-    "statements/v1/analysis/_create",
+    "/statements/v1/analysis/_create",
     //added
     "/statements/v1/utilization/_create",
   ].forEach((location) => app.use(location, createProxy));

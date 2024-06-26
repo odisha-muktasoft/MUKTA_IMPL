@@ -12,8 +12,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
   const isMeasurement = measurement && Object.keys(measurement)?.length > 0;
   let isMeasurementCreate = window.location.href.includes("measurement/create")
 
-  console.log(transformedContract)
-debugger;
+  
   lineItems?.filter(e => e.category === "NON-SOR")
     .forEach((item, index) => {
       // Check if the "sorId" is not null or undefined
