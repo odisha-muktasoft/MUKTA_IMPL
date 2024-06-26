@@ -289,7 +289,11 @@ expense:{
 
   rateAnalysis:{
     search:"/rate-analysis/v1/_calculate",
-  }
+  },
+
+  mdms_v2: {
+    search: "/mdms-v2/v2/_search",
+  },
 };
 
 export default Urls;

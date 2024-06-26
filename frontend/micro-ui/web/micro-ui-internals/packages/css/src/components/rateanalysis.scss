@@ -1,0 +1,23 @@
+
+  .search-button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 8px;
+    &.inbox {
+        grid-column: 2 / span 2;
+        &.filter {
+            button {
+                width: 100%;
+            }
+        }
+    }
+    &.search {
+        grid-column: 4 / span 2 !important;
+    }
+}
+
+.toast-success{
+    max-width: 540px;
+}

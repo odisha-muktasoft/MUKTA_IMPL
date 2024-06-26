@@ -14,6 +14,8 @@ import TableWithOutHead from "./components/specficAmountTable";
 import ViewTotalAmount from "./components/viewTotalAmount";
 import ExtraChargesViewTable from "./components/extra_charges_view_table";
 import RAResponseBanner from "./pages/employee/RAResponseBanner";
+import ViewScheduledJobs from "./pages/employee/ViewScheduledJobs";
+import SearchSOR from "./pages/employee/SearchSOR";
 
 const RateAnalysisModule = ({ stateCode, userType, tenants }) => {
   const { path, url } = useRouteMatch();
@@ -46,7 +48,10 @@ const componentsToRegister = {
   ViewTotalAmount,
  
   ExtraChargesViewTable,
-  RAResponseBanner
+  RAResponseBanner,
+
+  ViewScheduledJobs,
+  SearchSOR
 };
 
 export const initRateAnalysisComponents = () => {
