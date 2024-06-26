@@ -10,6 +10,7 @@ import SearchPlain from "./SearchPlain";
 
 import ResponseBanner from "./ResponseBanner"
 import UpdateMeasurement from "./UpdateMeasurement";
+import ViewUtilization from "./viewUtilization";
 
 
 const MeasurementBreadCrumbs = ({ location }) => {
@@ -54,6 +55,12 @@ const MeasurementBreadCrumbs = ({ location }) => {
       show: location.pathname.includes("/measurement/view") ? true : false,
       isBack: fromScreen && true,
     },
+    {
+      path: `/${window.contextPath}/employee/measurement/utilizationstatement`,
+      content: fromScreen ? `${t(fromScreen)} / ${t("MB_VIEW_UTLIZATION")}` : t("MB_VIEW_UTLIZATION"),
+      show: location.pathname.includes("/measurement/utilizationstatement") ? true : false,
+      isBack: fromScreen && true,
+    },
   ];
   return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };
@@ -73,6 +80,7 @@ const App = ({ path }) => {
         <PrivateRoute path={`${path}/response`} component={() => <ResponseBanner {...{ path }} />} />
         <PrivateRoute path={`${path}/searchplain`} component={() => <SearchPlain {...{ path }} />} />
         <PrivateRoute path={`${path}/update`} component={() => <UpdateMeasurement {...{ path }} />} />
+        <PrivateRoute path={`${path}/utilizationstatement`} component={() => <ViewUtilization {...{ path }} />} />
       </React.Fragment>
     </Switch>
   );
