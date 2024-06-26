@@ -96,6 +96,11 @@ module.exports = function (app) {
     "/rate-analysis/v1/_calculate",
     "mukta-ifix-adapter",
     "/ifms-adapter",
+    
+    //look here
+    "/statements/v1/analysis/_create",
+    //added
+    "/statements/v1/utilization/_create",
     "/rate-analysis/v1/scheduler/_search",
     "/mdms-v2/v2/_search",
     "/rate-analysis/v1/scheduler/_create"

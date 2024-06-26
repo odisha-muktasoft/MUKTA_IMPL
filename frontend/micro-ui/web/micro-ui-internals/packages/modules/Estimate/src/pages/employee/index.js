@@ -13,6 +13,7 @@ import CreateDetailedEstimate from "./Estimates/CreateDetailedEstimate/CreateEst
 import UpdateDetailedEstimate from "./Estimates/CreateDetailedEstimate/UpdateDetailedEstimate";
 import CreateRevisionDetailedEstimate from "./Estimates/CreateDetailedEstimate/CreateRevisionDetailedEstimate";
 import UpdateRevisionDetailedEstimate from "./Estimates/CreateDetailedEstimate/UpdateRevisionDetailedEstimate";
+import ViewAnalysisStatementPage from "./ViewAnalysisStatementPage";
 
 import ViewDetailedEstimate from "./ViewDetailedEstimate";
 
@@ -152,7 +153,7 @@ const App = ({ path }) => {
                     <PrivateRoute path={`${path}/update-detailed-estimate`} component={() => <UpdateDetailedEstimate {...{ path }} />} />
                     <PrivateRoute path={`${path}/create-revision-detailed-estimate`} component={() => <CreateRevisionDetailedEstimate {...{ path }} />} />
                     <PrivateRoute path={`${path}/update-revision-detailed-estimate`} component={() => <UpdateRevisionDetailedEstimate {...{ path }} />} />
-
+                    <PrivateRoute path={`${path}/view-analysis-statement`} component={() => <ViewAnalysisStatementPage {...{ path }} />} />
                     <PrivateRoute path={`${path}/response`} component={() => <EstimateResponse {...{ path }} />} />
 
                 </div>

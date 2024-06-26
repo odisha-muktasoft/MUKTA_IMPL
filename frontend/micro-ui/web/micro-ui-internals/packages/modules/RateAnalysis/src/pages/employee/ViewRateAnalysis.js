@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-import { viewRateAnalysisdataconfig } from "../../configs/viewRateAnalysisConfig";
+import { viewRateAnalysisdataconfig } from "../../configs/ViewRateAnalysisConfig";
 
 const ViewRateAnalysis = () => {
   const { t } = useTranslation();
