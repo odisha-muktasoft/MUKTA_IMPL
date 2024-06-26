@@ -1,6 +1,6 @@
 export const getDefaultValues = (sordata, t, mbNumber, compositionData, allSORData, allOverheadData, isUpdate) => {
   //default values to show the data in create rate analysis screen
-  console.log(sordata?.data?.sorVariant,"sorrrr");
+ 
 
   let SORData = {
     SORCode: sordata?.uniqueIdentifier,
@@ -102,7 +102,7 @@ export const getAdditionCharges = (data) => {
 
 export const transformRequestBody = async (data, createdState, tenantId, compositionData, isUpdate) => {
   let composition_Id = isUpdate ? compositionData?.mdms?.[0]?.data?.compositionId : await preProcessData();
-console.log(data,"data");
+
   let requestBody = {
     Mdms: {
       tenantId: tenantId?.split(".")?.[0],

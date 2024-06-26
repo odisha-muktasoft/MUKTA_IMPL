@@ -12,8 +12,7 @@ const RateAnalysisBreadCumbs = ({ location }) => {
   const { t } = useTranslation();
   const search = useLocation().search;
   const fromScreen = new URLSearchParams(search).get("from") || null;
-  console.log(window.contextPath, location);
-  console.log(fromScreen);
+  
   const crumbs = [
     {
       path: `/${window?.contextPath}/employee`,
