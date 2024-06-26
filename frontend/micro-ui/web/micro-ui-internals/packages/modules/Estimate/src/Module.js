@@ -22,6 +22,7 @@ import UpdateDetailedEstimate from "./pages/employee/Estimates/CreateDetailedEst
 import CreateRevisionDetailedEstimate from "./pages/employee/Estimates/CreateDetailedEstimate/CreateRevisionDetailedEstimate";
 import UpdateRevisionDetailedEstimate from "./pages/employee/Estimates/CreateDetailedEstimate/UpdateRevisionDetailedEstimate";
 import EstimateMeasureTableWrapper from "./pageComponents/EstimateMeasureTableWrapper";
+import ViewStatement from "./components/ViewStatement";
 import searchTemplate from "./pageComponents/searchTemplate";
 
 const EstimateModule = ({ stateCode, userType, tenants }) => {
@@ -64,6 +65,7 @@ const componentsToRegister = {
     CreateRevisionDetailedEstimate,
     UpdateRevisionDetailedEstimate,
     EstimateMeasureTableWrapper,
+    ViewStatement,
     searchTemplate
 
 };

@@ -95,7 +95,15 @@ module.exports = function (app) {
     "/egov-idgen/",
     "/rate-analysis/v1/_calculate",
     "mukta-ifix-adapter",
-    "/ifms-adapter"
+    "/ifms-adapter",
+    
+    //look here
+    "/statements/v1/analysis/_create",
+    //added
+    "/statements/v1/utilization/_create",
+    "/rate-analysis/v1/scheduler/_search",
+    "/mdms-v2/v2/_search",
+    "/rate-analysis/v1/scheduler/_create"
   ].forEach((location) => app.use(location, createProxy));
   ["/pb-egov-assets"].forEach((location) => app.use(location, assetsProxy));
 };

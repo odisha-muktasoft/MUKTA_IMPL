@@ -5,6 +5,8 @@ import { Switch, useLocation } from "react-router-dom";
 import ViewRateAnalysis from "./ViewRateAnalysis";
 import CreateRateAnalysis from "./CreateRateAnalysis";
 import RAResponseBanner from "./RAResponseBanner";
+import ViewScheduledJobs from "./ViewScheduledJobs";
+import SearchSOR from "./SearchSOR";
 
 const RateAnalysisBreadCumbs = ({ location }) => {
   const { t } = useTranslation();
@@ -27,6 +29,17 @@ const RateAnalysisBreadCumbs = ({ location }) => {
       path: `/${window.contextPath}/employee/rateAnalysis/view-rate-analysis`,
       content: fromScreen ? `${t(fromScreen)} / ${t("RA_VIEW_RATE_HEADER")}` : t("RA_VIEW_RATE_HEADER"),
       show: location.pathname.includes("/rateanalysis/view-rate-analysis") ? true : true,
+      isBack: true,
+
+
+      path: `/${window.contextPath}/employee/rateAnalysis/search-sor`,
+      content: t("RA_SEARCH_SOR"),
+      show: location.pathname.includes("/rateanalysis/search-sor") ? true : true,
+      isBack: true,
+
+      path: `/${window.contextPath}/employee/rateAnalysis/view-scheduled-jobs`,
+      content: `${t("RA_SEARCH_SOR")} / ${t("RA_VIEW_JOBS")}`,
+      show: location.pathname.includes("/rateanalysis/view-scheduled-jobs") ? true : true,
       isBack: true,
     },
   ];
@@ -77,6 +90,8 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/create-rate-analysis`} component={() => <CreateRateAnalysis />} />
           <PrivateRoute path={`${path}/update-rate-analysis`} component={() => <CreateRateAnalysis isUpdate={true} />} />
           <PrivateRoute path={`${path}/response`} component={() => <RAResponseBanner />} />
+          <PrivateRoute path={`${path}/view-scheduled-jobs`} component={() => <ViewScheduledJobs />} />
+          <PrivateRoute path={`${path}/search-sor`} component={() => < SearchSOR/>} />
         </div>
       </React.Fragment>
     </Switch>

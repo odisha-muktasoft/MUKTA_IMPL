@@ -12,6 +12,8 @@ export const editEstimateUtil = (estimate,uom,overheads,RatesData, allEstimates)
     //pre populating the relevant formData
     //total estimate amount
     formData.totalEstimatedAmount = estimate?.additionalDetails?.totalEstimatedAmount;
+    //change has been done so that I will get estimate id for analysis statement
+    formData.estimateId= estimate?.id;
 
     //labour and material analysis
     formData.labourMaterialAnalysis = estimate?.additionalDetails?.labourMaterialAnalysis
