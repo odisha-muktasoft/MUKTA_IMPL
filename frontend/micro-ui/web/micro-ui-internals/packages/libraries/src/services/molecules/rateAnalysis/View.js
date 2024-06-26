@@ -91,7 +91,7 @@ const transformRateAnalysisViewDataToApplicationDetails = async (data) => {
                     id: detail?.id,
                     type: detail?.type,
                     heads: detail?.heads,
-                    amount: detail?.amount,
+                    amount: parseFloat(detail?.amount.toFixed(2)),
                   },
                 ],
                 additionalDetails: {
@@ -102,7 +102,7 @@ const transformRateAnalysisViewDataToApplicationDetails = async (data) => {
                   sorSubType: item?.additionalDetails?.sorSubType,
                   sorVariant: item?.additionalDetails?.sorVariant,
                   description: item?.additionalDetails?.description,
-                  basicRate: item?.additionalDetails?.rate?.rate,
+                  basicRate: parseFloat(item?.additionalDetails?.rate?.rate.toFixed(2)),
                 },
               };
 

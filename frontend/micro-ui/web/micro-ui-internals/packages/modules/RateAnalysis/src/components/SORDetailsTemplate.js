@@ -156,8 +156,8 @@ const SORDetailsTemplate = (props) => {
     sorCode: row?.sorCode,
     description: row?.description,
     uom: row?.uom,
-    quantity: row?.quantity,
-    ...(pageType === 'VIEW' ? { amount: row?.amount,basicRate:row?.basicRate } : {})
+    quantity: parseFloat(row?.quantity.toFixed(4)),
+    ...(pageType === 'VIEW' ? { amount: parseFloat(row?.amount.toFixed(2)),basicRate:parseFloat(row?.basicRate .toFixed(2))} : {})
   }));
 
   
