@@ -52,11 +52,9 @@ export const transformStatementData = (data) => {
 
   const { sorDetails } = data;
 
-  console.log(sorDetails, "sordetais");
   sorDetails.forEach((sorDetail, sorIndex) => {
     const { lineItems } = sorDetail;
 
-    console.log(sorDetail, "sorrrr");
     // Main SOR data
     const mainSORRow = {
       sNo: nestedData.length + 1,
@@ -89,7 +87,7 @@ export const transformStatementData = (data) => {
 
       // end of the comment
 
-      estimatedAmount:{
+      estimatedAmount: {
         M:
           sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
             ? sorDetail.lineItems.filter((ob) => ob?.sorType === "M").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
@@ -191,7 +189,6 @@ export const sortSorsBasedonType = (statement) => {
     });
   });
 
-  console.log("INDIA", resultArray);
   return resultArray;
 
   // Create the array of objects based on the provided statement data
