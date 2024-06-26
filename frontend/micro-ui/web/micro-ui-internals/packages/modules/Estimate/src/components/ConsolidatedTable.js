@@ -45,7 +45,7 @@ const GroupedTable = (props) => {
   };
 
   const sortedData = (groupedDataList) => {
-    console.log("check",groupedDataList)
+   
     const grouped = {};
 
     groupedDataList.forEach((item) => {
