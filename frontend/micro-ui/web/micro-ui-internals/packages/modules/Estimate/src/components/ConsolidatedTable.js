@@ -108,7 +108,7 @@ const GroupedTable = (props) => {
   // Render table body
   const renderBody = () => {
     const groupedData = groupAndCalculateTotals();
-       console.log("yyy",groupedData[0])
+       
     let sno = 0;
     return groupedData.map((row, index) => (
       <tr key={index}>
