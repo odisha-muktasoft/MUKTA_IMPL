@@ -26,7 +26,8 @@ const TableWithOutHead = (props) => {
 
           <td className="flex" style={{ width: "40%", margin: "0px", padding: "10px", textAlign: "right" }}>
             
-          {Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(row.amount)).toFixed(2),"number",undefined,true,undefined,2)}
+          {/*Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(row.amount)).toFixed(2),"number",undefined,true,undefined,2)*/}
+         { (parseFloat(row.amount)).toFixed(2)}
          
           </td>
         </tr>

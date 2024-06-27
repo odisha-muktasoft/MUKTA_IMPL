@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import React from "react";
-import { Amount, LinkLabel } from "@egovernments/digit-ui-react-components";
+import React, { useState } from "react";
+import { Amount, LinkLabel, CheckBox} from "@egovernments/digit-ui-react-components";
 
 //create functions here based on module name set in mdms(eg->SearchProjectConfig)
 //how to call these -> Digit?.Customizations?.[masterName]?.[moduleName]
@@ -2772,7 +2772,7 @@ export const UICustomizations = {
         }
 
         case "RA_NO_OF_SOR_SCHEDULED":
-          return {value};
+          return { value };
 
         case "RA_SUCCESSFUL": {
           let successfulCount = 0;
@@ -2829,45 +2829,67 @@ export const UICustomizations = {
 
       data.body.MdmsCriteria = {
         tenantId: Digit.ULBService.getCurrentTenantId(),
+        schemaCode:"WORKS-SOR.SOR",
         filters: filters,
       };
-
       return data;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      //here we can add multiple conditions
-      //like if a cell is link then we return link
-      //first we can identify which column it belongs to then we can return relevant result
-      const [sorData, setSorData] = Digit.Hooks.useSessionStorage("RA_SCHEDULE_JOBS_REQUEST_DATA", {});
-      const sorIds = searchResult.map((item) => item.id).filter((id) => id !== undefined);
+      const [selectedSorIds, setSelectedSorIds] = React.useState(Digit.SessionStorage.get("RA_SELECTED_SORS") || {});
 
-      // Updating session storage
+      const handleCheckboxChange = (checked, row) => {
+        const matchingItem = searchResult.find((item) => item?.id === row?.id);
+        const sorTypeSelected = row?.data?.sorType;
+
+        if (matchingItem?.id !== undefined) {
+          setSelectedSorIds((prevIds) => {
+            const oldData = Digit.SessionStorage.get("RA_SELECTED_SORS")?.sorIds || [];
+            let updatedIds;
+            if (checked) {
+              updatedIds = [...oldData, matchingItem?.id] ;
+            } else {
+              updatedIds = oldData.filter((id) => id !== matchingItem?.id);
+            }
+            const updatedData = {
+              sorType: sorTypeSelected,
+              sorIds: updatedIds
+            };
+            if(oldData !== updatedIds) {
+              Digit.SessionStorage.set("RA_SELECTED_SORS", updatedData);
+              window.dispatchEvent(new Event('session-storage-update'));
+            }
+            return updatedData;
+          });
+        }
+      };
+
       React.useEffect(() => {
-        setSorData({
-          ...sorData,
-          sorIds: sorIds,
-        });
-      }, [searchResult]);
+        const storedData = Digit.SessionStorage.get("RA_SELECTED_SORS") || {};
+        setSelectedSorIds(storedData);
+      }, []);
 
       switch (key) {
         case "RA_SOR_CODE":
           return (
-            <span className="link">
-              <Link to={`/${window.contextPath}/workbench-ui/employee/workbench/mdms-view?moduleName=WORKS-SOR&masterName=SOR&uniqueIdentifier=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
-              </Link>
-            </span>
+            <div style={{ display: "flex", gap: "4px" }}>
+              <CheckBox onChange={(e) => handleCheckboxChange(e.target.checked, row)} disable={row?.data?.sorType !== "W" || value === undefined}></CheckBox>
+              <span className="link">
+                <a href={`/workbench-ui/employee/workbench/mdms-view?moduleName=WORKS-SOR&masterName=SOR&uniqueIdentifier=${value}`}>
+                  {String(value ? value : t("ES_COMMON_NA"))}
+                </a>
+              </span>
+            </div>
           );
 
         case "RA_SOR_SUBTYPE":
-          return value;
+          return value ? value : t("ES_COMMON_NA");
 
         case "RA_SOR_VARIANT": {
-          return value;
+          return value ? value : t("ES_COMMON_NA");
         }
 
         case "RA_SOR_DESCRIPTION":
-          return value;
+          return value ? value : t("ES_COMMON_NA");
 
         default:
           return t("ES_COMMON_NA");
