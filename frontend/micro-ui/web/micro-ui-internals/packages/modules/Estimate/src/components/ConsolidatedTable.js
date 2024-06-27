@@ -45,7 +45,7 @@ const GroupedTable = (props) => {
   };
 
   const sortedData = (groupedDataList) => {
-    console.log("check",groupedDataList)
+   
     const grouped = {};
 
     groupedDataList.forEach((item) => {
@@ -108,7 +108,7 @@ const GroupedTable = (props) => {
   // Render table body
   const renderBody = () => {
     const groupedData = groupAndCalculateTotals();
-       console.log("yyy",groupedData[0])
+       
     let sno = 0;
     return groupedData.map((row, index) => (
       <tr key={index}>
@@ -117,14 +117,14 @@ const GroupedTable = (props) => {
         <td style={{ width: "25%" }}>{row.description}</td>
         <td style={{ width: "10%" }}>{row.uom}</td>
         <td style={{ width: "10%" }}>
-          {<Amount value={parseFloat(row.rate).toFixed(2)} t={t} />}
+          {<Amount value={parseFloat(row.rate).toFixed(2)} t={t} sameDisplay={true} roundOff={false} />}
         </td>
         <td style={{ width: "15%" }}>
           {/*<Amount value={row.totalQuantity} t={t} />*/}
-          {row.totalQuantity}
+          {<Amount value={parseFloat(row.totalQuantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />}
         </td>
         <td style={{ width: "15%" }}>
-          <Amount value={parseFloat(row.totalAmount).toFixed(2)} t={t} />
+          <Amount value={parseFloat(row.totalAmount).toFixed(2)} t={t} sameDisplay={true} roundOff={false}/>
         </td>
         {/* <td style={{ width: "15%" }}>
           <Amount value={parseFloat(row.totalMH).toFixed(2)} t={t} />
@@ -142,19 +142,19 @@ const GroupedTable = (props) => {
           groupAndCalculateTotals().length>0&&
         <tr>
         <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" }}>{t("MB_AMOUNT_TOTAL")}</td>
-        <td style={{ width: "10%" }}>{
+        <td style={{ width: "10%" }}>
           
-          groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)
-        }</td>
+         <Amount value={ parseFloat( Math.round((groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)*100)/100).toFixed(2))} />
+        </td>
         </tr>
         
         }
 
         {
           groupAndCalculateTotals().length===0&&
-          <td colSpan={8} style={{ textAlign: "center" }}>
+          <td colSpan={7} style={{marginLeft:"10px", color:"#9E9E9E", textAlign:"center"}}>
           {t(emptyTableMsg)}
-          </td>
+        </td>
         }
         </tbody>
       </table>

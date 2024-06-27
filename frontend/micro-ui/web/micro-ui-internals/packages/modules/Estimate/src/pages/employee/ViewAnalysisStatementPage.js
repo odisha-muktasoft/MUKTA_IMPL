@@ -276,13 +276,16 @@ const ViewAnalysisStatement = () => {
     //     }
     //   ]
       //look here need to uncomment once api works fine and check if the data is coming proper
-      const { state } = useLocation()
-      console.log(state);
+     
+      const location = useLocation();
+  const { responseData, estimateId, oldData } = location.state || {};
+     // const { state , refId } = useLocation()
       
-      let statement = state?.statement;
+      
+      let statement = responseData?.statement;
   const history = useHistory();
   const [showActions, setShowActions] = useState(false);
-  const { tenantId, estimateId } = Digit.Hooks.useQueryParams();
+  //const { tenantId } = Digit.Hooks.useQueryParams();
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
@@ -415,12 +418,11 @@ const ViewAnalysisStatement = () => {
     }
   };
 
-//   const HandleDownloadPdf = () => {
-//     if(revisionNumber)
-//       Digit.Utils.downloadEgovPDF("deviationStatement/deviation-statement", { revisionNumber, tenantId }, `DeviationStatement-${revisionNumber}.pdf`);
-//     else
-//     Digit.Utils.downloadEgovPDF("detailedEstimate/detailed-estimate", { estimateNumber, tenantId }, `Estimate-${estimateNumber}.pdf`);
-//   };
+  const HandleDownloadPdf = () => {
+    
+      Digit.Utils.downloadEgovPDF("rateAnalysisStatement/rate-analysis-statement", { tenantId: tenantId ,referenceId:refId}, `analysis_statement-${refId}.pdf`);
+   
+  };
 
 // Consolidated table will be sent overhere
 //   const overheads = detailedEstimate?.estimates?.filter((ob) => revisionNumber ? (ob?.revisionNumber === revisionNumber) : (ob?.businessService === "ESTIMATE" || !(ob?.revisionNumber)))?.[0]?.estimateDetails?.filter((row) => row?.category?.includes("OVERHEAD") && row?.isActive);
@@ -444,7 +446,7 @@ const ViewAnalysisStatement = () => {
 //     },
 //   };
 
-  const config = data(statement?.[0],statement);
+  const config = data(statement?.[0],statement,oldData);
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
 
@@ -454,7 +456,7 @@ const ViewAnalysisStatement = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
-        {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}
+        { <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}

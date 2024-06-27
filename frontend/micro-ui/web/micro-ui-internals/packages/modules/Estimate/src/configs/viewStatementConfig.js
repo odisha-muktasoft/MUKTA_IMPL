@@ -3,7 +3,7 @@ import { transformEstimateObjects } from "../../util/estimateConversion";
 import { transformStatementData ,sortSorsBasedonType} from "../../util/EstimateData";
 import { sortedFIlteredData } from "../../../Measurement/src/utils/view_utilization";
 
-export const data = (statementDetails,rawData) => {
+export const data = (statementDetails,rawData,oldData) => {
    
   const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [] });
   const [sorted, setSorted] = useState([]);
@@ -39,15 +39,15 @@ export const data = (statementDetails,rawData) => {
             values: [
               {
                 key: "STATEMENT_MATERIAL",
-                value: 100,
+                value: oldData ? parseFloat(oldData?.Material).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2),
               },
               {
                 key: "STATEMENT_LABOUR",
-                value: 100,
+                value: oldData ? parseFloat(oldData?.Machinery).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2),
               },
               {
                 key: "STATEMENT_MACHINERY",
-                value: 100,
+                value: oldData ? parseFloat(oldData?.Labour).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2),
               },
             ],
           },
@@ -111,7 +111,7 @@ export const data = (statementDetails,rawData) => {
               },
               arrayProps: {
                 fields: viewData?.nestedData,
-                type: "MH"
+                type: "E"
               },
               register: () => {},
               setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
@@ -126,7 +126,9 @@ export const data = (statementDetails,rawData) => {
             type: "COMPONENT",
             cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
+           
             props: {
+              emptyTableMsg:"NO_MATERIAL_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -149,6 +151,7 @@ export const data = (statementDetails,rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_LABOUR_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_LABOUR_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -171,13 +174,14 @@ export const data = (statementDetails,rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_MACHINERY_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
               },
               arrayProps: {
-                fields: sortedFIlteredData(viewData?.sorted, "MH"),
-                type: "MH",
+                fields: sortedFIlteredData(viewData?.sorted, "E"),
+                type: "E",
               },
               register: () => {},
               setValue: (key, value) => setViewData(),

@@ -30,15 +30,15 @@ export const data = (statementDetails, rawData) => {
             values: [
               {
                 key: "STATEMENT_MATERIAL",
-                value: 100,
+                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount,
               },
               {
                 key: "STATEMENT_LABOUR",
-                value: 100,
+                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount,
               },
               {
                 key: "STATEMENT_MACHINERY",
-                value: 100,
+                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount,
               },
             ],
           },
