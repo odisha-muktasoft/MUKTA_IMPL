@@ -278,7 +278,7 @@ const ViewAnalysisStatement = () => {
       //look here need to uncomment once api works fine and check if the data is coming proper
      
       const location = useLocation();
-  const { responseData, estimateId } = location.state || {};
+  const { responseData, estimateId, oldData } = location.state || {};
      // const { state , refId } = useLocation()
       
       
@@ -446,7 +446,7 @@ const ViewAnalysisStatement = () => {
 //     },
 //   };
 
-  const config = data(statement?.[0],statement);
+  const config = data(statement?.[0],statement,oldData);
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
 

@@ -3,7 +3,7 @@ import { transformEstimateObjects } from "../../util/estimateConversion";
 import { transformStatementData ,sortSorsBasedonType} from "../../util/EstimateData";
 import { sortedFIlteredData } from "../../../Measurement/src/utils/view_utilization";
 
-export const data = (statementDetails,rawData) => {
+export const data = (statementDetails,rawData,oldData) => {
    
   const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [] });
   const [sorted, setSorted] = useState([]);
@@ -39,15 +39,15 @@ export const data = (statementDetails,rawData) => {
             values: [
               {
                 key: "STATEMENT_MATERIAL",
-                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount,
+                value: oldData ? parseFloat(oldData?.Material).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2),
               },
               {
                 key: "STATEMENT_LABOUR",
-                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount,
+                value: oldData ? parseFloat(oldData?.Machinery).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2),
               },
               {
                 key: "STATEMENT_MACHINERY",
-                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount,
+                value: oldData ? parseFloat(oldData?.Labour).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2),
               },
             ],
           },
@@ -111,7 +111,7 @@ export const data = (statementDetails,rawData) => {
               },
               arrayProps: {
                 fields: viewData?.nestedData,
-                type: "MH"
+                type: "E"
               },
               register: () => {},
               setValue: (key, value) => setViewData((old) => ({ ...old, nestedData: value })),
@@ -180,8 +180,8 @@ export const data = (statementDetails,rawData) => {
                 mode: "VIEWES",
               },
               arrayProps: {
-                fields: sortedFIlteredData(viewData?.sorted, "MH"),
-                type: "MH",
+                fields: sortedFIlteredData(viewData?.sorted, "E"),
+                type: "E",
               },
               register: () => {},
               setValue: (key, value) => setViewData(),

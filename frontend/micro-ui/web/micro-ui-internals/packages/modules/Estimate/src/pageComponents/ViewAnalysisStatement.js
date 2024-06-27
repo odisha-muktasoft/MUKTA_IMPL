@@ -1,5 +1,5 @@
 import React from "react";
-import { LinkButton } from "@egovernments/digit-ui-react-components";
+import { LinkButton, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -12,12 +12,59 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     window.location.href
   );
   const isEstimate = window.location.href.includes("/estimate/");
+  const isView = window.location.href.includes("estimate-details");
   const { mutate: AnalysisMutation } = Digit.Hooks.works.useCreateAnalysisStatement("WORKS");
   const { mutate: UtilizationMutation } = Digit.Hooks.works.useCreateUtilizationStatement("WORKS");
 
+  const ChargesCodeMapping = {
+    LabourCost : ["LA"],
+    MaterialCost : ["MA","RA","CA","EMF","DMF","ADC","LC"],
+    MachineryCost : ["MHA"],
+}
+
+  function getAnalysisCost(categories){
+   
+    let SORAmount = 0;
+    if(window.location.href.includes("estimate-details"))
+    {
+                if(categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+                if(categories.some(cat => ChargesCodeMapping?.MaterialCost?.includes(cat)) && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.material;
+                if(categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    }
+    //Conditions is used in the case of View details to capture the data from additional details
+    // if(category === "LA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) return formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    // if(category === "MA" && SORAmount =getAnalysisCost= 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) return formData?.additionalDetails?.labourMaterialAnalysis?.material;
+    // if(category === "MHA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) return formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    // if(window.location.href.includes("update-detailed-estimate"))
+    // {
+    // if(category === "LA" && SORAmount == 0  && formData?.labourMaterialAnalysis?.labour) return formData?.labourMaterialAnalysis?.labour;
+    // if(category === "MA" && SORAmount == 0 && formData?.labourMaterialAnalysis?.material) return formData?.labourMaterialAnalysis?.material;
+    // if(category === "MHA" && SORAmount == 0 && formData?.labourMaterialAnalysis?.machinery) return formData?.labourMaterialAnalysis?.machinery;
+    // }
+
+    SORAmount = SORAmount ? SORAmount : 0;
+    return Digit.Utils.dss.formatterWithoutRound((parseFloat(SORAmount)).toFixed(2),"number",undefined,true,undefined,2);        
+}
+
+    const requestSearchCriteria = {
+      url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
+      //params: { tenantId: tenantId, id: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id },
+      body:{
+        searchCriteria:{
+          tenantId: tenantId, referenceId: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id
+        },
+      },
+      config: {
+        cacheTime: 0,
+        enabled : formData?.SORtable?.[0]?.estimateId ? true : false
+      },
+      changeQueryName: "analysisStatement",
+    };
+
+    const { data: searchResponse, isLoading : searchLoading } = Digit.Hooks.useCustomAPIHook(requestSearchCriteria);
+
   async function callCreateApi() {
-    //look here add the condition for utlization statement and call your api
-    
+    // Look here add the condition for utilization statement and call your api
     let payload = {
       statementRequest: {
         tenantId: tenantId,
@@ -30,35 +77,15 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
         ? await AnalysisMutation(payload, {
             onError: async (error, variables) => {
               setIsButtonDisabled(false);
-              setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+              setShowToast({
+                warning: true,
+                label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error,
+              });
               setTimeout(() => {
                 setShowToast(false);
               }, 5000);
             },
             onSuccess: async (responseData, variables) => {
-              // clearSessionFormData();
-              console.log(responseData);
-              // const state = {
-              //   header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
-              //   id: isCreateRevisionEstimate || isEditRevisionEstimate ? responseData?.estimates[0]?.revisionNumber : responseData?.estimates[0]?.estimateNumber,
-              //   info:isCreateRevisionEstimate || isEditRevisionEstimate ?  t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
-              //   // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-              //   links: [
-              //     {
-              //       name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-              //       redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-              //       code: "",
-              //       svg: "GotoInboxIcon",
-              //       isVisible: true,
-              //       type: "inbox",
-              //     },
-              //   ],
-              // }
-              //   setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
-              //   if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              //     setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
-              //   else
-              //   setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
               setTimeout(() => {
                 history.push({
                   pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
@@ -67,41 +94,21 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                     estimateId: formData?.SORtable?.[0]?.estimateId,
                   },
                 });
-              }, 5000);
+              }, 1000);
             },
           })
         : await UtilizationMutation(payload, {
             onError: async (error, variables) => {
               setIsButtonDisabled(false);
-              setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+              setShowToast({
+                warning: true,
+                label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error,
+              });
               setTimeout(() => {
                 setShowToast(false);
               }, 5000);
             },
             onSuccess: async (responseData, variables) => {
-              // clearSessionFormData();
-              console.log(responseData);
-              // const state = {
-              //   header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
-              //   id: isCreateRevisionEstimate || isEditRevisionEstimate ? responseData?.estimates[0]?.revisionNumber : responseData?.estimates[0]?.estimateNumber,
-              //   info:isCreateRevisionEstimate || isEditRevisionEstimate ?  t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
-              //   // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-              //   links: [
-              //     {
-              //       name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-              //       redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-              //       code: "",
-              //       svg: "GotoInboxIcon",
-              //       isVisible: true,
-              //       type: "inbox",
-              //     },
-              //   ],
-              // }
-              //   setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
-              //   if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              //     setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
-              //   else
-              //   setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
               setTimeout(() => {
                 history.push({
                   pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
@@ -116,12 +123,46 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     }
   }
 
+  async function handleButtonClick() {
+    if (isView) {
+      if (searchResponse) {
+        history.push({
+          pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+          state: {
+            responseData: searchResponse,
+            estimateId: formData?.SORtable?.[0]?.estimateId,
+          },
+        });
+      } else {
+        //add the code for old viewpopup here
+        history.push({
+          pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+          state: {
+            responseData: searchResponse,
+            estimateId: formData?.SORtable?.[0]?.estimateId,
+            oldData : {
+              Labour : getAnalysisCost(ChargesCodeMapping?.LabourCost),
+              Material : getAnalysisCost(ChargesCodeMapping?.MaterialCost),
+              Machinery : getAnalysisCost(ChargesCodeMapping?.MachineryCost),
+            }
+          },
+        });
+        //await callCreateApi();
+      }
+    } else {
+      await callCreateApi();
+    }
+  }
+
+  if(searchLoading)
+    return <Loader />
+
   if (!window.location.href.includes("create"))
     return (
       <LinkButton
         className="view-Analysis-button"
         style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
-        onClick={callCreateApi}
+        onClick={handleButtonClick}
         label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
       />
     );
