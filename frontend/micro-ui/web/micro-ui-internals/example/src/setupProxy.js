@@ -101,6 +101,7 @@ module.exports = function (app) {
     "/statements/v1/analysis/_create",
     "/statements/v1/analysis/_search",
     //added
+    "/statements/v1/utilization/_search",
     "/statements/v1/utilization/_create",
     "/rate-analysis/v1/scheduler/_search",
     "/mdms-v2/v2/_search",

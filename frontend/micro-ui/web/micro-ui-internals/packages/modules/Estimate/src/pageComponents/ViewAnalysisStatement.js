@@ -12,24 +12,29 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     window.location.href
   );
   const isEstimate = window.location.href.includes("/estimate/");
-  const isView = window.location.href.includes("estimate-details");
+  const isView = window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view");
   const { mutate: AnalysisMutation } = Digit.Hooks.works.useCreateAnalysisStatement("WORKS");
   const { mutate: UtilizationMutation } = Digit.Hooks.works.useCreateUtilizationStatement("WORKS");
 
   const ChargesCodeMapping = {
-    LabourCost : ["LA"],
-    MaterialCost : ["MA","RA","CA","EMF","DMF","ADC","LC"],
-    MachineryCost : ["MHA"],
-}
+    LabourCost: ["LA"],
+    MaterialCost: ["MA", "RA", "CA", "EMF", "DMF", "ADC", "LC"],
+    MachineryCost: ["MHA"],
+  };
 
-  function getAnalysisCost(categories){
-   
+  function getAnalysisCost(categories) {
     let SORAmount = 0;
-    if(window.location.href.includes("estimate-details"))
-    {
-                if(categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.labour;
-                if(categories.some(cat => ChargesCodeMapping?.MaterialCost?.includes(cat)) && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.material;
-                if(categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    if (window.location.href.includes("estimate-details")) {
+      if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
+        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+      if (
+        categories.some((cat) => ChargesCodeMapping?.MaterialCost?.includes(cat)) &&
+        SORAmount == 0 &&
+        formData?.additionalDetails?.labourMaterialAnalysis?.material
+      )
+        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
+      if (categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
+        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
     }
     //Conditions is used in the case of View details to capture the data from additional details
     // if(category === "LA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) return formData?.additionalDetails?.labourMaterialAnalysis?.labour;
@@ -43,25 +48,26 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     // }
 
     SORAmount = SORAmount ? SORAmount : 0;
-    return Digit.Utils.dss.formatterWithoutRound((parseFloat(SORAmount)).toFixed(2),"number",undefined,true,undefined,2);        
-}
+    return Digit.Utils.dss.formatterWithoutRound(parseFloat(SORAmount).toFixed(2), "number", undefined, true, undefined, 2);
+  }
 
-    const requestSearchCriteria = {
-      url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
-      //params: { tenantId: tenantId, id: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id },
-      body:{
-        searchCriteria:{
-          tenantId: tenantId, referenceId: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id
-        },
+  const requestSearchCriteria = {
+    url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
+    //params: { tenantId: tenantId, id: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id },
+    body: {
+      searchCriteria: {
+        tenantId: tenantId,
+        referenceId: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id,
       },
-      config: {
-        cacheTime: 0,
-        enabled : formData?.SORtable?.[0]?.estimateId ? true : false
+    },
+    config: {
+      cacheTime: 0,
+      enabled : formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id ? true : false
       },
-      changeQueryName: "analysisStatement",
-    };
+    changeQueryName: "analysisStatement",
+  };
 
-    const { data: searchResponse, isLoading : searchLoading } = Digit.Hooks.useCustomAPIHook(requestSearchCriteria);
+  const { data: searchResponse, isLoading: searchLoading } = Digit.Hooks.useCustomAPIHook(requestSearchCriteria);
 
   async function callCreateApi() {
     // Look here add the condition for utilization statement and call your api
@@ -127,7 +133,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     if (isView) {
       if (searchResponse) {
         history.push({
-          pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+          pathname: isEstimate
+            ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+            : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
           state: {
             responseData: searchResponse,
             estimateId: formData?.SORtable?.[0]?.estimateId,
@@ -136,15 +144,17 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       } else {
         //add the code for old viewpopup here
         history.push({
-          pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+          pathname: isEstimate
+            ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+            : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
           state: {
             responseData: searchResponse,
             estimateId: formData?.SORtable?.[0]?.estimateId,
-            oldData : {
-              Labour : getAnalysisCost(ChargesCodeMapping?.LabourCost),
-              Material : getAnalysisCost(ChargesCodeMapping?.MaterialCost),
-              Machinery : getAnalysisCost(ChargesCodeMapping?.MachineryCost),
-            }
+            oldData: {
+              Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
+              Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
+              Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
+            },
           },
         });
         //await callCreateApi();
@@ -154,8 +164,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     }
   }
 
-  if(searchLoading)
-    return <Loader />
+  if (searchLoading) return <Loader />;
 
   if (!window.location.href.includes("create"))
     return (
