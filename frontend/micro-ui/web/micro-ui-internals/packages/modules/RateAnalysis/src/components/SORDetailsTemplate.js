@@ -109,7 +109,7 @@ const SORDetailsTemplate = (props) => {
 
   const SORTypeCodes = {
     MATERIAL: "M",
-    MACHINERY: "MH",
+    MACHINERY: "E",
     LABOUR: "L",
   };
 
