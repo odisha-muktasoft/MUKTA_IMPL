@@ -12,7 +12,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     window.location.href
   );
   const isEstimate = window.location.href.includes("/estimate/");
-  const isView = window.location.href.includes("estimate-details");
+  const isView = window.location.href.includes("estimate-details")||window.location.href.includes("measurement/view");
   const { mutate: AnalysisMutation } = Digit.Hooks.works.useCreateAnalysisStatement("WORKS");
   const { mutate: UtilizationMutation } = Digit.Hooks.works.useCreateUtilizationStatement("WORKS");
 
@@ -47,6 +47,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 }
 
     const requestSearchCriteria = {
+
       url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
       //params: { tenantId: tenantId, id: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id },
       body:{
@@ -56,7 +57,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       },
       config: {
         cacheTime: 0,
-        enabled : formData?.SORtable?.[0]?.estimateId ? true : false
+        enabled :  formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id ? true : false
       },
       changeQueryName: "analysisStatement",
     };
@@ -127,7 +128,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     if (isView) {
       if (searchResponse) {
         history.push({
-          pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+          pathname: isEstimate?`/${window?.contextPath}/employee/estimate/view-analysis-statement`:`/${window?.contextPath}/employee/measurement/utilizationstatement`,
           state: {
             responseData: searchResponse,
             estimateId: formData?.SORtable?.[0]?.estimateId,
@@ -136,7 +137,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       } else {
         //add the code for old viewpopup here
         history.push({
-          pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+          pathname: isEstimate?`/${window?.contextPath}/employee/estimate/view-analysis-statement`:`/${window?.contextPath}/employee/measurement/utilizationstatement`,
           state: {
             responseData: searchResponse,
             estimateId: formData?.SORtable?.[0]?.estimateId,

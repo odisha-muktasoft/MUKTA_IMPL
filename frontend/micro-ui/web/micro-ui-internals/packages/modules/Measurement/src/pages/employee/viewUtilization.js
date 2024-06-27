@@ -423,8 +423,9 @@ const ViewUtilization = () => {
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
-    console.log("refId",state?.refId)
-    Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
+    console.log("refId",formId)
+   // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
+    Digit.Utils.downloadEgovPDF("analysisUtilization/analysis-utilization", { tenantId: tenantId ,referenceId:formId}, `utilization-${formId}.pdf`);
 }
   return (
     <div className={"employee-main-application-details"}>
