@@ -63,19 +63,19 @@ export const transformStatementData = (data) => {
       description: sorDetail?.additionalDetails?.sorDetails?.description, // Hardcoded
       uom: sorDetail?.additionalDetails?.sorDetails?.uom, // Hardcoded
       rate: sorDetail?.additionalDetails?.rateDetails?.rate, // Hardcoded
-      type: lineItems?.length == 0 ? sorDetail?.basicSorDetails?.[0]?.type : null,
+      type: lineItems?.length == null ? sorDetail?.basicSorDetails?.[0]?.type : null,
       estimatedQuantity: {
         M:
-          sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
+         sorDetail.lineItems!==null && sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
             ? sorDetail.lineItems.filter((ob) => ob?.sorType === "M").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
         L:
-          sorDetail.lineItems.filter((ob) => ob?.sorType === "L").length > 0
+         sorDetail.lineItems!==null && sorDetail.lineItems.filter((ob) => ob?.sorType === "L").length > 0
             ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
         MH:
-          sorDetail.lineItems.filter((ob) => ob?.sorType === "MH").length > 0
-            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
+         sorDetail.lineItems!==null && sorDetail.lineItems.filter((ob) => ob?.sorType === "E").length > 0
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "E").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.quantity || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.quantity || 0.0,
       }, // Hardcoded
 
@@ -89,22 +89,23 @@ export const transformStatementData = (data) => {
 
       estimatedAmount: {
         M:
-          sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
+        sorDetail.lineItems!==null &&  sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0
             ? sorDetail.lineItems.filter((ob) => ob?.sorType === "M").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.amount || 0.0,
         L:
-          sorDetail.lineItems.filter((ob) => ob?.sorType === "L").length > 0
+        sorDetail.lineItems!==null &&  sorDetail.lineItems.filter((ob) => ob?.sorType === "L").length > 0
             ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.amount || 0.0,
         MH:
-          sorDetail.lineItems.filter((ob) => ob?.sorType === "MH").length > 0
-            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "L").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
+        sorDetail.lineItems!==null &&  sorDetail.lineItems.filter((ob) => ob?.sorType === "E").length > 0
+            ? sorDetail.lineItems.filter((ob) => ob?.sorType === "E").reduce((sum, detail) => sum + (detail.basicSorDetails?.[0]?.amount || 0), 0)
             : sorDetail?.basicSorDetails?.[0]?.amount || 0.0,
       },
 
       subrows: [], // Initialize subrows array
     };
 
+    sorDetail.lineItems !== null?
     // Sub-table rows (line items)
     lineItems.forEach((lineItem) => {
       const { amountDetails } = lineItem?.additionalDetails?.rateDetails;
@@ -122,7 +123,7 @@ export const transformStatementData = (data) => {
         };
         mainSORRow.subrows.push(subrow);
       });
-    });
+    }):[];
 
     nestedData.push(mainSORRow);
   });
@@ -137,7 +138,7 @@ export const sortSorsBasedonType = (statement) => {
 
   statement.forEach((item) => {
     item.sorDetails.forEach((detail) => {
-      let sorId = detail.lineItems.length > 0 ? detail.lineItems[0].sorId : detail.sorId;
+      let sorId = (detail.lineItems!==null&& detail.lineItems.length > 0) ? detail.lineItems[0].sorId : detail.sorId;
       let description = null;
       let type = null;
       let amount = null;
@@ -146,7 +147,7 @@ export const sortSorsBasedonType = (statement) => {
       let rate = null;
 
       // If lineItems exist, use them; otherwise, use basicSorDetails
-      if (detail.lineItems.length > 0) {
+      if ( detail.lineItems !==null && detail.lineItems.length > 0) {
         detail.lineItems.forEach((line) => {
           line.additionalDetails?.rateDetails?.amountDetails.forEach((amountDetail) => {
             description = line?.additionalDetails?.sorDetails?.description;

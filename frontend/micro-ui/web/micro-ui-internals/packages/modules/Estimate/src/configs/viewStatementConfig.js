@@ -39,15 +39,15 @@ export const data = (statementDetails,rawData) => {
             values: [
               {
                 key: "STATEMENT_MATERIAL",
-                value: 100,
+                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount,
               },
               {
                 key: "STATEMENT_LABOUR",
-                value: 100,
+                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount,
               },
               {
                 key: "STATEMENT_MACHINERY",
-                value: 100,
+                value: statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount,
               },
             ],
           },
@@ -126,7 +126,9 @@ export const data = (statementDetails,rawData) => {
             type: "COMPONENT",
             cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
+           
             props: {
+              emptyTableMsg:"NO_MATERIAL_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -149,6 +151,7 @@ export const data = (statementDetails,rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_LABOUR_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_LABOUR_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -171,6 +174,7 @@ export const data = (statementDetails,rawData) => {
             cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
+              emptyTableMsg:"NO_MACHINERY_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",

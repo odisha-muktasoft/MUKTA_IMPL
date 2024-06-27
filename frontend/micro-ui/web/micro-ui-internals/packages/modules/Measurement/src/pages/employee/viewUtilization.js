@@ -390,7 +390,8 @@ const ViewUtilization = () => {
 
   const history = useHistory();
   const [showActions, setShowActions] = useState(false);
-  const { tenantId, estimateId } = Digit.Hooks.useQueryParams();
+ // const { tenantId, estimateId } = Digit.Hooks.useQueryParams();
+ const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
@@ -400,10 +401,14 @@ const ViewUtilization = () => {
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
   //look here need to uncomment once api works fine and check if the data is coming proper
-      const { state } = useLocation()
+     // const { state,refId } = useLocation()
+      const location = useLocation();
+      const { responseData, formId } = location.state || {};
+         // const { state , refId } = useLocation()
+          console.log(responseData);
       // console.log(state);
       // debugger;
-      let statement = state?.statement;
+      let statement = responseData?.statement;
 
   const closeMenu = () => {
     setShowActions(false);
@@ -418,8 +423,8 @@ const ViewUtilization = () => {
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
-    
-    Digit.Utils.downloadEgovPDF('rateAnalysisUtilization/rate-analysis-utilization',{tenantId,referenceId},`utilization-${referenceId}.pdf`)
+    console.log("refId",state?.refId)
+    Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
 }
   return (
     <div className={"employee-main-application-details"}>
