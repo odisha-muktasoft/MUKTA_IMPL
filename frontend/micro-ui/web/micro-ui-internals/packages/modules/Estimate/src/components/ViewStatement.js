@@ -68,13 +68,13 @@ const ViewStatement = (props) => {
         <td style={{ width: "30%" }}>{subRow.name}</td>
         <td style={{ width: "14.28%" }}>{subRow.unit}</td>
         <td style={{ width: "14.28%" }}>
-          <Amount value={subRow.rate} t={t} />
+          <Amount value={parseFloat(subRow?.rate).toFixed(2)} t={t} sameDisplay={true} roundOff={false}/>
         </td>
         <td style={{ width: "14.28%" }}>
-          <Amount value={parseFloat(subRow.quantity).toFixed(2)} t={t} sameDisplay={true} roundOff={false} />
+          <Amount value={parseFloat(subRow?.quantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />
         </td>
         <td style={{ width: "14.28%" }}>
-          <Amount value={parseFloat(subRow.amount).toFixed(2)} t={t} />
+          <Amount value={parseFloat(subRow?.amount).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
         </td>
       </tr>
     ));
@@ -107,18 +107,18 @@ const ViewStatement = (props) => {
           <React.Fragment key={index}>
             <tr>
               <td style={{ width: "5%" }}>{row.sNo}</td>
-              <td style={{ width: "12.5%", fontWeight: "500" }}>{row.sortype}</td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>{`${t(`WORKS_SOR_TYPE_${row.sortype}`)} / ${t(`WORKS_SOR_SUBTYPE_${row?.sorSubType}`)}`}</td>
               <td style={{ width: "12.5%" }}>{row.code}</td>
               <td style={{ width: "30%" }}>{row.description}</td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>{row.uom}</td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>
-                <Amount value={parseFloat(row.rate).toFixed(2)} t={t} />
+                <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>
-                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>
-                <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} />
+                <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
               </td>
             </tr>
             {subRows.length > 0 && (
@@ -159,14 +159,17 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
+          {nestedData.filter((ob) => (ob?.type ? ob?.type === type : true)).length > 0 ?
           <tr>
             <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
               {t("Total")}:
             </td>
             <td style={{ textAlign: "right", fontWeight: "bold" }}>
-              <Amount value={grandTotal.toFixed(2)} t={t} />
+              <Amount value={grandTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
             </td>
-          </tr>
+          </tr>:<td colSpan={7} style={{marginLeft:"10px", color:"#9E9E9E", textAlign:"center"}}>
+              {t("STATEMENT_NO_DATA_PRESENT")}
+            </td>}
         </tfoot>
       </table>
     </React.Fragment>
