@@ -142,10 +142,10 @@ const GroupedTable = (props) => {
           groupAndCalculateTotals().length>0&&
         <tr>
         <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" }}>{t("MB_AMOUNT_TOTAL")}</td>
-        <td style={{ width: "10%" }}>{
+        <td style={{ width: "10%" }}>
           
-          groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)
-        }</td>
+         <Amount value={ parseFloat( Math.round((groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)*100)/100).toFixed(2))} />
+        </td>
         </tr>
         
         }

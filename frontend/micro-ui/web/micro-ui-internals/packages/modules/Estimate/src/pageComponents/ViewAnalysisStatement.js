@@ -17,11 +17,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   async function callCreateApi() {
     //look here add the condition for utlization statement and call your api
-    console.log("check",formData?.SORtable?.[0]?.estimateId)
+    
     let payload = {
       statementRequest: {
         tenantId: tenantId,
-        id: isEstimate ? formData?.SORtable?.[0]?.estimateId : measurement?.id,
+        id: isEstimate ? formData?.SORtable?.[0]?.estimateId : formData?.Measurement?.id,
       },
     };
 
@@ -36,7 +36,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               }, 5000);
             },
             onSuccess: async (responseData, variables) => {
-             // clearSessionFormData();
+              // clearSessionFormData();
               console.log(responseData);
               // const state = {
               //   header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
@@ -60,7 +60,13 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               //   else
               //   setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
               setTimeout(() => {
-                history.push(`/${window?.contextPath}/employee/estimate/view-analysis-statement`, responseData);
+                history.push({
+                  pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+                  state: {
+                    responseData: responseData,
+                    estimateId: formData?.SORtable?.[0]?.estimateId,
+                  },
+                });
               }, 5000);
             },
           })
@@ -73,7 +79,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               }, 5000);
             },
             onSuccess: async (responseData, variables) => {
-              clearSessionFormData();
+              // clearSessionFormData();
               console.log(responseData);
               // const state = {
               //   header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
@@ -97,7 +103,13 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               //   else
               //   setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
               setTimeout(() => {
-                history.push(`/${window?.contextPath}/employee/measurement/utilizationstatement`, responseData);
+                history.push({
+                  pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+                  state: {
+                    responseData: responseData,
+                    formId: formData?.Measurement?.id,
+                  },
+                });
               }, 5000);
             },
           });
