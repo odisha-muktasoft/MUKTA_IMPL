@@ -1,4 +1,4 @@
-import { Card, Header, Button, Loader, Row, StatusTable, LinkButton } from "@egovernments/digit-ui-react-components";
+import { Card, Header, Button, Loader, Row, StatusTable, LinkButton ,CardSectionHeader} from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import ViewTotalEstAmount from "../../../Estimate/src/components/ViewTotalEstAmount";
@@ -70,10 +70,28 @@ const RateAmountGroup = (props) => {
         }}
       >
         <div style={{ paddingRight: "1%" }}>
-          <ViewTotalEstAmount mode={"VIEW"} detail={{ showTitle: "RA_EXISTING_RATE", value: existingData }} />
+        
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "2rem" }}>
+        
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between", padding: "1rem", border: "1px solid #D6D5D4", borderRadius: "5px" }}>
+                <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize:"18px"  }}>{t("RA_EXISTING_RATE")}</CardSectionHeader>
+                <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{existingData}</CardSectionHeader>
+            </div>
+        </div>
+          {/*<ViewTotalEstAmount mode={"VIEW"} detail={{ showTitle: "RA_EXISTING_RATE", value: existingData }} />*/}
         </div>
         <div style={{ paddingLeft: "1%" }}>
-          <ViewTotalEstAmount mode={"VIEW"} detail={{ showTitle: "RA_NEW_RATE", value: newValue }} />
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "2rem" }}>
+        
+            <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between", padding: "1rem", border: "1px solid #D6D5D4", borderRadius: "5px" }}>
+                <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize:"18px"  }}>{t("RA_NEW_RATE")}</CardSectionHeader>
+                <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{
+                  parseFloat(newValue.toFixed(2))
+                  
+                }</CardSectionHeader>
+            </div>
+        </div>
+          {/*<ViewTotalEstAmount mode={"VIEW"} detail={{ showTitle: "RA_NEW_RATE", value: newValue }} />*/}
         </div>
       </div>
     </React.Fragment>

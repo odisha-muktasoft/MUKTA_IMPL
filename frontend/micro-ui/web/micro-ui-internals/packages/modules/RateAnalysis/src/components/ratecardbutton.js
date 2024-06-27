@@ -53,7 +53,7 @@ const RateCardWithRightButton = (props) => {
               );
             })}
           </div>
-          {sections.infoCard && (
+          { (
             <div style={{ paddingLeft: "0px", paddingTop: "10px", paddingRight: "10px", paddingBottom: "10px" }}>
               <CitizenInfoLabel style={{ margin: "0px" }} info={t("RA_ACTIVE_RATE_INFO_LABEL")} text={t("RA_ACTIVE_RATE_INFO_CONTENT_LABEL")} />
             </div>
