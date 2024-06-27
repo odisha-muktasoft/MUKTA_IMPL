@@ -102,12 +102,17 @@ const transformRateAnalysisViewDataToApplicationDetails = async (data) => {
                   sorSubType: item?.additionalDetails?.sorSubType,
                   sorVariant: item?.additionalDetails?.sorVariant,
                   description: item?.additionalDetails?.description,
-                  basicRate: item?.additionalDetails?.rate?.rate,
+                  basicRate:getBasicRate( item?.additionalDetails?.sorType,item?.additionalDetails?.rate?.amountDetails,detail.heads),
                 },
               };
-
+              if(detail.heads.split('.')[0]==="MA" ||detail.heads.split('.')[0]==="MHA"||detail.heads.split('.')[0]==="LA"){
+             if (getStatusToAdd(item?.additionalDetails?.sorType,detail.heads.split('.')[0]))
+              {groupedByHeads[head].push(data);}
+            }
+            else{
               groupedByHeads[head].push(data);
             }
+          }
           });
         }
       }
@@ -119,6 +124,27 @@ const transformRateAnalysisViewDataToApplicationDetails = async (data) => {
     rateAnalysisDetail: data.rateAnalysis[0],
     infoCard: infoCard,
   };
+};
+
+const getBasicRate = (sorType,amountDetails, headType) => {
+  let rate = 0.0;
+  
+
+  rate=amountDetails.filter(data=>data.heads===headType)[0]?.amount;
+  return rate;
+}; 
+
+const getStatusToAdd = (sorType, headType) => {
+  switch (sorType) {
+    case "M":
+      return headType === "MA" || headType === "M";
+    case "L":
+      return headType === "LA" || headType === "LA"|| headType === "L";
+    case "E":
+      return headType === "MHA" || headType === "E";
+    default:
+      return false;
+  }
 };
 // View object to handle fetching and transforming rate analysis details
 export const View = {

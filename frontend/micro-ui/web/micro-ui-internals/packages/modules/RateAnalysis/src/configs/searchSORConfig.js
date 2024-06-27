@@ -37,7 +37,7 @@ const searchSORConfig = {
             },
             fields: [
               {
-                isMandatory: false,
+                isMandatory: true,
                 key: "sorType",
                 type: "dropdown",
                 label: "WORKS_SOR_TYPE",
