@@ -128,25 +128,7 @@ const transformRateAnalysisViewDataToApplicationDetails = async (data) => {
 
 const getBasicRate = (sorType,amountDetails, headType) => {
   let rate = 0.0;
-  // amountDetails.forEach(detail => {
-  //   // if (
-  //   //   (headType === "L" && detail.heads.startsWith("L")) ||
-  //   //   (headType === "M" && detail.heads.startsWith("M")) ||
-  //   //   (headType === "MA" && detail.heads.startsWith("MA")) ||
-  //   //   (headType === "MHA" && detail.heads.startsWith("MHA")) ||
-  //   //   (headType === "LA" && detail.heads.startsWith("LA")) ||
-  //   //   (headType === "E" && detail.heads.startsWith("E"))
-  //   // ) {
-  //   //   if (rate === null || detail.amount < rate) {
-  //   //     rate = detail.amount;
-  //   //   }
-  //   // }
-
-
-
-
-  // });
-
+  
 
   rate=amountDetails.filter(data=>data.heads===headType)[0]?.amount;
   return rate;
