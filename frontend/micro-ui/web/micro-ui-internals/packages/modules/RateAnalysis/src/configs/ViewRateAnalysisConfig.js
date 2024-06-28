@@ -404,6 +404,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
               detail: {
                 newValue: grossTotalAmountCalculation(viewData)[2]?.amount / (rateAnalysis?.analysisQuantity ? rateAnalysis?.analysisQuantity : 1.0),
                 sorId: sorId,
+                uom: rateAnalysis?.uom,
               },
             },
           },
