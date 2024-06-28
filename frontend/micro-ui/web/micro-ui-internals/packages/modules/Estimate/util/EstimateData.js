@@ -108,12 +108,11 @@ export const transformStatementData = (data) => {
 
     sorDetail.lineItems !== null && sorDetail?.additionalDetails?.sorDetails?.sorType === "W"?
     // Sub-table rows (line items)
-    lineItems.forEach((lineItem) => {
+    lineItems.forEach((lineItem,index) => {
       const { amountDetails } = lineItem?.additionalDetails?.rateDetails;
 
-      amountDetails.forEach((detail) => {
         const subrow = {
-          sNo: mainSORRow.subrows.length + 1,
+          sNo: index + 1,
           code: lineItem?.sorId,
           name: lineItem?.additionalDetails?.sorDetails?.description,
           unit: lineItem?.additionalDetails?.sorDetails?.uom,
@@ -123,7 +122,6 @@ export const transformStatementData = (data) => {
           type: lineItem?.additionalDetails?.sorDetails?.sorType,
         };
         mainSORRow.subrows.push(subrow);
-      });
     }):[];
 
     nestedData.push(mainSORRow);
