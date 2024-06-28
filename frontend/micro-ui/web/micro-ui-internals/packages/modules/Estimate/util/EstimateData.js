@@ -64,7 +64,7 @@ export const transformStatementData = (data) => {
       description: sorDetail?.additionalDetails?.sorDetails?.description,
       uom: sorDetail?.additionalDetails?.sorDetails?.uom,
       rate: parseFloat(sorDetail?.additionalDetails?.rateDetails?.rate).toFixed(2),
-      type: lineItems?.length == null ? sorDetail?.additionalDetails?.sorDetails?.sorType : null,
+      type: sorDetail?.additionalDetails?.sorDetails?.sorType ,
       estimatedQuantity: {
         M:
          sorDetail.lineItems!==null && sorDetail.lineItems.filter((ob) => ob?.sorType === "M").length > 0

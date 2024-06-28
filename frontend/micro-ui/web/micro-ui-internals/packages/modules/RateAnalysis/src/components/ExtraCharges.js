@@ -32,6 +32,21 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
+
+  useEffect(() => {
+    if(formData[formFieldName]?.length === 0)
+    {
+      setValue(formData[formFieldName],[{
+        key: 1,
+        description: "",
+        applicableOn: "",
+        calculationType: "",
+        figure: "",
+        isShow: true,
+      }]);
+    }
+  },[formData])
+
   const getStyles = (index) => {
     let obj = {};
     switch (index) {
@@ -101,6 +116,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       figure: "",
       isShow: true,
     };
+    console.log(rows,"added rows");
     setRows([...rows, newRow]);
   };
 
@@ -152,6 +168,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
+    console.log(updatedRows,"set amount field rows");
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
   };
@@ -160,6 +177,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
 
+  console.log(formData,"fromdata")
+  console.log(rows,"main rowss")
   const renderBody = useMemo(() => {
     let i = 0;
     return rows.map((row, rowIndex) => {
@@ -174,6 +193,9 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                 <TextInput
                   style={{ marginBottom: "0px", wordWrap: "break-word" }}
                   name={`${formFieldName}[${rowIndex}].description`}
+                  onChange={(e) => {
+                    setValue(`${formFieldName}[${rowIndex}].description`,e.target.value)
+                  }}    
                   //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
                   defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
                   inputRef={register({
