@@ -101,6 +101,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       figure: "",
       isShow: true,
     };
+    console.log(rows,"added rows");
     setRows([...rows, newRow]);
   };
 
@@ -152,6 +153,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     const updatedRows = rows.map((row, index) =>
       index === rowIndex ? { ...row, figure: e.target.value } : row
     );
+    console.log(updatedRows,"set amount field rows");
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
   };
@@ -160,6 +162,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
 
+  console.log(rows,"main rowss")
   const renderBody = useMemo(() => {
     let i = 0;
     return rows.map((row, rowIndex) => {

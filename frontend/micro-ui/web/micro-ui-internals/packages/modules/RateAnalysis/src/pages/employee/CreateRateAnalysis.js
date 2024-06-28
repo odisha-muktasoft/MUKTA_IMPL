@@ -246,6 +246,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   }, [showToast]);
 
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
+    console.log(formData,createState,"outsideformvalue")
     if (deepCompare(formData,createState)) {
       console.log(formData,createState,"informvaluechange");
       setState({ ...createState, ...formData })
