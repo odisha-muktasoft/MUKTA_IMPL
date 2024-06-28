@@ -20,19 +20,19 @@ const GroupedTable = (props) => {
     // Iterate through each item in data array
 
     // Iterate through each subrow of the item
-
+console.log("data",data)
     data.forEach((subrow, index) => {
       
       const { rate,sNo, amount, description, quantity, type, sorId ,uom} = subrow;
 
       // Check if the SORID (code) exists in groupedData, if not, initialize it
-
+  
       groupedData.push({
         sNo: index,
         code: sorId,
         description: description, // Use subrow name for description
         uom: uom, // Use subrow unit for UOM
-        rate: rate,
+        rate: rate|| 0,
         type,
         totalQuantity: quantity || 0,
         totalAmount: amount || 0,
@@ -144,7 +144,7 @@ const GroupedTable = (props) => {
         <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" }}>{t("MB_AMOUNT_TOTAL")}</td>
         <td style={{ width: "10%" }}>
           
-         <Amount value={ parseFloat( Math.round((groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)*100)/100).toFixed(2))} />
+         <div> { parseFloat( groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)).toFixed(2)} </div>
         </td>
         </tr>
         

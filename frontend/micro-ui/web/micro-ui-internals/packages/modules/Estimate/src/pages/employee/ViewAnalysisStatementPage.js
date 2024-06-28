@@ -419,8 +419,8 @@ const ViewAnalysisStatement = () => {
   };
 
   const HandleDownloadPdf = () => {
-    
-      Digit.Utils.downloadEgovPDF("rateAnalysisStatement/rate-analysis-statement", { tenantId: tenantId ,referenceId:refId}, `analysis_statement-${refId}.pdf`);
+    // https://unified-qa.digit.org/works-pdf/download/analysisStatement/analysis-statement?tenantId=pg.citya&referenceId=cb63afc4-2162-47f2-8ec5-58667737d42b
+      Digit.Utils.downloadEgovPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:refId}, `analysis_statement-${refId}.pdf`);
    
   };
 
