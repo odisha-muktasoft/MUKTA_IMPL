@@ -24,7 +24,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   function getAnalysisCost(categories) {
     let SORAmount = 0;
-    if (window.location.href.includes("estimate-details")) {
+    if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
       if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
         SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
       if (
