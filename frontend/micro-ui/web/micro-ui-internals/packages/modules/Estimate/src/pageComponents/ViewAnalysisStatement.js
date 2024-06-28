@@ -4,6 +4,12 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 const ViewAnalysisStatement = ({ formData, ...props }) => {
+  console.log("update", formData);
+  
+  
+   
+  
+
   const { t } = useTranslation();
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
@@ -12,7 +18,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     window.location.href
   );
   const isEstimate = window.location.href.includes("/estimate/");
-  const isView = window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view");
+  const isView =
+    window.location.href.includes("estimate-details") ||
+    window.location.href.includes("measurement/view") ;
   const { mutate: AnalysisMutation } = Digit.Hooks.works.useCreateAnalysisStatement("WORKS");
   const { mutate: UtilizationMutation } = Digit.Hooks.works.useCreateUtilizationStatement("WORKS");
 
@@ -57,13 +65,13 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     body: {
       searchCriteria: {
         tenantId: tenantId,
-        referenceId: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id,
+        referenceId: isEstimate ? formData?.SORtable?.[0]?.estimateId : formData?.Measurement?.id,
       },
     },
     config: {
       cacheTime: 0,
-      enabled : formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id ? true : false
-      },
+      enabled: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id ? true : false,
+    },
     changeQueryName: "analysisStatement",
   };
 
@@ -74,10 +82,14 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     let payload = {
       statementRequest: {
         tenantId: tenantId,
-        id: isEstimate ? formData?.SORtable?.[0]?.estimateId : formData?.Measurement?.id,
+        id: isEstimate
+          ? formData?.SORtable?.[0]?.estimateId
+          : window.location.href.includes("measurement/update")
+          ? props.config.formData.Measurement.id
+          : formData?.Measurement?.id,
       },
     };
-
+    console.log("payload", formData?.Measurement);
     {
       isEstimate
         ? await AnalysisMutation(payload, {

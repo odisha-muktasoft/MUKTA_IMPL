@@ -20,7 +20,7 @@ const GroupedTable = (props) => {
     // Iterate through each item in data array
 
     // Iterate through each subrow of the item
-
+console.log("data",data)
     data.forEach((subrow, index) => {
       
       const { rate,sNo, amount, description, quantity, type, sorId ,uom} = subrow;

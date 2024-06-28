@@ -101,7 +101,7 @@ const ViewStatement = (props) => {
   const renderBody = () => {
    
     return nestedData
-      .filter((ob) => (ob?.type ? ob?.type === type : true))
+      .filter((ob) => (ob?.type  ? (ob?.type==="W"?true: ob?.type === type) : true))
       .map((row, index) => {
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
         return (
