@@ -33,12 +33,13 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
   useEffect(()=>{
-    if(!formData[formFieldName] || formData?.[formFieldName]?.length <= 0)
+    if(formData?.[formFieldName]?.length <= 0)
     {
+      console.log("coming here");
       setValue(formFieldName,initialState);
-      setRows(initialState);
+      //setRows(initialState);
     }
-  },[formData, rows])
+  },[formData])
 
   const getStyles = (index) => {
     let obj = {};
