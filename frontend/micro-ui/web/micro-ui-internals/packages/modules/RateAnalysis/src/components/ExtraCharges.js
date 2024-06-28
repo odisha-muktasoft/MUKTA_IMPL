@@ -32,20 +32,12 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
-
   useEffect(() => {
-    if(formData[formFieldName]?.length === 0)
-    {
-      setValue(formData[formFieldName],[{
-        key: 1,
-        description: "",
-        applicableOn: "",
-        calculationType: "",
-        figure: "",
-        isShow: true,
-      }]);
+    if (!formData?.[formFieldName] || formData?.[formFieldName]?.length === 0) {
+      setValue(formFieldName, initialState);
+      setRows(initialState);
     }
-  },[formData])
+  }, [formData, setValue]);
 
   const getStyles = (index) => {
     let obj = {};
@@ -193,9 +185,6 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                 <TextInput
                   style={{ marginBottom: "0px", wordWrap: "break-word" }}
                   name={`${formFieldName}[${rowIndex}].description`}
-                  onChange={(e) => {
-                    setValue(`${formFieldName}[${rowIndex}].description`,e.target.value)
-                  }}    
                   //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
                   defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
                   inputRef={register({
