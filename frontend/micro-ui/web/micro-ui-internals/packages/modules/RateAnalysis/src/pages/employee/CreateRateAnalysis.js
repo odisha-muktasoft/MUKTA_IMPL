@@ -201,6 +201,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       data.selectedApprover = selectedApprover;
 
     // Create the rateanalysis payload with transformRequestBody data
+    console.log(data,createState);
     const rateComposition = await transformRequestBody(data, createState, tenantId, compositionData, isUpdate);
 
     //call the createMutation for Rate Analysis and route to view page on onSuccess or show error

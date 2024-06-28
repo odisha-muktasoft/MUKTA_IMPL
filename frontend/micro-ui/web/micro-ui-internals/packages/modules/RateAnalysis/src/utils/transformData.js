@@ -88,6 +88,7 @@ export const getBasicSORDetails = (data) => {
 };
 
 export const getAdditionCharges = (data) => {
+  console.log(data);
   return data?.extraCharges
     ?.filter((ac) => ac !== null)
     .map((ob) => {
@@ -130,6 +131,7 @@ export const transformRequestBody = async (data, createdState, tenantId, composi
     requestBody.Mdms.auditDetails = compositionData?.mdms?.[0]?.auditDetails;
   }
 
+  console.log(requestBody);
   return requestBody;
 };
 
