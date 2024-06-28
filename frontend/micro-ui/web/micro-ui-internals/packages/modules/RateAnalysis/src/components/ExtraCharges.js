@@ -36,8 +36,12 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     if(formData?.[formFieldName]?.length <= 0)
     {
       console.log("coming here");
-      setValue(formFieldName,initialState);
-      //setRows(initialState);
+      setValue(`${formFieldName}[${0}].key`,1);
+      setValue(`${formFieldName}[${0}].description`,"");
+      setValue(`${formFieldName}[${0}].applicableOn`,"");
+      setValue(`${formFieldName}[${0}].calculationType`,"");
+      setValue(`${formFieldName}[${0}].figure`,"");
+      setValue(`${formFieldName}[${0}].isShow`,true);
     }
   },[formData])
 
