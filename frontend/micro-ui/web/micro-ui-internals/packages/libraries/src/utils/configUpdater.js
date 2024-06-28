@@ -22,7 +22,12 @@ export const configUpdater = (config) => {
   //set default values for targetFields
   Object.keys(presets).forEach(preset => {
     if(preset !=="showFields" && preset!=="showFieldsDisabled"){
-      defaultValues[preset] = presets[preset]
+      // if(presets[preset]?.includes("["))
+      // {  console.log(presets[preset].replace("[","").replace("]","").split(','),"jjjjj")
+      //   defaultValues[preset] = presets[preset].replace("[","").replace("]","").split(',');
+      // }
+      // else
+        defaultValues[preset] = presets[preset]
     }
   })
 
