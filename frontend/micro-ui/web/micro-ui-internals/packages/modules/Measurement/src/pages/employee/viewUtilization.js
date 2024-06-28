@@ -403,7 +403,7 @@ const ViewUtilization = () => {
   //look here need to uncomment once api works fine and check if the data is coming proper
      // const { state,refId } = useLocation()
       const location = useLocation();
-      const { responseData, formId } = location.state || {};
+      const { responseData, estimateId } = location.state || {};
         
       let statement = responseData?.statement;
 
@@ -420,9 +420,9 @@ const ViewUtilization = () => {
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
-   
+  
     // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
-    Digit.Utils.downloadEgovPDF("analysisUtilization/analysis-utilization", { tenantId: tenantId ,referenceId:formId}, `utilization-${formId}.pdf`);
+    Digit.Utils.downloadEgovPDF("utilizationStatement/utilization-statement", { tenantId: tenantId ,referenceId:estimateId}, `utilization-${estimateId}.pdf`);
   }
   return (
     <div className={"employee-main-application-details"}>

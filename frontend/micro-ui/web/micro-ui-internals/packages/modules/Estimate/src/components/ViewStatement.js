@@ -89,10 +89,10 @@ const ViewStatement = (props) => {
     return (
       <tr>
         <td colSpan={6} style={{ textAlign: "right", fontWeight: "400" }}>
-          {t("Total")}:
+          {t("MB_ONLY_AMOUNT")}:
         </td>
         <td style={{ textAlign: "right", fontWeight: "bold" }}>
-          <Amount value={subTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+          <Amount value={parseFloat(subTotal.toFixed(2))} t={t} roundOff={false} sameDisplay={true} />
         </td>
       </tr>
     );
