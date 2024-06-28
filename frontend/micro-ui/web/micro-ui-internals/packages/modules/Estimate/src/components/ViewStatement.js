@@ -68,7 +68,7 @@ const ViewStatement = (props) => {
         <td style={{ width: "30%" }}>{subRow.name}</td>
         <td style={{ width: "14.28%" }}>{subRow.unit}</td>
         <td style={{ width: "14.28%" }}>
-          <Amount value={parseFloat(subRow?.rate).toFixed(2)} t={t} sameDisplay={true} roundOff={false}/>
+          <div>{parseFloat(subRow?.rate.toFixed(2))} </div>
         </td>
         <td style={{ width: "14.28%" }}>
           <Amount value={parseFloat(subRow?.quantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />
@@ -92,13 +92,14 @@ const ViewStatement = (props) => {
           {t("Total")}:
         </td>
         <td style={{ textAlign: "right", fontWeight: "bold" }}>
-          <Amount value={subTotal.toFixed(2)} t={t} />
+          <Amount value={subTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
         </td>
       </tr>
     );
   };
 
   const renderBody = () => {
+   
     return nestedData
       .filter((ob) => (ob?.type ? ob?.type === type : true))
       .map((row, index) => {

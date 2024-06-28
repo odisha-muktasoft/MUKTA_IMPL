@@ -404,10 +404,7 @@ const ViewUtilization = () => {
      // const { state,refId } = useLocation()
       const location = useLocation();
       const { responseData, formId } = location.state || {};
-         // const { state , refId } = useLocation()
-          console.log(responseData);
-      // console.log(state);
-      // debugger;
+        
       let statement = responseData?.statement;
 
   const closeMenu = () => {
@@ -423,7 +420,7 @@ const ViewUtilization = () => {
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
-    console.log("refId",formId)
+   
     // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
     Digit.Utils.downloadEgovPDF("analysisUtilization/analysis-utilization", { tenantId: tenantId ,referenceId:formId}, `utilization-${formId}.pdf`);
   }
@@ -431,7 +428,7 @@ const ViewUtilization = () => {
     <div className={"employee-main-application-details"}>
       <div className={"employee-application-details"} style={{ marginBottom: "15px" ,marginRight:"5px"  }}>
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>
-          {t("Utilization Statement")}
+          {t("MB_VIEW_UTLIZATION")}
         </Header>
          <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> 
       </div>
