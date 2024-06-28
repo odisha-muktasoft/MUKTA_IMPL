@@ -63,7 +63,7 @@ const ViewStatement = (props) => {
   const renderSubBody = (subRows) => {
     return subRows.map((subRow, subIndex) => (
       <tr key={subIndex}>
-        <td style={{ width: "5%" }}>{subRow.sNo}</td>
+        <td style={{ width: "5%" }}>{subIndex+1}</td>
         <td style={{ width: "14.28%" }}>{subRow.code}</td>
         <td style={{ width: "30%" }}>{subRow.name}</td>
         <td style={{ width: "14.28%" }}>{subRow.unit}</td>
