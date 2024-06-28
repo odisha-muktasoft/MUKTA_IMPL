@@ -120,10 +120,10 @@ const SORDetailsTemplate = (props) => {
         obj = { width: "1rem" };
         break;
       case 2:
-        obj = { width: "12rem" };
+        obj = { width: "8rem" };
         break;
       case 3:
-        obj = { width: "70rem" };
+        obj = { width: "70rem", };
         break;
       case 4:
         obj = { width: "10rem" };
@@ -190,12 +190,14 @@ const SORDetailsTemplate = (props) => {
           </div>
         )}
       </div>
-      <table className="table reports-table sub-work-table">
+      <table className="reports-table sub-work-table" >
         <thead>
           <tr>
             {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
       columns.map((column, index) => <th key={index}>{column.label}</th>)*/}
-      {columns.map((column, index) => <th key={index}>{column.label}</th>)}
+      {columns.map((column, index) => <th 
+        style={getStyles(index + 1)}
+      key={index}>{column.label}</th>)}
           </tr>
         </thead>
         <tbody>
