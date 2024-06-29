@@ -27,6 +27,18 @@ INDIVIDUAL_HOST = os.getenv('INDIVIDUAL_HOST')
 USER_HOST = os.getenv('USER_HOST')
 WORKFLOW_HOST = os.getenv('WORKFLOW_HOST')
 
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+
+# Connect to PostgreSQL
+def connect_to_database():
+    return psycopg2.connect(
+        host=DB_HOST, port=DB_PORT, database=DB_NAME, user=DB_USER, password=DB_PASSWORD
+    )
+
 
 tenantids = [
     "od.jatni",
@@ -536,60 +548,164 @@ def writeDataToCSV(data, filename):
         writer.writeheader()
         writer.writerows(data)
 
+def reports():
+    logging.info('Report Started Generating')
+
+    # directory = '/home/admin1/Music'
+    directory = '/mukta-report/muktareport'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+    # Get current date in ddmmyyyy format
+    current_date = dt.datetime.now().strftime('%d%m%Y')
+    
+    # Generate filenames with the current date
+    workOrder_filename = f'workOrder_{current_date}.csv'
+    failedPayments_filename = f'failed_payments_{current_date}.csv'
+    bill_filename = f'bill_{current_date}.csv'
+    musterRoll_filename = f'musterRoll_{current_date}.csv'
+    project_filename = f'project_{current_date}.csv'
+    success_payments_filename = f'success_payments_{current_date}.csv'
+    
+    # Process work order data
+    workOrder_data = getWorkOrderData()
+    workOrder_file_path = os.path.join(directory, workOrder_filename)
+    writeDataToCSV(workOrder_data, workOrder_file_path)
+    
+    # Process failed payments data
+    failed_payments_data = getFailedPaymentsDataFromExpense()
+    failed_payments_file_path = os.path.join(directory, failedPayments_filename)
+    writeDataToCSV(failed_payments_data, failed_payments_file_path)
+    
+    # Process bill data
+    bill_data = getBillData()
+    bill_file_path = os.path.join(directory, bill_filename)
+    writeDataToCSV(bill_data, bill_file_path)
+    
+    # Process muster roll data
+    muster_Data = getMusterRollData()
+    muster_file_path = os.path.join(directory, musterRoll_filename)
+    writeDataToCSV(muster_Data, muster_file_path)
+    
+    # Process project data
+    project_data = getProjectData()
+    project_file_path = os.path.join(directory, project_filename)
+    writeDataToCSV(project_data, project_file_path)
+
+    # Process Success/Partial Payments
+    success_payments_data = getSuccessPaymentsDataFromExpense()
+    success_payments_file_path = os.path.join(directory, success_payments_filename)
+    writeDataToCSV(success_payments_data, success_payments_file_path)
+
+    logging.info('Report Generated Successfully')
+    print(f"Reports saved in directory: {directory}")
+
+def search_disburse_from_program_service(payment_number, locaiton_code):
+    try:
+        program_service_host = os.getenv('PROGRAM_SERVICE_HOST')
+        program_disburse_search = os.getenv('PROGRAM_DISBURSE_SEARCH')
+
+        api_url = f"{program_service_host}/{program_disburse_search}"
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        request = {
+            "signature": None,
+            "header": {
+                "message_id": "123",
+                "message_ts": "1708428280",
+                "message_type": "disburse",
+                "action": "search",
+                "sender_id": os.getenv('PROGRAM_DISBURSE_UPDATE_SENDER_ID'),
+                "receiver_id": os.getenv('PROGRAM_DISBURSE_UPDATE_RECEIVER_ID')
+            },
+            "message": {
+                "location_code": locaiton_code,
+                "target_id": payment_number,
+                "pagination": {
+                    "limit": 100,
+                    "offset": 0
+                }
+            }
+        }
+
+        response = requests.post(api_url, json=request, headers=headers)
+        disbursements = []
+        if response.status_code == 200:
+            response_data = response.json()
+            # Assuming your response is stored in the variable 'response_data'
+            disbursements.extend(response_data.get('disbursements', []))
+        else:
+            print(f"Failed to fetch data from the API. Status code: {response.status_code}")
+            print(response.text)
+        return disbursements
+    except Exception as e:
+        print("search_disburse_from_program_service : error {}".format(str(e)))
+        raise e
+
+def call_on_disburse_update_api(disburse):
+    try:
+        program_service_host = os.getenv('PROGRAM_SERVICE_HOST')
+        program_disburse_update = os.getenv('PROGRAM_ON_DISBURSE_CREATE')
+
+        api_url = f"{program_service_host}/{program_disburse_update}"
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        request = {
+            "signature": None,
+            "header": {
+                "message_id": disburse['id'],
+                "message_ts": "1708428280",
+                "message_type": "on-disburse",
+                "action": "create",
+                "sender_id": os.getenv('PROGRAM_DISBURSE_UPDATE_SENDER_ID'),
+                "receiver_id": os.getenv('PROGRAM_DISBURSE_UPDATE_RECEIVER_ID')
+            },
+            "message": disburse
+        }
+
+        response = requests.post(api_url, json=request, headers=headers)
+        if response.status_code == 200:
+            print(f"Disbursement updated for payment number: {disburse['target_id']}")
+        else:
+            print(f"Failed to update disburse for {disburse['target_id']} from the API. Status code: {response.status_code}")
+            print(response.text)
+    except Exception as e:
+        print("search_disburse_from_program_service : error {}".format(str(e)))
+        raise e
+
+
+def data_correction():
+    print("Data correction started")
+
+    # connect to postgreSQL
+    connection = connect_to_database()
+    cursor = connection.cursor()
+    query = """select jp.tenantid, jp.muktareferenceid from eg_mukta_ifms_disburse as md inner join jit_payment_inst_details as jp on md.id = jp.id where md.status != jp.pistatus order by jp.pistatus;"""
+    cursor.execute(query)
+
+    results = cursor.fetchall()
+    for row in results:
+        # print(row)
+        tenantid = row[0]
+        muktareferenceid = row[1]
+        disbursement = search_disburse_from_program_service(muktareferenceid, tenantid)
+
+        if disbursement:
+            call_on_disburse_update_api(disbursement[0])
+
+    cursor.close()
+    connection.close()
+
+    print("Data correction finished")
+
 
 if __name__ == '__main__':
     try:
-        logging.info('Report Started Generating')
 
-        directory = '/home/admin1/Music'
-        # directory = '/mukta-report/muktareport'
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        
-        # Get current date in ddmmyyyy format
-        current_date = dt.datetime.now().strftime('%d%m%Y')
-        
-        # Generate filenames with the current date
-        workOrder_filename = f'workOrder_{current_date}.csv'
-        failedPayments_filename = f'failed_payments_{current_date}.csv'
-        bill_filename = f'bill_{current_date}.csv'
-        musterRoll_filename = f'musterRoll_{current_date}.csv'
-        project_filename = f'project_{current_date}.csv'
-        success_payments_filename = f'success_payments_{current_date}.csv'
-        
-        # Process work order data
-        workOrder_data = getWorkOrderData()
-        workOrder_file_path = os.path.join(directory, workOrder_filename)
-        writeDataToCSV(workOrder_data, workOrder_file_path)
-        
-        # Process failed payments data
-        failed_payments_data = getFailedPaymentsDataFromExpense()
-        failed_payments_file_path = os.path.join(directory, failedPayments_filename)
-        writeDataToCSV(failed_payments_data, failed_payments_file_path)
-        
-        # Process bill data
-        bill_data = getBillData()
-        bill_file_path = os.path.join(directory, bill_filename)
-        writeDataToCSV(bill_data, bill_file_path)
-        
-        # Process muster roll data
-        muster_Data = getMusterRollData()
-        muster_file_path = os.path.join(directory, musterRoll_filename)
-        writeDataToCSV(muster_Data, muster_file_path)
-        
-        # Process project data
-        project_data = getProjectData()
-        project_file_path = os.path.join(directory, project_filename)
-        writeDataToCSV(project_data, project_file_path)
-
-        # Process Success/Partial Payments
-        success_payments_data = getSuccessPaymentsDataFromExpense()
-        success_payments_file_path = os.path.join(directory, success_payments_filename)
-        writeDataToCSV(success_payments_data, success_payments_file_path)
-
-        logging.info('Report Generated Successfully')
-        print(f"Reports saved in directory: {directory}")
-
+        # reports()
+        data_correction() 
 
     except Exception as ex:
         logging.error("Exception occured on main.", exc_info=True)
