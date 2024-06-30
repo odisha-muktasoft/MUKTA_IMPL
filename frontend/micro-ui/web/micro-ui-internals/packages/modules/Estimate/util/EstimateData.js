@@ -148,7 +148,7 @@ export const sortSorsBasedonType = (statement) => {
       // If lineItems exist, use them; otherwise, use basicSorDetails
       if ( detail.lineItems !==null && detail.lineItems.length > 0) {
         detail.lineItems.forEach((line) => {
-          line.additionalDetails?.rateDetails?.amountDetails.forEach((amountDetail) => {
+          sorId=line?.sorId,
             description = line?.additionalDetails?.sorDetails?.description;
             type = line?.additionalDetails?.sorDetails?.sorType;
             amount = line?.basicSorDetails?.[0]?.amount;
@@ -166,7 +166,7 @@ export const sortSorsBasedonType = (statement) => {
               rate,
             });
           });
-        });
+        
       } else {
         detail?.basicSorDetails.forEach((basic) => {
           description = basic.name;

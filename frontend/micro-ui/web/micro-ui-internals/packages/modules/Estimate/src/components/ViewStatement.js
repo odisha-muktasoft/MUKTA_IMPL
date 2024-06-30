@@ -9,7 +9,7 @@ const ViewStatement = (props) => {
   const { t } = useTranslation();
 
   // Calculate the grand total
-  
+  console.log("view statement",nestedData)
   const grandTotal = nestedData.reduce((total, row) => {
     return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
@@ -22,9 +22,9 @@ const ViewStatement = (props) => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
       { key: t("SOR Type/ Sub Type"), width: "12.5%" },
-      { key: t("WORKS-SORS_COLUMN_CODE"), width: "12.5%" },
-      { key: t("Description"), width: "30%" },
-      { key: t("Uom"), width: "12.5%" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.5%" },
+      { key: t("Description"), width: "35%" },
+      { key: t("Uom"), width: "8.5%" },
       { key: t("Rate"), width: "12.5%" },
     ];
 
@@ -46,9 +46,9 @@ const ViewStatement = (props) => {
   const renderSubHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("WORKS-SORS_COLUMN_CODE"), width: "14.28%" },
-      { key: t("Name"), width: "30%" },
-      { key: t("Unit"), width: "14.28%" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.28%" },
+      { key: t("Name"), width: "40%" },
+      { key: t("Unit"), width: "9.28%" },
       { key: t("Rate"), width: "14.28%" },
       { key: t("Quantity"), width: "14.28%" },
       { key: t("Amount"), width: "14.28%" },
@@ -64,16 +64,16 @@ const ViewStatement = (props) => {
     return subRows.map((subRow, subIndex) => (
       <tr key={subIndex}>
         <td style={{ width: "5%" }}>{subIndex+1}</td>
-        <td style={{ width: "14.28%" }}>{subRow.code}</td>
+        <td style={{ width: "5.28%" }}>{subRow.code}</td>
         <td style={{ width: "30%" }}>{subRow.name}</td>
-        <td style={{ width: "14.28%" }}>{subRow.unit}</td>
-        <td style={{ width: "14.28%" }}>
+        <td style={{ width: "9.28%" }}>{subRow.unit}</td>
+        <td style={{ width: "14.28%" , textAlign:"right" }}>
           <div>{parseFloat(subRow?.rate.toFixed(2))} </div>
         </td>
-        <td style={{ width: "14.28%" }}>
+        <td style={{ width: "14.28%", textAlign:"right" }}>
           <Amount value={parseFloat(subRow?.quantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />
         </td>
-        <td style={{ width: "14.28%" }}>
+        <td style={{ width: "14.28%" , textAlign:"right"}}>
           <Amount value={parseFloat(subRow?.amount).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
         </td>
       </tr>
@@ -109,16 +109,16 @@ const ViewStatement = (props) => {
             <tr>
               <td style={{ width: "5%" }}>{row.sNo}</td>
               <td style={{ width: "12.5%", fontWeight: "500" }}>{`${t(`WORKS_SOR_TYPE_${row.sortype}`)} / ${t(`WORKS_SOR_SUBTYPE_${row?.sorSubType}`)}`}</td>
-              <td style={{ width: "12.5%" }}>{row.code}</td>
-              <td style={{ width: "30%" }}>{row.description}</td>
-              <td style={{ width: "12.5%", fontWeight: "500" }}>{row.uom}</td>
-              <td style={{ width: "12.5%", fontWeight: "500" }}>
+              <td style={{ width: "6.5%" }}>{row.code}</td>
+              <td style={{ width: "35%" }}>{row.description}</td>
+              <td style={{ width: "8.5%", fontWeight: "500" }}>{row.uom}</td>
+              <td style={{ width: "12.5%", fontWeight: "500" , textAlign:"right"}}>
                 <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
               </td>
-              <td style={{ width: "12.5%", fontWeight: "500" }}>
+              <td style={{ width: "12.5%", fontWeight: "500" , textAlign:"right"}}>
                 <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
               </td>
-              <td style={{ width: "12.5%", fontWeight: "500" }}>
+              <td style={{ width: "12.5%", fontWeight: "500" , textAlign:"right"}}>
                 <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
               </td>
             </tr>
@@ -134,7 +134,7 @@ const ViewStatement = (props) => {
                   <td style={{ borderTop: "none" }}></td>
                   <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
                     <table
-                      className="table sub-table"
+                      className=" sub-table"
                       style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
                     >
                       <thead>
@@ -154,7 +154,7 @@ const ViewStatement = (props) => {
 
   return (
     <React.Fragment>
-      <table className="table reports-table sub-work-table measurement-table-custom">
+      <table className=" reports-table sub-work-table measurement-table-custom">
         <thead>
           <tr>{renderHeader()}</tr>
         </thead>
