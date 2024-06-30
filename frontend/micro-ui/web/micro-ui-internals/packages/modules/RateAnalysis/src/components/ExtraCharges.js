@@ -205,7 +205,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                 <Controller
                   control={control}
                   name={`${formFieldName}[${rowIndex}].applicableOn`}
-                  defaultValue={row.applicableOn}
+                  defaultValue={row?.applicableOn}
                   rules={{
                     required: false,
                     pattern: /^[a-zA-Z0-9_ .$@#\/ ]*$/,

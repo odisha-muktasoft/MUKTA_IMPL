@@ -28,7 +28,7 @@ export const getDefaultValues = (sordata, t, mbNumber, compositionData, allSORDa
 export const getDefaultSORDetails = (compositionData, allSORData) => {
   const SORTypeCodes = {
     M: "MATERIAL",
-    MH: "MACHINERY",
+    E: "MACHINERY",
     L: "LABOUR",
   };
 

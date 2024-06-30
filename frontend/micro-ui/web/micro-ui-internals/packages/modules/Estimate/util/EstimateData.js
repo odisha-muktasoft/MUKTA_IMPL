@@ -168,7 +168,7 @@ export const sortSorsBasedonType = (statement) => {
           });
         });
       } else {
-        detail.basicSorDetails.forEach((basic) => {
+        detail?.basicSorDetails.forEach((basic) => {
           description = basic.name;
           type = basic.type;
           amount = basic.amount;
