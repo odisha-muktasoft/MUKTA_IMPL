@@ -6,7 +6,7 @@ part 'skills.g.dart';
 @freezed
 class SkillsList with _$SkillsList {
   const factory SkillsList({
-    @JsonKey(name: 'WageSeekerSkills') List<WageSeekerSkills>? wageSeekerSkills,
+    @JsonKey(name: 'SOR') List<WageSeekerSkills>? wageSeekerSkills,
   }) = _SkillsList;
 
   factory SkillsList.fromJson(
@@ -18,9 +18,11 @@ class SkillsList with _$SkillsList {
 @freezed
 class WageSeekerSkills with _$WageSeekerSkills {
   const factory WageSeekerSkills({
-    required String code,
+     String? code,
     int? amount,
-    required bool active,
+     bool? active,
+     String? description,
+     String? id,
   }) = _WageSeekerSkills;
 
   factory WageSeekerSkills.fromJson(Map<String, dynamic> json) =>

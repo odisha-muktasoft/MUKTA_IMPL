@@ -168,7 +168,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                   loaded: (SkillsList? skillsList) {
                     skillList = skillsList!.wageSeekerSkills
                             ?.where((obj) => obj.active == true)
-                            .map((e) => Skill(code: e.code))
+                            .map((e) => Skill(code: e.id!))
                             .toList() ??
                         [];
                     for (Skill skill in skillList) {

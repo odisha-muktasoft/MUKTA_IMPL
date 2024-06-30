@@ -70,8 +70,11 @@ class MultiSelectSearchCheckBoxState extends State<MultiSelectSearchCheckBox> {
                 return StatefulBuilder(
                   builder: (BuildContext context, StateSetter set) {
                     return CheckboxListTile(
-                      title: Text(AppLocalizations.of(context)
-                          .translate('COMMON_MASTERS_SKILLS_$optionData')),
+                      //TODO:{old code}
+                      // title: Text(AppLocalizations.of(context)
+                      //     .translate('COMMON_MASTERS_SKILLS_${optionData}')),
+
+                      title: Text(AppLocalizations.of(context).translate(optionData.split("/").last)),
                       controlAffinity: ListTileControlAffinity.leading,
                       value: widget.selectedOptions.contains(optionData),
                       onChanged: (selected) {
@@ -120,14 +123,20 @@ class MultiSelectSearchCheckBoxState extends State<MultiSelectSearchCheckBox> {
                     runSpacing: 3.0,
                     children: widget.selectedOptions
                         .map((option) => Tooltip(
-                              message: AppLocalizations.of(context)
-                                  .translate('COMMON_MASTERS_SKILLS_$option'),
+                          //TODO:{old code}
+                              // message: AppLocalizations.of(context)
+                              //     .translate('COMMON_MASTERS_SKILLS_$option'),
+                               message: AppLocalizations.of(context)
+                                  .translate(option.split("/").last),
                               preferBelow: false,
                               child: Chip(
                                 backgroundColor: const DigitColors().quillGray,
                                 label: Text(
-                                  AppLocalizations.of(context).translate(
-                                      'COMMON_MASTERS_SKILLS_$option'),
+                                  //TODO:[old code]
+                                  // AppLocalizations.of(context).translate(
+                                  //     'COMMON_MASTERS_SKILLS_$option'),
+                                  AppLocalizations.of(context)
+                                  .translate(option.split("/").last),
                                   overflow: TextOverflow.ellipsis,
                                   softWrap: true,
                                 ),

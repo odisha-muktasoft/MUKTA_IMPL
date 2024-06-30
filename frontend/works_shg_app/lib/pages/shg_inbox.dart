@@ -176,7 +176,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                       skillList = skillsList!.wageSeekerSkills
                               ?.where((obj) => obj.active == true)
                               .map((e) => Skill(
-                                    code: e.code,
+                                    code: e.id!,
                                   ))
                               .toList() ??
                           [];

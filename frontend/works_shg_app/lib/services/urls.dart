@@ -46,6 +46,7 @@ class WageSeekerServices {
 class InitServices {
   const InitServices();
   String get mdms => 'egov-mdms-service/v1/_search';
+  String get mdmsSkill=>"mdms-v2/v1/_search";
   String get localizationSearch => 'localization/messages/v1/_search';
 }
 
@@ -57,7 +58,7 @@ class UserServices {
   String get userSearchProfile => 'user/_search';
   String get editProfile => 'user/profile/_update';
   String get changePassword => 'user/password/_update';
-  String get sendOtp => 'mukta-user-otp/v1/_send';
+  String get sendOtp => 'user-otp/v1/_send';
   String get logOut => 'user/_logout';
 }
 

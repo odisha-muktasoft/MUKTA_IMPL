@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
+import 'package:works_shg_app/models/skills/skills.dart';
 
 import '../../../models/attendance/muster_submission.dart';
 import '../../../models/mdms/attendance_hours.dart';
@@ -123,4 +124,30 @@ class MdmsRepository {
       rethrow;
     }
   }
+
+
+// updated sor skills
+
+Future<List<WageSeekerSkills>> skillsMDMS({
+    required String apiEndPoint,
+    required String tenantId,
+    required List<Map> moduleDetails,
+  }) async {
+    try {
+      var response = await _client.post(apiEndPoint, data: {
+        "MdmsCriteria": {
+          "tenantId": tenantId,
+          "moduleDetails": moduleDetails,
+        },
+      });
+
+      return SkillsList.fromJson(
+        json.decode(response.toString())['MdmsRes']['WORKS-SOR'],
+      ).wageSeekerSkills??[];
+    } on DioError catch (ex) {
+      // Assuming there will be an errorMessage property in the JSON object
+      rethrow;
+    }
+  }
+
 }

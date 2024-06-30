@@ -64,7 +64,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           ? []
           : registrationState.skillDetails!.individualSkills!
               .where((e) => e.type != null)
-              .map((e) => '${e.level}.${e.type}')
+              .map((e) => '${e.level}/${e.type}')
               .toList();
     }
   }
@@ -92,7 +92,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     List<String> skills =
         widget.wageSeekerMDMS!.commonMDMS!.wageSeekerSkills != null
             ? widget.wageSeekerMDMS!.commonMDMS!.wageSeekerSkills!
-                .map((e) => e.code)
+                .map((e) => "${e.id!}/${e.description}")
                 .toList()
             : [];
 
@@ -358,8 +358,8 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               final skillList = SkillDetails(
                                   individualSkills: selectedOptions
                                       .map((e) => IndividualSkill(
-                                          type: e.toString().split('.').last,
-                                          level: e.toString().split('.').first))
+                                          type: e.toString().split("/").first.split('_').last,
+                                          level: e.toString().split("/").first.split('_').first))
                                       .toList());
 
                               BlocProvider.of<WageSeekerBloc>(context).add(
@@ -391,7 +391,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     Map<String, int> afterDotCount = {};
 
     for (String skill in selectedOptions) {
-      List<String> skillParts = skill.split(".");
+      List<String> skillParts = skill.split("/").first.split("_");
       String beforeDot = skillParts[0];
       String afterDot = skillParts[1];
 
