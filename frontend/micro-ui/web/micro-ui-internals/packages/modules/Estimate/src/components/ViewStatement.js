@@ -160,10 +160,10 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {nestedData.filter((ob) => (ob?.type ? ob?.type === type : true)).length > 0 ?
+          {nestedData.filter((ob) => (ob?.type ? (ob?.type==="W"?true: ob?.type === type): true)).length > 0 ?
           <tr>
             <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
-              {t("Total")}:
+              {t("STATEMENT_GRAND_TOTAL")}:
             </td>
             <td style={{ textAlign: "right", fontWeight: "bold" }}>
               <Amount value={grandTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
