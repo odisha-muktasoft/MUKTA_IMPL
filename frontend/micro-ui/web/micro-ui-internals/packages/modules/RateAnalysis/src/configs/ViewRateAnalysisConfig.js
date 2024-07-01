@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getRefactoredTableRows, grossTotalAmountCalculation, getRefactoreExtraChargesTableRows, formatDate } from "../utils/transformData";
 
 export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard) => {
-  console.log(data, "dataconfig");
+  
   const [viewData, setViewData] = useState(null);
   const categorizeData = () => {
     // Initialize categories with empty objects
@@ -76,7 +76,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
     categorizeData();
   }, [data, rateAnalysis]);
 
-  console.log(infoCard);
+ 
   return {
     cards: [
       {

@@ -9,7 +9,7 @@ const ViewStatement = (props) => {
   const { t } = useTranslation();
 
   // Calculate the grand total
-  console.log("view statement", nestedData);
+ 
   const grandTotal = nestedData.reduce((total, row) => {
     return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
@@ -21,19 +21,19 @@ const ViewStatement = (props) => {
   const renderHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("SOR Type/ Sub Type"), width: "12.5%" },
+      { key: t("WORKS_SORS_COLUMN_TYPE"), width: "12.5%" },
       { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.5%" },
-      { key: t("Description"), width: "35%" },
-      { key: t("Uom"), width: "8.5%" },
-      { key: t("Rate"), width: "12.5%" },
+      { key: t("WORKS-SORS_COLUMN_DESCRIPTION"), width: "35%" },
+      { key: t("WORKS-SORS_COLUMN_UOM"), width: "8.5%" },
+      { key: t("WORKS-SORS_COLUMN_RATE"), width: "12.5%" },
     ];
 
     if (config?.screenType === "UTILIZATION") {
-      columns.push({ key: t("Consumed Quantity"), width: "12.5%" });
-      columns.push({ key: t("Amount"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_QTY"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_AMT"), width: "12.5%" });
     } else {
-      columns.push({ key: t("Estimated Quantity"), width: "12.5%" });
-      columns.push({ key: t("Estimated Amount"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_QTY"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_AMT"), width: "12.5%" });
     }
 
     return columns.map((col, index) => (
@@ -47,11 +47,11 @@ const ViewStatement = (props) => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
       { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.28%" },
-      { key: t("Name"), width: "40%" },
-      { key: t("Unit"), width: "9.28%" },
-      { key: t("Rate"), width: "14.28%" },
-      { key: t("Quantity"), width: "14.28%" },
-      { key: t("Amount"), width: "14.28%" },
+      { key: t("WORKS-SORS_SUB_COLUMN_NAME"), width: "40%" },
+      { key: t("WORKS-SORS_SUB_COLUMN_UNIT"), width: "9.28%" },
+      { key: t("WORKS-SORS_COLUMN_RATE"), width: "14.28%" },
+      { key: t("WORKS-SORS_SUB_COLUMN_QTY"), width: "14.28%" },
+      { key: t("WORKS-SORS_COLUMN_AMT"), width: "14.28%" },
     ];
     return columns.map((col, index) => (
       <th key={index} style={{ width: col.width, padding: "10px", backgroundColor: "#A6A6A6" }}>
