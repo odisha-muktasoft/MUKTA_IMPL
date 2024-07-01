@@ -9,7 +9,7 @@ const ViewStatement = (props) => {
   const { t } = useTranslation();
 
   // Calculate the grand total
-  console.log("view statement",nestedData)
+  console.log("view statement", nestedData);
   const grandTotal = nestedData.reduce((total, row) => {
     return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
@@ -17,7 +17,7 @@ const ViewStatement = (props) => {
   /* need to pass the screenType 
      - TO render the column header
   */
-  
+
   const renderHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
@@ -63,29 +63,28 @@ const ViewStatement = (props) => {
   const renderSubBody = (subRows) => {
     return subRows.map((subRow, subIndex) => (
       <tr key={subIndex}>
-        <td style={{ width: "5%" }}>{subIndex+1}</td>
+        <td style={{ width: "5%" }}>{subIndex + 1}</td>
         <td style={{ width: "5.28%" }}>{subRow.code}</td>
         <td style={{ width: "30%" }}>{subRow.name}</td>
         <td style={{ width: "9.28%" }}>{subRow.unit}</td>
-        <td style={{ width: "14.28%" , textAlign:"right" }}>
+        <td style={{ width: "14.28%", textAlign: "right" }}>
           <div>{parseFloat(subRow?.rate.toFixed(2))} </div>
         </td>
-        <td style={{ width: "14.28%", textAlign:"right" }}>
+        <td style={{ width: "14.28%", textAlign: "right" }}>
           <Amount value={parseFloat(subRow?.quantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />
         </td>
-        <td style={{ width: "14.28%" , textAlign:"right"}}>
-          <Amount value={parseFloat(subRow?.amount).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
+        <td style={{ width: "14.28%", textAlign: "right" }}>
+          <Amount value={parseFloat(subRow?.amount).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
         </td>
       </tr>
     ));
   };
 
   const renderSubFooter = (subRows) => {
-   
     const subTotal = subRows.reduce((total, subRow) => {
       return total + (parseFloat(subRow.amount) || 0);
     }, 0);
-   
+
     return (
       <tr>
         <td colSpan={6} style={{ textAlign: "right", fontWeight: "400" }}>
@@ -99,56 +98,61 @@ const ViewStatement = (props) => {
   };
 
   const renderBody = () => {
-   
     return nestedData
-      .filter((ob) => (ob?.type  ? (ob?.type==="W"?true: ob?.type === type) : true))
+      .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
-        return (
-          <React.Fragment key={index}>
-            <tr>
-              <td style={{ width: "5%" }}>{row.sNo}</td>
-              <td style={{ width: "12.5%", fontWeight: "500" }}>{`${t(`WORKS_SOR_TYPE_${row.sortype}`)} / ${t(`WORKS_SOR_SUBTYPE_${row?.sorSubType}`)}`}</td>
-              <td style={{ width: "6.5%" }}>{row.code}</td>
-              <td style={{ width: "35%" }}>{row.description}</td>
-              <td style={{ width: "8.5%", fontWeight: "500" }}>{row.uom}</td>
-              <td style={{ width: "12.5%", fontWeight: "500" , textAlign:"right"}}>
-                <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
-              </td>
-              <td style={{ width: "12.5%", fontWeight: "500" , textAlign:"right"}}>
-                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
-              </td>
-              <td style={{ width: "12.5%", fontWeight: "500" , textAlign:"right"}}>
-                <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
-              </td>
-            </tr>
-            {subRows.length > 0 && (
-              <React.Fragment>
-                <tr>
-                  <td style={{ borderBottom: "none" }}></td>
-                  <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
-                    <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td style={{ borderTop: "none" }}></td>
-                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
-                    <table
-                      className=" sub-table"
-                      style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
-                    >
-                      <thead>
-                        <tr>{renderSubHeader()}</tr>
-                      </thead>
-                      <tbody>{renderSubBody(subRows)}</tbody>
-                      <tfoot>{renderSubFooter(subRows)}</tfoot>
-                    </table>
-                  </td>
-                </tr>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        );
+        if (row?.type === "W" && subRows.length == 0) {
+          return null;
+        } else {
+          return (
+            <React.Fragment key={index}>
+              <tr>
+                <td style={{ width: "5%" }}>{row.sNo}</td>
+                <td style={{ width: "12.5%", fontWeight: "500" }}>{`${t(`WORKS_SOR_TYPE_${row.sortype}`)} / ${t(
+                  `WORKS_SOR_SUBTYPE_${row?.sorSubType}`
+                )}`}</td>
+                <td style={{ width: "6.5%" }}>{row.code}</td>
+                <td style={{ width: "35%" }}>{row.description}</td>
+                <td style={{ width: "8.5%", fontWeight: "500" }}>{row.uom}</td>
+                <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
+                  <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                </td>
+                <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
+                  <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
+                </td>
+                <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
+                  <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                </td>
+              </tr>
+              {subRows.length > 0 && (
+                <React.Fragment>
+                  <tr>
+                    <td style={{ borderBottom: "none" }}></td>
+                    <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
+                      <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={{ borderTop: "none" }}></td>
+                    <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
+                      <table
+                        className=" sub-table"
+                        style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
+                      >
+                        <thead>
+                          <tr>{renderSubHeader()}</tr>
+                        </thead>
+                        <tbody>{renderSubBody(subRows)}</tbody>
+                        <tfoot>{renderSubFooter(subRows)}</tfoot>
+                      </table>
+                    </td>
+                  </tr>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          );
+        }
       });
   };
 
@@ -160,17 +164,23 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {nestedData.filter((ob) => (ob?.type ? (ob?.type==="W"?true: ob?.type === type): true)).length > 0 ?
-          <tr>
-            <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
-              {t("STATEMENT_GRAND_TOTAL")}:
-            </td>
-            <td style={{ textAlign: "right", fontWeight: "bold" }}>
-              <Amount value={grandTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true}  />
-            </td>
-          </tr>:<td colSpan={7} style={{marginLeft:"10px", color:"#9E9E9E", textAlign:"center"}}>
+          {nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true)).length > 0 ? (
+            <tr>
+              <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
+                {
+               config?.screenType === "UTILIZATION"?t("UTILIZATION_STATEMENT_GRAND_TOTAL"):
+              t("STATEMENT_GRAND_TOTAL")
+              }:
+              </td>
+              <td style={{ textAlign: "right", fontWeight: "bold" }}>
+                <Amount value={grandTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+              </td>
+            </tr>
+          ) : (
+            <td colSpan={7} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
               {t("STATEMENT_NO_DATA_PRESENT")}
-            </td>}
+            </td>
+          )}
         </tfoot>
       </table>
     </React.Fragment>

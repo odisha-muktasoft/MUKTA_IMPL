@@ -422,7 +422,7 @@ const ViewUtilization = () => {
   const HandleDownloadPdf = () => {
   
     // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
-    Digit.Utils.downloadEgovPDF("utilizationStatement/utilization-statement", { tenantId: tenantId ,referenceId:estimateId}, `utilization-${estimateId}.pdf`);
+    Digit.Utils.downloadWorksPDF("utilizationStatement/utilization-statement", { tenantId: tenantId ,referenceId:estimateId}, `utilization-${estimateId}.pdf`);
   }
   return (
     <div className={"employee-main-application-details"}>
