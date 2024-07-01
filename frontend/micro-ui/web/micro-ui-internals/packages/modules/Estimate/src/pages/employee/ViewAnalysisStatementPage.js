@@ -286,6 +286,7 @@ const ViewAnalysisStatement = () => {
   const history = useHistory();
   const [showActions, setShowActions] = useState(false);
   //const { tenantId } = Digit.Hooks.useQueryParams();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
@@ -419,9 +420,7 @@ const ViewAnalysisStatement = () => {
   };
 
   const HandleDownloadPdf = () => {
-    // https://unified-qa.digit.org/works-pdf/download/analysisStatement/analysis-statement?tenantId=pg.citya&referenceId=cb63afc4-2162-47f2-8ec5-58667737d42b
-      Digit.Utils.downloadEgovPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:refId}, `analysis_statement-${refId}.pdf`);
-   
+      Digit.Utils.downloadWorksPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:estimateId}, `analysis_statement-${estimateId}.pdf`);
   };
 
 // Consolidated table will be sent overhere

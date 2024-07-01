@@ -30,7 +30,6 @@ const ViewRateAnalysis = () => {
   let config = null;
   useEffect(() => {}, [tenantId, isLoading, applicationDetails, queryStrings]);
 
-  // console.log(queryStrings?.sorid)
   const redirectToCreateBill = (contractType) => {
     if (userRoles.includes("MDMS_STATE_ADMIN") === true) {
       if (contractType === "CREATE_EDIT_RATE_ANALYSIS") {
@@ -38,25 +37,33 @@ const ViewRateAnalysis = () => {
           `/${window?.contextPath}/employee/rateanalysis/update-rate-analysis?compositionid=${applicationDetails?.rateAnalysisDetail.compositionId}&sorid=${queryStrings?.sorId}`
         );
       }
-    } else if (userRoles.includes("MDMS_CITY_ADMIN") === true) {
-      if (contractType === "CREATE_EDIT_RATE_ANALYSIS") {
-        //TODO:[need to add revise rate screen path]
-        // history.push(
-        //   `/${window?.contextPath}/employee/rateanalysis/update-rate-analysis?compositionid=${applicationDetails?.rateAnalysisDetail.compositionId}&sorid=${queryStrings?.sorId}`
-        // );
+      if (contractType === "CREATE_RATE_ANALYSIS") {
+        history.push(`/${window?.contextPath}/employee/rateanalysis/create-rate-analysis?sorid=${queryStrings?.sorId}`);
       }
     }
-    //rateanalysis/update-rate-analysis?compositionid=CMP_000017&sorid=SOR_000005
+
+    if (userRoles.includes("MDMS_CITY_ADMIN") === true) {
+      if (contractType === "REVISE_RATE_ANALYSIS") {
+        history.push(`/${window?.contextPath}/employee/rateAnalysis/search-sor`);
+      }
+    }
   };
   const [displayMenu, setDisplayMenu] = useState(false);
   const actionULB = [];
 
   if (userRoles.includes("MDMS_STATE_ADMIN") === true) {
     actionULB.push({
+      code: "CREATE_RATE_ANALYSIS",
+      name: t("CREATE_RATE_ANALYSIS"),
+    });
+
+    actionULB.push({
       code: "CREATE_EDIT_RATE_ANALYSIS",
       name: t("CREATE_EDIT_RATE_ANALYSIS"),
     });
-  } else if (userRoles.includes("MDMS_CITY_ADMIN") === true) {
+  }
+
+  if (userRoles.includes("MDMS_CITY_ADMIN") === true) {
     actionULB.push({
       code: "REVISE_RATE_ANALYSIS",
       name: t("REVISE_RATE_ANALYSIS"),
@@ -66,6 +73,9 @@ const ViewRateAnalysis = () => {
   function onActionSelect(action) {
     if (action?.code === "CREATE_EDIT_RATE_ANALYSIS") {
       redirectToCreateBill("CREATE_EDIT_RATE_ANALYSIS");
+    }
+    if (action?.code === "CREATE_RATE_ANALYSIS") {
+      redirectToCreateBill("CREATE_RATE_ANALYSIS");
     }
     if (action?.code === "REVISE_RATE_ANALYSIS") {
       redirectToCreateBill("REVISE_RATE_ANALYSIS");

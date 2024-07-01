@@ -4,7 +4,7 @@ import { transformStatementData, sortSorsBasedonType } from "../../../Estimate/u
 import { sortedFIlteredData } from "../utils/view_utilization";
 
 export const data = (statementDetails, rawData,oldData) => {
-  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [] });
+  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [], });
   const [sorted, setSorted] = useState([]);
 
   const headerLocale = Digit.Utils.locale.getTransformedLocale(statementDetails?.tenantId);
@@ -15,7 +15,7 @@ export const data = (statementDetails, rawData,oldData) => {
       if (statementDetails && !(viewData?.nestedData)) {
         //Transforming the estimate search response according to formdata 
         setViewData({
-            nestedData: transformStatementData(statementDetails),
+            nestedData: transformStatementData(statementDetails,"UTILIZATION"),
             sorted: sortSorsBasedonType(rawData),
           //NONSOR: transformEstimateObjects(estimateDetails, "NON-SOR", {}, allDetailedEstimate),
         });
@@ -24,7 +24,7 @@ export const data = (statementDetails, rawData,oldData) => {
       }
     };
     processArrays();
-  }, [statementDetails,sorted]);
+  }, []);
 
   return {
     cards: [

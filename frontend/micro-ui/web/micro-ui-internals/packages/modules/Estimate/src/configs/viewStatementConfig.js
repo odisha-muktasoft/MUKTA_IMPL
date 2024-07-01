@@ -18,7 +18,7 @@ export const data = (statementDetails,rawData,oldData) => {
       if (statementDetails && !(viewData?.nestedData)) {
         //Transforming the estimate search response according to formdata 
         setViewData({
-            nestedData: transformStatementData(statementDetails),
+            nestedData: transformStatementData(statementDetails,"ANALYSIS"),
             sorted: sortSorsBasedonType(rawData),
           //NONSOR: transformEstimateObjects(estimateDetails, "NON-SOR", {}, allDetailedEstimate),
         });

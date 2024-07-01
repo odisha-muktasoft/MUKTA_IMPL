@@ -100,7 +100,9 @@ module.exports = function (app) {
     //look here
     "/statements/v1/analysis/_create",
     "/statements/v1/analysis/_search",
+    "/works-pdf/download/analysisStatement/analysis-statement",
     //added
+    "/works-pdf/download/utilizationStatement/utilization-statement",
     "/statements/v1/utilization/_search",
     "/statements/v1/utilization/_create",
     "/rate-analysis/v1/scheduler/_search",
