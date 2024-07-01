@@ -32,6 +32,18 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
+  useEffect(() => {
+    if (formData && formData[formFieldName]) {
+      setRows(formData[formFieldName].map((item, index) => ({
+        ...item,
+        key: index + 1,
+        isShow: true,
+      })));
+    } else {
+      setRows(initialState);
+    }
+  }, [formData, formFieldName]);
+
   const getStyles = (index) => {
     let obj = {};
     switch (index) {
@@ -156,6 +168,14 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     setValue(`${formFieldName}[${rowIndex}].figure`, e.target.value);
   };
 
+  const setDescription = (e, rowIndex) => {
+    const updatedRows = rows.map((row, index) =>
+      index === rowIndex ? { ...row, description: e.target.value } : row
+    );
+    setRows(updatedRows);
+    setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+  };
+
   const cellContainerStyle = { display: "flex", flexDirection: "column" };
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
@@ -176,6 +196,9 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                   name={`${formFieldName}[${rowIndex}].description`}
                   //value={formData?.extraCharges?.[rowIndex]?.description || row.description}
                   defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.description || row.description) : null}
+                  onChange={(e) => {
+                    setDescription(e,rowIndex);
+                  }}
                   inputRef={register({
                     maxLength: {
                       value: 512,
