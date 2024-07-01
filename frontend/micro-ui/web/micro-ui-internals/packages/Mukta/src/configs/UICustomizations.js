@@ -443,7 +443,7 @@ export const UICustomizations = {
       const getAmount = (item) => {
         return item.amountDetail.reduce((acc, row) => acc + row.amount, 0);
       };
-      if (key === "ESTIMATE_SEARCH_ESTIMATE_NO") {
+      if (key === "ESTIMATE_ESTIMATE_NO") {
         return (
           <span className="link">
             {/* <Link to={`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${row.ProcessInstance.tenantId}&estimateNumber=${value}`}>
@@ -1081,7 +1081,7 @@ export const UICustomizations = {
       //like if a cell is link then we return link
       //first we can identify which column it belongs to then we can return relevant result
       switch (key) {
-        case "WORKS_SEARCH_ORDER_ID":
+        case "WORKS_ORDER_ID":
           return (
             <span className="link">
               <Link
