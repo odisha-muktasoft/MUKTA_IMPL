@@ -137,7 +137,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   useEffect(() => {
     const fetchRequiredData = () => {
       if (data) {
-        const defaultValues = allOverheadData ? getDefaultValues(data?.mdms?.[0], t, mbNumber, compositionData?.mdms?.[0],allSORData,allOverheadData,isUpdate || props?.isUpdate) : {};
+        const defaultValues = ((isUpdate) ? allOverheadData : true) ? getDefaultValues(data?.mdms?.[0], t, mbNumber, compositionData?.mdms?.[0],allSORData,allOverheadData,isUpdate || props?.isUpdate) : {};
         setState({
           currentDate : [new Date().toISOString().split("T")[0]],
           SORDetails : defaultValues?.SORDetails || [],
