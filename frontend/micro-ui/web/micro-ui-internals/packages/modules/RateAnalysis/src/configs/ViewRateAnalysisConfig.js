@@ -110,7 +110,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
                 key: "RA_RATE_DEFINED",
                 value: rateAnalysis?.quantity,
               },
-              {
+              { isTranslate:false,
                 key: "RA_DESCRIPTION",
                 value: rateAnalysis?.description,
               },

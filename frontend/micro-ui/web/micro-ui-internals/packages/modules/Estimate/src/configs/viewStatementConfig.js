@@ -19,7 +19,7 @@ export const data = (statementDetails,rawData,oldData) => {
         //Transforming the estimate search response according to formdata 
         setViewData({
             nestedData: transformStatementData(statementDetails,"ANALYSIS"),
-            sorted: sortSorsBasedonType(rawData),
+           sorted: sortSorsBasedonType(rawData,"ANALYSIS"),
           //NONSOR: transformEstimateObjects(estimateDetails, "NON-SOR", {}, allDetailedEstimate),
         });
        
