@@ -18,6 +18,7 @@ export const RenderDataSection = ({ section }) => {
         {section.sectionHeader && <CardSectionHeader style={section?.sectionHeader?.inlineStyles}>{t(section.sectionHeader.value)}</CardSectionHeader>}
         {section?.values?.filter((ob) => ob !== null && Object?.keys(ob)?.length > 0).map((row, rowIdx) => {
           const displayValue = row?.value !== undefined && row?.value !== null ? row.value : 'NA';
+          
           return (
             <Row
               key={row.key}
@@ -25,10 +26,15 @@ export const RenderDataSection = ({ section }) => {
               text={row?.isLink ? <div>
                 <Link to={row?.to}>
                   <span className="link" style={{ color: "#F47738" }}>
-                    {t(displayValue)}
+                    {  
+                      t(displayValue)
+                    }
                   </span>
                 </Link>
-              </div> : t(displayValue)}
+              </div> : 
+              row?.isTranslate ===false ?
+                      (displayValue):
+              t(displayValue)}
               last={rowIdx === section.values?.length - 1}
               caption={row.caption}
               className="border-none"
