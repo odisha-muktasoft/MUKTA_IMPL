@@ -53,6 +53,17 @@ const SORDetailsTemplate = (props) => {
 
   const buttonClick = async () => {
     const sor = transformSOR(stateData?.selectedSor);
+    if(window.location.href.includes("update"))
+    {
+      sor?.sorId && SORDetails?.push({ ...sor, sorType: props?.config?.sorType });
+
+      setFormValue(SORDetails);
+      setSORDetails(SORDetails);
+      setStateData({ ...stateData });
+
+      setSelectedSOR(null);
+    }
+    else{
     sor?.sorId && formData?.push({ ...sor, sorType: props?.config?.sorType });
 
     setFormValue(formData);
@@ -60,6 +71,7 @@ const SORDetailsTemplate = (props) => {
     setStateData({ ...stateData });
 
     setSelectedSOR(null);
+    }
   };
 
   const remove = (row) => {
