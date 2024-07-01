@@ -420,11 +420,7 @@ const ViewAnalysisStatement = () => {
   };
 
   const HandleDownloadPdf = () => {
-    console.log(estimateId);
-    debugger;
-    // https://unified-qa.digit.org/works-pdf/download/analysisStatement/analysis-statement?tenantId=pg.citya&referenceId=cb63afc4-2162-47f2-8ec5-58667737d42b
       Digit.Utils.downloadWorksPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:estimateId}, `analysis_statement-${estimateId}.pdf`);
-   
   };
 
 // Consolidated table will be sent overhere

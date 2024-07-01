@@ -26,7 +26,6 @@ const GroupedTable = (props) => {
       const { rate,sNo, amount, description, quantity, type, sorId ,uom} = subrow;
 
       // Check if the SORID (code) exists in groupedData, if not, initialize it
-      console.log("inside foreach",type)
   if (type===sorType) {
     
   
