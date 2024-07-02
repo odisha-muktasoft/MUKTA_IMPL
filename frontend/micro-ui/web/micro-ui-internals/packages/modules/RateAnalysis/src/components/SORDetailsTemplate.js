@@ -97,7 +97,7 @@ const SORDetailsTemplate = (props) => {
   }
   const transformSOR = (sor, isUpdate) => {
     const transformedSOR = {
-      sNo: isUpdate ? SORDetails?.length + 1 : 1,
+      sNo: SORDetails?.length > 0 ? parseFloat(SORDetails?.[SORDetails.length -1]?.sNo) + 1 : 1,
       description: sor?.description,
       uom: sor?.uom,
       category: "SOR",
@@ -158,12 +158,12 @@ const SORDetailsTemplate = (props) => {
   };
 
   const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
-    sno: index + 1,
+    sno: row?.sNo,
     sorCode: row?.sorCode,
     description: row?.description,
     uom: row?.uom,
 
-    quantity: pageType === "VIEW" ? parseFloat(row?.quantity || 0).toFixed(4) : row?.quantity ,
+    quantity: pageType === "VIEW" ? parseFloat(row?.quantity || 0).toFixed(4) : row?.quantity,
     ...(pageType === "VIEW" ? { amount: parseFloat(row?.amount || 0).toFixed(2), basicRate: parseFloat(row?.basicRate || 0).toFixed(2) } : {}),
   }));
 
@@ -211,7 +211,7 @@ const SORDetailsTemplate = (props) => {
             sortedRows.length>0?
             sortedRows.map((row, rowIndex) => {
               return(
-            <tr key={rowIndex}>
+            <tr key={row?.sno}>
               {columns.map((column, columnIndex) => (
                 <td key={columnIndex} style={getStyles(columnIndex + 1)}>
                   {column?.key === "quantity" && pageType !== "VIEW" ? (
@@ -219,7 +219,7 @@ const SORDetailsTemplate = (props) => {
                       <TextInput
                         style={{ marginBottom: "0px" }}
                         defaultValue={window.location.href.includes("update") ? row?.quantity : null}
-                        value={row?.quantity}
+                        //value={row?.quantity}
                         onChange={(e) => {
                           const { value } = e.target;
                           if (value ? has4DecimalPlaces(parseFloat(value)): true) {
