@@ -18,7 +18,7 @@ const Close = () => (
 
 const CloseBtn = (props) => {
   return (
-    <div className="icon-bg-secondary" onClick={props.onClick}>
+    <div className="icon-bg-secondary" onClick={props.onClick} style={{ cursor: "pointer" }}>
       <Close />
     </div>
   );
@@ -66,8 +66,6 @@ const SearchSOR = () => {
   const handleDateChange = (e) => {
     const selectedDate = Digit.Utils.pt.convertDateToEpoch(e.target.value);
     setEffectiveFromDate(selectedDate);
-    setPopup(false);
-    handleSchedulerCreate();
   };
 
   const getNextDayDate = () => {
@@ -129,7 +127,6 @@ const SearchSOR = () => {
       <ActionBar style={{ display: "flex", gap: "24px", justifyContent: "flex-end" }}>
         <SubmitBar
           label={t("RA_REVISE_RATE_FOR_SELECTED")}
-          style={{ width: "fit-content" }}
           onSubmit={() => setPopup(true)}
           disabled={selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
         />
@@ -153,7 +150,12 @@ const SearchSOR = () => {
       )}
       {popup && (
         <Modal
-          headerBarMain={<Heading t={t} heading={"Select Effective From Date"} />}
+          headerBarMain={
+            <Heading
+              t={t}
+              heading={"Please select an effective date to revise the rate. Note that the effective date cannot be today or a past date."}
+            />
+          }
           headerBarEnd={<CloseBtn onClick={() => setPopup(false)} />}
           formId="modal-action"
           popupStyles={{ margin: "auto auto" }}
@@ -161,6 +163,16 @@ const SearchSOR = () => {
           hideSubmit={true}
         >
           <TextInput type="date" isRequired={true} onChange={(e) => handleDateChange(e)} min={getNextDayDate()} />
+          <Button
+            label={t("SUBMIT_EFFECTIVE_DATE")}
+            variation="primary"
+            onButtonClick={() => {
+              setPopup(false);
+              handleSchedulerCreate();
+            }}
+            type="button"
+            style={{ width: "100%" }}
+          />
         </Modal>
       )}
     </React.Fragment>
