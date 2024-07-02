@@ -106,11 +106,11 @@ const requestCriteriaOverhead = {
       tenantId: tenantId,
       limit:100,
       schemaCode: "WORKS-SOR.Overhead",
-      uniqueIdentifiers : compositionData?.mdms?.[0]?.data?.additionalCharges?.map((ob) => ob?.applicableOn),
+      //uniqueIdentifiers : compositionData?.mdms?.[0]?.data?.additionalCharges?.map((ob) => ob?.applicableOn),
   },
   },
   config:{
-    enabled:compositionData?.mdms?.length > 0 ? true : false
+    //enabled:compositionData?.mdms?.length > 0 ? true : false
   },
   changeQueryName:"allOverheadData"
 };
@@ -160,7 +160,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       }
     };
     fetchRequiredData();
-  }, [data,allSORData,compositionData,allOverheadData]);
+  }, [data,allSORData,compositionData,isOverheadLoading,allOverheadData]);
 
   useEffect(() => {
     setConfig(

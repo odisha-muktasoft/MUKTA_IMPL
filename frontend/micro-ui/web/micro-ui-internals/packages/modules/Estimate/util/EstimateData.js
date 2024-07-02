@@ -123,7 +123,7 @@ export const sortSorsBasedonType = (statement,screenType) => {
   let resultArray = [];
    let data=[statement[0]];
   data.forEach((item) => {
-    item.sorDetails.forEach((detail) => {
+    item.sorDetails.filter((ob) => ob?.isActive === true).forEach((detail) => {
       let sorId = (detail.lineItems!==null&& detail.lineItems.length > 0) ? detail.lineItems[0].sorId : detail.sorId;
       let description = null;
       let type = null;

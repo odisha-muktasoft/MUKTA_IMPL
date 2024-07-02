@@ -42,7 +42,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     } else {
       setRows(initialState);
     }
-  }, [formData, formFieldName]);
+  }, [formData]);
 
   const getStyles = (index) => {
     let obj = {};
@@ -98,10 +98,12 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   };
 
   const removeRow = (rowIndex) => {
-    const updatedRows = rows.map((row, index) =>
-      index === rowIndex ? { ...row, isShow: false } : row
-    );
+    // const updatedRows = rows.map((row, index) =>
+    //   index === rowIndex ? { ...row, isShow: false } : row
+    // );
+    const updatedRows = rows.filter((row, index) => index != rowIndex );
     setRows(updatedRows);
+    setValue(formFieldName,updatedRows);
   };
 
   const addRow = () => {
