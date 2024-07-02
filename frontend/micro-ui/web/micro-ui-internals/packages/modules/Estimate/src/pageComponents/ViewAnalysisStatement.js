@@ -8,6 +8,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
 
+
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
     window.location.href
   );
@@ -105,6 +106,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                   state: {
                     responseData: responseData,
                     estimateId: formData?.SORtable?.[0]?.estimateId,
+                    number:formData?.estimateNumber,
                   },
                 });
               }, 1000);
@@ -131,6 +133,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                     estimateId: window.location.href.includes("measurement/update")
                       ? props.config.formData.Measurement.id
                       : formData?.Measurement?.id,
+                      number:window.location.href.includes("measurement/update")
+                      ? props.config.formData.Measurement.measurementNumber
+                      : formData?.Measurement?.measurementNumber
                   },
                 
                 });
@@ -155,6 +160,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               : window.location.href.includes("measurement/update")
               ? props.config.formData.Measurement.id
               : formData?.Measurement?.id,
+              number:isEstimate
+              ? formData?.estimateNumber
+              : window.location.href.includes("measurement/update")
+              ? props.config.formData.Measurement.measurementNumber
+              : formData?.Measurement?.measurementNumber,
           },
         });
       } else {
@@ -170,6 +180,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               : window.location.href.includes("measurement/update")
               ? props.config.formData.Measurement.id
               : formData?.Measurement?.id,
+            number:isEstimate
+              ? formData?.estimateNumber
+              : window.location.href.includes("measurement/update")
+              ? props.config.formData.Measurement.measurementNumber
+              : formData?.Measurement?.measurementNumber,
             oldData: {
               Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
               Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
