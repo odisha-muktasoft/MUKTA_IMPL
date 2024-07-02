@@ -1087,7 +1087,9 @@ def call_on_disburse_update_api(disburse):
 
 def data_correction():
     print("Data correction started")
+
 # ids from select jp.id from eg_mukta_ifms_disburse as md inner join jit_payment_inst_details as jp on md.id = jp.id where md.status != jp.pistatus;
+
     ids = [
             "f7640e32-395d-4d02-ac4e-e438a9e73527"
         ]
