@@ -19,6 +19,29 @@ const ViewStatement = (props) => {
      - TO render the column header
   */
 
+const lengthCheck= nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true)).map((row, index) => {
+       
+  const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
+  if (row?.type === "W" && subRows.length == 0) {
+    return 0;
+  } else if(row?.type==="L"){
+    return 1;
+  }
+  else if(row?.type==="M"){
+    return 1;
+  }
+  else if(row?.type==="E"){
+    return 1;
+  }
+  else{
+    return subRows.length
+  }
+});
+
+
+
+
+
   const renderHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
@@ -166,7 +189,7 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true)).length > 0 ? (
+          {lengthCheck > 0 ? (
             <tr>
               <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
                 {
