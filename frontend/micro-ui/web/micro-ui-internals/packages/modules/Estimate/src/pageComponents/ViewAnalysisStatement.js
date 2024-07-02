@@ -1,5 +1,5 @@
-import React from "react";
-import { LinkButton, Loader } from "@egovernments/digit-ui-react-components";
+import React, { useState } from "react";
+import { LinkButton, Toast, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -7,7 +7,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [showToast, setShowToast] = useState(null);
 
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
     window.location.href
@@ -52,10 +53,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     return Digit.Utils.dss.formatterWithoutRound(parseFloat(SORAmount).toFixed(2), "number", undefined, true, undefined, 2);
   }
 
- 
-
   const requestSearchCriteria = {
-    
     url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
     //params: { tenantId: tenantId, id: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id },
     body: {
@@ -73,6 +71,21 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const { data: searchResponse, isLoading: searchLoading } = Digit.Hooks.useCustomAPIHook(requestSearchCriteria);
 
+  const checkMeasurement = () => {
+    if (window.location.href.includes("measurement/update")) {
+      if (props.data.SORtable.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (formData.SORtable.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
   async function callCreateApi() {
     // Look here add the condition for utilization statement and call your api
     let payload = {
@@ -85,7 +98,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
           : formData?.Measurement?.id,
       },
     };
-   
+
     {
       isEstimate
         ? await AnalysisMutation(payload, {
@@ -106,7 +119,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                   state: {
                     responseData: responseData,
                     estimateId: formData?.SORtable?.[0]?.estimateId,
-                    number:formData?.estimateNumber,
+                    number: formData?.estimateNumber,
                   },
                 });
               }, 1000);
@@ -125,7 +138,6 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             },
             onSuccess: async (responseData, variables) => {
               setTimeout(() => {
-              
                 history.push({
                   pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
                   state: {
@@ -133,13 +145,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                     estimateId: window.location.href.includes("measurement/update")
                       ? props.config.formData.Measurement.id
                       : formData?.Measurement?.id,
-                      number:window.location.href.includes("measurement/update")
+                    number: window.location.href.includes("measurement/update")
                       ? props.config.formData.Measurement.measurementNumber
-                      : formData?.Measurement?.measurementNumber
+                      : formData?.Measurement?.measurementNumber,
                   },
-                
                 });
-               
               }, 5000);
             },
           });
@@ -147,56 +157,132 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   }
 
   async function handleButtonClick() {
-    if (isView) {
-      if (searchResponse) {
-        history.push({
-          pathname: isEstimate
-            ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-            : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
-          state: {
-            responseData: searchResponse,
-            estimateId: isEstimate
-              ? formData?.SORtable?.[0]?.estimateId
-              : window.location.href.includes("measurement/update")
-              ? props.config.formData.Measurement.id
-              : formData?.Measurement?.id,
-              number:isEstimate
-              ? formData?.estimateNumber
-              : window.location.href.includes("measurement/update")
-              ? props.config.formData.Measurement.measurementNumber
-              : formData?.Measurement?.measurementNumber,
-          },
-        });
+    if (isEstimate) {
+      if (formData?.SORtable.length > 0) {
+        if (isView) {
+          if (searchResponse) {
+            history.push({
+              pathname: isEstimate
+                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              state: {
+                responseData: searchResponse,
+                estimateId: isEstimate
+                  ? formData?.SORtable?.[0]?.estimateId
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.id
+                  : formData?.Measurement?.id,
+                number: isEstimate
+                  ? formData?.estimateNumber
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
+              },
+            });
+          } else {
+            //add the code for old viewpopup here
+            history.push({
+              pathname: isEstimate
+                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              state: {
+                responseData: searchResponse,
+                estimateId: isEstimate
+                  ? formData?.SORtable?.[0]?.estimateId
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.id
+                  : formData?.Measurement?.id,
+                number: isEstimate
+                  ? formData?.estimateNumber
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
+                oldData: {
+                  Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
+                  Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
+                  Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
+                },
+              },
+            });
+            //await callCreateApi();
+          }
+        } else {
+          await callCreateApi();
+        }
       } else {
-        //add the code for old viewpopup here
-        history.push({
-          pathname: isEstimate
-            ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-            : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
-          state: {
-            responseData: searchResponse,
-            estimateId: isEstimate
-              ? formData?.SORtable?.[0]?.estimateId
-              : window.location.href.includes("measurement/update")
-              ? props.config.formData.Measurement.id
-              : formData?.Measurement?.id,
-            number:isEstimate
-              ? formData?.estimateNumber
-              : window.location.href.includes("measurement/update")
-              ? props.config.formData.Measurement.measurementNumber
-              : formData?.Measurement?.measurementNumber,
-            oldData: {
-              Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
-              Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
-              Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
-            },
-          },
+        // estimate else
+
+        setShowToast({
+          error: true,
+          label: t("NO_ESTIMATE_SOR_FOUND"),
         });
-        //await callCreateApi();
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
       }
-      
     } else {
-      await callCreateApi();
+      // util
+      if (checkMeasurement()) {
+        if (isView) {
+          if (searchResponse) {
+            history.push({
+              pathname: isEstimate
+                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              state: {
+                responseData: searchResponse,
+                estimateId: isEstimate
+                  ? formData?.SORtable?.[0]?.estimateId
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.id
+                  : formData?.Measurement?.id,
+                number: isEstimate
+                  ? formData?.estimateNumber
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
+              },
+            });
+          } else {
+            //add the code for old viewpopup here
+            history.push({
+              pathname: isEstimate
+                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              state: {
+                responseData: searchResponse,
+                estimateId: isEstimate
+                  ? formData?.SORtable?.[0]?.estimateId
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.id
+                  : formData?.Measurement?.id,
+                number: isEstimate
+                  ? formData?.estimateNumber
+                  : window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
+                oldData: {
+                  Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
+                  Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
+                  Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
+                },
+              },
+            });
+            //await callCreateApi();
+          }
+        } else {
+          await callCreateApi();
+        }
+      } else {
+        // util else
+        setShowToast({
+          error: true,
+          label: t("NO_MEASUREMENT_SOR_FOUND"),
+        });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
+      }
     }
   }
 
@@ -204,12 +290,15 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   if (!window.location.href.includes("create"))
     return (
-      <LinkButton
-        className="view-Analysis-button"
-        style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
-        onClick={handleButtonClick}
-        label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
-      />
+      <div>
+        <LinkButton
+          className="view-Analysis-button"
+          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+          onClick={handleButtonClick}
+          label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
+        />
+        {showToast && <Toast error={showToast?.error} label={showToast?.label} isDleteBtn={true} onClose={() => closeToast()} />}
+      </div>
     );
   else return <div></div>;
 };
