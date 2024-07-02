@@ -18,9 +18,10 @@ const RateAmountGroup = (props) => {
     body: {
       MdmsCriteria: {
         tenantId: tenantId,
-        filters: {
-          sorId: sorId,
-        },
+        // filters: {
+        //   sorId: sorId,
+        // },
+        uniqueIdentifiers:[`${sorId}`],
         schemaCode: "WORKS-SOR.Rates",
         limit: 100,
         offset: 0,
@@ -75,7 +76,7 @@ const RateAmountGroup = (props) => {
         
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between", padding: "1rem", border: "1px solid #D6D5D4", borderRadius: "5px" }}>
                 <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize:"18px"  }}>{`${t("RA_EXISTING_RATE")}/${uom}`}</CardSectionHeader>
-                <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{existingData}</CardSectionHeader>
+                <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{parseFloat(existingData).toFixed(2)}</CardSectionHeader>
             </div>
         </div>
           {/*<ViewTotalEstAmount mode={"VIEW"} detail={{ showTitle: "RA_EXISTING_RATE", value: existingData }} />*/}
@@ -86,7 +87,7 @@ const RateAmountGroup = (props) => {
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between", padding: "1rem", border: "1px solid #D6D5D4", borderRadius: "5px" }}>
                 <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize:"18px"  }}>{`${t("RA_NEW_RATE")}/${uom}`}</CardSectionHeader>
                 <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{
-                  parseFloat(newValue.toFixed(2))
+                  parseFloat(newValue).toFixed(2)
                   
                 }</CardSectionHeader>
             </div>

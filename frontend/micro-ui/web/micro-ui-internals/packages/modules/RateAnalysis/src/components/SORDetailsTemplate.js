@@ -4,35 +4,28 @@ import { useTranslation } from "react-i18next";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
 import { has4DecimalPlaces } from "../utils/transformData";
 
-
 import { calculateTotalAmount } from "../utils/transformData";
 
 const SORDetailsTemplate = (props) => {
   //new component only
   const { t } = useTranslation();
-  let isUpdate = window.location.href.includes("update")
-  
+  let isUpdate = window.location.href.includes("update");
 
-  const { pageType, arrayData, register, setValue, watch,  emptyTableMsg } = props;
+  const { pageType, arrayData, register, setValue, watch, emptyTableMsg } = props;
   const [stateData, setStateData] = useState({});
   const [selectedSOR, setSelectedSOR] = useState(null);
   const [SORDetails, setSORDetails] = useState([]);
   const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
-  
+
   let formData = watch("SORDetails");
 
   useEffect(() => {
-    setSORDetails(arrayData?arrayData:[])
-
+    setSORDetails(arrayData ? arrayData : []);
   }, [arrayData]);
 
   useEffect(() => {
-    if(isUpdate)
-      setSORDetails(formData);
+    if (isUpdate) setSORDetails(formData);
   }, [formData]);
-
-  
-  
 
   //setting the value for search sor in the statedata
   useEffect(() => {
@@ -58,10 +51,8 @@ const SORDetailsTemplate = (props) => {
   }, [SORDetails]);
 
   const buttonClick = async () => {
-                          
-    if(window.location.href.includes("update"))
-    {
-      const sor = transformSOR(stateData?.selectedSor,isUpdate);
+    if (window.location.href.includes("update")) {
+      const sor = transformSOR(stateData?.selectedSor, isUpdate);
       sor?.sorId && SORDetails?.push({ ...sor, sorType: props?.config?.sorType });
 
       setFormValue(SORDetails);
@@ -69,16 +60,15 @@ const SORDetailsTemplate = (props) => {
       setStateData({ ...stateData });
 
       setSelectedSOR(null);
-    }
-    else{
+    } else {
       const sor = transformSOR(stateData?.selectedSor);
-    sor?.sorId && formData?.push({ ...sor, sorType: props?.config?.sorType });
+      sor?.sorId && formData?.push({ ...sor, sorType: props?.config?.sorType });
 
-    setFormValue(formData);
-    setSORDetails(formData);
-    setStateData({ ...stateData });
+      setFormValue(formData);
+      setSORDetails(formData);
+      setStateData({ ...stateData });
 
-    setSelectedSOR(null);
+      setSelectedSOR(null);
     }
   };
 
@@ -105,9 +95,9 @@ const SORDetailsTemplate = (props) => {
     columns.splice(4, 0, { label: t("RA_BASIC_RATE"), key: "basicRate" });
     columns.push({ label: t("RA_AMT"), key: "amount" });
   }
-  const transformSOR = (sor,isUpdate) => {
+  const transformSOR = (sor, isUpdate) => {
     const transformedSOR = {
-      sNo: isUpdate? SORDetails?.length + 1 : 1,
+      sNo: isUpdate ? SORDetails?.length + 1 : 1,
       description: sor?.description,
       uom: sor?.uom,
       category: "SOR",
@@ -143,22 +133,19 @@ const SORDetailsTemplate = (props) => {
         obj = { width: "8rem" };
         break;
       case 3:
-        obj = { width: "70rem", };
+        obj = { width: "70rem" };
         break;
       case 4:
         obj = { width: "10rem" };
         break;
       case 5:
-        obj = pageType==="VIEW"?
-        { width: "15rem" , textAlign: "right"}:{width: "15rem"};
+        obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
         break;
       case 6:
-        obj = pageType==="VIEW"?
-        { width: "16rem" , textAlign: "right"}:{width: "15rem"};
+        obj = pageType === "VIEW" ? { width: "16rem", textAlign: "right" } : { width: "15rem" };
         break;
       case 7:
-        obj = pageType==="VIEW"?
-        { width: "14rem" , textAlign: "right" }:{ width: "10rem" };
+        obj = pageType === "VIEW" ? { width: "14rem", textAlign: "right" } : { width: "10rem" };
         break;
       case 8:
         obj = { width: "3%" };
@@ -170,18 +157,15 @@ const SORDetailsTemplate = (props) => {
     return obj;
   };
 
-  
   const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
     sno: index + 1,
     sorCode: row?.sorCode,
     description: row?.description,
     uom: row?.uom,
-    quantity: row?.quantity,
-    ...(pageType === 'VIEW' ? { amount: row?.amount,basicRate:row?.basicRate } : {})
-  }));
 
-  
-  
+    quantity: parseFloat(row?.quantity || 0).toFixed(4),
+    ...(pageType === "VIEW" ? { amount: parseFloat(row?.amount || 0).toFixed(2), basicRate: parseFloat(row?.basicRate || 0).toFixed(2) } : {}),
+  }));
 
   useEffect(() => {
     if (window.location.href.includes("update") && props?.config?.customProps?.SORDetails?.length > 0) {
@@ -189,12 +173,11 @@ const SORDetailsTemplate = (props) => {
     }
   }, [props?.config?.customProps?.SORDetails]);
 
-
   return (
     <div
-     style={{
-      paddingRight:"4%"
-     }}
+      style={{
+        paddingRight: "4%",
+      }}
     >
       <div className="search-sor-container">
         <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
@@ -210,82 +193,83 @@ const SORDetailsTemplate = (props) => {
           </div>
         )}
       </div>
-      <table className="reports-table sub-work-table" >
+      <table className="reports-table sub-work-table">
         <thead>
           <tr>
             {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
       columns.map((column, index) => <th key={index}>{column.label}</th>)*/}
-      {columns.map((column, index) => <th 
-        style={getStyles(index + 1)}
-      key={index}>{column.label}</th>)}
+            {columns.map((column, index) => (
+              <th style={getStyles(index + 1)} key={index}>
+                {column.label}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {/*renderBody*/}
-          {
-            sortedRows.length>0?
+          {sortedRows.length > 0 ? (
             sortedRows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {columns.map((column, columnIndex) => (
-                <td key={columnIndex} style={getStyles(columnIndex + 1)}>
-                  {column?.key === "quantity" && pageType !== "VIEW" ? (
+              <tr key={rowIndex}>
+                {columns.map((column, columnIndex) => (
+                  <td key={columnIndex} style={getStyles(columnIndex + 1)}>
+                    {column?.key === "quantity" && pageType !== "VIEW" ? (
+                      <div style={cellContainerStyle}>
+                        <TextInput
+                          style={{ marginBottom: "0px" }}
+                          defaultValue={window.location.href.includes("update") ? row?.quantity : null}
+                          onChange={(e) => {
+                            const { value } = e.target;
+                            if (has4DecimalPlaces(parseFloat(value))) {
+                              let newSOR = SORDetails?.map((obj) => {
+                                if (obj?.sorCode === row?.sorCode) {
+                                  return { ...obj, quantity: value };
+                                }
+                                return obj;
+                              });
+                              setSORDetails([...newSOR]);
+                              setFormValue([...newSOR]);
+                              //setValue("SORDetails",[...newSOR])
+                            } else {
+                              e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
+                            }
+                          }}
+                          inputRef={register({
+                            required: true,
+                          })}
+                          disable={false}
+                        />
+                      </div>
+                    ) : (
+                      row[column.key]
+                    )}
+                  </td>
+                ))}
+                {pageType !== "VIEW" && (
+                  <td /*style={getStyles(5)}*/>
                     <div style={cellContainerStyle}>
-                      <TextInput
-                        style={{ marginBottom: "0px" }}
-                        defaultValue={window.location.href.includes("update") ? row?.quantity : null}
-                        onChange={(e) => {
-                          const { value } = e.target;
-                          if (has4DecimalPlaces(parseFloat(value))) {
-                            let newSOR = SORDetails?.map((obj) => {
-                              if (obj?.sorCode === row?.sorCode) {
-                                return { ...obj, quantity: value };
-                              }
-                              return obj;
-                            });
-                            setSORDetails([...newSOR]);
-                            setFormValue([...newSOR]);
-                            //setValue("SORDetails",[...newSOR])
-                          }
-                          else {
-                            e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
-                          }
-                        }}
-                        inputRef={register({
-                          required: true,
-                        })}
-                        disable={false}
-                      />
+                      {
+                        <span onClick={() => remove(row)} className="icon-wrapper">
+                          <DeleteIcon fill={"#FF9100"} />
+                        </span>
+                      }
                     </div>
-                  ) : (
-                    row[column.key]
-                  )}
-                </td>
-              ))}
-              {pageType !== "VIEW" && (
-                <td /*style={getStyles(5)}*/>
-                  <div style={cellContainerStyle}>
-                    {
-                      <span onClick={() => remove(row)} className="icon-wrapper">
-                        <DeleteIcon fill={"#FF9100"} />
-                      </span>
-                    }
-                  </div>
-                  <div style={errorContainerStyles}></div>
-                </td>
-              )}
-            </tr>
-          )):<td colSpan={8} style={{ textAlign: "center" }}>
-          {t(emptyTableMsg)}
-          </td>
-        }
+                    <div style={errorContainerStyles}></div>
+                  </td>
+                )}
+              </tr>
+            ))
+          ) : (
+            <td colSpan={8} style={{ textAlign: "center" }}>
+              {t(emptyTableMsg)}
+            </td>
+          )}
 
-          {(sortedRows.length>0&& pageType === "VIEW" )&& (
+          {sortedRows.length > 0 && pageType === "VIEW" && (
             <tr>
               <td colSpan={6} style={{ textAlign: "right" }}>
                 {t("RA_TOTAL")}
               </td>
-              <td style={{ textAlign: "right" }}
-              >{calculateTotalAmount(arrayData)}</td>
+              <td style={{ textAlign: "right" }}>{calculateTotalAmount(arrayData)}</td>
             </tr>
           )}
         </tbody>
