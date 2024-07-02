@@ -164,7 +164,7 @@ const SearchSOR = () => {
         >
           <TextInput type="date" isRequired={true} onChange={(e) => handleDateChange(e)} min={getNextDayDate()} />
           <Button
-            label={t("Submit")}
+            label={t("SUBMIT_EFFECTIVE_DATE")}
             variation="primary"
             onButtonClick={() => {
               setPopup(false);
