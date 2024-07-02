@@ -207,62 +207,64 @@ const SORDetailsTemplate = (props) => {
         </thead>
         <tbody>
           {/*renderBody*/}
-          {sortedRows.length > 0 ? (
-            sortedRows.map((row, rowIndex) => (
-              <tr key={rowIndex}>
-                {columns.map((column, columnIndex) => (
-                  <td key={columnIndex} style={getStyles(columnIndex + 1)}>
-                    {column?.key === "quantity" && pageType !== "VIEW" ? (
-                      <div style={cellContainerStyle}>
-                        <TextInput
-                          style={{ marginBottom: "0px" }}
-                          defaultValue={window.location.href.includes("update") ? row?.quantity : null}
-                          onChange={(e) => {
-                            const { value } = e.target;
-                            if (has4DecimalPlaces(parseFloat(value))) {
-                              let newSOR = SORDetails?.map((obj) => {
-                                if (obj?.sorCode === row?.sorCode) {
-                                  return { ...obj, quantity: value };
-                                }
-                                return obj;
-                              });
-                              setSORDetails([...newSOR]);
-                              setFormValue([...newSOR]);
-                              //setValue("SORDetails",[...newSOR])
-                            } else {
-                              e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
-                            }
-                          }}
-                          inputRef={register({
-                            required: true,
-                          })}
-                          disable={false}
-                        />
-                      </div>
-                    ) : (
-                      row[column.key]
-                    )}
-                  </td>
-                ))}
-                {pageType !== "VIEW" && (
-                  <td /*style={getStyles(5)}*/>
+          {
+            sortedRows.length>0?
+            sortedRows.map((row, rowIndex) => {
+              return(
+            <tr key={rowIndex}>
+              {columns.map((column, columnIndex) => (
+                <td key={columnIndex} style={getStyles(columnIndex + 1)}>
+                  {column?.key === "quantity" && pageType !== "VIEW" ? (
                     <div style={cellContainerStyle}>
-                      {
-                        <span onClick={() => remove(row)} className="icon-wrapper">
-                          <DeleteIcon fill={"#FF9100"} />
-                        </span>
-                      }
+                      <TextInput
+                        style={{ marginBottom: "0px" }}
+                        defaultValue={window.location.href.includes("update") ? row?.quantity : null}
+                        value={row?.quantity}
+                        onChange={(e) => {
+                          const { value } = e.target;
+                          if (value ? has4DecimalPlaces(parseFloat(value)): true) {
+                            let newSOR = SORDetails?.map((obj) => {
+                              if (obj?.sorCode === row?.sorCode) {
+                                return { ...obj, quantity: value };
+                              }
+                              return obj;
+                            });
+                            setSORDetails([...newSOR]);
+                            setFormValue([...newSOR]);
+                            //setValue("SORDetails",[...newSOR])
+                          }
+                          else {
+                            e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
+                          }
+                        }}
+                        inputRef={register({
+                          required: true,
+                        })}
+                        disable={false}
+                      />
                     </div>
-                    <div style={errorContainerStyles}></div>
-                  </td>
-                )}
-              </tr>
-            ))
-          ) : (
-            <td colSpan={8} style={{ textAlign: "center" }}>
-              {t(emptyTableMsg)}
-            </td>
-          )}
+                  ) : (
+                    row[column.key]
+                  )}
+                </td>
+              ))}
+              {pageType !== "VIEW" && (
+                <td /*style={getStyles(5)}*/>
+                  <div style={cellContainerStyle}>
+                    {
+                      <span onClick={() => remove(row)} className="icon-wrapper">
+                        <DeleteIcon fill={"#FF9100"} />
+                      </span>
+                    }
+                  </div>
+                  <div style={errorContainerStyles}></div>
+                </td>
+              )}
+            </tr>
+          )}):<td colSpan={8} style={{ textAlign: "center" }}>
+          {t(emptyTableMsg)}
+          </td>
+        }
 
           {sortedRows.length > 0 && pageType === "VIEW" && (
             <tr>

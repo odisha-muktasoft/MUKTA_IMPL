@@ -181,12 +181,21 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     {
       setErrorMessage(t("RA_ONLY_FOR_WORKS"));
       setShowToast({display:true, error:true});
+      setIsPopupOpen(false);
       return;
     }
     if(createState?.SORDetails?.length <= 0)
     {
       setErrorMessage(t("RA_SOR_DETAILS_MANDATORY"));
       setShowToast({display:true, error:true});
+      setIsPopupOpen(false);
+      return;
+    }
+    if(createState?.SORDetails?.filter((ob) => ob?.quantity === null || ob?.quantity === "")?.length > 0)
+    {
+      setErrorMessage(t("RA_SOR_DETAILS_QUANTITY_MANDATORY"));
+      setShowToast({display:true, error:true});
+      setIsPopupOpen(false);
       return;
     }
 
