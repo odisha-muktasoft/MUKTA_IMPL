@@ -49,6 +49,10 @@ export const data = (statementDetails,rawData,oldData) => {
                 key: "STATEMENT_MACHINERY",
                 value: oldData ? parseFloat(oldData?.Labour).toFixed(2) : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2),
               },
+              {
+                key: "STATEMENT_LABOUR_CESS",
+                value: parseFloat(statementDetails?.sorDetails.reduce((acc,ob) => {return acc + (ob?.additionalDetails?.labourCessAmount || 0)}, 0)).toFixed(2),
+              }
             ],
           },
         ],
