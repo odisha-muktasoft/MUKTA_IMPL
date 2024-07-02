@@ -117,12 +117,12 @@ export const transformStatementData = (data,screenType) => {
   return nestedData;
 };
 
-export const sortSorsBasedonType = (statement) => {
+export const sortSorsBasedonType = (statement,screenType) => {
   // Function to create the array of objects based on the requirement
 
   let resultArray = [];
-
-  statement.forEach((item) => {
+   let data=[statement[0]];
+  data.forEach((item) => {
     item.sorDetails.filter((ob) => ob?.isActive === true).forEach((detail) => {
       let sorId = (detail.lineItems!==null&& detail.lineItems.length > 0) ? detail.lineItems[0].sorId : detail.sorId;
       let description = null;
@@ -156,12 +156,12 @@ export const sortSorsBasedonType = (statement) => {
         
       } else {
         detail?.basicSorDetails.forEach((basic) => {
-          description = basic.name;
+          description = detail?.additionalDetails?.sorDetails?.description;
           type = basic.type;
-          amount = basic.amount;
-          quantity = basic.quantity;
-          uom = basic.uom;
-          rate = basic?.rate;
+          amount = screenType==="ANALYSIS"? detail?.additionalDetails?.estimatedAmount:detail?.additionalDetails?.consumedAmount;
+          quantity = screenType==="ANALYSIS"?detail?.additionalDetails?.estimatedQuantity:detail?.additionalDetails?.consumedQuantity;
+          uom = detail?.additionalDetails?.sorDetails?.uom;
+          rate = parseFloat(detail?.additionalDetails?.rateDetails?.rate).toFixed(2),
           resultArray.push({
             sorId,
             description,
