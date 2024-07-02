@@ -400,11 +400,11 @@ const ViewUtilization = () => {
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
   //look here need to uncomment once api works fine and check if the data is coming proper
-  // const { state,refId } = useLocation()
-  const location = useLocation();
-  const { responseData, estimateId, number } = location.state || {};
-
-  let statement = responseData?.statement;
+     // const { state,refId } = useLocation()
+      const location = useLocation();
+      const { responseData, estimateId,number } = location.state || {};
+        
+      let statement = responseData?.statement;
 
   const closeMenu = () => {
     setShowActions(false);
@@ -420,12 +420,8 @@ const ViewUtilization = () => {
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
     // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
-    Digit.Utils.downloadWorksPDF(
-      "utilizationStatement/utilization-statement",
-      { tenantId: tenantId, referenceId: estimateId },
-      `utilization-${number}.pdf`
-    );
-  };
+    Digit.Utils.downloadWorksPDF("utilizationStatement/utilization-statement", { tenantId: tenantId ,referenceId:estimateId}, `utilization-${number}.pdf`);
+  }
   return (
     <div className={"employee-main-application-details"}>
       <div className={"employee-application-details"} style={{ marginBottom: "15px", marginRight: "5px" }}>
