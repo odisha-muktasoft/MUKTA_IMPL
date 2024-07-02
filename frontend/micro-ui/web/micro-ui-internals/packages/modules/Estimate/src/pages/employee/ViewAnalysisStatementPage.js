@@ -460,6 +460,9 @@ const ViewAnalysisStatement = () => {
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
+      <ActionBar >
+      <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
+      </ActionBar>
         {/* {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>
           {showActions ? <Menu
