@@ -13,7 +13,7 @@ const ViewStatement = (props) => {
   const grandTotal = nestedData.reduce((total, row) => {
     return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
-  console.log(grandTotal)
+  
 
   /* need to pass the screenType 
      - TO render the column header
