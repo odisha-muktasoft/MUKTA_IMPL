@@ -1091,7 +1091,7 @@ def data_correction():
 # ids from select jp.id from eg_mukta_ifms_disburse as md inner join jit_payment_inst_details as jp on md.id = jp.id where md.status != jp.pistatus;
 
     ids = [
-            "f7640e32-395d-4d02-ac4e-e438a9e73527"
+            "953347ac-a603-4550-b257-023056a611bb"
         ]
     for id in ids:
         payments = search_payment_instruction_from_ifms_adapter(id)
@@ -1100,12 +1100,12 @@ def data_correction():
             tenantid = payment.get('tenantId')
             disbursements = search_disburse_from_program_service(id, tenantid)
             disbursement = disbursements[0]
-            if disbursement:
-                disburse = modify_disburse(disbursement, payment)
-                if disburse:
-                    call_on_disburse_update_api(disburse)
-            else:
-                print(f"Disbursement not found for: {id}")
+            # if disbursement:
+            #     disburse = modify_disburse(disbursement, payment)
+            #     if disburse:
+            #         call_on_disburse_update_api(disburse)
+            # else:
+            #     print(f"Disbursement not found for: {id}")
     print("Data migration finished")
 
 if __name__ == '__main__':
