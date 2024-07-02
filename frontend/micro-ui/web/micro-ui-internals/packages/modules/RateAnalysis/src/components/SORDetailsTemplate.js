@@ -10,6 +10,7 @@ import { calculateTotalAmount } from "../utils/transformData";
 const SORDetailsTemplate = (props) => {
   //new component only
   const { t } = useTranslation();
+  let isUpdate = window.location.href.includes("update")
   
 
   const { pageType, arrayData, register, setValue, watch,  emptyTableMsg } = props;
@@ -24,6 +25,11 @@ const SORDetailsTemplate = (props) => {
     setSORDetails(arrayData?arrayData:[])
 
   }, [arrayData]);
+
+  useEffect(() => {
+    if(isUpdate)
+      setSORDetails(formData);
+  }, [formData]);
 
   
   
@@ -52,9 +58,10 @@ const SORDetailsTemplate = (props) => {
   }, [SORDetails]);
 
   const buttonClick = async () => {
-    const sor = transformSOR(stateData?.selectedSor);
+                          
     if(window.location.href.includes("update"))
     {
+      const sor = transformSOR(stateData?.selectedSor,isUpdate);
       sor?.sorId && SORDetails?.push({ ...sor, sorType: props?.config?.sorType });
 
       setFormValue(SORDetails);
@@ -64,6 +71,7 @@ const SORDetailsTemplate = (props) => {
       setSelectedSOR(null);
     }
     else{
+      const sor = transformSOR(stateData?.selectedSor);
     sor?.sorId && formData?.push({ ...sor, sorType: props?.config?.sorType });
 
     setFormValue(formData);
@@ -97,9 +105,9 @@ const SORDetailsTemplate = (props) => {
     columns.splice(4, 0, { label: t("RA_BASIC_RATE"), key: "basicRate" });
     columns.push({ label: t("RA_AMT"), key: "amount" });
   }
-  const transformSOR = (sor) => {
+  const transformSOR = (sor,isUpdate) => {
     const transformedSOR = {
-      sNo: 1,
+      sNo: isUpdate? SORDetails?.length + 1 : 1,
       description: sor?.description,
       uom: sor?.uom,
       category: "SOR",
@@ -234,9 +242,9 @@ const SORDetailsTemplate = (props) => {
                               }
                               return obj;
                             });
+                            setSORDetails([...newSOR]);
                             setFormValue([...newSOR]);
                             //setValue("SORDetails",[...newSOR])
-                            setSORDetails([...newSOR]);
                           }
                           else {
                             e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
