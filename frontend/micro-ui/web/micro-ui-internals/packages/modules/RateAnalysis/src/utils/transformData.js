@@ -196,7 +196,7 @@ export const calculateTotalAmount = (listData) => {
   //return totalAmount;
 
   //return Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(totalAmount)).toFixed(2),"number",undefined,true,undefined,2)
-  return parseFloat(totalAmount.toFixed(2))
+  return parseFloat(totalAmount).toFixed(2)
 };
 
 /* gross total amount calculation */

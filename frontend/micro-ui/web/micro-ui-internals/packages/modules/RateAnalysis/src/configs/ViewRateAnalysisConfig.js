@@ -108,7 +108,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
               },
               {
                 key: "RA_RATE_DEFINED",
-                value: rateAnalysis?.quantity,
+                value: rateAnalysis?.quantity?parseFloat(rateAnalysis?.quantity).toFixed(4):"NA",
               },
               { isTranslate:false,
                 key: "RA_DESCRIPTION",
@@ -143,7 +143,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
                   },
                   {
                     key: "RA_ANALYSIS_QUANTITY_DEFINED",
-                    value: rateAnalysis?.analysisQuantity,
+                    value: parseFloat(rateAnalysis?.analysisQuantity).toFixed(4),
                   },
                 ],
               },

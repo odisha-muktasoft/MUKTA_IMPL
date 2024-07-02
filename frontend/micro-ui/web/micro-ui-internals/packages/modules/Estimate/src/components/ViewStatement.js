@@ -13,6 +13,7 @@ const ViewStatement = (props) => {
   const grandTotal = nestedData.reduce((total, row) => {
     return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
+  
 
   /* need to pass the screenType 
      - TO render the column header
@@ -91,7 +92,7 @@ const ViewStatement = (props) => {
           {t("MB_ONLY_AMOUNT")}:
         </td>
         <td style={{ textAlign: "right", fontWeight: "bold" }}>
-          <Amount value={parseFloat(subTotal.toFixed(2))} t={t} roundOff={false} sameDisplay={true} />
+          <Amount value={parseFloat(subTotal).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
         </td>
       </tr>
     );
@@ -101,6 +102,7 @@ const ViewStatement = (props) => {
     return nestedData
       .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
+       
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
         if (row?.type === "W" && subRows.length == 0) {
           return null;
@@ -173,7 +175,7 @@ const ViewStatement = (props) => {
               }:
               </td>
               <td style={{ textAlign: "right", fontWeight: "bold" }}>
-                <Amount value={grandTotal.toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                <Amount value={parseFloat(grandTotal).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
             </tr>
           ) : (

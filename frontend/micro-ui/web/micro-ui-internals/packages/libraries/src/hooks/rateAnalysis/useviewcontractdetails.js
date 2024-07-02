@@ -4,7 +4,9 @@ import { View } from "../../services/molecules/rateAnalysis/View";
 
 const useViewRateAnalysisDetails = (tenantId, data) => {
   const { t } = useTranslation();
-  return useQuery(["VIEW_RATE_ANALYSIS_DETAILS", tenantId, data], () => View.fetchRateAnalysisDetails(tenantId, data));
+  return useQuery(["VIEW_RATE_ANALYSIS_DETAILS", tenantId, data],
+    
+     () => View.fetchRateAnalysisDetails(tenantId, data));
 };
 
 export default useViewRateAnalysisDetails;
