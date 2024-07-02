@@ -49,7 +49,7 @@ const ViewScheduledJobsConfig = {
                     options:[
                       {code:"FAILED",name:"FAILED"},
                       {code:"SUCCESSFUL",name:"SUCCESSFUL"},
-                      {code:"IN_PROGRESS",name:"IN PROGRESS"},
+                      {code:"IN_PROGRESS",name:"INPROGRESS"},
                       {code:"SCHEDULED",name:"SCHEDULED"}
                     ]
                   },

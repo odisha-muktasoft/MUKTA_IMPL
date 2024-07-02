@@ -2734,8 +2734,8 @@ export const UICustomizations = {
   },
   ViewScheduledJobsConfig: {
     preProcess: (data) => {
-      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduledFrom, "daystart");
-      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduledTo);
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.SearchCriteria?.scheduleFrom);
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.SearchCriteria?.scheduleTo);
       const status = data.body.SearchCriteria?.status?.code;
       data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
       data.body.SearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
@@ -2743,8 +2743,8 @@ export const UICustomizations = {
         ...data.body.SearchCriteria,
         tenantId: Digit.ULBService.getCurrentTenantId(),
         status,
-        scheduledFrom,
-        scheduledTo,
+        scheduleFrom:scheduledFrom,
+        scheduleTo:scheduledTo,
       };
       return data;
     },
@@ -2867,6 +2867,12 @@ export const UICustomizations = {
         const storedData = Digit.SessionStorage.get("RA_SELECTED_SORS") || {};
         setSelectedSorIds(storedData);
       }, []);
+
+      React.useEffect(() => {
+        Digit.SessionStorage.set("RA_SELECTED_SORS", {});
+        const storedData = Digit.SessionStorage.get("RA_SELECTED_SORS") || {};
+        setSelectedSorIds(storedData);
+      }, [searchResult]);
 
       switch (key) {
         case "RA_SOR_CODE":
