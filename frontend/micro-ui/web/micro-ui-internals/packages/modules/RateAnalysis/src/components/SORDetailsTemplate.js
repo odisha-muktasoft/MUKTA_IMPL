@@ -163,7 +163,7 @@ const SORDetailsTemplate = (props) => {
     description: row?.description,
     uom: row?.uom,
 
-    quantity: parseFloat(row?.quantity || 0).toFixed(4),
+    quantity: pageType === "VIEW" ? parseFloat(row?.quantity || 0).toFixed(4) : row?.quantity ,
     ...(pageType === "VIEW" ? { amount: parseFloat(row?.amount || 0).toFixed(2), basicRate: parseFloat(row?.basicRate || 0).toFixed(2) } : {}),
   }));
 
