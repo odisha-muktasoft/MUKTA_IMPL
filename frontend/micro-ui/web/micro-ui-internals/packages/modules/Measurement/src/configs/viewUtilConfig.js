@@ -58,7 +58,7 @@ export const data = (statementDetails, rawData,oldData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_MB", inlineStyles: {} },
             component: "ViewStatement",
             props: {
               config: {
@@ -81,7 +81,7 @@ export const data = (statementDetails, rawData,oldData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_LABOUR", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_LABOUR_MB", inlineStyles: {} },
             component: "ViewStatement",
             props: {
               config: {
@@ -104,7 +104,7 @@ export const data = (statementDetails, rawData,oldData) => {
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "WORKS_SORS_WISE_MACHINERY", inlineStyles: {} },
+            cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_MB", inlineStyles: {} },
             component: "ViewStatement",
             props: {
               config: {
