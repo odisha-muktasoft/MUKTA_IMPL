@@ -7,7 +7,6 @@ const ViewStatement = (props) => {
   let nestedData = arrayProps?.fields || [];
   let type = arrayProps?.type || "W";
   const { t } = useTranslation();
-  
 
   // Calculate the grand total
 
@@ -18,11 +17,6 @@ const ViewStatement = (props) => {
   /* need to pass the screenType 
      - TO render the column header
   */
-
-
-
-
-
 
   const renderHeader = () => {
     const columns = [
@@ -128,24 +122,21 @@ const ViewStatement = (props) => {
       </tr>
     );
   };
- let check=false;
+  let check = false;
   const renderBody = () => {
-   
-     
     return nestedData
       .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
         if (row?.type === "W" && subRows.length == 0) {
-        if(check==true)
-        {
-        check=true
-        }else{
-        check=false;
-}
+          if (check == true) {
+            check = true;
+          } else {
+            check = false;
+          }
           return null;
         } else {
-        check=true;
+          check = true;
           return (
             <React.Fragment key={index}>
               <tr>
@@ -205,7 +196,7 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {check  ? (
+          {check ? (
             <tr>
               <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
                 {config?.screenType === "UTILIZATION" ? t("UTILIZATION_STATEMENT_GRAND_TOTAL") : t("STATEMENT_GRAND_TOTAL")}:

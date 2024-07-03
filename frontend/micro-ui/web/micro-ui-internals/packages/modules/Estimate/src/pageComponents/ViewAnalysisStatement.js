@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { LinkButton, Toast, Loader } from "@egovernments/digit-ui-react-components";
+import React, { useState, useEffect } from "react";
+import { Toast, Loader,LinkButton } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -7,7 +7,6 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [showToast, setShowToast] = useState(null);
 
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
@@ -42,7 +41,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
     SORAmount = SORAmount ? SORAmount : 0;
     return Digit.Utils.dss.formatterWithoutRound(parseFloat(SORAmount).toFixed(2), "number", undefined, true, undefined, 2);
-  }
+  };
 
   const requestSearchCriteria = {
     url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
@@ -63,21 +62,14 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const checkMeasurement = () => {
     if (window.location.href.includes("measurement/update")) {
-      if (props?.data?.SORtable?.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return props?.data?.SORtable?.length > 0;
     } else {
-      if (formData?.SORtable?.length > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return formData?.SORtable?.length > 0;
     }
   };
-  async function callCreateApi() {
-    // Look here add the condition for utilization statement and call your api
+
+  const callCreateApi = async (event) => {
+    event.preventDefault();
     let payload = {
       statementRequest: {
         tenantId: tenantId,
@@ -89,191 +81,58 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       },
     };
 
-    {
-      isEstimate
-        ? await AnalysisMutation(payload, {
-            onError: async (error, variables) => {
-              setIsButtonDisabled(false);
-              setShowToast({
-                warning: true,
-                label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error,
-              });
-              setTimeout(() => {
-                setShowToast(false);
-              }, 5000);
-            },
-            onSuccess: async (responseData, variables) => {
-              setTimeout(() => {
-                history.push({
-                  pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
-                  state: {
-                    responseData: responseData,
-                    estimateId: formData?.SORtable?.[0]?.estimateId,
-                    number: formData?.estimateNumber,
-                  },
-                });
-              }, 1000);
-            },
-          })
-        : await UtilizationMutation(payload, {
-            onError: async (error, variables) => {
-              setIsButtonDisabled(false);
-              setShowToast({
-                warning: true,
-                label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error,
-              });
-              setTimeout(() => {
-                setShowToast(false);
-              }, 5000);
-            },
-            onSuccess: async (responseData, variables) => {
-              setTimeout(() => {
-                history.push({
-                  pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
-                  state: {
-                    responseData: responseData,
-                    estimateId: window.location.href.includes("measurement/update")
-                      ? props.config.formData.Measurement.id
-                      : formData?.Measurement?.id,
-                    number: window.location.href.includes("measurement/update")
-                      ? props.config.formData.Measurement.measurementNumber
-                      : formData?.Measurement?.measurementNumber,
-                  },
-                });
-              }, 5000);
-            },
-          });
-    }
-  }
-
-  async function handleButtonClick() {
- 
     if (isEstimate) {
-      if (formData?.SORtable?.length > 0) {
-        if (isView) {
-          if (searchResponse) {
+      await AnalysisMutation(payload, {
+        onError: async (error) => {
+          setShowToast({
+            error: true,
+            label: error?.response?.data?.Errors?.[0].message || error,
+          });
+          setTimeout(() => {
+            setShowToast(false);
+          }, 5000);
+        },
+        onSuccess: async (responseData) => {
+          setTimeout(() => {
             history.push({
-              pathname: isEstimate
-                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
               state: {
-                responseData: searchResponse,
-                estimateId: isEstimate
-                  ? formData?.SORtable?.[0]?.estimateId
-                  : window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.id
-                  : formData?.Measurement?.id,
-                number: isEstimate
-                  ? formData?.estimateNumber
-                  : window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.measurementNumber
-                  : formData?.Measurement?.measurementNumber,
+                responseData: responseData,
+                estimateId: formData?.SORtable?.[0]?.estimateId,
+                number: formData?.estimateNumber,
               },
             });
-          } else {
-            //add the code for old viewpopup here
-            history.push({
-              pathname: isEstimate
-                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
-              state: {
-                responseData: searchResponse,
-                estimateId: isEstimate
-                  ? formData?.SORtable?.[0]?.estimateId
-                  : window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.id
-                  : formData?.Measurement?.id,
-                number: isEstimate
-                  ? formData?.estimateNumber
-                  : window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.measurementNumber
-                  : formData?.Measurement?.measurementNumber,
-                oldData: {
-                  Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
-                  Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
-                  Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
-                },
-              },
-            });
-            //await callCreateApi();
-          }
-        } else {
-          await callCreateApi();
-        }
-      } else {
-        // estimate else
-
-        setShowToast({
-          error: true,
-          label: t("NO_ESTIMATE_SOR_FOUND"),
-        });
-        setTimeout(() => {
-          setShowToast(false);
-        }, 5000);
-      }
+          }, 1000);
+        },
+      });
     } else {
-      // util
-      if (checkMeasurement()) {
-        if (isView) {
-          if (searchResponse) {
+      await UtilizationMutation(payload, {
+        onError: async (error) => {
+          setShowToast({
+            error: true,
+            label: error?.response?.data?.Errors?.[0].message || error,
+          });
+          setTimeout(() => {
+            setShowToast(false);
+          }, 5000);
+        },
+        onSuccess: async (responseData) => {
+          setTimeout(() => {
             history.push({
-              pathname: isEstimate
-                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
               state: {
-                responseData: searchResponse,
-                estimateId: isEstimate
-                  ? formData?.SORtable?.[0]?.estimateId
-                  : window.location.href.includes("measurement/update")
+                responseData: responseData,
+                estimateId: window.location.href.includes("measurement/update")
                   ? props.config.formData.Measurement.id
                   : formData?.Measurement?.id,
-                number: isEstimate
-                  ? formData?.estimateNumber
-                  : window.location.href.includes("measurement/update")
+                number: window.location.href.includes("measurement/update")
                   ? props.config.formData.Measurement.measurementNumber
                   : formData?.Measurement?.measurementNumber,
               },
             });
-          } else {
-            //add the code for old viewpopup here
-            history.push({
-              pathname: isEstimate
-                ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-                : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
-              state: {
-                responseData: searchResponse,
-                estimateId: isEstimate
-                  ? formData?.SORtable?.[0]?.estimateId
-                  : window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.id
-                  : formData?.Measurement?.id,
-                number: isEstimate
-                  ? formData?.estimateNumber
-                  : window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.measurementNumber
-                  : formData?.Measurement?.measurementNumber,
-                oldData: {
-                  Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
-                  Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
-                  Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
-                },
-              },
-            });
-            //await callCreateApi();
-          }
-        } else {
-          await callCreateApi();
-        }
-      } else {
-        // util else
-        setShowToast({
-          error: true,
-          label: t("NO_MEASUREMENT_SOR_FOUND"),
-        });
-        setTimeout(() => {
-          setShowToast(false);
-        }, 5000);
-      }
+          }, 1000);
+        },
+      });
     }
   };
 
@@ -372,14 +231,25 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   if (!window.location.href.includes("create"))
     return (
-      <div>
+      <div >
         <LinkButton
           className="view-Analysis-button"
           style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
           onClick={handleButtonClick}
           label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
         />
-        {showToast && <Toast error={showToast?.error} label={showToast?.label} isDleteBtn={true} onClose={() => closeToast()} />}
+        {showToast && (
+        <Toast
+          error={showToast?.error}
+          warning={showToast?.warning}
+          success={showToast?.success}
+          label={t(showToast?.label)}
+          isDleteBtn={true}
+          style={{ overflowWrap: "break-word", // Ensure words break if they exceed container width
+            whiteSpace: "pre-line"}}
+          onClose={() => setShowToast(false)}
+        />
+      )}
       </div>
     );
   else return <div></div>;
