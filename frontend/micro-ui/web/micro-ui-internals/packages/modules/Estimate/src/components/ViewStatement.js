@@ -122,14 +122,14 @@ const ViewStatement = (props) => {
       </tr>
     );
   };
-  let check = false;
+  let showAmountTotal = false;
   const renderBody = () => {
     return nestedData
       .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
 
-        check = true;
+        showAmountTotal = true;
         return (
           <React.Fragment key={index}>
             <tr>
@@ -275,7 +275,7 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {check ? (
+          {showAmountTotal ? (
             <tr>
               <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
                 {config?.screenType === "UTILIZATION" ? t("UTILIZATION_STATEMENT_GRAND_TOTAL") : t("STATEMENT_GRAND_TOTAL")}:
