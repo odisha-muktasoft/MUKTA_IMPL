@@ -63,13 +63,13 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const checkMeasurement = () => {
     if (window.location.href.includes("measurement/update")) {
-      if (props.data.SORtable.length > 0) {
+      if (props?.data?.SORtable?.length > 0) {
         return true;
       } else {
         return false;
       }
     } else {
-      if (formData.SORtable.length > 0) {
+      if (formData?.SORtable?.length > 0) {
         return true;
       } else {
         return false;
@@ -147,8 +147,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   }
 
   async function handleButtonClick() {
+  console.log("search")
     if (isEstimate) {
-      if (formData?.SORtable.length > 0) {
+      if (formData?.SORtable?.length > 0) {
         if (isView) {
           if (searchResponse) {
             history.push({
