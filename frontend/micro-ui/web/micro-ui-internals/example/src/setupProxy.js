@@ -94,7 +94,7 @@ module.exports = function (app) {
     "/mdms-v2/",
     "/egov-idgen/",
     "/rate-analysis/v1/_calculate",
-    "ifix-adapter",
+    "mukta-ifix-adapter",
     "/ifms-adapter",
     
     //look here
