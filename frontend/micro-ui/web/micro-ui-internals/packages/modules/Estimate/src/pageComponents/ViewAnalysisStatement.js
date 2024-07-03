@@ -147,7 +147,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   }
 
   async function handleButtonClick() {
-  console.log("search")
+ 
     if (isEstimate) {
       if (formData?.SORtable?.length > 0) {
         if (isView) {
