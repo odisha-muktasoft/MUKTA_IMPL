@@ -130,7 +130,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       url: "/mdms-v2/v2/_search",
       body: {
         MdmsCriteria: {
-          tenantId: "pg",
+          tenantId: "od",
           schemaCode: "WORKS-SOR.Overhead",
         },
       },

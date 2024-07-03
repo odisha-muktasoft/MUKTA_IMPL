@@ -1,5 +1,5 @@
 export const createOrganizationConfigMUKTA = {
-    tenantId: "pg",
+    tenantId: "od",
     moduleName: "commonMuktaUiConfig",
     CreateOrganizationConfig: [
         {

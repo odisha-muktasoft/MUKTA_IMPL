@@ -1,5 +1,5 @@
 export const SearchPaymentInstructionConfig = {
-  "tenantId": "pg",
+  "tenantId": "od",
   "moduleName": "commonMuktaUiConfig",
   "SearchPaymentInstructionConfig": [
     {

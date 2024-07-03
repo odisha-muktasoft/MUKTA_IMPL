@@ -1,5 +1,5 @@
 export const SearchPIConfigNew = {
-  "tenantId": "pg",
+  "tenantId": "od",
   "moduleName": "commonMuktaUiConfig",
   "SearchPaymentInstructionConfig": [
     {

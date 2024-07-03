@@ -1,5 +1,5 @@
 const ViewScheduledJobsConfig = {
-    tenantId: "pg",
+    tenantId: "od",
     moduleName: "ViewScheduledJobsConfig",
     ViewScheduledJobsConfig: [
       {

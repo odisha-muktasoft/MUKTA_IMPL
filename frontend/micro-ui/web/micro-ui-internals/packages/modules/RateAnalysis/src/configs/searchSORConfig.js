@@ -1,5 +1,5 @@
 const searchSORConfig = {
-  tenantId: "pg",
+  tenantId: "od",
   moduleName: "searchSORConfig",
   SearchSORConfig: [
     {

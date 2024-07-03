@@ -1,7 +1,7 @@
 const createWorkOrderConfigMUKTA = ({defaultValues, documents, officerInCharge, nameOfCBO}) => {
 
   return {
-    tenantId: "pg",
+    tenantId: "od",
     moduleName: "commonMuktaUiConfig",
     CreateWorkOrderConfig: [
       {
