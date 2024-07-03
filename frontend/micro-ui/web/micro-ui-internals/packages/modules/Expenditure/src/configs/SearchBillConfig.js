@@ -9,7 +9,7 @@ export const SearchBillConfig = {
         "actionRole": "BILL_ACCOUNTANT",
         "actionLink": "expenditure/download-bill",
         "apiDetails": {
-          "serviceName": "/mukta-expense-calculator/v1/_search",
+          "serviceName": "/expense-calculator/v1/_search",
           "requestParam": {},
           "requestBody": {
             "searchCriteria": {}

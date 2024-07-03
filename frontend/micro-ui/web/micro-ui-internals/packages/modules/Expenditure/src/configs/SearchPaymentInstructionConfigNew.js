@@ -9,7 +9,7 @@ export const SearchPIConfigNew = {
       "actionRole": "BILL_ACCOUNTANT",
       "actionLink": "expenditure/create-pa?status=APPROVED",
       "apiDetails": {
-        "serviceName": "/wms/mukta-pi/_search",
+        "serviceName": "/wms/pi/_search",
         "requestParam": {},
         "requestBody": {
           "inbox": {

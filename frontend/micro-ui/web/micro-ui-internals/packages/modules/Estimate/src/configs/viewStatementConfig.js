@@ -307,7 +307,7 @@ export const data = (statementDetails,rawData,oldData) => {
     //         applicationNo: revisionNumber ? revisionNumber : estimateDetails?.estimateNumber,
     //         tenantId: estimateDetails?.tenantId,
     //         applicationDetails: estimateDetails,
-    //         url: "/mukta-estimate/v1/_update",
+    //         url: "/estimate/v1/_update",
     //         moduleCode: "Estimate",
     //         editApplicationNumber: undefined,
     //         editCallback : getRedirectionCallback

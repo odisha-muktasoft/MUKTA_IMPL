@@ -157,7 +157,7 @@ export const View = {
   fetchMeasurementDetails: async (t, tenantId, data, searchParams, revisedWONumber) => {
     try {
 
-      const url = "/mukta-mukta-services/measurement/_search"
+      const url = "/mukta-services/measurement/_search"
 
       const allData = await CustomService.getResponse({
         url, 

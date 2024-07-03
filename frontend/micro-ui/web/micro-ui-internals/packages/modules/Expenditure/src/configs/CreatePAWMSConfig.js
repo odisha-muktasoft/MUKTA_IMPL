@@ -7,7 +7,7 @@ export const CreatePAWMSConfig = {
       "type": "search",
       "actionRole": "BILL_ACCOUNTANT",
       "apiDetails": {
-        "serviceName": "/wms/mukta-expense/_search",
+        "serviceName": "/wms/expense/_search",
         "requestParam": {},
         "requestBody": {
           "inbox": {

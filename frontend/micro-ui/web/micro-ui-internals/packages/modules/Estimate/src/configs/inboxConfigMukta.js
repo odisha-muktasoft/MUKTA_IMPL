@@ -8,7 +8,7 @@ const inboxConfigMukta = () => {
       requestBody: {
         inbox: {
           processSearchCriteria: {
-            businessService: ["mukta-estimate"],
+            businessService: ["estimate"],
             moduleName: "estimate-service",
           },
           moduleSearchCriteria: {},
@@ -256,7 +256,7 @@ const inboxConfigMukta = () => {
               populators: {
                 name: "state",
                 labelPrefix: "WF_EST_",
-                businessService: "mukta-estimate",
+                businessService: "estimate",
               },
             },
           ],

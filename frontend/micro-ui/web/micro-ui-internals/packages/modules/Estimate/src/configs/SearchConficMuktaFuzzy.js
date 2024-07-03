@@ -3,7 +3,7 @@ const searchConfigMuktaFuzzy = () => {
     "label": "WORKS_SEARCH_ESTIMATES",
     "type": "search",
     "apiDetails": {
-      "serviceName": "/wms/mukta-estimate/_search",
+      "serviceName": "/wms/estimate/_search",
       "requestParam": {},
       "requestBody": {
         "inbox": {

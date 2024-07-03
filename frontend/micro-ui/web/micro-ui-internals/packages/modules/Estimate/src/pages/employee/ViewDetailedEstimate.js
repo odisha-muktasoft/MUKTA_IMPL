@@ -23,7 +23,7 @@ const ViewDetailedEstimate = () => {
   Digit.Hooks.useClickOutside(menuRef, closeMenu, showActions);
 
   const requestCriteria = {
-    url: "/mukta-estimate/v1/_search",
+    url: "/estimate/v1/_search",
     params : revisionNumber ? {tenantId : tenantId , revisionNumber : revisionNumber} : {tenantId : tenantId , estimateNumber : estimateNumber}
   };
 
@@ -32,7 +32,7 @@ const ViewDetailedEstimate = () => {
 
   //fetching all the estimates for revision original values
   const requestrevisionCriteria = {
-    url: "/mukta-estimate/v1/_search",
+    url: "/estimate/v1/_search",
     params : {tenantId : tenantId , estimateNumber : estimateNumber},
     config : {
       cacheTime : 0
