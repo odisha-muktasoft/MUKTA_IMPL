@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Amount, Loader } from "@egovernments/digit-ui-react-components";
 
@@ -9,11 +9,10 @@ const ViewStatement = (props) => {
   const { t } = useTranslation();
 
   // Calculate the grand total
- 
+
   const grandTotal = nestedData.reduce((total, row) => {
     return total + (parseFloat(row.estimatedAmount?.[type]) || 0);
   }, 0);
-  
 
   /* need to pass the screenType 
      - TO render the column header
@@ -34,7 +33,7 @@ const ViewStatement = (props) => {
       columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_AMT"), width: "12.5%" });
     } else {
       columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_QTY"), width: "12.5%" });
-      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_AMT"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_AMT"), width: "12.5%" });
     }
 
     return columns.map((col, index) => (
@@ -97,16 +96,21 @@ const ViewStatement = (props) => {
       </tr>
     );
   };
-
+  let check = false;
   const renderBody = () => {
     return nestedData
       .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
-       
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
         if (row?.type === "W" && subRows.length == 0) {
+          if (check == true) {
+            check = true;
+          } else {
+            check = false;
+          }
           return null;
         } else {
+          check = true;
           return (
             <React.Fragment key={index}>
               <tr>
@@ -166,20 +170,17 @@ const ViewStatement = (props) => {
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true)).length > 0 ? (
+          {check ? (
             <tr>
               <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
-                {
-               config?.screenType === "UTILIZATION"?t("UTILIZATION_STATEMENT_GRAND_TOTAL"):
-              t("STATEMENT_GRAND_TOTAL")
-              }:
+                {config?.screenType === "UTILIZATION" ? t("UTILIZATION_STATEMENT_GRAND_TOTAL") : t("STATEMENT_GRAND_TOTAL")}:
               </td>
               <td style={{ textAlign: "right", fontWeight: "bold" }}>
                 <Amount value={parseFloat(grandTotal).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
             </tr>
           ) : (
-            <td colSpan={7} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
+            <td colSpan={8} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
               {t("STATEMENT_NO_DATA_PRESENT")}
             </td>
           )}
