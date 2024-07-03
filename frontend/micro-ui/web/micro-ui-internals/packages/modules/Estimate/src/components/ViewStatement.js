@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Amount, Loader } from "@egovernments/digit-ui-react-components";
 
@@ -7,6 +7,7 @@ const ViewStatement = (props) => {
   let nestedData = arrayProps?.fields || [];
   let type = arrayProps?.type || "W";
   const { t } = useTranslation();
+  
 
   // Calculate the grand total
  
@@ -19,24 +20,6 @@ const ViewStatement = (props) => {
      - TO render the column header
   */
 
-const lengthCheck= nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true)).map((row, index) => {
-       
-  const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
-  if (row?.type === "W" && subRows.length == 0) {
-    return 0;
-  } else if(row?.type==="L"){
-    return 1;
-  }
-  else if(row?.type==="M"){
-    return 1;
-  }
-  else if(row?.type==="E"){
-    return 1;
-  }
-  else{
-    return subRows.length
-  }
-});
 
 
 
@@ -120,16 +103,25 @@ const lengthCheck= nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? tru
       </tr>
     );
   };
-
+ let check=false;
   const renderBody = () => {
+   
+     
     return nestedData
       .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
        
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
         if (row?.type === "W" && subRows.length == 0) {
+        if(check==true)
+        {
+        check=true
+        }else{
+        check=false;
+}
           return null;
         } else {
+        check=true;
           return (
             <React.Fragment key={index}>
               <tr>
@@ -189,7 +181,7 @@ const lengthCheck= nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? tru
         </thead>
         <tbody>{renderBody()}</tbody>
         <tfoot>
-          {lengthCheck > 0 ? (
+          {check  ? (
             <tr>
               <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold" }}>
                 {
@@ -202,7 +194,7 @@ const lengthCheck= nestedData.filter((ob) => (ob?.type ? (ob?.type === "W" ? tru
               </td>
             </tr>
           ) : (
-            <td colSpan={7} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
+            <td colSpan={8} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
               {t("STATEMENT_NO_DATA_PRESENT")}
             </td>
           )}
