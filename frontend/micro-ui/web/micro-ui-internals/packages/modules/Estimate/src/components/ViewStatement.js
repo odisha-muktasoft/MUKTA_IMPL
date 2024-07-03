@@ -128,63 +128,142 @@ const ViewStatement = (props) => {
       .filter((ob) => (ob?.type ? (ob?.type === "W" ? true : ob?.type === type) : true))
       .map((row, index) => {
         const subRows = row?.subrows?.filter((ob) => ob?.type === type) || [];
-        if (row?.type === "W" && subRows.length == 0) {
-          if (check == true) {
-            check = true;
-          } else {
-            check = false;
-          }
-          return null;
-        } else {
-          check = true;
-          return (
-            <React.Fragment key={index}>
-              <tr>
-                <td style={{ width: "5%" }}>{row.sNo}</td>
-                <td style={{ width: "12.5%", fontWeight: "500" }}>{`${t(`WORKS_SOR_TYPE_${row.sortype}`)} / ${t(
-                  `WORKS_SOR_SUBTYPE_${row?.sorSubType}`
-                )}`}</td>
-                <td style={{ width: "6.5%" }}>{row.code}</td>
-                <td style={{ width: "35%" }}>{row.description}</td>
-                <td style={{ width: "8.5%", fontWeight: "500" }}>{row.uom}</td>
-                <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
-                  <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
-                </td>
-                <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
-                  <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
-                </td>
-                <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
-                  <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
-                </td>
-              </tr>
-              {subRows.length > 0 && (
-                <React.Fragment>
-                  <tr>
-                    <td style={{ borderBottom: "none" }}></td>
-                    <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
-                      <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td style={{ borderTop: "none" }}></td>
-                    <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
-                      <table
-                        className=" sub-table"
-                        style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
-                      >
-                        <thead>
-                          <tr>{renderSubHeader()}</tr>
-                        </thead>
-                        <tbody>{renderSubBody(subRows)}</tbody>
-                        <tfoot>{renderSubFooter(subRows)}</tfoot>
-                      </table>
-                    </td>
-                  </tr>
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          );
-        }
+
+        check = true;
+        return (
+          <React.Fragment key={index}>
+            <tr>
+              <td style={{ width: "5%" }}>{row.sNo}</td>
+              <td style={{ width: "12.5%", fontWeight: "500" }}>{`${t(`WORKS_SOR_TYPE_${row.sortype}`)} / ${t(
+                `WORKS_SOR_SUBTYPE_${row?.sorSubType}`
+              )}`}</td>
+              <td style={{ width: "6.5%" }}>{row.code}</td>
+              <td style={{ width: "35%" }}>{row.description}</td>
+              <td style={{ width: "8.5%", fontWeight: "500" }}>{row.uom}</td>
+              <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
+                <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+              </td>
+              <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
+                <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
+              </td>
+              <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
+                <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+              </td>
+            </tr>
+            {subRows.length > 0 && (
+              <React.Fragment>
+                <tr>
+                  <td style={{ borderBottom: "none" }}></td>
+                  <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
+                    <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ borderTop: "none" }}></td>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
+                    <table
+                      className=" sub-table"
+                      style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
+                    >
+                      <thead>
+                        <tr>{renderSubHeader()}</tr>
+                      </thead>
+                      <tbody>{renderSubBody(subRows)}</tbody>
+                      <tfoot>{renderSubFooter(subRows)}</tfoot>
+                    </table>
+                  </td>
+                </tr>
+              </React.Fragment>
+            )}
+
+            {subRows.length === 0 && row?.type === "W" && (
+              <React.Fragment>
+                <tr>
+                  <td style={{ borderBottom: "none" }}></td>
+                  <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
+                    <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ borderTop: "none" }}></td>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
+                    <table
+                      className=" sub-table"
+                      style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
+                    >
+                      <thead>
+                        <tr>{renderSubHeader()}</tr>
+                      </thead>
+                      <tbody>
+                        {
+                          <tr key={0}>
+                            <td colSpan={8} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
+                              {t("STATEMENT_NO_DATA_PRESENT")}
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </React.Fragment>
+            )}
+
+            {subRows.length === 0 && row?.type !== "W" && (
+              <React.Fragment>
+                <tr>
+                  <td style={{ borderBottom: "none" }}></td>
+                  <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
+                    <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ borderTop: "none" }}></td>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
+                    <table
+                      className=" sub-table"
+                      style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" }}
+                    >
+                      <thead>
+                        <tr>{renderSubHeader()}</tr>
+                      </thead>
+                      <tbody>
+                        {
+                          <tr key={row.sNo}>
+                            <td style={{ width: "5%" }}>{row.sNo}</td>
+                            <td style={{ width: "5.28%" }}>{row.code}</td>
+                            <td style={{ width: "30%" }}>{row.description}</td>
+                            <td style={{ width: "9.28%" }}>{row.uom}</td>
+                            <td style={{ width: "14.28%", textAlign: "right" }}>
+                              <div>{parseFloat(row.rate).toFixed(2)} </div>
+                            </td>
+                            <td style={{ width: "14.28%", textAlign: "right" }}>
+                              <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />
+                            </td>
+                            <td style={{ width: "14.28%", textAlign: "right" }}>
+                              <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                            </td>
+                          </tr>
+                        }
+                          
+                        <tr>
+                          <td colSpan={6} style={{ textAlign: "right", fontWeight: "400" }}>
+                            {t("MB_ONLY_AMOUNT")}:
+                          </td>
+                          <td style={{ textAlign: "right", fontWeight: "bold" }}>
+                            <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                          </td>
+                        </tr>
+                      
+                      </tbody>
+                     
+                    </table>
+                  </td>
+                </tr>
+              </React.Fragment>
+            )}
+          </React.Fragment>
+        );
       });
   };
 
