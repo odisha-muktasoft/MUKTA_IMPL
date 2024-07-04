@@ -111,6 +111,23 @@ config:
         image-name: "measurement-registry"
       - work-dir: "backend/measurement-registry/src/main/resources/db"
         image-name: "measurement-registry-db"
+        
+  - name: "builds/mukta_impl/backend/statements"
+    build:
+      - work-dir: "backend/statements"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "statements"
+      - work-dir: "backend/statements/src/main/resources/db"
+        image-name: "statements-db"  
+        
+  - name: "builds/mukta_impl/backend/rate-analysis"
+    build:
+      - work-dir: "backend/rate-analysis"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "rate-analysis"
+      - work-dir: "backend/rate-analysis/src/main/resources/db"
+        image-name: "rate-analysis-db"      
+        
 
   # utilities
   - name: "builds/mukta_impl/utilities/egov-pdf"
@@ -310,6 +327,4 @@ config:
     build:
       - work-dir: frontend/works_shg_app/
         dockerfile: frontend/works_shg_app/docker/Dockerfile
-        image-name: mukta-works-shg-app      
-
-        
+        image-name: mukta-works-shg-app
