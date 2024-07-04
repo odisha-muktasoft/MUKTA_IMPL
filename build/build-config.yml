@@ -118,7 +118,15 @@ config:
         dockerfile: "build/maven-java17/Dockerfile"
         image-name: "statements"
       - work-dir: "backend/statements/src/main/resources/db"
-        image-name: "statements-db"          
+        image-name: "statements-db"
+
+  - name: "builds/digit-works/backend/rate-analysis"
+    build:
+      - work-dir: "backend/rate-analysis"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "rate-analysis"
+      - work-dir: "backend/rate-analysis/src/main/resources/db"
+        image-name: "rate-analysis-db"             
 
   # utilities
   - name: "builds/mukta_impl/utilities/egov-pdf"
