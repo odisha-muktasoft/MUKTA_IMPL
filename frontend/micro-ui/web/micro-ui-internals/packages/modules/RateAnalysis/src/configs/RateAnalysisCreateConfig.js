@@ -148,7 +148,7 @@ export const CreateConfig = ({ defaultValue, isUpdate, measurement }) => {
                   "populators": {
                     "name": "effective_from_date",
                     "validation":{
-                      "min":defaultValue?.currentDate
+                      "min": isUpdate ? null : defaultValue?.currentDate 
                     }
                   }
                 },
