@@ -2777,7 +2777,7 @@ export const UICustomizations = {
         case "RA_SUCCESSFUL": {
           let successfulCount = 0;
           row.sorDetails.forEach((detail) => {
-            if (detail.status === "COMPLETED") {
+            if (detail.status === "SUCCESSFUL") {
               successfulCount++;
             }
           });
