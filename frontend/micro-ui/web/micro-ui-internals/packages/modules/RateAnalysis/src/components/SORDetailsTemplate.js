@@ -158,7 +158,7 @@ const SORDetailsTemplate = (props) => {
   };
 
   const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
-    sno: pageType === "VIEW"?parseFloat(index+1): row?.sNo ,
+    sno: row?.sNo,
     sorCode: row?.sorCode,
     description: row?.description,
     uom: row?.uom,
