@@ -18,10 +18,9 @@ const RateAmountGroup = (props) => {
     body: {
       MdmsCriteria: {
         tenantId: tenantId,
-        // filters: {
-        //   sorId: sorId,
-        // },
-        uniqueIdentifiers:[`${sorId}`],
+        filters: {
+          sorId: sorId,
+        },
         schemaCode: "WORKS-SOR.Rates",
         limit: 100,
         offset: 0,
@@ -29,6 +28,23 @@ const RateAmountGroup = (props) => {
     },
     changeQueryName: "ratesQuery",
   };
+
+  // const requestCriteria = {
+  //   url: "/mdms-v2/v2/_search",
+  //   body: {
+  //     MdmsCriteria: {
+  //       tenantId: tenantId,
+  //       // filters: {
+  //       //   sorId: sorId,
+  //       // },
+  //       uniqueIdentifiers:[`${sorId}`],
+  //       schemaCode: "WORKS-SOR.Rates",
+  //       limit: 100,
+  //       offset: 0,
+  //     },
+  //   },
+  //   changeQueryName: "ratesQuery",
+  // };
 
   // const requestCriteria = {
   //   url: "/mdms-v2/v2/_search",
