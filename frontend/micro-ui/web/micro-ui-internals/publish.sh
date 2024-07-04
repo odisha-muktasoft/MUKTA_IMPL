@@ -11,7 +11,7 @@ yarn
 # sleep 5
 
 msg "Building and publishing css"
-cd "$BASEDIR/packages/css" && yarn&& npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/css" &&  yarn&& npm publish --tag mukta-1.2
 
 # msg "Building and publishing libraries"
 # cd "$BASEDIR/packages/libraries" && yarn publish --access public
@@ -25,25 +25,28 @@ cd "$BASEDIR/packages/css" && yarn&& npm publish --tag mukta-1.1
 # sleep 5
 
 msg "Building and publishing AttendenceMgmt module"
-cd "$BASEDIR/packages/modules/AttendenceMgmt" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/AttendenceMgmt" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
 msg "Building and publishing Expenditure module"
-cd "$BASEDIR/packages/modules/Expenditure" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/Expenditure" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
+
+msg "Building and publishing RateAnalysis module"
+cd "$BASEDIR/packages/modules/RateAnalysis" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
 msg "Building and publishing Contracts module"
-cd "$BASEDIR/packages/modules/Contracts" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/Contracts" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
 msg "Building and publishing Masters module"
-cd "$BASEDIR/packages/modules/Masters" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/Masters" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
 msg "Building and publishing Works module"
-cd "$BASEDIR/packages/modules/works" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/works" &&  rm -rf node_modules &&  rm -rf dist && yarn&& npm publish --tag mukta-1.2
 
 msg "Building and publishing Project module"
-cd "$BASEDIR/packages/modules/Project" &&  rm -rf node_modules &&  rm -rf dist && yarn && npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/Project" &&  rm -rf node_modules &&  rm -rf dist && yarn && npm publish --tag mukta-1.2
 
 msg "Building and publishing Estimate module"
-cd "$BASEDIR/packages/modules/Estimate" &&  rm -rf node_modules &&  rm -rf dist && yarn && npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/Estimate" &&  rm -rf node_modules &&  rm -rf dist && yarn && npm publish --tag mukta-1.2
 
 msg "Building and publishing Measurement module"
-cd "$BASEDIR/packages/modules/Measurement" &&  rm -rf node_modules &&  rm -rf dist && yarn && npm publish --tag mukta-1.1
+cd "$BASEDIR/packages/modules/Measurement" &&  rm -rf node_modules &&  rm -rf dist && yarn && npm publish --tag mukta-1.2

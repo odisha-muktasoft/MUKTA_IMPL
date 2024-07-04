@@ -1,5 +1,5 @@
 export const CreatePAWMSConfig = {
-  "tenantId": "pg",
+  "tenantId": "od",
   "moduleName": "commonMuktaUiConfig",
   "CreatePAWMSConfig": [
     {

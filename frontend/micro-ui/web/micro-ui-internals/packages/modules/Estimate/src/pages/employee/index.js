@@ -13,6 +13,7 @@ import CreateDetailedEstimate from "./Estimates/CreateDetailedEstimate/CreateEst
 import UpdateDetailedEstimate from "./Estimates/CreateDetailedEstimate/UpdateDetailedEstimate";
 import CreateRevisionDetailedEstimate from "./Estimates/CreateDetailedEstimate/CreateRevisionDetailedEstimate";
 import UpdateRevisionDetailedEstimate from "./Estimates/CreateDetailedEstimate/UpdateRevisionDetailedEstimate";
+import ViewAnalysisStatementPage from "./ViewAnalysisStatementPage";
 
 import ViewDetailedEstimate from "./ViewDetailedEstimate";
 
@@ -94,6 +95,12 @@ const EstimateBreadCrumbs = ({ location }) => {
             show: location.pathname.includes("/estimate/inbox") ? true : false,
             isBack: fromScreen && true,
         },
+        {
+            // path: `/${window.contextPath}/employee/estimate/inbox`,
+            content: fromScreen ? `${t(fromScreen)} / ${t("ESTIMATE_VIEW_ANALYSIS_STATEMENT")}` : t("ESTIMATE_VIEW_ANALYSIS_STATEMENT"),
+            show: location.pathname.includes("/estimate/view-analysis-statement") ? true : false,
+            isBack: fromScreen && true,
+        },
     ];
     return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} zerothStyle={location.pathname.includes("/estimate/inbox") || location.pathname.includes("/estimate/search-estimate")  ? {marginLeft:"-0.2rem"} : {}} />;
 
@@ -152,7 +159,7 @@ const App = ({ path }) => {
                     <PrivateRoute path={`${path}/update-detailed-estimate`} component={() => <UpdateDetailedEstimate {...{ path }} />} />
                     <PrivateRoute path={`${path}/create-revision-detailed-estimate`} component={() => <CreateRevisionDetailedEstimate {...{ path }} />} />
                     <PrivateRoute path={`${path}/update-revision-detailed-estimate`} component={() => <UpdateRevisionDetailedEstimate {...{ path }} />} />
-
+                    <PrivateRoute path={`${path}/view-analysis-statement`} component={() => <ViewAnalysisStatementPage {...{ path }} />} />
                     <PrivateRoute path={`${path}/response`} component={() => <EstimateResponse {...{ path }} />} />
 
                 </div>

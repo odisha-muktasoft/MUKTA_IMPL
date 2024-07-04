@@ -1,5 +1,5 @@
 export const SearchBillWMSConfig = {
-    "tenantId": "pg",
+    "tenantId": "od",
     "moduleName": "commonMuktaUiConfig",
     "SearchBillWMSConfig":[
         {

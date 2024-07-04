@@ -1,5 +1,5 @@
 import { TextInput } from "@egovernments/digit-ui-react-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 const SearchBar = (props) => {
@@ -8,6 +8,7 @@ const SearchBar = (props) => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const menuRef = useRef();
   const fetchData = async (searchText) => {
     const subtypeCondition = (stateData?.SORSubType && `&& @.sorSubType == '${stateData?.SORSubType}'`) || "";
     const variantCondition = (stateData?.SORVariant && `&& @.sorVariant == '${stateData?.SORVariant}'`) || "";
@@ -15,7 +16,7 @@ const SearchBar = (props) => {
       url: "/mdms-v2/v1/_search",
       body: {
         MdmsCriteria: {
-          tenantId: tenantId,
+          tenantId: props?.placeholder ? tenantId?.split(".")[0] : tenantId,
           moduleDetails: [
             {
               moduleName: "WORKS-SOR",
@@ -67,6 +68,12 @@ const SearchBar = (props) => {
       setSelectedSOR(null);
   };
 
+  const closeMenu = () => {
+    setSuggestions([]);
+  }
+
+  Digit.Hooks.useClickOutside(menuRef, closeMenu, suggestions);
+
   const handleSelectOption = (option) => {
     if (option?.id) {
       setInputValue(option.description);
@@ -76,8 +83,8 @@ const SearchBar = (props) => {
   };
 
   return (
-    <div className={"search-bar-sor"} style={{margin:"20px 1.4rem 0"}}>
-      <TextInput type="text" name={"Search"} placeholder={t("SEARCH_SOR_HINT")} value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
+    <div className={"search-bar-sor"} ref={menuRef}>
+      <TextInput type="text" name={"Search"} placeholder={props?.placeholder ? props?.placeholder : "Type any SOR description..."} value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
       {suggestions?.length > 0 && (
       <ul
         className="suggestions-sor" style={{zIndex:"10", maxHeight:"33rem", overflow:"auto"}}

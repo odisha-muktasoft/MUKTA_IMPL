@@ -1,5 +1,5 @@
 export const InboxPaymentInstructionConfig = {
-  "tenantId": "pg",
+  "tenantId": "od",
   "moduleName": "commonMuktaUiConfig",
   "InboxPaymentInstructionConfig": [
     {

@@ -4,7 +4,7 @@ output is array of object of type which is passed
 
 */
 
-export const transformEstimateData = (lineItems, contract, type, measurement = {}, allMeasurements = []) => {
+export const transformEstimateData = (lineItems, contract, type, measurement = {}, allMeasurements = [], showM=false) => {
   /* logic to be updated according to business usecase*/
   //let isCreateorUpdate = window.location.href.includes("create") || window.location.href.includes("update");
   const lastMeasuredObject = allMeasurements?.filter?.((e) => e?.isActive)?.[0] || {};
@@ -12,6 +12,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
   const isMeasurement = measurement && Object.keys(measurement)?.length > 0;
   let isMeasurementCreate = window.location.href.includes("measurement/create")
 
+  
   lineItems?.filter(e => e.category === "NON-SOR")
     .forEach((item, index) => {
       // Check if the "sorId" is not null or undefined
@@ -63,7 +64,7 @@ export const transformEstimateData = (lineItems, contract, type, measurement = {
       contractNumber: transformedContract?.contractNumber,
       targetId: transformedContract?.lineItemsObject[transformedEstimateObject[key][0].id]?.contractLineItemId,
       approvedQuantity: transformedEstimateObject[key].reduce((acc, curr) => curr.isDeduction == true ? acc - curr?.noOfunit : acc + curr.noOfunit, 0),
-      showMeasure: false,
+      showMeasure: showM,
       sorId: key,
       measures,
     };

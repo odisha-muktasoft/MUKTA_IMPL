@@ -84,7 +84,11 @@ const getSkillsToUpdate = (formData, wageSeekerDataFromAPI) => {
         return takeIt
     })
 
-    let skillsTobeAdded = extraSkillsTobeAdded?.map(item => ({ level: item?.code?.split('.')?.[0], type: item?.code?.split('.')?.[1]}))
+    let skillsTobeAdded = extraSkillsTobeAdded?.map(item => {
+        const separator = item?.code.includes('.') ? '.' : '_';
+        const [level, type] = item?.code.split(separator);
+        return { level, type };
+    });
     let skillsTobeRemoved = extraSkillsTobeRemoved?.map(item => ({ ...item, isDeleted: true }))
     return {
         skillsTobeAdded: [...filterExistingSkills, ...skillsTobeAdded],

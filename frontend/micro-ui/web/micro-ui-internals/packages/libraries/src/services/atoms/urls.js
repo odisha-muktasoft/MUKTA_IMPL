@@ -47,6 +47,10 @@ const Urls = {
     searchProject: "/project/v1/_search",
     wmsSearchProject: "/wms/project/_search",
     updateProject: "/project/v1/_update",
+    //look here add your own url
+    analysisStatementcreate : "/statements/v1/analysis/_create",
+    // added
+    utilizationCreate:"/statements/v1/utilization/_create",
   },
 
   contracts: {
@@ -96,7 +100,7 @@ expense:{
   searchPayment: "/mukta-ifix-adapter/v1/pi/_search",
   updatePayment: "/expense/payment/v1/_update",
   regenerate : '/egov-pdf/bill/_generate',
-  searchPaymentWMS:"/wms/mukta-pi/_search",
+  searchPaymentWMS:"/wms/pi/_search",
   updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
   searchPA:"/expense/payment/v1/_search"
 
@@ -278,8 +282,18 @@ expense:{
 
   measurement : {
     search : "/measurement-service/v1/_search",
-    update : "/measurement-service/v1/_update"
+    update : "/measurement-service/v1/_update",
+    
   }
+  ,
+
+  rateAnalysis:{
+    search:"/rate-analysis/v1/_calculate",
+  },
+
+  mdms_v2: {
+    search: "/mdms-v2/v2/_search",
+  },
 };
 
 export default Urls;

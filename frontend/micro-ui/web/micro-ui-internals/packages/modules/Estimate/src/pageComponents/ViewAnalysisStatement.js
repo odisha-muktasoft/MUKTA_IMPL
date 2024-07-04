@@ -1,135 +1,260 @@
-import React,{Fragment, useState} from 'react'
-import {
-    Card,
-    CardSectionHeader,
-    LabelFieldPair,
-    CardLabel,
-    PopUp,
-    LinkButton,
-    Button,
-} from "@egovernments/digit-ui-react-components";
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from "react";
+import { Toast, Loader,LinkButton } from "@egovernments/digit-ui-react-components";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
-const ViewAnalysisStatement = ({watch,formState,...props}) => {
-    const {t} = useTranslation();
-    const { register, errors, setValue, getValues, formData } = props
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    let isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(window.location.href);
-    let isEstimateCreateorUpdate = /(estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(window.location.href);
-    //Defined the codes for charges upserted in mdmsV2
-    const ChargesCodeMapping = {
-        LabourCost : ["LA"],
-        MaterialCost : ["MA","RA","CA","EMF","DMF","ADC","LC"],
-        MachineryCost : ["MHA"],
+const ViewAnalysisStatement = ({ formData, ...props }) => {
+  const { t } = useTranslation();
+  const history = useHistory();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const [showToast, setShowToast] = useState(null);
+
+  const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
+    window.location.href
+  );
+  const isEstimate = window.location.href.includes("/estimate/");
+  const isView = window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view");
+
+  const { mutate: AnalysisMutation } = Digit.Hooks.works.useCreateAnalysisStatement("WORKS");
+  const { mutate: UtilizationMutation } = Digit.Hooks.works.useCreateUtilizationStatement("WORKS");
+
+  const ChargesCodeMapping = {
+    LabourCost: ["LA"],
+    MaterialCost: ["MA", "RA", "CA", "EMF", "DMF", "ADC", "LC"],
+    MachineryCost: ["MHA"],
+  };
+
+  const getAnalysisCost = (categories) => {
+    let SORAmount = 0;
+    if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
+      if (categories.includes("LA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
+        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+      if (
+        categories.some((cat) => ChargesCodeMapping.MaterialCost.includes(cat)) &&
+        SORAmount === 0 &&
+        formData?.additionalDetails?.labourMaterialAnalysis?.material
+      )
+        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
+      if (categories.includes("MHA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
+        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
     }
 
-    const tenantId = Digit.ULBService.getCurrentTenantId();
-    let isEstimate = window.location.href.includes("/estimate/");
+    SORAmount = SORAmount ? SORAmount : 0;
+    return Digit.Utils.dss.formatterWithoutRound(parseFloat(SORAmount).toFixed(2), "number", undefined, true, undefined, 2);
+  };
 
-    const requestCriteria = {
-        url: "/mdms-v2/v1/_search",
-        body: {
-        MdmsCriteria: {
-            tenantId: tenantId,
-            moduleDetails: [
-            {
-                moduleName: "WORKS-SOR",
-                masterDetails: [
-                {
-                    name: "Rates",
-                    //filter: `[?(@.sorId=='${sorid}')]`,
-                },
-                ],
-            },
-            ],
-        },
-        },
-        changeQueryName:"ratesQuery"
+  const requestSearchCriteria = {
+    url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
+    body: {
+      searchCriteria: {
+        tenantId: tenantId,
+        referenceId: isEstimate ? formData?.SORtable?.[0]?.estimateId : formData?.Measurement?.id,
+      },
+    },
+    config: {
+      cacheTime: 0,
+      enabled: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id ? true : false,
+    },
+    changeQueryName: "analysisStatement",
+  };
+
+  const { data: searchResponse, isLoading: searchLoading } = Digit.Hooks.useCustomAPIHook(requestSearchCriteria);
+
+  const checkMeasurement = () => {
+    if (window.location.href.includes("measurement/update")) {
+      return props?.data?.SORtable?.length > 0;
+    } else {
+      return formData?.SORtable?.length > 0;
+    }
+  };
+
+  const callCreateApi = async (event) => {
+    event.preventDefault();
+    let payload = {
+      statementRequest: {
+        tenantId: tenantId,
+        id: isEstimate
+          ? formData?.SORtable?.[0]?.estimateId
+          : window.location.href.includes("measurement/update")
+          ? props.config.formData.Measurement.id
+          : formData?.Measurement?.id,
+      },
     };
 
-    const { isLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(requestCriteria);
-    let currentDateInMillis = isEstimateCreateorUpdate ? new Date().getTime() : formData?.auditDetails?.createdTime; 
-
-    //this method is used for calculating labour charges which rate * qty(current Mb entry)
-    function getAnalysisCost(categories){
-        let SORAmount = formData?.SORtable?.reduce((tot,ob) => {
-            let amount = ob?.amountDetails?.reduce((total, item) => total + (categories.some(category => item?.heads?.includes(category)) ? item?.amount : 0), 0);
-            return (tot + amount * ob?.currentMBEntry);
-        },0);
-        SORAmount = SORAmount ? SORAmount : 0;
-        if(SORAmount == 0)
-        {
-            SORAmount = formData?.SORtable?.reduce((tot,ob) => {
-                //let amountDetails = RatesData?.MdmsRes?.["WORKS-SOR"]?.Rates?.filter((rate) => rate?.sorId === ob?.sorId || rate?.sorId === ob?.sorCode)?.[0]?.amountDetails;
-                let amountDetails = RatesData?.MdmsRes?.["WORKS-SOR"]?.Rates?.filter((rate) => {
-                    // Convert validFrom and validTo to milliseconds
-                    let validFromInMillis = new Date(parseInt(rate?.validFrom)).getTime();
-                    let validToInMillis = rate?.validTo ? new Date(parseInt(rate?.validTo)).getTime() : Infinity;
-                    // Check if the current date is within the valid date range
-                    return rate.sorId === ob?.sorId || rate.sorId === ob?.sorCode
-                      && validFromInMillis <= currentDateInMillis
-                      && currentDateInMillis < validToInMillis;
-                  })?.[0]?.amountDetails;
-                let amount = amountDetails?.reduce((total, item) => total + (categories.some(category => item?.heads?.includes(category)) ? item?.amount : 0), 0);
-                return (tot + amount * ob?.currentMBEntry)
-            },0);
-        }
-        if(window.location.href.includes("estimate-details"))
-        {
-                    if(categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.labour;
-                    if(categories.some(cat => ChargesCodeMapping?.MaterialCost?.includes(cat)) && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.material;
-                    if(categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) SORAmount =  formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
-        }
-        //Conditions is used in the case of View details to capture the data from additional details
-        // if(category === "LA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) return formData?.additionalDetails?.labourMaterialAnalysis?.labour;
-        // if(category === "MA" && SORAmount =getAnalysisCost= 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) return formData?.additionalDetails?.labourMaterialAnalysis?.material;
-        // if(category === "MHA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) return formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
-        // if(window.location.href.includes("update-detailed-estimate"))
-        // {
-        // if(category === "LA" && SORAmount == 0  && formData?.labourMaterialAnalysis?.labour) return formData?.labourMaterialAnalysis?.labour;
-        // if(category === "MA" && SORAmount == 0 && formData?.labourMaterialAnalysis?.material) return formData?.labourMaterialAnalysis?.material;
-        // if(category === "MHA" && SORAmount == 0 && formData?.labourMaterialAnalysis?.machinery) return formData?.labourMaterialAnalysis?.machinery;
-        // }
-
-        SORAmount = SORAmount ? SORAmount : 0;
-        return Digit.Utils.dss.formatterWithoutRound((parseFloat(SORAmount)).toFixed(2),"number",undefined,true,undefined,2);        
+    if (isEstimate) {
+      await AnalysisMutation(payload, {
+        onError: async (error) => {
+          setShowToast({
+            error: true,
+            label: error?.response?.data?.Errors?.[0].message || error,
+          });
+          setTimeout(() => {
+            setShowToast(false);
+          }, 5000);
+        },
+        onSuccess: async (responseData) => {
+          setTimeout(() => {
+            history.push({
+              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+              state: {
+                responseData: responseData,
+                estimateId: formData?.SORtable?.[0]?.estimateId,
+                number: formData?.estimateNumber,
+              },
+            });
+          }, 1000);
+        },
+      });
+    } else {
+      await UtilizationMutation(payload, {
+        onError: async (error) => {
+          setShowToast({
+            error: true,
+            label: error?.response?.data?.Errors?.[0].message || error,
+          });
+          setTimeout(() => {
+            setShowToast(false);
+          }, 5000);
+        },
+        onSuccess: async (responseData) => {
+          setTimeout(() => {
+            history.push({
+              pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              state: {
+                responseData: responseData,
+                estimateId: window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.id
+                  : formData?.Measurement?.id,
+                number: window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
+              },
+            });
+          }, 1000);
+        },
+      });
     }
-    
+  };
+
+  const handleNavigation = (isEstimate, isView, searchResponse, formData, props) => {
+    const path = isEstimate
+      ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+      : `/${window?.contextPath}/employee/measurement/utilizationstatement`;
+
+    const estimateId = isEstimate
+      ? formData?.SORtable?.[0]?.estimateId
+      : window.location.href.includes("measurement/update")
+      ? props.config.formData.Measurement.id
+      : formData?.Measurement?.id;
+
+    const number = isEstimate
+      ? formData?.estimateNumber
+      : window.location.href.includes("measurement/update")
+      ? props.config.formData.Measurement.measurementNumber
+      : formData?.Measurement?.measurementNumber;
+
+    const state = {
+      responseData: searchResponse,
+      estimateId,
+      number,
+    };
+
+    if (!searchResponse) {
+      state.oldData = {
+        Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
+        Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
+        Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+      };
+    }
+
+    history.push({ pathname: path, state });
+  };
+
+  const checkConditions = (isEstimate, formData, props) => {
+    if (isEstimate) {
+      return formData?.SORtable?.length > 0;
+    } else {
+      return checkMeasurement();
+    }
+  };
+
+  const handleButtonClick = async (event) => {
+    event.preventDefault();
    
-    
-  return (
-        <Fragment>
-        <LinkButton className="view-Analysis-button" style={isCreateOrUpdate ? {marginTop:"-3.5%",textAlign:"center", width:"17%"}: {textAlign:"center",width:"17%"}} onClick={() => setIsPopupOpen(true)} label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}></LinkButton>
-        {isPopupOpen && <PopUp>
-            <div className="popup-view-alaysis">
-            <Card>
-            <CardSectionHeader className="estimate-analysis-cardheader">{isEstimate ? t(`ESTIMATE_COST_ANALYSIS_HEADER`): t(`MB_UTILIZATION_STM_HEADER`)}</CardSectionHeader>
-            <LabelFieldPair style={{marginBottom:'1rem', marginTop:"3rem", justifyContent:"space-between"}}>
-                <CardLabel className="analysis-estimate-label">{isEstimate ? `${t(`ESTIMATE_LABOUR_COST`)}`: t(`MB_LABOUR_UTILIZATION`)}</CardLabel>
-                <CardLabel>{getAnalysisCost(ChargesCodeMapping?.LabourCost)}</CardLabel>
-            </LabelFieldPair >
-            <LabelFieldPair style={{marginBottom:'1rem', justifyContent:"space-between"}}>
-                <CardLabel className="analysis-estimate-label">{isEstimate ? `${t(`ESTIMATE_MATERIAL_COST`)}` : t(`MB_MATERIAL_UTILIZATION`)}</CardLabel>
-                <CardLabel>{getAnalysisCost(ChargesCodeMapping?.MaterialCost)}</CardLabel>
-            </LabelFieldPair>
-            <LabelFieldPair style={{marginBottom:'3rem', justifyContent:"space-between"}}>
-                <CardLabel className="analysis-estimate-label">{isEstimate ? `${t(`ESTIMATE_MACHINERY_COST`)}` : t("MB_MACHINERY_UTILIZATION")}</CardLabel>
-                <CardLabel>{getAnalysisCost(ChargesCodeMapping?.MachineryCost)}</CardLabel>
-            </LabelFieldPair>
-            <Button
-             style={{marginLeft:"70%", width:"30%"}}
-             label={"OK"}
-             variation="primary"
-             onButtonClick={() => {
-                setIsPopupOpen(false);
-             }}
-             type="button"
-             />
-            </Card>
-            </div>
-        </PopUp>}
-        </Fragment>
-  );
-}
+
+    if (!checkConditions(isEstimate, formData, props)) {
+      const message = isEstimate ? t("NO_ESTIMATE_SOR_FOUND") : t("NO_MEASUREMENT_SOR_FOUND");
+      showToastMessage(message);
+      return;
+    }
+
+    if (isView && searchResponse) {
+      handleNavigation(isEstimate, isView, searchResponse, formData, props);
+    } else {
+      await callCreateApi(event);
+    }
+  };
+
+  const showToastMessage = (message) => {
+    setShowToast({ warning: true, label: message });
+    setTimeout(() => setShowToast(false), 5000);
+  };
+
+  // return (
+  //   <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+  //     {searchLoading ? (
+  //       <Loader />
+  //     ) : (
+  //       <button
+  //         type="button"
+  //         className="view-Analysis-button"
+  //         style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+  //         onClick={handleButtonClick}
+  //       >
+  //         {isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
+  //       </button>
+  //     )}
+  //     {showToast && (
+  //       <Toast
+  //         error={showToast?.error}
+  //         warning={showToast?.warning}
+  //         success={showToast?.success}
+  //         label={t(showToast?.label)}
+  //         isDleteBtn={true}
+  //         onClose={() => setShowToast(null)}
+  //       />
+  //     )}
+  //   </div>
+  // );
+
+   if (searchLoading) return <Loader />;
+
+  if (!window.location.href.includes("create"))
+    return (
+      <div >
+        <LinkButton
+          className="view-Analysis-button"
+          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+          onClick={handleButtonClick}
+          label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
+        />
+        {showToast && (
+        <Toast
+          error={showToast?.error}
+          warning={showToast?.warning}
+          success={showToast?.success}
+          label={t(showToast?.label)}
+          isDleteBtn={true}
+          style={{ overflowWrap: "break-word", // Ensure words break if they exceed container width
+            whiteSpace: "pre-line"}}
+          onClose={() => setShowToast(false)}
+        />
+      )}
+      </div>
+    );
+  else return <div></div>;
+
+};
 
 export default ViewAnalysisStatement;
+
