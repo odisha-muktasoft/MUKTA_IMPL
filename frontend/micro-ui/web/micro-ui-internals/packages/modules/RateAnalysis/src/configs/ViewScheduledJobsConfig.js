@@ -47,10 +47,9 @@ const ViewScheduledJobsConfig = {
                       top: "2.3rem",
                     },
                     options:[
-                      {code:"FAILED",name:"FAILED"},
-                      {code:"SUCCESSFUL",name:"SUCCESSFUL"},
-                      {code:"IN_PROGRESS",name:"INPROGRESS"},
-                      {code:"SCHEDULED",name:"SCHEDULED"}
+                      {code:"SCHEDULED",name:"SCHEDULED"},
+                      {code:"INPROGRESS",name:"INPROGRESS"},
+                      {code:"COMPLETED",name:"COMPLETED"}
                     ]
                   },
                 },
