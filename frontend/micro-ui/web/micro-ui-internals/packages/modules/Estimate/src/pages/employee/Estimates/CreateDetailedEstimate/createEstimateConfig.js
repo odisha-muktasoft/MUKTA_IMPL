@@ -19,6 +19,20 @@ export const createEstimateConfig = () => {
                 ]
             },
             {
+                "head": "ESTIMATE_TEMPLATE_HEADER",
+                "subHead": "",
+                "navLink": "Work Details",
+                "body": [
+                    {
+                        type: "component",
+                        component: "searchTemplate",
+                        withoutLabel: true,
+                        key: "searchTemplate",
+                        
+                    },
+                ]
+            },
+            {
                 "head": "",
                 "subHead": "",
                 "navLink": "Work Details",

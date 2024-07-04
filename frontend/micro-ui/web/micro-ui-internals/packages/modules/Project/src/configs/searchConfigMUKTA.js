@@ -1,5 +1,5 @@
 const searchConfigMUKTA = {
-  "tenantId": "pg",
+  "tenantId": "od",
   "moduleName": "commonMuktaUiConfig",
   "SearchProjectConfig": [
     {

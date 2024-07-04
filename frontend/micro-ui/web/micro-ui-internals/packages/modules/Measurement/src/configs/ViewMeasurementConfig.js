@@ -126,7 +126,9 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
             type: "COMPONENT",
             cardHeader: { value: "", inlineStyles: {} },
             component: "ViewAnalysisStatement",
-            props: {formData : {...estimateDetails, SORtable:  estimateDetails ? transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements) : []}}
+            props: {formData : {...estimateDetails,
+             Measurement:measurement,
+             SORtable:  estimateDetails ? transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements) : []}}
           },
           {
             type: "COMPONENT",

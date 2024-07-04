@@ -1,5 +1,5 @@
     export const createProjectConfig = {
-        "tenantId" : "pg",
+        "tenantId" : "od",
         "moduleName" : "commonUiConfig",
         "CreateProjectConfig" : [
           {

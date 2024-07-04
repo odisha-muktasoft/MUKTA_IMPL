@@ -20,6 +20,7 @@ import { initEstimateComponents } from "@egovernments/digit-ui-module-estimate";
 import "@egovernments/digit-ui-works-css/example/index.css";
 import { initMeasurementComponents } from "@egovernments/digit-ui-module-measurement";
 import { initMuktaCustomisations } from "@egovernments/digit-ui-customisation-mukta";
+import { initRateAnalysisComponents } from "@egovernments/digit-ui-module-rate-analysis";
 
 // import * as comps from "@egovernments/digit-ui-react-components";
 
@@ -42,6 +43,7 @@ const enabledModules = [
   "DSS",
   "Sample",
   "Measurement",
+  "RateAnalysis",
   // "Engagement"
 ];
 
@@ -90,6 +92,7 @@ const initDigitUI = () => {
   initExpenditureComponents();
   initMastersComponents();
   initProjectComponents();
+  initRateAnalysisComponents();
 
   const moduleReducers = (initData) => initData;
 

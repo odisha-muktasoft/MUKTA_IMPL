@@ -31,7 +31,7 @@ const businessServiceMap = {
 };    
 
 const inboxModuleNameMap = {
-  "mukta-estimate": "estimate-service",
+  "estimate": "estimate-service",
   "contract-approval-mukta": "contract-service",
   "muster-roll-approval": "muster-roll-service",
 };

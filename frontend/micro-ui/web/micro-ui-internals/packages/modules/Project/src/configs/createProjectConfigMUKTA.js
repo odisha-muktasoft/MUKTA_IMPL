@@ -1,5 +1,5 @@
 export const createProjectConfigMUKTA = {
-  "tenantId": "pg",
+  "tenantId": "od",
   "moduleName": "commonMuktaUiConfig",
   "CreateProjectConfig": [
     {

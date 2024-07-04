@@ -107,6 +107,8 @@ import useCreateLOI from "./works/useCreateLOI";
 import useEstimateSearchWorks from "./works/useSearch";
 import useCreateEstimate from "./works/useCreateEstimate";
 import useCreateEstimateNew from "./works/useCreateEstimateNew";
+import useCreateAnalysisStatement from "./works/useCreateAnalysisStatement";
+import useCreateUtilizationStatement from "./works/useCreateUtilizationStatement";
 import useSearchEstimate from "./works/useSearchEstimate";
 import useApplicationActionsLOI from "./works/useApplicationActions";
 import useApplicationActionsEstimate from "./works/useUpdateEstimate";
@@ -168,6 +170,8 @@ import useMBDataForPB from "./expenditure/useMBDataForPB";
 import useViewMeasurement from "./measurement/useViewMeasurement";
 import useEstimateSearchValidation from "./mukta/useEstimateSearchValidation";
 import useTEorMBCreateValidation from "./mukta/useTEorMBCreateValidation";
+import fetchContractDetails from"./rateAnalysis/useviewcontractdetails";
+import useViewRateAnalysisDetails from "./rateAnalysis/useviewcontractdetails";
 
 const works = {
   useViewEstimateDetails,
@@ -182,6 +186,12 @@ const works = {
   useSearchWORKS,
   useCreateEstimate,
   useCreateEstimateNew,
+  //look here to import and export
+  useCreateAnalysisStatement,
+  // added
+  useCreateUtilizationStatement,
+
+
   useSearchEstimate,
   useApplicationActionsLOI,
   useUpdateEstimate:useUpdateEstimateWorks,
@@ -330,6 +340,10 @@ const mukta = {
   useEstimateSearchValidation,
   useTEorMBCreateValidation
 }
+const rateAnalysis={
+  fetchContractDetails,
+  useViewRateAnalysisDetails
+}
 
 const Hooks = {
   useSessionStorage,
@@ -399,7 +413,8 @@ const Hooks = {
   bankAccount,
   paymentInstruction,
   measurement,
-  mukta
+  mukta,
+  rateAnalysis,
 };
 
 export default Hooks;
