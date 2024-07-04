@@ -145,7 +145,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
           extraCharges:defaultValues?.extraCharges,
         });
         setDefaultState({
-          currentDate : new Date(Date.now() + 86400000).toISOString().split("T")[0],
+          currentDate : [new Date().toISOString().split("T")[0]],
           SORDetails : defaultValues?.SORDetails || [],
           sordata: data?.mdms?.[0],
           extraCharges:defaultValues?.extraCharges,

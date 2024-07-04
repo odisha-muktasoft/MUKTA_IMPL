@@ -278,7 +278,7 @@ const ViewAnalysisStatement = () => {
       //look here need to uncomment once api works fine and check if the data is coming proper
      
       const location = useLocation();
-  const { responseData, estimateId, oldData, number } = location.state || {};
+  const { responseData, estimateId, oldData } = location.state || {};
      // const { state , refId } = useLocation()
       
       
@@ -420,7 +420,7 @@ const ViewAnalysisStatement = () => {
   };
 
   const HandleDownloadPdf = () => {
-      Digit.Utils.downloadWorksPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:estimateId}, `analysis_statement-${number}.pdf`);
+      Digit.Utils.downloadWorksPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:estimateId}, `analysis_statement-${estimateId}.pdf`);
   };
 
 // Consolidated table will be sent overhere

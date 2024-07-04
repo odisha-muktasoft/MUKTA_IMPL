@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Toast, Loader,LinkButton } from "@egovernments/digit-ui-react-components";
+import React from "react";
+import { LinkButton, Loader } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -7,14 +7,12 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
-  const [showToast, setShowToast] = useState(null);
 
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
     window.location.href
   );
   const isEstimate = window.location.href.includes("/estimate/");
   const isView = window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view");
-
   const { mutate: AnalysisMutation } = Digit.Hooks.works.useCreateAnalysisStatement("WORKS");
   const { mutate: UtilizationMutation } = Digit.Hooks.works.useCreateUtilizationStatement("WORKS");
 
@@ -24,27 +22,41 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     MachineryCost: ["MHA"],
   };
 
-  const getAnalysisCost = (categories) => {
+  function getAnalysisCost(categories) {
     let SORAmount = 0;
     if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
-      if (categories.includes("LA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
+      if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
         SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
       if (
-        categories.some((cat) => ChargesCodeMapping.MaterialCost.includes(cat)) &&
-        SORAmount === 0 &&
+        categories.some((cat) => ChargesCodeMapping?.MaterialCost?.includes(cat)) &&
+        SORAmount == 0 &&
         formData?.additionalDetails?.labourMaterialAnalysis?.material
       )
         SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
-      if (categories.includes("MHA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
+      if (categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
         SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
     }
+    //Conditions is used in the case of View details to capture the data from additional details
+    // if(category === "LA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour) return formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    // if(category === "MA" && SORAmount =getAnalysisCost= 0 && formData?.additionalDetails?.labourMaterialAnalysis?.material) return formData?.additionalDetails?.labourMaterialAnalysis?.material;
+    // if(category === "MHA" && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) return formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    // if(window.location.href.includes("update-detailed-estimate"))
+    // {
+    // if(category === "LA" && SORAmount == 0  && formData?.labourMaterialAnalysis?.labour) return formData?.labourMaterialAnalysis?.labour;
+    // if(category === "MA" && SORAmount == 0 && formData?.labourMaterialAnalysis?.material) return formData?.labourMaterialAnalysis?.material;
+    // if(category === "MHA" && SORAmount == 0 && formData?.labourMaterialAnalysis?.machinery) return formData?.labourMaterialAnalysis?.machinery;
+    // }
 
     SORAmount = SORAmount ? SORAmount : 0;
     return Digit.Utils.dss.formatterWithoutRound(parseFloat(SORAmount).toFixed(2), "number", undefined, true, undefined, 2);
-  };
+  }
+
+ 
 
   const requestSearchCriteria = {
+    
     url: isEstimate ? "/statements/v1/analysis/_search" : "/statements/v1/utilization/_search",
+    //params: { tenantId: tenantId, id: formData?.SORtable?.[0]?.estimateId || formData?.Measurement?.id },
     body: {
       searchCriteria: {
         tenantId: tenantId,
@@ -60,16 +72,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const { data: searchResponse, isLoading: searchLoading } = Digit.Hooks.useCustomAPIHook(requestSearchCriteria);
 
-  const checkMeasurement = () => {
-    if (window.location.href.includes("measurement/update")) {
-      return props?.data?.SORtable?.length > 0;
-    } else {
-      return formData?.SORtable?.length > 0;
-    }
-  };
-
-  const callCreateApi = async (event) => {
-    event.preventDefault();
+  async function callCreateApi() {
+    // Look here add the condition for utilization statement and call your api
     let payload = {
       statementRequest: {
         tenantId: tenantId,
@@ -80,181 +84,119 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
           : formData?.Measurement?.id,
       },
     };
-
-    if (isEstimate) {
-      await AnalysisMutation(payload, {
-        onError: async (error) => {
-          setShowToast({
-            error: true,
-            label: error?.response?.data?.Errors?.[0].message || error,
-          });
-          setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
-        },
-        onSuccess: async (responseData) => {
-          setTimeout(() => {
-            history.push({
-              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
-              state: {
-                responseData: responseData,
-                estimateId: formData?.SORtable?.[0]?.estimateId,
-                number: formData?.estimateNumber,
-              },
-            });
-          }, 1000);
-        },
-      });
-    } else {
-      await UtilizationMutation(payload, {
-        onError: async (error) => {
-          setShowToast({
-            error: true,
-            label: error?.response?.data?.Errors?.[0].message || error,
-          });
-          setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
-        },
-        onSuccess: async (responseData) => {
-          setTimeout(() => {
-            history.push({
-              pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
-              state: {
-                responseData: responseData,
-                estimateId: window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.id
-                  : formData?.Measurement?.id,
-                number: window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.measurementNumber
-                  : formData?.Measurement?.measurementNumber,
-              },
-            });
-          }, 1000);
-        },
-      });
-    }
-  };
-
-  const handleNavigation = (isEstimate, isView, searchResponse, formData, props) => {
-    const path = isEstimate
-      ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
-      : `/${window?.contextPath}/employee/measurement/utilizationstatement`;
-
-    const estimateId = isEstimate
-      ? formData?.SORtable?.[0]?.estimateId
-      : window.location.href.includes("measurement/update")
-      ? props.config.formData.Measurement.id
-      : formData?.Measurement?.id;
-
-    const number = isEstimate
-      ? formData?.estimateNumber
-      : window.location.href.includes("measurement/update")
-      ? props.config.formData.Measurement.measurementNumber
-      : formData?.Measurement?.measurementNumber;
-
-    const state = {
-      responseData: searchResponse,
-      estimateId,
-      number,
-    };
-
-    if (!searchResponse) {
-      state.oldData = {
-        Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
-        Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
-        Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
-      };
-    }
-
-    history.push({ pathname: path, state });
-  };
-
-  const checkConditions = (isEstimate, formData, props) => {
-    if (isEstimate) {
-      return formData?.SORtable?.length > 0;
-    } else {
-      return checkMeasurement();
-    }
-  };
-
-  const handleButtonClick = async (event) => {
-    event.preventDefault();
    
-
-    if (!checkConditions(isEstimate, formData, props)) {
-      const message = isEstimate ? t("NO_ESTIMATE_SOR_FOUND") : t("NO_MEASUREMENT_SOR_FOUND");
-      showToastMessage(message);
-      return;
+    {
+      isEstimate
+        ? await AnalysisMutation(payload, {
+            onError: async (error, variables) => {
+              setIsButtonDisabled(false);
+              setShowToast({
+                warning: true,
+                label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error,
+              });
+              setTimeout(() => {
+                setShowToast(false);
+              }, 5000);
+            },
+            onSuccess: async (responseData, variables) => {
+              setTimeout(() => {
+                history.push({
+                  pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+                  state: {
+                    responseData: responseData,
+                    estimateId: formData?.SORtable?.[0]?.estimateId,
+                  },
+                });
+              }, 1000);
+            },
+          })
+        : await UtilizationMutation(payload, {
+            onError: async (error, variables) => {
+              setIsButtonDisabled(false);
+              setShowToast({
+                warning: true,
+                label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error,
+              });
+              setTimeout(() => {
+                setShowToast(false);
+              }, 5000);
+            },
+            onSuccess: async (responseData, variables) => {
+              setTimeout(() => {
+              
+                history.push({
+                  pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+                  state: {
+                    responseData: responseData,
+                    estimateId: window.location.href.includes("measurement/update")
+                      ? props.config.formData.Measurement.id
+                      : formData?.Measurement?.id,
+                  },
+                
+                });
+               
+              }, 5000);
+            },
+          });
     }
+  }
 
-    if (isView && searchResponse) {
-      handleNavigation(isEstimate, isView, searchResponse, formData, props);
+  async function handleButtonClick() {
+    if (isView) {
+      if (searchResponse) {
+        history.push({
+          pathname: isEstimate
+            ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+            : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+          state: {
+            responseData: searchResponse,
+            estimateId: isEstimate
+              ? formData?.SORtable?.[0]?.estimateId
+              : window.location.href.includes("measurement/update")
+              ? props.config.formData.Measurement.id
+              : formData?.Measurement?.id,
+          },
+        });
+      } else {
+        //add the code for old viewpopup here
+        history.push({
+          pathname: isEstimate
+            ? `/${window?.contextPath}/employee/estimate/view-analysis-statement`
+            : `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+          state: {
+            responseData: searchResponse,
+            estimateId: isEstimate
+              ? formData?.SORtable?.[0]?.estimateId
+              : window.location.href.includes("measurement/update")
+              ? props.config.formData.Measurement.id
+              : formData?.Measurement?.id,
+            oldData: {
+              Labour: getAnalysisCost(ChargesCodeMapping?.LabourCost),
+              Material: getAnalysisCost(ChargesCodeMapping?.MaterialCost),
+              Machinery: getAnalysisCost(ChargesCodeMapping?.MachineryCost),
+            },
+          },
+        });
+        //await callCreateApi();
+      }
+      
     } else {
-      await callCreateApi(event);
+      await callCreateApi();
     }
-  };
+  }
 
-  const showToastMessage = (message) => {
-    setShowToast({ warning: true, label: message });
-    setTimeout(() => setShowToast(false), 5000);
-  };
-
-  // return (
-  //   <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-  //     {searchLoading ? (
-  //       <Loader />
-  //     ) : (
-  //       <button
-  //         type="button"
-  //         className="view-Analysis-button"
-  //         style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
-  //         onClick={handleButtonClick}
-  //       >
-  //         {isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
-  //       </button>
-  //     )}
-  //     {showToast && (
-  //       <Toast
-  //         error={showToast?.error}
-  //         warning={showToast?.warning}
-  //         success={showToast?.success}
-  //         label={t(showToast?.label)}
-  //         isDleteBtn={true}
-  //         onClose={() => setShowToast(null)}
-  //       />
-  //     )}
-  //   </div>
-  // );
-
-   if (searchLoading) return <Loader />;
+  if (searchLoading) return <Loader />;
 
   if (!window.location.href.includes("create"))
     return (
-      <div >
-        <LinkButton
-          className="view-Analysis-button"
-          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
-          onClick={handleButtonClick}
-          label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
-        />
-        {showToast && (
-        <Toast
-          error={showToast?.error}
-          warning={showToast?.warning}
-          success={showToast?.success}
-          label={t(showToast?.label)}
-          isDleteBtn={true}
-          style={{ overflowWrap: "break-word", // Ensure words break if they exceed container width
-            whiteSpace: "pre-line"}}
-          onClose={() => setShowToast(false)}
-        />
-      )}
-      </div>
+      <LinkButton
+        className="view-Analysis-button"
+        style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+        onClick={handleButtonClick}
+        label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
+      />
     );
   else return <div></div>;
-
 };
 
 export default ViewAnalysisStatement;
-
