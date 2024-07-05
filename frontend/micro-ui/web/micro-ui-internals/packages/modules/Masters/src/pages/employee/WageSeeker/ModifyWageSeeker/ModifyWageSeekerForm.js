@@ -33,19 +33,49 @@ const ModifyWageSeekerForm = ({createWageSeekerConfig, sessionFormData, setSessi
     const { mutate: CreateBankAccountMutation } = Digit.Hooks.bankAccount.useCreateBankAccount();
     const { mutate: DeleteWageSeeker } = Digit.Hooks.wageSeeker.useDeleteWageSeeker();
 
-    //Skill data
-    const {isLoading: skillDataFetching, data: skillData } = Digit.Hooks.useCustomMDMS(
-        stateTenant,
-        "common-masters",
-        [ { "name": "WageSeekerSkills" }],
-        {
+const requestCriteria = {
+    url: "/mdms-v2/v1/_search",
+    body: {
+      MdmsCriteria: {
+        moduleDetails : [
+
+          {
+            // "moduleName": options?.moduleName,
+            "moduleName": "WORKS-SOR",
+            "masterDetails": [
+                {
+                    "name": "SOR",
+                    "filter": "[?(@.sorType=='L')]"
+                    
+                }  
+            ]
+        },
+        ],
+        "tenantId": Digit.ULBService.getCurrentTenantId(),
+      },
+    },
+    config: {
             select: (data) => {
-                return data?.["common-masters"]?.WageSeekerSkills?.filter(item => item?.active)?.map(skill => ({
-                    code: skill?.code, name: `COMMON_MASTERS_SKILLS_${skill?.code}`
-                }))  
+              const optionsData = _.get(data?.MdmsRes, `${"WORKS-SOR"}.${"SOR"}`, []);
+              return optionsData?.filter((opt) => opt?.active === undefined || opt?.active === true).map((opt) => ({name: opt?.description, code: opt?.id}));
             }
-        }
-    );
+          },
+  };
+  const { isLoading, data : skillData} = Digit.Hooks.useCustomAPIHook(requestCriteria);
+
+    // Skill data
+    // const {isLoading: skillDataFetching, data: skillData } = Digit.Hooks.useCustomMDMS(
+    //     stateTenant,
+    //     "common-masters",
+    //     [ { "name": "WageSeekerSkills" }],
+    //     {
+    //         select: (data) => {
+    //             return data?.["common-masters"]?.WageSeekerSkills?.filter(item => item?.active)?.map(skill => ({
+    //                 code: skill?.code, name: `COMMON_MASTERS_SKILLS_${skill?.code}`
+    //             }))  
+    //         }
+    //     }
+    // );
 
     //location data
     const ULB = Digit.Utils.locale.getCityLocale(tenantId);

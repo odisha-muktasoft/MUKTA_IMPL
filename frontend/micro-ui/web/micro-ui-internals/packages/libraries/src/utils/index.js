@@ -6,7 +6,7 @@ import * as obps from "./obps";
 import * as pt from "./pt";
 import * as privacy from "./privacy";
 import { debouncing } from "./debouncing";
-import PDFUtil, { downloadReceipt, downloadPDFFromLink, downloadBill, getFileUrl, downloadEgovPDF, getDocumentName } from "./pdf";
+import PDFUtil, { downloadReceipt, downloadPDFFromLink, downloadBill, getFileUrl, downloadEgovPDF, getDocumentName, downloadWorksPDF } from "./pdf";
 import getFileTypeFromFileStoreURL from "./fileType";
 import preProcessMDMSConfig from "./preProcessMDMSConfig";
 import { configUpdater } from "./configUpdater";
@@ -322,6 +322,7 @@ const trimStringsInObject =  ( obj ) => {
 
 export default {
   pdf: PDFUtil,
+  downloadWorksPDF,
   downloadReceipt,
   downloadBill,
   downloadPDFFromLink,

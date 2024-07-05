@@ -1,5 +1,5 @@
 const searchWMSProjectConfig = {
-    "tenantId": "pg",
+    "tenantId": "od",
     "moduleName": "commonMuktaUiConfig",
     "SearchWMSProjectConfig": [
       {

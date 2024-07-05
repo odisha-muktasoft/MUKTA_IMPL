@@ -16,6 +16,7 @@ import { initHRMSComponents } from "@egovernments/digit-ui-module-hrms";
 // import {initMuktaCustomisations} from "@egovernments/digit-ui-customisation-mukta";
 import { TLCustomisations } from "./Customisations/tl/TLCustomisation";
 import { UICustomizations } from "./Customisations/UICustomizations";
+import { initRateAnalysisComponents } from "@egovernments/digit-ui-module-rate-analysis";
 
 window.contextPath = "core-ui";
 
@@ -47,6 +48,7 @@ const enabledModules = [
   "Estimate",
   "Project",
   "Measurement",
+  "RateAnalysis",
   // "Mukta"
 ];
 
@@ -64,6 +66,7 @@ const initDigitUI = () => {
   initExpenditureComponents();
   initMastersComponents();
   initProjectComponents();
+  initRateAnalysisComponents();
 
   window.Digit.Customizations = {
     PGR: {},

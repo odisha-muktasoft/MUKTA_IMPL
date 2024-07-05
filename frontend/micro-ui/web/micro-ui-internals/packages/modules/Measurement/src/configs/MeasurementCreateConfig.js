@@ -1,4 +1,5 @@
 export const CreateConfig = ({ defaultValue, measurement }) => {
+  
   return {
     CreateConfig: [
       {
@@ -189,7 +190,12 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 "type": "component",
                 "component": "ViewAnalysisStatement",
                 "withoutLabel": true,
-                "key": "labourMaterialAnalysis"
+                "key": "labourMaterialAnalysis",
+                
+                "formData" : {
+             Measurement:measurement,
+             }
+          
               }
             ],
           },

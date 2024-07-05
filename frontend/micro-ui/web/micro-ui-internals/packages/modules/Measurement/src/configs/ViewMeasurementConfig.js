@@ -41,7 +41,7 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
               {
                 key: "MB_MUSTER_ROLL_ID",
                 isLink : musterrollNumber ? true : false,
-                to : `/mukta-works-ui/employee/attendencemgmt/view-attendance?tenantId=${measurement?.tenantId}&musterRollNumber=${musterrollNumber}`,
+                to : `/works-ui/employee/attendencemgmt/view-attendance?tenantId=${measurement?.tenantId}&musterRollNumber=${musterrollNumber}`,
                 value: (findMusterRollNumber(musterRolls,measurement?.measurementNumber, measurement?.additionalDetails?.startDate, measurement?.additionalDetails?.endDate)) || "NA",
               },
               {
@@ -126,7 +126,9 @@ export const data = (contract, estimateDetails, measurement, allMeasurements, th
             type: "COMPONENT",
             cardHeader: { value: "", inlineStyles: {} },
             component: "ViewAnalysisStatement",
-            props: {formData : {...estimateDetails, SORtable:  estimateDetails ? transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements) : []}}
+            props: {formData : {...estimateDetails,
+             Measurement:measurement,
+             SORtable:  estimateDetails ? transformEstimateData(estimateDetails?.estimateDetails, contract, "SOR", measurement, allMeasurements) : []}}
           },
           {
             type: "COMPONENT",

@@ -342,7 +342,7 @@ const data = {
             project: null,
             ProcessInstances: null,
           },
-          url: "/mukta-estimate/v1/_update",
+          url: "/estimate/v1/_update",
           moduleCode: "Estimate",
           editApplicationNumber: undefined,
         },
@@ -379,7 +379,7 @@ const data = {
               //id {card[1]scection[]0+key}
               //classname
               // type:"link"/string/number/date/amount/
-              to:"/mukta-works-ui/employee/estimate/estimate-details?tenantId=pg.citya&estimateNumber=ES/2023-24/000828",
+              to:"/works-ui/employee/estimate/estimate-details?tenantId=pg.citya&estimateNumber=ES/2023-24/000828",
             },
           ],
         },
@@ -424,7 +424,7 @@ const data = {
               key: "key 3",
               value:"thisislink",
               isLink:true,
-              to:"/mukta-works-ui/employee/estimate/estimate-details?tenantId=pg.citya&estimateNumber=ES/2023-24/000828",
+              to:"/works-ui/employee/estimate/estimate-details?tenantId=pg.citya&estimateNumber=ES/2023-24/000828",
             },
           ],
         },

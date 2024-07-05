@@ -7,6 +7,8 @@ import org.egov.config.Constants;
 import org.egov.config.IfmsAdapterConfig;
 import org.egov.config.JITAuthValues;
 import org.egov.enc.SymmetricEncryptionService;
+import org.egov.kafka.IfmsAdapterProducer;
+import org.egov.web.models.ErrorRes;
 import org.egov.web.models.bankaccount.BankAccountResponse;
 import org.egov.web.models.enums.JITServiceId;
 import org.egov.web.models.jit.JITErrorRequestLog;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -40,6 +43,9 @@ public class ESLogUtils {
 
     @Autowired
     private JITAuthValues jitAuthValues;
+
+    @Autowired
+    private IfmsAdapterProducer ifmsAdapterProducer;
 
     @Autowired
     private ESAuthUtil esAuthUtil;
@@ -66,6 +72,8 @@ public class ESLogUtils {
             }
         } catch (Exception e) {
             log.info("Exception in saveJitRequestLogsToES : "+ e.getMessage());
+            ErrorRes errorRes = ErrorRes.builder().message(e.getMessage()).objects(Collections.singletonList(jitRequestLog)).build();
+            ifmsAdapterProducer.push(config.getIfixAdapterESErrorQueueTopic(), errorRes);
         }
         return jitRequestLog;
     }
@@ -91,13 +99,15 @@ public class ESLogUtils {
                 log.info("Request logged of jit request and response in ES");
             }
         } catch (Exception e) {
-            log.info("Exception in saveJitRequestLogsToES : "+ e.getMessage());
+            log.error("Exception in saveJitRequestLogsToES : "+ e.getMessage());
+            ErrorRes errorRes = ErrorRes.builder().message(e.getMessage()).objects(Collections.singletonList(jitErrorRequestLog)).build();
+            ifmsAdapterProducer.push(config.getIfixAdapterESErrorQueueTopic(), errorRes);
         }
         return jitErrorRequestLog;
     }
 
-	public @Valid JITRequestLog saveJitRequestLogsToES(JITRequest jitRequest, String encResponse, String decryptionRek) {
-		JITRequestLog jitRequestLog = null;
+    public @Valid JITRequestLog saveJitRequestLogsToES(JITRequest jitRequest, String encResponse, String decryptionRek) {
+        JITRequestLog jitRequestLog = null;
         try {
             if (config.getIfmsRequestLogEnabled()) {
                 log.info("Creating log for jit request and response in ES");
@@ -120,10 +130,12 @@ public class ESLogUtils {
                 log.info("Request logged of jit request and response in ES");
             }
         } catch (Exception e) {
-            log.info("Exception in saveJitRequestLogsToES : "+ e.getMessage());
+            log.error("Exception in saveJitRequestLogsToES : "+ e.getMessage());
+            ErrorRes errorRes = ErrorRes.builder().message(e.getMessage()).objects(Collections.singletonList(jitRequestLog)).build();
+            ifmsAdapterProducer.push(config.getIfixAdapterESErrorQueueTopic(), errorRes);
         }
         return jitRequestLog;
-	}
+    }
 
     public @Valid JITErrorRequestLog saveErrorResponseLogsToES(JITRequestLog jitRequestLog, JITRequest jitRequest, Map<String, String> payload, Exception ex, Integer statusCode) {
         JITErrorRequestLog jitErrorRequestLog = null;
@@ -155,7 +167,9 @@ public class ESLogUtils {
             }
 
         } catch (Exception e) {
-            log.info("Exception in saveErrorResponseLogsToES : "+ e.getMessage());
+            log.error("Exception in saveErrorResponseLogsToES : "+ e.getMessage());
+            ErrorRes errorRes = ErrorRes.builder().message(e.getMessage()).objects(Collections.singletonList(jitErrorRequestLog)).build();
+            ifmsAdapterProducer.push(config.getIfixAdapterESErrorQueueTopic(), errorRes);
         }
         return jitErrorRequestLog;
     }
@@ -198,6 +212,8 @@ public class ESLogUtils {
             response = restTemplate.postForObject(uri.toString(), entity, Map.class);
         } catch (Exception e) {
             log.error("Exception occurred while executing query in indexer : ", e);
+            throw new RuntimeException("Exception occurred while executing query in indexer", e);
+//            throw e;
         }
         return response;
     }

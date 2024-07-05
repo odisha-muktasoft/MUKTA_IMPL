@@ -9,6 +9,7 @@ import Button from "./Button";
   /* Alert popup when needed to have a warning action   */
 
 const AlertPopUp = ({setIsPopupOpen,setShowModal,t,label,...props}) => {
+    
     return (
             <PopUp>
             <div className="popup-view-alaysis" style={{marginTop: "20% !important", width:"27rem"}}>
@@ -23,7 +24,7 @@ const AlertPopUp = ({setIsPopupOpen,setShowModal,t,label,...props}) => {
                     style={{width:"45%"}}
                     label={t("CANCEL")}
                     variation="secondary"
-                    onButtonClick={() => {
+                    onButtonClick={props?.onButtonClickCancel ? props?.onButtonClickCancel : () => {
                         setIsPopupOpen(false);
                         setShowModal(false);
                     }}
@@ -33,10 +34,10 @@ const AlertPopUp = ({setIsPopupOpen,setShowModal,t,label,...props}) => {
                     style={{width:"45%"}}
                     label={t("CONFIRM")}
                     variation="primary"
-                    onButtonClick={() => {
+                    onButtonClick={props?.onButtonClickConfirm ? props?.onButtonClickConfirm : () => {
                         setIsPopupOpen(false);
                         setShowModal(true);
-                    }}
+}}
                     type="button"
                     />
                 </div>

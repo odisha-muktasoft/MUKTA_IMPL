@@ -46,13 +46,6 @@ public class NotificationServiceConfiguration {
     @Value("${egov.attendance.register.path}")
     private String attendanceRegisterPath;
 
-    //Org Configct
-    @Value("${egov.org.host}")
-    private String orgHost;
-
-    @Value("${egov.org.search.endpoint}")
-    private String orgSearchPath;
-
     @Value("${egov.idgen.contract.number.name}")
     private String idgenContractNumberName;
 

@@ -80,7 +80,7 @@ const CreateEstimate = ({props}) => {
 
  //fetching all the estimates for revision original values
  const requestrevisionCriteria = {
-  url: "/mukta-estimate/v1/_search",
+  url: "/estimate/v1/_search",
   params : {tenantId : tenantId , estimateNumber : estimateNumber},
   config : {
     cacheTime : 0

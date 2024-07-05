@@ -1,5 +1,5 @@
 export const CreateWageSeekerConfig = {
-  "tenantId" : "pg",
+  "tenantId" : "od",
   "moduleName" : "commonUiConfig",
   "CreateWageSeekerConfig" : [
     {

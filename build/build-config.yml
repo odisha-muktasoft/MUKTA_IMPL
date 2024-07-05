@@ -112,6 +112,22 @@ config:
       - work-dir: "backend/measurement-registry/src/main/resources/db"
         image-name: "measurement-registry-db"
 
+  - name: "builds/mukta_impl/backend/statements"
+    build:
+      - work-dir: "backend/statements"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "statements"
+      - work-dir: "backend/statements/src/main/resources/db"
+        image-name: "statements-db"
+
+  - name: "builds/mukta_impl/backend/rate-analysis"
+    build:
+      - work-dir: "backend/rate-analysis"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "rate-analysis"
+      - work-dir: "backend/rate-analysis/src/main/resources/db"
+        image-name: "rate-analysis-db"             
+
   # utilities
   - name: "builds/mukta_impl/utilities/egov-pdf"
     build:
@@ -150,18 +166,6 @@ config:
       - work-dir: frontend/works_shg_app/
         dockerfile: frontend/works_shg_app/docker/Dockerfile
         image-name: works-shg-app
-
-  - name: builds/mukta_impl/mukta/micro-ui/mukta-works-ui
-    build:
-      - work-dir: frontend/micro-ui/
-        dockerfile: frontend/micro-ui/web/docker/Dockerfile
-        image-name: mukta-works-ui      
-
-  - name: builds/mukta_impl/mukta/mukta-works-shg-app
-    build:
-      - work-dir: frontend/works_shg_app/
-        dockerfile: frontend/works_shg_app/docker/Dockerfile
-        image-name: mukta-works-shg-app  
 
 # utilities
   - name: "builds/mukta_impl/utilities/works-pdf"
@@ -216,6 +220,11 @@ config:
       - work-dir: "utilities/ifms-cronjob"
         image-name: "ifms-cronjob-pa"
         dockerfile: "utilities/ifms-cronjob/Dockerfile"
+  - name: "builds/mukta_impl/utilities/transformer-cronjob"
+    build:
+      - work-dir: "utilities/transformer-cronjob"
+        image-name: "transformer-cronjob"
+        dockerfile: "utilities/transformer-cronjob/Dockerfile"
 
 # reference-adapters
   - name: "builds/mukta_impl/reference-adapters/ifms-adapter"
