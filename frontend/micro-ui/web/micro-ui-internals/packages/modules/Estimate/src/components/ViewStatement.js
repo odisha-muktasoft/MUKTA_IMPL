@@ -203,8 +203,8 @@ const ViewStatement = (props) => {
                       </thead>
                       <tbody>
                         {
-                          <tr key={row.sNo}>
-                            <td style={{ width: "5%" }}>{row.sNo}</td>
+                          <tr key={1}>
+                            <td style={{ width: "5%" }}>{1}</td>
                             <td style={{ width: "5.28%" }}>{row.code}</td>
                             <td style={{ width: "30%" }}>{row.description}</td>
                             <td style={{ width: "9.28%" }}>{row.uom}</td>
