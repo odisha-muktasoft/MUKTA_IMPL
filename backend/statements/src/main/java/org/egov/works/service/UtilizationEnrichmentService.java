@@ -21,6 +21,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static org.egov.works.config.ErrorConfiguration.*;
+import static org.egov.works.config.ServiceConstants.SOR;
+import static org.egov.works.config.ServiceConstants.WORKS_TYPE;
+
 @Component
 @Slf4j
 public class UtilizationEnrichmentService {
@@ -52,20 +56,27 @@ public class UtilizationEnrichmentService {
         Map<String, EstimateDetail> estimateDetailIdToEstimateDetailMap = estimate.getEstimateDetails().stream()
                 .collect(Collectors.toMap(EstimateDetail::getId, Function.identity()));
         List<String> sorIdsFromEstimateDetail = estimate.getEstimateDetails().stream().filter(estimateDetail -> estimateDetail.getCategory()
-                .equalsIgnoreCase("SOR")).map(EstimateDetail::getSorId).collect(Collectors.toList());
+                .equalsIgnoreCase(SOR)).map(EstimateDetail::getSorId).collect(Collectors.toList());
 
         Map<String, Sor> sorIdToSorMap = mdmsUtil.fetchSorData(statementCreateRequest.getRequestInfo(),
                 statementCreateRequest.getStatementRequest().getTenantId(), sorIdsFromEstimateDetail, Boolean.TRUE);
         Set<String> worksSorIds = sorIdToSorMap.values().stream().filter(sor -> sor.getSorType()
-                .equalsIgnoreCase("W")).map(Sor::getId).collect(Collectors.toSet());
+                .equalsIgnoreCase(WORKS_TYPE)).map(Sor::getId).collect(Collectors.toSet());
         Map<String, SorComposition> sorIdToCompositionMap = null;
         Set<String> basicSorIds =new HashSet<>();
         Map<String, Sor> basicSorIdFromCompositionToSorMap = new HashMap<>();
+        Map<String, List<Rates>> worksRatesMap = new HashMap<>();
         if (!worksSorIds.isEmpty()) {
+            worksRatesMap = mdmsUtil.fetchRateForSor(new ArrayList<>(worksSorIds),
+                    statementCreateRequest.getRequestInfo(), statementCreateRequest.getStatementRequest().getTenantId());
+            Set<String> compositionIds = worksRatesMap.values().stream()
+                    .flatMap(List::stream)
+                    .map(Rates::getCompositionId)
+                    .collect(Collectors.toSet());
 //            Map<String, List<Rates>> sorRateMap = mdmsUtil.fetchRateForNonWorksSor(new ArrayList<>(worksSorIds),
 //                    statementCreateRequest.getRequestInfo(), statementCreateRequest.getStatementRequest().getTenantId());
-            sorIdToCompositionMap = mdmsUtil.fetchSorComposition(statementCreateRequest.getRequestInfo()
-                    , worksSorIds, statementCreateRequest.getStatementRequest().getTenantId(), measurement.getAuditDetails().getCreatedTime());
+            sorIdToCompositionMap = mdmsUtil.fetchSorCompositionBasedOnCompositionId(statementCreateRequest.getRequestInfo()
+                    , compositionIds, statementCreateRequest.getStatementRequest().getTenantId(), measurement.getAuditDetails().getCreatedTime());
             basicSorIds = sorIdToCompositionMap.values().stream()
                     .flatMap(sorComposition -> sorComposition.getBasicSorDetails().stream())
                     .map(SorCompositionBasicSorDetail::getSorId)
@@ -83,7 +94,7 @@ public class UtilizationEnrichmentService {
 
         sorIdToSorMap.putAll(basicSorIdFromCompositionToSorMap);
 
-        Map<String, List<Rates>> sorRateMap = mdmsUtil.fetchRateForNonWorksSor(new ArrayList<>(sorIdToSorMap.keySet()),
+        Map<String, List<Rates>> sorRateMap = mdmsUtil.fetchRateForSor(new ArrayList<>(sorIdToSorMap.keySet()),
                 statementCreateRequest.getRequestInfo(), statementCreateRequest.getStatementRequest().getTenantId());
 
         Map<String, BigDecimal> sorIdToCummValueMap = getSorToCummValueMap(measureList, estimateDetailIdToEstimateDetailMap,
@@ -115,7 +126,7 @@ public class UtilizationEnrichmentService {
         for (Measure measure : measureList) {
             String estimateDetailId = contractLineItemRefToEstDetailIdMap.get(measure.getTargetId());
             EstimateDetail estimateDetail = estimateDetailIdToEstimateDetailMap.get(estimateDetailId);
-            if (estimateDetail.getCategory().equalsIgnoreCase("SOR")) {
+            if (estimateDetail.getCategory().equalsIgnoreCase(SOR)) {
                 Sor sor;
                 if (sorIdToSorMap.get(estimateDetail.getSorId()) != null) {
                     sor = sorIdToSorMap.get(estimateDetail.getSorId());
@@ -126,7 +137,7 @@ public class UtilizationEnrichmentService {
                 if (alreadyComputeSor.contains(estimateDetail.getSorId()))
                     continue;
                 alreadyComputeSor.add(estimateDetail.getSorId());
-                if (sor.getSorType().equalsIgnoreCase("W")) {
+                if (sor.getSorType().equalsIgnoreCase(WORKS_TYPE)) {
                     calculatorService.calculateUtilizationForWorksSor(sorIdToCompositionMap, estimateDetail,
                             basicSorRateMap, typeToBasicSorDetailsMap, sor, measure, sorIdToSorMap, sorIdToCummValueMap,
                             timeForEstimateSubmission);
@@ -154,7 +165,7 @@ public class UtilizationEnrichmentService {
 
             String estimateDetailId = contractLineItemRefToEstDetailIdMap.get(measure.getTargetId());
             EstimateDetail estimateDetail = estimateDetailIdToEstimateDetailMap.get(estimateDetailId);
-            if (!estimateDetail.getCategory().equalsIgnoreCase("SOR")) {
+            if (!estimateDetail.getCategory().equalsIgnoreCase(SOR)) {
                 continue;
             }
             Sor sor = sorIdToSorMap.get(estimateDetail.getSorId());
@@ -170,7 +181,7 @@ public class UtilizationEnrichmentService {
 
 
             Map<String, BasicSorDetails> typeToBasicSorDetailsMap = new HashMap<>();
-            if (sor.getSorType().equalsIgnoreCase("W")) {
+            if (sor.getSorType().equalsIgnoreCase(WORKS_TYPE)) {
                 calculatorService.calculateUtilizationForWorksSor(sorIdToCompositionMap, estimateDetail,
                         sorRateMap, typeToBasicSorDetailsMap, sor, measure, sorIdToSorMap, sorIdToCummValueMap,
                         timeForEstimateSubmission);
@@ -208,7 +219,7 @@ public class UtilizationEnrichmentService {
             }
         }
 
-        throw new CustomException("RATE_NOT_FOUND", "No valid rate found for given time");
+        throw new CustomException(RATE_NOT_FOUND_KEY, RATE_NOT_FOUND_MSG);
     }
 
     private static long parseTime(String timeStr) {
@@ -227,7 +238,7 @@ public class UtilizationEnrichmentService {
                                 Measure measure, Map<String, List<Rates>> basicSorRateMap, String referenceId,
                                 Map<String, BigDecimal> sorIdToCummValueMap, Long timeForEstimateSubmission) {
         List<BasicSor> lineItems = new ArrayList<>();
-        if (sorIdToSorMap.get(sorId).getSorType().equalsIgnoreCase("W")) {
+        if (sorIdToSorMap.get(sorId).getSorType().equalsIgnoreCase(WORKS_TYPE)) {
             for(SorCompositionBasicSorDetail compositionBasicSorDetail : sorIdToCompositionMap.get(sorId).getBasicSorDetails()) {
                 BigDecimal quantity = sorIdToCummValueMap.get(estimateDetail.getSorId())
                         .multiply(compositionBasicSorDetail.getQuantity()).divide(sorIdToCompositionMap.get(sorId).getQuantity())
@@ -248,7 +259,7 @@ public class UtilizationEnrichmentService {
 
         Map<String, BasicSorDetails> typeToBasicSorDetailsMap = new HashMap<>();
         if (!basicSorRateMap.containsKey(sor.getId()))
-            throw new CustomException("RATES_NOT_FOUND", "Rates not found for given SOR :: " + sor.getId());
+            throw new CustomException(RATES_NOT_FOUND_SOR_KEY, RATES_NOT_FOUND_SOR_MSG + sor.getId());
 
         Rates rates = commonUtil.getApplicatbleRate(basicSorRateMap.get(sor.getId()), timeForEstimateSubmission);
         calculatorService.calculateUtilizationForBasicSor1(estimateDetail.getIsDeduction(), rates, typeToBasicSorDetailsMap,
@@ -267,7 +278,7 @@ public class UtilizationEnrichmentService {
             String estimateDetailId = contractLineItemRefToEstDetailIdMap.get(measure.getTargetId());
             EstimateDetail estimateDetail = estimateDetailIdToEstimateDetailMap.get(estimateDetailId);
             BigDecimal quantity = estimateDetail.getIsDeduction() ? measure.getCumulativeValue().multiply(BigDecimal.valueOf(-1)) : measure.getCumulativeValue();
-            if (estimateDetail.getCategory().equalsIgnoreCase("SOR"))
+            if (estimateDetail.getCategory().equalsIgnoreCase(SOR))
                 sorToCummValueMap.merge(estimateDetail.getSorId(), quantity, BigDecimal::add);
         }
         return sorToCummValueMap;
@@ -278,6 +289,7 @@ public class UtilizationEnrichmentService {
         if (previousStatement == null || currentStatement == null) {
             return;
         }
+        currentStatement.setId(previousStatement.getId());
 
         // Create a map for quick lookup of SorDetail by sorId from the previous statement
         Map<String, SorDetail> sorDetailMap = new HashMap<>();
@@ -296,6 +308,7 @@ public class UtilizationEnrichmentService {
 
                 if (previousSorDetail != null) {
                     currentSorDetail.setId(previousSorDetail.getId());
+                    currentSorDetail.setStatementId(previousSorDetail.getStatementId());
 
                     // Create a map for quick lookup of BasicSor by sorId from the previous sorDetail's lineItems
                     Map<String, BasicSor> lineItemsMap = new HashMap<>();
@@ -315,9 +328,13 @@ public class UtilizationEnrichmentService {
                             if (previousLineItem != null) {
                                 currentLineItem.setId(previousLineItem.getId());
                                 currentLineItem.setReferenceId(previousLineItem.getReferenceId());
+                            } else {
+                                currentLineItem.setReferenceId(currentSorDetail.getId());
                             }
                         }
                     }
+                } else {
+                    currentSorDetail.setStatementId(currentStatement.getId());
                 }
             }
         }
