@@ -120,7 +120,7 @@ config:
       - work-dir: "backend/statements/src/main/resources/db"
         image-name: "statements-db"
 
-  - name: "builds/digit-works/backend/rate-analysis"
+  - name: "builds/mukta_impl/backend/rate-analysis"
     build:
       - work-dir: "backend/rate-analysis"
         dockerfile: "build/maven-java17/Dockerfile"
