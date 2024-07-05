@@ -6,9 +6,13 @@ import org.egov.works.web.models.Rates;
 import org.egov.works.web.models.SorComposition;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static org.egov.works.config.ErrorConfiguration.*;
 
 @Component
 @Slf4j
@@ -32,10 +36,16 @@ public class CommonUtil {
                 return rate;
             }
         }
-        throw new CustomException("RATE_NOT_FOUND", "No valid rate found for given time");
+        return Rates.builder()
+                .rate(BigDecimal.ZERO)
+                .sorId(ratesList.get(0).getSorId())
+                .tenantId(ratesList.get(0).getTenantId())
+                .amountDetails( new ArrayList<>())
+                .build();
+       // throw new CustomException("RATE_NOT_FOUND", "No valid rate found for given time");
 //        return null; // Or throw an exception if no valid rate is found
         }else{
-            throw new CustomException("NO_RATES_FOUND","No rates present ");
+            throw new CustomException(NO_RATES_FOUND_KEY,NO_RATES_FOUND_MSG);
         }
     }
 
@@ -65,7 +75,7 @@ public class CommonUtil {
                 return sorComposition;
             }
         }
-        throw new CustomException("SOR_COMPOSITION_NOT_FOUND", "Sor composition with given effective time not found for SOR codes :: " + sorCompositions.get(0).getSorId());
+        throw new CustomException(SOR_COMPOSITION_NOT_FOUND_KEY, SOR_COMPOSITION_NOT_FOUND_MSG + sorCompositions.get(0).getSorId());
     }
 
 }

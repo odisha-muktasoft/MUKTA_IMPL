@@ -10,8 +10,12 @@ import  org.egov.works.services.common.models.estimate.EstimateDetail;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
+
+import static org.egov.works.config.ErrorConfiguration.NO_RATES_FOUND_FOR_BASIC_SOR_KEY;
+import static org.egov.works.config.ErrorConfiguration.NO_RATES_FOUND_FOR_BASIC_SOR_MSG;
 
 @Service
 @Slf4j
@@ -58,7 +62,7 @@ public class CalculatorService {
             calculateAmount(rates, typeToBasicSorDetailsMap, sor, quantity);
         } else {
             log.error("No rates found for basicSorId : " + sorId);
-            throw new CustomException("NO_RATES_FOUND_FOR_BASIC_SOR", "No rates found for basicSorId : " + sorId);
+            throw new CustomException(NO_RATES_FOUND_FOR_BASIC_SOR_KEY, NO_RATES_FOUND_FOR_BASIC_SOR_MSG + sorId);
         }
 
     }
@@ -75,14 +79,16 @@ public class CalculatorService {
     private void calculateAmount(Rates rates, Map<String, BasicSorDetails> typeToBasicSorDetailsMap, Sor sor,
                                  BigDecimal quantity) {
 
+        quantity.setScale(4, BigDecimal.ROUND_HALF_UP);
         if (typeToBasicSorDetailsMap.containsKey(sor.getSorType())) {
             BigDecimal currentAmount = typeToBasicSorDetailsMap.get(sor.getSorType()).getAmount();
-            currentAmount = currentAmount.add(rates.getRate().multiply(quantity));
+            currentAmount = currentAmount.add(rates.getRate().multiply(quantity)).setScale(2, RoundingMode.HALF_UP);
             typeToBasicSorDetailsMap.get(sor.getSorType()).setAmount(currentAmount);
             typeToBasicSorDetailsMap.get(sor.getSorType()).setQuantity(typeToBasicSorDetailsMap.get(sor.getSorType()).getQuantity().add(quantity));
         } else {
             BasicSorDetails basicSorDetails = enrichmentUtil.getEnrichedBasicSorDetails(sor.getSorType());
-            basicSorDetails.setAmount(rates.getRate().multiply(quantity));
+            BigDecimal currentAmount = rates.getRate().multiply(quantity).setScale(2, RoundingMode.HALF_UP);
+            basicSorDetails.setAmount(currentAmount);
             basicSorDetails.setQuantity(quantity);
             typeToBasicSorDetailsMap.put(sor.getSorType(), basicSorDetails);
         }
