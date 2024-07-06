@@ -10,12 +10,9 @@ const ExtraChargesViewTable = (props) => {
   //new component only
   const { t } = useTranslation();
 
-  const { pageType, arrayData,  emptyTableMsg } = props;
+  const { pageType, arrayData, emptyTableMsg } = props;
 
-  
   const [SORDetails, setSORDetails] = useState([]);
-
-  
 
   useEffect(() => {
     setSORDetails(arrayData ? arrayData : []);
@@ -71,8 +68,8 @@ const ExtraChargesViewTable = (props) => {
     description: row?.description,
     appliedOn: row?.appliedOn,
     calculationType: row?.calculationType,
-    figure: row?.figure,
-    amount: row?.amount,
+    figure: Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.figure).toFixed(2), "number", undefined, true, undefined, 2),
+    amount: Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.amount).toFixed(2), "number", undefined, true, undefined, 2),
   }));
 
   return (

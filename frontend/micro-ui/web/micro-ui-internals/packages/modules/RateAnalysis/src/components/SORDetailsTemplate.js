@@ -97,7 +97,7 @@ const SORDetailsTemplate = (props) => {
   }
   const transformSOR = (sor, isUpdate) => {
     const transformedSOR = {
-      sNo: SORDetails?.length > 0 ? parseFloat(SORDetails?.[SORDetails.length -1]?.sNo) + 1 : 1,
+      sNo: SORDetails?.length > 0 ? parseFloat(SORDetails?.[SORDetails.length - 1]?.sNo) + 1 : 1,
       description: sor?.description,
       uom: sor?.uom,
       category: "SOR",
@@ -158,13 +158,18 @@ const SORDetailsTemplate = (props) => {
   };
 
   const sortedRows = SORDetails.filter((ob) => ob?.sorType === props?.config?.sorType).map((row, index) => ({
-    sno: pageType === "VIEW"?parseFloat(index+1): row?.sNo ,
+    sno: pageType === "VIEW" ? parseFloat(index + 1) : row?.sNo,
     sorCode: row?.sorCode,
     description: row?.description,
     uom: row?.uom,
 
     quantity: pageType === "VIEW" ? parseFloat(row?.quantity || 0).toFixed(4) : row?.quantity,
-    ...(pageType === "VIEW" ? { amount: parseFloat(row?.amount || 0).toFixed(2), basicRate: parseFloat(row?.basicRate || 0).toFixed(2) } : {}),
+    ...(pageType === "VIEW"
+      ? {
+          amount: Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.amount || 0).toFixed(2), "number", undefined, true, undefined, 2),
+          basicRate: Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.basicRate || 0).toFixed(2), "number", undefined, true, undefined, 2),
+        }
+      : {}),
   }));
 
   useEffect(() => {
@@ -207,64 +212,65 @@ const SORDetailsTemplate = (props) => {
         </thead>
         <tbody>
           {/*renderBody*/}
-          {
-            sortedRows.length>0?
+          {sortedRows.length > 0 ? (
             sortedRows.map((row, rowIndex) => {
-              return(
-            <tr key={row?.sno}>
-              {columns.map((column, columnIndex) => (
-                <td key={columnIndex} style={getStyles(columnIndex + 1)}>
-                  {column?.key === "quantity" && pageType !== "VIEW" ? (
-                    <div style={cellContainerStyle}>
-                      <TextInput
-                        style={{ marginBottom: "0px" }}
-                        defaultValue={window.location.href.includes("update") ? row?.quantity : null}
-                        //value={row?.quantity}
-                        onChange={(e) => {
-                          const { value } = e.target;
-                          if (value ? has4DecimalPlaces(parseFloat(value)): true) {
-                            let newSOR = SORDetails?.map((obj) => {
-                              if (obj?.sorCode === row?.sorCode) {
-                                return { ...obj, quantity: value };
+              return (
+                <tr key={row?.sno}>
+                  {columns.map((column, columnIndex) => (
+                    <td key={columnIndex} style={getStyles(columnIndex + 1)}>
+                      {column?.key === "quantity" && pageType !== "VIEW" ? (
+                        <div style={cellContainerStyle}>
+                          <TextInput
+                            style={{ marginBottom: "0px" }}
+                            defaultValue={window.location.href.includes("update") ? row?.quantity : null}
+                            //value={row?.quantity}
+                            onChange={(e) => {
+                              const { value } = e.target;
+                              if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
+                                let newSOR = SORDetails?.map((obj) => {
+                                  if (obj?.sorCode === row?.sorCode) {
+                                    return { ...obj, quantity: value };
+                                  }
+                                  return obj;
+                                });
+                                setSORDetails([...newSOR]);
+                                setFormValue([...newSOR]);
+                                //setValue("SORDetails",[...newSOR])
+                              } else {
+                                e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
                               }
-                              return obj;
-                            });
-                            setSORDetails([...newSOR]);
-                            setFormValue([...newSOR]);
-                            //setValue("SORDetails",[...newSOR])
-                          }
-                          else {
-                            e.target.value = value.slice(0, value.length - 1); // Restrict input to 4 decimal places
-                          }
-                        }}
-                        inputRef={register({
-                          required: true,
-                        })}
-                        disable={false}
-                      />
-                    </div>
-                  ) : (
-                    row[column.key]
+                            }}
+                            inputRef={register({
+                              required: true,
+                            })}
+                            disable={false}
+                          />
+                        </div>
+                      ) : (
+                        row[column.key]
+                      )}
+                    </td>
+                  ))}
+                  {pageType !== "VIEW" && (
+                    <td /*style={getStyles(5)}*/>
+                      <div style={cellContainerStyle}>
+                        {
+                          <span onClick={() => remove(row)} className="icon-wrapper">
+                            <DeleteIcon fill={"#FF9100"} />
+                          </span>
+                        }
+                      </div>
+                      <div style={errorContainerStyles}></div>
+                    </td>
                   )}
-                </td>
-              ))}
-              {pageType !== "VIEW" && (
-                <td /*style={getStyles(5)}*/>
-                  <div style={cellContainerStyle}>
-                    {
-                      <span onClick={() => remove(row)} className="icon-wrapper">
-                        <DeleteIcon fill={"#FF9100"} />
-                      </span>
-                    }
-                  </div>
-                  <div style={errorContainerStyles}></div>
-                </td>
-              )}
-            </tr>
-          )}):<td colSpan={8} style={{ textAlign: "center" }}>
-          {t(emptyTableMsg)}
-          </td>
-        }
+                </tr>
+              );
+            })
+          ) : (
+            <td colSpan={8} style={{ textAlign: "center" }}>
+              {t(emptyTableMsg)}
+            </td>
+          )}
 
           {sortedRows.length > 0 && pageType === "VIEW" && (
             <tr>
