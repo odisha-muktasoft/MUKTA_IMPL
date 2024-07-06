@@ -120,14 +120,14 @@ const GroupedTable = (props) => {
         <td style={{ width: "25%" }}>{row.description}</td>
         <td style={{ width: "10%" }}>{row.uom}</td>
         <td style={{ width: "10%" ,textAlign:"right", }}>
-          {<Amount value={parseFloat(row.rate).toFixed(2)} t={t} sameDisplay={true} roundOff={false} />}
+          {<Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row.rate).toFixed(2), "number", undefined, true, undefined, 2)} t={t} sameDisplay={true} roundOff={false} />}
         </td>
         <td style={{ width: "15%",textAlign:"right", }}>
           {/*<Amount value={row.totalQuantity} t={t} />*/}
           {<Amount value={parseFloat(row.totalQuantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />}
         </td>
         <td style={{ width: "15%" ,textAlign:"right",}}>
-          <Amount value={parseFloat(row.totalAmount).toFixed(2)} t={t} sameDisplay={true} roundOff={false}/>
+          <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row.totalAmount).toFixed(2), "number", undefined, true, undefined, 2)} t={t} sameDisplay={true} roundOff={false}/>
         </td>
         {/* <td style={{ width: "15%" }}>
           <Amount value={parseFloat(row.totalMH).toFixed(2)} t={t} />
@@ -147,7 +147,7 @@ const GroupedTable = (props) => {
         <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" }}>{t("MB_AMOUNT_TOTAL")}</td>
         <td style={{ width: "10%" }}>
           
-         <div style={{ textAlign:"right", fontWeight:"bold" }}> { parseFloat( groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)).toFixed(2)} </div>
+         <div style={{ textAlign:"right", fontWeight:"bold" }}> {Digit.Utils.dss.formatterWithoutRound( parseFloat( groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)).toFixed(2), "number", undefined, true, undefined, 2)} </div>
         </td>
         </tr>
         
