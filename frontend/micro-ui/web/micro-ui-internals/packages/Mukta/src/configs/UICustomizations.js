@@ -2831,7 +2831,10 @@ export const UICustomizations = {
         tenantId: Digit.ULBService.getCurrentTenantId(),
         schemaCode:"WORKS-SOR.SOR",
         filters: filters,
-      };
+        limit:data.state.tableForm.limit,
+        offset:data.state.tableForm.offset
+      };  
+
       return data;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
@@ -2869,10 +2872,17 @@ export const UICustomizations = {
       }, []);
 
       React.useEffect(() => {
-        Digit.SessionStorage.set("RA_SELECTED_SORS", {});
-        const storedData = Digit.SessionStorage.get("RA_SELECTED_SORS") || {};
-        setSelectedSorIds(storedData);
+        if (searchResult.length > 0) {
+          const sorTypeSelected = row?.data?.sorType;
+          Digit.SessionStorage.set("RA_SELECTED_SORS", { sorType: sorTypeSelected });
+          setSelectedSorIds({ sorType: sorTypeSelected });
+        }
       }, [searchResult]);
+    
+
+      React.useEffect(() => {
+        window.dispatchEvent(new Event('session-storage-update'));
+      }, [Digit.SessionStorage.get("RA_SELECTED_SORS")]);
 
       switch (key) {
         case "RA_SOR_CODE":
