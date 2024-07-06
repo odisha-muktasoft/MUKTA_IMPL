@@ -12,16 +12,15 @@ const ViewRateAnalysis = () => {
 
   const userInfo = Digit.UserService.getUser();
   const userRoles = userInfo?.info?.roles?.map((roleData) => roleData?.code);
-const [current,setCurrent]=useState(Date.now())
+  const [current, setCurrent] = useState(Date.now());
   const queryStrings = Digit.Hooks.useQueryParams();
-  
-  let effectiveTime=queryStrings.fromeffective != current? current : queryStrings.fromeffective
-  let dataPaylod = {
 
+  let effectiveTime = queryStrings.fromeffective ? queryStrings.fromeffective : current;
+  let dataPaylod = {
     sorDetails: {
       tenantId: tenantId,
       sorCodes: [`${queryStrings?.sorId}`],
-    effectiveFrom: effectiveTime,
+      effectiveFrom: effectiveTime,
     },
   };
 
