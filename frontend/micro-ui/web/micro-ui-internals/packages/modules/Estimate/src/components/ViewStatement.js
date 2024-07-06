@@ -68,13 +68,13 @@ const ViewStatement = (props) => {
         <td style={{ width: "30%" }}>{subRow.name}</td>
         <td style={{ width: "9.28%" }}>{subRow.unit}</td>
         <td style={{ width: "14.28%", textAlign: "right" }}>
-          <div>{parseFloat(subRow?.rate.toFixed(2))} </div>
+          <div>{Digit.Utils.dss.formatterWithoutRound(parseFloat(subRow?.rate.toFixed(2)), "number", undefined, true, undefined, 2)} </div>
         </td>
         <td style={{ width: "14.28%", textAlign: "right" }}>
           <Amount value={parseFloat(subRow?.quantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />
         </td>
         <td style={{ width: "14.28%", textAlign: "right" }}>
-          <Amount value={parseFloat(subRow?.amount).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+          <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(subRow?.amount).toFixed(2), "number", undefined, true, undefined, 2)} t={t} roundOff={false} sameDisplay={true} />
         </td>
       </tr>
     ));
@@ -91,7 +91,7 @@ const ViewStatement = (props) => {
           {t("MB_ONLY_AMOUNT")}:
         </td>
         <td style={{ textAlign: "right", fontWeight: "bold" }}>
-          <Amount value={parseFloat(subTotal).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+          <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(subTotal).toFixed(2), "number", undefined, true, undefined, 2)} t={t} roundOff={false} sameDisplay={true} />
         </td>
       </tr>
     );
@@ -115,23 +115,23 @@ const ViewStatement = (props) => {
               <td style={{ width: "35%" }}>{row.description}</td>
               <td style={{ width: "8.5%", fontWeight: "500" }}>{row.uom}</td>
               <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
-                <Amount value={parseFloat(row.rate).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row.rate).toFixed(2), "number", undefined, true, undefined, 2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
                 <Amount value={parseFloat(row.estimatedQuantity?.[type]).toFixed(4)} t={t} roundOff={false} sameDisplay={true} />
               </td>
               <td style={{ width: "12.5%", fontWeight: "500", textAlign: "right" }}>
-                <Amount value={parseFloat(row.estimatedAmount?.[type]).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row.estimatedAmount?.[type]).toFixed(2), "number", undefined, true, undefined, 2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
             </tr>
             {subRows.length > 0 && (
               <React.Fragment>
-                <tr>
+                {/*<tr>
                   <td style={{ borderBottom: "none" }}></td>
                   <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
                     <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
                   </td>
-                </tr>
+                </tr>*/}
                 <tr>
                   <td style={{ borderTop: "none" }}></td>
                   <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
@@ -152,12 +152,12 @@ const ViewStatement = (props) => {
 
             {subRows.length === 0 && row?.type === "W" && (
               <React.Fragment>
-                <tr>
+                {/*<tr>
                   <td style={{ borderBottom: "none" }}></td>
                   <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
                     <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
                   </td>
-                </tr>
+                </tr>*/}
                 <tr>
                   <td style={{ borderTop: "none" }}></td>
                   <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
@@ -185,12 +185,12 @@ const ViewStatement = (props) => {
 
             {subRows.length === 0 && row?.type !== "W" && (
               <React.Fragment>
-                <tr>
+               {/* <tr>
                   <td style={{ borderBottom: "none" }}></td>
                   <td colSpan={7} style={{ borderBottom: "none", paddingLeft: "20px" }}>
                     <strong>{t(`WORKS_${type}_TABLE_HEADER`)}</strong>
                   </td>
-                </tr>
+                </tr>*/}
                 <tr>
                   <td style={{ borderTop: "none" }}></td>
                   <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" }}>
@@ -255,7 +255,7 @@ const ViewStatement = (props) => {
                 {config?.screenType === "UTILIZATION" ? t("UTILIZATION_STATEMENT_GRAND_TOTAL") : t("STATEMENT_GRAND_TOTAL")}:
               </td>
               <td style={{ textAlign: "right", fontWeight: "bold" }}>
-                <Amount value={parseFloat(grandTotal).toFixed(2)} t={t} roundOff={false} sameDisplay={true} />
+                <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(grandTotal).toFixed(2), "number", undefined, true, undefined, 2)} t={t} roundOff={false} sameDisplay={true} />
               </td>
             </tr>
           ) : (

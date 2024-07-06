@@ -92,7 +92,10 @@ const RateAmountGroup = (props) => {
         
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between", padding: "1rem", border: "1px solid #D6D5D4", borderRadius: "5px" }}>
                 <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize:"18px"  }}>{`${t("RA_EXISTING_RATE")}/${uom}`}</CardSectionHeader>
-                <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{parseFloat(existingData).toFixed(2)}</CardSectionHeader>
+                <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{
+                  Digit.Utils.dss.formatterWithoutRound(parseFloat(existingData).toFixed(2), "number", undefined, true, undefined, 2)
+                  
+                }</CardSectionHeader>
             </div>
         </div>
           {/*<ViewTotalEstAmount mode={"VIEW"} detail={{ showTitle: "RA_EXISTING_RATE", value: existingData }} />*/}
@@ -103,8 +106,8 @@ const RateAmountGroup = (props) => {
             <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-between", padding: "1rem", border: "1px solid #D6D5D4", borderRadius: "5px" }}>
                 <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize:"18px"  }}>{`${t("RA_NEW_RATE")}/${uom}`}</CardSectionHeader>
                 <CardSectionHeader style={{ marginBottom: "0px", fontSize:"24px", fontWeight:"700"}}>{
-                  parseFloat(newValue).toFixed(2)
                   
+                  Digit.Utils.dss.formatterWithoutRound(parseFloat(newValue).toFixed(2), "number", undefined, true, undefined, 2)  
                 }</CardSectionHeader>
             </div>
         </div>
