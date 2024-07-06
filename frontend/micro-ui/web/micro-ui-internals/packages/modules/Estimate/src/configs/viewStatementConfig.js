@@ -41,8 +41,7 @@ export const data = (statementDetails, rawData, oldData) => {
                   ? parseFloat(oldData?.Material).toFixed(2)
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2)
-                  : parseFloat(0).toFixed(2),
-                  textStyle:{width:"14%",textAlign:"right"},
+                  : (0).toFixed(2),
               },
               {
                 key: "STATEMENT_LABOUR",
@@ -50,8 +49,7 @@ export const data = (statementDetails, rawData, oldData) => {
                   ? parseFloat(oldData?.Machinery).toFixed(2)
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2)
-                  : parseFloat(0).toFixed(2),
-                  textStyle:{width:"14%",textAlign:"right"},
+                  : (0).toFixed(2),
               },
               {
                 key: "STATEMENT_MACHINERY",
@@ -59,8 +57,7 @@ export const data = (statementDetails, rawData, oldData) => {
                   ? parseFloat(oldData?.Labour).toFixed(2)
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2)
-                  : parseFloat(0).toFixed(2),
-                  textStyle:{width:"14%",textAlign:"right"},
+                  : (0).toFixed(2),
               },
               {
                 
@@ -70,7 +67,6 @@ export const data = (statementDetails, rawData, oldData) => {
                     return acc + (ob?.additionalDetails?.labourCessAmount || 0);
                   }, 0)
                 ).toFixed(2),
-                textStyle:{width:"14%",textAlign:"right"},
               },
             ],
           },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Toast, Loader,LinkButton } from "@egovernments/digit-ui-react-components";
+import { Toast, Loader, LinkButton } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [showToast, setShowToast] = useState(null);
-
+  const { revisionNumber } = Digit.Hooks.useQueryParams();
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
     window.location.href
   );
@@ -99,7 +99,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               state: {
                 responseData: responseData,
                 estimateId: formData?.SORtable?.[0]?.estimateId,
-                number: formData?.estimateNumber,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
               },
             });
           }, 1000);
@@ -122,9 +122,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
               state: {
                 responseData: responseData,
-                estimateId: window.location.href.includes("measurement/update")
-                  ? props.config.formData.Measurement.id
-                  : formData?.Measurement?.id,
+                estimateId: window.location.href.includes("measurement/update") ? props.config.formData.Measurement.id : formData?.Measurement?.id,
                 number: window.location.href.includes("measurement/update")
                   ? props.config.formData.Measurement.measurementNumber
                   : formData?.Measurement?.measurementNumber,
@@ -148,7 +146,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       : formData?.Measurement?.id;
 
     const number = isEstimate
-      ? formData?.estimateNumber
+      ? window.location.href.includes("revision")
+        ? revisionNumber
+        : formData?.estimateNumber
       : window.location.href.includes("measurement/update")
       ? props.config.formData.Measurement.measurementNumber
       : formData?.Measurement?.measurementNumber;
@@ -180,7 +180,6 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const handleButtonClick = async (event) => {
     event.preventDefault();
-   
 
     if (!checkConditions(isEstimate, formData, props)) {
       const message = isEstimate ? t("NO_ESTIMATE_SOR_FOUND") : t("NO_MEASUREMENT_SOR_FOUND");
@@ -227,11 +226,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   //   </div>
   // );
 
-   if (searchLoading) return <Loader />;
+  if (searchLoading) return <Loader />;
 
   if (!window.location.href.includes("create"))
     return (
-      <div >
+      <div>
         <LinkButton
           className="view-Analysis-button"
           style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
@@ -239,22 +238,19 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
           label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
         />
         {showToast && (
-        <Toast
-          error={showToast?.error}
-          warning={showToast?.warning}
-          success={showToast?.success}
-          label={t(showToast?.label)}
-          isDleteBtn={true}
-          style={{ overflowWrap: "break-word", // Ensure words break if they exceed container width
-            whiteSpace: "pre-line"}}
-          onClose={() => setShowToast(false)}
-        />
-      )}
+          <Toast
+            error={showToast?.error}
+            warning={showToast?.warning}
+            success={showToast?.success}
+            label={t(showToast?.label)}
+            isDleteBtn={true}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between", whiteSpace: "nowrap" }}
+            onClose={() => setShowToast(false)}
+          />
+        )}
       </div>
     );
   else return <div></div>;
-
 };
 
 export default ViewAnalysisStatement;
-
