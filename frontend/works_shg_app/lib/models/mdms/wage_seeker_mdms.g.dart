@@ -98,6 +98,9 @@ _$_WageSeekerCommonMDMS _$$_WageSeekerCommonMDMSFromJson(
       socialCategory: (json['SocialCategory'] as List<dynamic>?)
           ?.map((e) => SocialCategory.fromJson(e as Map<String, dynamic>))
           .toList(),
+      documentType: (json['DocumentType'] as List<dynamic>?)
+          ?.map((e) => DocumentType.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_WageSeekerCommonMDMSToJson(
@@ -107,6 +110,7 @@ Map<String, dynamic> _$$_WageSeekerCommonMDMSToJson(
       'WageSeekerSkills': instance.wageSeekerSkills,
       'Relationship': instance.relationship,
       'SocialCategory': instance.socialCategory,
+      'DocumentType': instance.documentType,
     };
 
 _$_GenderType _$$_GenderTypeFromJson(Map<String, dynamic> json) =>
@@ -157,6 +161,20 @@ _$_BankAccType _$$_BankAccTypeFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$$_BankAccTypeToJson(_$_BankAccType instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'code': instance.code,
+      'active': instance.active,
+    };
+
+_$_DocumentType _$$_DocumentTypeFromJson(Map<String, dynamic> json) =>
+    _$_DocumentType(
+      name: json['name'] as String,
+      code: json['code'] as String,
+      active: json['active'] as bool,
+    );
+
+Map<String, dynamic> _$$_DocumentTypeToJson(_$_DocumentType instance) =>
     <String, dynamic>{
       'name': instance.name,
       'code': instance.code,
