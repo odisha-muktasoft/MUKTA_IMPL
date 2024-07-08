@@ -159,7 +159,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       number,
     };
 
-    if (!searchResponse) {
+    if (!searchResponse || searchResponse?.statement?.length <=0) {
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
