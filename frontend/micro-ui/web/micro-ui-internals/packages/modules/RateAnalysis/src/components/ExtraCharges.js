@@ -16,6 +16,7 @@ import { has4DecimalPlaces } from "../utils/transformData";
 
 const ExtraCharges = ({ control, watch, config, ...props }) => {
   const populators = config?.populators;
+  const stateId = Digit.ULBService.getStateId()
 
   const formFieldName = "extraCharges"; // this will be the key under which the data for this table will be present on onFormSubmit
   const initialState = [
@@ -131,7 +132,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       url: "/mdms-v2/v2/_search",
       body: {
         MdmsCriteria: {
-          tenantId: "pg",
+          tenantId: stateId,
           schemaCode: "WORKS-SOR.Overhead",
         },
       },
