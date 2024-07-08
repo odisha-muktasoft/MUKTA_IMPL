@@ -27,6 +27,7 @@ const ViewScheduledJobsConfig = {
               headerStyle: null,
               primaryLabel: "ES_COMMON_SEARCH",
               secondaryLabel: "ES_COMMON_CLEAR_SEARCH",
+              searchWrapperClassName:"view-scheduled-jobs-serach-wrapper",
               minReqFields: 1,
               showFormInstruction: "",
               defaultValues: {
