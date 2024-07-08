@@ -127,8 +127,11 @@ const SearchSOR = () => {
       <ActionBar style={{ display: "flex", gap: "24px", justifyContent: "flex-end" }}>
         <SubmitBar
           label={t("RA_REVISE_RATE_FOR_SELECTED")}
-          onSubmit={() => setPopup(true)}
-          disabled={selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
+          onSubmit={() => {
+            setPopup(true);
+            setReviseAll(false);
+          }}
+          disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
         />
         <SubmitBar
           label={t("RA_REVISE_RATE_FOR_ALL")}
