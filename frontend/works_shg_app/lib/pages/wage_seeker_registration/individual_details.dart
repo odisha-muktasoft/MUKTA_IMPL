@@ -105,7 +105,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
     List<String> skills =
         widget.wageSeekerMDMS!.commonMDMS!.wageSeekerSkills != null
             ? widget.wageSeekerMDMS!.commonMDMS!.wageSeekerSkills!
-                .map((e) => e.code)
+                .map((e) => e.id!)
                 .toList()
             : [];
 // Returning appropriate subpage based on the switchPage variable

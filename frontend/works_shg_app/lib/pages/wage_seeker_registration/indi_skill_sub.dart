@@ -45,7 +45,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
               ? []
               : widget.skillDetails!.individualSkills!
                   .where((e) => e.type != null)
-                  .map((e) => '${e.level}.${e.type}')
+                  .map((e) => '${e.level}_${e.type}')
                   .toList();
     }
 
@@ -136,7 +136,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
     Map<String, int> afterDotCount = {};
 
     for (String skill in selectedOptions) {
-      List<String> skillParts = skill.split(".");
+      List<String> skillParts = skill.split("_");
       String beforeDot = skillParts[0];
       String afterDot = skillParts[1];
 
