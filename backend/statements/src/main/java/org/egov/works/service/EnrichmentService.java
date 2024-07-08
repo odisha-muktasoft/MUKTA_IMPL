@@ -15,6 +15,7 @@ import org.egov.works.util.EstimateUtil;
 import org.egov.works.util.MdmsUtil;
 import org.egov.works.util.StatementServiceUtil;
 import org.egov.works.web.models.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,18 +109,27 @@ public class EnrichmentService {
            // Map<String, Sor> sorDescriptionMapForSorMappedInEstimate = mdmsUtil.fetchSorData(requestInfo, configuration.getStateLevelTenantId(), new ArrayList<>(uniqueIdentifiers), true);
             Map<String, Rates> sorRates = mdmsUtil.fetchBasicRates(requestInfo, estimate.getTenantId(), new ArrayList<>(uniqueIdentifiers));
             Map<String, SorComposition> sorIdCompositionMap = new LinkedHashMap<>();
+            Set<String> compositionIdSet = new HashSet<>();
             Long currentEpochTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) * 1000;
             for (String sorId : uniqueIdentifiers) {
                 Rates rate = sorRates.get(sorId);
-                Set<String> compositionIdSet = new HashSet<>();
-                compositionIdSet.add(rate.getCompositionId());
-                // Fetch SorComposition for the current compositionIdSet
-                Map<String, SorComposition> fetchedMap = mdmsUtil.fetchSorCompositionBasedOnCompositionId(requestInfo, compositionIdSet, statementRequest.getTenantId(), currentEpochTime);
-                // Add fetchedMap entries to sorIdCompositionMap
-                sorIdCompositionMap.putAll(fetchedMap);
-
-
+                Optional.ofNullable(rate.getCompositionId())
+                        .ifPresent(compositionIdSet::add);
             }
+      /*      // Fetch SorComposition for the current compositionIdSet
+            Map<String, SorComposition> fetchedMap = mdmsUtil.fetchSorCompositionBasedOnCompositionId(requestInfo, compositionIdSet, statementRequest.getTenantId(), currentEpochTime);
+            // Add fetchedMap entries to sorIdCompositionMap
+            sorIdCompositionMap.putAll(fetchedMap);*/
+
+            // Check if compositionIdSet is not empty or null
+            Optional.ofNullable(compositionIdSet)
+                    .filter(ids -> !ids.isEmpty())  // Check if compositionIdSet is not empty
+                    .ifPresent(ids -> {
+                        // Perform computation only if compositionIdSet is not empty
+                        Map<String, SorComposition> fetchedMap = mdmsUtil.fetchSorCompositionBasedOnCompositionId(
+                                requestInfo, ids, statementRequest.getTenantId(), currentEpochTime);
+                        sorIdCompositionMap.putAll(fetchedMap);
+                    });
 
             if (sorIdCompositionMap != null && !sorIdCompositionMap.isEmpty()) {
                 for (SorComposition sorComposition : sorIdCompositionMap.values()) {
@@ -181,31 +191,39 @@ public class EnrichmentService {
                 // Update existingSorDetail with newSorDetail if they differ
                 SorDetail existingSorDetail = existingStatementSorDetailsMap.get(sorId);
                 existingSorDetail.setAdditionalDetails(newSorDetail.getAdditionalDetails());
-                if (!areBasicSorDetailsEqual(existingSorDetail.getBasicSorDetails(), newSorDetail.getBasicSorDetails())) {
+                existingSorDetail.setBasicSorDetails(new ArrayList<>(newSorDetail.getBasicSorDetails()));
+               /* if (!areBasicSorDetailsEqual(existingSorDetail.getBasicSorDetails(), newSorDetail.getBasicSorDetails())) {
                     existingSorDetail.setBasicSorDetails(new ArrayList<>(newSorDetail.getBasicSorDetails()));
-                }
+                }*/
 
                 // Update line items if necessary
                 List<BasicSor> existingBasicSorList = existingSorDetail.getLineItems();
                 List<BasicSor> newBasicSorList = newSorDetail.getLineItems();
+                List<BasicSor> updatedBasicSorList= new ArrayList<BasicSor>();
+
                 if (newBasicSorList != null && !areBasicSorDetailsOfLineItemsEqual(existingBasicSorList, newBasicSorList)) {
                     log.info("Updated Basic Sor Line Items object in existing statement");
-                      /*  newBasicSorList.stream()
-                                .forEach(basicSor -> basicSor.setReferenceId(existingSorDetail.getId()));
-                    existingSorDetail.setLineItems(new ArrayList<>(newBasicSorList));*/
+
+                    updatedBasicSorList.addAll(existingBasicSorList);
+                    // Set updatedBasicSorList to existingSorDetail after updates
+                    existingSorDetail.setLineItems(updatedBasicSorList);
                 }
+
+                existingStatementSorDetailsMap.put(sorId,existingSorDetail);
             }
         }
-        // Track cumulative amounts for each sorType
-        Map<String, BigDecimal> cumulativeAmounts = new HashMap<>();
-        Map<String, BigDecimal> cumulativeQuantities = new HashMap<>();
+
+       // Map<String, BigDecimal> cumulativeQuantities = new HashMap<>();
 
 
         for (String sorId : existingStatementSorDetailsMap.keySet()) {
+            // Track cumulative amounts for each sorType
+            Map<String, BigDecimal> cumulativeAmounts = new HashMap<>();
             // Mark sorDetails in the existing statement as inactive if not present in the new statement
             if (!newStatementSorIds.contains(sorId)) {
                 SorDetail existingSorDetail = existingStatementSorDetailsMap.get(sorId);
                 existingSorDetail.setIsActive(Boolean.FALSE);
+                existingStatementSorDetailsMap.put(sorId,existingSorDetail);
             }
             ObjectMapper objectMapper = new ObjectMapper();
             List<BasicSorDetails> basicSorDetailsList = objectMapper.convertValue(
@@ -216,6 +234,7 @@ public class EnrichmentService {
             for (BasicSorDetails detail : basicSorDetailsList) {
                 String type = detail.getType();
                 cumulativeAmounts.put(type, cumulativeAmounts.getOrDefault(type, BigDecimal.ZERO).add(detail.getAmount()));
+
                 //cumulativeQuantities.put(type, cumulativeQuantities.getOrDefault(type, BigDecimal.ZERO).add(detail.getQuantity()));
             }
             // Update cumulative amounts and quantities
@@ -226,7 +245,6 @@ public class EnrichmentService {
                 String type = entry.getKey();
                 BigDecimal amount = entry.getValue().setScale(2, RoundingMode.HALF_UP);
                 BasicSorDetails detail = BasicSorDetails.builder()
-                        .id(UUID.randomUUID().toString())
                         .amount(amount)
                         .type(type)
                         .build();
@@ -240,16 +258,14 @@ public class EnrichmentService {
         // Convert the map back to a list and update the statement
         List<SorDetail> updatedSorDetailsList = new ArrayList<>(existingStatementSorDetailsMap.values());
         existingStatement.setSorDetails(updatedSorDetailsList);
-        existingStatement.setBasicSorDetails(updatedStatementPushRequest.getStatement().getBasicSorDetails());
+        //existingStatement.setBasicSorDetails(updatedStatementPushRequest.getStatement().getBasicSorDetails());
 
         // Set audit details
         AuditDetails auditDetails = statementServiceUtil.getAuditDetails(statementCreateRequest.getRequestInfo().getUserInfo().getUuid(), existingStatement, false);
         existingStatement.setAuditDetails(auditDetails);
-
-        // Removing all the
-        // existingStatement.getBasicSorDetails().clear();
+        existingStatement.setAdditionalDetails(updatedStatementPushRequest.getStatement().getAdditionalDetails());
         //Cummulative BasicSorDetails on Parent Level
-        //  accumulateBasicSorDetails(existingStatement);
+          accumulateBasicSorDetails(existingStatement);
 
         // Update the StatementPushRequest with the updated Statement object
         updatedStatementPushRequest.setStatement(existingStatement);
@@ -507,16 +523,13 @@ public class EnrichmentService {
         } else {
             sorQuantity = sorIdToEstimateDetailQuantityMap.get(sorId);
         }
-        BigDecimal labourCessAmount = null;
+        BigDecimal labourCessAmount = BigDecimal.ZERO;
         for (AmountDetail amountDetail : rates.getAmountDetails()) {
 
             if (amountDetail.getHeads().contains("LC")) {
                 labourCessAmount = amountDetail.getAmount().multiply(sorQuantity);
                 break; // Exit the loop once found
-            } else {
-                log.error("No Labour Cess found for this sor :: {}", sorId);
             }
-
         }
 
         BigDecimal estimatedAmount = rates.getRate().multiply(sorQuantity).setScale(2, RoundingMode.HALF_UP);
@@ -624,28 +637,31 @@ public class EnrichmentService {
             return false;
         }
 
-        // Create a list to store updated details
-        List<BasicSor> updatedDetails = new ArrayList<>();
+        List<BasicSor> updatedBasicSorList= new ArrayList<>();
         boolean hasDifferences = false;
 
-        // Compare each element
-        for (int i = 0; i < existingBasicSorList.size(); i++) {
-            BasicSor existingBasicSor = existingBasicSorList.get(i);
-            BasicSor newBasicSor = newBasicSorList.get(i);
+        // Create a map for newBasicSorList
+        Map<String, BasicSor> newBasicSorMap = new HashMap<>();
+        for (BasicSor basicSor : newBasicSorList) {
+            newBasicSorMap.put(basicSor.getSorId(), basicSor);
+        }
 
-            if (existingBasicSor.getSorId().equals(newBasicSor.getSorId())) {
-                if (!areBasicSorDetailsEqual(existingBasicSor.getBasicSorDetails(), newBasicSor.getBasicSorDetails())) {
-                    // Update the basicSorDetails of existingBasicSor
-                    existingBasicSor.setBasicSorDetails(newBasicSor.getBasicSorDetails());
-                    updatedDetails.add(existingBasicSor);
-                    hasDifferences = true;
-                }
+        for (BasicSor existingBasicSor : existingBasicSorList) {
+            String sorId = existingBasicSor.getSorId();
+            if (newBasicSorMap.containsKey(sorId)) {
+                BasicSor newBasicSor = newBasicSorMap.get(sorId);
+
+                BasicSor updatedBasicSor = getBasicSor(existingBasicSor, newBasicSor);
+
+                updatedBasicSorList.add(updatedBasicSor);
+                hasDifferences = true;
+
             }
         }
         // If there were differences, update the new list with changes
         if (hasDifferences) {
             // First, create a set of sorIds from updatedDetails for quick lookup
-            Set<String> updatedSorIds = updatedDetails.stream()
+            Set<String> updatedSorIds = updatedBasicSorList.stream()
                     .map(BasicSor::getSorId)
                     .collect(Collectors.toSet());
 
@@ -658,7 +674,7 @@ public class EnrichmentService {
                             return existingBasicSor;
                         } else {
                             // If present, find corresponding updated detail if available
-                            Optional<BasicSor> updatedDetail = updatedDetails.stream()
+                            Optional<BasicSor> updatedDetail = updatedBasicSorList.stream()
                                     .filter(newBasicSor -> newBasicSor.getSorId().equals(existingBasicSor.getSorId()))
                                     .findFirst();
 
@@ -676,6 +692,18 @@ public class EnrichmentService {
         }
 
         return !hasDifferences;
+    }
+
+    private static  BasicSor getBasicSor(BasicSor existingBasicSor, BasicSor newBasicSor) {
+        List<BasicSorDetails> updatedDetails = new ArrayList<>(newBasicSor.getBasicSorDetails());
+        BasicSor updatedBasicSor = new BasicSor();
+        updatedBasicSor.setBasicSorDetails(updatedDetails);
+        updatedBasicSor.setSorType(existingBasicSor.getSorType());
+        updatedBasicSor.setId(existingBasicSor.getId());
+        updatedBasicSor.setAdditionalDetails(newBasicSor.getAdditionalDetails());
+        updatedBasicSor.setReferenceId(existingBasicSor.getReferenceId());
+        updatedBasicSor.setSorId(existingBasicSor.getSorId());
+        return updatedBasicSor;
     }
 
     // Helper method to compare basicSorDetails lists
@@ -698,8 +726,10 @@ public class EnrichmentService {
             BasicSorDetails detail2 = objectMapper.convertValue(newBasicSorDetailsList.get(i), BasicSorDetails.class);
 
             if (detail1.getType().equals(detail2.getType())) {
-                if (!detail1.getAmount().equals(detail2.getAmount())) {
-                    // If amounts  differ, update the id and add to updated list
+                if (!detail1.getAmount().equals(detail2.getAmount()) ||
+                        (detail1.getQuantity() != null && detail2.getQuantity() != null &&
+                                !detail1.getQuantity().equals(detail2.getQuantity()))) {
+                    // If amounts differ OR quantities are both non-null and differ, update id and add to updated list
                     detail2.setId(detail1.getId());
                     updatedDetails.add(detail2);
                     hasDifferences = true;
