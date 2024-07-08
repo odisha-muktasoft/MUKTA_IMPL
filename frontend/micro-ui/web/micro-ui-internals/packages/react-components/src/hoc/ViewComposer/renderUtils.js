@@ -41,7 +41,7 @@ export const RenderDataSection = ({ section }) => {
               /* privacy object set to the Row Component */
               privacy={row?.value?.privacy}
               rowContainerStyle={{}}
-              textStyle={{}}
+              textStyle={row?.textStyle}
               labelStyle={{}}
               amountStyle={{}}
             />
