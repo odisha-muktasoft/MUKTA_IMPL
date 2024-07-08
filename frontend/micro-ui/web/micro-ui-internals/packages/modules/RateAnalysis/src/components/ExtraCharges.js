@@ -33,6 +33,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
   useEffect(() => {
+    if(window.location.href.includes("update"))
     if (formData && formData[formFieldName]) {
       setRows(formData[formFieldName].map((item, index) => ({
         ...item,
@@ -42,7 +43,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     } else {
       setRows(initialState);
     }
-  }, [formData]);
+  }, []);
 
   const getStyles = (index) => {
     let obj = {};
@@ -108,7 +109,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
   const addRow = () => {
     const newRow = {
-      key: rows.length + 1,
+      key: rows[rows?.length -1]?.key +1,
       description: "",
       applicableOn: "",
       calculationType: "",
@@ -125,12 +126,12 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     ];
   };
 
-  const getDropDownDataFromMDMS = (t, row, inputName, props, register, optionKey = "name", options = []) => {
+  const getDropDownDataFromMDMS = (t, row, inputName, props, register, optionKey = "name", rowIndex) => {
     const requestCriteria = {
       url: "/mdms-v2/v2/_search",
       body: {
         MdmsCriteria: {
-          tenantId: "od",
+          tenantId: "pg",
           schemaCode: "WORKS-SOR.Overhead",
         },
       },
@@ -152,7 +153,12 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           optionKey={optionKey}
           t={t}
           select={(e) => {
-            props.onChange(e);
+            const updatedRows = rows.map((row, index) =>
+            index === rowIndex ? { ...row, applicableOn: e } : row
+          );
+          setRows(updatedRows);
+          setValue(`${formFieldName}[${rowIndex}].applicableOn`, e);
+          props.onChange(e);
           }}
           onBlur={props?.onBlur}
           optionCardStyles={{ maxHeight: "15rem" }}
@@ -187,7 +193,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     return rows.map((row, rowIndex) => {
       if (row.isShow) i++;
       return row.isShow && (
-        <tr key={rowIndex} style={!row?.isShow ? { display: 'none' } : {}}>
+        <tr key={row?.key} style={!row?.isShow ? { display: 'none' } : {}}>
           <td style={getStyles(1)}>{i}</td>
 
           <td style={getStyles(2)}>
@@ -230,13 +236,13 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                 <Controller
                   control={control}
                   name={`${formFieldName}[${rowIndex}].applicableOn`}
-                  defaultValue={row?.applicableOn}
+                  defaultValue={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.applicableOn || row.applicableOn) : null}
                   rules={{
                     required: false,
                     pattern: /^[a-zA-Z0-9_ .$@#\/ ]*$/,
                   }}
                   render={(props) =>
-                    getDropDownDataFromMDMS(t, row, "applicableOn", props, register, "description")
+                    getDropDownDataFromMDMS(t, row, "applicableOn", props, register, "description", rowIndex)
                   }
                 />
               </div>
@@ -265,11 +271,16 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     <Dropdown
                       inputRef={register()}
                       option={getCalculationType()}
-                      selected={props?.value || row?.calculationType}
+                      selected={window.location.href.includes("update") ? (formData?.extraCharges?.[rowIndex]?.calculationType || row.calculationType) : null}
                       optionKey={"name"}
                       t={t}
                       select={(e) => {
-                        props.onChange(e);
+                        const updatedRows = rows.map((row, index) =>
+                        index === rowIndex ? { ...row, calculationType: e } : row
+                      );
+                      setRows(updatedRows);
+                      setValue(`${formFieldName}[${rowIndex}].calculationType`, e);
+                      props.onChange(e);
                       }}
                       onBlur={props?.onBlur}
                       optionCardStyles={{ maxHeight: "15rem" }}
