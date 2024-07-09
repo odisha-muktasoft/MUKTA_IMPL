@@ -112,7 +112,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
   const addRow = () => {
     const newRow = {
-      key: rows[rows?.length -1]?.key +1,
+      key: rows.length > 0 ? rows[rows?.length -1]?.key +1 : 1,
       description: "",
       applicableOn: "",
       calculationType: "",
