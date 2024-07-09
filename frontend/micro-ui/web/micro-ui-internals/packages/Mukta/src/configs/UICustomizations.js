@@ -2824,7 +2824,7 @@ export const UICustomizations = {
         sorType: sortype,
         sorSubType: sorsubtype,
         sorVariant: sorvariant,
-        ...(sorcode && { sorCode: sorcode }),
+        ...(sorcode && { id: sorcode }),
       };
 
       data.body.MdmsCriteria = {
