@@ -228,7 +228,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
             child: DigitCard(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       t.translate(
@@ -239,7 +239,6 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                           ?.apply(color: const DigitColors().black),
                     ),
                     DigitReactiveDropdown<String>(
-                      
                       label: t.translate(i18.wageSeeker.identityDocumentLabel),
                       //TODO:[temp commented for adhar release ]
                       // menuItems: [
@@ -248,19 +247,22 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       //   "Driving License",
                       //   "Ration Card under TPDS"
                       // ].map((e) => e.toString()).toList(),
-                       menuItems: [
+                      menuItems: [
                         "AADHAAR",
-                        
                       ].map((e) => e.toString()).toList(),
                       isRequired: true,
                       formControlName: identityDocument,
                       valueMapper: (value) => t.translate('CORE_COMMON_$value'),
                       onChanged: (value) {
                         //TODO:[temp comment for release]
-                       // adharSelect(value);
+                        // adharSelect(value);
                       },
                     ),
                     DigitTextFormField(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 0,
+                      ),
                       onChanged: (p0) {
                         //TODO:[aadhar temporarily commented for release]
                         // if (adhar) {
@@ -277,7 +279,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       //TODO:[temp commented for release]
                       // minLength: adhar ? 12 : null,
                       // maxLength: adhar ? 12 : null,
-                       minLength: adhar ? 12 : 12,
+                      minLength: adhar ? 12 : 12,
                       maxLength: adhar ? 12 : 12,
                       keyboardType: TextInputType.number,
                       inputFormatter: [
@@ -302,6 +304,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                             },
                     ),
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                       onChanged: (p0) {
                         //TODO:[temp commented for release]
                         // if (adhar) {
@@ -529,17 +532,18 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
 
                                   context.read<WageSeekerBloc>().add(
                                         WageSeekerIdentificationCreateEvent(
-                                          adharVerified: false,
-                                          documentType: form
-                                              .value[identityDocument]
-                                              .toString(),
-                                          name: form.value[nameKey].toString(),
-                                          number: form.value[aadhaarNoKey]
-                                              .toString(),
-                                          timeStamp: DateTime.now()
-                                              .millisecondsSinceEpoch,
-                                              adharCardResponse: const AdharCardResponse()
-                                        ),
+                                            adharVerified: false,
+                                            documentType: form
+                                                .value[identityDocument]
+                                                .toString(),
+                                            name:
+                                                form.value[nameKey].toString(),
+                                            number: form.value[aadhaarNoKey]
+                                                .toString(),
+                                            timeStamp: DateTime.now()
+                                                .millisecondsSinceEpoch,
+                                            adharCardResponse:
+                                                const AdharCardResponse()),
                                       );
                                   setState(() {
                                     switchPage = 1;
@@ -581,7 +585,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
               Validators.maxLength(128)
             ]),
         identityDocument: FormControl<String>(
-            value: individualDetails.documentType??"AADHAAR",
+            value: individualDetails.documentType ?? "AADHAAR",
             validators: [
               Validators.required,
             ]),

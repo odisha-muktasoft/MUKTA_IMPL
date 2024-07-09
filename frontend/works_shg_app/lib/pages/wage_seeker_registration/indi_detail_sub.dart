@@ -121,6 +121,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         );
                       }),
                       DigitTextFormField(
+                        padding: EdgeInsets.zero,
                         formControlName: fatherNameKey,
                         isRequired: true,
                         label: t.translate(i18.common.guardianName),
@@ -140,6 +141,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         },
                       ),
                       DigitReactiveDropdown<String>(
+                        padding: EdgeInsets.zero,
                         label: t.translate(i18.common.relationship),
                         menuItems: widget.relationship
                             .map((e) => e.toString())
@@ -156,6 +158,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         },
                       ),
                       DigitTextFormField(
+                        padding: const EdgeInsets.only(top:10),
                         label: t.translate(i18.common.mobileNumber),
                         formControlName: mobileKey,
                         isRequired: true,
@@ -184,6 +187,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         },
                       ),
                       DigitReactiveDropdown<String>(
+                        padding: EdgeInsets.zero,
                         label: t.translate(i18.common.socialCategory),
                         menuItems: widget.socialCategory
                             .map((e) => e.toString())
