@@ -19,28 +19,30 @@ const RateAnalysisBreadCumbs = ({ location }) => {
       content: t("WORKS_MUKTA"),
       show: true,
     },
-
     {
       path: `/${window.contextPath}/employee/rateanalysis/create-rate-analysis`,
       content: fromScreen ? `${t(fromScreen)} / ${t("RA_CREATE_RA")}` : t("RA_CREATE_RA"),
       show: location.pathname.includes("/rateanalysis/create-rate-analysis") ? true : false,
       isBack: fromScreen && true,
+    },
+    {
       path: `/${window.contextPath}/employee/rateAnalysis/view-rate-analysis`,
       content: fromScreen ? `${t(fromScreen)} / ${t("RA_VIEW_RATE_HEADER")}` : t("RA_VIEW_RATE_HEADER"),
-      show: location.pathname.includes("/rateanalysis/view-rate-analysis") ? true : true,
-      isBack: true,
-
-
-      path: `/${window.contextPath}/employee/rateAnalysis/search-sor`,
-      content: t("RA_SEARCH_SOR"),
-      show: location.pathname.includes("/rateanalysis/search-sor") ? true : true,
-      isBack: true,
-
-      path: `/${window.contextPath}/employee/rateAnalysis/view-scheduled-jobs`,
-      content: `${t("RA_SEARCH_SOR")} / ${t("RA_VIEW_JOBS")}`,
-      show: location.pathname.includes("/rateanalysis/view-scheduled-jobs") ? true : true,
+      show: location.pathname.includes("/view-rate-analysis") ? true : false,
       isBack: true,
     },
+    {
+      path: `/${window.contextPath}/employee/rateAnalysis/search-sor`,
+      content: t("RA_SEARCH_SOR"),
+      show: location.pathname.includes("/search-sor") ? true : false,
+      isBack: true,
+    },
+    {
+      path: `/${window.contextPath}/employee/rateAnalysis/view-scheduled-jobs`,
+      content: `${t("RA_SEARCH_SOR")} / ${t("RA_VIEW_JOBS")}`,
+      show: location.pathname.includes("/view-scheduled-jobs") ? true : false,
+      isBack: true,
+    }
   ];
   return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };
