@@ -420,7 +420,7 @@ const ViewUtilization = () => {
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
     // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
-    Digit.Utils.downloadWorksPDF(
+    Digit.Utils.downloadEgovPDF(
       "utilizationStatement/utilization-statement",
       { tenantId: tenantId, referenceId: estimateId },
       `utilization-${number}.pdf`

@@ -420,7 +420,7 @@ const ViewAnalysisStatement = () => {
   };
 
   const HandleDownloadPdf = () => {
-      Digit.Utils.downloadWorksPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:estimateId}, `analysis_statement-${number}.pdf`);
+      Digit.Utils.downloadEgovPDF("analysisStatement/analysis-statement", { tenantId: tenantId ,referenceId:estimateId}, `analysis_statement-${number}.pdf`);
   };
 
 // Consolidated table will be sent overhere
