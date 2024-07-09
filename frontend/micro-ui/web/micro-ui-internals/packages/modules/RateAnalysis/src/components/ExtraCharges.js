@@ -31,7 +31,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   ];
 
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
-  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
+  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : []);
 
   useEffect(() => {
     console.log(rows,formData,"rows,formdata");
