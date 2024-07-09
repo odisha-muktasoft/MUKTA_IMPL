@@ -278,7 +278,7 @@ const ViewAnalysisStatement = () => {
       //look here need to uncomment once api works fine and check if the data is coming proper
      
       const location = useLocation();
-  const { responseData, estimateId, oldData, number } = location.state || {};
+  const { responseData, estimateId, oldData, number ,downloadStatus} = location.state || {};
      // const { state , refId } = useLocation()
       
       
@@ -455,7 +455,7 @@ const ViewAnalysisStatement = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
-        { <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
+        { downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
