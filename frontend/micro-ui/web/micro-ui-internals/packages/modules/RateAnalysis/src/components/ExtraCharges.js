@@ -33,6 +33,10 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
+    useEffect(() => {
+    setValue("extraCharges", rows)
+  }, []);
+
   useEffect(() => {
     if(window.location.href.includes("update"))
     if (formData && formData[formFieldName]) {

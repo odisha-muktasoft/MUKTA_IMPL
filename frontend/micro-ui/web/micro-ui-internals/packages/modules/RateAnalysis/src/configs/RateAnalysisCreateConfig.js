@@ -230,7 +230,7 @@ export const CreateConfig = ({ defaultValue, isUpdate, measurement }) => {
                   key: "extraCharges",
                   mode: "CREATE",
                   sorType : "EXTRACHARGES",
-                  useFieldArray: true,
+                  useFieldArray: false,
                   // customProps:{
                   //   extraCharges:defaultValue?.extraCharges,
                   // }
