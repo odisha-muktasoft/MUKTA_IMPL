@@ -194,7 +194,11 @@ public class ExpenseCalculatorConfiguration {
 	@Value("${expense.billing.search.max.limit}")
 	private Integer maxLimit;
 
+	@Value("${egov.mdms.v2.host}")
+	private String mdmsV2Host;
+
 	@Value("${egov.mdms.v2.search.endpoint}")
 	private String mdmsV2EndPoint;
+
 
 }
