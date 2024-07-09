@@ -41,8 +41,9 @@ class BillServices {
 
 class WageSeekerServices {
   const WageSeekerServices();
-
-  String get individualCreate => 'mukta-individual/v1/_create';
+// unified-qa
+  // String get individualCreate => 'mukta-individual/v1/_create';
+  String get individualCreate => 'individual/v1/_create';
   String get bankCreate => '/bankaccount-service/bankaccount/v1/_create';
 
   String get adharVerifyUrl=>'http://164.100.141.79/authekycv4/api/authenticate';
