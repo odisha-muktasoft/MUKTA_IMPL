@@ -402,7 +402,7 @@ const ViewUtilization = () => {
   //look here need to uncomment once api works fine and check if the data is coming proper
   // const { state,refId } = useLocation()
   const location = useLocation();
-  const { responseData, estimateId, number } = location.state || {};
+  const { responseData, estimateId, number ,oldData,downloadStatus} = location.state || {};
 
   let statement = responseData?.statement;
 
@@ -415,7 +415,7 @@ const ViewUtilization = () => {
     setToast({ show: false, label: "", error: false });
   };
 
-  const config = data(statement?.[0], statement);
+  const config = data(statement?.[0], statement,oldData);
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
@@ -432,7 +432,7 @@ const ViewUtilization = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("MB_VIEW_UTLIZATION")}
         </Header>
-        <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+        {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />}
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && (
