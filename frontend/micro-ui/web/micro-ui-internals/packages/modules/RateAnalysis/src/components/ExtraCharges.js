@@ -34,6 +34,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
 
   useEffect(() => {
+    console.log(rows,formData,"rows,formdata");
+    debugger;
     if(window.location.href.includes("update"))
     if (formData && formData[formFieldName]) {
       setRows(formData[formFieldName].map((item, index) => ({
@@ -189,6 +191,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
 
+  console.log(rows,"rows");
   const renderBody = useMemo(() => {
     let i = 0;
     return rows.map((row, rowIndex) => {

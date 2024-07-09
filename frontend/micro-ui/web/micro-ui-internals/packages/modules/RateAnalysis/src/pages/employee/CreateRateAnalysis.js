@@ -177,6 +177,8 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
 
   // Handle form submission
   const handleCreateRateAnalysis = async (data, action) => {
+    console.log(data,createState);
+    debugger;
     if(createState?.SORType !== "Works")
     {
       setErrorMessage(t("RA_ONLY_FOR_WORKS"));
@@ -211,7 +213,8 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
 
     // Create the rateanalysis payload with transformRequestBody data
     const rateComposition = await transformRequestBody(data, createState, tenantId, compositionData, isUpdate);
-
+    console.log(rateComposition);
+    debugger;
     //call the createMutation for Rate Analysis and route to view page on onSuccess or show error
     const onError = (resp) => {
       setErrorMessage(resp?.response?.data?.Errors?.[0]?.message);
@@ -253,6 +256,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   }, [showToast]);
 
   const onFormValueChange = (setValue, formData, formState, reset, setError, clearErrors, trigger, getValues) => {
+    console.log(formData,createState)
     if (deepCompare(formData,createState)) {
       setState({ ...createState, ...formData })
     }
