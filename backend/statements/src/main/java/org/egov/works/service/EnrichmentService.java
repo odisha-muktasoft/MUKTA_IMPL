@@ -629,13 +629,13 @@ public class EnrichmentService {
 
 
     private static boolean areBasicSorDetailsOfLineItemsEqual(List<BasicSor> existingBasicSorList, List<BasicSor> newBasicSorList) {
+
         if (existingBasicSorList == null) {
+            existingBasicSorList= new ArrayList<>();
+            existingBasicSorList.addAll(newBasicSorList);
+
             return false;
-        }
-        // Compare size
-        if (existingBasicSorList.size() != newBasicSorList.size()) {
-            return false;
-        }
+        }else{
 
         List<BasicSor> updatedBasicSorList= new ArrayList<>();
         boolean hasDifferences = false;
@@ -646,52 +646,58 @@ public class EnrichmentService {
             newBasicSorMap.put(basicSor.getSorId(), basicSor);
         }
 
-        for (BasicSor existingBasicSor : existingBasicSorList) {
-            String sorId = existingBasicSor.getSorId();
-            if (newBasicSorMap.containsKey(sorId)) {
-                BasicSor newBasicSor = newBasicSorMap.get(sorId);
 
-                BasicSor updatedBasicSor = getBasicSor(existingBasicSor, newBasicSor);
+            for (BasicSor existingBasicSor : existingBasicSorList) {
+                String sorId = existingBasicSor.getSorId();
+                if (newBasicSorMap.containsKey(sorId)) {
+                    BasicSor newBasicSor = newBasicSorMap.get(sorId);
 
-                updatedBasicSorList.add(updatedBasicSor);
-                hasDifferences = true;
+                    BasicSor updatedBasicSor = getBasicSor(existingBasicSor, newBasicSor);
+
+                    updatedBasicSorList.add(updatedBasicSor);
+                    hasDifferences = true;
+
+                }else{
+                    updatedBasicSorList.add(newBasicSorMap.get(sorId));
+                }
+            }
+            // If there were differences, update the new list with changes
+            if (hasDifferences) {
+                // First, create a set of sorIds from updatedDetails for quick lookup
+                Set<String> updatedSorIds = updatedBasicSorList.stream()
+                        .map(BasicSor::getSorId)
+                        .collect(Collectors.toSet());
+
+                // Then, iterate through existingBasicSorList and update accordingly
+                List<BasicSor> finalList = existingBasicSorList.stream()
+                        .map(existingBasicSor -> {
+                            // Check if sorId is in updatedSorIds
+                            if (!updatedSorIds.contains(existingBasicSor.getSorId())) {
+                                // If not present in updatedSorIds, add existingBasicSor directly
+                                return existingBasicSor;
+                            } else {
+                                // If present, find corresponding updated detail if available
+                                Optional<BasicSor> updatedDetail = updatedBasicSorList.stream()
+                                        .filter(newBasicSor -> newBasicSor.getSorId().equals(existingBasicSor.getSorId()))
+                                        .findFirst();
+
+                                // Return updatedDetail if found, otherwise existingBasicSor
+                                return updatedDetail.orElse(existingBasicSor);
+                            }
+                        })
+                        .toList();
+
+                // Finally, update existingBasicSorList with the finalList
+                existingBasicSorList.clear();
+                existingBasicSorList.addAll(finalList);
+
 
             }
-        }
-        // If there were differences, update the new list with changes
-        if (hasDifferences) {
-            // First, create a set of sorIds from updatedDetails for quick lookup
-            Set<String> updatedSorIds = updatedBasicSorList.stream()
-                    .map(BasicSor::getSorId)
-                    .collect(Collectors.toSet());
 
-            // Then, iterate through existingBasicSorList and update accordingly
-            List<BasicSor> finalList = existingBasicSorList.stream()
-                    .map(existingBasicSor -> {
-                        // Check if sorId is in updatedSorIds
-                        if (!updatedSorIds.contains(existingBasicSor.getSorId())) {
-                            // If not present in updatedSorIds, add existingBasicSor directly
-                            return existingBasicSor;
-                        } else {
-                            // If present, find corresponding updated detail if available
-                            Optional<BasicSor> updatedDetail = updatedBasicSorList.stream()
-                                    .filter(newBasicSor -> newBasicSor.getSorId().equals(existingBasicSor.getSorId()))
-                                    .findFirst();
-
-                            // Return updatedDetail if found, otherwise existingBasicSor
-                            return updatedDetail.orElse(existingBasicSor);
-                        }
-                    })
-                    .toList();
-
-            // Finally, update existingBasicSorList with the finalList
-            existingBasicSorList.clear();
-            existingBasicSorList.addAll(finalList);
-
-
+            return !hasDifferences;
         }
 
-        return !hasDifferences;
+
     }
 
     private static  BasicSor getBasicSor(BasicSor existingBasicSor, BasicSor newBasicSor) {
