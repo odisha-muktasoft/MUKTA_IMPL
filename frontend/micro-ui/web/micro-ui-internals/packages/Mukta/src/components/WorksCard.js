@@ -12,6 +12,7 @@ const ROLES = {
   MUSTERROLLS: ["MUSTER_ROLL_VERIFIER", "MUSTER_ROLL_APPROVER"],
   MEASUREMENT: ["MB_CREATOR", "MB_VERIFIER", "MB_APPROVER", "MB_VIEWER"],
   WORKBENCH : ["MDMS_ADMIN", "MDMS_STATE_ADMIN", "MDMS_CITY_ADMIN", "MDMS_STATE_VIEW_ADMIN", "MDMS_CITY_VIEW_ADMIN"],
+  REVISIONOFRATES : ["MDMS_ADMIN", "MDMS_CITY_ADMIN", "MDMS_STATE_VIEW_ADMIN", "MDMS_CITY_VIEW_ADMIN"],
   DSS: ["STADMIN"],
 };
 
@@ -20,7 +21,6 @@ const WorksCard = () => {
   if (!Digit.Utils.didEmployeeHasAtleastOneRole(Object.values(ROLES).flatMap((e) => e))) {
     return null;
   }
-
 
   const bsEstimate = Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("estimate");
   const bsContract = Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("contract");
@@ -220,6 +220,11 @@ const WorksCard = () => {
       label: t("ACTION_TEST_9WORKBENCH"),
       link: `/workbench-ui/employee/workbench/manage-master-data`,
       roles: ROLES.WORKBENCH,
+    },
+    {
+      label: t("ACTION_TEST_10REVISIONOFRATES"),
+      link: `/${window?.contextPath}/employee/rateAnalysis/search-sor`,
+      roles: ROLES.REVISIONOFRATES,
     }
   ];
 
