@@ -72,7 +72,7 @@ class WageSeekerMDMSBloc
               "masterDetails": [
                 {
                   "name": "SOR",
-                  "filter": "[?(@.description =~ /.*SKILLED.*|.*OTHERS.*/i)]"
+                  "filter": "[?(@.sorType =~ /.*L.*/i)]"
                 },
               ],
             }

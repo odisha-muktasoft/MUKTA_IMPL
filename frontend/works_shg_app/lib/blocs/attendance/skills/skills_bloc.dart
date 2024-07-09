@@ -35,7 +35,7 @@ class SkillsBloc extends Bloc<SkillsBlocEvent, SkillsBlocState> {
               "moduleName": "WORKS-SOR",
               "masterDetails": [
                 {"name": "SOR",
-                  "filter": "[?(@.description =~ /.*SKILLED.*|.*OTHERS.*/i)]"
+                  "filter": "[?(@.sorType =~ /.*L.*/i)]"
                  
                  },
               ],
