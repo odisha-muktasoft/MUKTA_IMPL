@@ -24,6 +24,25 @@ mixin _$WageSeekerBlocEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
     required TResult Function() clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -35,6 +54,20 @@ mixin _$WageSeekerBlocEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
     TResult? Function()? clear,
   }) =>
       throw _privateConstructorUsedError;
@@ -46,6 +79,20 @@ mixin _$WageSeekerBlocEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
     TResult Function()? clear,
     required TResult orElse(),
   }) =>
@@ -53,18 +100,33 @@ mixin _$WageSeekerBlocEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
     required TResult Function(WageSeekerClearEvent value) clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
     TResult? Function(WageSeekerClearEvent value)? clear,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
     TResult Function(WageSeekerClearEvent value)? clear,
     required TResult orElse(),
   }) =>
@@ -210,6 +272,25 @@ class _$WageSeekerCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
     required TResult Function() clear,
   }) {
     return create(
@@ -225,6 +306,20 @@ class _$WageSeekerCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
     TResult? Function()? clear,
   }) {
     return create?.call(
@@ -240,6 +335,20 @@ class _$WageSeekerCreateEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -254,6 +363,11 @@ class _$WageSeekerCreateEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
     required TResult Function(WageSeekerClearEvent value) clear,
   }) {
     return create(this);
@@ -263,6 +377,11 @@ class _$WageSeekerCreateEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
     TResult? Function(WageSeekerClearEvent value)? clear,
   }) {
     return create?.call(this);
@@ -272,6 +391,11 @@ class _$WageSeekerCreateEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
     TResult Function(WageSeekerClearEvent value)? clear,
     required TResult orElse(),
   }) {
@@ -296,6 +420,1101 @@ abstract class WageSeekerCreateEvent implements WageSeekerBlocEvent {
   @JsonKey(ignore: true)
   _$$WageSeekerCreateEventCopyWith<_$WageSeekerCreateEvent> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WageSeekerIdentificationCreateEventCopyWith<$Res> {
+  factory _$$WageSeekerIdentificationCreateEventCopyWith(
+          _$WageSeekerIdentificationCreateEvent value,
+          $Res Function(_$WageSeekerIdentificationCreateEvent) then) =
+      __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String documentType,
+      String number,
+      String name,
+      bool adharVerified,
+      int timeStamp,
+      AdharCardResponse? adharCardResponse});
+
+  $AdharCardResponseCopyWith<$Res>? get adharCardResponse;
+}
+
+/// @nodoc
+class __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>
+    extends _$WageSeekerBlocEventCopyWithImpl<$Res,
+        _$WageSeekerIdentificationCreateEvent>
+    implements _$$WageSeekerIdentificationCreateEventCopyWith<$Res> {
+  __$$WageSeekerIdentificationCreateEventCopyWithImpl(
+      _$WageSeekerIdentificationCreateEvent _value,
+      $Res Function(_$WageSeekerIdentificationCreateEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? documentType = null,
+    Object? number = null,
+    Object? name = null,
+    Object? adharVerified = null,
+    Object? timeStamp = null,
+    Object? adharCardResponse = freezed,
+  }) {
+    return _then(_$WageSeekerIdentificationCreateEvent(
+      documentType: null == documentType
+          ? _value.documentType
+          : documentType // ignore: cast_nullable_to_non_nullable
+              as String,
+      number: null == number
+          ? _value.number
+          : number // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      adharVerified: null == adharVerified
+          ? _value.adharVerified
+          : adharVerified // ignore: cast_nullable_to_non_nullable
+              as bool,
+      timeStamp: null == timeStamp
+          ? _value.timeStamp
+          : timeStamp // ignore: cast_nullable_to_non_nullable
+              as int,
+      adharCardResponse: freezed == adharCardResponse
+          ? _value.adharCardResponse
+          : adharCardResponse // ignore: cast_nullable_to_non_nullable
+              as AdharCardResponse?,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AdharCardResponseCopyWith<$Res>? get adharCardResponse {
+    if (_value.adharCardResponse == null) {
+      return null;
+    }
+
+    return $AdharCardResponseCopyWith<$Res>(_value.adharCardResponse!, (value) {
+      return _then(_value.copyWith(adharCardResponse: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$WageSeekerIdentificationCreateEvent
+    with DiagnosticableTreeMixin
+    implements WageSeekerIdentificationCreateEvent {
+  const _$WageSeekerIdentificationCreateEvent(
+      {required this.documentType,
+      required this.number,
+      required this.name,
+      required this.adharVerified,
+      required this.timeStamp,
+      this.adharCardResponse});
+
+  @override
+  final String documentType;
+  @override
+  final String number;
+  @override
+  final String name;
+  @override
+  final bool adharVerified;
+  @override
+  final int timeStamp;
+  @override
+  final AdharCardResponse? adharCardResponse;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'WageSeekerBlocEvent.identificationCreate(documentType: $documentType, number: $number, name: $name, adharVerified: $adharVerified, timeStamp: $timeStamp, adharCardResponse: $adharCardResponse)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'WageSeekerBlocEvent.identificationCreate'))
+      ..add(DiagnosticsProperty('documentType', documentType))
+      ..add(DiagnosticsProperty('number', number))
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('adharVerified', adharVerified))
+      ..add(DiagnosticsProperty('timeStamp', timeStamp))
+      ..add(DiagnosticsProperty('adharCardResponse', adharCardResponse));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WageSeekerIdentificationCreateEvent &&
+            (identical(other.documentType, documentType) ||
+                other.documentType == documentType) &&
+            (identical(other.number, number) || other.number == number) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.adharVerified, adharVerified) ||
+                other.adharVerified == adharVerified) &&
+            (identical(other.timeStamp, timeStamp) ||
+                other.timeStamp == timeStamp) &&
+            (identical(other.adharCardResponse, adharCardResponse) ||
+                other.adharCardResponse == adharCardResponse));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, documentType, number, name,
+      adharVerified, timeStamp, adharCardResponse);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WageSeekerIdentificationCreateEventCopyWith<
+          _$WageSeekerIdentificationCreateEvent>
+      get copyWith => __$$WageSeekerIdentificationCreateEventCopyWithImpl<
+          _$WageSeekerIdentificationCreateEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)
+        create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
+    required TResult Function() clear,
+  }) {
+    return identificationCreate(documentType, number, name, adharVerified,
+        timeStamp, adharCardResponse);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult? Function()? clear,
+  }) {
+    return identificationCreate?.call(documentType, number, name, adharVerified,
+        timeStamp, adharCardResponse);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (identificationCreate != null) {
+      return identificationCreate(documentType, number, name, adharVerified,
+          timeStamp, adharCardResponse);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
+    required TResult Function(WageSeekerClearEvent value) clear,
+  }) {
+    return identificationCreate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult? Function(WageSeekerClearEvent value)? clear,
+  }) {
+    return identificationCreate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult Function(WageSeekerClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (identificationCreate != null) {
+      return identificationCreate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WageSeekerIdentificationCreateEvent
+    implements WageSeekerBlocEvent {
+  const factory WageSeekerIdentificationCreateEvent(
+          {required final String documentType,
+          required final String number,
+          required final String name,
+          required final bool adharVerified,
+          required final int timeStamp,
+          final AdharCardResponse? adharCardResponse}) =
+      _$WageSeekerIdentificationCreateEvent;
+
+  String get documentType;
+  String get number;
+  String get name;
+  bool get adharVerified;
+  int get timeStamp;
+  AdharCardResponse? get adharCardResponse;
+  @JsonKey(ignore: true)
+  _$$WageSeekerIdentificationCreateEventCopyWith<
+          _$WageSeekerIdentificationCreateEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WageSeekerDetailsCreateEventCopyWith<$Res> {
+  factory _$$WageSeekerDetailsCreateEventCopyWith(
+          _$WageSeekerDetailsCreateEvent value,
+          $Res Function(_$WageSeekerDetailsCreateEvent) then) =
+      __$$WageSeekerDetailsCreateEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String fatherName,
+      DateTime dob,
+      String relationShip,
+      String gender,
+      String socialCategory,
+      String mobileNumber});
+}
+
+/// @nodoc
+class __$$WageSeekerDetailsCreateEventCopyWithImpl<$Res>
+    extends _$WageSeekerBlocEventCopyWithImpl<$Res,
+        _$WageSeekerDetailsCreateEvent>
+    implements _$$WageSeekerDetailsCreateEventCopyWith<$Res> {
+  __$$WageSeekerDetailsCreateEventCopyWithImpl(
+      _$WageSeekerDetailsCreateEvent _value,
+      $Res Function(_$WageSeekerDetailsCreateEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? fatherName = null,
+    Object? dob = null,
+    Object? relationShip = null,
+    Object? gender = null,
+    Object? socialCategory = null,
+    Object? mobileNumber = null,
+  }) {
+    return _then(_$WageSeekerDetailsCreateEvent(
+      fatherName: null == fatherName
+          ? _value.fatherName
+          : fatherName // ignore: cast_nullable_to_non_nullable
+              as String,
+      dob: null == dob
+          ? _value.dob
+          : dob // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      relationShip: null == relationShip
+          ? _value.relationShip
+          : relationShip // ignore: cast_nullable_to_non_nullable
+              as String,
+      gender: null == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as String,
+      socialCategory: null == socialCategory
+          ? _value.socialCategory
+          : socialCategory // ignore: cast_nullable_to_non_nullable
+              as String,
+      mobileNumber: null == mobileNumber
+          ? _value.mobileNumber
+          : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WageSeekerDetailsCreateEvent
+    with DiagnosticableTreeMixin
+    implements WageSeekerDetailsCreateEvent {
+  const _$WageSeekerDetailsCreateEvent(
+      {required this.fatherName,
+      required this.dob,
+      required this.relationShip,
+      required this.gender,
+      required this.socialCategory,
+      required this.mobileNumber});
+
+  @override
+  final String fatherName;
+  @override
+  final DateTime dob;
+  @override
+  final String relationShip;
+  @override
+  final String gender;
+  @override
+  final String socialCategory;
+  @override
+  final String mobileNumber;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'WageSeekerBlocEvent.detailsCreate(fatherName: $fatherName, dob: $dob, relationShip: $relationShip, gender: $gender, socialCategory: $socialCategory, mobileNumber: $mobileNumber)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'WageSeekerBlocEvent.detailsCreate'))
+      ..add(DiagnosticsProperty('fatherName', fatherName))
+      ..add(DiagnosticsProperty('dob', dob))
+      ..add(DiagnosticsProperty('relationShip', relationShip))
+      ..add(DiagnosticsProperty('gender', gender))
+      ..add(DiagnosticsProperty('socialCategory', socialCategory))
+      ..add(DiagnosticsProperty('mobileNumber', mobileNumber));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WageSeekerDetailsCreateEvent &&
+            (identical(other.fatherName, fatherName) ||
+                other.fatherName == fatherName) &&
+            (identical(other.dob, dob) || other.dob == dob) &&
+            (identical(other.relationShip, relationShip) ||
+                other.relationShip == relationShip) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
+            (identical(other.socialCategory, socialCategory) ||
+                other.socialCategory == socialCategory) &&
+            (identical(other.mobileNumber, mobileNumber) ||
+                other.mobileNumber == mobileNumber));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, fatherName, dob, relationShip,
+      gender, socialCategory, mobileNumber);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WageSeekerDetailsCreateEventCopyWith<_$WageSeekerDetailsCreateEvent>
+      get copyWith => __$$WageSeekerDetailsCreateEventCopyWithImpl<
+          _$WageSeekerDetailsCreateEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)
+        create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
+    required TResult Function() clear,
+  }) {
+    return detailsCreate(
+        fatherName, dob, relationShip, gender, socialCategory, mobileNumber);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult? Function()? clear,
+  }) {
+    return detailsCreate?.call(
+        fatherName, dob, relationShip, gender, socialCategory, mobileNumber);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (detailsCreate != null) {
+      return detailsCreate(
+          fatherName, dob, relationShip, gender, socialCategory, mobileNumber);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
+    required TResult Function(WageSeekerClearEvent value) clear,
+  }) {
+    return detailsCreate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult? Function(WageSeekerClearEvent value)? clear,
+  }) {
+    return detailsCreate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult Function(WageSeekerClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (detailsCreate != null) {
+      return detailsCreate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WageSeekerDetailsCreateEvent implements WageSeekerBlocEvent {
+  const factory WageSeekerDetailsCreateEvent(
+      {required final String fatherName,
+      required final DateTime dob,
+      required final String relationShip,
+      required final String gender,
+      required final String socialCategory,
+      required final String mobileNumber}) = _$WageSeekerDetailsCreateEvent;
+
+  String get fatherName;
+  DateTime get dob;
+  String get relationShip;
+  String get gender;
+  String get socialCategory;
+  String get mobileNumber;
+  @JsonKey(ignore: true)
+  _$$WageSeekerDetailsCreateEventCopyWith<_$WageSeekerDetailsCreateEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WageSeekerSkillCreateEventCopyWith<$Res> {
+  factory _$$WageSeekerSkillCreateEventCopyWith(
+          _$WageSeekerSkillCreateEvent value,
+          $Res Function(_$WageSeekerSkillCreateEvent) then) =
+      __$$WageSeekerSkillCreateEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SkillDetails skillDetails});
+}
+
+/// @nodoc
+class __$$WageSeekerSkillCreateEventCopyWithImpl<$Res>
+    extends _$WageSeekerBlocEventCopyWithImpl<$Res,
+        _$WageSeekerSkillCreateEvent>
+    implements _$$WageSeekerSkillCreateEventCopyWith<$Res> {
+  __$$WageSeekerSkillCreateEventCopyWithImpl(
+      _$WageSeekerSkillCreateEvent _value,
+      $Res Function(_$WageSeekerSkillCreateEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? skillDetails = null,
+  }) {
+    return _then(_$WageSeekerSkillCreateEvent(
+      skillDetails: null == skillDetails
+          ? _value.skillDetails
+          : skillDetails // ignore: cast_nullable_to_non_nullable
+              as SkillDetails,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WageSeekerSkillCreateEvent
+    with DiagnosticableTreeMixin
+    implements WageSeekerSkillCreateEvent {
+  const _$WageSeekerSkillCreateEvent({required this.skillDetails});
+
+  @override
+  final SkillDetails skillDetails;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'WageSeekerBlocEvent.skillCreate(skillDetails: $skillDetails)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'WageSeekerBlocEvent.skillCreate'))
+      ..add(DiagnosticsProperty('skillDetails', skillDetails));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WageSeekerSkillCreateEvent &&
+            (identical(other.skillDetails, skillDetails) ||
+                other.skillDetails == skillDetails));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, skillDetails);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WageSeekerSkillCreateEventCopyWith<_$WageSeekerSkillCreateEvent>
+      get copyWith => __$$WageSeekerSkillCreateEventCopyWithImpl<
+          _$WageSeekerSkillCreateEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)
+        create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
+    required TResult Function() clear,
+  }) {
+    return skillCreate(skillDetails);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult? Function()? clear,
+  }) {
+    return skillCreate?.call(skillDetails);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (skillCreate != null) {
+      return skillCreate(skillDetails);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
+    required TResult Function(WageSeekerClearEvent value) clear,
+  }) {
+    return skillCreate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult? Function(WageSeekerClearEvent value)? clear,
+  }) {
+    return skillCreate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult Function(WageSeekerClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (skillCreate != null) {
+      return skillCreate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WageSeekerSkillCreateEvent implements WageSeekerBlocEvent {
+  const factory WageSeekerSkillCreateEvent(
+          {required final SkillDetails skillDetails}) =
+      _$WageSeekerSkillCreateEvent;
+
+  SkillDetails get skillDetails;
+  @JsonKey(ignore: true)
+  _$$WageSeekerSkillCreateEventCopyWith<_$WageSeekerSkillCreateEvent>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$WageSeekerPhotoCreateEventCopyWith<$Res> {
+  factory _$$WageSeekerPhotoCreateEventCopyWith(
+          _$WageSeekerPhotoCreateEvent value,
+          $Res Function(_$WageSeekerPhotoCreateEvent) then) =
+      __$$WageSeekerPhotoCreateEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({File? imageFile, Uint8List? bytes, String? photo});
+}
+
+/// @nodoc
+class __$$WageSeekerPhotoCreateEventCopyWithImpl<$Res>
+    extends _$WageSeekerBlocEventCopyWithImpl<$Res,
+        _$WageSeekerPhotoCreateEvent>
+    implements _$$WageSeekerPhotoCreateEventCopyWith<$Res> {
+  __$$WageSeekerPhotoCreateEventCopyWithImpl(
+      _$WageSeekerPhotoCreateEvent _value,
+      $Res Function(_$WageSeekerPhotoCreateEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? imageFile = freezed,
+    Object? bytes = freezed,
+    Object? photo = freezed,
+  }) {
+    return _then(_$WageSeekerPhotoCreateEvent(
+      imageFile: freezed == imageFile
+          ? _value.imageFile
+          : imageFile // ignore: cast_nullable_to_non_nullable
+              as File?,
+      bytes: freezed == bytes
+          ? _value.bytes
+          : bytes // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WageSeekerPhotoCreateEvent
+    with DiagnosticableTreeMixin
+    implements WageSeekerPhotoCreateEvent {
+  const _$WageSeekerPhotoCreateEvent({this.imageFile, this.bytes, this.photo});
+
+  @override
+  final File? imageFile;
+  @override
+  final Uint8List? bytes;
+  @override
+  final String? photo;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'WageSeekerBlocEvent.photoCreate(imageFile: $imageFile, bytes: $bytes, photo: $photo)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'WageSeekerBlocEvent.photoCreate'))
+      ..add(DiagnosticsProperty('imageFile', imageFile))
+      ..add(DiagnosticsProperty('bytes', bytes))
+      ..add(DiagnosticsProperty('photo', photo));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WageSeekerPhotoCreateEvent &&
+            (identical(other.imageFile, imageFile) ||
+                other.imageFile == imageFile) &&
+            const DeepCollectionEquality().equals(other.bytes, bytes) &&
+            (identical(other.photo, photo) || other.photo == photo));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, imageFile,
+      const DeepCollectionEquality().hash(bytes), photo);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WageSeekerPhotoCreateEventCopyWith<_$WageSeekerPhotoCreateEvent>
+      get copyWith => __$$WageSeekerPhotoCreateEventCopyWithImpl<
+          _$WageSeekerPhotoCreateEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)
+        create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
+    required TResult Function() clear,
+  }) {
+    return photoCreate(imageFile, bytes, photo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult? Function()? clear,
+  }) {
+    return photoCreate?.call(imageFile, bytes, photo);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
+    TResult Function()? clear,
+    required TResult orElse(),
+  }) {
+    if (photoCreate != null) {
+      return photoCreate(imageFile, bytes, photo);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
+    required TResult Function(WageSeekerClearEvent value) clear,
+  }) {
+    return photoCreate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult? Function(WageSeekerClearEvent value)? clear,
+  }) {
+    return photoCreate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
+    TResult Function(WageSeekerClearEvent value)? clear,
+    required TResult orElse(),
+  }) {
+    if (photoCreate != null) {
+      return photoCreate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class WageSeekerPhotoCreateEvent implements WageSeekerBlocEvent {
+  const factory WageSeekerPhotoCreateEvent(
+      {final File? imageFile,
+      final Uint8List? bytes,
+      final String? photo}) = _$WageSeekerPhotoCreateEvent;
+
+  File? get imageFile;
+  Uint8List? get bytes;
+  String? get photo;
+  @JsonKey(ignore: true)
+  _$$WageSeekerPhotoCreateEventCopyWith<_$WageSeekerPhotoCreateEvent>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -350,6 +1569,25 @@ class _$WageSeekerClearEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
+    required TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)
+        identificationCreate,
+    required TResult Function(
+            String fatherName,
+            DateTime dob,
+            String relationShip,
+            String gender,
+            String socialCategory,
+            String mobileNumber)
+        detailsCreate,
+    required TResult Function(SkillDetails skillDetails) skillCreate,
+    required TResult Function(File? imageFile, Uint8List? bytes, String? photo)
+        photoCreate,
     required TResult Function() clear,
   }) {
     return clear();
@@ -364,6 +1602,20 @@ class _$WageSeekerClearEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult? Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult? Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult? Function(SkillDetails skillDetails)? skillCreate,
+    TResult? Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
     TResult? Function()? clear,
   }) {
     return clear?.call();
@@ -378,6 +1630,20 @@ class _$WageSeekerClearEvent
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult Function(
+            String documentType,
+            String number,
+            String name,
+            bool adharVerified,
+            int timeStamp,
+            AdharCardResponse? adharCardResponse)?
+        identificationCreate,
+    TResult Function(String fatherName, DateTime dob, String relationShip,
+            String gender, String socialCategory, String mobileNumber)?
+        detailsCreate,
+    TResult Function(SkillDetails skillDetails)? skillCreate,
+    TResult Function(File? imageFile, Uint8List? bytes, String? photo)?
+        photoCreate,
     TResult Function()? clear,
     required TResult orElse(),
   }) {
@@ -391,6 +1657,11 @@ class _$WageSeekerClearEvent
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(WageSeekerCreateEvent value) create,
+    required TResult Function(WageSeekerIdentificationCreateEvent value)
+        identificationCreate,
+    required TResult Function(WageSeekerDetailsCreateEvent value) detailsCreate,
+    required TResult Function(WageSeekerSkillCreateEvent value) skillCreate,
+    required TResult Function(WageSeekerPhotoCreateEvent value) photoCreate,
     required TResult Function(WageSeekerClearEvent value) clear,
   }) {
     return clear(this);
@@ -400,6 +1671,11 @@ class _$WageSeekerClearEvent
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(WageSeekerCreateEvent value)? create,
+    TResult? Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult? Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult? Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult? Function(WageSeekerPhotoCreateEvent value)? photoCreate,
     TResult? Function(WageSeekerClearEvent value)? clear,
   }) {
     return clear?.call(this);
@@ -409,6 +1685,11 @@ class _$WageSeekerClearEvent
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(WageSeekerCreateEvent value)? create,
+    TResult Function(WageSeekerIdentificationCreateEvent value)?
+        identificationCreate,
+    TResult Function(WageSeekerDetailsCreateEvent value)? detailsCreate,
+    TResult Function(WageSeekerSkillCreateEvent value)? skillCreate,
+    TResult Function(WageSeekerPhotoCreateEvent value)? photoCreate,
     TResult Function(WageSeekerClearEvent value)? clear,
     required TResult orElse(),
   }) {

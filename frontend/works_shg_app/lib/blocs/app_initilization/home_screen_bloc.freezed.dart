@@ -19,16 +19,19 @@ mixin _$HomeScreenBlocEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getHomeSvreenConfig,
+    required TResult Function() getEmpHomeSvreenConfig,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getHomeSvreenConfig,
+    TResult? Function()? getEmpHomeSvreenConfig,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getHomeSvreenConfig,
+    TResult Function()? getEmpHomeSvreenConfig,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -36,16 +39,21 @@ mixin _$HomeScreenBlocEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(GetHomeScreenConfigEvent value)
         getHomeSvreenConfig,
+    required TResult Function(GetEmpHomeScreenConfigEvent value)
+        getEmpHomeSvreenConfig,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GetHomeScreenConfigEvent value)? getHomeSvreenConfig,
+    TResult? Function(GetEmpHomeScreenConfigEvent value)?
+        getEmpHomeSvreenConfig,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GetHomeScreenConfigEvent value)? getHomeSvreenConfig,
+    TResult Function(GetEmpHomeScreenConfigEvent value)? getEmpHomeSvreenConfig,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -109,6 +117,7 @@ class _$GetHomeScreenConfigEvent implements GetHomeScreenConfigEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() getHomeSvreenConfig,
+    required TResult Function() getEmpHomeSvreenConfig,
   }) {
     return getHomeSvreenConfig();
   }
@@ -117,6 +126,7 @@ class _$GetHomeScreenConfigEvent implements GetHomeScreenConfigEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? getHomeSvreenConfig,
+    TResult? Function()? getEmpHomeSvreenConfig,
   }) {
     return getHomeSvreenConfig?.call();
   }
@@ -125,6 +135,7 @@ class _$GetHomeScreenConfigEvent implements GetHomeScreenConfigEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? getHomeSvreenConfig,
+    TResult Function()? getEmpHomeSvreenConfig,
     required TResult orElse(),
   }) {
     if (getHomeSvreenConfig != null) {
@@ -138,6 +149,8 @@ class _$GetHomeScreenConfigEvent implements GetHomeScreenConfigEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(GetHomeScreenConfigEvent value)
         getHomeSvreenConfig,
+    required TResult Function(GetEmpHomeScreenConfigEvent value)
+        getEmpHomeSvreenConfig,
   }) {
     return getHomeSvreenConfig(this);
   }
@@ -146,6 +159,8 @@ class _$GetHomeScreenConfigEvent implements GetHomeScreenConfigEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(GetHomeScreenConfigEvent value)? getHomeSvreenConfig,
+    TResult? Function(GetEmpHomeScreenConfigEvent value)?
+        getEmpHomeSvreenConfig,
   }) {
     return getHomeSvreenConfig?.call(this);
   }
@@ -154,6 +169,7 @@ class _$GetHomeScreenConfigEvent implements GetHomeScreenConfigEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(GetHomeScreenConfigEvent value)? getHomeSvreenConfig,
+    TResult Function(GetEmpHomeScreenConfigEvent value)? getEmpHomeSvreenConfig,
     required TResult orElse(),
   }) {
     if (getHomeSvreenConfig != null) {
@@ -168,13 +184,123 @@ abstract class GetHomeScreenConfigEvent implements HomeScreenBlocEvent {
 }
 
 /// @nodoc
+abstract class _$$GetEmpHomeScreenConfigEventCopyWith<$Res> {
+  factory _$$GetEmpHomeScreenConfigEventCopyWith(
+          _$GetEmpHomeScreenConfigEvent value,
+          $Res Function(_$GetEmpHomeScreenConfigEvent) then) =
+      __$$GetEmpHomeScreenConfigEventCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetEmpHomeScreenConfigEventCopyWithImpl<$Res>
+    extends _$HomeScreenBlocEventCopyWithImpl<$Res,
+        _$GetEmpHomeScreenConfigEvent>
+    implements _$$GetEmpHomeScreenConfigEventCopyWith<$Res> {
+  __$$GetEmpHomeScreenConfigEventCopyWithImpl(
+      _$GetEmpHomeScreenConfigEvent _value,
+      $Res Function(_$GetEmpHomeScreenConfigEvent) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$GetEmpHomeScreenConfigEvent implements GetEmpHomeScreenConfigEvent {
+  const _$GetEmpHomeScreenConfigEvent();
+
+  @override
+  String toString() {
+    return 'HomeScreenBlocEvent.getEmpHomeSvreenConfig()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetEmpHomeScreenConfigEvent);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() getHomeSvreenConfig,
+    required TResult Function() getEmpHomeSvreenConfig,
+  }) {
+    return getEmpHomeSvreenConfig();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? getHomeSvreenConfig,
+    TResult? Function()? getEmpHomeSvreenConfig,
+  }) {
+    return getEmpHomeSvreenConfig?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? getHomeSvreenConfig,
+    TResult Function()? getEmpHomeSvreenConfig,
+    required TResult orElse(),
+  }) {
+    if (getEmpHomeSvreenConfig != null) {
+      return getEmpHomeSvreenConfig();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(GetHomeScreenConfigEvent value)
+        getHomeSvreenConfig,
+    required TResult Function(GetEmpHomeScreenConfigEvent value)
+        getEmpHomeSvreenConfig,
+  }) {
+    return getEmpHomeSvreenConfig(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(GetHomeScreenConfigEvent value)? getHomeSvreenConfig,
+    TResult? Function(GetEmpHomeScreenConfigEvent value)?
+        getEmpHomeSvreenConfig,
+  }) {
+    return getEmpHomeSvreenConfig?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(GetHomeScreenConfigEvent value)? getHomeSvreenConfig,
+    TResult Function(GetEmpHomeScreenConfigEvent value)? getEmpHomeSvreenConfig,
+    required TResult orElse(),
+  }) {
+    if (getEmpHomeSvreenConfig != null) {
+      return getEmpHomeSvreenConfig(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetEmpHomeScreenConfigEvent implements HomeScreenBlocEvent {
+  const factory GetEmpHomeScreenConfigEvent() = _$GetEmpHomeScreenConfigEvent;
+}
+
+/// @nodoc
 mixin _$HomeScreenBlocState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)
+            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)
         loaded,
     required TResult Function(String? error) error,
   }) =>
@@ -183,7 +309,8 @@ mixin _$HomeScreenBlocState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult? Function(String? error)? error,
   }) =>
@@ -192,7 +319,8 @@ mixin _$HomeScreenBlocState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -283,7 +411,8 @@ class _$_Initial extends _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)
+            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -295,7 +424,8 @@ class _$_Initial extends _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -307,7 +437,8 @@ class _$_Initial extends _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -401,7 +532,8 @@ class _$_Loading extends _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)
+            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -413,7 +545,8 @@ class _$_Loading extends _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -425,7 +558,8 @@ class _$_Loading extends _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
@@ -484,7 +618,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<CBOHomeScreenConfigModel>? cboHomeScreenConfig});
+  $Res call(
+      {List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+      HomeConfigModel? homeConfigModel});
+
+  $HomeConfigModelCopyWith<$Res>? get homeConfigModel;
 }
 
 /// @nodoc
@@ -498,20 +636,38 @@ class __$$_LoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? cboHomeScreenConfig = freezed,
+    Object? homeConfigModel = freezed,
   }) {
     return _then(_$_Loaded(
       freezed == cboHomeScreenConfig
           ? _value._cboHomeScreenConfig
           : cboHomeScreenConfig // ignore: cast_nullable_to_non_nullable
               as List<CBOHomeScreenConfigModel>?,
+      freezed == homeConfigModel
+          ? _value.homeConfigModel
+          : homeConfigModel // ignore: cast_nullable_to_non_nullable
+              as HomeConfigModel?,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $HomeConfigModelCopyWith<$Res>? get homeConfigModel {
+    if (_value.homeConfigModel == null) {
+      return null;
+    }
+
+    return $HomeConfigModelCopyWith<$Res>(_value.homeConfigModel!, (value) {
+      return _then(_value.copyWith(homeConfigModel: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$_Loaded extends _Loaded {
-  const _$_Loaded(final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)
+  const _$_Loaded(final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+      this.homeConfigModel)
       : _cboHomeScreenConfig = cboHomeScreenConfig,
         super._();
 
@@ -527,8 +683,11 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
+  final HomeConfigModel? homeConfigModel;
+
+  @override
   String toString() {
-    return 'HomeScreenBlocState.loaded(cboHomeScreenConfig: $cboHomeScreenConfig)';
+    return 'HomeScreenBlocState.loaded(cboHomeScreenConfig: $cboHomeScreenConfig, homeConfigModel: $homeConfigModel)';
   }
 
   @override
@@ -537,12 +696,16 @@ class _$_Loaded extends _Loaded {
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
             const DeepCollectionEquality()
-                .equals(other._cboHomeScreenConfig, _cboHomeScreenConfig));
+                .equals(other._cboHomeScreenConfig, _cboHomeScreenConfig) &&
+            (identical(other.homeConfigModel, homeConfigModel) ||
+                other.homeConfigModel == homeConfigModel));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_cboHomeScreenConfig));
+      runtimeType,
+      const DeepCollectionEquality().hash(_cboHomeScreenConfig),
+      homeConfigModel);
 
   @JsonKey(ignore: true)
   @override
@@ -556,11 +719,12 @@ class _$_Loaded extends _Loaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)
+            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)
         loaded,
     required TResult Function(String? error) error,
   }) {
-    return loaded(cboHomeScreenConfig);
+    return loaded(cboHomeScreenConfig, homeConfigModel);
   }
 
   @override
@@ -568,11 +732,12 @@ class _$_Loaded extends _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
-    return loaded?.call(cboHomeScreenConfig);
+    return loaded?.call(cboHomeScreenConfig, homeConfigModel);
   }
 
   @override
@@ -580,13 +745,14 @@ class _$_Loaded extends _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(cboHomeScreenConfig);
+      return loaded(cboHomeScreenConfig, homeConfigModel);
     }
     return orElse();
   }
@@ -631,10 +797,12 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends HomeScreenBlocState {
   const factory _Loaded(
-      final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig) = _$_Loaded;
+      final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+      final HomeConfigModel? homeConfigModel) = _$_Loaded;
   const _Loaded._() : super._();
 
   List<CBOHomeScreenConfigModel>? get cboHomeScreenConfig;
+  HomeConfigModel? get homeConfigModel;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -705,7 +873,8 @@ class _$_Error extends _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(
-            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)
+            List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)
         loaded,
     required TResult Function(String? error) error,
   }) {
@@ -717,7 +886,8 @@ class _$_Error extends _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult? Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult? Function(String? error)? error,
   }) {
@@ -729,7 +899,8 @@ class _$_Error extends _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig)?
+    TResult Function(List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+            HomeConfigModel? homeConfigModel)?
         loaded,
     TResult Function(String? error)? error,
     required TResult orElse(),

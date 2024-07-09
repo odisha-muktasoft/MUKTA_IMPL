@@ -152,7 +152,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                             context.read<AuthBloc>().add(
                                   AuthLoginEvent(
                                     userId: widget.mobileNumber,
-                                    password: otpController.text,
+                                    password: otpController.text, roleType: RoleType.cbo,
                                   ),
                                 );
                           }

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
@@ -39,7 +40,9 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
     context
         .read<LocalizationBloc>()
         .add(LocalizationEvent.onSpecificLoadLocalization(
-          module: 'rainmaker-attendencemgmt',
+          module: GlobalVariables.roleType==RoleType.employee?
+          'rainmaker-contracts,rainmaker-attendencemgmt,rainmaker-measurement,rainmaker-workflow'
+          :'rainmaker-contracts,rainmaker-attendencemgmt,rainmaker-workflow',
           tenantId: GlobalVariables
               .globalConfigObject!.globalConfigs!.stateTenantId
               .toString(),
@@ -49,7 +52,9 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
     // ignore: use_build_context_synchronously
     context
         .read<ORGSearchBloc>()
-        .add(SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber']));
+        .add(
+          SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber'])
+          );
   }
 
   @override

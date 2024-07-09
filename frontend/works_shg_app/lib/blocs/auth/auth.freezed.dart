@@ -18,21 +18,27 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password) login,
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
+        login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
@@ -86,7 +92,8 @@ abstract class _$$AuthLoginEventCopyWith<$Res> {
           _$AuthLoginEvent value, $Res Function(_$AuthLoginEvent) then) =
       __$$AuthLoginEventCopyWithImpl<$Res>;
   @useResult
-  $Res call({String userId, String password});
+  $Res call(
+      {String userId, String password, RoleType roleType, String? tenantId});
 }
 
 /// @nodoc
@@ -102,6 +109,8 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
   $Res call({
     Object? userId = null,
     Object? password = null,
+    Object? roleType = null,
+    Object? tenantId = freezed,
   }) {
     return _then(_$AuthLoginEvent(
       userId: null == userId
@@ -112,6 +121,14 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      roleType: null == roleType
+          ? _value.roleType
+          : roleType // ignore: cast_nullable_to_non_nullable
+              as RoleType,
+      tenantId: freezed == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -119,16 +136,24 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
-  const _$AuthLoginEvent({required this.userId, required this.password});
+  const _$AuthLoginEvent(
+      {required this.userId,
+      required this.password,
+      required this.roleType,
+      this.tenantId});
 
   @override
   final String userId;
   @override
   final String password;
+  @override
+  final RoleType roleType;
+  @override
+  final String? tenantId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthEvent.login(userId: $userId, password: $password)';
+    return 'AuthEvent.login(userId: $userId, password: $password, roleType: $roleType, tenantId: $tenantId)';
   }
 
   @override
@@ -137,7 +162,9 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
     properties
       ..add(DiagnosticsProperty('type', 'AuthEvent.login'))
       ..add(DiagnosticsProperty('userId', userId))
-      ..add(DiagnosticsProperty('password', password));
+      ..add(DiagnosticsProperty('password', password))
+      ..add(DiagnosticsProperty('roleType', roleType))
+      ..add(DiagnosticsProperty('tenantId', tenantId));
   }
 
   @override
@@ -147,11 +174,16 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
             other is _$AuthLoginEvent &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.password, password) ||
-                other.password == password));
+                other.password == password) &&
+            (identical(other.roleType, roleType) ||
+                other.roleType == roleType) &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userId, password);
+  int get hashCode =>
+      Object.hash(runtimeType, userId, password, roleType, tenantId);
 
   @JsonKey(ignore: true)
   @override
@@ -162,33 +194,39 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password) login,
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
+        login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
   }) {
-    return login(userId, password);
+    return login(userId, password, roleType, tenantId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) {
-    return login?.call(userId, password);
+    return login?.call(userId, password, roleType, tenantId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
   }) {
     if (login != null) {
-      return login(userId, password);
+      return login(userId, password, roleType, tenantId);
     }
     return orElse();
   }
@@ -232,10 +270,14 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
 abstract class AuthLoginEvent implements AuthEvent {
   const factory AuthLoginEvent(
       {required final String userId,
-      required final String password}) = _$AuthLoginEvent;
+      required final String password,
+      required final RoleType roleType,
+      final String? tenantId}) = _$AuthLoginEvent;
 
   String get userId;
   String get password;
+  RoleType get roleType;
+  String? get tenantId;
   @JsonKey(ignore: true)
   _$$AuthLoginEventCopyWith<_$AuthLoginEvent> get copyWith =>
       throw _privateConstructorUsedError;
@@ -287,7 +329,9 @@ class _$AuthLogoutEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password) login,
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
+        login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
   }) {
@@ -297,7 +341,9 @@ class _$AuthLogoutEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) {
@@ -307,7 +353,9 @@ class _$AuthLogoutEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
@@ -408,7 +456,9 @@ class _$AuthClearLoggedDetailsEvent
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String userId, String password) login,
+    required TResult Function(
+            String userId, String password, RoleType roleType, String? tenantId)
+        login,
     required TResult Function() logout,
     required TResult Function() clearLoggedInDetails,
   }) {
@@ -418,7 +468,9 @@ class _$AuthClearLoggedDetailsEvent
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String userId, String password)? login,
+    TResult? Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult? Function()? logout,
     TResult? Function()? clearLoggedInDetails,
   }) {
@@ -428,7 +480,9 @@ class _$AuthClearLoggedDetailsEvent
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String userId, String password)? login,
+    TResult Function(String userId, String password, RoleType roleType,
+            String? tenantId)?
+        login,
     TResult Function()? logout,
     TResult Function()? clearLoggedInDetails,
     required TResult orElse(),
@@ -485,8 +539,8 @@ mixin _$AuthState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-            UserDetailsModel? userDetailsModel, String? accessToken)
+    required TResult Function(UserDetailsModel? userDetailsModel,
+            String? accessToken, RoleType roleType)
         loaded,
     required TResult Function() error,
   }) =>
@@ -495,7 +549,8 @@ mixin _$AuthState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult? Function()? error,
   }) =>
@@ -504,7 +559,8 @@ mixin _$AuthState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
@@ -599,8 +655,8 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-            UserDetailsModel? userDetailsModel, String? accessToken)
+    required TResult Function(UserDetailsModel? userDetailsModel,
+            String? accessToken, RoleType roleType)
         loaded,
     required TResult Function() error,
   }) {
@@ -612,7 +668,8 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult? Function()? error,
   }) {
@@ -624,7 +681,8 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
@@ -723,8 +781,8 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-            UserDetailsModel? userDetailsModel, String? accessToken)
+    required TResult Function(UserDetailsModel? userDetailsModel,
+            String? accessToken, RoleType roleType)
         loaded,
     required TResult Function() error,
   }) {
@@ -736,7 +794,8 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult? Function()? error,
   }) {
@@ -748,7 +807,8 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
@@ -807,7 +867,10 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({UserDetailsModel? userDetailsModel, String? accessToken});
+  $Res call(
+      {UserDetailsModel? userDetailsModel,
+      String? accessToken,
+      RoleType roleType});
 
   $UserDetailsModelCopyWith<$Res>? get userDetailsModel;
 }
@@ -824,6 +887,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? userDetailsModel = freezed,
     Object? accessToken = freezed,
+    Object? roleType = null,
   }) {
     return _then(_$_Loaded(
       freezed == userDetailsModel
@@ -834,6 +898,10 @@ class __$$_LoadedCopyWithImpl<$Res>
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
               as String?,
+      null == roleType
+          ? _value.roleType
+          : roleType // ignore: cast_nullable_to_non_nullable
+              as RoleType,
     ));
   }
 
@@ -853,16 +921,19 @@ class __$$_LoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  const _$_Loaded(this.userDetailsModel, this.accessToken) : super._();
+  const _$_Loaded(this.userDetailsModel, this.accessToken, this.roleType)
+      : super._();
 
   @override
   final UserDetailsModel? userDetailsModel;
   @override
   final String? accessToken;
+  @override
+  final RoleType roleType;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AuthState.loaded(userDetailsModel: $userDetailsModel, accessToken: $accessToken)';
+    return 'AuthState.loaded(userDetailsModel: $userDetailsModel, accessToken: $accessToken, roleType: $roleType)';
   }
 
   @override
@@ -871,7 +942,8 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'AuthState.loaded'))
       ..add(DiagnosticsProperty('userDetailsModel', userDetailsModel))
-      ..add(DiagnosticsProperty('accessToken', accessToken));
+      ..add(DiagnosticsProperty('accessToken', accessToken))
+      ..add(DiagnosticsProperty('roleType', roleType));
   }
 
   @override
@@ -882,11 +954,14 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
             (identical(other.userDetailsModel, userDetailsModel) ||
                 other.userDetailsModel == userDetailsModel) &&
             (identical(other.accessToken, accessToken) ||
-                other.accessToken == accessToken));
+                other.accessToken == accessToken) &&
+            (identical(other.roleType, roleType) ||
+                other.roleType == roleType));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userDetailsModel, accessToken);
+  int get hashCode =>
+      Object.hash(runtimeType, userDetailsModel, accessToken, roleType);
 
   @JsonKey(ignore: true)
   @override
@@ -899,12 +974,12 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-            UserDetailsModel? userDetailsModel, String? accessToken)
+    required TResult Function(UserDetailsModel? userDetailsModel,
+            String? accessToken, RoleType roleType)
         loaded,
     required TResult Function() error,
   }) {
-    return loaded(userDetailsModel, accessToken);
+    return loaded(userDetailsModel, accessToken, roleType);
   }
 
   @override
@@ -912,11 +987,12 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult? Function()? error,
   }) {
-    return loaded?.call(userDetailsModel, accessToken);
+    return loaded?.call(userDetailsModel, accessToken, roleType);
   }
 
   @override
@@ -924,13 +1000,14 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(userDetailsModel, accessToken);
+      return loaded(userDetailsModel, accessToken, roleType);
     }
     return orElse();
   }
@@ -974,13 +1051,13 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 }
 
 abstract class _Loaded extends AuthState {
-  const factory _Loaded(
-          final UserDetailsModel? userDetailsModel, final String? accessToken) =
-      _$_Loaded;
+  const factory _Loaded(final UserDetailsModel? userDetailsModel,
+      final String? accessToken, final RoleType roleType) = _$_Loaded;
   const _Loaded._() : super._();
 
   UserDetailsModel? get userDetailsModel;
   String? get accessToken;
+  RoleType get roleType;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1030,8 +1107,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(
-            UserDetailsModel? userDetailsModel, String? accessToken)
+    required TResult Function(UserDetailsModel? userDetailsModel,
+            String? accessToken, RoleType roleType)
         loaded,
     required TResult Function() error,
   }) {
@@ -1043,7 +1120,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult? Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult? Function()? error,
   }) {
@@ -1055,7 +1133,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken)?
+    TResult Function(UserDetailsModel? userDetailsModel, String? accessToken,
+            RoleType roleType)?
         loaded,
     TResult Function()? error,
     required TResult orElse(),

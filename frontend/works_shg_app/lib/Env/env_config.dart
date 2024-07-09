@@ -72,6 +72,10 @@ class Variables {
     'SEND_TIMEOUT',
     '$_connectTimeoutValue',
   );
+static const _aadhaarUrl = EnvEntry(
+    'AADHAAR_VERIFY_PATH',
+    'http://164.100.141.79/authekycv4/api/authenticate',
+  );
 
   static const _baseUrl = EnvEntry(
     'BASE_URL',
@@ -96,6 +100,8 @@ class Variables {
     this.useFallbackValues = false,
     required DotEnv dotEnv,
   }) : _dotEnv = dotEnv;
+
+String get aadharUrl =>useFallbackValues?_aadhaarUrl.value:_dotEnv.get(_aadhaarUrl.key, fallback: _aadhaarUrl.value);
 
   String get baseUrl => useFallbackValues
       ? _baseUrl.value

@@ -8,21 +8,23 @@ part of 'skills.dart';
 
 _$_SkillsList _$$_SkillsListFromJson(Map<String, dynamic> json) =>
     _$_SkillsList(
-      wageSeekerSkills: (json['WageSeekerSkills'] as List<dynamic>?)
+      wageSeekerSkills: (json['SOR'] as List<dynamic>?)
           ?.map((e) => WageSeekerSkills.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$$_SkillsListToJson(_$_SkillsList instance) =>
     <String, dynamic>{
-      'WageSeekerSkills': instance.wageSeekerSkills,
+      'SOR': instance.wageSeekerSkills,
     };
 
 _$_WageSeekerSkills _$$_WageSeekerSkillsFromJson(Map<String, dynamic> json) =>
     _$_WageSeekerSkills(
-      code: json['code'] as String,
-      amount: json['amount'] as int?,
-      active: json['active'] as bool,
+      json['code'] as String?,
+      json['amount'] as int?,
+      json['active'] as bool?,
+      json['description'] as String?,
+      json['id'] as String?,
     );
 
 Map<String, dynamic> _$$_WageSeekerSkillsToJson(_$_WageSeekerSkills instance) =>
@@ -30,4 +32,6 @@ Map<String, dynamic> _$$_WageSeekerSkillsToJson(_$_WageSeekerSkills instance) =>
       'code': instance.code,
       'amount': instance.amount,
       'active': instance.active,
+      'description': instance.description,
+      'id': instance.id,
     };

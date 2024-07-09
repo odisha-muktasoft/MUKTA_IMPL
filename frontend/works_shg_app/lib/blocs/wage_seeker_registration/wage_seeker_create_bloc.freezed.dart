@@ -24,6 +24,7 @@ mixin _$WageSeekerCreateEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
+    required TResult Function(String name, String uid) verifyAdhar,
     required TResult Function() dispose,
   }) =>
       throw _privateConstructorUsedError;
@@ -35,6 +36,7 @@ mixin _$WageSeekerCreateEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult? Function(String name, String uid)? verifyAdhar,
     TResult? Function()? dispose,
   }) =>
       throw _privateConstructorUsedError;
@@ -46,6 +48,7 @@ mixin _$WageSeekerCreateEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult Function(String name, String uid)? verifyAdhar,
     TResult Function()? dispose,
     required TResult orElse(),
   }) =>
@@ -53,18 +56,21 @@ mixin _$WageSeekerCreateEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(CreateWageSeekerEvent value) create,
+    required TResult Function(VerifyAdharEvent value) verifyAdhar,
     required TResult Function(CreateWageSeekerDisposeEvent value) dispose,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CreateWageSeekerEvent value)? create,
+    TResult? Function(VerifyAdharEvent value)? verifyAdhar,
     TResult? Function(CreateWageSeekerDisposeEvent value)? dispose,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CreateWageSeekerEvent value)? create,
+    TResult Function(VerifyAdharEvent value)? verifyAdhar,
     TResult Function(CreateWageSeekerDisposeEvent value)? dispose,
     required TResult orElse(),
   }) =>
@@ -198,6 +204,7 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
+    required TResult Function(String name, String uid) verifyAdhar,
     required TResult Function() dispose,
   }) {
     return create(
@@ -213,6 +220,7 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult? Function(String name, String uid)? verifyAdhar,
     TResult? Function()? dispose,
   }) {
     return create?.call(
@@ -228,6 +236,7 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult Function(String name, String uid)? verifyAdhar,
     TResult Function()? dispose,
     required TResult orElse(),
   }) {
@@ -242,6 +251,7 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(CreateWageSeekerEvent value) create,
+    required TResult Function(VerifyAdharEvent value) verifyAdhar,
     required TResult Function(CreateWageSeekerDisposeEvent value) dispose,
   }) {
     return create(this);
@@ -251,6 +261,7 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CreateWageSeekerEvent value)? create,
+    TResult? Function(VerifyAdharEvent value)? verifyAdhar,
     TResult? Function(CreateWageSeekerDisposeEvent value)? dispose,
   }) {
     return create?.call(this);
@@ -260,6 +271,7 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CreateWageSeekerEvent value)? create,
+    TResult Function(VerifyAdharEvent value)? verifyAdhar,
     TResult Function(CreateWageSeekerDisposeEvent value)? dispose,
     required TResult orElse(),
   }) {
@@ -283,6 +295,171 @@ abstract class CreateWageSeekerEvent implements WageSeekerCreateEvent {
   FinancialDetails? get financialDetails;
   @JsonKey(ignore: true)
   _$$CreateWageSeekerEventCopyWith<_$CreateWageSeekerEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VerifyAdharEventCopyWith<$Res> {
+  factory _$$VerifyAdharEventCopyWith(
+          _$VerifyAdharEvent value, $Res Function(_$VerifyAdharEvent) then) =
+      __$$VerifyAdharEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String name, String uid});
+}
+
+/// @nodoc
+class __$$VerifyAdharEventCopyWithImpl<$Res>
+    extends _$WageSeekerCreateEventCopyWithImpl<$Res, _$VerifyAdharEvent>
+    implements _$$VerifyAdharEventCopyWith<$Res> {
+  __$$VerifyAdharEventCopyWithImpl(
+      _$VerifyAdharEvent _value, $Res Function(_$VerifyAdharEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? uid = null,
+  }) {
+    return _then(_$VerifyAdharEvent(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$VerifyAdharEvent implements VerifyAdharEvent {
+  const _$VerifyAdharEvent({required this.name, required this.uid});
+
+  @override
+  final String name;
+  @override
+  final String uid;
+
+  @override
+  String toString() {
+    return 'WageSeekerCreateEvent.verifyAdhar(name: $name, uid: $uid)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VerifyAdharEvent &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.uid, uid) || other.uid == uid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, name, uid);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VerifyAdharEventCopyWith<_$VerifyAdharEvent> get copyWith =>
+      __$$VerifyAdharEventCopyWithImpl<_$VerifyAdharEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)
+        create,
+    required TResult Function(String name, String uid) verifyAdhar,
+    required TResult Function() dispose,
+  }) {
+    return verifyAdhar(name, uid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult? Function(String name, String uid)? verifyAdhar,
+    TResult? Function()? dispose,
+  }) {
+    return verifyAdhar?.call(name, uid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            IndividualDetails? individualDetails,
+            SkillDetails? skillDetails,
+            LocationDetails? locationDetails,
+            FinancialDetails? financialDetails)?
+        create,
+    TResult Function(String name, String uid)? verifyAdhar,
+    TResult Function()? dispose,
+    required TResult orElse(),
+  }) {
+    if (verifyAdhar != null) {
+      return verifyAdhar(name, uid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CreateWageSeekerEvent value) create,
+    required TResult Function(VerifyAdharEvent value) verifyAdhar,
+    required TResult Function(CreateWageSeekerDisposeEvent value) dispose,
+  }) {
+    return verifyAdhar(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CreateWageSeekerEvent value)? create,
+    TResult? Function(VerifyAdharEvent value)? verifyAdhar,
+    TResult? Function(CreateWageSeekerDisposeEvent value)? dispose,
+  }) {
+    return verifyAdhar?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CreateWageSeekerEvent value)? create,
+    TResult Function(VerifyAdharEvent value)? verifyAdhar,
+    TResult Function(CreateWageSeekerDisposeEvent value)? dispose,
+    required TResult orElse(),
+  }) {
+    if (verifyAdhar != null) {
+      return verifyAdhar(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class VerifyAdharEvent implements WageSeekerCreateEvent {
+  const factory VerifyAdharEvent(
+      {required final String name,
+      required final String uid}) = _$VerifyAdharEvent;
+
+  String get name;
+  String get uid;
+  @JsonKey(ignore: true)
+  _$$VerifyAdharEventCopyWith<_$VerifyAdharEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -334,6 +511,7 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)
         create,
+    required TResult Function(String name, String uid) verifyAdhar,
     required TResult Function() dispose,
   }) {
     return dispose();
@@ -348,6 +526,7 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult? Function(String name, String uid)? verifyAdhar,
     TResult? Function()? dispose,
   }) {
     return dispose?.call();
@@ -362,6 +541,7 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
             LocationDetails? locationDetails,
             FinancialDetails? financialDetails)?
         create,
+    TResult Function(String name, String uid)? verifyAdhar,
     TResult Function()? dispose,
     required TResult orElse(),
   }) {
@@ -375,6 +555,7 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(CreateWageSeekerEvent value) create,
+    required TResult Function(VerifyAdharEvent value) verifyAdhar,
     required TResult Function(CreateWageSeekerDisposeEvent value) dispose,
   }) {
     return dispose(this);
@@ -384,6 +565,7 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(CreateWageSeekerEvent value)? create,
+    TResult? Function(VerifyAdharEvent value)? verifyAdhar,
     TResult? Function(CreateWageSeekerDisposeEvent value)? dispose,
   }) {
     return dispose?.call(this);
@@ -393,6 +575,7 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(CreateWageSeekerEvent value)? create,
+    TResult Function(VerifyAdharEvent value)? verifyAdhar,
     TResult Function(CreateWageSeekerDisposeEvent value)? dispose,
     required TResult orElse(),
   }) {
@@ -415,6 +598,7 @@ mixin _$WageSeekerCreateState {
     required TResult Function() loading,
     required TResult Function(SingleIndividualModel? individualListModel)
         loaded,
+    required TResult Function(AdharCardResponse? adharCardResponse) verified,
     required TResult Function(String? error) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -423,6 +607,7 @@ mixin _$WageSeekerCreateState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult? Function(AdharCardResponse? adharCardResponse)? verified,
     TResult? Function(String? error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -431,6 +616,7 @@ mixin _$WageSeekerCreateState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult Function(AdharCardResponse? adharCardResponse)? verified,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) =>
@@ -440,6 +626,7 @@ mixin _$WageSeekerCreateState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Verified value) verified,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -448,6 +635,7 @@ mixin _$WageSeekerCreateState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Verified value)? verified,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -456,6 +644,7 @@ mixin _$WageSeekerCreateState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Verified value)? verified,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -522,6 +711,7 @@ class _$_Initial extends _Initial {
     required TResult Function() loading,
     required TResult Function(SingleIndividualModel? individualListModel)
         loaded,
+    required TResult Function(AdharCardResponse? adharCardResponse) verified,
     required TResult Function(String? error) error,
   }) {
     return initial();
@@ -533,6 +723,7 @@ class _$_Initial extends _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult? Function(AdharCardResponse? adharCardResponse)? verified,
     TResult? Function(String? error)? error,
   }) {
     return initial?.call();
@@ -544,6 +735,7 @@ class _$_Initial extends _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult Function(AdharCardResponse? adharCardResponse)? verified,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -559,6 +751,7 @@ class _$_Initial extends _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Verified value) verified,
     required TResult Function(_Error value) error,
   }) {
     return initial(this);
@@ -570,6 +763,7 @@ class _$_Initial extends _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Verified value)? verified,
     TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
@@ -581,6 +775,7 @@ class _$_Initial extends _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Verified value)? verified,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -637,6 +832,7 @@ class _$_Loading extends _Loading {
     required TResult Function() loading,
     required TResult Function(SingleIndividualModel? individualListModel)
         loaded,
+    required TResult Function(AdharCardResponse? adharCardResponse) verified,
     required TResult Function(String? error) error,
   }) {
     return loading();
@@ -648,6 +844,7 @@ class _$_Loading extends _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult? Function(AdharCardResponse? adharCardResponse)? verified,
     TResult? Function(String? error)? error,
   }) {
     return loading?.call();
@@ -659,6 +856,7 @@ class _$_Loading extends _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult Function(AdharCardResponse? adharCardResponse)? verified,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -674,6 +872,7 @@ class _$_Loading extends _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Verified value) verified,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -685,6 +884,7 @@ class _$_Loading extends _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Verified value)? verified,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -696,6 +896,7 @@ class _$_Loading extends _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Verified value)? verified,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -778,6 +979,7 @@ class _$_Loaded extends _Loaded {
     required TResult Function() loading,
     required TResult Function(SingleIndividualModel? individualListModel)
         loaded,
+    required TResult Function(AdharCardResponse? adharCardResponse) verified,
     required TResult Function(String? error) error,
   }) {
     return loaded(individualListModel);
@@ -789,6 +991,7 @@ class _$_Loaded extends _Loaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult? Function(AdharCardResponse? adharCardResponse)? verified,
     TResult? Function(String? error)? error,
   }) {
     return loaded?.call(individualListModel);
@@ -800,6 +1003,7 @@ class _$_Loaded extends _Loaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult Function(AdharCardResponse? adharCardResponse)? verified,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -815,6 +1019,7 @@ class _$_Loaded extends _Loaded {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Verified value) verified,
     required TResult Function(_Error value) error,
   }) {
     return loaded(this);
@@ -826,6 +1031,7 @@ class _$_Loaded extends _Loaded {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Verified value)? verified,
     TResult? Function(_Error value)? error,
   }) {
     return loaded?.call(this);
@@ -837,6 +1043,7 @@ class _$_Loaded extends _Loaded {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Verified value)? verified,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -855,6 +1062,175 @@ abstract class _Loaded extends WageSeekerCreateState {
   SingleIndividualModel? get individualListModel;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$_VerifiedCopyWith<$Res> {
+  factory _$$_VerifiedCopyWith(
+          _$_Verified value, $Res Function(_$_Verified) then) =
+      __$$_VerifiedCopyWithImpl<$Res>;
+  @useResult
+  $Res call({AdharCardResponse? adharCardResponse});
+
+  $AdharCardResponseCopyWith<$Res>? get adharCardResponse;
+}
+
+/// @nodoc
+class __$$_VerifiedCopyWithImpl<$Res>
+    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$_Verified>
+    implements _$$_VerifiedCopyWith<$Res> {
+  __$$_VerifiedCopyWithImpl(
+      _$_Verified _value, $Res Function(_$_Verified) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? adharCardResponse = freezed,
+  }) {
+    return _then(_$_Verified(
+      freezed == adharCardResponse
+          ? _value.adharCardResponse
+          : adharCardResponse // ignore: cast_nullable_to_non_nullable
+              as AdharCardResponse?,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $AdharCardResponseCopyWith<$Res>? get adharCardResponse {
+    if (_value.adharCardResponse == null) {
+      return null;
+    }
+
+    return $AdharCardResponseCopyWith<$Res>(_value.adharCardResponse!, (value) {
+      return _then(_value.copyWith(adharCardResponse: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$_Verified extends _Verified {
+  const _$_Verified(this.adharCardResponse) : super._();
+
+  @override
+  final AdharCardResponse? adharCardResponse;
+
+  @override
+  String toString() {
+    return 'WageSeekerCreateState.verified(adharCardResponse: $adharCardResponse)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_Verified &&
+            (identical(other.adharCardResponse, adharCardResponse) ||
+                other.adharCardResponse == adharCardResponse));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, adharCardResponse);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_VerifiedCopyWith<_$_Verified> get copyWith =>
+      __$$_VerifiedCopyWithImpl<_$_Verified>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(SingleIndividualModel? individualListModel)
+        loaded,
+    required TResult Function(AdharCardResponse? adharCardResponse) verified,
+    required TResult Function(String? error) error,
+  }) {
+    return verified(adharCardResponse);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult? Function(AdharCardResponse? adharCardResponse)? verified,
+    TResult? Function(String? error)? error,
+  }) {
+    return verified?.call(adharCardResponse);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult Function(AdharCardResponse? adharCardResponse)? verified,
+    TResult Function(String? error)? error,
+    required TResult orElse(),
+  }) {
+    if (verified != null) {
+      return verified(adharCardResponse);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Verified value) verified,
+    required TResult Function(_Error value) error,
+  }) {
+    return verified(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Verified value)? verified,
+    TResult? Function(_Error value)? error,
+  }) {
+    return verified?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Verified value)? verified,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (verified != null) {
+      return verified(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Verified extends WageSeekerCreateState {
+  const factory _Verified(final AdharCardResponse? adharCardResponse) =
+      _$_Verified;
+  const _Verified._() : super._();
+
+  AdharCardResponse? get adharCardResponse;
+  @JsonKey(ignore: true)
+  _$$_VerifiedCopyWith<_$_Verified> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -924,6 +1300,7 @@ class _$_Error extends _Error {
     required TResult Function() loading,
     required TResult Function(SingleIndividualModel? individualListModel)
         loaded,
+    required TResult Function(AdharCardResponse? adharCardResponse) verified,
     required TResult Function(String? error) error,
   }) {
     return error(this.error);
@@ -935,6 +1312,7 @@ class _$_Error extends _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult? Function(AdharCardResponse? adharCardResponse)? verified,
     TResult? Function(String? error)? error,
   }) {
     return error?.call(this.error);
@@ -946,6 +1324,7 @@ class _$_Error extends _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(SingleIndividualModel? individualListModel)? loaded,
+    TResult Function(AdharCardResponse? adharCardResponse)? verified,
     TResult Function(String? error)? error,
     required TResult orElse(),
   }) {
@@ -961,6 +1340,7 @@ class _$_Error extends _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Verified value) verified,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -972,6 +1352,7 @@ class _$_Error extends _Error {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Verified value)? verified,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -983,6 +1364,7 @@ class _$_Error extends _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Verified value)? verified,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
