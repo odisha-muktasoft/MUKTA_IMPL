@@ -12,6 +12,7 @@ const ROLES = {
   MUSTERROLLS: ["MUSTER_ROLL_VERIFIER", "MUSTER_ROLL_APPROVER"],
   MEASUREMENT: ["MB_CREATOR", "MB_VERIFIER", "MB_APPROVER", "MB_VIEWER"],
   WORKBENCH : ["MDMS_ADMIN", "MDMS_STATE_ADMIN", "MDMS_CITY_ADMIN", "MDMS_STATE_VIEW_ADMIN", "MDMS_CITY_VIEW_ADMIN"],
+  REVISIONOFRATES : ["MDMS_ADMIN", "MDMS_CITY_ADMIN", "MDMS_STATE_VIEW_ADMIN", "MDMS_CITY_VIEW_ADMIN"],
   DSS: ["STADMIN"],
 };
 
@@ -223,7 +224,7 @@ const WorksCard = () => {
     {
       label: t("ACTION_TEST_10REVISIONOFRATES"),
       link: `/${window?.contextPath}/employee/rateAnalysis/search-sor`,
-      roles: ROLES.WORKBENCH,
+      roles: ROLES.REVISIONOFRATES,
     }
   ];
 
