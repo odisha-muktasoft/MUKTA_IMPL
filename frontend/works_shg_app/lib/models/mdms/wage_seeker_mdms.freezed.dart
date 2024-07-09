@@ -947,6 +947,8 @@ mixin _$WageSeekerCommonMDMS {
   @JsonKey(name: 'SocialCategory')
   List<SocialCategory>? get socialCategory =>
       throw _privateConstructorUsedError;
+  @JsonKey(name: 'DocumentType')
+  List<DocumentType>? get documentType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -968,7 +970,9 @@ abstract class $WageSeekerCommonMDMSCopyWith<$Res> {
       @JsonKey(name: 'Relationship')
           List<Relationship>? relationship,
       @JsonKey(name: 'SocialCategory')
-          List<SocialCategory>? socialCategory});
+          List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          List<DocumentType>? documentType});
 }
 
 /// @nodoc
@@ -989,6 +993,7 @@ class _$WageSeekerCommonMDMSCopyWithImpl<$Res,
     Object? wageSeekerSkills = freezed,
     Object? relationship = freezed,
     Object? socialCategory = freezed,
+    Object? documentType = freezed,
   }) {
     return _then(_value.copyWith(
       genderType: freezed == genderType
@@ -1007,6 +1012,10 @@ class _$WageSeekerCommonMDMSCopyWithImpl<$Res,
           ? _value.socialCategory
           : socialCategory // ignore: cast_nullable_to_non_nullable
               as List<SocialCategory>?,
+      documentType: freezed == documentType
+          ? _value.documentType
+          : documentType // ignore: cast_nullable_to_non_nullable
+              as List<DocumentType>?,
     ) as $Val);
   }
 }
@@ -1027,7 +1036,9 @@ abstract class _$$_WageSeekerCommonMDMSCopyWith<$Res>
       @JsonKey(name: 'Relationship')
           List<Relationship>? relationship,
       @JsonKey(name: 'SocialCategory')
-          List<SocialCategory>? socialCategory});
+          List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          List<DocumentType>? documentType});
 }
 
 /// @nodoc
@@ -1045,6 +1056,7 @@ class __$$_WageSeekerCommonMDMSCopyWithImpl<$Res>
     Object? wageSeekerSkills = freezed,
     Object? relationship = freezed,
     Object? socialCategory = freezed,
+    Object? documentType = freezed,
   }) {
     return _then(_$_WageSeekerCommonMDMS(
       genderType: freezed == genderType
@@ -1063,6 +1075,10 @@ class __$$_WageSeekerCommonMDMSCopyWithImpl<$Res>
           ? _value._socialCategory
           : socialCategory // ignore: cast_nullable_to_non_nullable
               as List<SocialCategory>?,
+      documentType: freezed == documentType
+          ? _value._documentType
+          : documentType // ignore: cast_nullable_to_non_nullable
+              as List<DocumentType>?,
     ));
   }
 }
@@ -1078,11 +1094,14 @@ class _$_WageSeekerCommonMDMS implements _WageSeekerCommonMDMS {
       @JsonKey(name: 'Relationship')
           final List<Relationship>? relationship,
       @JsonKey(name: 'SocialCategory')
-          final List<SocialCategory>? socialCategory})
+          final List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          final List<DocumentType>? documentType})
       : _genderType = genderType,
         _wageSeekerSkills = wageSeekerSkills,
         _relationship = relationship,
-        _socialCategory = socialCategory;
+        _socialCategory = socialCategory,
+        _documentType = documentType;
 
   factory _$_WageSeekerCommonMDMS.fromJson(Map<String, dynamic> json) =>
       _$$_WageSeekerCommonMDMSFromJson(json);
@@ -1132,9 +1151,20 @@ class _$_WageSeekerCommonMDMS implements _WageSeekerCommonMDMS {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<DocumentType>? _documentType;
+  @override
+  @JsonKey(name: 'DocumentType')
+  List<DocumentType>? get documentType {
+    final value = _documentType;
+    if (value == null) return null;
+    if (_documentType is EqualUnmodifiableListView) return _documentType;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'WageSeekerCommonMDMS(genderType: $genderType, wageSeekerSkills: $wageSeekerSkills, relationship: $relationship, socialCategory: $socialCategory)';
+    return 'WageSeekerCommonMDMS(genderType: $genderType, wageSeekerSkills: $wageSeekerSkills, relationship: $relationship, socialCategory: $socialCategory, documentType: $documentType)';
   }
 
   @override
@@ -1149,7 +1179,9 @@ class _$_WageSeekerCommonMDMS implements _WageSeekerCommonMDMS {
             const DeepCollectionEquality()
                 .equals(other._relationship, _relationship) &&
             const DeepCollectionEquality()
-                .equals(other._socialCategory, _socialCategory));
+                .equals(other._socialCategory, _socialCategory) &&
+            const DeepCollectionEquality()
+                .equals(other._documentType, _documentType));
   }
 
   @JsonKey(ignore: true)
@@ -1159,7 +1191,8 @@ class _$_WageSeekerCommonMDMS implements _WageSeekerCommonMDMS {
       const DeepCollectionEquality().hash(_genderType),
       const DeepCollectionEquality().hash(_wageSeekerSkills),
       const DeepCollectionEquality().hash(_relationship),
-      const DeepCollectionEquality().hash(_socialCategory));
+      const DeepCollectionEquality().hash(_socialCategory),
+      const DeepCollectionEquality().hash(_documentType));
 
   @JsonKey(ignore: true)
   @override
@@ -1178,15 +1211,16 @@ class _$_WageSeekerCommonMDMS implements _WageSeekerCommonMDMS {
 
 abstract class _WageSeekerCommonMDMS implements WageSeekerCommonMDMS {
   const factory _WageSeekerCommonMDMS(
-          {@JsonKey(name: 'GenderType')
-              final List<GenderType>? genderType,
-          @JsonKey(name: 'WageSeekerSkills')
-              final List<WageSeekerSkills>? wageSeekerSkills,
-          @JsonKey(name: 'Relationship')
-              final List<Relationship>? relationship,
-          @JsonKey(name: 'SocialCategory')
-              final List<SocialCategory>? socialCategory}) =
-      _$_WageSeekerCommonMDMS;
+      {@JsonKey(name: 'GenderType')
+          final List<GenderType>? genderType,
+      @JsonKey(name: 'WageSeekerSkills')
+          final List<WageSeekerSkills>? wageSeekerSkills,
+      @JsonKey(name: 'Relationship')
+          final List<Relationship>? relationship,
+      @JsonKey(name: 'SocialCategory')
+          final List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          final List<DocumentType>? documentType}) = _$_WageSeekerCommonMDMS;
 
   factory _WageSeekerCommonMDMS.fromJson(Map<String, dynamic> json) =
       _$_WageSeekerCommonMDMS.fromJson;
@@ -1203,6 +1237,9 @@ abstract class _WageSeekerCommonMDMS implements WageSeekerCommonMDMS {
   @override
   @JsonKey(name: 'SocialCategory')
   List<SocialCategory>? get socialCategory;
+  @override
+  @JsonKey(name: 'DocumentType')
+  List<DocumentType>? get documentType;
   @override
   @JsonKey(ignore: true)
   _$$_WageSeekerCommonMDMSCopyWith<_$_WageSeekerCommonMDMS> get copyWith =>
@@ -1875,5 +1912,177 @@ abstract class _BankAccType implements BankAccType {
   @override
   @JsonKey(ignore: true)
   _$$_BankAccTypeCopyWith<_$_BankAccType> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+DocumentType _$DocumentTypeFromJson(Map<String, dynamic> json) {
+  return _DocumentType.fromJson(json);
+}
+
+/// @nodoc
+mixin _$DocumentType {
+  String get name => throw _privateConstructorUsedError;
+  String get code => throw _privateConstructorUsedError;
+  bool get active => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $DocumentTypeCopyWith<DocumentType> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DocumentTypeCopyWith<$Res> {
+  factory $DocumentTypeCopyWith(
+          DocumentType value, $Res Function(DocumentType) then) =
+      _$DocumentTypeCopyWithImpl<$Res, DocumentType>;
+  @useResult
+  $Res call({String name, String code, bool active});
+}
+
+/// @nodoc
+class _$DocumentTypeCopyWithImpl<$Res, $Val extends DocumentType>
+    implements $DocumentTypeCopyWith<$Res> {
+  _$DocumentTypeCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? code = null,
+    Object? active = null,
+  }) {
+    return _then(_value.copyWith(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      code: null == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String,
+      active: null == active
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$_DocumentTypeCopyWith<$Res>
+    implements $DocumentTypeCopyWith<$Res> {
+  factory _$$_DocumentTypeCopyWith(
+          _$_DocumentType value, $Res Function(_$_DocumentType) then) =
+      __$$_DocumentTypeCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String name, String code, bool active});
+}
+
+/// @nodoc
+class __$$_DocumentTypeCopyWithImpl<$Res>
+    extends _$DocumentTypeCopyWithImpl<$Res, _$_DocumentType>
+    implements _$$_DocumentTypeCopyWith<$Res> {
+  __$$_DocumentTypeCopyWithImpl(
+      _$_DocumentType _value, $Res Function(_$_DocumentType) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? name = null,
+    Object? code = null,
+    Object? active = null,
+  }) {
+    return _then(_$_DocumentType(
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      code: null == code
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
+              as String,
+      active: null == active
+          ? _value.active
+          : active // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_DocumentType implements _DocumentType {
+  const _$_DocumentType(
+      {required this.name, required this.code, required this.active});
+
+  factory _$_DocumentType.fromJson(Map<String, dynamic> json) =>
+      _$$_DocumentTypeFromJson(json);
+
+  @override
+  final String name;
+  @override
+  final String code;
+  @override
+  final bool active;
+
+  @override
+  String toString() {
+    return 'DocumentType(name: $name, code: $code, active: $active)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_DocumentType &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.active, active) || other.active == active));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, name, code, active);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$_DocumentTypeCopyWith<_$_DocumentType> get copyWith =>
+      __$$_DocumentTypeCopyWithImpl<_$_DocumentType>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_DocumentTypeToJson(
+      this,
+    );
+  }
+}
+
+abstract class _DocumentType implements DocumentType {
+  const factory _DocumentType(
+      {required final String name,
+      required final String code,
+      required final bool active}) = _$_DocumentType;
+
+  factory _DocumentType.fromJson(Map<String, dynamic> json) =
+      _$_DocumentType.fromJson;
+
+  @override
+  String get name;
+  @override
+  String get code;
+  @override
+  bool get active;
+  @override
+  @JsonKey(ignore: true)
+  _$$_DocumentTypeCopyWith<_$_DocumentType> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -16,42 +16,43 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ORGSearchEvent {
-  String get mobileNumber => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String mobileNumber) search,
+    required TResult Function(String tenantId) mbOrgsearch,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String mobileNumber)? search,
+    TResult? Function(String tenantId)? mbOrgsearch,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String mobileNumber)? search,
+    TResult Function(String tenantId)? mbOrgsearch,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SearchORGEvent value) search,
+    required TResult Function(SearchMbORGEvent value) mbOrgsearch,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SearchORGEvent value)? search,
+    TResult? Function(SearchMbORGEvent value)? mbOrgsearch,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SearchORGEvent value)? search,
+    TResult Function(SearchMbORGEvent value)? mbOrgsearch,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $ORGSearchEventCopyWith<ORGSearchEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -60,8 +61,6 @@ abstract class $ORGSearchEventCopyWith<$Res> {
   factory $ORGSearchEventCopyWith(
           ORGSearchEvent value, $Res Function(ORGSearchEvent) then) =
       _$ORGSearchEventCopyWithImpl<$Res, ORGSearchEvent>;
-  @useResult
-  $Res call({String mobileNumber});
 }
 
 /// @nodoc
@@ -73,28 +72,13 @@ class _$ORGSearchEventCopyWithImpl<$Res, $Val extends ORGSearchEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? mobileNumber = null,
-  }) {
-    return _then(_value.copyWith(
-      mobileNumber: null == mobileNumber
-          ? _value.mobileNumber
-          : mobileNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$SearchORGEventCopyWith<$Res>
-    implements $ORGSearchEventCopyWith<$Res> {
+abstract class _$$SearchORGEventCopyWith<$Res> {
   factory _$$SearchORGEventCopyWith(
           _$SearchORGEvent value, $Res Function(_$SearchORGEvent) then) =
       __$$SearchORGEventCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String mobileNumber});
 }
@@ -164,6 +148,7 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String mobileNumber) search,
+    required TResult Function(String tenantId) mbOrgsearch,
   }) {
     return search(mobileNumber);
   }
@@ -172,6 +157,7 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String mobileNumber)? search,
+    TResult? Function(String tenantId)? mbOrgsearch,
   }) {
     return search?.call(mobileNumber);
   }
@@ -180,6 +166,7 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String mobileNumber)? search,
+    TResult Function(String tenantId)? mbOrgsearch,
     required TResult orElse(),
   }) {
     if (search != null) {
@@ -192,6 +179,7 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(SearchORGEvent value) search,
+    required TResult Function(SearchMbORGEvent value) mbOrgsearch,
   }) {
     return search(this);
   }
@@ -200,6 +188,7 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(SearchORGEvent value)? search,
+    TResult? Function(SearchMbORGEvent value)? mbOrgsearch,
   }) {
     return search?.call(this);
   }
@@ -208,6 +197,7 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(SearchORGEvent value)? search,
+    TResult Function(SearchMbORGEvent value)? mbOrgsearch,
     required TResult orElse(),
   }) {
     if (search != null) {
@@ -220,11 +210,154 @@ class _$SearchORGEvent with DiagnosticableTreeMixin implements SearchORGEvent {
 abstract class SearchORGEvent implements ORGSearchEvent {
   const factory SearchORGEvent(final String mobileNumber) = _$SearchORGEvent;
 
-  @override
   String get mobileNumber;
-  @override
   @JsonKey(ignore: true)
   _$$SearchORGEventCopyWith<_$SearchORGEvent> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SearchMbORGEventCopyWith<$Res> {
+  factory _$$SearchMbORGEventCopyWith(
+          _$SearchMbORGEvent value, $Res Function(_$SearchMbORGEvent) then) =
+      __$$SearchMbORGEventCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String tenantId});
+}
+
+/// @nodoc
+class __$$SearchMbORGEventCopyWithImpl<$Res>
+    extends _$ORGSearchEventCopyWithImpl<$Res, _$SearchMbORGEvent>
+    implements _$$SearchMbORGEventCopyWith<$Res> {
+  __$$SearchMbORGEventCopyWithImpl(
+      _$SearchMbORGEvent _value, $Res Function(_$SearchMbORGEvent) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? tenantId = null,
+  }) {
+    return _then(_$SearchMbORGEvent(
+      tenantId: null == tenantId
+          ? _value.tenantId
+          : tenantId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SearchMbORGEvent
+    with DiagnosticableTreeMixin
+    implements SearchMbORGEvent {
+  const _$SearchMbORGEvent({required this.tenantId});
+
+  @override
+  final String tenantId;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ORGSearchEvent.mbOrgsearch(tenantId: $tenantId)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ORGSearchEvent.mbOrgsearch'))
+      ..add(DiagnosticsProperty('tenantId', tenantId));
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SearchMbORGEvent &&
+            (identical(other.tenantId, tenantId) ||
+                other.tenantId == tenantId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, tenantId);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SearchMbORGEventCopyWith<_$SearchMbORGEvent> get copyWith =>
+      __$$SearchMbORGEventCopyWithImpl<_$SearchMbORGEvent>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String mobileNumber) search,
+    required TResult Function(String tenantId) mbOrgsearch,
+  }) {
+    return mbOrgsearch(tenantId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String mobileNumber)? search,
+    TResult? Function(String tenantId)? mbOrgsearch,
+  }) {
+    return mbOrgsearch?.call(tenantId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String mobileNumber)? search,
+    TResult Function(String tenantId)? mbOrgsearch,
+    required TResult orElse(),
+  }) {
+    if (mbOrgsearch != null) {
+      return mbOrgsearch(tenantId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SearchORGEvent value) search,
+    required TResult Function(SearchMbORGEvent value) mbOrgsearch,
+  }) {
+    return mbOrgsearch(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SearchORGEvent value)? search,
+    TResult? Function(SearchMbORGEvent value)? mbOrgsearch,
+  }) {
+    return mbOrgsearch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SearchORGEvent value)? search,
+    TResult Function(SearchMbORGEvent value)? mbOrgsearch,
+    required TResult orElse(),
+  }) {
+    if (mbOrgsearch != null) {
+      return mbOrgsearch(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SearchMbORGEvent implements ORGSearchEvent {
+  const factory SearchMbORGEvent({required final String tenantId}) =
+      _$SearchMbORGEvent;
+
+  String get tenantId;
+  @JsonKey(ignore: true)
+  _$$SearchMbORGEventCopyWith<_$SearchMbORGEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
