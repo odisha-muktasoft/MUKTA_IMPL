@@ -136,12 +136,16 @@ const ViewContractDetails = () => {
         }
 
         let isCreeateMBUser = verifiedRolesForAction?.["CREATE_MB"].some(role => loggedInUserRoles.includes(role));
+        console.log(isInWorkflowMeasurementPresent);
+        console.log(measurementData);
+        console.log(actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST"), actionsMenu);
+        console.log(isCreeateMBUser);
         if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
         setActionsMenu((prevState => [...prevState,{
             name:"CREATE_MEASUREMENT_REQUEST",
             action:"CREATE_MEASUREMENT"
         }]))
-
+        console.log(actionsMenu,"after adding");
     }, [data, measurementData])
 
 
