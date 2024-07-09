@@ -21,7 +21,6 @@ const WorksCard = () => {
     return null;
   }
 
-
   const bsEstimate = Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("estimate");
   const bsContract = Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("contract");
   const bsRevisedWO = Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("revisedWO");
@@ -219,6 +218,11 @@ const WorksCard = () => {
     {
       label: t("ACTION_TEST_9WORKBENCH"),
       link: `/workbench-ui/employee/workbench/manage-master-data`,
+      roles: ROLES.WORKBENCH,
+    },
+    {
+      label: t("ACTION_TEST_10REVISIONOFRATES"),
+      link: `/${window?.contextPath}/employee/rateAnalysis/search-sor`,
       roles: ROLES.WORKBENCH,
     }
   ];
