@@ -37,7 +37,8 @@ public class RateAnalysisService {
 
     public RateAnalysisResponse calculateRate(AnalysisRequest analysisRequest) {
         log.info("Calculate rate request");
-        rateAnalysisValidator.validateTenantId(analysisRequest.getSorDetails().getTenantId(), analysisRequest.getRequestInfo());
+        //Removed tenant id validation done from mdms v2 for mukta
+        //rateAnalysisValidator.validateTenantId(analysisRequest.getSorDetails().getTenantId(), analysisRequest.getRequestInfo());
         Map<String, SorComposition> sorIdCompositionMap = mdmsUtil.fetchSorComposition(analysisRequest);
         Map<String, List<Rates>> basicRatesMap = mdmsUtil.fetchBasicRates(analysisRequest, sorIdCompositionMap);
         Map<String, JsonNode> sorMap = mdmsUtil.fetchSor(analysisRequest, sorIdCompositionMap);
@@ -54,7 +55,7 @@ public class RateAnalysisService {
 
     public List<Rates> createRateAnalysis(AnalysisRequest analysisRequest) {
         log.info("Create rate request");
-        rateAnalysisValidator.validateTenantId(analysisRequest.getSorDetails().getTenantId(), analysisRequest.getRequestInfo());
+        //rateAnalysisValidator.validateTenantId(analysisRequest.getSorDetails().getTenantId(), analysisRequest.getRequestInfo());
         Map<String, SorComposition> sorIdCompositionMap = mdmsUtil.fetchSorComposition(analysisRequest);
         Map<String, List<Rates>> basicRatesMap = mdmsUtil.fetchBasicRates(analysisRequest, sorIdCompositionMap);
         Map<String, JsonNode> sorMap = mdmsUtil.fetchSor(analysisRequest, sorIdCompositionMap);
