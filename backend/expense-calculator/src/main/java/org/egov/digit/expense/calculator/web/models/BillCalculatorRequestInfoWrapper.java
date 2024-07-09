@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.egov.common.contract.request.RequestInfo;
 
 
+
 @Builder
 @ToString
 public class BillCalculatorRequestInfoWrapper {

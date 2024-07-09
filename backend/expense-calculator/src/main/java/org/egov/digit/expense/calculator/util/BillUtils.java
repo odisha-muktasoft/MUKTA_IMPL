@@ -9,6 +9,7 @@ import org.egov.digit.expense.calculator.web.models.Bill;
 import org.egov.digit.expense.calculator.web.models.BillCalculatorRequestInfoWrapper;
 import org.egov.digit.expense.calculator.web.models.BillResponse;
 import org.egov.digit.expense.calculator.web.models.Workflow;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,7 @@ public class BillUtils {
 
     private BillResponse postBill(RequestInfo requestInfo, Bill bill, Workflow workflow, StringBuilder url) {
         // Update workflow object because in expense service it's using core service workflow
-                 Workflow expenseWorkflow1 = Workflow.builder()
+        Workflow expenseWorkflow1 = Workflow.builder()
                 .action(workflow.getAction())
                 .assignees(workflow.getAssignees())
                 .documents(workflow.getDocuments())
