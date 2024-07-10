@@ -174,21 +174,12 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       footer: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(
-                              flex: 2,
-                              child: DigitOutLineButton(
-                                label:
-                                    t.translate(i18.measurementBook.mbCancel),
-                                onPressed: () {
-                                  context.router.pop();
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
+                           
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width,
                               child: DigitElevatedButton(
                                 child: Text(
                                   widget.nextActions!.action == "EDIT/RE-SUBMIT"
@@ -257,6 +248,16 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 },
                               ),
                             )
+                         , SizedBox(
+                               width: MediaQuery.sizeOf(context).width,
+                              child: DigitOutLineButton(
+                                label:
+                                    t.translate(i18.measurementBook.mbCancel),
+                                onPressed: () {
+                                  context.router.pop();
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -409,21 +410,12 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       footer: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(
-                              flex: 2,
-                              child: DigitOutLineButton(
-                                label:
-                                    t.translate(i18.measurementBook.mbCancel),
-                                onPressed: () {
-                                  context.router.pop();
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
+                           
+                            SizedBox(
+                              width: MediaQuery.sizeOf(context).width,
                               child: DigitElevatedButton(
                                 child: Text(
                                   widget.stateActions!.action == "SUBMIT"
@@ -484,6 +476,16 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 },
                               ),
                             )
+                        , SizedBox(
+                              width: MediaQuery.sizeOf(context).width,
+                              child: DigitOutLineButton(
+                                label:
+                                    t.translate(i18.measurementBook.mbCancel),
+                                onPressed: () {
+                                  context.router.pop();
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),
