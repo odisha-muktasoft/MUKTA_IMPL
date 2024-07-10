@@ -17,7 +17,7 @@ class WORepository {
     required String url,
   }) async {
     try {
-      //Dio http=Dio();
+      
       final res = await _client.post(
         url,
         queryParameters: queryParameters,
@@ -28,7 +28,7 @@ class WORepository {
         }),
       );
 
-      // return res.data;
+      
       return WOInboxResponse.fromJson(res.data);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
@@ -36,55 +36,4 @@ class WORepository {
     }
   }
 
-  // FutureOr<MBDetailResponse> fetchMbDetail({
-  //   Map<String, String>? queryParameters,
-  //   dynamic body,
-  //   required String url,
-  // }) async {
-  //   try {
-  //     //Dio http=Dio();
-  //     final res = await _client.post(
-  //       url,
-  //       queryParameters: queryParameters,
-  //       data: body ?? {},
-  //       options: Options(extra: {
-  //         "userInfo": GlobalVariables.userRequestModel,
-  //         "accessToken": GlobalVariables.authToken
-  //       }),
-  //     );
-
-  //     //return res.data;
-  //     // return MBInboxResponse.fromJson(res.data);
-
-  //     return MBDetailResponse.fromJson(res.data);
-  //   } on DioError catch (ex) {
-  //     // Assuming there will be an errorMessage property in the JSON object
-  //     rethrow;
-  //   }
-  // }
-
-  // FutureOr<Measurement> updateMeasurement({
-  //   Map<String, String>? queryParameters,
-  //   dynamic body,
-  //   required String url,
-  // }) async {
-  //   try {
-  //     //Dio http=Dio();
-  //     final res = await _client.post(
-  //       url,
-  //       queryParameters: queryParameters,
-  //       data: body ?? {},
-  //       options: Options(extra: {
-  //         "userInfo": GlobalVariables.userRequestModel,
-  //         "accessToken": GlobalVariables.authToken
-  //       }),
-  //     );
-
-  //     //return res.data;
-  //     return Measurement.fromJson(res.data);
-  //   } on DioError catch (ex) {
-  //     // Assuming there will be an errorMessage property in the JSON object
-  //     rethrow;
-  //   }
-  // }
 }

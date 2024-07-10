@@ -52,25 +52,7 @@ class MeasurementInboxBloc
       final MBInboxResponse res =
           await MBRepository(client.init()).fetchMbInbox(
         url: Urls.measurementService.measurementInbox, body: s,
-        // "RequestInfo": {
-        //   "apiId": "Rainmaker",
-        //   "authToken": "db570c2b-950a-4084-87fc-6fa7482a22f7",
-        //   "userInfo": {
-        //     "id": 357,
-        //     "uuid": "4ec9da90-ef66-47c8-8a0b-eb87d8cf9c31",
-        //     "userName": "EMPJIT",
-        //     "name": "Sumana Naga sai",
-        //     "mobileNumber": "7895456214",
-        //     "emailId": null,
-        //     "locale": null,
-        //     "type": "EMPLOYEE",
-        //     "active": true,
-        //     "tenantId": "od.testing",
-        //     "permanentCity": null
-        //   },
-        //   "msgId": "1708076019861|en_IN",
-        //   "plainAccessRequest": {}
-        // }
+        
       );
       if (event.offset == 0) {
         emit(MeasurementInboxState.loaded(
@@ -124,22 +106,7 @@ class MeasurementInboxBloc
         emit(const MeasurementInboxState.loading());
       }
 
-      // final s = {
-      //   "inbox": {
-      //     "tenantId": "od.testing",
-      //     "moduleSearchCriteria": {
-      //       "tenantId": "od.testing",
-      //       "status": event.status,
-      //       "ward": event.ward,
-      //     },
-      //     "processSearchCriteria": {
-      //       "businessService": ["MB"],
-      //       "moduleName": "measurement-service"
-      //     },
-      //     "limit": 10,
-      //     "offset": event.offset
-      //   }
-      // };
+      
       final MBInboxResponse res =
           await MBRepository(client.init()).fetchMbInbox(
         url: Urls.measurementService.measurementInbox,
@@ -205,22 +172,7 @@ class MeasurementInboxBloc
           return null;
         },
         loaded: (value) async {
-          // final s = {
-          //   "inbox": {
-          //     "tenantId": "od.testing",
-          //     "moduleSearchCriteria": {
-          //       "tenantId": "od.testing",
-          //       "status": value.status,
-          //       "ward": value.ward,
-          //     },
-          //     "processSearchCriteria": {
-          //       "businessService": ["MB"],
-          //       "moduleName": "measurement-service"
-          //     },
-          //     "limit": 10,
-          //     "offset": event.offset
-          //   }
-          // };
+          
           value.data['inbox']!['offset'] = event.offset;
           final MBInboxResponse res = await MBRepository(client.init())
               .fetchMbInbox(

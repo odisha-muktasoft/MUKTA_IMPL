@@ -31,6 +31,7 @@ class Login {
 
 class Common {
   const Common();
+  String get statementnotfound=>"WORK_ORDER_STATEMENT_NOT_FOUND";
   String get noFileSelected=>"WORKS_NO_FILE_SELECTED";
   String get comments=>"WF_COMMON_COMMENTS";
   String get photoInfo=>"WORKS_DOC_UPLOAD_HINT";
@@ -147,6 +148,8 @@ class Common {
   String get validTo => 'ORG_VALID_TO';
   String get contactPersonName => 'ORG_CONTACT_PERSON_NAME';
   String get download => "COMMON_DOWNLOAD";
+   String get workOrderdownload => "COMMON_WORK_ORDER_DOWNLOAD";
+   String get analysisdownload => "COMMON_ANALYSIS_STATEMENT_DOWNLOAD";
   String get showWorkflowTimeline => 'SHOW_WORKFLOW_TIMELINE';
   String get hideWorkflowTimeline => 'HIDE_WORKFLOW_TIMELINE';
   String get workflowTimeline => 'WORKS_WORKFLOW_TIMELINE';

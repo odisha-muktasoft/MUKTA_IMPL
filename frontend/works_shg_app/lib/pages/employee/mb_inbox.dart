@@ -188,11 +188,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Back(
-                                  // widget: null,
+                                
                                   callback: () {
                                     context.router.pop();
-                                    // Navigator.of(context).pop();
-                                    //context.router.push(const HomeRoute());
+                                   
                                   },
                                 ),
                                 Padding(
@@ -305,36 +304,14 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           icon:
                                               SvgPicture.asset(Constants.sort)),
 
-                                      // Row(
-                                      //   children: [
-                                      //     IconButton(
-                                      //         color: const DigitColors()
-                                      //             .burningOrange,
-                                      //         onPressed: () {
-                                      //           _openSortingModal();
-                                      //         },
-                                      //         icon: SvgPicture.asset(Constants.sort)),
-                                      //     Text(
-                                      //       "Sort",
-                                      //       style: DigitTheme
-                                      //           .instance
-                                      //           .mobileTheme
-                                      //           .textTheme
-                                      //           .labelLarge!
-                                      //           .copyWith(
-                                      //         color: const DigitColors()
-                                      //             .burningOrange,
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
+                                      
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          height: 150,
+                          height: 170,
                         ),
                       ),
                       mbInboxResponse!.mbInboxResponse.items!.isEmpty
@@ -494,30 +471,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
     );
   }
 
-  // TODO:[unused code]
-
-  // Future<dynamic> filterDialog(BuildContext context) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         titlePadding: EdgeInsets.zero,
-  //         insetPadding: EdgeInsets.only(top: AppBar().preferredSize.height),
-  //         title: const Text("sd"),
-  //         contentPadding: EdgeInsets.zero,
-  //         content: Card(
-  //           child: SizedBox(
-  //             height: double.maxFinite,
-  //             width: MediaQuery.of(context).size.width,
-  //             child: const Center(
-  //               child: Text("Loading"),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  
 }
 
 class MyHeaderDelegate extends SliverPersistentHeaderDelegate {

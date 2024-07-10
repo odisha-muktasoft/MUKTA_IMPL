@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -17,6 +18,8 @@ typedef WorkOrderPDFEmitter = Emitter<WorkOrderPDFState>;
 class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
   WorkOrderPDFBloc() : super(const WorkOrderPDFState.initial()) {
     on<PDFEventWorkOrder>(_onWorkOrderPDF);
+     on<PDFEventAnalysis>(_onAnalysisPDF);
+    
   }
 
   FutureOr<void> _onWorkOrderPDF(
@@ -45,12 +48,74 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
       emit(WorkOrderPDFState.error(e.response?.data['Errors'][0]['code']));
     }
   }
+
+  FutureOr<void> _onAnalysisPDF(
+    PDFEventAnalysis event,
+    WorkOrderPDFEmitter emit,
+  ) async {
+    Client client = Client();
+    try {
+      emit(const WorkOrderPDFState.initial());
+      var selectedLocale = await GlobalVariables.selectedLocale();
+      await CommonRepository(client.init()).downloadPDF(
+        url: '${Urls.commonServices.pdfDownload}/analysisStatement/analysis-statement',
+        queryParameters: {
+          "referenceId": event.estimateId.toString(),
+          "tenantId": event.tenantId.toString(),
+        },
+        fileName: 'WorkOrder.pdf',
+        options: Options(extra: {
+          "userInfo": GlobalVariables.userRequestModel,
+          "accessToken": GlobalVariables.authToken,
+          "msgId": "20170310130900|$selectedLocale"
+        }, headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+        }, responseType: ResponseType.bytes),
+      );
+    } on DioError catch (e) {
+
+      if (e.response != null) {
+      final responseData = e.response?.data;
+      final statusCode = e.response?.statusCode;
+
+      // Logging the error for debugging purposes
+     
+      
+      if (responseData is List<int>) {
+        // Decode the byte array to a string
+        String responseString = utf8.decode(responseData);
+        
+        // Parse the JSON string to a Map
+        final Map<String, dynamic> responseJson = jsonDecode(responseString);
+
+        // Extracting and emitting specific error code if available
+        if (responseJson.containsKey('Errors')) {
+          final errorCode = responseJson['Errors'][0]['message'];
+          emit(WorkOrderPDFState.error(errorCode));
+        } else {
+          emit(WorkOrderPDFState.error('Unexpected error format: $responseString'));
+        }
+      } else {
+        emit(WorkOrderPDFState.error('Unexpected response type: ${e.response?.data}'));
+      }
+    } else {
+     
+     
+      emit(WorkOrderPDFState.error(e.message));
+    }
+    }
+     catch (e) {
+      emit(const WorkOrderPDFState.error("Something went wrong"));
+    }
+  }
 }
 
 @freezed
 class WorkOrderPDFEvent with _$WorkOrderPDFEvent {
   const factory WorkOrderPDFEvent.onWorkOrderPDF(
       {String? tenantId, String? contractId}) = PDFEventWorkOrder;
+      const factory WorkOrderPDFEvent.onAnalysisPDF(
+      {String? tenantId, String? estimateId}) = PDFEventAnalysis;
 }
 
 @freezed

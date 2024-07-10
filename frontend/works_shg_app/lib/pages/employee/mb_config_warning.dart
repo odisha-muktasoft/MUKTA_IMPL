@@ -142,9 +142,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
             );
             Notifiers.getToastMessage(
               context,
-              // AppLocalizations.of(context)
-              //     .translate(i18.login.invalidOTP),
-
               value.error.toString(),
               'ERROR',
             );
@@ -223,9 +220,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       workFlow: WorkFlow(
                                         action: widget.nextActions!.action,
                                         comment: comment.text,
-                                        assignees:selectedAssignee!=null? selectedAssignee?.uuid!=null? [
-                                          selectedAssignee!.uuid!
-                                        ]:null:null,
+                                        assignees: selectedAssignee != null
+                                            ? selectedAssignee?.uuid != null
+                                                ? [selectedAssignee!.uuid!]
+                                                : null
+                                            : null,
                                         documents: supportDocument,
                                       ),
                                       type: widget.type,
@@ -239,17 +238,21 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               action:
                                                   widget.nextActions!.action,
                                               comment: comment.text,
-                                              assignees: selectedAssignee!=null? selectedAssignee?.uuid!=null? [
-                                          selectedAssignee!.uuid!
-                                        ]:null:null,
+                                              assignees: selectedAssignee !=
+                                                      null
+                                                  ? selectedAssignee?.uuid !=
+                                                          null
+                                                      ? [
+                                                          selectedAssignee!
+                                                              .uuid!
+                                                        ]
+                                                      : null
+                                                  : null,
                                               documents: supportDocument,
                                             ),
                                             type: widget.type,
                                           ),
                                         );
-                                    // Navigator.of(context)
-                                    //     .popUntil((route) => route is HomeRoute);
-                                    // context.router.push(const HomeRoute());
                                   }
                                 },
                               ),
@@ -296,18 +299,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   return state.maybeMap(
                                     orElse: () => const SizedBox.shrink(),
                                     loaded: (value) {
-                                      // HRMSEmployee selectedAssignee = HRMSEmployee(
-                                      //   id: value.hrmsEmployee!.first.id,
-                                      //   uuid: value.hrmsEmployee!.first.uuid,
-                                      //   code: value.hrmsEmployee!.first.code,
-                                      //   isActive: value.hrmsEmployee!.first.isActive,
-                                      //   dateOfAppointment:
-                                      //       value.hrmsEmployee!.first.dateOfAppointment,
-                                      //   employeeType:
-                                      //       value.hrmsEmployee!.first.employeeType,
-                                      // );
-
-                                      //    selectedAssignee=selectedAssignee;
                                       if (value.hrmsEmployee != null &&
                                           value.hrmsEmployee!.isNotEmpty) {
                                         return DigitDropdown<HRMSEmployee>(
@@ -323,17 +314,14 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               .map((e) => e)
                                               .toList(),
                                           valueMapper: (value) {
-                                            if (value
-                                                .employeeUser!=null) {
+                                            if (value.employeeUser != null) {
                                               return t.translate(value
-                                                .employeeUser!.name
-                                                .toString());
+                                                  .employeeUser!.name
+                                                  .toString());
                                             } else {
-                                               return t.translate(
+                                              return t.translate(
                                                   value.code.toString());
                                             }
-                                            
-                                            
                                           },
                                         );
                                       } else {
@@ -356,27 +344,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               ? true
                               : false,
                         ),
-                        // SizedBox(
-                        //   height: 300,
-                        //   child: SHGFilePicker(
-                        //     callBack: (List<FileStoreModel>? fileStore) {
-                        //       if (fileStore != null && fileStore.isNotEmpty) {
-                        //         // setState(() {
-                        //         photo = fileStore!
-                        //             .map((e) => e.fileStoreId!)
-                        //             .toList();
-                        //         // });
-                        //       } else {
-                        //         setState(() {
-                        //           photo = [];
-                        //         });
-                        //       }
-                        //     },
-                        //     extensions: const ['jpg', 'png', 'jpeg'],
-                        //     moduleName: 'works',
-                        //     label: t.translate("CLICK_TO_ADD_PHOTO"),
-                        //   ),
-                        // ),
                         widget.nextActions!.action != "EDIT/RE-SUBMIT" &&
                                 widget.nextActions!.action != "SUBMIT"
                             ? SizedBox(
@@ -408,7 +375,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         supportDocument
                                             .addAll(supportDocumentData);
                                         setState(() {});
-                                        print(supportDocument);
+                                       
                                       },
                                       extensions: const [
                                         'jpg',
@@ -480,9 +447,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           ? "SUBMIT"
                                           : widget.stateActions!.action,
                                       comment: comment.text,
-                                      assignees:selectedAssignee!=null? selectedAssignee?.uuid!=null? [
-                                          selectedAssignee!.uuid!
-                                        ]:null:null,
+                                      assignees: selectedAssignee != null
+                                          ? selectedAssignee?.uuid != null
+                                              ? [selectedAssignee!.uuid!]
+                                              : null
+                                          : null,
                                       documents: supportDocument,
                                     ),
                                     type: widget.type,
@@ -499,9 +468,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                 ? "SUBMIT"
                                                 : widget.stateActions!.action,
                                             comment: comment.text,
-                                            assignees: selectedAssignee!=null? selectedAssignee?.uuid!=null? [
-                                          selectedAssignee!.uuid!
-                                        ]:null:null,
+                                            assignees: selectedAssignee != null
+                                                ? selectedAssignee?.uuid != null
+                                                    ? [selectedAssignee!.uuid!]
+                                                    : null
+                                                : null,
                                             documents: supportDocument,
                                           ),
                                           type: widget.type,

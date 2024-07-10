@@ -47,7 +47,7 @@ class ProjectTypeBloc extends Bloc<ProjectTypeBlocEvent, ProjectTypeState> {
           }
         },
       );
-      print(res);
+      
 
       emit(
         ProjectTypeState.loaded(res),

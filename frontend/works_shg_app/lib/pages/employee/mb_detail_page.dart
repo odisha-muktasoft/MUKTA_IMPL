@@ -130,13 +130,11 @@ class _MBDetailPageState extends State<MBDetailPage>
             state.maybeMap(
               orElse: () => {},
               loaded: (value) {
-                //TODO:[text change]
-                // String msg =
-                //     "WF_MB_ACTION_${value.measurement?.workflow?.action}";
+                
 
                 if (widget.type == MBScreen.update) {
                   context.read<MusterGetWorkflowBloc>().add(
-                        //hard coded
+                        
                         FetchMBWorkFlowEvent(
                             tenantId: GlobalVariables.tenantId!,
                             mbNumber: widget.mbNumber!),
@@ -211,52 +209,7 @@ class _MBDetailPageState extends State<MBDetailPage>
             );
           },
         ),
-        // BlocListener<SearchIndividualWorkBloc, SearchIndividualWorkState>(
-        //   listener: (context, state) {
-        //     state.maybeMap(
-        //       orElse: () => null,
-        //       loaded: (value) {
-        //         print(
-        //             "individualWork${value.contractsModel!.contracts!.first.status!}");
-        //         setState(() {
-        //           workorderStatus =
-        //               value.contractsModel!.contracts!.first.status!;
-        //         });
-
-        //         context.read<EstimateBloc>().add(EstimateLoadBlocEvent(
-        //               isActive: true,
-        //               roles: value.contractsModel!.contracts!.first
-        //                   .additionalDetails!.estimateNumber!,
-        //               tenantId: widget.tenantId!,
-        //             ));
-        //       },
-        //     );
-        //   },
-        // ),
-        // BlocListener<EstimateBloc, EstimateState>(
-        //   listener: (context, estimateState) {
-        //     estimateState.maybeMap(
-        //       orElse: () => null,
-        //       loaded: (value) {
-        //         print(value.estimateDetailResponse?.estimates!.first.status!);
-        //         setState(() {
-        //           estimateStatus =
-        //               value.estimateDetailResponse!.estimates!.first.status!;
-        //         });
-        //         context.read<EmpHRMSBloc>().add(
-        //               EmpHRMSLoadBlocEvent(
-        //                 isActive: true,
-        //                 roles: "MB_VERIFIER",
-        //                 tenantId: widget.tenantId!,
-        //               ),
-        //             );
-        //       },
-        //       error: (value) {
-        //         print(value.toString());
-        //       },
-        //     );
-        //   },
-        // ),
+        
       ],
       child: DefaultTabController(
         length: 3,
@@ -371,13 +324,7 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                                 return FloatActionCard(
                                   actions: () {
-                                    // if ((estimateStatus != "INWORKFLOW") &&
-                                    //     (value.data.length >= 2
-                                    //         ? (value.data[1].wfStatus ==
-                                    //                 "APPROVED" ||
-                                    //             value.data[1].wfStatus ==
-                                    //                 "REJECTED")
-                                    //         : true)) {
+                                    
                                     DigitActionDialog.show(
                                       context,
                                       widget: CommonButtonCard(
@@ -388,24 +335,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         bs: bk,
                                       ),
                                     );
-                                    // } else {
-                                    //   if (estimateStatus == "INWORKFLOW") {
-                                    //     Notifiers.getToastMessage(
-                                    //         context,
-                                    //         t.translate(i18.workOrder
-                                    //             .estimateRevisionError),
-                                    //         'ERROR');
-                                    //   } else {
-                                    //     Notifiers.getToastMessage(
-                                    //         context,
-                                    //         t.translate(i18.workOrder
-                                    //             .existingMBCreateError),
-                                    //         'ERROR');
-                                    //   }
-
-                                    //}
+                                   
                                   },
-                                  // amount: sorprice.toString(),
+                                  
                                   amount: value.data.first.totalAmount != null
                                       ? value.data.first.totalAmount!
                                           .roundToDouble()
@@ -635,8 +567,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               index,
                                               magic: value.sor![index]
                                                   .filteredMeasurementsMeasure,
-                                              // preSor_NonSor: value.preSor![index]
-                                              // .filteredMeasurementsMeasure,
+                                              
 
                                               preSorNonSor: value.preSor == null
                                                   ? null
@@ -692,8 +623,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               magic: value.nonSor![index]
                                                   .filteredMeasurementsMeasure,
 
-                                              // preSor_NonSor: value.preNonSor![index]
-                                              // .filteredMeasurementsMeasure,
+                                              
 
                                               preSorNonSor: value.preNonSor ==
                                                       null
@@ -718,8 +648,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .sorId)!
                                                           .filteredMeasurementsMeasure
                                                       : null,
-                                              // : value.preNonSor![index]
-                                              //     .filteredMeasurementsMeasure,
+                                              
                                               type: "NonSor",
                                               sorNonSorId:
                                                   value.nonSor![index].sorId!,
@@ -838,7 +767,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(4),
-                                                          // color: DigitColors().pacificBlue,
+                                                          
                                                           child: Text(
                                                               t.translate(i18
                                                                   .measurementBook
@@ -1318,17 +1247,8 @@ switch (photok) {
                 .toStringAsFixed(4);
           });
 
-    final doubtamout = (magic.fold(0.0, (sum, obj) {
-      double m = 0.00;
-      if (obj.contracts?.first.estimates?.first.isDeduction == true) {
-        m = -(obj.mbAmount ?? 0.00); // Negate the amount for deductions
-      } else {
-        m = (obj.mbAmount ?? 0.00);
-      }
-      return sum + m;
-    })).toStringAsFixed(2);
 
-    print(doubtamout);
+    
 
     return Card(
       child: SizedBox(
@@ -1659,40 +1579,7 @@ switch (photok) {
                             ),
                           );
                         } else {
-                          // if ((estimateStatus != "INWORKFLOW") &&
-                          //     previousMBStatus) {
-                          //   DigitActionDialog.show(
-                          //     context,
-                          //     widget: CommonButtonCard(
-                          //       g: processInstances,
-                          //       contractNumber: contractNumber,
-                          //       mbNumber: mbNumber,
-                          //       type: widget.type,
-                          //       bs: bs,
-                          //     ),
-                          //   );
-                          // }
-                          //  else {
-                          //   // if (workorderStatus != "ACTIVE") {
-                          //   //   Notifiers.getToastMessage(
-                          //   //       context,
-                          //   //       t.translate(i18.workOrder.timeExtensionError),
-                          //   //       'ERROR');
-                          //   // } else
-                          //   if (estimateStatus == "INWORKFLOW") {
-                          //     Notifiers.getToastMessage(
-                          //         context,
-                          //         t.translate(
-                          //             i18.workOrder.estimateRevisionError),
-                          //         'ERROR');
-                          //   } else {
-                          //     Notifiers.getToastMessage(
-                          //         context,
-                          //         t.translate(
-                          //             i18.workOrder.existingMBCreateError),
-                          //         'ERROR');
-                          //   }
-                          // }
+                          
 
                           DigitActionDialog.show(
                             context,
