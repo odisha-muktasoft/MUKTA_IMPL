@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Toast, ActionBar, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Toast, ActionBar, Menu, SubmitBar, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewStatementConfig";
@@ -445,6 +445,16 @@ const ViewAnalysisStatement = () => {
 //     },
 //   };
 
+let InfoCardData = {
+  "Info": "STATEMENT_ANALYSIS_INFO_LABEL",
+  "reasons": [
+    "STATEMENT_ANALYSIS_INFO_1",
+    "STATEMENT_ANALYSIS_INFO_2",
+    "STATEMENT_ANALYSIS_INFO_3",
+    "STATEMENT_ANALYSIS_INFO_4"
+  ]
+}
+
   const config = data(statement?.[0],statement,oldData);
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
@@ -456,6 +466,15 @@ const ViewAnalysisStatement = () => {
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
         { downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
+      </div>
+      <div>
+      <CitizenInfoLabel textType={"Componenet"} style={{margin:"0px", maxWidth:"99%", marginBottom:"20px"}} info={t("CS_INFO")} text={<div style={{display:"block"}}>
+          <p>{t(InfoCardData?.Info)}</p>
+          {InfoCardData?.reasons.map((reason, index) => (
+            <p key={index}>{t(reason)}</p>
+          ))}
+        </div>} 
+              />
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}

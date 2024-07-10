@@ -30,7 +30,12 @@ const searchSORConfig = {
             minReqFields: 1,
             showFormInstruction: "",
             defaultValues: {
-              sorType: "",
+              sorType: { 
+                active: true,
+                code: "W",
+                description: "Works",
+                i18nKey: "WORKS_SOR_TYPE_W",
+              },
               sorSubType: "",
               sorVariant: "",
               sorCode: "",
@@ -49,9 +54,14 @@ const searchSORConfig = {
                   "optionsCustomStyle": {
                     "top": "2.3rem"
                   },
-                  mdmsv2: {
-                    schemaCode: "WORKS-SOR.Type"
-                  },
+                  options: [
+                    {
+                      active: true,
+                      code: "W",
+                      description: "Works",
+                      i18nKey: "WORKS_SOR_TYPE_W",
+                    },
+                  ],
                 },
               },
               {
