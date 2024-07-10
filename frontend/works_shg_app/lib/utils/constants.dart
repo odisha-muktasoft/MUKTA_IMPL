@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 enum LanguageEnum { en_IN, or_IN }
 class Constants {
+  static const String deleteIcon='assets/svg/delete.svg';
   static const String mdmsApiEndPoint = 'egov-mdms-service/v1/_search';
   static final navKey = GlobalKey<NavigatorState>();
   static const userMobileNumberKey = 'mobileNumber';
@@ -15,6 +16,10 @@ class Constants {
   static const String rejected = 'REJECTED';
   static const String sentBack = 'SENTBACKTOCBO';
   static const muktaIcon = 'assets/svg/mukta.svg';
+  static const mbIcon = 'assets/svg/menu_book.svg';
+  static const workOrderIcon = 'assets/svg/workorderInbox.svg';
+  static const doubleArrow ='assets/svg/double_arrow.svg';
+  static const sort ='assets/svg/sort.svg';
   static const devAssets =
       'https://s3.ap-south-1.amazonaws.com/works-dev-asset/worksGlobalConfig.json';
   static const qaAssets =
@@ -39,6 +44,8 @@ class Constants {
   static const approvedKey = 'APPROVED';
   static const tenantIdKey = 'tenantId';
   static const inWorkFlowKey = 'INWORKFLOW';
+  static const verifyAdhar="SUCCESS";
+  static const saveAsDraft="SAVE_AS_DRAFT";
 }
 
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

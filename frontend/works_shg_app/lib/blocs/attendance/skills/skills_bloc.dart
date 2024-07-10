@@ -26,15 +26,18 @@ class SkillsBloc extends Bloc<SkillsBlocEvent, SkillsBlocState> {
     try {
       emit(const SkillsBlocState.loading());
       SkillsList result = await mdmsRepository.skillsMDMS(
-          apiEndPoint: Urls.initServices.mdms,
+          apiEndPoint: Urls.initServices.mdmsSkill,
           tenantId: GlobalVariables
               .globalConfigObject!.globalConfigs!.stateTenantId
               .toString(),
           moduleDetails: [
             {
-              "moduleName": "common-masters",
+              "moduleName": "WORKS-SOR",
               "masterDetails": [
-                {"name": "WageSeekerSkills", "filter": "[?(@.active==true)]"},
+                {"name": "SOR",
+                  "filter": "[?(@.sorType =~ /.*L.*/i)]"
+                 
+                 },
               ],
             }
           ]);

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/data/repositories/common_repository/common_repository.dart';
+import 'package:works_shg_app/models/employee/homeconfig/homeConfigModel.dart';
 import 'package:works_shg_app/services/urls.dart';
 
 import '../../../utils/global_variables.dart';
@@ -17,6 +18,7 @@ typedef HomeScreenBlocEmitter = Emitter<HomeScreenBlocState>;
 class HomeScreenBloc extends Bloc<HomeScreenBlocEvent, HomeScreenBlocState> {
   HomeScreenBloc() : super(const HomeScreenBlocState.initial()) {
     on<GetHomeScreenConfigEvent>(_getHomeScreenConfig);
+    on<GetEmpHomeScreenConfigEvent>(_getEmpHomeScreenConfig);
   }
 
   FutureOr<void> _getHomeScreenConfig(
@@ -50,7 +52,37 @@ class HomeScreenBloc extends Bloc<HomeScreenBlocEvent, HomeScreenBlocState> {
       cboHomeScreenConfig = cboHomeScreenConfig?.toList()
         ?..sort((a, b) => a.order!.compareTo(b.order!.toInt()));
 
-      emit(HomeScreenBlocState.loaded(cboHomeScreenConfig));
+      emit(HomeScreenBlocState.loaded(cboHomeScreenConfig, null));
+    } on DioError catch (e) {
+      emit(HomeScreenBlocState.error(e.response?.data['Errors'][0]['code']));
+    }
+  }
+
+  // emp home config from mdms
+
+  FutureOr<void> _getEmpHomeScreenConfig(
+    GetEmpHomeScreenConfigEvent event,
+    HomeScreenBlocEmitter emit,
+  ) async {
+    Client client = Client();
+    try {
+      emit(const HomeScreenBlocState.loading());
+      HomeConfigModel configModel =
+          await CommonRepository(client.init()).getEmpHomeConfig(
+        apiEndPoint: Urls.initServices.empHomeConfig,
+        actionMaster: 'actions-test',
+        enabled: true,
+        roleCodes: GlobalVariables.roles,
+        tenantId: "od",
+      );
+
+      print(configModel);
+      // List<CBOHomeScreenConfigModel>? cboHomeScreenConfig =
+      //     configModel.commonUiConfig?.cboHomeScreenConfig;
+      // cboHomeScreenConfig = cboHomeScreenConfig?.toList()
+      //   ?..sort((a, b) => a.order!.compareTo(b.order!.toInt()));
+
+      emit(HomeScreenBlocState.loaded(null, configModel));
     } on DioError catch (e) {
       emit(HomeScreenBlocState.error(e.response?.data['Errors'][0]['code']));
     }
@@ -61,6 +93,8 @@ class HomeScreenBloc extends Bloc<HomeScreenBlocEvent, HomeScreenBlocState> {
 class HomeScreenBlocEvent with _$HomeScreenBlocEvent {
   const factory HomeScreenBlocEvent.getHomeSvreenConfig() =
       GetHomeScreenConfigEvent;
+  const factory HomeScreenBlocEvent.getEmpHomeSvreenConfig() =
+      GetEmpHomeScreenConfigEvent;
 }
 
 @freezed
@@ -69,6 +103,8 @@ class HomeScreenBlocState with _$HomeScreenBlocState {
   const factory HomeScreenBlocState.initial() = _Initial;
   const factory HomeScreenBlocState.loading() = _Loading;
   const factory HomeScreenBlocState.loaded(
-      List<CBOHomeScreenConfigModel>? cboHomeScreenConfig) = _Loaded;
+    List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+    HomeConfigModel? homeConfigModel,
+  ) = _Loaded;
   const factory HomeScreenBlocState.error(String? error) = _Error;
 }
