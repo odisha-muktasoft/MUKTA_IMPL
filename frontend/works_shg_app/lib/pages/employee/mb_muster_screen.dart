@@ -57,25 +57,13 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                mbNumber: widget.musterRollNumber),
         );
    
-   //TODO:[if bug comes then we will uncomment this ]
-   // context.read<MusterRollSearchBloc>().add(MbSearchMusterRollEvent(
-    //     musterRollNumner: widget.musterRollNumber, tenantId: widget.tenantId));
-    // context.read<MusterGetWorkflowBloc>().add(
-    //       GetMusterWorkflowEvent(
-    //           tenantId: widget.tenantId,
-    //           musterRollNumber: widget.musterRollNumber,
-    //           musterSentBackCode: "PENDINGFORVERIFICATION"),
-    //     );
-
-
-    //end
-
+   
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     newList.clear();
     tableData.clear();
     timeLineAttributes.clear();
@@ -270,70 +258,14 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                 return state.maybeMap(
                                   orElse: SizedBox.shrink,
                                   loaded: (value) {
-                                    // final modifiedData = value
-                                    //     .musterWorkFlowModel!.processInstances!
-                                    //     .where((element) =>
-                                    //         element.action !=
-                                    //         Constants.saveAsDraft)
-                                    //     .toList();
-                                    // if (modifiedData
-                                    //             .first
-                                    //             .nextActions !=
-                                    //         null ||
-                                    //    modifiedData
-                                    //             .first
-                                    //             .nextActions !=
-                                    //         [] ||
-                                    //     modifiedData
-                                    //         .first
-                                    //         .nextActions!
-                                    //         .isNotEmpty) {
-                                    //   modifiedData.insert(
-                                    //       0,
-                                    //       value.musterWorkFlowModel!
-                                    //           .processInstances!.first);
-                                    // }
-
-                                    // final timeLineAttributes = modifiedData
-                                    //     .mapIndexed((i, e) =>
-                                    //         DigitTimelineOptions(
-                                    //           title: t.translate(i == 0
-                                    //               ? e.workflowState?.state ==
-                                    //                       "EDIT_RE_SUBMIT"
-                                    //                   ? 'WF_MB_STATUS_${e.workflowState?.state}'
-                                    //                   : 'WF_MB_STATUS_${e.workflowState?.state}'
-                                    //               : 'WF_MB_STATUS_${e.action}'),
-                                    //           subTitle:
-                                    //               DateFormats.getTimeLineDate(e
-                                    //                       .auditDetails
-                                    //                       ?.lastModifiedTime ??
-                                    //                   0),
-                                    //           isCurrentState: i == 0,
-                                    //           comments: e.comment,
-                                    //           documents: e.documents != null
-                                    //               ? e.documents
-                                    //                   ?.map((d) =>
-                                    //                       FileStoreModel(
-                                    //                           name: '',
-                                    //                           fileStoreId: d
-                                    //                               .documentUid))
-                                    //                   .toList()
-                                    //               : null,
-                                    //           assignee: e.assigner?.name,
-                                    //           mobileNumber: e.assigner != null
-                                    //               ? '+91-${e.assigner?.mobileNumber}'
-                                    //               : null,
-                                    //         ))
-                                    //     .toList();
+                                    
                                     List<ProcessInstances> modifiedData = value
                                         .musterWorkFlowModel!.processInstances!
                                         .where((element) =>
                                             element.action !=
                                             Constants.saveAsDraft)
                                         .toList();
-                                    // ..insert(0, value
-                                    // .musterWorkFlowModel!
-                                    // .processInstances!.first);
+                                    
                                     if (modifiedData.isNotEmpty &&
                                         (modifiedData.first.nextActions !=
                                                 null &&

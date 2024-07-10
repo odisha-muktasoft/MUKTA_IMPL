@@ -18,7 +18,6 @@ class MBRepository {
     required String url,
   }) async {
     try {
-      //Dio http=Dio();
       final res = await _client.post(
         url,
         queryParameters: queryParameters,
@@ -54,9 +53,6 @@ class MBRepository {
         }),
       );
 
-      //return res.data;
-      // return MBInboxResponse.fromJson(res.data);
-
       return MBDetailResponse.fromJson(res.data);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
@@ -70,7 +66,6 @@ class MBRepository {
     required String url,
   }) async {
     try {
-      //Dio http=Dio();
       final res = await _client.post(
         url,
         queryParameters: queryParameters,
@@ -81,8 +76,6 @@ class MBRepository {
         }),
       );
 
-      //return res.data;
-      print(res.data['measurements']);
       return Measurement.fromJson(res.data['measurements'][0]);
     } on DioError catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object

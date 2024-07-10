@@ -17,7 +17,7 @@ class MBMDMSRepository {
     required String url,
   }) async {
     try {
-      //Dio http=Dio();
+      
       final res = await _client.post(
         url,
         queryParameters: queryParameters,
@@ -25,8 +25,7 @@ class MBMDMSRepository {
         options: Options(extra: {"authToken": GlobalVariables.authToken}),
       );
 
-      //return res.data;
-      // return MBInboxResponse.fromJson(res.data);
+      
 
       return MBProjectType.fromJson(res.data);
     } on DioError catch (ex) {

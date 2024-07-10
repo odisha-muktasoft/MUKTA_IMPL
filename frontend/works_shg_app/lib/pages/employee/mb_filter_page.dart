@@ -342,14 +342,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           MeasurementBookInboxSearchBlocEvent(
                                                             limit: 10,
                                                             offset: 0,
-                                                            data:
-                                                                s, // ward: ward,
-                                                            // status: workflow
-                                                            //     .map((e) => e.statusid!)
-                                                            //     .toList(),
-                                                            // projectId: null,
-                                                            // mbNumber: null,
-                                                            // projectName: null,
+                                                            data: s,
                                                           ),
                                                         );
                                                   } else {
@@ -366,9 +359,6 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "tenantId":
                                                                 GlobalVariables
                                                                     .tenantId,
-                                                            // "status": workflow
-                                                            //     .map((e) => e.statusid!)
-                                                            //     .toList(),
                                                             "measurementNumber":
                                                                 mbNumber.text,
                                                           },
@@ -491,14 +481,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           MeasurementBookInboxSearchBlocEvent(
                                                             limit: 10,
                                                             offset: 0,
-                                                            data:
-                                                                s, // ward: ward,
-                                                            // status: workflow
-                                                            //     .map((e) => e.statusid!)
-                                                            //     .toList(),
-                                                            // projectId: null,
-                                                            // mbNumber: null,
-                                                            // projectName: null,
+                                                            data: s,
                                                           ),
                                                         );
                                                   }
@@ -594,15 +577,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               controller: projectId,
                                             )
                                           : const SizedBox.shrink(),
-// TODO:[change project name to projectType dropdown]
 
-                                      // project
-                                      //     ? DigitTextField(
-                                      //         label: t.translate(i18
-                                      //             .measurementBook.projectName),
-                                      //         controller: projectName,
-                                      //       )
-                                      //     : const SizedBox.shrink(),
                                       project
                                           ? BlocBuilder<ProjectTypeBloc,
                                               ProjectTypeState>(

@@ -15,10 +15,6 @@ class MBLogic {
 
   static List<FilteredMeasurements> formContract(
       {required MBDetailResponse mbDetailResponse}) {
-    // List<FilteredMeasurementsContract> s = getContract(
-    //   mbDetailResponse!.contract!.lineItems!.first.contractLineItemRef!,
-    //   mbDetailResponse,
-    // );
     List<FilteredMeasurementsContract> s =
         mbDetailResponse.contract!.lineItems!.map((e) {
       FilteredMeasurementsContract filteredMeasurementsContract =
@@ -30,39 +26,6 @@ class MBLogic {
               contractLineItemRef: e.contractLineItemRef,
               unitRate: e.unitRate,
               status: e.status,
-              // estimates: mbDetailResponse.estimate?.estimateDetails
-              //         ?.map((e) {
-              //           if (e.sorId != null) {
-              //             FilteredMeasurementsEstimate
-              //                 filteredMeasurementsEstimate =
-              //                 FilteredMeasurementsEstimate(
-              //               id: e.id,
-              //               sorId: e.sorId,
-              //               category: e.category,
-              //               name: e.name,
-              //               description: e.description,
-              //               unitRate: e.unitRate,
-              //               noOfunit: e.noOfunit != null
-              //                   ? double.parse(
-              //                       (e.noOfunit!.toDouble()).toStringAsFixed(2))
-              //                   : 0,
-              //               uom: e.uom,
-              //               length: e.length != null ? e.length!.toInt() : 0,
-              //               width: e.width != null ? e.width!.toInt() : 0,
-              //               height: e.height != null ? e.height!.toInt() : 0,
-              //               quantity:
-              //                   e.quantity != null ? e.quantity!.toInt() : 0,
-              //               isDeduction: e.isDeduction,
-              //             );
-
-              //             return filteredMeasurementsEstimate;
-              //           }
-              //         })
-              //         .toList()
-              //         .whereNotNull()
-              //         .toList() ??
-              //     []
-
               estimates: getEstimate(e.estimateLineItemId!, mbDetailResponse));
 
       return filteredMeasurementsContract;
@@ -99,19 +62,6 @@ class MBLogic {
                   targetId: e.contractLineItemRef,
                   isActive: null,
                   id: "${e.contractLineItemRef}$index",
-                  // measureLineItems: e!.estimates!?.mapIndexed((index, e) {
-                  //   MeasureLineItem sk = MeasureLineItem(
-                  //     width: e.width ?? 0.0,
-                  //     height: e.height ?? 0.0,
-                  //     length: e.length ?? 0.0,
-                  //     number: 0.0,
-                  //     quantity: 0.0,
-                  //     measurelineitemNo: index,
-                  //   );
-
-                  //   return sk;
-                  // }).toList()
-
                   measureLineItems: [
                 const MeasureLineItem(
                   width: 0.0,
@@ -198,18 +148,18 @@ class MBLogic {
 
     final data = allMeasurements.mapIndexed((index, e) {
       FilteredMeasurements datak = FilteredMeasurements(
-          documents: e.documents?.mapIndexed((index,e) => WorkflowDocument(
-            documentType: e.documentType,
-            documentUid: e.documentUid,
-            documentAdditionalDetails: e.documentAdditionalDetails,
-            fileStore: e.fileStore,
-            fileStoreId: e.fileStoreId,
-            id: e.id,
-            tenantId: e.tenantId,
-            isActive: true,
-            indexing: (index+1)
-
-          )).toList(),
+          documents: e.documents
+              ?.mapIndexed((index, e) => WorkflowDocument(
+                  documentType: e.documentType,
+                  documentUid: e.documentUid,
+                  documentAdditionalDetails: e.documentAdditionalDetails,
+                  fileStore: e.fileStore,
+                  fileStoreId: e.fileStoreId,
+                  id: e.id,
+                  tenantId: e.tenantId,
+                  isActive: true,
+                  indexing: (index + 1)))
+              .toList(),
           id: e.id,
           totalSorAmount: e.additionalDetail?.sorAmount ?? 0.0,
           totalNorSorAmount: e.additionalDetail?.nonSorAmount ?? 0.0,
@@ -223,15 +173,7 @@ class MBLogic {
               : DateTime.now().millisecondsSinceEpoch,
           physicalRefNumber: e.physicalRefNumber,
           referenceId: e.referenceId,
-          // to be chnaged
-          //musterRollNumber: e.additionalDetail?.musterRollNumber ?? "",
-          // musterRollNumber: mbDetailResponse.musterRolls?.first.musterRollNumber??"",
           musterRollNumber: mbDetailResponse.musterRolls is List
-              // ? (mbDetailResponse.musterRolls as List<Map<String, dynamic>>).firstWhere(
-              //     (m) => m['startDate'] == e.additionalDetail?.startDate,
-              //     orElse: () => null,
-
-              //     )['startDate']
               ? convertList(
                   mbDetailResponse.musterRolls, e.additionalDetail?.startDate)
               : null,
@@ -262,22 +204,8 @@ class MBLogic {
                           e.measureAdditionalDetails!.measureLineItems!
                               .isNotEmpty)
                       ? e.measureAdditionalDetails!.measureLineItems!.map((e) {
-                          // if (index == 0 && type == MBScreen.create) {
-                          //   MeasureLineItem measureLineItem = MeasureLineItem(
-                          //     width: 0.0,
-                          //     height: 0.0,
-                          //     length: 0.0,
-                          //     number: 0.0,
-                          //     quantity: 0.0,
-                          //     measurelineitemNo: e.measurelineitemNo,
-                          //   );
-                          //   return measureLineItem;
-                          // } else {
-                          //   return e;
-                          // }
                           return e;
                         }).toList()
-                      // testing null pre[null]
                       : [
                           const MeasureLineItem(
                             width: 0.0,
@@ -298,7 +226,6 @@ class MBLogic {
       return datak;
     }).toList();
 
-// experiment
     if (type == MBScreen.create) {
       final ff = formContract(mbDetailResponse: mbDetailResponse);
 
@@ -306,10 +233,6 @@ class MBLogic {
     } else {
       return data.whereNotNull().toList() ?? [];
     }
-
-//
-    // print(data);
-    //return data.whereNotNull().toList() ?? [];
   }
 
   static List<FilteredMeasurementsContract> getContract(
@@ -342,7 +265,8 @@ class MBLogic {
         FilteredMeasurementsEstimate filteredMeasurementsEstimate =
             FilteredMeasurementsEstimate(
           id: e.id,
-          //TODO:[hard code for non-sor id 45 then we are changing it to other mumber]
+          // Info::::
+          //TODO :[hard code for non-sor id 45 then we are changing it to other mumber]
           // previous code
 //sorId: e.sorId,
           //end of it
@@ -374,92 +298,6 @@ class MBLogic {
 
     return alldata!.whereNotNull().toList() ?? [];
   }
-
-// old
-//   static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
-//     // List<FilteredMeasurementsMeasure> sor = [];
-//     // List<FilteredMeasurementsMeasure> nonSor = [];
-//     List<List<List<SorObject>>> mark=[];
-//     final k = s!.first!.measures;
-
-//     for (int a = 0; a < s.length; a++) {
-//       List<FilteredMeasurementsMeasure> sor = [];
-//       List<FilteredMeasurementsMeasure> nonSor = [];
-
-//       for (int i = 0; i < s[a].measures!.length; i++) {
-//         if (s[a].measures![i].contracts!.first.estimates!.first.category == "SOR") {
-//           sor.add(s[a].measures![i]);
-//         } else {
-//           nonSor.add(s[a].measures![i]);
-//         }
-//       }
-
-//       List<SorObject> listSors = [];
-//       List<SorObject> listNonSors = [];
-
-//       bool isObjectExists(String objectId) {
-//         return listSors.any((obj) => obj.sorId == objectId);
-//       }
-
-//       void addObjectOrModify(
-//           String objectId, FilteredMeasurementsMeasure newobj, String type) {
-//         if (type == "NonSOR") {
-//           if (isObjectExists(objectId)) {
-//             SorObject existingObject =
-//                 listNonSors.firstWhere((obj) => obj.sorId == objectId);
-
-//             existingObject.filteredMeasurementsMeasure.add(newobj);
-//           } else {
-//             listNonSors.add(
-//               SorObject(
-//                 filteredMeasurementsMeasure: [newobj],
-//                 id: newobj.contracts!.first.estimates!.first.id,
-//                 sorId: newobj.contracts!.first.estimates!.first.sorId,
-//               ),
-//             );
-//           }
-//         } else {
-//           if (isObjectExists(objectId)) {
-//             SorObject existingObject =
-//                 listSors.firstWhere((obj) => obj.sorId == objectId);
-
-//             existingObject.filteredMeasurementsMeasure.add(newobj);
-//           } else {
-//             listSors.add(
-//               SorObject(
-//                 filteredMeasurementsMeasure: [newobj],
-//                 id: newobj.contracts!.first.estimates!.first.id,
-//                 sorId: newobj.contracts!.first.estimates!.first.sorId,
-//               ),
-//             );
-//           }
-//         }
-//       }
-
-//       for (var obj in sor) {
-//         String mValue = obj!.contracts!.first.estimates!.first.sorId!;
-
-//         addObjectOrModify(mValue, obj, "SOR");
-//       }
-
-//       //
-
-// //get nonSors
-
-//       for (var obj in nonSor) {
-//         String mValue = obj!.contracts!.first.estimates!.first.sorId!;
-
-//         addObjectOrModify(mValue, obj, "NonSOR");
-//       }
-
-// //
-//       //return [listSors, listNonSors];
-//       mark.add([listSors, listNonSors]);
-//     }
-//   return mark;
-// }
-
-// //
 
   static List<List<List<SorObject>>> getSors(List<FilteredMeasurements> s) {
     List<List<List<SorObject>>> mark = [];
@@ -499,7 +337,7 @@ class MBLogic {
               List.from(existingObject.filteredMeasurementsMeasure);
           mutableList.add(newobj);
           int index = list.indexWhere((obj) => obj.sorId == objectId);
-          // list[index] = existingObject.updateFilteredMeasurementsMeasure(mutableList);
+          
           list[index] = SorObject(
             sorId: existingObject.sorId,
             id: existingObject.id,
@@ -616,7 +454,7 @@ class MBLogic {
       "documents": measurement.documents != null
           ? measurement.documents!.map((e) {
               return {
-                "isActive":e.isActive,
+                "isActive": e.isActive,
                 "fileStore": e.fileStore,
                 "id": e.id,
                 "documentUid": e.documentUid,
@@ -676,18 +514,25 @@ class MBLogic {
           // 'length': measure.length,
           // 'height':measure.height,
           // end of old code clean working
-          'breadth': (measure.numItems == 0.0 ||measure.numItems! < 0.0) ? 0.0 : 1.0,
-          'length': (measure.numItems == 0.0 ||measure.numItems! < 0.0) ? 0.0 : 1.0,
-          'height': (measure.numItems == 0.0 ||measure.numItems! < 0.0) ? 0.0 : 1.0,
+          'breadth':
+              (measure.numItems == 0.0 || measure.numItems! < 0.0) ? 0.0 : 1.0,
+          'length':
+              (measure.numItems == 0.0 || measure.numItems! < 0.0) ? 0.0 : 1.0,
+          'height':
+              (measure.numItems == 0.0 || measure.numItems! < 0.0) ? 0.0 : 1.0,
           'isActive': measure.isActive,
           'referenceId': measure.referenceId,
-          'numItems': (measure.numItems! < 0.0)?(measure.numItems!*-1):measure.numItems,
+          'numItems': (measure.numItems! < 0.0)
+              ? (measure.numItems! * -1)
+              : measure.numItems,
           'id': measure.id,
           'cumulativeValue': measure.cumulativeValue,
           'currentValue': measure.currentValue,
           'additionalDetails': {
             'type': measure.measureAdditionalDetails?.type,
-            'mbAmount': (measure.measureAdditionalDetails!.mbAmount!<0)?(measure.measureAdditionalDetails!.mbAmount!)*-1:measure.measureAdditionalDetails!.mbAmount,
+            'mbAmount': (measure.measureAdditionalDetails!.mbAmount! < 0)
+                ? (measure.measureAdditionalDetails!.mbAmount!) * -1
+                : measure.measureAdditionalDetails!.mbAmount,
             'measureLineItems': measureListFilter(measure),
           },
         };
@@ -716,9 +561,7 @@ class MBLogic {
                 filteredMeasurementsMeasure.measureLineItems!
                     .map((measurementLine) {
               if (measurementLine.measurelineitemNo == measurementLineIndex) {
-                // MeasureLineItem ml= MeasureLineItem(
-                //   width:
-                // );
+               
 
                 return updatedMeasurementLine;
               }
@@ -880,12 +723,7 @@ class MBLogic {
                 .filteredMeasurementsMeasure
                 .map((filteredMeasurementsMeasure) {
           if (filteredMeasurementsMeasure.id == filteredMeasurementsMeasureId) {
-            // final List<MeasureLineItem> updatedMeasurementLineItems = List.from(filteredMeasurementsMeasure.measureLineItems ?? []);
-
-            // // if (measurementLineIndex >= 0 && measurementLineIndex < updatedMeasurementLineItems.length) {
-            // //   updatedMeasurementLineItems.removeAt(measurementLineIndex);
-            // // }
-
+           
             final List<MeasureLineItem> updatedMeasurementLineItems =
                 (filteredMeasurementsMeasure.measureLineItems ?? [])
                     .where((item) =>
@@ -893,20 +731,11 @@ class MBLogic {
                         measurementLineIndex) // Assuming MeasureLineItem has a name property
                     .toList();
 
-            // final List<MeasureLineItem> updatedMeasurementLineItemx=   updatedMeasurementLineItems.mapIndexed((index,e){
-            //   return MeasureLineItem(
-            //     width: e.width,
-            //     height: e.height,
-            //     length: e.length,
-            //     number: e.number,
-            //     quantity: e.quantity,
-            //     measurelineitemNo: index,
-            //   );
-            // }).toList();
+            
 
             return filteredMeasurementsMeasure.copyWith(
               measureLineItems: updatedMeasurementLineItems,
-              // measureLineItems: updatedMeasurementLineItemx,
+              
             );
           }
           return filteredMeasurementsMeasure;
@@ -943,18 +772,7 @@ class MBLogic {
   }
 
   static List<dynamic> measureListFilter(Measure measure) {
-//  final List<Map<String,dynamic>?> ?data=measure.measureAdditionalDetails!.measureLineItems?.map((item) {
-//                   if(item.number!=0&&item.width!=0&&item.height!=0&&item.length!=0&&item.quantity!=0){
-//               return {
-//                 'width': item.width,
-//                 'height': item.height,
-//                 'length': item.length,
-//                 'number': item.number,
-//                 'quantity': item.quantity,
-//                 'measurelineitemNo': item.measurelineitemNo,
-//               };
-//                   }
-//             }).toList();
+
     final List<Map<String, dynamic>>? data =
         measure.measureAdditionalDetails?.measureLineItems
             ?.map((item) {
