@@ -127,17 +127,20 @@ public class EnrichmentService {
                     .ifPresent(ids -> {
                         // Perform computation only if compositionIdSet is not empty
                         Map<String, SorComposition> fetchedMap = mdmsUtil.fetchSorCompositionBasedOnCompositionId(
-                                requestInfo, ids, statementRequest.getTenantId(), currentEpochTime);
+                                requestInfo, ids, statementRequest.getTenantId(), currentEpochTime,false);
                         sorIdCompositionMap.putAll(fetchedMap);
                     });
 
             if (sorIdCompositionMap != null && !sorIdCompositionMap.isEmpty()) {
                 for (SorComposition sorComposition : sorIdCompositionMap.values()) {
-                    basicSorIds.addAll(sorComposition.getBasicSorDetails().stream().map(SorCompositionBasicSorDetail::getSorId).toList());
-                    // Fetch Rates For Basic Sor present in the SorComposition
-                    Map<String, Rates> basicSorRates = mdmsUtil.fetchBasicRates(requestInfo, estimate.getTenantId(), new ArrayList<>(basicSorIds));
-                    // Put the basicSorRates data in sorRates map object
-                    basicSorRates.forEach((key, value) -> sorRates.putIfAbsent(key, value));
+                    if(sorComposition!=null){
+                        basicSorIds.addAll(sorComposition.getBasicSorDetails().stream().map(SorCompositionBasicSorDetail::getSorId).toList());
+                        // Fetch Rates For Basic Sor present in the SorComposition
+                        Map<String, Rates> basicSorRates = mdmsUtil.fetchBasicRates(requestInfo, estimate.getTenantId(), new ArrayList<>(basicSorIds));
+                        // Put the basicSorRates data in sorRates map object
+                        basicSorRates.forEach((key, value) -> sorRates.putIfAbsent(key, value));
+                    }
+
                 }
             } else {
                 log.info("COMPOSITION_NOT_PRESENT ::: For Sor Ids mapped in the estimate detail no Sor Composition is present: {}", uniqueIdentifiers.toString());
