@@ -31,7 +31,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   ];
 
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
-  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
+  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : []);
 
   useEffect(() => {
     if(window.location.href.includes("update"))
@@ -110,7 +110,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
   const addRow = () => {
     const newRow = {
-      key: rows[rows?.length -1]?.key +1,
+      key: rows.length > 0 ? rows[rows?.length -1]?.key +1 : 1,
       description: "",
       applicableOn: "",
       calculationType: "",
