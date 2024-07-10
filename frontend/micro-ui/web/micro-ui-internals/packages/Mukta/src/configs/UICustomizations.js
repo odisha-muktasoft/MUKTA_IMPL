@@ -2796,7 +2796,7 @@ export const UICustomizations = {
         case "RA_STATUS":
           return (
             <div style={{ color: value === "FAILED" ? "#D4351C" : value === "COMPLETED" ? "#27AE60" : "#F47738" }}>
-              {value === "FAILED" ? "Failed" : value === "COMPLETED" ? "Completed" : value === "INPROGRESS" ? "In Progress" : "Scheduled"}
+              {value === "FAILED" ? "Failed" : value === "COMPLETED" ? "Completed" : value === "IN_PROGRESS" ? "In Progress" : "Scheduled"}
             </div>
           );
 
