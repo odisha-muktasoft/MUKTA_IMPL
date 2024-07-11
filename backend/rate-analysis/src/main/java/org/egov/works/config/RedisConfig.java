@@ -21,6 +21,9 @@ public class RedisConfig {
     @Value("${spring.data.redis.port}")
     private int redisPort;
 
+    @Value("${spring.data.redis.timeout}")
+    private int redisTimeout;
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(redisHost, redisPort);
@@ -36,7 +39,7 @@ public class RedisConfig {
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofHours(1)) // Set the TTL for cache entries (e.g., 1 hour)
+                .entryTtl(Duration.ofSeconds(redisTimeout)) // Set the TTL for cache entries (e.g., 1 hour)
                 .disableCachingNullValues();
     }
 

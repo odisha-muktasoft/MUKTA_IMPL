@@ -65,11 +65,16 @@ public class SchedulerValidator {
 
     public Boolean validateJobScheduledRequest(JobScheduledRequest jobScheduledRequest) {
         log.info("SchedulerValidator: validateJobScheduledRequest");
-        String jobId = jobScheduledRequest.getScheduledJobs().getJobId();
+        try {
+            String jobId = jobScheduledRequest.getScheduledJobs().getJobId();
         if (Boolean.TRUE.equals(redisService.isJobPresentInCache(jobId))) {
             return true;
         }
         redisService.setCacheForJob(jobId);
         return false;
+        }catch (Exception e) {
+            log.error("Error while calling redis service", e);
+            throw new CustomException("REDIS_ERROR", "Error while calling redis service");
+        }
     }
 }
