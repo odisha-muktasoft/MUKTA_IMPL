@@ -40,6 +40,7 @@ export const data = (statementDetails, rawData,oldData) => {
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2)
                   : parseFloat(0).toFixed(2),
+                amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
               {
                 key: "STATEMENT_LABOUR",
@@ -48,6 +49,7 @@ export const data = (statementDetails, rawData,oldData) => {
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2)
                   : parseFloat(0).toFixed(2),
+                amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
               {
                 key: "STATEMENT_MACHINERY",
@@ -56,6 +58,7 @@ export const data = (statementDetails, rawData,oldData) => {
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2)
                   : parseFloat(0).toFixed(2),
+                amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
               {
                 
@@ -65,6 +68,7 @@ export const data = (statementDetails, rawData,oldData) => {
                     return acc + (ob?.additionalDetails?.labourCessAmount || 0);
                   }, 0) || 0
                 ).toFixed(2),
+                amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
             ],
           },
