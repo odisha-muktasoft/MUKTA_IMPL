@@ -18,11 +18,11 @@ import static org.egov.works.config.ErrorConfiguration.SOR_COMPOSITION_NOT_FOUND
 public class CommonUtil {
 
     public Rates getApplicatbleRate(List<Rates> ratesList, Long givenTime) {
-         Comparator<Rates> comparator = (o1, o2) -> {
-             String validFrom1 = o1.getValidFrom();
-             String validFrom2 = o2.getValidFrom();
-             return validFrom1.compareTo(validFrom2);
-         };
+        Comparator<Rates> comparator = (o1, o2) -> {
+            String validFrom1 = o1.getValidFrom();
+            String validFrom2 = o2.getValidFrom();
+            return validFrom1.compareTo(validFrom2);
+        };
 
         Collections.sort(ratesList, comparator.reversed());
         for (Rates rate : ratesList) {
@@ -51,9 +51,9 @@ public class CommonUtil {
 
     public SorComposition getApplicableSorComposition(List<SorComposition> sorCompositions, Long time) {
         Comparator<SorComposition> comparator = (o1, o2) -> {
-           String validFrom1 = o1.getEffectiveFrom();
-           String validFrom2 = o2.getEffectiveFrom();
-           return validFrom1.compareTo(validFrom2);
+            String validFrom1 = o1.getEffectiveFrom();
+            String validFrom2 = o2.getEffectiveFrom();
+            return validFrom1.compareTo(validFrom2);
         } ;
         Collections.sort(sorCompositions, comparator.reversed());
         for (SorComposition sorComposition : sorCompositions) {

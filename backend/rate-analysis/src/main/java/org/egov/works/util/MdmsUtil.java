@@ -35,7 +35,18 @@ public class MdmsUtil {
     @Autowired
     private CommonUtil commonUtil;
 
-      public MdmsResponseV2 fetchSorsFromMdms(MdmsSearchCriteriaV2 mdmsSearchCriteria) {
+    public void updateMdmsData(MdmsRequest mdmsRequest){
+        StringBuilder uri = new StringBuilder();
+        uri.append(configs.getMdmsHost()).append(configs.getUpdateEndPoint()).append(mdmsRequest.getMdms().getSchemaCode());
+        Object response = new HashMap<>();
+        try {
+            response = restTemplate.postForObject(uri.toString(), mdmsRequest, Map.class);
+        } catch (Exception e) {
+            log.error(ERROR_WHILE_UPDATING_MDMS, e);
+        }
+    }
+
+    public MdmsResponseV2 fetchSorsFromMdms(MdmsSearchCriteriaV2 mdmsSearchCriteria) {
         MdmsResponseV2 mdmsResponse = new MdmsResponseV2();
         StringBuilder uri = new StringBuilder();
         uri.append(configs.getMdmsHost()).append(configs.getMdmsV2EndPoint());
@@ -49,10 +60,10 @@ public class MdmsUtil {
         return mdmsResponse;
     }
     public Map<String, SorComposition> fetchSorComposition(AnalysisRequest analysisRequest) {
-            String filter = getfilter(analysisRequest.getSorDetails().getSorCodes(), false);
-            Map<String, Map<String, JSONArray>> sorComposition = fetchMdmsData(analysisRequest.getRequestInfo(),
-                    analysisRequest.getSorDetails().getTenantId(), WORKS_SOR_KEY,
-                    Collections.singletonList(COMPOSITION_KEY), filter);
+        String filter = getfilter(analysisRequest.getSorDetails().getSorCodes(), false);
+        Map<String, Map<String, JSONArray>> sorComposition = fetchMdmsData(analysisRequest.getRequestInfo(),
+                analysisRequest.getSorDetails().getTenantId(), WORKS_SOR_KEY,
+                Collections.singletonList(COMPOSITION_KEY), filter);
 
 
         JSONArray jsonArray;
@@ -99,6 +110,7 @@ public class MdmsUtil {
                 ratesList.add(rates);
             }
         }
+
         Map<String, List<Rates>> ratesMap = ratesList.stream().collect(Collectors.groupingBy(Rates::getSorId));
 //        if (ratesMap.keySet().size() != basicSorIds.size()) {
 //            basicSorIds.remove(ratesMap.keySet());

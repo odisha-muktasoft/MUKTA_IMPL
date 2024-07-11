@@ -157,11 +157,11 @@ public class SchedulerService {
     private void callRateAnalysisCreate(SorDetail sorDetail, RequestInfo requestInfo, Long rateEffectiveFrom, String tenantId) {
         log.info("SchedulerService: callRateAnalysisCreate");
         SorDetails sorDetails = SorDetails.builder()
-                                .tenantId(tenantId)
-                                .sorId(Collections.singletonList(sorDetail.getSorId()))
-                                .sorCodes(Collections.singletonList(sorDetail.getSorCode()))
-                                .effectiveFrom(String.valueOf(rateEffectiveFrom))
-                                .build();
+                .tenantId(tenantId)
+                .sorId(Collections.singletonList(sorDetail.getSorId()))
+                .sorCodes(Collections.singletonList(sorDetail.getSorCode()))
+                .effectiveFrom(String.valueOf(rateEffectiveFrom))
+                .build();
         AnalysisRequest analysisRequest = AnalysisRequest.builder()
                 .requestInfo(requestInfo)
                 .sorDetails(sorDetails)
