@@ -15,6 +15,7 @@ const ROLES = {
   REVISIONOFRATES : ["MDMS_ADMIN", "MDMS_CITY_ADMIN", "MDMS_STATE_VIEW_ADMIN", "MDMS_CITY_VIEW_ADMIN"],
   DSS: ["STADMIN"],
   REVISIONOFRATES : ["MDMS_ADMIN", "MDMS_CITY_ADMIN", "MDMS_STATE_VIEW_ADMIN", "MDMS_CITY_VIEW_ADMIN"],
+  ESTIMATETEMPLATE : ["MDMS_ADMIN", "MDMS_STATE_ADMIN"],
 };
 
 // Mukta Overrriding the Works Home screen card
@@ -226,6 +227,11 @@ const WorksCard = () => {
       label: t("ACTION_TEST_10REVISIONOFRATES"),
       link: `/${window?.contextPath}/employee/rateAnalysis/search-sor`,
       roles: ROLES.REVISIONOFRATES,
+    },
+    {
+      label: t("ACTION_TEST_11ESTIMATETEMPLATE"),
+      link: `/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS&masterName=EstimateTemplate`,
+      roles: ROLES.ESTIMATETEMPLATE,
     }
   ];
 
