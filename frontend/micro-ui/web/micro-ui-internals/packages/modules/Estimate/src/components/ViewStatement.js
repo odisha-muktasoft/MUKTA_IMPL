@@ -341,7 +341,7 @@ const ViewStatement = (props) => {
               </td>
             </tr>
           ) : (
-            <td colSpan={8} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center" }}>
+            <td colSpan={8} style={{ marginLeft: "10px", color: "#9E9E9E", textAlign: "center",border: "1px solid #A6A6A6" }}>
               {t("STATEMENT_NO_DATA_PRESENT")}
             </td>
           )}
