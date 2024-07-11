@@ -185,9 +185,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             label: error?.response?.data?.Errors?.[0].message || error,
           });
          
-          // setTimeout(() => {
-          //   setShowToast(false);
-          // }, 5000);
+          setTimeout(() => {
+            setShowToast(false);
+          }, 5000);
         },
         onSuccess: async (responseData) => {
           setTimeout(() => {
