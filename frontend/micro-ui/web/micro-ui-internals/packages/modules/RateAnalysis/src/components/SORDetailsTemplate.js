@@ -83,13 +83,17 @@ const SORDetailsTemplate = (props) => {
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
 
-  const columns = [
-    //{ label: t("RA_SNO"), key: "sno" },
+  let columns = [
     { label: t("RA_CODE"), key: "sorCode" },
     { label: t("RA_NAME"), key: "description" },
     { label: t("RA_UOM"), key: "uom" },
     { label: t("RA_QTY"), key: "quantity" },
   ];
+
+  if(pageType === "VIEW")
+  {
+    columns.unshift({ label: t("RA_SNO"), key: "sno" });
+  }
 
   if (pageType === "VIEW") {
     columns.splice(4, 0, { label: t("RA_BASIC_RATE"), key: "basicRate" });
@@ -126,19 +130,19 @@ const SORDetailsTemplate = (props) => {
   const getStyles = (index) => {
     let obj = {};
     switch (index) {
-      // case 1:
-      //   obj = { width: "1rem" };
-      //   break;
       case 1:
-        obj = { width: "8rem" };
+        obj = pageType === "VIEW" ? { width: "1rem" } : { width: "8rem" };
         break;
       case 2:
-        obj = { width: "70rem" };
+        obj = pageType === "VIEW" ? { width: "8rem" } : { width: "70rem" };
         break;
       case 3:
-        obj = { width: "10rem" };
+        obj = pageType === "VIEW" ? { width: "70rem" } : { width: "10rem" };
         break;
       case 4:
+        obj = pageType === "VIEW" ? { width: "10rem" } : (pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" });
+        break;
+      case 5:
         obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
         break;
       case 6:
@@ -198,7 +202,7 @@ const SORDetailsTemplate = (props) => {
           </div>
         )}
       </div>
-      <table className="reports-table sub-work-table" style={{width:"104%"}}>
+      <table className="reports-table sub-work-table" style={pageType === "VIEW" ? {} : {width:"104%"}}>
         <thead>
           <tr>
             {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&

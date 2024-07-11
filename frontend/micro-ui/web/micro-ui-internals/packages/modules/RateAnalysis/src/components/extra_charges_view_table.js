@@ -66,7 +66,7 @@ const ExtraChargesViewTable = (props) => {
     sno: index + 1,
 
     description: row?.description,
-    appliedOn: row?.appliedOn,
+    appliedOn: row?.appliedOn ? t(row?.appliedOn) : row?.appliedOn,
     calculationType: row?.calculationType,
     figure: Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.figure).toFixed(2), "number", undefined, true, undefined, 2),
     amount: Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.amount).toFixed(2), "number", undefined, true, undefined, 2),
