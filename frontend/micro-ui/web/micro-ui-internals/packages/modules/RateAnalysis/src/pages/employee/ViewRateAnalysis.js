@@ -15,7 +15,7 @@ const ViewRateAnalysis = () => {
   const [current, setCurrent] = useState(Date.now());
   const queryStrings = Digit.Hooks.useQueryParams();
 
-  let effectiveTime = queryStrings.fromeffective ? queryStrings.fromeffective : current;
+  let effectiveTime = queryStrings.fromeffective ? (queryStrings.fromeffective < current ? current : queryStrings.fromeffective) : current;
   let dataPaylod = {
     sorDetails: {
       tenantId: tenantId,
