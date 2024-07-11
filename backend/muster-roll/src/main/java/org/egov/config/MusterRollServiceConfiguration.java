@@ -132,6 +132,11 @@ public class MusterRollServiceConfiguration {
     @Value("${notification.sms.enabled}")
     private boolean isSMSEnabled;
 
+    @Value("${egov.mdms.v2.host}")
+    private String mdmsV2Host;
+    @Value("${egov.mdms.v2.search.endpoint}")
+    private String mdmsV2EndPoint;
+
     @PostConstruct
     public void initialize() {
         TimeZone.setDefault(TimeZone.getTimeZone(timeZone));

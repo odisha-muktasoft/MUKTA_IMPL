@@ -195,14 +195,14 @@ public class MusterRollService {
         //fetch MDMS data for muster - skill level
         String tenantId = existingMusterRoll.getTenantId();
         Object mdmsData = mdmsUtils.mDMSCallMuster(musterRollRequest, tenantId);
-
+        Object mdmsV2Data = mdmsUtils.mDMSV2CallMuster(musterRollRequest, tenantId);
         //fetch the update additionalDetails from the request and persist it for verification
         if (!isComputeAttendance) {
             Object additionalDetails = musterRollRequest.getMusterRoll().getAdditionalDetails();
             existingMusterRoll.setAdditionalDetails(additionalDetails);
         }
 
-        enrichmentService.enrichMusterRollOnUpdate(musterRollRequest,existingMusterRoll,mdmsData);
+        enrichmentService.enrichMusterRollOnUpdate(musterRollRequest,existingMusterRoll,mdmsV2Data);
         if (isComputeAttendance) {
             RequestInfo requestInfo = musterRollRequest.getRequestInfo();
             musterRollValidator.isValidUser(existingMusterRoll, requestInfo);
