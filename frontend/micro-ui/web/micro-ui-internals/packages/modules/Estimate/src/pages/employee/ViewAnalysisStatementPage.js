@@ -445,15 +445,15 @@ const ViewAnalysisStatement = () => {
 //     },
 //   };
 
-let InfoCardData = {
-  "Info": "STATEMENT_ANALYSIS_INFO_LABEL",
-  "reasons": [
-    "STATEMENT_ANALYSIS_INFO_1",
-    "STATEMENT_ANALYSIS_INFO_2",
-    "STATEMENT_ANALYSIS_INFO_3",
-    "STATEMENT_ANALYSIS_INFO_4"
-  ]
-}
+// let InfoCardData = {
+//   "Info": "STATEMENT_ANALYSIS_INFO_LABEL",
+//   "reasons": [
+//     "STATEMENT_ANALYSIS_INFO_1",
+//     "STATEMENT_ANALYSIS_INFO_2",
+//     "STATEMENT_ANALYSIS_INFO_3",
+//     "STATEMENT_ANALYSIS_INFO_4"
+//   ]
+// }
 
   const config = data(statement?.[0],statement,oldData);
 
@@ -468,13 +468,7 @@ let InfoCardData = {
         { downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
       </div>
       <div>
-      <CitizenInfoLabel textType={"Componenet"} style={{margin:"0px", maxWidth:"99%", marginBottom:"20px"}} info={t("CS_INFO")} text={<div style={{display:"block"}}>
-          <p>{t(InfoCardData?.Info)}</p>
-          {InfoCardData?.reasons.map((reason, index) => (
-            <p key={index}>{t(reason)}</p>
-          ))}
-        </div>} 
-              />
+      <CitizenInfoLabel textType={"Componenet"} style={{margin:"0px", maxWidth:"99%", marginBottom:"20px"}} info={t("CS_INFO")} text={t("STATEMENT_ANALYSIS_INFO_RATE")}  />
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}

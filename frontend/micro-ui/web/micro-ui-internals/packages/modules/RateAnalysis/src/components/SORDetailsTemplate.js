@@ -84,7 +84,7 @@ const SORDetailsTemplate = (props) => {
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
 
   const columns = [
-    { label: t("RA_SNO"), key: "sno" },
+    //{ label: t("RA_SNO"), key: "sno" },
     { label: t("RA_CODE"), key: "sorCode" },
     { label: t("RA_NAME"), key: "description" },
     { label: t("RA_UOM"), key: "uom" },
@@ -126,19 +126,19 @@ const SORDetailsTemplate = (props) => {
   const getStyles = (index) => {
     let obj = {};
     switch (index) {
+      // case 1:
+      //   obj = { width: "1rem" };
+      //   break;
       case 1:
-        obj = { width: "1rem" };
-        break;
-      case 2:
         obj = { width: "8rem" };
         break;
-      case 3:
+      case 2:
         obj = { width: "70rem" };
         break;
-      case 4:
+      case 3:
         obj = { width: "10rem" };
         break;
-      case 5:
+      case 4:
         obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
         break;
       case 6:
@@ -198,7 +198,7 @@ const SORDetailsTemplate = (props) => {
           </div>
         )}
       </div>
-      <table className="reports-table sub-work-table">
+      <table className="reports-table sub-work-table" style={{width:"104%"}}>
         <thead>
           <tr>
             {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
