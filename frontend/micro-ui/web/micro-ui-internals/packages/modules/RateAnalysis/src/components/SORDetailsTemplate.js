@@ -227,7 +227,8 @@ const SORDetailsTemplate = (props) => {
                             onChange={(e) => {
                               const { value } = e.target;
                               if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
-                                let newSOR = formData?.map((obj) => {
+                                let detailsPicked = window.location.href.includes("update") ? SORDetails : formData
+                                let newSOR = detailsPicked?.map((obj) => {
                                   if (obj?.sorCode === row?.sorCode) {
                                     return { ...obj, quantity: value };
                                   }
