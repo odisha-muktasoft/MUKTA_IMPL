@@ -319,7 +319,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             success={showToast?.success}
             label={t(showToast?.label)}
             isDleteBtn={true}
-            style={{ width: "100%", display: "flex", justifyContent: "space-between", whiteSpace: "nowrap" }}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
             onClose={() => setShowToast(false)}
           />
         )}
