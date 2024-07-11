@@ -32,6 +32,12 @@ const RateAnalysisBreadCumbs = ({ location }) => {
       isBack: true,
     },
     {
+      path: `/${window.contextPath}/employee/rateAnalysis/update-rate-analysis`,
+      content: fromScreen ? `${t(fromScreen)} / ${t("RA_UPDATE_RATE_HEADER")}` : t("RA_UPDATE_RATE_HEADER"),
+      show: location.pathname.includes("/update-rate-analysis") ? true : false,
+      isBack: true,
+    },
+    {
       path: `/${window.contextPath}/employee/rateAnalysis/search-sor`,
       content: t("RA_SEARCH_SOR"),
       show: location.pathname.includes("/search-sor") ? true : false,

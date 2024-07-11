@@ -122,7 +122,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
   const getCalculationType = () => {
     return [
-      { code: "PERCENTAGE", name: "percentage" },
+      //{ code: "PERCENTAGE", name: "percentage" },
       { code: "FIXED", name: "fixed" }
     ];
   };
