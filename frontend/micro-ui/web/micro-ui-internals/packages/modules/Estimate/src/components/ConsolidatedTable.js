@@ -100,7 +100,12 @@ const GroupedTable = (props) => {
     return (
       <tr>
         {columns.map((col, index) => (
-          <th key={index} style={{ width: col.width }}>
+          <th key={index} style={{ width: col.width  , backgroundColor: "#A6A6A6",
+            fontSize: "16px",
+            lineHeight: "18.75px",
+            fontFamily: "Roboto",
+            fontWeight: "700",
+            color: "#0B0C0C",}}>
             {col.key}
           </th>
         ))}
@@ -114,19 +119,19 @@ const GroupedTable = (props) => {
        
     let sno = 0;
     return groupedData.map((row, index) => (
-      <tr key={index}>
-        <td style={{ width: "5%" }}>{++sno}</td>
-        <td style={{ width: "15%" }}>{row.code}</td>
-        <td style={{ width: "25%" }}>{row.description}</td>
-        <td style={{ width: "10%" }}>{row.uom}</td>
-        <td style={{ width: "10%" ,textAlign:"right", }}>
+      <tr key={index} style={{border: "1px solid #A6A6A6"}}>
+        <td style={{ width: "5%" ,border: "1px solid #A6A6A6"}}>{++sno}</td>
+        <td style={{ width: "15%",border: "1px solid #A6A6A6" }}>{row.code}</td>
+        <td style={{ width: "25%" ,border: "1px solid #A6A6A6"}}>{row.description}</td>
+        <td style={{ width: "10%" ,border: "1px solid #A6A6A6"}}>{row.uom}</td>
+        <td style={{ width: "10%" ,textAlign:"right",border: "1px solid #A6A6A6" }}>
           {<Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row.rate).toFixed(2), "number", undefined, true, undefined, 2)} t={t} sameDisplay={true} roundOff={false} />}
         </td>
-        <td style={{ width: "15%",textAlign:"right", }}>
+        <td style={{ width: "15%",textAlign:"right", border: "1px solid #A6A6A6"}}>
           {/*<Amount value={row.totalQuantity} t={t} />*/}
           {<Amount value={parseFloat(row.totalQuantity).toFixed(4)} t={t} sameDisplay={true} roundOff={false} />}
         </td>
-        <td style={{ width: "15%" ,textAlign:"right",}}>
+        <td style={{ width: "15%" ,textAlign:"right",border: "1px solid #A6A6A6"}}>
           <Amount value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row.totalAmount).toFixed(2), "number", undefined, true, undefined, 2)} t={t} sameDisplay={true} roundOff={false}/>
         </td>
         {/* <td style={{ width: "15%" }}>
@@ -143,9 +148,9 @@ const GroupedTable = (props) => {
         <tbody>{renderBody()}
         {
           groupAndCalculateTotals().length>0&&
-        <tr>
-        <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" }}>{t("MB_AMOUNT_TOTAL")}</td>
-        <td style={{ width: "10%" }}>
+        <tr style={{border: "1px solid #A6A6A6"}}>
+        <td colSpan={6} style={{ width: "25%", textAlign:"right", fontWeight:"bold" ,border: "1px solid #A6A6A6"}}>{t("MB_AMOUNT_TOTAL")}</td>
+        <td style={{ width: "10%" ,border: "1px solid #A6A6A6"}}>
           
          <div style={{ textAlign:"right", fontWeight:"bold" }}> {Digit.Utils.dss.formatterWithoutRound( parseFloat( groupAndCalculateTotals().reduce((accumulator, currentValue) => accumulator + currentValue.totalAmount, 0.00)).toFixed(2), "number", undefined, true, undefined, 2)} </div>
         </td>
@@ -155,7 +160,7 @@ const GroupedTable = (props) => {
 
         {
           groupAndCalculateTotals().length===0&&
-          <td colSpan={7} style={{marginLeft:"10px", color:"#9E9E9E", textAlign:"center"}}>
+          <td colSpan={7} style={{marginLeft:"10px", color:"#9E9E9E", textAlign:"center",border: "1px solid #A6A6A6"}}>
           {t(emptyTableMsg)}
         </td>
         }
