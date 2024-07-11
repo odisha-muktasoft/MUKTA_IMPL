@@ -111,7 +111,7 @@ const SORDetailsTemplate = (props) => {
       measures: [],
       targetId: null,
       sorId: sor?.id,
-      quantity: null,
+      quantity: "",
       definedQuantity: sor?.quantity,
     };
     return transformedSOR;
@@ -227,7 +227,7 @@ const SORDetailsTemplate = (props) => {
                             onChange={(e) => {
                               const { value } = e.target;
                               if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
-                                let newSOR = SORDetails?.map((obj) => {
+                                let newSOR = formData?.map((obj) => {
                                   if (obj?.sorCode === row?.sorCode) {
                                     return { ...obj, quantity: value };
                                   }
