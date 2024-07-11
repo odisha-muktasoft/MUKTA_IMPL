@@ -17,11 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.egov.digit.expense.calculator.util.ExpenseCalculatorServiceConstants.*;
 
@@ -29,7 +25,7 @@ import static org.egov.digit.expense.calculator.util.ExpenseCalculatorServiceCon
 @Slf4j
 public class MdmsUtils {
     private final ServiceRequestRepository serviceRequestRepository;
-    
+
     private final RestTemplate restTemplate;
 
     private final ObjectMapper mapper;
@@ -45,58 +41,58 @@ public class MdmsUtils {
     }
 
     public Map<String, Map<String, JSONArray>> fetchMdmsData(RequestInfo requestInfo, String tenantId,
-			String moduleName, List<String> masterNameList) {
-		StringBuilder uri = new StringBuilder();
-		uri.append(config.getMdmsHost()).append(config.getMdmsEndPoint());
-		MdmsCriteriaReq mdmsCriteriaReq = prepareMdMsRequest(requestInfo, tenantId, moduleName, masterNameList);
-		Object response = new HashMap<>();
-		MdmsResponse mdmsResponse = new MdmsResponse();
-		try {
-			response = restTemplate.postForObject(uri.toString(), mdmsCriteriaReq, Map.class);
-			mdmsResponse = mapper.convertValue(response, MdmsResponse.class);
-		} catch (Exception e) {
-			log.error("Exception occurred while fetching category lists from mdms: ", e);
-		}
+                                                             String moduleName, List<String> masterNameList) {
+        StringBuilder uri = new StringBuilder();
+        uri.append(config.getMdmsHost()).append(config.getMdmsEndPoint());
+        MdmsCriteriaReq mdmsCriteriaReq = prepareMdMsRequest(requestInfo, tenantId, moduleName, masterNameList);
+        Object response = new HashMap<>();
+        MdmsResponse mdmsResponse = new MdmsResponse();
+        try {
+            response = restTemplate.postForObject(uri.toString(), mdmsCriteriaReq, Map.class);
+            mdmsResponse = mapper.convertValue(response, MdmsResponse.class);
+        } catch (Exception e) {
+            log.error("Exception occurred while fetching category lists from mdms: ", e);
+        }
 
-		log.info(mdmsResponse.toString());
-		return mdmsResponse.getMdmsRes();
-	}
+        log.info(mdmsResponse.toString());
+        return mdmsResponse.getMdmsRes();
+    }
 
-	/**
-	 * prepares Master Data request
-	 * 
-	 * @param tenantId
-	 * @param moduleName
-	 * @param masterNames
-	 * @param requestInfo
-	 * @return
-	 */
-	public MdmsCriteriaReq prepareMdMsRequest(RequestInfo requestInfo, String tenantId, String moduleName,
-			List<String> masterNames) {
+    /**
+     * prepares Master Data request
+     *
+     * @param tenantId
+     * @param moduleName
+     * @param masterNames
+     * @param requestInfo
+     * @return
+     */
+    public MdmsCriteriaReq prepareMdMsRequest(RequestInfo requestInfo, String tenantId, String moduleName,
+                                              List<String> masterNames) {
 
-		List<MasterDetail> masterDetails = new ArrayList<>();
-		masterNames.forEach(name ->
-			masterDetails.add(MasterDetail.builder().name(name).build())
-		);
+        List<MasterDetail> masterDetails = new ArrayList<>();
+        masterNames.forEach(name ->
+                masterDetails.add(MasterDetail.builder().name(name).build())
+        );
 
-		ModuleDetail moduleDetail = ModuleDetail.builder()
-				.moduleName(moduleName)
-				.masterDetails(masterDetails)
-				.build();
-		
-		List<ModuleDetail> moduleDetails = new ArrayList<>();
-		moduleDetails.add(moduleDetail);
-		
-		MdmsCriteria mdmsCriteria = MdmsCriteria.builder()
-				.tenantId(tenantId)
-				.moduleDetails(moduleDetails)
-				.build();
+        ModuleDetail moduleDetail = ModuleDetail.builder()
+                .moduleName(moduleName)
+                .masterDetails(masterDetails)
+                .build();
 
-		return MdmsCriteriaReq.builder()
-				.requestInfo(requestInfo)
-				.mdmsCriteria(mdmsCriteria)
-				.build();
-	}
+        List<ModuleDetail> moduleDetails = new ArrayList<>();
+        moduleDetails.add(moduleDetail);
+
+        MdmsCriteria mdmsCriteria = MdmsCriteria.builder()
+                .tenantId(tenantId)
+                .moduleDetails(moduleDetails)
+                .build();
+
+        return MdmsCriteriaReq.builder()
+                .requestInfo(requestInfo)
+                .mdmsCriteria(mdmsCriteria)
+                .build();
+    }
     public Object fetchMDMSForValidation(RequestInfo requestInfo, String tenantId) {
         MdmsCriteriaReq mdmsCriteriaReq = getMDMSValidationRequest(requestInfo, tenantId);
         return serviceRequestRepository.fetchResult(getMDMSSearchUrl(), mdmsCriteriaReq);
@@ -174,17 +170,17 @@ public class MdmsUtils {
 
     private MdmsCriteriaReq prepareMDMSCriteria(RequestInfo requestInfo,List<ModuleDetail> moduleDetails, String tenantId){
         MdmsCriteria mdmsCriteria = MdmsCriteria.builder()
-                                                .moduleDetails(moduleDetails)
-                                                .tenantId(tenantId)
-                                                .build();
+                .moduleDetails(moduleDetails)
+                .tenantId(tenantId)
+                .build();
         return MdmsCriteriaReq.builder()
                 .mdmsCriteria(mdmsCriteria)
                 .requestInfo(requestInfo)
                 .build();
     }
     private MasterDetail getMasterDetailForSubModuleAndFilter(String masterDetailName, String filter){
-      return MasterDetail.builder().name(masterDetailName)
-              .filter(filter).build();
+        return MasterDetail.builder().name(masterDetailName)
+                .filter(filter).build();
     }
 
     private MasterDetail getMasterDetailForSubModule(String masterDetailName){
@@ -199,9 +195,9 @@ public class MdmsUtils {
         masterDetails.add(overHeadsMasterDetail);
 
         return ModuleDetail.builder()
-                            .masterDetails(masterDetails)
-                            .moduleName(MDMS_EXPENSE_MASTERS)
-                            .build();
+                .masterDetails(masterDetails)
+                .moduleName(MDMS_EXPENSE_MASTERS)
+                .build();
     }
 
 
@@ -219,6 +215,43 @@ public class MdmsUtils {
         List<ModuleDetail> moduleDetails = new LinkedList<>();
         moduleDetails.add(wageSeekerSkillsModuleDetail);
         return prepareMDMSCriteria(requestInfo,moduleDetails,tenantId);
+    }
+
+    public Object getLabourSorFromMDMSV2(RequestInfo requestInfo, String tenantId, List<String> sorList, Boolean isRate) {
+        String filter = getFilterFromSorList(sorList, isRate);
+
+        MdmsCriteria mdmsCriteria = getMdmsCriteria(requestInfo, isRate ? RATES_CONSTANT : SOR_CONSTANT, tenantId, filter);
+
+        return serviceRequestRepository.fetchResult(getMDMSV2SearchUrl(), MdmsCriteriaReq.builder().requestInfo(requestInfo).mdmsCriteria(mdmsCriteria).build());
+    }
+
+
+    private MdmsCriteria getMdmsCriteria (RequestInfo requestInfo, String masterName, String tenantId, String filter) {
+        return MdmsCriteria.builder().tenantId(tenantId)
+                .moduleDetails(Collections.singletonList(ModuleDetail.builder()
+                        .moduleName(WORKS_SOR_CONSTANT)
+                        .masterDetails(Collections.singletonList(MasterDetail.builder()
+                                .name(masterName)
+                                .filter(filter)
+                                .build()))
+                        .build()))
+                .build();
+
+    }
+
+    String getFilterFromSorList(List<String> sorList, Boolean isRate) {
+        String idConstant = isRate ? ID_SEARCH_CONSTANT_RATE : ID_SEARCH_CONSTANT;
+        StringBuilder filterString = new StringBuilder(FILTER_START).append(idConstant).append(sorList.get(0));
+        for (int i = 1; i < sorList.size(); i++) {
+            filterString.append(FILTER_OR_CONSTANT);
+            filterString.append(idConstant).append(sorList.get(i));
+        }
+        filterString.append(FILTER_END);
+        return filterString.toString();
+    }
+
+    public StringBuilder getMDMSV2SearchUrl() {
+        return new StringBuilder().append(config.getMdmsV2Host()).append(config.getMdmsV2EndPoint());
     }
 
 }
