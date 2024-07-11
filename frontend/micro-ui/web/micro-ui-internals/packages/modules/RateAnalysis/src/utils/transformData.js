@@ -6,7 +6,7 @@ export const getDefaultValues = (sordata, t, mbNumber, compositionData, allSORDa
     SORCode: sordata?.uniqueIdentifier,
     SORType: sordata?.data?.sorType !== "NA"? t(`WORKS_SOR_TYPE_${sordata?.data?.sorType}`) : "NA",
     SORSubType: sordata?.data?.sorSubType !== "NA" ? t(`WORKS_SOR_SUBTYPE_${sordata?.data?.sorSubType}`) : "NA",
-    SORVarient: sordata?.data?.sorVariant !== "NA" ? t(`WORKS_OR_VARIENT_${sordata?.data?.sorVariant}`) : "NA",
+    SORVarient: sordata?.data?.sorVariant !== "NA" ? t(`WORKS_SOR_VARIENT_${sordata?.data?.sorVariant}`) : "NA",
     uom: sordata?.data?.uom !== "NA"? t(`COMMON_MASTERS_UOM_${sordata?.data?.uom}`) : "NA",
     rateDefinedForQty: sordata?.data?.quantity,
     description: sordata?.data?.description,
