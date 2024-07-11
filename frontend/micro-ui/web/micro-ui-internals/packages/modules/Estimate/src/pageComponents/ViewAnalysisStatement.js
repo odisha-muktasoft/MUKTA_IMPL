@@ -179,10 +179,12 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     } else {
       await UtilizationMutation(payload, {
         onError: async (error) => {
+
           setShowToast({
             error: true,
             label: error?.response?.data?.Errors?.[0].message || error,
           });
+         
           setTimeout(() => {
             setShowToast(false);
           }, 5000);
@@ -232,7 +234,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       downloadStatus:true,
     };
 
-    if (!searchResponse || searchResponse?.statement?.length <= 0 || formData?.Measurement?.wfStatus === "APPROVED") {
+    if ((!searchResponse || searchResponse?.statement?.length <= 0 ) && formData?.Measurement?.wfStatus === "APPROVED") {
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
@@ -319,7 +321,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             success={showToast?.success}
             label={t(showToast?.label)}
             isDleteBtn={true}
-            style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
+            labelstyle={{width:"100%"}}
+             style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
             onClose={() => setShowToast(false)}
           />
         )}

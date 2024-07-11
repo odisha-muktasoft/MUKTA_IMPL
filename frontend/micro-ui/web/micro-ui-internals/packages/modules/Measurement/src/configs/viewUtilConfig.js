@@ -38,7 +38,7 @@ export const data = (statementDetails, rawData,oldData) => {
                 value: oldData
                   ? (oldData?.Material.includes(",") ? oldData?.Material : parseFloat(oldData?.Material).toFixed(2))
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
-                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2)
+                  ?Digit.Utils.dss.formatterWithoutRound( statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2), "number", undefined, true, undefined, 2)
                   : parseFloat(0).toFixed(2),
                 amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
@@ -47,7 +47,7 @@ export const data = (statementDetails, rawData,oldData) => {
                 value: oldData
                   ? (oldData?.Machinery?.includes(",") ? oldData?.Machinery : parseFloat(oldData?.Machinery).toFixed(2))
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
-                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2)
+                  ?Digit.Utils.dss.formatterWithoutRound(  statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2), "number", undefined, true, undefined, 2)
                   : parseFloat(0).toFixed(2),
                 amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
@@ -56,18 +56,18 @@ export const data = (statementDetails, rawData,oldData) => {
                 value: oldData
                   ? (oldData?.Labour?.includes(",") ? oldData?.Labour :parseFloat(oldData?.Labour).toFixed(2))
                   : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
-                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2)
+                  ?Digit.Utils.dss.formatterWithoutRound( statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2), "number", undefined, true, undefined, 2) 
                   : parseFloat(0).toFixed(2),
                 amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
               {
                 
                 key: "STATEMENT_LABOUR_CESS",
-                value: parseFloat(
+                value:Digit.Utils.dss.formatterWithoutRound( parseFloat(
                   statementDetails?.sorDetails.reduce((acc, ob) => {
                     return acc + (ob?.additionalDetails?.labourCessAmount || 0);
                   }, 0) || 0
-                ).toFixed(2),
+                ).toFixed(2), "number", undefined, true, undefined, 2)  ,
                 amountStyle:{maxWidth:"12%",textAlign:"end"}
               },
             ],
