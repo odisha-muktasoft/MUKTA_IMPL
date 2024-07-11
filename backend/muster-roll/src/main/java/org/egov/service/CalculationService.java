@@ -75,6 +75,7 @@ public class CalculationService {
         String tenantId = musterRoll.getTenantId();
         Object mdmsData = mdmsUtils.mDMSCallMuster(musterRollRequest, tenantId);
 
+        Object mdmsV2Data = mdmsUtils.mDMSV2CallMuster(musterRollRequest, tenantId);
 
         //fetch the log events for all individuals in a muster roll
         List<AttendanceLog> attendanceLogList = fetchAttendanceLogsAndHours(musterRollRequest,mdmsData);
@@ -204,7 +205,7 @@ public class CalculationService {
 						.findFirst().orElse(null);
 
 				if (individual != null /* && bankAccount != null */) {
-					setAdditionalDetails(entry, individualEntriesFromRequest, mdmsData, individual,
+                    setAdditionalDetails(entry, individualEntriesFromRequest, mdmsV2Data, individual,
 							bankAccount, isCreate);
 				} else {
 					log.info(
