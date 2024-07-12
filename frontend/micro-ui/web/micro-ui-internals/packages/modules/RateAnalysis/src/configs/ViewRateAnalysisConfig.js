@@ -99,7 +99,7 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
               },
               {
                 key: "RA_SOR_VARIENT",
-                value: rateAnalysis?.sorVariant && rateAnalysis?.sorVariant != "NA" ? t(`WORKS_SOR_VARIANT_${rateAnalysis?.sorVariant}`) :"NA",
+                value: rateAnalysis?.sorVariant ? rateAnalysis?.sorVariant != "NA" ? t(`WORKS_SOR_VARIANT_${rateAnalysis?.sorVariant}`) :t(`WORKS_SOR_VARIANT_NA`):"NA",
               },
 
               {
