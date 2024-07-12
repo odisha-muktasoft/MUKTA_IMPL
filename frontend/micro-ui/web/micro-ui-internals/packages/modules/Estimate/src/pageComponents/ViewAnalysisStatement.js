@@ -235,7 +235,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     };
 
     if ((!searchResponse || searchResponse?.statement?.length <= 0 ) && ( isEstimate? formData?.wfStatus === "APPROVED" :formData?.Measurement?.wfStatus === "APPROVED")) {
-   debugger
+  
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
@@ -265,7 +265,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       showToastMessage(message);
       return;
     }
-debugger
+
     if (isView && searchResponse) {
     
       handleNavigation(isEstimate, isView, searchResponse, formData, props);
