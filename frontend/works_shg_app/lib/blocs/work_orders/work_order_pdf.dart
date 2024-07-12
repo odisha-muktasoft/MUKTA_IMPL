@@ -63,7 +63,7 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
           "referenceId": event.estimateId.toString(),
           "tenantId": event.tenantId.toString(),
         },
-        fileName: 'WorkOrder.pdf',
+        fileName: 'analysis_statement.pdf',
         options: Options(extra: {
           "userInfo": GlobalVariables.userRequestModel,
           "accessToken": GlobalVariables.authToken,
