@@ -234,7 +234,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       downloadStatus:true,
     };
 
-    if ((!searchResponse || searchResponse?.statement?.length <= 0 ) && formData?.Measurement?.wfStatus === "APPROVED") {
+    if ((!searchResponse || searchResponse?.statement?.length <= 0 ) && ( isEstimate? formData?.wfStatus === "APPROVED" :formData?.Measurement?.wfStatus === "APPROVED")) {
+  
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
@@ -243,6 +244,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
       state.downloadStatus=false;
     }
+     
 
     history.push({ pathname: path, state });
   };
@@ -265,8 +267,10 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     }
 
     if (isView && searchResponse) {
+    
       handleNavigation(isEstimate, isView, searchResponse, formData, props);
     } else {
+     
       await callCreateApi(event);
     }
   };

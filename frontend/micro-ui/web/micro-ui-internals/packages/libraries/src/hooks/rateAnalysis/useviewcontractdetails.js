@@ -6,7 +6,12 @@ const useViewRateAnalysisDetails = (tenantId, data) => {
   const { t } = useTranslation();
   return useQuery(["VIEW_RATE_ANALYSIS_DETAILS", tenantId, data],
     
-     () => View.fetchRateAnalysisDetails(tenantId, data));
+     () => View.fetchRateAnalysisDetails(tenantId, data),
+     {
+      staleTime: 0,  // Data is always considered stale
+      cacheTime: 0,  // Data is immediately removed from the cache
+    }
+    );
 };
 
 export default useViewRateAnalysisDetails;

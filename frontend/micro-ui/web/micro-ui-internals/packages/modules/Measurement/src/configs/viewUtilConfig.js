@@ -3,24 +3,21 @@ import { transformEstimateObjects } from "../../../Estimate/util/estimateConvers
 import { transformStatementData, sortSorsBasedonType } from "../../../Estimate/util/EstimateData";
 import { sortedFIlteredData } from "../utils/view_utilization";
 
-export const data = (statementDetails, rawData,oldData) => {
-  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [], });
+export const data = (statementDetails, rawData, oldData) => {
+  const [viewData, setViewData] = useState({ SOR: [], NONSOR: [], sorted: [] });
   const [sorted, setSorted] = useState([]);
 
   const headerLocale = Digit.Utils.locale.getTransformedLocale(statementDetails?.tenantId);
 
   useEffect(() => {
-    
     const processArrays = () => {
-      if (statementDetails && !(viewData?.nestedData)) {
-        //Transforming the estimate search response according to formdata 
+      if (statementDetails && !viewData?.nestedData) {
+        //Transforming the estimate search response according to formdata
         setViewData({
-            nestedData: transformStatementData(statementDetails,"UTILIZATION"),
-            sorted: sortSorsBasedonType(rawData,"UTILIZATION"),
+          nestedData: transformStatementData(statementDetails, "UTILIZATION"),
+          sorted: sortSorsBasedonType(rawData, "UTILIZATION"),
           //NONSOR: transformEstimateObjects(estimateDetails, "NON-SOR", {}, allDetailedEstimate),
         });
-       
-        
       }
     };
     processArrays();
@@ -36,39 +33,78 @@ export const data = (statementDetails, rawData,oldData) => {
               {
                 key: "STATEMENT_MATERIAL",
                 value: oldData
-                  ? (oldData?.Material.includes(",") ? oldData?.Material : parseFloat(oldData?.Material).toFixed(2))
-                  : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
-                  ?Digit.Utils.dss.formatterWithoutRound( statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2), "number", undefined, true, undefined, 2)
+                  ? oldData?.Material.includes(",")
+                    ? oldData?.Material
+                    : parseFloat(oldData?.Material || 0).toFixed(2)
+                  : statementDetails
+                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
+                    ? Digit.Utils.dss.formatterWithoutRound(
+                        statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2),
+                        "number",
+                        undefined,
+                        true,
+                        undefined,
+                        2
+                      )
+                    : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle:{maxWidth:"12%",textAlign:"end"}
+                amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
               {
                 key: "STATEMENT_LABOUR",
                 value: oldData
-                  ? (oldData?.Machinery?.includes(",") ? oldData?.Machinery : parseFloat(oldData?.Machinery).toFixed(2))
-                  : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
-                  ?Digit.Utils.dss.formatterWithoutRound(  statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2), "number", undefined, true, undefined, 2)
+                  ? oldData?.Machinery?.includes(",")
+                    ? oldData?.Machinery
+                    : parseFloat(oldData?.Machinery).toFixed(2)
+                  : statementDetails
+                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
+                    ? Digit.Utils.dss.formatterWithoutRound(
+                        statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2),
+                        "number",
+                        undefined,
+                        true,
+                        undefined,
+                        2
+                      )
+                    : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle:{maxWidth:"12%",textAlign:"end"}
+                amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
               {
                 key: "STATEMENT_MACHINERY",
                 value: oldData
-                  ? (oldData?.Labour?.includes(",") ? oldData?.Labour :parseFloat(oldData?.Labour).toFixed(2))
-                  : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
-                  ?Digit.Utils.dss.formatterWithoutRound( statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2), "number", undefined, true, undefined, 2) 
+                  ? oldData?.Labour?.includes(",")
+                    ? oldData?.Labour
+                    : parseFloat(oldData?.Labour).toFixed(2)
+                  : statementDetails
+                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
+                    ? Digit.Utils.dss.formatterWithoutRound(
+                        statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2),
+                        "number",
+                        undefined,
+                        true,
+                        undefined,
+                        2
+                      )
+                    : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle:{maxWidth:"12%",textAlign:"end"}
+                amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
               {
-                
                 key: "STATEMENT_LABOUR_CESS",
-                value:Digit.Utils.dss.formatterWithoutRound( parseFloat(
-                  statementDetails?.sorDetails.reduce((acc, ob) => {
-                    return acc + (ob?.additionalDetails?.labourCessAmount || 0);
-                  }, 0) || 0
-                ).toFixed(2), "number", undefined, true, undefined, 2)  ,
-                amountStyle:{maxWidth:"12%",textAlign:"end"}
+                value: Digit.Utils.dss.formatterWithoutRound(
+                  parseFloat(
+                    statementDetails?.sorDetails.reduce((acc, ob) => {
+                      return acc + (ob?.additionalDetails?.labourCessAmount || 0);
+                    }, 0) || 0
+                  ).toFixed(2),
+                  "number",
+                  undefined,
+                  true,
+                  undefined,
+                  2
+                ),
+                amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
             ],
           },
@@ -151,7 +187,7 @@ export const data = (statementDetails, rawData,oldData) => {
             cardHeader: { value: "WORKS_SORS_WISE_MATERIAL_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
-              emptyTableMsg:"NO_MATERIAL_CONSOLIDATION",
+              emptyTableMsg: "NO_MATERIAL_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -174,7 +210,7 @@ export const data = (statementDetails, rawData,oldData) => {
             cardHeader: { value: "WORKS_SORS_WISE_LABOUR_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
-              emptyTableMsg:"NO_LABOUR_CONSOLIDATION",
+              emptyTableMsg: "NO_LABOUR_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
@@ -197,7 +233,7 @@ export const data = (statementDetails, rawData,oldData) => {
             cardHeader: { value: "WORKS_SORS_WISE_MACHINERY_CONSOLIDATION", inlineStyles: {} },
             component: "GroupedTable",
             props: {
-              emptyTableMsg:"NO_MACHINERY_CONSOLIDATION",
+              emptyTableMsg: "NO_MACHINERY_CONSOLIDATION",
               config: {
                 key: "SOR",
                 mode: "VIEWES",
