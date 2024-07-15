@@ -45,7 +45,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
               ? []
               : widget.skillDetails!.individualSkills!
                   .where((e) => e.type != null)
-                  .map((e) => '${e.level}_${e.type}')
+                  .map((e) => '${e.level}')
                   .toList();
     }
 
@@ -69,60 +69,77 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
         }
       },
       child: SingleChildScrollView(
-        child: DigitCard(
+        child: SizedBox(
+          height: MediaQuery.sizeOf(context).height*0.70,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                //  "Individual's Skill Details",
-                t.translate(i18.wageSeeker.individualSkillHeader),
-                style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
-                    ?.apply(color: const DigitColors().black),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Column(children: [
-                MultiSelectSearchCheckBox(
-                  label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                  onChange: _onSelectedOptionsChanged,
-                  options: widget.skills,
-                  hintText: t.translate(i18.attendanceMgmt.skill),
-                  selectedOptions: selectedOptions,
+              DigitCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      //  "Individual's Skill Details",
+                      t.translate(i18.wageSeeker.individualSkillHeader),
+                      style: DigitTheme
+                          .instance.mobileTheme.textTheme.displayMedium
+                          ?.apply(color: const DigitColors().black),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          MultiSelectSearchCheckBox(
+                            label: t.translate(i18.attendanceMgmt.skill) + ' *',
+                            onChange: _onSelectedOptionsChanged,
+                            options: widget.skills,
+                            hintText: t.translate(i18.attendanceMgmt.skill),
+                            selectedOptions: selectedOptions,
+                          ),
+                           const SizedBox(
+                        height: 10,
+                      ),
+                        ],
+                      ),
+                    ),
+                   
+                  ],
                 ),
-                const SizedBox(
-                  height: 12,
-                ),
-              ]),
+              ),
               Center(
-                child: DigitElevatedButton(
-                    onPressed: () {
-                      if (!getSkillsValid()) {
-                        Notifiers.getToastMessage(context,
-                            i18.wageSeeker.selectSkillValidation, 'ERROR');
-                      } else if (selectedOptions.isEmpty) {
-                        Notifiers.getToastMessage(
-                            context, i18.wageSeeker.skillsRequired, 'ERROR');
-                      } else {
-                        final skillList = SkillDetails(
-                            individualSkills: selectedOptions
-                                .map((e) => IndividualSkill(
-                                    type: e.toString().split('.').last,
-                                    level: e.toString().split('.').first))
-                                .toList());
-      
-                        context.read<WageSeekerBloc>().add(
-                              WageSeekerSkillCreateEvent(
-                                  skillDetails: skillList),
-                            );
-      
-                        widget.onPageChanged(3);
-                      }
-                    },
-                    child: Center(
-                      child: Text(t.translate(i18.common.next)),
-                    )),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
+                  color: const DigitColors().white,
+                  child: DigitElevatedButton(
+                      onPressed: () {
+                        if (!getSkillsValid()) {
+                          Notifiers.getToastMessage(context,
+                              i18.wageSeeker.selectSkillValidation, 'ERROR');
+                        } else if (selectedOptions.isEmpty) {
+                          Notifiers.getToastMessage(
+                              context, i18.wageSeeker.skillsRequired, 'ERROR');
+                        } else {
+                          final skillList = SkillDetails(
+                              individualSkills: selectedOptions
+                                  .map((e) => IndividualSkill(
+                                      type: e.toString().split('.').last,
+                                      level: e.toString().split('.').first))
+                                  .toList());
+                        
+                          context.read<WageSeekerBloc>().add(
+                                WageSeekerSkillCreateEvent(skillDetails: skillList),
+                              );
+                        
+                          widget.onPageChanged(3);
+                        }
+                      },
+                      child: Center(
+                        child: Text(t.translate(i18.common.next)),
+                      )),
+                ),
               )
             ],
           ),
@@ -144,7 +161,6 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
       afterDotCount[afterDot] = (afterDotCount[afterDot] ?? 0) + 1;
     }
 
-    
     int countAfterDot = afterDotCount.values.where((count) => count > 1).length;
 
     if (countAfterDot > 0) {

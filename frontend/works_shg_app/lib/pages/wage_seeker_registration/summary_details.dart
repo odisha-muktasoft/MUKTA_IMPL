@@ -73,7 +73,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
           ),
         ),
         DigitCard(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -161,13 +161,13 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        getItemWidget(context,
-                            title: t.translate(i18.wageSeeker.skillCategory),
-                            description: t.translate(item.level.toString()),
-                            isCustomCard: true),
+                        // getItemWidget(context,
+                        //     title: t.translate(i18.wageSeeker.skillCategory),
+                        //     description: t.translate("COMMON_MASTERS_SKILLS_${item.level.toString()}"),
+                        //     isCustomCard: true),
                         getItemWidget(context,
                             title: t.translate(i18.wageSeeker.skill),
-                            description: t.translate(item.type.toString()),
+                            description: t.translate("COMMON_MASTERS_SKILLS_${item.type.toString()}"),
                             isCustomCard: true),
                       ],
                     )),
