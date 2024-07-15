@@ -1,5 +1,6 @@
 package org.egov.works.repository.querybuilder;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.tracer.model.CustomException;
 import org.egov.works.config.ContractServiceConfiguration;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 
+@Slf4j
 @Component
 public class ContractQueryBuilder {
 
@@ -56,6 +58,12 @@ public class ContractQueryBuilder {
             "LEFT JOIN " +
             "eg_wms_contract_documents as document " +
             "ON (contract.id=document.contract_id) ";
+
+    private static final String PAGINATION_WRAPPER = "SELECT * FROM " +
+            "(SELECT *, DENSE_RANK() OVER (ORDER BY createdTime [] , id) offset_ FROM " +
+            "({})" +
+            " result) result_offset " +
+            "WHERE offset_ > ? AND offset_ <= ?";
     @Autowired
     private ContractServiceConfiguration config;
 
@@ -139,8 +147,8 @@ public class ContractQueryBuilder {
         }
 
         addOrderByClause(query, criteria);
-
-        addLimitAndOffset(query, criteria, preparedStmtList);
+        addPaginationWrapper(query.toString(), preparedStmtList, criteria);
+        //addLimitAndOffset(query, criteria, preparedStmtList);
 
         return query.toString();
     }
@@ -204,5 +212,34 @@ public class ContractQueryBuilder {
 
     private void addToPreparedStatement(List<Object> preparedStmtList, Collection<String> ids) {
         preparedStmtList.addAll(ids);
+    }
+
+    private String addPaginationWrapper(String query, List<Object> preparedStmtList,
+                                        ContractCriteria criteria) {
+        log.info("ContractQuerBuilder::addPaginationWrapper");
+        Pagination pagination=criteria.getPagination();
+        int limit = config.getContractDefaultLimit();
+        int offset = config.getContractDefaultOffset();
+        String wrapperQuery;
+        if (pagination.getOrder() == Pagination.OrderEnum.ASC)
+            wrapperQuery = PAGINATION_WRAPPER.replace("[]", "ASC");
+        else
+            wrapperQuery = PAGINATION_WRAPPER.replace("[]", "DESC");
+        String finalQuery = wrapperQuery.replace("{}", query);
+
+        if (pagination.getLimit() != null) {
+            if (pagination.getLimit() <= config.getContractMaxLimit())
+                limit = pagination.getLimit();
+            else
+                limit = config.getContractMaxLimit();
+        }
+
+        if (pagination.getOffSet() != null)
+            offset = pagination.getOffSet();
+
+        preparedStmtList.add(offset);
+        preparedStmtList.add(limit + offset);
+
+        return finalQuery;
     }
 }
