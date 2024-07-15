@@ -49,7 +49,18 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
       emit(WorkOrderPDFState.error(e.response?.data['Errors'][0]['code']));
     }
   }
-
+String convertString(String input) {
+  // Convert the input string to lowercase
+  String lowerCaseInput = input.toLowerCase();
+  
+  // Replace '/' with '_'
+  String replacedSlashes = lowerCaseInput.replaceAll('/', '_');
+  
+  // Replace '-' with '_'
+  String replacedDashes = replacedSlashes.replaceAll('-', '_');
+  
+  return replacedDashes;
+}
   FutureOr<void> _onAnalysisPDF(
     PDFEventAnalysis event,
     WorkOrderPDFEmitter emit,
@@ -65,7 +76,7 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
           "referenceId": event.estimateId.toString(),
           "tenantId": event.tenantId.toString(),
         },
-        fileName: 'analysis_statement_${event.workorder}.pdf',
+        fileName: 'analysis_statement_${convertString(event.workorder??"_")}.pdf',
         options: Options(extra: {
           "userInfo": GlobalVariables.userRequestModel,
           "accessToken": GlobalVariables.authToken,
