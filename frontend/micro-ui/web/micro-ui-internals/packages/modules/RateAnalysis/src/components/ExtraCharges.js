@@ -104,8 +104,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     //   index === rowIndex ? { ...row, isShow: false } : row
     // );
     const updatedRows = rows.filter((row, index) => index != rowIndex );
-    setRows(updatedRows);
-    setValue(formFieldName,updatedRows);
+    setRows([...updatedRows]);
+    setValue(formFieldName,[...updatedRows]);
   };
 
   const addRow = () => {
@@ -343,8 +343,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(8)}>
             <div style={cellContainerStyle}>
               {(
-                <span onClick={() => rows.length > 1 ? removeRow(rowIndex) : {}} className="icon-wrapper">
-                  <DeleteIcon fill={rows.length > 1 ? "#FF9100" : "#B1B4B6"} />
+                <span onClick={() =>  removeRow(rowIndex)} className="icon-wrapper">
+                  <DeleteIcon fill={"#FF9100"} />
                 </span>
               )}
             </div>

@@ -256,6 +256,10 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if (deepCompare(formData,createState)) {
       setState({ ...createState, ...formData })
     }
+    else if((!formData?.extraCharges || formData?.extraCharges?.length == 0) && createState?.extraCharges?.length > 0 && isUpdate)
+    {
+      setState({ ...createState, extraCharges: [] })
+    }
   };
 
   const validateRateAnalysis =() => {
