@@ -98,6 +98,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                   Column(children: [
                     DigitTextFormField(
+                      
                       padding: const EdgeInsets.only(top:10),
                       formControlName: pinCodeKey,
                       label: t.translate(i18.common.pinCode),
@@ -156,8 +157,9 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                               ),
                         }),
                     DigitTextFormField(
+                     
                         formControlName: streetNameKey,
-                        padding: const EdgeInsets.only(top: 12),
+                        //padding: const EdgeInsets.only(top: 12),
                         label: t.translate(i18.common.streetName),
                         validationMessages: {
                           'maxLength': (_) => t.translate(
@@ -169,6 +171,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                               RegExp("[a-zA-Z0-9 .,\\/\\-_@#\\']"))
                         ]),
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                         formControlName: doorNoKey,
                         label: t.translate(i18.common.doorNo),
                         maxLength: 8,
