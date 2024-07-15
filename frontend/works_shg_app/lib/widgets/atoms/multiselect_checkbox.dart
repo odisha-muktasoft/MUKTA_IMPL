@@ -130,7 +130,7 @@ class MultiSelectSearchCheckBoxState extends State<MultiSelectSearchCheckBox> {
                                   child: Chip(
                                     backgroundColor: const DigitColors().quillGray,
                                     label: SizedBox(
-                                      width: MediaQuery.sizeOf(context).width*0.8,
+                                      width: MediaQuery.sizeOf(context).width*0.66,
                                       child: Text(
                                         AppLocalizations.of(context).translate(
                                             'COMMON_MASTERS_SKILLS_$option'),
