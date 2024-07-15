@@ -40,7 +40,6 @@ const requestCriteria = {
         moduleDetails : [
 
           {
-            // "moduleName": options?.moduleName,
             "moduleName": "WORKS-SOR",
             "masterDetails": [
                 {
@@ -57,7 +56,7 @@ const requestCriteria = {
     config: {
             select: (data) => {
               const optionsData = _.get(data?.MdmsRes, `${"WORKS-SOR"}.${"SOR"}`, []);
-              return optionsData?.filter((opt) => opt?.active === undefined || opt?.active === true).map((opt) => ({name: opt?.description, code: opt?.id}));
+              return optionsData?.filter((opt) => opt?.active === undefined || opt?.active === true).map((opt) => ({name: `${t(opt?.sorSubType)} - ${opt?.description}`, code: opt?.id}));
             }
           },
   };
