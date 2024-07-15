@@ -38,7 +38,7 @@ const RAResponseBanner = () => {
 
     // Customize the message based on success or failure
     const message = true
-        ? (isUpdate ? t("RA_SUCCESSFUL_UPDATE_MESSAGE") : t("RA_SUCCESSFUL_CREATE_MESSAGE"))
+        ? (isUpdate === true || isUpdate === "true" ? t("RA_SUCCESSFUL_UPDATE_MESSAGE") : t("RA_SUCCESSFUL_CREATE_MESSAGE"))
         : t("RA_ERROR_MESSAGE");
 
     return (
