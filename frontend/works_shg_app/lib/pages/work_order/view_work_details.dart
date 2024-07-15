@@ -1658,7 +1658,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                     .estimateId,
                                                                 tenantId: contracts
                                                                     .first
-                                                                    .tenantId));
+                                                                    .tenantId,
+                                                                    workorder: widget
+                                                                    .contractNumber
+                                                                    ),);
                                                         Navigator.of(
                                                           context,
                                                           rootNavigator: true,

@@ -59,11 +59,11 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                       orElse: () => false,
                       loading: () => shg_app.Loaders.circularLoader(context),
                       loaded: (AppVersionModel? cboAppVersion) {
-                        CommonMethods().checkVersion(
-                            context,
-                            cboAppVersion?.packageName,
-                            cboAppVersion?.iOSId,
-                            cboAppVersion?.version);
+                        // CommonMethods().checkVersion(
+                        //     context,
+                        //     cboAppVersion?.packageName,
+                        //     cboAppVersion?.iOSId,
+                        //     cboAppVersion?.version);
                       },
                       error: (String? error) {
                         return const Center(

@@ -252,7 +252,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       ].map((e) => e.toString()).toList(),
                       isRequired: true,
                       formControlName: identityDocument,
-                      valueMapper: (value) => t.translate('CORE_COMMON_$value'),
+                      valueMapper: (value) => t.translate('CBO_CORE_COMMON_$value'),
                       onChanged: (value) {
                         //TODO:[temp comment for release]
                         // adharSelect(value);

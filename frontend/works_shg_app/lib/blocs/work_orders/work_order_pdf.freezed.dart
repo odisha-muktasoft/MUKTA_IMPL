@@ -21,20 +21,23 @@ mixin _$WorkOrderPDFEvent {
   TResult when<TResult extends Object?>({
     required TResult Function(String? tenantId, String? contractId)
         onWorkOrderPDF,
-    required TResult Function(String? tenantId, String? estimateId)
+    required TResult Function(
+            String? tenantId, String? estimateId, String? workorder)
         onAnalysisPDF,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? tenantId, String? contractId)? onWorkOrderPDF,
-    TResult? Function(String? tenantId, String? estimateId)? onAnalysisPDF,
+    TResult? Function(String? tenantId, String? estimateId, String? workorder)?
+        onAnalysisPDF,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? tenantId, String? contractId)? onWorkOrderPDF,
-    TResult Function(String? tenantId, String? estimateId)? onAnalysisPDF,
+    TResult Function(String? tenantId, String? estimateId, String? workorder)?
+        onAnalysisPDF,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -174,7 +177,8 @@ class _$PDFEventWorkOrder implements PDFEventWorkOrder {
   TResult when<TResult extends Object?>({
     required TResult Function(String? tenantId, String? contractId)
         onWorkOrderPDF,
-    required TResult Function(String? tenantId, String? estimateId)
+    required TResult Function(
+            String? tenantId, String? estimateId, String? workorder)
         onAnalysisPDF,
   }) {
     return onWorkOrderPDF(tenantId, contractId);
@@ -184,7 +188,8 @@ class _$PDFEventWorkOrder implements PDFEventWorkOrder {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? tenantId, String? contractId)? onWorkOrderPDF,
-    TResult? Function(String? tenantId, String? estimateId)? onAnalysisPDF,
+    TResult? Function(String? tenantId, String? estimateId, String? workorder)?
+        onAnalysisPDF,
   }) {
     return onWorkOrderPDF?.call(tenantId, contractId);
   }
@@ -193,7 +198,8 @@ class _$PDFEventWorkOrder implements PDFEventWorkOrder {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? tenantId, String? contractId)? onWorkOrderPDF,
-    TResult Function(String? tenantId, String? estimateId)? onAnalysisPDF,
+    TResult Function(String? tenantId, String? estimateId, String? workorder)?
+        onAnalysisPDF,
     required TResult orElse(),
   }) {
     if (onWorkOrderPDF != null) {
@@ -255,7 +261,7 @@ abstract class _$$PDFEventAnalysisCopyWith<$Res>
       __$$PDFEventAnalysisCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? tenantId, String? estimateId});
+  $Res call({String? tenantId, String? estimateId, String? workorder});
 }
 
 /// @nodoc
@@ -271,6 +277,7 @@ class __$$PDFEventAnalysisCopyWithImpl<$Res>
   $Res call({
     Object? tenantId = freezed,
     Object? estimateId = freezed,
+    Object? workorder = freezed,
   }) {
     return _then(_$PDFEventAnalysis(
       tenantId: freezed == tenantId
@@ -281,6 +288,10 @@ class __$$PDFEventAnalysisCopyWithImpl<$Res>
           ? _value.estimateId
           : estimateId // ignore: cast_nullable_to_non_nullable
               as String?,
+      workorder: freezed == workorder
+          ? _value.workorder
+          : workorder // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -288,16 +299,18 @@ class __$$PDFEventAnalysisCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PDFEventAnalysis implements PDFEventAnalysis {
-  const _$PDFEventAnalysis({this.tenantId, this.estimateId});
+  const _$PDFEventAnalysis({this.tenantId, this.estimateId, this.workorder});
 
   @override
   final String? tenantId;
   @override
   final String? estimateId;
+  @override
+  final String? workorder;
 
   @override
   String toString() {
-    return 'WorkOrderPDFEvent.onAnalysisPDF(tenantId: $tenantId, estimateId: $estimateId)';
+    return 'WorkOrderPDFEvent.onAnalysisPDF(tenantId: $tenantId, estimateId: $estimateId, workorder: $workorder)';
   }
 
   @override
@@ -308,11 +321,13 @@ class _$PDFEventAnalysis implements PDFEventAnalysis {
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
             (identical(other.estimateId, estimateId) ||
-                other.estimateId == estimateId));
+                other.estimateId == estimateId) &&
+            (identical(other.workorder, workorder) ||
+                other.workorder == workorder));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, tenantId, estimateId);
+  int get hashCode => Object.hash(runtimeType, tenantId, estimateId, workorder);
 
   @JsonKey(ignore: true)
   @override
@@ -325,30 +340,33 @@ class _$PDFEventAnalysis implements PDFEventAnalysis {
   TResult when<TResult extends Object?>({
     required TResult Function(String? tenantId, String? contractId)
         onWorkOrderPDF,
-    required TResult Function(String? tenantId, String? estimateId)
+    required TResult Function(
+            String? tenantId, String? estimateId, String? workorder)
         onAnalysisPDF,
   }) {
-    return onAnalysisPDF(tenantId, estimateId);
+    return onAnalysisPDF(tenantId, estimateId, workorder);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String? tenantId, String? contractId)? onWorkOrderPDF,
-    TResult? Function(String? tenantId, String? estimateId)? onAnalysisPDF,
+    TResult? Function(String? tenantId, String? estimateId, String? workorder)?
+        onAnalysisPDF,
   }) {
-    return onAnalysisPDF?.call(tenantId, estimateId);
+    return onAnalysisPDF?.call(tenantId, estimateId, workorder);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String? tenantId, String? contractId)? onWorkOrderPDF,
-    TResult Function(String? tenantId, String? estimateId)? onAnalysisPDF,
+    TResult Function(String? tenantId, String? estimateId, String? workorder)?
+        onAnalysisPDF,
     required TResult orElse(),
   }) {
     if (onAnalysisPDF != null) {
-      return onAnalysisPDF(tenantId, estimateId);
+      return onAnalysisPDF(tenantId, estimateId, workorder);
     }
     return orElse();
   }
@@ -387,11 +405,14 @@ class _$PDFEventAnalysis implements PDFEventAnalysis {
 
 abstract class PDFEventAnalysis implements WorkOrderPDFEvent {
   const factory PDFEventAnalysis(
-      {final String? tenantId, final String? estimateId}) = _$PDFEventAnalysis;
+      {final String? tenantId,
+      final String? estimateId,
+      final String? workorder}) = _$PDFEventAnalysis;
 
   @override
   String? get tenantId;
   String? get estimateId;
+  String? get workorder;
   @override
   @JsonKey(ignore: true)
   _$$PDFEventAnalysisCopyWith<_$PDFEventAnalysis> get copyWith =>
