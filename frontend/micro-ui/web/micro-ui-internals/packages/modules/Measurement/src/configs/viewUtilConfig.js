@@ -53,9 +53,9 @@ export const data = (statementDetails, rawData, oldData) => {
               {
                 key: "STATEMENT_LABOUR",
                 value: oldData
-                  ? oldData?.Machinery?.includes(",")
-                    ? oldData?.Machinery
-                    : parseFloat(oldData?.Machinery).toFixed(2)
+                  ? oldData?.Labour?.includes(",")
+                    ? oldData?.Labour
+                    : parseFloat(oldData?.Labour).toFixed(2)
                   : statementDetails
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
                     ? Digit.Utils.dss.formatterWithoutRound(
@@ -70,12 +70,13 @@ export const data = (statementDetails, rawData, oldData) => {
                   : parseFloat(0).toFixed(2),
                 amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
+              
               {
                 key: "STATEMENT_MACHINERY",
                 value: oldData
-                  ? oldData?.Labour?.includes(",")
-                    ? oldData?.Labour
-                    : parseFloat(oldData?.Labour).toFixed(2)
+                  ? oldData?.Machinery?.includes(",")
+                    ? oldData?.Machinery
+                    : parseFloat(oldData?.Machinery).toFixed(2)
                   : statementDetails
                   ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
                     ? Digit.Utils.dss.formatterWithoutRound(

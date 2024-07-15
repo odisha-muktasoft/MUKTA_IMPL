@@ -67,13 +67,14 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     //  {
     //    SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;}
 
-    SORAmount = formData?.SORtable?.reduce((tot, ob) => {
-      let amount = ob?.amountDetails?.reduce(
-        (total, item) => total + (categories.some((category) => item?.heads?.includes(category)) ? item?.amount : 0),
-        0
-      );
-      return tot + amount * ob?.currentMBEntry;
-    }, 0);
+    // SORAmount = formData?.SORtable?.reduce((tot, ob) => {
+    //   let amount = ob?.amountDetails?.reduce(
+    //     (total, item) => total + (categories.some((category) => item?.heads?.includes(category)) ? item?.amount : 0),
+    //     0
+    //   );
+    //   return tot + amount * ob?.currentMBEntry;
+    // }, 0);
+
     SORAmount = SORAmount ? SORAmount : 0;
     if (SORAmount == 0) {
       SORAmount = formData?.SORtable?.reduce((tot, ob) => {
@@ -88,25 +89,40 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             (rate.sorId === ob?.sorCode && validFromInMillis <= currentDateInMillis && currentDateInMillis < validToInMillis)
           );
         })?.[0]?.amountDetails;
+
+        
         let amount = amountDetails?.reduce(
           (total, item) => total + (categories.some((category) => item?.heads?.includes(category)) ? item?.amount : 0),
           0
         );
+
         return tot + amount * ob?.currentMBEntry;
       }, 0);
     }
-    if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
-      if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
-        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
-      if (
-        categories.some((cat) => ChargesCodeMapping?.MaterialCost?.includes(cat)) &&
-        SORAmount == 0 &&
-        formData?.additionalDetails?.labourMaterialAnalysis?.material
-      )
-        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
-      if (categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
-        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
-    }
+
+   
+    // if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
+    //   if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    //   if (
+    //     categories.some((cat) => ChargesCodeMapping?.MaterialCost?.includes(cat)) &&
+    //     SORAmount == 0 &&
+    //     formData?.additionalDetails?.labourMaterialAnalysis?.material
+    //   )
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
+    //   if (categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    // }
+
+    // if (SORAmount === 0) {
+    //   if (categories.includes("LA") && formData?.additionalDetails?.labourMaterialAnalysis?.labour) {
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    //   } else if (categories.some(cat => ChargesCodeMapping.MaterialCost.includes(cat)) && formData?.additionalDetails?.labourMaterialAnalysis?.material) {
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
+    //   } else if (categories.includes("MHA") && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) {
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    //   }
+    // }
 
     SORAmount = SORAmount ? SORAmount : 0;
 
@@ -170,7 +186,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                 responseData: responseData,
                 estimateId: formData?.SORtable?.[0]?.estimateId,
                 number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
-                downloadStatus:true
+                downloadStatus: true,
               },
             });
           }, 1000);
@@ -179,12 +195,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     } else {
       await UtilizationMutation(payload, {
         onError: async (error) => {
-
           setShowToast({
             error: true,
             label: error?.response?.data?.Errors?.[0].message || error,
           });
-         
+
           setTimeout(() => {
             setShowToast(false);
           }, 5000);
@@ -199,7 +214,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                 number: window.location.href.includes("measurement/update")
                   ? props.config.formData.Measurement.measurementNumber
                   : formData?.Measurement?.measurementNumber,
-                  downloadStatus:true
+                downloadStatus: true,
               },
             });
           }, 1000);
@@ -231,20 +246,21 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       responseData: searchResponse,
       estimateId,
       number,
-      downloadStatus:true,
+      downloadStatus: true,
     };
 
-    if ((!searchResponse || searchResponse?.statement?.length <= 0 ) && ( isEstimate? formData?.wfStatus === "APPROVED" :formData?.Measurement?.wfStatus === "APPROVED")) {
-  
+    if (
+      (!searchResponse || searchResponse?.statement?.length <= 0) &&
+      (isEstimate ? formData?.wfStatus === "APPROVED" : formData?.Measurement?.wfStatus === "APPROVED")
+    ) {
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
         Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
       };
 
-      state.downloadStatus=false;
+      state.downloadStatus = false;
     }
-     
 
     history.push({ pathname: path, state });
   };
@@ -267,10 +283,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     }
 
     if (isView && searchResponse) {
-    
       handleNavigation(isEstimate, isView, searchResponse, formData, props);
     } else {
-     
       await callCreateApi(event);
     }
   };
@@ -325,8 +339,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             success={showToast?.success}
             label={t(showToast?.label)}
             isDleteBtn={true}
-            labelstyle={{width:"100%"}}
-             style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
+            labelstyle={{ width: "100%" }}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
             onClose={() => setShowToast(false)}
           />
         )}
