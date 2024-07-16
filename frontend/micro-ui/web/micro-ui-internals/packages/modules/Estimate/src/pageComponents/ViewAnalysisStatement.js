@@ -20,8 +20,9 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const ChargesCodeMapping = {
     LabourCost: ["LA"],
-    MaterialCost: ["MA", "RA", "CA", "EMF", "DMF", "ADC", "LC"],
+    MaterialCost: ["MA", "RA", "CA", "EMF", "DMF", "ADC"],
     MachineryCost: ["MHA"],
+    LabourCessCost:["LC"]
   };
 
   const requestCriteria = {
@@ -90,7 +91,6 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
           );
         })?.[0]?.amountDetails;
 
-        
         let amount = amountDetails?.reduce(
           (total, item) => total + (categories.some((category) => item?.heads?.includes(category)) ? item?.amount : 0),
           0
@@ -100,7 +100,6 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       }, 0);
     }
 
-   
     // if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
     //   if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
     //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
@@ -170,13 +169,23 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     if (isEstimate) {
       await AnalysisMutation(payload, {
         onError: async (error) => {
-          setShowToast({
-            error: true,
-            label: error?.response?.data?.Errors?.[0].message || error,
-          });
           setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
+            history.push({
+              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+              state: {
+               
+                estimateId: formData?.SORtable?.[0]?.estimateId,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
+                 downloadStatus: false,
+                oldData: {
+                  Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
+                  Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
+                  Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+                  LabourCessCost:getAnalysisCost(ChargesCodeMapping.LabourCessCost)
+                },
+              },
+            });
+          }, 1000);
         },
         onSuccess: async (responseData) => {
           setTimeout(() => {
@@ -186,7 +195,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                 responseData: responseData,
                 estimateId: formData?.SORtable?.[0]?.estimateId,
                 number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
-                downloadStatus: true,
+               
               },
             });
           }, 1000);
@@ -195,14 +204,24 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     } else {
       await UtilizationMutation(payload, {
         onError: async (error) => {
-          setShowToast({
-            error: true,
-            label: error?.response?.data?.Errors?.[0].message || error,
-          });
-
+         debugger
           setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
+            history.push({
+              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+              state: {
+                
+                estimateId: formData?.SORtable?.[0]?.estimateId,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
+                downloadStatus: false,
+                oldData: {
+                  Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
+                  Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
+                  Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+                   LabourCessCost:getAnalysisCost(ChargesCodeMapping.LabourCessCost)
+                },
+              },
+            });
+          }, 1000);
         },
         onSuccess: async (responseData) => {
           setTimeout(() => {
@@ -249,14 +268,12 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       downloadStatus: true,
     };
 
-    if (
-      (!searchResponse || searchResponse?.statement?.length <= 0) &&
-      (isEstimate ? formData?.wfStatus === "APPROVED" : formData?.Measurement?.wfStatus === "APPROVED")
-    ) {
+    if (!searchResponse || searchResponse?.statement?.length <= 0) {
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
         Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+         LabourCessCost:getAnalysisCost(ChargesCodeMapping.LabourCessCost)
       };
 
       state.downloadStatus = false;
