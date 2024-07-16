@@ -204,7 +204,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     } else {
       await UtilizationMutation(payload, {
         onError: async (error) => {
-         debugger
+        
           setTimeout(() => {
             history.push({
               pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
