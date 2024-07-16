@@ -32,6 +32,7 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
         "Pagination": {"offSet": 0, "limit": 10}
       });
       GlobalVariables.organisationListModel = organisationListModel;
+      GlobalVariables.tenantId=organisationListModel.organisations?.first.tenantId??GlobalVariables.tenantId;
       await Future.delayed(const Duration(seconds: 1));
       emit(ORGSearchState.loaded(organisationListModel));
     } on DioError catch (e) {
@@ -51,6 +52,7 @@ class ORGSearchBloc extends Bloc<ORGSearchEvent, ORGSearchState> {
         "Pagination": {"offSet": 0, "limit": 1000}
       });
       GlobalVariables.organisationListModel = organisationListModel;
+      GlobalVariables.tenantId=organisationListModel.organisations?.first.tenantId??GlobalVariables.tenantId;
       await Future.delayed(const Duration(seconds: 1));
       emit(ORGSearchState.loaded(organisationListModel));
     } on DioError catch (e) {

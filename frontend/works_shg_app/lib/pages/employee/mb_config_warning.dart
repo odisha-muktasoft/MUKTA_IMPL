@@ -183,7 +183,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               child: DigitElevatedButton(
                                 child: Text(
                                   widget.nextActions!.action == "EDIT/RE-SUBMIT"
-                                      ? "Forward"
+                                      ? t.translate("WORKS_FORWARD")
                                       : t.translate(
                                           "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
                                 ),

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:intl/intl.dart';
 import 'package:works_shg_app/services/urls.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
@@ -48,13 +49,25 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
       emit(WorkOrderPDFState.error(e.response?.data['Errors'][0]['code']));
     }
   }
-
+String convertString(String input) {
+  // Convert the input string to lowercase
+  String lowerCaseInput = input.toLowerCase();
+  
+  // Replace '/' with '_'
+  String replacedSlashes = lowerCaseInput.replaceAll('/', '_');
+  
+  // Replace '-' with '_'
+  String replacedDashes = replacedSlashes.replaceAll('-', '_');
+  
+  return replacedDashes;
+}
   FutureOr<void> _onAnalysisPDF(
     PDFEventAnalysis event,
     WorkOrderPDFEmitter emit,
   ) async {
     Client client = Client();
     try {
+        
       emit(const WorkOrderPDFState.initial());
       var selectedLocale = await GlobalVariables.selectedLocale();
       await CommonRepository(client.init()).downloadPDF(
@@ -63,7 +76,7 @@ class WorkOrderPDFBloc extends Bloc<WorkOrderPDFEvent, WorkOrderPDFState> {
           "referenceId": event.estimateId.toString(),
           "tenantId": event.tenantId.toString(),
         },
-        fileName: 'WorkOrder.pdf',
+        fileName: 'analysis_statement_${convertString(event.workorder??"_")}.pdf',
         options: Options(extra: {
           "userInfo": GlobalVariables.userRequestModel,
           "accessToken": GlobalVariables.authToken,
@@ -115,7 +128,7 @@ class WorkOrderPDFEvent with _$WorkOrderPDFEvent {
   const factory WorkOrderPDFEvent.onWorkOrderPDF(
       {String? tenantId, String? contractId}) = PDFEventWorkOrder;
       const factory WorkOrderPDFEvent.onAnalysisPDF(
-      {String? tenantId, String? estimateId}) = PDFEventAnalysis;
+      {String? tenantId, String? estimateId,String? workorder}) = PDFEventAnalysis;
 }
 
 @freezed

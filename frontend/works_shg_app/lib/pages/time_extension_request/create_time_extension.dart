@@ -326,6 +326,10 @@ class _CreateTimeExtensionRequestPage
                                                                             i18.workOrder
                                                                                 .extensionReqInDaysMinVal,
                                                                           ),
+                                                                          'max':(_)=>t.translate(
+                                                                            i18.workOrder
+                                                                                .extensionReqInDaysMaxVal,
+                                                                          ),
                                                                     },
                                                                   ),
                                                                   DigitTextFormField(
@@ -441,6 +445,7 @@ class _CreateTimeExtensionRequestPage
       extensionDaysKey: FormControl<String>(value: extensionDays ?? '', validators: [
         Validators.required,
         Validators.min('1'),
+        Validators.max('365')
       ]),
       reasonForExtensionKey: FormControl<String>(value: extensionReason ?? '', validators: [
         Validators.required,

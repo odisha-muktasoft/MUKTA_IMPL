@@ -100,6 +100,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                   ),
                   Column(children: [
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                       formControlName: accountHolderKey,
                       label: t.translate(i18.common.accountHolderName),
                       isRequired: true,
@@ -120,6 +121,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                       },
                     ),
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                       formControlName: accountNoKey,
                       label: t.translate(i18.common.accountNo),
                       isRequired: true,
@@ -143,6 +145,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                       },
                     ),
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                       formControlName: reAccountNoKey,
                       label: t.translate(i18.common.reEnterAccountNo),
                       isRequired: true,
@@ -172,6 +175,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                       );
                     }),
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                         formControlName: ifscCodeKey,
                         textCapitalization: TextCapitalization.characters,
                         label: t.translate(i18.common.ifscCode),

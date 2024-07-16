@@ -64,7 +64,7 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           titleSpacing: 0,
-          title: BlocBuilder<ORGSearchBloc, ORGSearchState>(
+          title:GlobalVariables.roleType == RoleType.cbo? BlocBuilder<ORGSearchBloc, ORGSearchState>(
             builder: (context, state) {
               return state.maybeWhen(
                   orElse: () => Container(),
@@ -72,9 +72,32 @@ class _HomePage extends State<HomePage> {
                     return const AppBarLogo();
                   });
             },
-          ),
+          ):const AppBarLogo(),
         ),
-        drawer: const DrawerWrapper(Drawer(child: SideBar())),
+        drawer: DrawerWrapper(
+          Drawer(
+              child: GlobalVariables.roleType == RoleType.cbo
+                  ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                      builder: (context, state) {
+                        return state.maybeMap(
+                          orElse: () {
+                            return const SideBar();
+                          },
+                          loaded: (value) {
+                            return SideBar(
+                              module: CommonMethods.getLocaleModules(),
+                            );
+                          },
+                          error: (value) {
+                            return const SideBar();
+                          },
+                        );
+                      },
+                    )
+                  : SideBar(
+                      module: CommonMethods.getLocaleModules(),
+                    )),
+        ),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
             builder: (context, localState) {
           return localState.maybeMap(
@@ -135,12 +158,12 @@ class _HomePage extends State<HomePage> {
                                             HomeConfigModel? homeConfigModel) {
                                           // role based config
                                           // if (value.roleType == RoleType.cbo) {
-                                            return cboBasedLayout(
-                                              cboHomeScreenConfig,
-                                              t,
-                                              context,
-                                              selectedLan,
-                                            );
+                                          return cboBasedLayout(
+                                            cboHomeScreenConfig,
+                                            t,
+                                            context,
+                                            selectedLan,
+                                          );
                                           // } else {
                                           //   return empBasedLayout(
                                           //       context, homeConfigModel!,t);
@@ -170,7 +193,7 @@ class _HomePage extends State<HomePage> {
                                     );
                                   } else {
                                     return empBasedLayout(
-                                        context, homeConfigModel!,t);
+                                        context, homeConfigModel!, t);
                                   }
                                 });
                           },
@@ -188,7 +211,8 @@ class _HomePage extends State<HomePage> {
         }));
   }
 
-  Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,AppLocalizations t) {
+  Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,
+      AppLocalizations t) {
     final List<Widget> cards = _getItems(context, homeConfigModel);
     if (cards.isNotEmpty) {
       return ScrollableContent(
@@ -391,11 +415,9 @@ class HomeItemCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DigitCard(
-      
       onPressed: onPressed,
       padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
       child: Align(
-        
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
