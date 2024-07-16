@@ -213,7 +213,7 @@ const ViewStatement = (props) => {
                 </tr>*/}
                 <tr>
                   <td style={{ borderTop: "none" ,border: "1px solid #A6A6A6"}}></td>
-                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px",border: "1px solid #A6A6A6" }}>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "20px",border: "1px solid #A6A6A6" }}>
                     <table
                       className=" sub-table"
                       style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" ,border: "1px solid #A6A6A6"}}
@@ -239,7 +239,7 @@ const ViewStatement = (props) => {
                 </tr>*/}
                 <tr>
                   <td style={{ borderTop: "none",border: "1px solid #A6A6A6" }}></td>
-                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px" ,border: "1px solid #A6A6A6"}}>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "20px" ,border: "1px solid #A6A6A6"}}>
                     <table
                       className=" sub-table"
                       style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" ,border: "1px solid #A6A6A6"}}
@@ -272,7 +272,7 @@ const ViewStatement = (props) => {
                 </tr>*/}
                 <tr>
                   <td style={{ borderTop: "none" ,border: "1px solid #A6A6A6"}}></td>
-                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "60px",border: "1px solid #A6A6A6" }}>
+                  <td colSpan={7} style={{ borderTop: "none", paddingLeft: "20px", paddingRight: "20px",border: "1px solid #A6A6A6" }}>
                     <table
                       className=" sub-table"
                       style={{ width: "100%", borderCollapse: "collapse", boxShadow: "none", borderLeftWidth: "0px", borderRightWidth: "0px" ,border: "1px solid #A6A6A6"}}
