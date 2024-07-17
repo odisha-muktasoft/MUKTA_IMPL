@@ -177,6 +177,12 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
 
   // Handle form submission
   const handleCreateRateAnalysis = async (data, action) => {
+    console.log(data);
+    if(isUpdate)
+    {
+      data.extraCharges = data?.extraCharges?.filter((ob) => ob?.figure !== null )
+    }
+    console.log(data,"after changing extra charges");
     if(createState?.SORType !== "Works")
     {
       setErrorMessage(t("RA_ONLY_FOR_WORKS"));
