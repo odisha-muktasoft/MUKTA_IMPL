@@ -27,7 +27,7 @@
     "@egovernments/digit-ui-module-contracts": "0.4.2",
     "@egovernments/digit-ui-module-measurement":"0.2.0",
     "@egovernments/digit-ui-module-estimate": "0.4.5",
-    "@egovernments/digit-ui-module-masters": "0.4.4",
+    "@egovernments/digit-ui-module-masters": "0.4.5",
     "@egovernments/digit-ui-module-project": "0.4.1",
     "@egovernments/digit-ui-module-expenditure": "0.4.1",
     "@egovernments/digit-ui-customisation-mukta": "0.2.1",
