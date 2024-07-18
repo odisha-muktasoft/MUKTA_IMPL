@@ -180,7 +180,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     console.log(data);
     if(isUpdate)
     {
-      data.extraCharges = data?.extraCharges?.filter((ob) => ob?.figure !== null )
+      data.extraCharges = data?.extraCharges?.filter((ob) => ob?.applicableOn && ob?.calculationType && ob?.figure && ob?.description )
     }
     console.log(data,"after changing extra charges");
     if(createState?.SORType !== "Works")
