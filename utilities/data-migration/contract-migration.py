@@ -40,20 +40,22 @@ def data_migration():
         print("Connection established successfully")
 
         # cursor.execute("""
-        #     SELECT contract_id 
-        #     FROM (
-        #         SELECT tenant_id, contract_id, estimate_line_item_id, COUNT(*) 
-        #         FROM eg_wms_contract_line_items 
-        #         WHERE status = 'ACTIVE' 
-        #         GROUP BY tenant_id, contract_id, estimate_line_item_id
-        #     ) AS tmp 
-        #     WHERE COUNT > 1 
-        #     GROUP BY tenant_id, contract_id 
-        #     ORDER BY tenant_id
+            # SELECT contract_id 
+            # FROM (
+            #     SELECT tenant_id, contract_id, estimate_line_item_id, COUNT(*) 
+            #     FROM eg_wms_contract_line_items 
+            #     WHERE status = 'ACTIVE' 
+            #     GROUP BY tenant_id, contract_id, estimate_line_item_id
+            # ) AS tmp 
+            # WHERE COUNT > 1 
+            # GROUP BY tenant_id, contract_id 
+            # ORDER BY tenant_id
         # """)
         # contract_ids = cursor.fetchall()
 
-        contract_ids = ["69ebeade-8eed-4bed-b188-a3342085f249"]
+        contract_ids = [
+            "07e37b88-7778-4707-9cfa-c1fcfe509404"
+        ]
         
         # Dictionary to store unique estimate_line_item_id for each contract_id
         unique_items = {}
