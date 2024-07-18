@@ -89,18 +89,18 @@ const GroupedTable = (props) => {
   // Render table header
   const renderHeader = () => {
     const columns = [
-      { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("WORKS-SORS_COLUMN_CODE"), width: "15%" },
-      { key: t("CORE_COMMON_NAME"), width: "25%" },
-      { key: t("ACTION_TEST_COMMONMASTERUOM"), width: "10%" },
-      { key: t("MB_RATE"), width: "10%" },
-      { key: t("MB_QUANTITY"), width: "15%" },
-      { key: t("MB_ONLY_AMOUNT"), width: "15%" },
+      { key: t("WORKS_SNO"), width: "5%", textAlign:"left"  },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "15%", textAlign:"left"  },
+      { key: t("CORE_COMMON_NAME"), width: "25%", textAlign:"left"  },
+      { key: t("ACTION_TEST_COMMONMASTERUOM"), width: "10%", textAlign:"left"  },
+      { key: t("MB_RATE"), width: "10%", textAlign:"right" },
+      { key: t("MB_QUANTITY"), width: "15%", textAlign:"right" },
+      { key: t("MB_ONLY_AMOUNT"), width: "15%", textAlign:"right" },
     ];
     return (
       <tr>
         {columns.map((col, index) => (
-          <th key={index} style={{ width: col.width  , backgroundColor: "#A6A6A6",
+          <th key={index} style={{ width: col.width  , textAlign:col?.textAlign, backgroundColor: "#A6A6A6",
             fontSize: "16px",
             lineHeight: "18.75px",
             fontFamily: "Roboto",

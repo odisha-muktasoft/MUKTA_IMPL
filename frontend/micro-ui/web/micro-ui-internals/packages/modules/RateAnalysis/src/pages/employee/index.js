@@ -17,7 +17,7 @@ const RateAnalysisBreadCumbs = ({ location }) => {
     {
       path: `/${window?.contextPath}/employee`,
       content: t("WORKS_MUKTA"),
-      show: true,
+      show: location.pathname.includes("response") ? false : true,
     },
     {
       path: `/${window.contextPath}/employee/rateanalysis/create-rate-analysis`,
