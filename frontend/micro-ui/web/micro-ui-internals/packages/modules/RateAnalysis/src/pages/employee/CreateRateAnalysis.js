@@ -206,6 +206,11 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       return;
     }
 
+    if(isUpdate)
+    {
+      data.extraCharges = data?.extraCharges?.filter((ob) => ob?.applicableOn && ob?.calculationType && ob?.figure && ob?.description )
+    }
+
     if(selectedApprover)
       data.selectedApprover = selectedApprover;
 
