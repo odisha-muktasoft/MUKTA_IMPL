@@ -76,23 +76,51 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               loaded: (mbWorkFlow) {
                                 final g = mbWorkFlow
                                     .musterWorkFlowModel?.processInstances;
-                                return FloatActionCard(
-                                  actions: () {
-                                    DigitActionDialog.show(
-                                      context,
-                                      widget: CommonButtonCard(
-                                        g: g,
-                                        contractNumber: widget.contractNumber,
-                                        mbNumber: widget.mbNumber,
-                                        type: widget.type,
-                                      ),
-                                    );
-                                  },
-                                  amount: value.data.first.totalAmount != null
-                                      ? value.data.first.totalAmount!.roundToDouble()
-                                          .toStringAsFixed(2)
-                                      : "0.00",
-                                  openButtonSheet: () {
+                                return Draggable(
+                                  childWhenDragging:FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                        ),
+                                      );
+                                    },
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          (g != null &&
+                                                  (g.first.nextActions !=
+                                                          null &&
+                                                      g.first.nextActions!
+                                                          .isEmpty))
+                                              ? false
+                                              : true);
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    showAction: (g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? false
+                                        : true,
+                                  ) ,
+                                  onDragEnd: (details) {
                                     _openBottomSheet(
                                         t,
                                         context,
@@ -109,13 +137,50 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                             ? false
                                             : true);
                                   },
-                                  totalAmountText: t.translate(
-                                      i18.measurementBook.totalMbAmount),
-                                  showAction: (g != null &&
-                                          (g.first.nextActions != null &&
-                                              g.first.nextActions!.isEmpty))
-                                      ? false
-                                      : true,
+                                  feedback: const SizedBox.shrink(),
+                                  child: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                        ),
+                                      );
+                                    },
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          (g != null &&
+                                                  (g.first.nextActions !=
+                                                          null &&
+                                                      g.first.nextActions!
+                                                          .isEmpty))
+                                              ? false
+                                              : true);
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    showAction: (g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
                                 );
                               },
                             );
@@ -174,7 +239,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.type == MBScreen.update ? index : index;
                             if (adjustedIndex <= k.length) {
                               return CommonMBCard(
-                                padding: const EdgeInsets.only(left:8.0,top: 8.0,right: 8.0,bottom: 0),
+                                padding: const EdgeInsets.only(
+                                    left: 8.0, top: 8.0, right: 8.0, bottom: 0),
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                 items: {
@@ -257,6 +323,14 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
+               const Center(
+                    child: SizedBox(
+                      width: 100,
+                      child: Divider(
+                        thickness: 5,
+                      ),
+                    ),
+                  ),
               Container(
                 decoration: const BoxDecoration(
                   border: Border(
