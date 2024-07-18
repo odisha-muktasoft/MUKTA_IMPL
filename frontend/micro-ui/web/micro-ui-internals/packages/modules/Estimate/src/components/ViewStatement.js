@@ -21,26 +21,27 @@ const ViewStatement = (props) => {
   const renderHeader = () => {
     const columns = [
       { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("WORKS_SORS_COLUMN_TYPE"), width: "12.5%" },
-      { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.5%" },
-      { key: t("WORKS-SORS_COLUMN_DESCRIPTION"), width: "35%" },
-      { key: t("WORKS-SORS_COLUMN_UOM"), width: "8.5%" },
-      { key: t("WORKS-SORS_COLUMN_RATE"), width: "12.5%" },
+      { key: t("WORKS_SORS_COLUMN_TYPE"), width: "12.5%", textAlign:"left" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.5%",textAlign:"left" },
+      { key: t("WORKS-SORS_COLUMN_DESCRIPTION"), width: "35%", textAlign:"left" },
+      { key: t("WORKS-SORS_COLUMN_UOM"), width: "8.5%", textAlign:"left" },
+      { key: t("WORKS-SORS_COLUMN_RATE"), width: "12.5%", textAlign:"right" },
     ];
 
     if (config?.screenType === "UTILIZATION") {
-      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_QTY"), width: "12.5%" });
-      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_AMT"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_QTY"), width: "12.5%", textAlign:"right" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_CONSUMED_AMT"), width: "12.5%", textAlign:"right" });
     } else {
-      columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_QTY"), width: "12.5%" });
-      columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_AMT"), width: "12.5%" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_QTY"), width: "12.5%", textAlign:"right" });
+      columns.push({ key: t("WORKS_SORS_COLUMN_ESTIMATED_AMT"), width: "12.5%", textAlign:"right" });
     }
 
     return columns.map((col, index) => (
       <th
         key={index}
         style={{
-          width: col.width,
+          width: col?.width,
+          textAlign : col?.textAlign,
           backgroundColor: "#A6A6A6",
           fontSize: "16px",
           lineHeight: "18.75px",
@@ -56,19 +57,20 @@ const ViewStatement = (props) => {
 
   const renderSubHeader = () => {
     const columns = [
-      { key: t("WORKS_SNO"), width: "5%" },
-      { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.28%" },
-      { key: t("WORKS-SORS_SUB_COLUMN_NAME"), width: "40%" },
-      { key: t("WORKS-SORS_SUB_COLUMN_UNIT"), width: "9.28%" },
-      { key: t("WORKS-SORS_COLUMN_RATE"), width: "14.28%" },
-      { key: t("WORKS-SORS_SUB_COLUMN_QTY"), width: "14.28%" },
-      { key: t("WORKS-SORS_COLUMN_AMT"), width: "14.28%" },
+      { key: t("WORKS_SNO"), width: "5%", textAlign:"left" },
+      { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.28%", textAlign:"left" },
+      { key: t("WORKS-SORS_SUB_COLUMN_NAME"), width: "40%", textAlign:"left" },
+      { key: t("WORKS-SORS_SUB_COLUMN_UNIT"), width: "9.28%", textAlign:"left" },
+      { key: t("WORKS-SORS_COLUMN_RATE"), width: "14.28%", textAlign:"right" },
+      { key: t("WORKS-SORS_SUB_COLUMN_QTY"), width: "14.28%", textAlign:"right" },
+      { key: t("WORKS-SORS_COLUMN_AMT"), width: "14.28%", textAlign:"right" },
     ];
     return columns.map((col, index) => (
       <th
         key={index}
         style={{
           width: col.width,
+          textAlign: col?.textAlign,
           padding: "10px",
           backgroundColor: "#D6D5D4",
           fontSize: "12px",
@@ -329,7 +331,7 @@ const ViewStatement = (props) => {
           {showAmountTotal ? (
             <tr style={{ border: "1px solid #A6A6A6" }}>
               <td colSpan={7} style={{ textAlign: "right", fontWeight: "bold",border: "1px solid #A6A6A6" }}>
-                {config?.screenType === "UTILIZATION" ? t("UTILIZATION_STATEMENT_GRAND_TOTAL") : t("STATEMENT_GRAND_TOTAL")}:
+                {config?.screenType === "UTILIZATION" ? t("UTILIZATION_STATEMENT_GRAND_TOTAL") : t("STATEMENT_GRAND_TOTAL")}
               </td>
               <td style={{ textAlign: "right", fontWeight: "bold" ,border: "1px solid #A6A6A6" }}>
                 <Amount
