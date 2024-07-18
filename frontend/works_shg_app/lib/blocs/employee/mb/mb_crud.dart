@@ -30,11 +30,24 @@ class MeasurementCrudBloc
     Client client = Client();
 
     try {
-       
+      bool createCheck=false;
+         state.maybeMap(orElse:()=>{},
+         loaded: (value) {
+           if ((event.type== MBScreen.create && value.measurement!.wfStatus == "SUBMITTED")||(event.type== MBScreen.create && value.measurement!.wfStatus == "DRAFTED")) {
+             
+            createCheck=true;
+            
+           }
+         },
+          );
+        //  createCheck=true;
       emit(const MeasurementCrudState.loading());
 
       final Measurement res = await MBRepository(client.init()).updateMeasurement(
-        url:  event.type== MBScreen.update? Urls.measurementService.updateMeasurement:Urls.measurementService.createMeasurement,
+        url: 
+        createCheck?Urls.measurementService.updateMeasurement
+        :
+         event.type== MBScreen.update? Urls.measurementService.updateMeasurement:Urls.measurementService.createMeasurement,
         body: {
           "measurements": [MBLogic.measurementToMap(event.measurement)]
           

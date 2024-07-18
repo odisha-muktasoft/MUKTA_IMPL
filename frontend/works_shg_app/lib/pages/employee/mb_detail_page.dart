@@ -129,7 +129,7 @@ class _MBDetailPageState extends State<MBDetailPage>
           listener: (context, state) {
             state.maybeMap(
               orElse: () => {},
-              loaded: (value) {
+              loaded: (valueLoaded) {
                 if (widget.type == MBScreen.update) {
                   context.read<MusterGetWorkflowBloc>().add(
                         FetchMBWorkFlowEvent(
@@ -151,7 +151,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   ).popUntil(
                     (route) => route is! PopupRoute,
                   );
-                } else if ((value.measurement!.wfStatus == "SUBMITTED") &&
+                } else if ((valueLoaded.measurement!.wfStatus == "SUBMITTED") &&
                     widget.type == MBScreen.create) {
                   Navigator.of(
                     context,
@@ -160,7 +160,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     (route) => route is! PopupRoute,
                   );
                   context.router.popUntilRouteWithPath('home');
-                } else if ((value.measurement!.wfStatus == "DRAFTED") &&
+                } else if ((valueLoaded.measurement!.wfStatus == "DRAFTED") &&
                     widget.type == MBScreen.create) {
                   Navigator.of(
                     context,
@@ -173,8 +173,18 @@ class _MBDetailPageState extends State<MBDetailPage>
                 Notifiers.getToastMessage(
                     context,
                     t.translate(
-                        "WF_UPDATE_SUCCESS_MB_${value.measurement?.workflow?.action}"),
+                        "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
                     'SUCCESS');
+
+                context.read<MeasurementDetailBloc>().add(
+                      MeasurementDetailBookBlocEvent(
+                        tenantId: widget.tenantId!,
+                        contractNumber: widget.contractNumber,
+                        measurementNumber:
+                            valueLoaded!.measurement!.measurementNumber!,
+                        screenType: MBScreen.update,
+                      ),
+                    );
               },
               error: (value) {
                 Notifiers.getToastMessage(
