@@ -461,25 +461,60 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         .businessServices ??
                                     [];
 
-                                return FloatActionCard(
-                                  actions: () {
-                                    DigitActionDialog.show(
-                                      context,
-                                      widget: CommonButtonCard(
-                                        g: g,
-                                        contractNumber: widget.contractNumber,
-                                        mbNumber: widget.mbNumber,
-                                        type: widget.type,
-                                        bs: bk,
-                                      ),
-                                    );
-                                  },
-                                  amount: value.data.first.totalAmount != null
-                                      ? value.data.first.totalAmount!
-                                          .roundToDouble()
-                                          .toStringAsFixed(2)
-                                      : "0.00",
-                                  openButtonSheet: () {
+                                return Draggable(
+                                  childWhenDragging: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                          bs: bk,
+                                        ),
+                                      );
+                                    },
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          widget.type,
+                                          bk,
+                                          (bk != null &&
+                                                  (bk != null && bk.isEmpty))
+                                              ? false
+                                              : true,
+                                          workorderStatus,
+                                          estimateStatus,
+                                          (value.data.length >= 2
+                                              ? (value.data[1].wfStatus ==
+                                                      "APPROVED" ||
+                                                  value.data[1].wfStatus ==
+                                                      "REJECTED")
+                                              : true));
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
+                                    showAction: (bk != null &&
+                                            (bk != null && bk.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
+                                  onDragEnd: (details) {
                                     _openBottomSheet(
                                         t,
                                         context,
@@ -504,14 +539,59 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                     "REJECTED")
                                             : true));
                                   },
-                                  totalAmountText: t.translate(
-                                      i18.measurementBook.totalMbAmount),
-                                  subtext: t.translate(
-                                      i18.measurementBook.forCurrentEntry),
-                                  showAction:
-                                      (bk != null && (bk != null && bk.isEmpty))
-                                          ? false
-                                          : true,
+                                  feedback: const SizedBox.shrink(),
+                                  child: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                          bs: bk,
+                                        ),
+                                      );
+                                    },
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          widget.type,
+                                          bk,
+                                          (bk != null &&
+                                                  (bk != null && bk.isEmpty))
+                                              ? false
+                                              : true,
+                                          workorderStatus,
+                                          estimateStatus,
+                                          (value.data.length >= 2
+                                              ? (value.data[1].wfStatus ==
+                                                      "APPROVED" ||
+                                                  value.data[1].wfStatus ==
+                                                      "REJECTED")
+                                              : true));
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
+                                    showAction: (bk != null &&
+                                            (bk != null && bk.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
                                 );
                               },
                             );
@@ -1515,13 +1595,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top:12.0,bottom: 8.0),
-                    child: Text(t.translate(i18.measurementBook.mbAmtCurrentEntry),
-                        style: Theme.of(context).textTheme.headlineSmall),
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                    child: Text(
+                      t.translate(i18.measurementBook.mbAmtCurrentEntry),
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textScaleFactor: 0.99,
+                    ),
                   ),
                   Container(
                     width: MediaQuery.sizeOf(context).width,
-                    padding: const EdgeInsets.only(top:10.0, left: 5.0,right: 5.0,bottom: 10),
+                    padding: const EdgeInsets.only(
+                        top: 10.0, left: 5.0, right: 5.0, bottom: 10),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: const DigitColors().cloudGray,
@@ -1893,7 +1977,7 @@ class SORTableCard extends StatelessWidget {
                             width: MediaQuery.of(context).size.width / fraction,
                             child: Text(
                               e,
-                              style: theme.textTheme.headline5,
+                              style: theme.textTheme.headlineSmall,
                               textAlign: TextAlign.start,
                             ),
                           ),

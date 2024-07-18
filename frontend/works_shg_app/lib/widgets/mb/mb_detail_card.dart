@@ -56,7 +56,7 @@ class CommonMBCard extends StatelessWidget {
                           width: MediaQuery.of(context).size.width / 2,
                           child: Text(
                             t.translate(i18.measurementBook.mbSlaDaysRemaining),
-                            style: theme.textTheme.headline5,
+                            style: theme.textTheme.headlineSmall,
                             textAlign: TextAlign.start,
                           ),
                         ),
