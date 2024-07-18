@@ -246,13 +246,13 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 4.0),
+                padding: const EdgeInsets.only(left: 3.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(
                     inputFormatter: [
                       FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,4}')),
+                          RegExp(r'^\d*\.?\d{0,4}'),),
                     ],
                     label: t.translate(i18.measurementBook.widthLabel),
                     isDisabled: widget.viewMode,
@@ -263,7 +263,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 4.0, right: 2.0),
+                padding: const EdgeInsets.only(left: 3, right: 0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
                   child: DigitTextField(

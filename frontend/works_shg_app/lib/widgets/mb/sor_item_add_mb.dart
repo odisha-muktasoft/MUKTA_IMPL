@@ -41,13 +41,13 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
   @override
   void initState() {
     lineItems = widget.lineItems;
-    _scrollController = PageController(initialPage: 0,viewportFraction: 0.95);
+    _scrollController = PageController(initialPage: 0, viewportFraction: 0.95);
     super.initState();
   }
 
   void _scrollForward() {
     _scrollController.nextPage(
-     // _scrollController.offset + MediaQuery.of(context).size.width,
+      // _scrollController.offset + MediaQuery.of(context).size.width,
       duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
@@ -55,7 +55,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
 
   void _scrollBackward() {
     _scrollController.previousPage(
-     // _scrollController.offset - MediaQuery.of(context).size.width,
+      // _scrollController.offset - MediaQuery.of(context).size.width,
       duration: const Duration(milliseconds: 500),
       curve: Curves.ease,
     );
@@ -278,8 +278,8 @@ class _CardWidgetState extends State<CardWidget> {
         color: const DigitColors().white,
         borderRadius: BorderRadius.circular(10),
       ),
-      padding: const EdgeInsets.only(
-          left: 2.5, right: 2.5, bottom: 10.0, top: 16.0),
+      padding:
+          const EdgeInsets.only(left: 2.5, right: 2.5, bottom: 10.0, top: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -303,11 +303,10 @@ class _CardWidgetState extends State<CardWidget> {
                   style:
                       DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
-                
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: SizedBox(
-                    height: 30,
+                    height: 20,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -434,9 +433,9 @@ class _CardWidgetState extends State<CardWidget> {
                                                 .burningOrange,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(left:4.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 4.0),
                                             child: Text(
-                                              
                                               t.translate(
                                                 i18.measurementBook
                                                     .addMeasurement,
@@ -447,10 +446,9 @@ class _CardWidgetState extends State<CardWidget> {
                                                   .textTheme!
                                                   .bodyLarge!
                                                   .copyWith(
-                                                      color: const DigitColors()
-                                                          .burningOrange,
-                                                          
-                                                          ),
+                                                color: const DigitColors()
+                                                    .burningOrange,
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -536,7 +534,8 @@ class _CardWidgetState extends State<CardWidget> {
                                                 .burningOrange,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(left:4.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 4.0),
                                             child: Text(
                                               t.translate(i18.measurementBook
                                                   .addMeasurement),
@@ -604,8 +603,6 @@ class _CardWidgetState extends State<CardWidget> {
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: MultiLineItems(
                                   fieldValue: (p0, p1) {
-                                    print(widget.noOfUnit);
-                                    print(widget.cummulativePrevQty);
                                     switch (p0) {
                                       case "Number":
                                         context
@@ -878,7 +875,7 @@ class _CardWidgetState extends State<CardWidget> {
           // button section
           Padding(
             padding: const EdgeInsets.only(
-                top: 4.0, left: 8.0, right: 8.0, bottom: 4.0),
+                top: 3.0, left: 8.0, right: 8.0, bottom: 3),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
