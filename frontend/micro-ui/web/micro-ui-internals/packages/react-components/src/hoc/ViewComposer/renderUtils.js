@@ -40,8 +40,8 @@ export const RenderDataSection = ({ section }) => {
               className="border-none"
               /* privacy object set to the Row Component */
               privacy={row?.value?.privacy}
-              rowContainerStyle={{}}
-              textStyle={{}}
+              rowContainerStyle={row?.rowContainerStyle || {}}
+              textStyle={row?.textStyle || {}}
               labelStyle={{}}
               amountStyle={row?.amountStyle || {}}
             />
