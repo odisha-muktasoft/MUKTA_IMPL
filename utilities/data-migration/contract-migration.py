@@ -58,8 +58,7 @@ def data_migration():
         # Dictionary to store unique estimate_line_item_id for each contract_id
         unique_items = {}
 
-        for contract_id_tuple in contract_ids:
-            contract_id = contract_id_tuple[0]
+        for contract_id in contract_ids:
             print(f"Migrating contract: {contract_id}")
 
             cursor.execute("""
@@ -91,6 +90,7 @@ def data_migration():
                     DELETE FROM eg_wms_contract_line_items 
                     WHERE id = %s
                 """, (id,))
+                print(f"Deleted line_item_id: {id}")
 
         connection.commit()
         cursor.close()
