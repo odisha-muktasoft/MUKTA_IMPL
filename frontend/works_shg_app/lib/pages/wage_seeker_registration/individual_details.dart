@@ -576,6 +576,8 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                   ]
                 : [
                     Validators.required,
+                    Validators.minLength(12),
+                    Validators.maxLength(12)
                   ]),
         nameKey: FormControl<String>(
             value: individualDetails.name ?? '',
