@@ -31,6 +31,7 @@ class Login {
 
 class Common {
   const Common();
+  String get wentWrong=>"CORE_SOMETHING_WENT_WRONG";
   String get statementnotfound=>"WORK_ORDER_STATEMENT_NOT_FOUND";
   String get noFileSelected=>"WORKS_NO_FILE_SELECTED";
   String get comments=>"WF_COMMON_COMMENTS";

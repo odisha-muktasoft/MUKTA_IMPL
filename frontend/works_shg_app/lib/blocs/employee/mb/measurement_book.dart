@@ -51,8 +51,8 @@ class MeasurementInboxBloc
       };
       final MBInboxResponse res =
           await MBRepository(client.init()).fetchMbInbox(
-        url: Urls.measurementService.measurementInbox, body: s,
-        
+        url: Urls.measurementService.measurementInbox,
+        body: s,
       );
       if (event.offset == 0) {
         emit(MeasurementInboxState.loaded(
@@ -92,6 +92,8 @@ class MeasurementInboxBloc
       }
     } on DioError catch (e) {
       emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
+    } catch (e) {
+      emit(const MeasurementInboxState.error("CORE_SOMETHING_WENT_WRONG"));
     }
   }
 //search
@@ -106,7 +108,6 @@ class MeasurementInboxBloc
         emit(const MeasurementInboxState.loading());
       }
 
-      
       final MBInboxResponse res =
           await MBRepository(client.init()).fetchMbInbox(
         url: Urls.measurementService.measurementInbox,
@@ -172,7 +173,6 @@ class MeasurementInboxBloc
           return null;
         },
         loaded: (value) async {
-          
           value.data['inbox']!['offset'] = event.offset;
           final MBInboxResponse res = await MBRepository(client.init())
               .fetchMbInbox(

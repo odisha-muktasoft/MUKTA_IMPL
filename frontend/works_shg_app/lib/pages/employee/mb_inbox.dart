@@ -39,10 +39,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
   @override
   void initState() {
-     context
+    context
         .read<ProjectTypeBloc>()
         .add(ProjectTypeEvent(tenantId: GlobalVariables.tenantId!));
-        
+
     context.read<MeasurementInboxBloc>().add(
           MeasurementBookInboxBlocEvent(
             businessService: "MB",
@@ -52,8 +52,6 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             tenantId: GlobalVariables.tenantId!,
           ),
         );
-
-        
 
     context.read<WageSeekerLocationBloc>().add(
           LocationEventWageSeeker(tenantId: GlobalVariables.tenantId!),
@@ -83,13 +81,13 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
     state.maybeMap(
       orElse: () => {},
       loaded: (value) {
-        if (value.search && value.data.length==1) {
+        if (value.search && value.data.length == 1) {
           context.read<MeasurementInboxBloc>().add(
                 MeasurementBookInboxSearchRepeatBlocEvent(
                   businessService: "MB",
                   limit: 10,
                   moduleName: 'measurement-module',
-                  offset: value.data['inbox']!['offset']+10,
+                  offset: value.data['inbox']!['offset'] + 10,
                   tenantId: GlobalVariables.tenantId!,
                 ),
               );
@@ -188,10 +186,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Back(
-                                
                                   callback: () {
                                     context.router.pop();
-                                   
                                   },
                                 ),
                                 Padding(
@@ -303,8 +299,6 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           },
                                           icon:
                                               SvgPicture.asset(Constants.sort)),
-
-                                      
                                     ],
                                   ),
                                 ),
@@ -320,10 +314,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 (BuildContext context, int index) {
                                   // Display items
 
-                                  return  Center(
+                                  return Center(
                                     child: EmptyImage(
                                       align: Alignment.center,
-                                      label: t.translate(i18.measurementBook.mbNotFound),
+                                      label: t.translate(
+                                          i18.measurementBook.mbNotFound),
                                     ),
                                   );
                                 },
@@ -463,6 +458,14 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                     child: CircularProgressIndicator.adaptive(),
                   );
                 },
+                error: (value) {
+                  return Center(
+                    child: EmptyImage(
+                      align: Alignment.center,
+                      label: t.translate(i18.common.wentWrong),
+                    ),
+                  );
+                },
               );
             },
           ),
@@ -470,8 +473,6 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
       },
     );
   }
-
-  
 }
 
 class MyHeaderDelegate extends SliverPersistentHeaderDelegate {
