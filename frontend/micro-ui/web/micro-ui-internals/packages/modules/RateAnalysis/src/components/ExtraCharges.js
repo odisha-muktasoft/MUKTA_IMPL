@@ -185,6 +185,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
   };
 
+  const isValidQuantity = (value) => {
+    const regex = /^\d{0,4}(\.\d{0,2})?$/;
+    return regex.test(value);
+  };
+
   const cellContainerStyle = { display: "flex", flexDirection: "column" };
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
@@ -315,7 +320,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                   })}
                   onChange={(e) => {
-                    if(has4DecimalPlaces(parseFloat(e?.target.value))){
+                    if(isValidQuantity(parseFloat(e?.target.value))){
                       setAmountField(e, rowIndex)
                     }
                     else
