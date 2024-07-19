@@ -228,32 +228,35 @@ public class EnrichmentService {
                 existingSorDetail.setIsActive(Boolean.FALSE);
                 existingStatementSorDetailsMap.put(sorId,existingSorDetail);
             }
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<BasicSorDetails> basicSorDetailsList = objectMapper.convertValue(
-                    existingStatementSorDetailsMap.get(sorId).getBasicSorDetails(),
-                    new TypeReference<List<BasicSorDetails>>() {
-                    }
-            );
-            for (BasicSorDetails detail : basicSorDetailsList) {
-                String type = detail.getType();
-                cumulativeAmounts.put(type, cumulativeAmounts.getOrDefault(type, BigDecimal.ZERO).add(detail.getAmount()));
 
-                //cumulativeQuantities.put(type, cumulativeQuantities.getOrDefault(type, BigDecimal.ZERO).add(detail.getQuantity()));
+            if(existingStatementSorDetailsMap.get(sorId).getLineItems()!=null) {
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                List<BasicSorDetails> basicSorDetailsList = objectMapper.convertValue(
+                        existingStatementSorDetailsMap.get(sorId).getBasicSorDetails(),
+                        new TypeReference<List<BasicSorDetails>>() {
+                        }
+                );
+
+                for (BasicSorDetails detail : basicSorDetailsList) {
+                    String type = detail.getType();
+                    cumulativeAmounts.put(type, cumulativeAmounts.getOrDefault(type, BigDecimal.ZERO).add(detail.getAmount()));
+
+                }
+                // Update cumulative amounts and quantities
+                List<BasicSorDetails> basicSorDetails = new ArrayList<>();
+                for (Map.Entry<String, BigDecimal> entry : cumulativeAmounts.entrySet()) {
+                    String type = entry.getKey();
+                    BigDecimal amount = entry.getValue().setScale(2, RoundingMode.HALF_UP);
+                    BasicSorDetails detail = BasicSorDetails.builder()
+                            .amount(amount)
+                            .type(type)
+                            .build();
+                    basicSorDetails.add(detail);
+                }
+                existingStatementSorDetailsMap.get(sorId).setBasicSorDetails(basicSorDetails);
             }
-            // Update cumulative amounts and quantities
-
-
-            List<BasicSorDetails> basicSorDetails = new ArrayList<>();
-            for (Map.Entry<String, BigDecimal> entry : cumulativeAmounts.entrySet()) {
-                String type = entry.getKey();
-                BigDecimal amount = entry.getValue().setScale(2, RoundingMode.HALF_UP);
-                BasicSorDetails detail = BasicSorDetails.builder()
-                        .amount(amount)
-                        .type(type)
-                        .build();
-                basicSorDetails.add(detail);
-            }
-            existingStatementSorDetailsMap.get(sorId).setBasicSorDetails(basicSorDetails);
 
         }
 

@@ -51,7 +51,8 @@ export const data = (statementDetails, rawData, oldData) => {
                       )
                     : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end" },
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
               {
                 key: "STATEMENT_LABOUR",
@@ -71,7 +72,8 @@ export const data = (statementDetails, rawData, oldData) => {
                       )
                     : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end" },
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
 
               {
@@ -92,11 +94,17 @@ export const data = (statementDetails, rawData, oldData) => {
                       )
                     : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                amountStyle: { maxWidth: "12%", textAlign: "end" },
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
               {
                 key: "STATEMENT_LABOUR_CESS",
-                value: Digit.Utils.dss.formatterWithoutRound(
+                value:oldData
+                ? oldData?.LabourCessCost?.includes(",")
+                  ? oldData?.LabourCessCost
+                  : parseFloat(oldData?.LabourCessCost).toFixed(2)
+                : statementDetails?
+                 Digit.Utils.dss.formatterWithoutRound(
                   parseFloat(
                     statementDetails?.sorDetails.reduce((acc, ob) => {
                       return acc + (ob?.additionalDetails?.labourCessAmount || 0);
@@ -107,8 +115,9 @@ export const data = (statementDetails, rawData, oldData) => {
                   true,
                   undefined,
                   2
-                ),
-                amountStyle: { maxWidth: "12%", textAlign: "end" },
+                ): parseFloat(0).toFixed(2),
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
             ],
           },

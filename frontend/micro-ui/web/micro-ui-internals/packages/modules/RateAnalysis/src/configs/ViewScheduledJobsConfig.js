@@ -32,8 +32,8 @@ const ViewScheduledJobsConfig = {
               showFormInstruction: "",
               defaultValues: {
                 status: "",
-                createdFrom: "",
-                createdTo: "",
+                scheduleFrom: "",
+                scheduleTo: "",
               },
               fields: [
                 {

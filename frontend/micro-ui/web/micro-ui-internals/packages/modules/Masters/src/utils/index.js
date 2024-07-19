@@ -19,7 +19,7 @@ export const updateWageSeekerFormDefaultValues = async ({configs, isModify, sess
 
     const adhaar = individual?.identifiers?.find(item => item?.identifierType === 'AADHAAR')
     const socialCategory = individual?.additionalFields?.fields?.find(item => item?.key === "SOCIAL_CATEGORY")
-    const skills = individual?.skills?.length > 0 ? individual?.skills?.map(skill => ({code: `${skill?.level}.${skill?.type}`, name: `COMMON_MASTERS_SKILLS_${skill?.level}.${skill?.type}`})) : ""
+    const skills = individual?.skills?.length > 0 ? individual?.skills?.map(skill => ({code: `${skill?.level}.${skill?.type}`, name: `COMMON_MASTERS_SKILLS_${skill?.level}`})) : ""
     
     let photo = ''
     try {
