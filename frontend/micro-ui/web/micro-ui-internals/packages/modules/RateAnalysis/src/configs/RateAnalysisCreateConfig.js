@@ -157,10 +157,14 @@ export const CreateConfig = ({ defaultValue, isUpdate, measurement }) => {
                   "label": "RA_ANALYSIS_QUANTITY_DEFINED",
                   "isMandatory": true,
                   "key": "analysis_qty_defined",
-                  "type": "text",
+                  "type": "number",
                   "disable": false,
                   "populators": {
                     "name": "analysis_qty_defined",
+                    "validation": {
+                      "pattern": "\\d{1,4}(\\.\\d{1,2})?",
+                      "ValidationRequired" : true,
+                    }
                   }
                 },
               ],
