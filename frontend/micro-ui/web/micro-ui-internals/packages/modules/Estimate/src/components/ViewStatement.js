@@ -20,7 +20,7 @@ const ViewStatement = (props) => {
 
   const renderHeader = () => {
     const columns = [
-      { key: t("WORKS_SNO"), width: "5%" },
+      { key: t("WORKS_SNO"), width: "5%",textAlign:"left" },
       { key: t("WORKS_SORS_COLUMN_TYPE"), width: "12.5%", textAlign:"left" },
       { key: t("WORKS-SORS_COLUMN_CODE"), width: "5.5%",textAlign:"left" },
       { key: t("WORKS-SORS_COLUMN_DESCRIPTION"), width: "35%", textAlign:"left" },
