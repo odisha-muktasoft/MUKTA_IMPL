@@ -55,7 +55,7 @@ public class RateAnalysisConsumer {
         try {
             MdmsRequest mdmsRequest = objectMapper.convertValue(mdmsRecord, MdmsRequest.class);
             if(mdmsRequest != null && mdmsRequest.getRequestInfo() != null && mdmsRequest.getMdms() != null && (mdmsRequest.getMdms().getSchemaCode().equals(configuration.getRatesSchemaCode()) ||
-                    mdmsRequest.getMdms().getSchemaCode().equals(configuration.getCompositionSchemaCode()))) {
+                    mdmsRequest.getMdms().getSchemaCode().equals(configuration.getCompositionSchemaCode()))&& configuration.getIsMdmsConsumerNeeded()) {
                 log.info("Processing mdms save request for record");
                 rateAnalysisService.updateMdmsDataForRatesAndComposition(mdmsRequest);
             }
