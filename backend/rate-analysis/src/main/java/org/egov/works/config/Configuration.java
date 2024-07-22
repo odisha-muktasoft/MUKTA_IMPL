@@ -83,4 +83,7 @@ public class Configuration {
 
     @Value("${sor.default.offset}")
     private Integer sorDefaultOffset;
+
+    @Value("${works.is.mdms.consumer.needed}")
+    private Boolean isMdmsConsumerNeeded;
 }
