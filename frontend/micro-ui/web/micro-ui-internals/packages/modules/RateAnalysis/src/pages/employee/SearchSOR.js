@@ -139,8 +139,8 @@ const SearchSOR = () => {
             setPopup(true);
             setReviseAll(true);
           }}
-          //disabled={selectedSorIds?.sorType !== "W"}
-          disabled={true}
+          disabled={selectedSorIds?.sorType !== "W"}
+          //disabled={true}
         />
       </ActionBar>
       {showToast?.show && (
