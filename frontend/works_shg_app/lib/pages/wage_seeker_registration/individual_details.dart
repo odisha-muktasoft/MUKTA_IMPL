@@ -301,6 +301,12 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               'required': (_) => t.translate(
                                     i18.wageSeeker.aadhaarRequired,
                                   ),
+                              'minLength': (_) => t.translate(
+                                    i18.wageSeeker.minAadhaarCharacters,
+                                  ),
+                              'maxLength': (_) => t.translate(
+                                    i18.wageSeeker.maxAadhaarCharacters,
+                                  ),
                             },
                     ),
                     DigitTextFormField(
