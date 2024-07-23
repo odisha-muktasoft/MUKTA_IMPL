@@ -446,7 +446,7 @@ const ViewUtilization = () => {
         {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />}
       </div>
       <div>
-      <CitizenInfoLabel textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} />
+      <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} />
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && (
