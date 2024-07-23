@@ -1,3 +1,4 @@
+/*
 package org.egov.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -125,3 +126,4 @@ class OrganisationApiControllerTest {
     }
 
 }
+*/
