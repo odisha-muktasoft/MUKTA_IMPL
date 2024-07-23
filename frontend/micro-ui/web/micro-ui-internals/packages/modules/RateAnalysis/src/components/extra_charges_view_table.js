@@ -79,7 +79,7 @@ const ExtraChargesViewTable = (props) => {
       }}
     >
       <div className="search-sor-container">
-        <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+        <span className="card-section-header">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
       </div>
       <table className="table reports-table sub-work-table">
         <thead>

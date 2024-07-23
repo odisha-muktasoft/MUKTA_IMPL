@@ -20,6 +20,7 @@ const RateCardWithRightButton = (props) => {
     background: "#c7e0f1", // Default background
     padding: "10px",
     width: "100%",
+     borderRadius: "4px"
     //boxSizing: "border-box",
   };
 
@@ -75,7 +76,7 @@ const RateCardWithRightButton = (props) => {
         </div>
 
         <div style={bannerStyle}>
-          <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{ margin: "0px", padding:"8px" }} info={t("RA_ACTIVE_RATE_INFO_LABEL")} text={t("RA_ACTIVE_RATE_INFO_CONTENT_LABEL")} />
+          <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{ margin: "0px", padding:"8px", }} info={t("RA_ACTIVE_RATE_INFO_LABEL")} text={t("RA_ACTIVE_RATE_INFO_CONTENT_LABEL")} />
         </div>
       </div>
     </React.Fragment>
