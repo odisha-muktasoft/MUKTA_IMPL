@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, createContext } from "react";
+import React, { useState, useEffect, useMemo, createContext, Fragment } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Loader, Button, ActionBar, SubmitBar, Toast, TextInput, Modal } from "@egovernments/digit-ui-react-components";
+import { Header, Loader, Button, ActionBar, SubmitBar, Toast, TextInput, Modal, CardText } from "@egovernments/digit-ui-react-components";
 import { InboxSearchComposer } from "@egovernments/digit-ui-react-components";
 import { useHistory } from "react-router-dom";
 import searchSORConfig from "../../configs/searchSORConfig";
@@ -155,11 +155,14 @@ const SearchSOR = () => {
       {popup && (
         <Modal
           headerBarMain={
-            <Heading
-              t={t}
-              heading={"Please select an effective date to revise the rate. Note that the effective date cannot be today or a past date."}
-            />
+            <>
+              <Heading t={t} heading={t("SELECT_DATE")} />
+              <CardText className="popup-effective-date-description" style={{ marginLeft: "16px" }}>
+                {t("RA_EFFECTIVE_DATE_DESCRIPTION")}
+              </CardText>
+            </>
           }
+          headerBarMainStyle={{gap:"4px"}}
           headerBarEnd={<CloseBtn onClick={() => setPopup(false)} />}
           formId="modal-action"
           popupStyles={{ margin: "auto auto" }}
