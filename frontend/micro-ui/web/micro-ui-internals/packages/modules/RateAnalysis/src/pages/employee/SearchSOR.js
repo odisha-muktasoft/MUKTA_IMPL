@@ -156,9 +156,9 @@ const SearchSOR = () => {
         <Modal
           headerBarMain={
             <>
-              <Heading t={t} heading={t("Select Date")} />
+              <Heading t={t} heading={t("SELECT_DATE")} />
               <CardText className="popup-effective-date-description" style={{ marginLeft: "16px" }}>
-                {t("Please select an effective date to revise the rate. Note that the effective date cannot be today or a past date.")}
+                {t("PLEASE_SELECT_ AN_ EFFECTIVE_DATE TO_REVISE_THE_RATE._NOTE_THAT_THE_EFFECTIVE_DATE_CANNOT_BE_TODAY_OR_A_PAST_DATE.")}
               </CardText>
             </>
           }
