@@ -207,4 +207,7 @@ public class Configuration {
 	
 	@Value("${sms.isAdditonalFieldRequired}")
     private boolean isAdditonalFieldRequired;
+
+    @Value("${individual.search.limit}")
+    private String individualSearchLimit;
 }

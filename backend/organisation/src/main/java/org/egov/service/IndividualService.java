@@ -341,7 +341,7 @@ public class IndividualService {
         try {
             tenantId = multiStateInstanceUtil.getStateLevelTenant(tenantId);
             UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url.toString())
-                    .queryParam("limit",100)
+                    .queryParam("limit", config.getIndividualSearchLimit())
                     .queryParam("offset",0)
                     .queryParam("tenantId",tenantId);
             Object response = serviceRequestRepository.fetchResult(new StringBuilder(uriBuilder.toUriString()), userRequest);
