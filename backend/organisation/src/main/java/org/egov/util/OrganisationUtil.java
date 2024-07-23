@@ -20,6 +20,11 @@ public class OrganisationUtil {
 
     @Autowired
     private final OrganisationRepository organisationRepository;
+
+    public OrganisationUtil(OrganisationRepository organisationRepository) {
+        this.organisationRepository = organisationRepository;
+    }
+
     /**
      * Method to set auditDetails for create/update flows of organisations
      *
