@@ -158,7 +158,7 @@ const SearchSOR = () => {
             <>
               <Heading t={t} heading={t("SELECT_DATE")} />
               <CardText className="popup-effective-date-description" style={{ marginLeft: "16px" }}>
-                {t("PLEASE_SELECT_ AN_ EFFECTIVE_DATE TO_REVISE_THE_RATE._NOTE_THAT_THE_EFFECTIVE_DATE_CANNOT_BE_TODAY_OR_A_PAST_DATE.")}
+                {t("RA_EFFECTIVE_DATE_DESCRIPTION")}
               </CardText>
             </>
           }
