@@ -20,7 +20,7 @@ const TableWithOutHead = (props) => {
     return fields?.map((row, index) => {
       return (
         <tr key={index}>
-          <td className="flex" style={{ width: "60%", margin: "0px", padding: "10px", textAlign: "right", paddingRight: "30px" }}>
+          <td className="flex" style={{ width: "60%", margin: "0px", padding: "10px", textAlign: "left", paddingRight: "30px" }}>
             { index===2?`${t(row?.name)}/ ${t(qty)} ${t(uom)}`:t(row?.name)}
           </td>
 
@@ -44,14 +44,14 @@ const TableWithOutHead = (props) => {
           flexDirection: "row",
           width: "100%",
           justifyContent: "flex-end",
-          paddingRight: "4%",
+          paddingRight: "0%",
           alignItems: "center",
           marginTop: "-30px",
         }}
       >
         <table
           className="table reports-table sub-work-table measurement-table-custom"
-          style={{ width: "40%", justifyContent: "right", paddingRight: "2%", alignItems: "right" }}
+          style={{ width: "40%", justifyContent: "right", paddingRight: "0%", alignItems: "right" }}
         >
           <tbody>{renderBody()}</tbody>
         </table>
