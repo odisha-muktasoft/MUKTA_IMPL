@@ -58,9 +58,20 @@ router.post(
             }
             catch (ex) {
                 if (ex.response && ex.response.data) console.log(ex.response.data);
-                return renderError(res, "Failed to query details of the mdms service", 500);
+                return renderError(res, "Failed to query details of the mdms v2 service", 500);
             }
             var muster = resMuster.data;
+            muster.musterRolls[0] = filterIndividualEntries(muster.musterRolls[0]);
+
+            function filterIndividualEntries(muster_roll) {
+                if (Array.isArray(muster_roll.individualEntries)) {
+                  muster_roll.individualEntries = muster_roll.individualEntries.filter(entry => {
+                    const additionalDetails = get(entry, 'additionalDetails', {});
+                    return additionalDetails.hasOwnProperty('skillCode') && !additionalDetails.hasOwnProperty('skillValue');
+                  });
+                }
+                return muster_roll;
+            }
             var contract = resContract.data;
             var mdms = get(resMdms, 'data.MdmsRes.WORKS-SOR.Rates', []);
             
