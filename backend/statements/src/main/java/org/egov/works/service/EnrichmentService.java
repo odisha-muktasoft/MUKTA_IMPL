@@ -205,6 +205,8 @@ public class EnrichmentService {
                 List<BasicSor> updatedBasicSorList= new ArrayList<BasicSor>();
 
                 if (newBasicSorList != null && !areBasicSorDetailsOfLineItemsEqual(existingBasicSorList, newBasicSorList)) {
+                    existingBasicSorList= new ArrayList<>();
+                    existingBasicSorList.addAll(newBasicSorList);
                     log.info("Updated Basic Sor Line Items object in existing statement");
 
                     updatedBasicSorList.addAll(existingBasicSorList);
@@ -634,12 +636,9 @@ public class EnrichmentService {
     }
 
 
-    private static boolean areBasicSorDetailsOfLineItemsEqual(List<BasicSor> existingBasicSorList, List<BasicSor> newBasicSorList) {
+    private static boolean areBasicSorDetailsOfLineItemsEqual( List<BasicSor> existingBasicSorList, List<BasicSor> newBasicSorList) {
 
         if (existingBasicSorList == null) {
-            existingBasicSorList= new ArrayList<>();
-            existingBasicSorList.addAll(newBasicSorList);
-
             return false;
         }else{
 
