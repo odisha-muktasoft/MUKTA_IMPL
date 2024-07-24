@@ -100,7 +100,7 @@ const GroupedTable = (props) => {
     return (
       <tr>
         {columns.map((col, index) => (
-          <th key={index} style={{ width: col.width  , textAlign:col?.textAlign, backgroundColor: "#A6A6A6",
+          <th key={index} style={{ width: col.width  , textAlign:col?.textAlign, backgroundColor: "#EFEFEF",
             fontSize: "16px",
             lineHeight: "18.75px",
             fontFamily: "Roboto",
@@ -144,7 +144,7 @@ const GroupedTable = (props) => {
   return (
     <React.Fragment>
       <table className="table reports-table reports-table sub-work-table">
-        <thead>{renderHeader()}</thead>
+        <thead style={{backgroundColor:"#EFEFEF"}}>{renderHeader()}</thead>
         <tbody>{renderBody()}
         {
           groupAndCalculateTotals().length>0&&

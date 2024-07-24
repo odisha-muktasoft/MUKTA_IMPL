@@ -55,9 +55,9 @@ const RateCardWithRightButton = (props) => {
                     className="border-none"
                     /* privacy object set to the Row Component */
                     privacy={row?.value?.privacy}
-                    rowContainerStyle={{}}
-                    textStyle={{}}
-                    labelStyle={{}}
+                    rowContainerStyle={{marginBottom:"0px"}}
+                    textStyle={{marginBottom:"0px"}}
+                    labelStyle={{marginBottom:"0px"}}
                     amountStyle={{}}
                   />
                 );

@@ -79,7 +79,7 @@ const ExtraChargesViewTable = (props) => {
       }}
     >
       <div className="search-sor-container">
-        <span className="card-section-header">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"?{}:{marginBottom:"-20px"}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
       </div>
       <table className="table reports-table sub-work-table">
         <thead>
