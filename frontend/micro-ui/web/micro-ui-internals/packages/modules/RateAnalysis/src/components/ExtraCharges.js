@@ -62,7 +62,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
         obj = { width: "10rem" };
         break;
       case 5:
-        obj = { width: "15rem" };
+        obj = { width: "15rem",textAlign:"right" };
         break;
       case 6:
         obj = { width: "18rem" };

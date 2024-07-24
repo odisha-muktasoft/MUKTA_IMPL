@@ -130,13 +130,13 @@ const SORDetailsTemplate = (props) => {
     let obj = {};
     switch (index) {
       case 1:
-        obj = pageType === "VIEW" ? { width: "1rem", textAlign: "left" } : { width: "8rem" };
+        obj = pageType === "VIEW" ? { width: "1rem", textAlign: "left" } : { width: "8rem" , textAlign: "left"};
         break;
       case 2:
-        obj = pageType === "VIEW" ? { width: "8rem", textAlign: "left" } : { width: "70rem" };
+        obj = pageType === "VIEW" ? { width: "8rem", textAlign: "left" } : { width: "70rem", textAlign: "left" };
         break;
       case 3:
-        obj = pageType === "VIEW" ? { width: "70rem", textAlign: "left" } : { width: "10rem" };
+        obj = pageType === "VIEW" ? { width: "70rem", textAlign: "left" } : { width: "10rem", textAlign: "left" };
         break;
       case 4:
         obj =
@@ -144,7 +144,7 @@ const SORDetailsTemplate = (props) => {
             ? { width: "10rem", textAlign: "left" }
             : pageType === "VIEW"
             ? { width: "15rem", textAlign: "right" }
-            : { width: "15rem" };
+            : { width: "15rem",textAlign: "right" };
         break;
       case 5:
         obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
