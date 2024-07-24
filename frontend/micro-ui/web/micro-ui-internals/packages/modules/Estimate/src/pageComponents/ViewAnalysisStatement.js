@@ -188,7 +188,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
           }, 1000);
         },
         onSuccess: async (responseData) => {
-          debugger
+        
           setTimeout(() => {
             history.push({
               pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
