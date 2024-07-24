@@ -20,6 +20,7 @@ const RateCardWithRightButton = (props) => {
     background: "#c7e0f1", // Default background
     padding: "10px",
     width: "100%",
+     borderRadius: "4px"
     //boxSizing: "border-box",
   };
 
@@ -54,9 +55,9 @@ const RateCardWithRightButton = (props) => {
                     className="border-none"
                     /* privacy object set to the Row Component */
                     privacy={row?.value?.privacy}
-                    rowContainerStyle={{}}
-                    textStyle={{}}
-                    labelStyle={{}}
+                    rowContainerStyle={{marginBottom:"0px"}}
+                    textStyle={{marginBottom:"0px"}}
+                    labelStyle={{marginBottom:"0px"}}
                     amountStyle={{}}
                   />
                 );
@@ -75,7 +76,7 @@ const RateCardWithRightButton = (props) => {
         </div>
 
         <div style={bannerStyle}>
-          <CitizenInfoLabel style={{ margin: "0px" }} info={t("RA_ACTIVE_RATE_INFO_LABEL")} text={t("RA_ACTIVE_RATE_INFO_CONTENT_LABEL")} />
+          <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{ margin: "0px", padding:"8px", }} info={t("RA_ACTIVE_RATE_INFO_LABEL")} text={t("RA_ACTIVE_RATE_INFO_CONTENT_LABEL")} />
         </div>
       </div>
     </React.Fragment>

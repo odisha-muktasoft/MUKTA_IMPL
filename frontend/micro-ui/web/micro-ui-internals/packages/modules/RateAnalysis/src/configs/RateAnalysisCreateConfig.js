@@ -1,4 +1,4 @@
-export const CreateConfig = ({ defaultValue, isUpdate, measurement }) => {
+export const CreateConfig = ({t, defaultValue, isUpdate, measurement }) => {
     return {
       CreateConfig: [
         {
@@ -161,6 +161,12 @@ export const CreateConfig = ({ defaultValue, isUpdate, measurement }) => {
                   "disable": false,
                   "populators": {
                     "name": "analysis_qty_defined",
+                    "error": t("ERR_QUANTITY_MANDATORY_FORMAT"),
+                    "validation": {
+                      "pattern": /^$|^\d{1,4}(\.\d{1,2})?$/i,
+                      //"ValidationRequired" : true,
+                      //"title" : "please correct the input",
+                    }
                   }
                 },
               ],

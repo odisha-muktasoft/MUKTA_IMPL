@@ -81,7 +81,7 @@ const RateAmountGroup = (props) => {
           flexDirection: "row",
           width: "100%",
           justifyContent: "flex-end",
-          paddingRight: "2%",
+          paddingRight: "0%",
           alignItems: "center",
           marginTop: "-30px",
         }}

@@ -8,7 +8,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [showToast, setShowToast] = useState(null);
-  const { revisionNumber } = Digit.Hooks.useQueryParams();
+  const { revisionNumber,estimateNumber } = Digit.Hooks.useQueryParams();
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
     window.location.href
   );
@@ -175,7 +175,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
               state: {
                
                 estimateId: formData?.SORtable?.[0]?.estimateId,
-                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber?formData?.estimateNumber:estimateNumber,
                  downloadStatus: false,
                 oldData: {
                   Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
@@ -188,13 +188,15 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
           }, 1000);
         },
         onSuccess: async (responseData) => {
+        
           setTimeout(() => {
             history.push({
               pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
               state: {
                 responseData: responseData,
                 estimateId: formData?.SORtable?.[0]?.estimateId,
-                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber?formData?.estimateNumber:estimateNumber,
+                 downloadStatus: true,
                
               },
             });
@@ -207,11 +209,13 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
         
           setTimeout(() => {
             history.push({
-              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+              pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
               state: {
                 
-                estimateId: formData?.SORtable?.[0]?.estimateId,
-                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
+                estimateId: window.location.href.includes("measurement/update") ? props.config.formData.Measurement.id : formData?.Measurement?.id,
+                number: window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
                 downloadStatus: false,
                 oldData: {
                   Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
@@ -256,7 +260,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     const number = isEstimate
       ? window.location.href.includes("revision")
         ? revisionNumber
-        : formData?.estimateNumber
+        : formData?.estimateNumber?formData?.estimateNumber:estimateNumber
       : window.location.href.includes("measurement/update")
       ? props.config.formData.Measurement.measurementNumber
       : formData?.Measurement?.measurementNumber;
@@ -345,7 +349,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       <div>
         <LinkButton
           className="view-Analysis-button"
-          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "282px" } : { textAlign: "center", width: "282px" }}
           onClick={handleButtonClick}
           label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
         />

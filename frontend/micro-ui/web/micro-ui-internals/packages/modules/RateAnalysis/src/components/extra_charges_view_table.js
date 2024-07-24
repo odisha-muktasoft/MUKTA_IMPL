@@ -32,25 +32,25 @@ const ExtraChargesViewTable = (props) => {
     let obj = {};
     switch (index) {
       case 1:
-        obj = { width: "1rem" };
+        obj = { width: "1rem",textAlign: "left" };
         break;
       case 2:
-        obj = { width: "70rem" };
+        obj = { width: "70rem",textAlign: "left" };
         break;
       case 3:
-        obj = { width: "10rem" };
+        obj = { width: "10rem" ,textAlign: "left"};
         break;
       case 4:
-        obj = { width: "10rem" };
+        obj = { width: "10rem" ,textAlign: "left"};
         break;
       case 5:
-        obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
+        obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" ,textAlign: "right"};
         break;
       case 6:
-        obj = pageType === "VIEW" ? { width: "16rem", textAlign: "right" } : { width: "15rem" };
+        obj = pageType === "VIEW" ? { width: "16rem", textAlign: "right" } : { width: "15rem" ,textAlign: "right"};
         break;
       case 7:
-        obj = pageType === "VIEW" ? { width: "14rem", textAlign: "right" } : { width: "10rem" };
+        obj = pageType === "VIEW" ? { width: "14rem", textAlign: "right" } : { width: "10rem" ,textAlign: "right"};
         break;
       case 8:
         obj = { width: "3%" };
@@ -75,17 +75,17 @@ const ExtraChargesViewTable = (props) => {
   return (
     <div
       style={{
-        paddingRight: "4%",
+        paddingRight: "0%",
       }}
     >
       <div className="search-sor-container">
-        <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"?{}:{marginBottom:"-20px"}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
       </div>
       <table className="table reports-table sub-work-table">
         <thead>
           <tr>
             {columns.map((column, index) => (
-              <th key={index}>{column.label}</th>
+              <th key={index} style={getStyles(index + 1)}>{column.label}</th>
             ))}
           </tr>
         </thead>

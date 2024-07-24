@@ -171,6 +171,8 @@ export const FormComposer = (props) => {
                   minlength={populators?.validation?.minlength}
                   customIcon={populators?.customIcon}
                   customClass={populators?.customClass}
+                  ValidationRequired={populators?.validation?.ValidationRequired}
+                  validation={populators?.validation}
                 />
               )}
               name={populators.name}

@@ -62,7 +62,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
         obj = { width: "10rem" };
         break;
       case 5:
-        obj = { width: "15rem" };
+        obj = { width: "15rem",textAlign:"right" };
         break;
       case 6:
         obj = { width: "18rem" };
@@ -183,6 +183,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     );
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+  };
+
+  const isValidQuantity = (value) => {
+    const regex = /^\d{0,4}(\.\d{0,2})?$/;
+    return regex.test(value);
   };
 
   const cellContainerStyle = { display: "flex", flexDirection: "column" };
@@ -315,7 +320,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                   })}
                   onChange={(e) => {
-                    if(has4DecimalPlaces(parseFloat(e?.target.value))){
+                    if(isValidQuantity(parseFloat(e?.target.value))){
                       setAmountField(e, rowIndex)
                     }
                     else

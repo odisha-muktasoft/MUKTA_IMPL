@@ -90,8 +90,7 @@ const SORDetailsTemplate = (props) => {
     { label: t("RA_QTY"), key: "quantity" },
   ];
 
-  if(pageType === "VIEW")
-  {
+  if (pageType === "VIEW") {
     columns.unshift({ label: t("RA_SNO"), key: "sno" });
   }
 
@@ -131,16 +130,21 @@ const SORDetailsTemplate = (props) => {
     let obj = {};
     switch (index) {
       case 1:
-        obj = pageType === "VIEW" ? { width: "1rem" } : { width: "8rem" };
+        obj = pageType === "VIEW" ? { width: "1rem", textAlign: "left" } : { width: "8rem" , textAlign: "left"};
         break;
       case 2:
-        obj = pageType === "VIEW" ? { width: "8rem" } : { width: "70rem" };
+        obj = pageType === "VIEW" ? { width: "8rem", textAlign: "left" } : { width: "70rem", textAlign: "left" };
         break;
       case 3:
-        obj = pageType === "VIEW" ? { width: "70rem" } : { width: "10rem" };
+        obj = pageType === "VIEW" ? { width: "70rem", textAlign: "left" } : { width: "10rem", textAlign: "left" };
         break;
       case 4:
-        obj = pageType === "VIEW" ? { width: "10rem" } : (pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" });
+        obj =
+          pageType === "VIEW"
+            ? { width: "10rem", textAlign: "left" }
+            : pageType === "VIEW"
+            ? { width: "15rem", textAlign: "right" }
+            : { width: "15rem",textAlign: "right" };
         break;
       case 5:
         obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
@@ -184,12 +188,19 @@ const SORDetailsTemplate = (props) => {
 
   return (
     <div
-      style={{
+      style={
+        pageType !== "VIEW"?{
+        
         paddingRight: "4%",
-      }}
+      }:
+      {
+        
+        paddingRight: "0%",
+      }
+    }
     >
-      <div className="search-sor-container">
-        <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+      <div style={{ display: "flex", width: "70.25%", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"?{}:{marginBottom:"-20px"}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
         {pageType !== "VIEW" && (
           <div className="search-sor-button">
             <SearchBar
@@ -202,7 +213,7 @@ const SORDetailsTemplate = (props) => {
           </div>
         )}
       </div>
-      <table className="reports-table sub-work-table" style={pageType === "VIEW" ? {} : {width:"104%"}}>
+      <table className="reports-table sub-work-table" style={pageType === "VIEW" ? {} : { width: "104%" }}>
         <thead>
           <tr>
             {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
@@ -231,7 +242,7 @@ const SORDetailsTemplate = (props) => {
                             onChange={(e) => {
                               const { value } = e.target;
                               if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
-                                let detailsPicked = window.location.href.includes("update") ? SORDetails : formData
+                                let detailsPicked = window.location.href.includes("update") ? SORDetails : formData;
                                 let newSOR = detailsPicked?.map((obj) => {
                                   if (obj?.sorCode === row?.sorCode) {
                                     return { ...obj, quantity: value };
