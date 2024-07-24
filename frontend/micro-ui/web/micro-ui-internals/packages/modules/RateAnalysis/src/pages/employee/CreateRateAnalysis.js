@@ -292,7 +292,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       <Header className="works-header-view modify-header">{isUpdate ? t("RA_UPDATE_RATE_ANALYSIS") : t("RA_CREATE_RATE_ANALYSIS")}</Header>
       <FormComposerV2
         label={t("RA_SUBMIT_BAR")}
-        config={CreateConfig({ defaultValue: defaultState, isUpdate, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
+        config={CreateConfig({t, defaultValue: defaultState, isUpdate, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
           return {
             ...config,
             body: config.body.filter((a) => !a.hideInEmployee),
