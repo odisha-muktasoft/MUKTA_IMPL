@@ -349,7 +349,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       <div>
         <LinkButton
           className="view-Analysis-button"
-          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "282px" } : { textAlign: "center", width: "282px" }}
           onClick={handleButtonClick}
           label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
         />
