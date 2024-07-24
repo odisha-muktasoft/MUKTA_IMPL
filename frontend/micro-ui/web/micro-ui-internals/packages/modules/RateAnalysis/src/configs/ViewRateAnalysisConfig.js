@@ -134,7 +134,9 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
 
                 type: "DATA",
 
-                cardHeader: { value: "RA_RATE_ANALYSIS_LABEL", inlineStyles: {} },
+                cardHeader: { value: "RA_RATE_ANALYSIS_LABEL", inlineStyles: {
+                marginBottom : "10px", fontSize: "24px",lineHeight:"32px"
+                } },
                 infoCard:infoCard,
                 values: [
                   {
