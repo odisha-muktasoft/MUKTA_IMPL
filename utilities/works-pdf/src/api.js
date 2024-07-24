@@ -546,6 +546,39 @@ async function search_measurementBookDetails(tenantId, requestinfo,contractNumbe
   });
 }
 
+async function search_mdmsV2(tenantId) {
+  const params = {
+    MdmsCriteria: {
+      moduleDetails: [
+        {
+          moduleName: "WORKS-SOR",
+          masterDetails: [
+            {
+              name: "Rates"
+            }
+          ]
+        }
+      ],
+      tenantId: tenantId
+    }
+  };
+
+  const searchEndpoint = config.paths.mdmsV2_search;
+
+  try {
+    const response = await axios({
+      method: "post",
+      url: url.resolve(config.host.mdmsV2, searchEndpoint),
+      data: params
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error searching MDMS v2:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   pool,
   create_pdf,
@@ -573,5 +606,6 @@ module.exports = {
   exec_query_eg_payments_excel,
   search_hrms,
   search_mdms_terms_and_conditions,
-  search_measurementBookDetails
+  search_measurementBookDetails,
+  search_mdmsV2
 };

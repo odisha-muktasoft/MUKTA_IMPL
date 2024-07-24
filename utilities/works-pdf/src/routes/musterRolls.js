@@ -6,7 +6,7 @@ var config = require("../config");
 var { search_musterRoll, create_pdf, search_localization } = require("../api");
 var {searchEstimateFormusterRoll,create_pdf  }= require("../api");
 var { search_contract, create_pdf } = require("../api");
-var { search_mdmsLabourCharges, create_pdf } = require("../api");
+var { search_mdmsV2, create_pdf } = require("../api");
 const { asyncMiddleware } = require("../utils/asyncMiddleware");
 const { calculateAttendenceDetails, calculateAttendenceTotal, getDateMonth } = require("../utils/calculateMusterData");
 const get = require("lodash.get");
@@ -53,7 +53,7 @@ router.post(
             }
             try {
 
-                resMdms = await search_mdmsLabourCharges(tenantId, requestinfo);
+                resMdms = await search_mdmsV2(tenantId);
 
             }
             catch (ex) {
@@ -62,7 +62,7 @@ router.post(
             }
             var muster = resMuster.data;
             var contract = resContract.data;
-            var mdms = get(resMdms, 'data.MdmsRes.expense.LabourCharges', []);
+            var mdms = get(resMdms, 'data.MdmsRes.WORKS-SOR.Rates', []);
             
             // Get estimate using expense calculator
             let estimateCalc = {}
@@ -123,10 +123,10 @@ router.post(
                     muster.musterRolls[0].totalWageAmount= 'NA';                  
                 }
                 const createdTime = muster.musterRolls[0].auditDetails.createdTime;
-                const filteredMdmsLabourCharges = mdms.filter(item => createdTime >= item.effectiveFrom && (createdTime <= item.effectiveTo || item.effectiveTo == null));
+                const filteredMdmsLabourCharges = mdms.filter(item => createdTime >= item.validFrom && (createdTime <= item.validTo || item.validTo == null));
 
                 var labourCharges = filteredMdmsLabourCharges.reduce((modified, actual) => {
-                    modified[actual.code] = actual.amount;
+                    modified[actual.sorId] = actual.rate;
                     return modified;
                 }, {})
                 
