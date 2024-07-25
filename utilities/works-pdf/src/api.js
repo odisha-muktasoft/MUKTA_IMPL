@@ -579,6 +579,57 @@ async function search_mdmsV2(tenantId) {
   }
 }
 
+async function search_rateAnalysisStatementDetails(tenantId, requestinfo, referenceId) {
+  const search_endpoint = config.paths.analysis_statement_search;
+  const url = new URL(search_endpoint, config.host.statements);
+  requestinfo = requestinfo.RequestInfo;
+  const data = {
+    RequestInfo: requestinfo,
+    searchCriteria: {
+      tenantId: tenantId,
+      referenceId: referenceId
+    }
+  };
+
+  return await axios.post(url.href, data);
+}
+async function search_rateAnalysisUtilizationDetails(tenantId, requestinfo, referenceId) {
+  const search_endpoint = config.paths.analysis_utilization_search;
+  const url = new URL(search_endpoint, config.host.statements);
+  requestinfo = requestinfo.RequestInfo;
+  const data = {
+    RequestInfo: requestinfo,
+    searchCriteria: {
+      tenantId: tenantId,
+      referenceId: referenceId
+    }
+  };
+
+  return await axios.post(url.href, data);
+}
+
+async function search_projectDetails_by_ID(tenantId, requestinfo, projectId) {
+  var params = {
+    tenantId: tenantId,
+    limit: 1,
+    offset: 0
+  };
+
+  var searchEndpoint = config.paths.projectDetails_search;
+  var data = {
+    "Projects": [{
+      "tenantId": tenantId,
+      "id": projectId
+    }]
+  }
+  return await axios({
+    method: "post",
+    url: url.resolve(config.host.projectDetails, searchEndpoint),
+    data: Object.assign(requestinfo, data),
+    params,
+  });
+}
+
 module.exports = {
   pool,
   create_pdf,
@@ -607,5 +658,8 @@ module.exports = {
   search_hrms,
   search_mdms_terms_and_conditions,
   search_measurementBookDetails,
-  search_mdmsV2
+  search_mdmsV2,
+  search_rateAnalysisStatementDetails,
+  search_projectDetails_by_ID,
+  search_rateAnalysisUtilizationDetails
 };

@@ -259,8 +259,9 @@ const searchTemplate = (props) => {
    })):[];
 
 
-   let nosSorData = stateData?.selectedTemplate.nonSorLineItems? stateData?.selectedTemplate.nonSorLineItems?.map((item) => ({
-     sNo: 1,
+   let newnonsorIndex = formNonSORdata[formNonSORdata?.length - 1]?.sNo+1;
+   let nosSorData = stateData?.selectedTemplate.nonSorLineItems? stateData?.selectedTemplate.nonSorLineItems?.map((item, index) => ({
+     sNo: newnonsorIndex++,
      description: item?.description,
      uom: item?.uom,
      category: "NON-SOR",
@@ -273,7 +274,6 @@ const searchTemplate = (props) => {
      amount: 0,
      measures: [],
      targetId: null,
-     sorId: item?.id,
    })):[];
 
 
@@ -373,7 +373,7 @@ const searchTemplate = (props) => {
              customClass="search-sor-input"
            />
            {suggestions?.length > 0 && (
-             <ul className="suggestions-sor" style={{ zIndex: "10", maxHeight: "33rem", overflow: "auto" }}>
+             <ul className="suggestions-sor" style={{ zIndex: "21", maxHeight: "33rem", overflow: "auto" }}>
                {suggestions.map((option) => (
                  <li key={option?.templateId} onClick={() => handleSelectOption(option)}>
                    {option?.templateName}
