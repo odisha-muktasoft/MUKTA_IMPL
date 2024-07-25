@@ -373,7 +373,7 @@ const searchTemplate = (props) => {
              customClass="search-sor-input"
            />
            {suggestions?.length > 0 && (
-             <ul className="suggestions-sor" style={{ zIndex: "10", maxHeight: "33rem", overflow: "auto" }}>
+             <ul className="suggestions-sor" style={{ zIndex: "21", maxHeight: "33rem", overflow: "auto" }}>
                {suggestions.map((option) => (
                  <li key={option?.templateId} onClick={() => handleSelectOption(option)}>
                    {option?.templateName}
