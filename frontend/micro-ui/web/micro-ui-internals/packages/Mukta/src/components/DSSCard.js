@@ -1,4 +1,4 @@
-import { HRIcon, EmployeeModuleCard } from "@egovernments/digit-ui-react-components";
+import { HRIcon, EmployeeModuleCard, WorksMgmtIcon } from "@egovernments/digit-ui-react-components";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -15,7 +15,7 @@ const DSSCard = () => {
 
   let isProduction = window.location.href.includes("odisha.gov.in") ? true : false;
   const propsForModuleCard = {
-    Icon: <HRIcon />,
+    Icon: <WorksMgmtIcon />,
     moduleName: t("ACTION_TEST_10DSS"),
     kpis: [
       // {
@@ -34,11 +34,13 @@ const DSSCard = () => {
         label: t("DSS_MUKTA_DASHBOARD"),
         link: isProduction ? `/kibana-v8/app/dashboards#/view/fcba7d24-851a-4b11-b792-e790a86bab3d?_g=[…]!t,value:60000),time:(from:now-1y%2Fd,to:now))` : `/kibana-v8/app/dashboards#/view/c8d7e730-2252-11ef-98df-3bbfa2125b2b?_g=(filters:!(),time:(from:now-1y,to:now))`,
         roles: ROLES.MUKTADASHBOARD,
+        target: "_blank"
       },
       {
         label: t("DSS_ROLLOUT_DASHBOARD"),
         link: isProduction ? `/kibana-v8/app/dashboards#/view/1cb35e7c-2a53-45e2-a46b-018d17ae4c15?_g=[…]!t,value:60000),time:(from:now-1y%2Fd,to:now))`: `/kibana-v8/app/dashboards#/view/261cb0b0-fbde-11ee-b08d-8b505ceea182?_g=[…]use:!t,value:60000),time:(from:now-1y,to:now))`,
         roles: ROLES.MUKTADASHBOARD,
+        target: "_blank"
       },
     ],
   };
