@@ -203,11 +203,11 @@ const WorksCard = () => {
     //   link: `/${window?.contextPath}/employee/expenditure/search-bill?status=APPROVED`,
     //   roles: ROLES.PAYMENT,
     // },
-    {
-      label: t("ACTION_TEST_6DASHBOARD"),
-      link: `/${window?.contextPath}/employee/dss/dashboard/mukta`,
-      roles: ROLES.DSS,
-    },
+    // {
+    //   label: t("ACTION_TEST_6DASHBOARD"),
+    //   link: `/${window?.contextPath}/employee/dss/dashboard/mukta`,
+    //   roles: ROLES.DSS,
+    // },
     {
       label: t("ACTION_TEST_7MASTERS"),
       link: `/${window?.contextPath}/employee/masters/search-organization`,
