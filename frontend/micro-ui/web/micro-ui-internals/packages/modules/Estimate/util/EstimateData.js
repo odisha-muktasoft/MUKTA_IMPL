@@ -175,8 +175,7 @@ export const sortSorsBasedonType = (statement,screenType) => {
       }
     });
   });
-  console.log(resultArray);
-  debugger;
+ 
   return resultArray;
 
   // Create the array of objects based on the provided statement data
