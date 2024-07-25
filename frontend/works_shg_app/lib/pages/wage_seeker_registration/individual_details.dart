@@ -301,6 +301,12 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                               'required': (_) => t.translate(
                                     i18.wageSeeker.aadhaarRequired,
                                   ),
+                              'minLength': (_) => t.translate(
+                                    i18.wageSeeker.minAadhaarCharacters,
+                                  ),
+                              'maxLength': (_) => t.translate(
+                                    i18.wageSeeker.maxAadhaarCharacters,
+                                  ),
                             },
                     ),
                     DigitTextFormField(
@@ -576,6 +582,8 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                   ]
                 : [
                     Validators.required,
+                    Validators.minLength(12),
+                    Validators.maxLength(12)
                   ]),
         nameKey: FormControl<String>(
             value: individualDetails.name ?? '',

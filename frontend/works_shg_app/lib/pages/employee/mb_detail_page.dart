@@ -129,12 +129,9 @@ class _MBDetailPageState extends State<MBDetailPage>
           listener: (context, state) {
             state.maybeMap(
               orElse: () => {},
-              loaded: (value) {
-                
-
+              loaded: (valueLoaded) {
                 if (widget.type == MBScreen.update) {
                   context.read<MusterGetWorkflowBloc>().add(
-                        
                         FetchMBWorkFlowEvent(
                             tenantId: GlobalVariables.tenantId!,
                             mbNumber: widget.mbNumber!),
@@ -154,7 +151,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   ).popUntil(
                     (route) => route is! PopupRoute,
                   );
-                } else if ((value.measurement!.wfStatus == "SUBMITTED") &&
+                } else if ((valueLoaded.measurement!.wfStatus == "SUBMITTED") &&
                     widget.type == MBScreen.create) {
                   Navigator.of(
                     context,
@@ -163,7 +160,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     (route) => route is! PopupRoute,
                   );
                   context.router.popUntilRouteWithPath('home');
-                } else if ((value.measurement!.wfStatus == "DRAFTED") &&
+                } else if ((valueLoaded.measurement!.wfStatus == "DRAFTED") &&
                     widget.type == MBScreen.create) {
                   Navigator.of(
                     context,
@@ -176,8 +173,18 @@ class _MBDetailPageState extends State<MBDetailPage>
                 Notifiers.getToastMessage(
                     context,
                     t.translate(
-                        "WF_UPDATE_SUCCESS_MB_${value.measurement?.workflow?.action}"),
+                        "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
                     'SUCCESS');
+
+                context.read<MeasurementDetailBloc>().add(
+                      MeasurementDetailBookBlocEvent(
+                        tenantId: widget.tenantId!,
+                        contractNumber: widget.contractNumber,
+                        measurementNumber:
+                            valueLoaded!.measurement!.measurementNumber!,
+                        screenType: MBScreen.update,
+                      ),
+                    );
               },
               error: (value) {
                 Notifiers.getToastMessage(
@@ -209,7 +216,6 @@ class _MBDetailPageState extends State<MBDetailPage>
             );
           },
         ),
-        
       ],
       child: DefaultTabController(
         length: 3,
@@ -251,25 +257,64 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 final g = mbWorkFlow
                                     .musterWorkFlowModel?.processInstances;
 
-                                return FloatActionCard(
-                                  actions: () {
-                                    DigitActionDialog.show(
-                                      context,
-                                      widget: CommonButtonCard(
-                                        g: g,
-                                        contractNumber: widget.contractNumber,
-                                        mbNumber: widget.mbNumber,
-                                        type: widget.type,
-                                      ),
-                                    );
-                                  },
-                                  // amount: sorprice.toString(),
-                                  amount: value.data.first.totalAmount != null
-                                      ? value.data.first.totalAmount!
-                                          .roundToDouble()
-                                          .toStringAsFixed(2)
-                                      : "0.00",
-                                  openButtonSheet: () {
+                                return Draggable(
+                                  childWhenDragging: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                        ),
+                                      );
+                                    },
+                                    // amount: sorprice.toString(),
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          widget.type,
+                                          null,
+                                          (g != null &&
+                                                  (g.first.nextActions !=
+                                                          null &&
+                                                      g.first.nextActions!
+                                                          .isEmpty))
+                                              ? false
+                                              : true,
+                                          workorderStatus,
+                                          estimateStatus,
+                                          (value.data.length >= 2
+                                              ? (value.data[1].wfStatus ==
+                                                      "APPROVED" ||
+                                                  value.data[1].wfStatus ==
+                                                      "REJECTED")
+                                              : false));
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
+                                    showAction: (g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
+                                  onDragEnd: (details) {
                                     _openBottomSheet(
                                         t,
                                         context,
@@ -296,15 +341,119 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                     "REJECTED")
                                             : false));
                                   },
-                                  totalAmountText: t.translate(
-                                      i18.measurementBook.totalMbAmount),
-                                  subtext: t.translate(
-                                      i18.measurementBook.forCurrentEntry),
-                                  showAction: (g != null &&
-                                          (g.first.nextActions != null &&
-                                              g.first.nextActions!.isEmpty))
-                                      ? false
-                                      : true,
+                                  feedback: const SizedBox.shrink(),
+                                  // feedback: FloatActionCard(
+                                  //   actions: () {
+                                  //     DigitActionDialog.show(
+                                  //       context,
+                                  //       widget: CommonButtonCard(
+                                  //         g: g,
+                                  //         contractNumber: widget.contractNumber,
+                                  //         mbNumber: widget.mbNumber,
+                                  //         type: widget.type,
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  //   // amount: sorprice.toString(),
+                                  //   amount: value.data.first.totalAmount != null
+                                  //       ? value.data.first.totalAmount!
+                                  //           .roundToDouble()
+                                  //           .toStringAsFixed(2)
+                                  //       : "0.00",
+                                  //   openButtonSheet: () {
+                                  //     _openBottomSheet(
+                                  //         t,
+                                  //         context,
+                                  //         value.data.first.totalSorAmount!,
+                                  //         value.data.first.totalNorSorAmount!,
+                                  //         value.data.first.totalAmount!,
+                                  //         g,
+                                  //         widget.contractNumber,
+                                  //         widget.mbNumber,
+                                  //         widget.type,
+                                  //         null,
+                                  //         (g != null &&
+                                  //                 (g.first.nextActions !=
+                                  //                         null &&
+                                  //                     g.first.nextActions!
+                                  //                         .isEmpty))
+                                  //             ? false
+                                  //             : true,
+                                  //         workorderStatus,
+                                  //         estimateStatus,
+                                  //         (value.data.length >= 2
+                                  //             ? (value.data[1].wfStatus ==
+                                  //                     "APPROVED" ||
+                                  //                 value.data[1].wfStatus ==
+                                  //                     "REJECTED")
+                                  //             : false));
+                                  //   },
+                                  //   totalAmountText: t.translate(
+                                  //       i18.measurementBook.totalMbAmount),
+                                  //   subtext: t.translate(
+                                  //       i18.measurementBook.forCurrentEntry),
+                                  //   showAction: (g != null &&
+                                  //           (g.first.nextActions != null &&
+                                  //               g.first.nextActions!.isEmpty))
+                                  //       ? false
+                                  //       : true,
+                                  // ),
+                                  child: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                        ),
+                                      );
+                                    },
+                                    // amount: sorprice.toString(),
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          widget.type,
+                                          null,
+                                          (g != null &&
+                                                  (g.first.nextActions !=
+                                                          null &&
+                                                      g.first.nextActions!
+                                                          .isEmpty))
+                                              ? false
+                                              : true,
+                                          workorderStatus,
+                                          estimateStatus,
+                                          (value.data.length >= 2
+                                              ? (value.data[1].wfStatus ==
+                                                      "APPROVED" ||
+                                                  value.data[1].wfStatus ==
+                                                      "REJECTED")
+                                              : false));
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
+                                    showAction: (g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
                                 );
                               },
                             );
@@ -322,28 +471,60 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         .businessServices ??
                                     [];
 
-                                return FloatActionCard(
-                                  actions: () {
-                                    
-                                    DigitActionDialog.show(
-                                      context,
-                                      widget: CommonButtonCard(
-                                        g: g,
-                                        contractNumber: widget.contractNumber,
-                                        mbNumber: widget.mbNumber,
-                                        type: widget.type,
-                                        bs: bk,
-                                      ),
-                                    );
-                                   
-                                  },
-                                  
-                                  amount: value.data.first.totalAmount != null
-                                      ? value.data.first.totalAmount!
-                                          .roundToDouble()
-                                          .toStringAsFixed(2)
-                                      : "0.00",
-                                  openButtonSheet: () {
+                                return Draggable(
+                                  childWhenDragging: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                          bs: bk,
+                                        ),
+                                      );
+                                    },
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          widget.type,
+                                          bk,
+                                          (bk != null &&
+                                                  (bk != null && bk.isEmpty))
+                                              ? false
+                                              : true,
+                                          workorderStatus,
+                                          estimateStatus,
+                                          (value.data.length >= 2
+                                              ? (value.data[1].wfStatus ==
+                                                      "APPROVED" ||
+                                                  value.data[1].wfStatus ==
+                                                      "REJECTED")
+                                              : true));
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
+                                    showAction: (bk != null &&
+                                            (bk != null && bk.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
+                                  onDragEnd: (details) {
                                     _openBottomSheet(
                                         t,
                                         context,
@@ -368,14 +549,59 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                     "REJECTED")
                                             : true));
                                   },
-                                  totalAmountText: t.translate(
-                                      i18.measurementBook.totalMbAmount),
-                                  subtext: t.translate(
-                                      i18.measurementBook.forCurrentEntry),
-                                  showAction:
-                                      (bk != null && (bk != null && bk.isEmpty))
-                                          ? false
-                                          : true,
+                                  feedback: const SizedBox.shrink(),
+                                  child: FloatActionCard(
+                                    actions: () {
+                                      DigitActionDialog.show(
+                                        context,
+                                        widget: CommonButtonCard(
+                                          g: g,
+                                          contractNumber: widget.contractNumber,
+                                          mbNumber: widget.mbNumber,
+                                          type: widget.type,
+                                          bs: bk,
+                                        ),
+                                      );
+                                    },
+                                    amount: value.data.first.totalAmount != null
+                                        ? value.data.first.totalAmount!
+                                            .roundToDouble()
+                                            .toStringAsFixed(2)
+                                        : "0.00",
+                                    openButtonSheet: () {
+                                      _openBottomSheet(
+                                          t,
+                                          context,
+                                          value.data.first.totalSorAmount!,
+                                          value.data.first.totalNorSorAmount!,
+                                          value.data.first.totalAmount!,
+                                          g,
+                                          widget.contractNumber,
+                                          widget.mbNumber,
+                                          widget.type,
+                                          bk,
+                                          (bk != null &&
+                                                  (bk != null && bk.isEmpty))
+                                              ? false
+                                              : true,
+                                          workorderStatus,
+                                          estimateStatus,
+                                          (value.data.length >= 2
+                                              ? (value.data[1].wfStatus ==
+                                                      "APPROVED" ||
+                                                  value.data[1].wfStatus ==
+                                                      "REJECTED")
+                                              : true));
+                                    },
+                                    totalAmountText: t.translate(
+                                        i18.measurementBook.totalMbAmount),
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
+                                    showAction: (bk != null &&
+                                            (bk != null && bk.isEmpty))
+                                        ? false
+                                        : true,
+                                  ),
                                 );
                               },
                             );
@@ -567,7 +793,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               index,
                                               magic: value.sor![index]
                                                   .filteredMeasurementsMeasure,
-                                              
 
                                               preSorNonSor: value.preSor == null
                                                   ? null
@@ -619,12 +844,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               int index) {
                                             return sorCard(
                                               t,
-                                              context, index,
+                                              context,
+                                              index,
                                               magic: value.nonSor![index]
                                                   .filteredMeasurementsMeasure,
-
-                                              
-
                                               preSorNonSor: value.preNonSor ==
                                                       null
                                                   ? null
@@ -648,7 +871,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .sorId)!
                                                           .filteredMeasurementsMeasure
                                                       : null,
-                                              
                                               type: "NonSor",
                                               sorNonSorId:
                                                   value.nonSor![index].sorId!,
@@ -767,7 +989,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(4),
-                                                          
                                                           child: Text(
                                                               t.translate(i18
                                                                   .measurementBook
@@ -852,7 +1073,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                   ),
                                                 )
                                               : DigitCard(
-                                                
                                                   child: ListView.builder(
                                                       physics:
                                                           const NeverScrollableScrollPhysics(),
@@ -1195,25 +1415,22 @@ class _MBDetailPageState extends State<MBDetailPage>
     }
   }
 
- double photoSize(int photok){
+  double photoSize(int photok) {
+    switch (photok) {
+      case 1:
+        return (photok * 115) + 112;
+      case 2:
+        return (photok * 100) + 88;
+      case 3:
+        return (photok * 100) + 80;
+      case 4:
+        return (photok * 90) + 80;
+      case 5:
+        return (photok * 80) + 80;
 
-switch (photok) {
-  case 1:
-   return  (photok * 115) + 112;
-   case 2:
-   return  (photok * 100) + 88;
-   case 3:
-   return  (photok * 100) + 80;
-   case 4:
-   return  (photok * 90) + 80;
-   case 5:
-   return  (photok * 80) + 80;
-   
-    
-  default:
-  return 350;
-}
-     
+      default:
+        return 350;
+    }
   }
 
   Card sorCard(
@@ -1246,9 +1463,6 @@ switch (photok) {
             return double.parse((double.parse(sum) + m.toDouble()).toString())
                 .toStringAsFixed(4);
           });
-
-
-    
 
     return Card(
       child: SizedBox(
@@ -1290,9 +1504,9 @@ switch (photok) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                    padding: const EdgeInsets.only(bottom: 10.0),
                     child: Text(t.translate(i18.measurementBook.currentMBEntry),
-                        style: Theme.of(context).textTheme.labelSmall),
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
                   Container(
                     padding: const EdgeInsets.all(5.0),
@@ -1386,27 +1600,80 @@ switch (photok) {
               ),
 
               // end
-
-              DigitTextField(
-                controller: TextEditingController()
-                  ..value
-                  ..text = (magic.fold(0.0, (sum, obj) {
-                    double m = obj.mbAmount != null
-                        ? (obj.mbAmount != null && obj.mbAmount! < 0)
-                            ? (obj.mbAmount! * (-1))
-                            : obj.mbAmount!
-                        : 0.00;
-                    if (obj.contracts?.first.estimates?.first.isDeduction ==
-                        true) {
-                      m = -(m); // Negate the amount for deductions
-                    } else {
-                      m = (m);
-                    }
-                    return sum + m;
-                  })).toStringAsFixed(2),
-                label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
-                isDisabled: true,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                    child: Text(
+                      t.translate(i18.measurementBook.mbAmtCurrentEntry),
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textScaleFactor: 0.99,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.sizeOf(context).width,
+                    padding: const EdgeInsets.only(
+                        top: 10.0, left: 5.0, right: 5.0, bottom: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const DigitColors().cloudGray,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        (magic.fold(0.0, (sum, obj) {
+                          double m = obj.mbAmount != null
+                              ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                                  ? (obj.mbAmount! * (-1))
+                                  : obj.mbAmount!
+                              : 0.00;
+                          if (obj.contracts?.first.estimates?.first
+                                  .isDeduction ==
+                              true) {
+                            m = -(m); // Negate the amount for deductions
+                          } else {
+                            m = (m);
+                          }
+                          return sum + m;
+                        })).toStringAsFixed(2),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 3,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+
+              //
+
+              // DigitTextField(
+              //   controller: TextEditingController()
+              //     ..value
+              //     ..text = (magic.fold(0.0, (sum, obj) {
+              //       double m = obj.mbAmount != null
+              //           ? (obj.mbAmount != null && obj.mbAmount! < 0)
+              //               ? (obj.mbAmount! * (-1))
+              //               : obj.mbAmount!
+              //           : 0.00;
+              //       if (obj.contracts?.first.estimates?.first.isDeduction ==
+              //           true) {
+              //         m = -(m); // Negate the amount for deductions
+              //       } else {
+              //         m = (m);
+              //       }
+              //       return sum + m;
+              //     })).toStringAsFixed(2),
+              //   label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
+              //   isDisabled: true,
+              // ),
             ],
           ),
         ),
@@ -1444,6 +1711,14 @@ switch (photok) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Center(
+                child: SizedBox(
+                  width: 100,
+                  child: Divider(
+                    thickness: 5,
+                  ),
+                ),
+              ),
               Container(
                 decoration: const BoxDecoration(
                   border: Border(
@@ -1579,8 +1854,6 @@ switch (photok) {
                             ),
                           );
                         } else {
-                          
-
                           DigitActionDialog.show(
                             context,
                             widget: CommonButtonCard(
@@ -1593,7 +1866,7 @@ switch (photok) {
                           );
                         }
 
-// before
+                        // before
                       })
                   : const SizedBox.shrink(),
             ],
@@ -1714,7 +1987,7 @@ class SORTableCard extends StatelessWidget {
                             width: MediaQuery.of(context).size.width / fraction,
                             child: Text(
                               e,
-                              style: theme.textTheme.headline5,
+                              style: theme.textTheme.headlineSmall,
                               textAlign: TextAlign.start,
                             ),
                           ),
