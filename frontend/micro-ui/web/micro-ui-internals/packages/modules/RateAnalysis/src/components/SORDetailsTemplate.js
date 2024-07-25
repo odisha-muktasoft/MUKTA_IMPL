@@ -144,7 +144,7 @@ const SORDetailsTemplate = (props) => {
             ? { width: "10rem", textAlign: "left" }
             : pageType === "VIEW"
             ? { width: "15rem", textAlign: "right" }
-            : { width: "15rem",textAlign: "right" };
+            : { width: "15rem",textAlign: "left" };
         break;
       case 5:
         obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
