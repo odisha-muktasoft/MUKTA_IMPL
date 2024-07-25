@@ -73,7 +73,7 @@ const ViewStatement = (props) => {
           width: col.width,
           textAlign: col?.textAlign,
           padding: "10px",
-          backgroundColor: "#D6D5D4",
+          backgroundColor: "#EFEFEF",
           fontSize: "12px",
           lineHeight: "14.06px",
           fontFamily: "Roboto",
