@@ -33,9 +33,9 @@ const EmployeeModuleCard = ({ Icon, moduleName, kpis = [], links = [], isCitizen
             </div>
           )}
           <div className="links-wrapper" style={{ width: "80%" }}>
-            {links.map(({ count, label, link }, index) => (
+            {links.map(({ count, label, link, target }, index) => (
               <span className="link" key={index}>
-                {link ? (link?.includes(`${window?.contextPath}/`)?<span className="link" onClick={()=> history.push(`${link}`,{count})}>{label}</span>:<a href={link}>{label}</a>) : null}
+                {link ? (link?.includes(`${window?.contextPath}/`)?<span className="link" onClick={()=> history.push(`${link}`,{count})}>{label}</span>:<a href={link} target={target?"_blank":"_self"}>{label}</a>) : null}
                 {count ? (
                   <>
                     <span className={"inbox-total"} onClick={()=>history.push(`${link}`)}>{count || "-"}</span>
