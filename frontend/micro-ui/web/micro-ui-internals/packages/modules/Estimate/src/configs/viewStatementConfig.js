@@ -28,49 +28,95 @@ export const data = (statementDetails, rawData, oldData) => {
   return {
     cards: [
       {
-        
         sections: [
           {
             type: "DATA",
-           
-            
+
             values: [
               {
                 key: "STATEMENT_MATERIAL",
                 value: oldData
-                  ? parseFloat(oldData?.Material).toFixed(2)
-                  : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
-                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2)
+                  ? oldData?.Material.includes(",")
+                    ? oldData?.Material
+                    : parseFloat(oldData?.Material).toFixed(2)
+                  : statementDetails
+                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M").length != 0
+                    ? Digit.Utils.dss.formatterWithoutRound(
+                        statementDetails?.basicSorDetails.filter((ob) => ob?.type === "M")[0]?.amount.toFixed(2),
+                        "number",
+                        undefined,
+                        true,
+                        undefined,
+                        2
+                      )
+                    : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                  textStyle:{width:"14%",textAlign:"right"},
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
               {
                 key: "STATEMENT_LABOUR",
                 value: oldData
-                  ? parseFloat(oldData?.Machinery).toFixed(2)
-                  : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
-                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2)
+                  ? oldData?.Labour?.includes(",")
+                    ? oldData?.Labour
+                    : parseFloat(oldData?.Labour).toFixed(2)
+                  : statementDetails
+                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L").length != 0
+                    ? Digit.Utils.dss.formatterWithoutRound(
+                        statementDetails?.basicSorDetails.filter((ob) => ob?.type === "L")[0]?.amount.toFixed(2),
+                        "number",
+                        undefined,
+                        true,
+                        undefined,
+                        2
+                      )
+                    : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                  textStyle:{width:"14%",textAlign:"right"},
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
+
               {
                 key: "STATEMENT_MACHINERY",
                 value: oldData
-                  ? parseFloat(oldData?.Labour).toFixed(2)
-                  : statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
-                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2)
+                  ? oldData?.Machinery?.includes(",")
+                    ? oldData?.Machinery
+                    : parseFloat(oldData?.Machinery).toFixed(2)
+                  : statementDetails
+                  ? statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E").length != 0
+                    ? Digit.Utils.dss.formatterWithoutRound(
+                        statementDetails?.basicSorDetails.filter((ob) => ob?.type === "E")[0]?.amount.toFixed(2),
+                        "number",
+                        undefined,
+                        true,
+                        undefined,
+                        2
+                      )
+                    : parseFloat(0).toFixed(2)
                   : parseFloat(0).toFixed(2),
-                  textStyle:{width:"14%",textAlign:"right"},
+                amountStyle: { maxWidth: "12%", textAlign: "end", marginLeft:"-15rem" },
+                rowContainerStyle: {justifyContent : "revert"}
               },
               {
-                
                 key: "STATEMENT_LABOUR_CESS",
-                value: parseFloat(
-                  statementDetails?.sorDetails.reduce((acc, ob) => {
-                    return acc + (ob?.additionalDetails?.labourCessAmount || 0);
-                  }, 0)
-                ).toFixed(2),
-                textStyle:{width:"14%",textAlign:"right"},
+                value:oldData
+                ? oldData?.LabourCessCost?.includes(",")
+                  ? oldData?.LabourCessCost
+                  : parseFloat(oldData?.LabourCessCost).toFixed(2)
+                : statementDetails?
+                 Digit.Utils.dss.formatterWithoutRound(
+                  parseFloat(
+                    statementDetails?.sorDetails.reduce((acc, ob) => {
+                      return acc + (ob?.additionalDetails?.labourCessAmount || 0);
+                    }, 0) || 0
+                  ).toFixed(2),
+                  "number",
+                  undefined,
+                  true,
+                  undefined,
+                  2
+                ):parseFloat(0).toFixed(2),
+                amountStyle: { maxWidth: "12%", textAlign: "end" },
               },
             ],
           },

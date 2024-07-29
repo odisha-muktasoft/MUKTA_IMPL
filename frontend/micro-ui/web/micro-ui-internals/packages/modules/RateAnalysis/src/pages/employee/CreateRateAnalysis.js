@@ -206,6 +206,11 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       return;
     }
 
+    if(isUpdate)
+    {
+      data.extraCharges = data?.extraCharges?.filter((ob) => ob?.applicableOn && ob?.calculationType && ob?.figure && ob?.description )
+    }
+
     if(selectedApprover)
       data.selectedApprover = selectedApprover;
 
@@ -256,6 +261,10 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
     if (deepCompare(formData,createState)) {
       setState({ ...createState, ...formData })
     }
+    else if((!formData?.extraCharges || formData?.extraCharges?.length == 0) && createState?.extraCharges?.length > 0 && isUpdate)
+    {
+      setState({ ...createState, extraCharges: [] })
+    }
   };
 
   const validateRateAnalysis =() => {
@@ -280,10 +289,10 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
   return (
     <div>
       {isPopupOpen && <AlertPopUp t={t} label={"Existing rate analysis is edited.Do you want to update existing rate analysis? Please confirm to complete the action."} setIsPopupOpen={setIsPopupOpen} onButtonClickConfirm={(_data) => handleCreateRateAnalysis({..._data,...createState},"SUBMIT")} onButtonClickCancel={() => { setIsPopupOpen(false)}}/>}
-      <Header className="works-header-view modify-header">{t("RA_CREATE_RATE_ANALYSIS")}</Header>
+      <Header className="works-header-view modify-header">{isUpdate ? t("RA_UPDATE_RATE_ANALYSIS") : t("RA_CREATE_RATE_ANALYSIS")}</Header>
       <FormComposerV2
         label={t("RA_SUBMIT_BAR")}
-        config={CreateConfig({ defaultValue: defaultState, isUpdate, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
+        config={CreateConfig({t, defaultValue: defaultState, isUpdate, measurement : props?.data[0] }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
           return {
             ...config,
             body: config.body.filter((a) => !a.hideInEmployee),

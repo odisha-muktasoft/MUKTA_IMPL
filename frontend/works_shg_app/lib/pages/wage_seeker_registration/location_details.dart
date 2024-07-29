@@ -98,6 +98,8 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                   Column(children: [
                     DigitTextFormField(
+                      
+                      padding: const EdgeInsets.only(top:10),
                       formControlName: pinCodeKey,
                       label: t.translate(i18.common.pinCode),
                       keyboardType: TextInputType.number,
@@ -107,6 +109,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                       ],
                     ),
                     DigitReactiveDropdown<String>(
+                      
                       label: t.translate(i18.common.city),
                       padding: const EdgeInsets.only(top: 0),
                       menuItems: city.map((e) => e.toString()).toList(),
@@ -124,7 +127,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     DigitReactiveDropdown<String>(
                       label: t.translate(i18.common.ward),
                       menuMaxHeight: 300,
-                      padding: const EdgeInsets.only(top: 32),
+                      padding: const EdgeInsets.only(top: 12),
                       menuItems: ward.map((e) => e.toString()).toList(),
                       isRequired: true,
                       formControlName: wardKey,
@@ -140,7 +143,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     ),
                     DigitReactiveDropdown<String>(
                         label: t.translate(i18.common.locality),
-                        padding: const EdgeInsets.only(top: 32),
+                        padding: const EdgeInsets.only(top: 12),
                         menuMaxHeight: 300,
                         menuItems: locality.map((e) => e.toString()).toList(),
                         formControlName: localityKey,
@@ -154,8 +157,9 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                               ),
                         }),
                     DigitTextFormField(
+                     
                         formControlName: streetNameKey,
-                        padding: const EdgeInsets.only(top: 32),
+                        //padding: const EdgeInsets.only(top: 12),
                         label: t.translate(i18.common.streetName),
                         validationMessages: {
                           'maxLength': (_) => t.translate(
@@ -167,6 +171,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                               RegExp("[a-zA-Z0-9 .,\\/\\-_@#\\']"))
                         ]),
                     DigitTextFormField(
+                      padding: EdgeInsets.zero,
                         formControlName: doorNoKey,
                         label: t.translate(i18.common.doorNo),
                         maxLength: 8,

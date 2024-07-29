@@ -83,13 +83,16 @@ const SORDetailsTemplate = (props) => {
   const errorCardStyle = { width: "100%", fontSize: "12px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
   const errorContainerStyles = { display: "block", height: "1rem", overflow: "hidden" };
 
-  const columns = [
-    { label: t("RA_SNO"), key: "sno" },
+  let columns = [
     { label: t("RA_CODE"), key: "sorCode" },
     { label: t("RA_NAME"), key: "description" },
     { label: t("RA_UOM"), key: "uom" },
     { label: t("RA_QTY"), key: "quantity" },
   ];
+
+  if (pageType === "VIEW") {
+    columns.unshift({ label: t("RA_SNO"), key: "sno" });
+  }
 
   if (pageType === "VIEW") {
     columns.splice(4, 0, { label: t("RA_BASIC_RATE"), key: "basicRate" });
@@ -111,7 +114,7 @@ const SORDetailsTemplate = (props) => {
       measures: [],
       targetId: null,
       sorId: sor?.id,
-      quantity: null,
+      quantity: "",
       definedQuantity: sor?.quantity,
     };
     return transformedSOR;
@@ -127,16 +130,21 @@ const SORDetailsTemplate = (props) => {
     let obj = {};
     switch (index) {
       case 1:
-        obj = { width: "1rem" };
+        obj = pageType === "VIEW" ? { width: "1rem", textAlign: "left" } : { width: "8rem" , textAlign: "left"};
         break;
       case 2:
-        obj = { width: "8rem" };
+        obj = pageType === "VIEW" ? { width: "8rem", textAlign: "left" } : { width: "70rem", textAlign: "left" };
         break;
       case 3:
-        obj = { width: "70rem" };
+        obj = pageType === "VIEW" ? { width: "70rem", textAlign: "left" } : { width: "10rem", textAlign: "left" };
         break;
       case 4:
-        obj = { width: "10rem" };
+        obj =
+          pageType === "VIEW"
+            ? { width: "10rem", textAlign: "left" }
+            : pageType === "VIEW"
+            ? { width: "15rem", textAlign: "right" }
+            : { width: "15rem",textAlign: "left" };
         break;
       case 5:
         obj = pageType === "VIEW" ? { width: "15rem", textAlign: "right" } : { width: "15rem" };
@@ -180,12 +188,19 @@ const SORDetailsTemplate = (props) => {
 
   return (
     <div
-      style={{
+      style={
+        pageType !== "VIEW"?{
+        
         paddingRight: "4%",
-      }}
+      }:
+      {
+        
+        paddingRight: "0%",
+      }
+    }
     >
-      <div className="search-sor-container">
-        <span className="search-sor-label">{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+      <div style={{ display: "flex", width: "70.25%", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"?{}:{marginBottom:"-20px"}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
         {pageType !== "VIEW" && (
           <div className="search-sor-button">
             <SearchBar
@@ -198,7 +213,7 @@ const SORDetailsTemplate = (props) => {
           </div>
         )}
       </div>
-      <table className="reports-table sub-work-table">
+      <table className="reports-table sub-work-table" style={pageType === "VIEW" ? {} : { width: "104%" }}>
         <thead>
           <tr>
             {/*SORDetails?.filter((ob) => ob?.sorType === props?.config?.sorType).length > 0 &&
@@ -227,7 +242,8 @@ const SORDetailsTemplate = (props) => {
                             onChange={(e) => {
                               const { value } = e.target;
                               if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
-                                let newSOR = SORDetails?.map((obj) => {
+                                let detailsPicked = window.location.href.includes("update") ? SORDetails : formData;
+                                let newSOR = detailsPicked?.map((obj) => {
                                   if (obj?.sorCode === row?.sorCode) {
                                     return { ...obj, quantity: value };
                                   }

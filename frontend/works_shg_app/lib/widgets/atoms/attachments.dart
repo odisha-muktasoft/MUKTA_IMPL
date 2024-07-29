@@ -1,5 +1,6 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
@@ -40,10 +41,15 @@ class Attachments extends StatelessWidget {
                       .map<Widget>((e) => InkWell(
                             onTap: () => CommonMethods().onTapOfAttachment(
                                 e,
-                                e.tenantId ??
+                                e.tenantId==null?
+                                GlobalVariables.roleType==RoleType.employee?
+                                GlobalVariables.tenantId!:
                                     GlobalVariables.stateInfoListModel!.code
-                                        .toString(),
-                                context),
+                                        .toString():e.tenantId!,
+                               // "od.testing",
+                                context,
+                               roleType: GlobalVariables.roleType==RoleType.employee?RoleType.employee:RoleType.cbo
+                                ),
                             child: Container(
                                 width: 50,
                                 margin: const EdgeInsets.symmetric(

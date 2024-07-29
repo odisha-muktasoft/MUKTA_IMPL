@@ -99,6 +99,7 @@ const ViewContractDetails = () => {
         }
     
       }
+      console.log(requestCriteria,"requestcriteria");
     
     
       const {isLoading, data:measurementData} = Digit.Hooks.useCustomAPIHook(requestCriteria);
@@ -136,6 +137,7 @@ const ViewContractDetails = () => {
         }
 
         let isCreeateMBUser = verifiedRolesForAction?.["CREATE_MB"].some(role => loggedInUserRoles.includes(role));
+        console.log(isInWorkflowMeasurementPresent,measurementData,actionsMenu,isCreeateMBUser);
         if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
         setActionsMenu((prevState => [...prevState,{
             name:"CREATE_MEASUREMENT_REQUEST",

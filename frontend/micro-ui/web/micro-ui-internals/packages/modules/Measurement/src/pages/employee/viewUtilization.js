@@ -12,6 +12,7 @@ import {
   ActionBar,
   Menu,
   SubmitBar,
+  CitizenInfoLabel,
 } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
@@ -402,7 +403,7 @@ const ViewUtilization = () => {
   //look here need to uncomment once api works fine and check if the data is coming proper
   // const { state,refId } = useLocation()
   const location = useLocation();
-  const { responseData, estimateId, number } = location.state || {};
+  const { responseData, estimateId, number ,oldData,downloadStatus} = location.state || {};
 
   let statement = responseData?.statement;
 
@@ -415,12 +416,22 @@ const ViewUtilization = () => {
     setToast({ show: false, label: "", error: false });
   };
 
-  const config = data(statement?.[0], statement);
+  const config = data(statement?.[0], statement,oldData);
+
+  // let InfoCardData = {
+  //   "Info": "STATEMENT_UTILIZATION_INFO_LABEL",
+  //   "reasons": [
+  //     "STATEMENT_UTILIZATION_INFO_1",
+  //     "STATEMENT_UTILIZATION_INFO_2",
+  //     "STATEMENT_UTILIZATION_INFO_3",
+  //     "STATEMENT_UTILIZATION_INFO_4"
+  //   ]
+  // }
 
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
   const HandleDownloadPdf = () => {
     // Digit.Utils.downloadEgovPDF(`analysisUtilization/analysis-utilization?tenantId=${tenantId}&referenceId=${formId}`,{referenceId:formId},`utilization-${refId}.pdf`)
-    Digit.Utils.downloadWorksPDF(
+    Digit.Utils.downloadEgovPDF(
       "utilizationStatement/utilization-statement",
       { tenantId: tenantId, referenceId: estimateId },
       `utilization-${number}.pdf`
@@ -432,7 +443,10 @@ const ViewUtilization = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("MB_VIEW_UTLIZATION")}
         </Header>
-        <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+        {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />}
+      </div>
+      <div>
+      <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} />
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && (

@@ -52,7 +52,8 @@ const getAttendanceTableData = async(data, skills, t, expenseCalculations) => {
       tableRow.actualWorkingDays = item?.actualTotalAttendance || 0
       tableRow.nameOfIndividual = item?.additionalDetails?.userName || t("NA")
       tableRow.guardianName = item?.additionalDetails?.fatherName  || t("NA")
-      tableRow.skill = skills[item?.additionalDetails?.skillCode]?.description || t("NA")
+      const skill = skills[item?.additionalDetails?.skillCode]
+      tableRow.skill = skill ? `${t(skill.sorSubType)} - ${skill.description}` : t("NA");
       tableRow.amount = skills[item?.additionalDetails?.skillCode]?.amount * item?.actualTotalAttendance || 0
       tableRow.modifiedAmount = expenseCalculations?.filter(data=>data?.payee?.identifier === item?.individualId)?.[0]?.lineItems?.[0]?.amount || 0;
       tableRow.modifiedWorkingDays = item?.modifiedTotalAttendance ? item?.modifiedTotalAttendance : item?.actualTotalAttendance
@@ -147,7 +148,8 @@ const getWageSeekerSkills = async (data) => {
             moduleName: "WORKS-SOR",
             masterDetails: [
               {
-                name: "SOR"
+                name: "SOR",
+                filter: "[?(@.sorType=='L')]"
               },
               {
                 name: "Rates"

@@ -16,6 +16,7 @@ import { has4DecimalPlaces } from "../utils/transformData";
 
 const ExtraCharges = ({ control, watch, config, ...props }) => {
   const populators = config?.populators;
+  const stateId = Digit.ULBService.getStateId()
 
   const formFieldName = "extraCharges"; // this will be the key under which the data for this table will be present on onFormSubmit
   const initialState = [
@@ -30,7 +31,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
   ];
 
   const { t, register, errors, setValue, getValues, formData, unregister } = props;
-  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : initialState);
+  const [rows, setRows] = useState(formData?.[formFieldName]?.length > 0 ? formData?.[formFieldName] : []);
 
   useEffect(() => {
     if(window.location.href.includes("update"))
@@ -61,7 +62,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
         obj = { width: "10rem" };
         break;
       case 5:
-        obj = { width: "15rem" };
+        obj = { width: "15rem",textAlign:"left" };
         break;
       case 6:
         obj = { width: "18rem" };
@@ -103,13 +104,13 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     //   index === rowIndex ? { ...row, isShow: false } : row
     // );
     const updatedRows = rows.filter((row, index) => index != rowIndex );
-    setRows(updatedRows);
-    setValue(formFieldName,updatedRows);
+    setRows([...updatedRows]);
+    setValue(formFieldName,[...updatedRows]);
   };
 
   const addRow = () => {
     const newRow = {
-      key: rows[rows?.length -1]?.key +1,
+      key: rows.length > 0 ? rows[rows?.length -1]?.key +1 : 1,
       description: "",
       applicableOn: "",
       calculationType: "",
@@ -121,7 +122,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
 
   const getCalculationType = () => {
     return [
-      { code: "PERCENTAGE", name: "percentage" },
+      //{ code: "PERCENTAGE", name: "percentage" },
       { code: "FIXED", name: "fixed" }
     ];
   };
@@ -131,7 +132,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
       url: "/mdms-v2/v2/_search",
       body: {
         MdmsCriteria: {
-          tenantId: "pg",
+          tenantId: stateId,
           schemaCode: "WORKS-SOR.Overhead",
         },
       },
@@ -182,6 +183,11 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
     );
     setRows(updatedRows);
     setValue(`${formFieldName}[${rowIndex}].description`, e.target.value);
+  };
+
+  const isValidQuantity = (value) => {
+    const regex = /^\d{0,4}(\.\d{0,2})?$/;
+    return regex.test(value);
   };
 
   const cellContainerStyle = { display: "flex", flexDirection: "column" };
@@ -314,7 +320,7 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
                     pattern: /^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/,
                   })}
                   onChange={(e) => {
-                    if(has4DecimalPlaces(parseFloat(e?.target.value))){
+                    if(isValidQuantity(parseFloat(e?.target.value))){
                       setAmountField(e, rowIndex)
                     }
                     else
@@ -342,8 +348,8 @@ const ExtraCharges = ({ control, watch, config, ...props }) => {
           <td style={getStyles(8)}>
             <div style={cellContainerStyle}>
               {(
-                <span onClick={() => rows.length > 1 ? removeRow(rowIndex) : {}} className="icon-wrapper">
-                  <DeleteIcon fill={rows.length > 1 ? "#FF9100" : "#B1B4B6"} />
+                <span onClick={() =>  removeRow(rowIndex)} className="icon-wrapper">
+                  <DeleteIcon fill={"#FF9100"} />
                 </span>
               )}
             </div>

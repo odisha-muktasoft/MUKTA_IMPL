@@ -4,9 +4,9 @@ export const getDefaultValues = (sordata, t, mbNumber, compositionData, allSORDa
 
   let SORData = {
     SORCode: sordata?.uniqueIdentifier,
-    SORType: sordata?.data?.sorType !== "NA"? t(`SOR_TYPE_${sordata?.data?.sorType}`) : "NA",
-    SORSubType: sordata?.data?.sorSubType !== "NA" ? t(`SOR_SUBTYPE_${sordata?.data?.sorSubType}`) : "NA",
-    SORVarient: sordata?.data?.sorVariant !== "NA" ? t(`SOR_VARIENT_${sordata?.data?.sorVariant}`) : "NA",
+    SORType: sordata?.data?.sorType !== "NA"? t(`WORKS_SOR_TYPE_${sordata?.data?.sorType}`) : "NA",
+    SORSubType: sordata?.data?.sorSubType !== "NA" ? t(`WORKS_SOR_SUBTYPE_${sordata?.data?.sorSubType}`) : "NA",
+    SORVarient: sordata?.data?.sorVariant !== "NA" ? t(`WORKS_SOR_VARIANT_${sordata?.data?.sorVariant}`) : "NA",
     uom: sordata?.data?.uom !== "NA"? t(`COMMON_MASTERS_UOM_${sordata?.data?.uom}`) : "NA",
     rateDefinedForQty: sordata?.data?.quantity,
     description: sordata?.data?.description,
@@ -19,8 +19,13 @@ export const getDefaultValues = (sordata, t, mbNumber, compositionData, allSORDa
     extraCharges = getDefaultExtraCharges(compositionData, allOverheadData);
     SORData.analysis_qty_defined = compositionData?.data.quantity;
     SORData.effective_from_date = compositionData?.data.effectiveFrom
-      ? new Date(parseInt(compositionData?.data.effectiveFrom)).toISOString().split("T")[0]
-      : "";
+    ? new Date(parseInt(compositionData?.data.effectiveFrom)).toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).split(",")[0].split("/").reverse().join("-")
+    : "";
   }
   return { SORData, SORDetails, extraCharges };
 };
@@ -185,7 +190,7 @@ export const getRefactoreExtraChargesTableRows = (listData, sorType) => {
     quantity: data?.additionalDetails?.quantity,
     basicRate: data?.amountDetails[0]?.amount,
     calculationType: data?.amountDetails[0]?.type,
-    appliedOn: data?.amountDetails[0]?.heads?.split(".")[0],
+    appliedOn: `WORKS_SOR_OVERHEAD_${data?.amountDetails[0]?.heads?.split(".")[0]}_${data?.amountDetails[0]?.heads?.split(".")[1]}`,
     figure: data?.amountDetails[0]?.amount,
   }));
 };

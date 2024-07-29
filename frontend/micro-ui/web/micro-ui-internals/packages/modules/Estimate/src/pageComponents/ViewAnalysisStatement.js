@@ -8,7 +8,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   const history = useHistory();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const [showToast, setShowToast] = useState(null);
-  const { revisionNumber } = Digit.Hooks.useQueryParams();
+  const { revisionNumber,estimateNumber } = Digit.Hooks.useQueryParams();
   const isCreateOrUpdate = /(measurement\/create|estimate\/create-detailed-estimate|estimate\/update-detailed-estimate|measurement\/update|estimate\/create-revision-detailed-estimate|estimate\/update-revision-detailed-estimate)/.test(
     window.location.href
   );
@@ -20,26 +20,111 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
 
   const ChargesCodeMapping = {
     LabourCost: ["LA"],
-    MaterialCost: ["MA", "RA", "CA", "EMF", "DMF", "ADC", "LC"],
+    MaterialCost: ["MA", "RA", "CA", "EMF", "DMF", "ADC"],
     MachineryCost: ["MHA"],
+    LabourCessCost:["LC"]
   };
+
+  const requestCriteria = {
+    url: "/mdms-v2/v1/_search",
+    body: {
+      MdmsCriteria: {
+        tenantId: tenantId,
+        moduleDetails: [
+          {
+            moduleName: "WORKS-SOR",
+            masterDetails: [
+              {
+                name: "Rates",
+                //filter: `[?(@.sorId=='${sorid}')]`,
+              },
+            ],
+          },
+        ],
+      },
+    },
+    changeQueryName: "ratesQuery",
+  };
+
+  const { isLoading, data: RatesData } = Digit.Hooks.useCustomAPIHook(requestCriteria);
+  let currentDateInMillis = isCreateOrUpdate ? new Date().getTime() : formData?.auditDetails?.createdTime;
 
   const getAnalysisCost = (categories) => {
     let SORAmount = 0;
-    if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
-      if (categories.includes("LA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
-        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
-      if (
-        categories.some((cat) => ChargesCodeMapping.MaterialCost.includes(cat)) &&
-        SORAmount === 0 &&
-        formData?.additionalDetails?.labourMaterialAnalysis?.material
-      )
-        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
-      if (categories.includes("MHA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
-        SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
-    }
+
+    // if (categories.includes("LA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
+    // {
+
+    //   SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    // }
+    // if (
+    //   categories.some((cat) => ChargesCodeMapping.MaterialCost.includes(cat)) &&
+    //   SORAmount === 0 &&
+    //   formData?.additionalDetails?.labourMaterialAnalysis?.material
+    // )
+    // {
+    //   SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;}
+    // if (categories.includes("MHA") && SORAmount === 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
+    //  {
+    //    SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;}
+
+    // SORAmount = formData?.SORtable?.reduce((tot, ob) => {
+    //   let amount = ob?.amountDetails?.reduce(
+    //     (total, item) => total + (categories.some((category) => item?.heads?.includes(category)) ? item?.amount : 0),
+    //     0
+    //   );
+    //   return tot + amount * ob?.currentMBEntry;
+    // }, 0);
 
     SORAmount = SORAmount ? SORAmount : 0;
+    if (SORAmount == 0) {
+      SORAmount = formData?.SORtable?.reduce((tot, ob) => {
+        //let amountDetails = RatesData?.MdmsRes?.["WORKS-SOR"]?.Rates?.filter((rate) => rate?.sorId === ob?.sorId || rate?.sorId === ob?.sorCode)?.[0]?.amountDetails;
+        let amountDetails = RatesData?.MdmsRes?.["WORKS-SOR"]?.Rates?.filter((rate) => {
+          // Convert validFrom and validTo to milliseconds
+          let validFromInMillis = new Date(parseInt(rate?.validFrom)).getTime();
+          let validToInMillis = rate?.validTo ? new Date(parseInt(rate?.validTo)).getTime() : Infinity;
+          // Check if the current date is within the valid date range
+          return (
+            rate.sorId === ob?.sorId ||
+            (rate.sorId === ob?.sorCode && validFromInMillis <= currentDateInMillis && currentDateInMillis < validToInMillis)
+          );
+        })?.[0]?.amountDetails;
+
+        let amount = amountDetails?.reduce(
+          (total, item) => total + (categories.some((category) => item?.heads?.includes(category)) ? item?.amount : 0),
+          0
+        );
+
+        return tot + amount * ob?.currentMBEntry;
+      }, 0);
+    }
+
+    // if (window.location.href.includes("estimate-details") || window.location.href.includes("measurement/view")) {
+    //   if (categories?.includes("LA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.labour)
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    //   if (
+    //     categories.some((cat) => ChargesCodeMapping?.MaterialCost?.includes(cat)) &&
+    //     SORAmount == 0 &&
+    //     formData?.additionalDetails?.labourMaterialAnalysis?.material
+    //   )
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
+    //   if (categories?.includes("MHA") && SORAmount == 0 && formData?.additionalDetails?.labourMaterialAnalysis?.machinery)
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    // }
+
+    // if (SORAmount === 0) {
+    //   if (categories.includes("LA") && formData?.additionalDetails?.labourMaterialAnalysis?.labour) {
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.labour;
+    //   } else if (categories.some(cat => ChargesCodeMapping.MaterialCost.includes(cat)) && formData?.additionalDetails?.labourMaterialAnalysis?.material) {
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.material;
+    //   } else if (categories.includes("MHA") && formData?.additionalDetails?.labourMaterialAnalysis?.machinery) {
+    //     SORAmount = formData?.additionalDetails?.labourMaterialAnalysis?.machinery;
+    //   }
+    // }
+
+    SORAmount = SORAmount ? SORAmount : 0;
+
     return Digit.Utils.dss.formatterWithoutRound(parseFloat(SORAmount).toFixed(2), "number", undefined, true, undefined, 2);
   };
 
@@ -84,22 +169,35 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     if (isEstimate) {
       await AnalysisMutation(payload, {
         onError: async (error) => {
-          setShowToast({
-            error: true,
-            label: error?.response?.data?.Errors?.[0].message || error,
-          });
           setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
+            history.push({
+              pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
+              state: {
+               
+                estimateId: formData?.SORtable?.[0]?.estimateId,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber?formData?.estimateNumber:estimateNumber,
+                 downloadStatus: false,
+                oldData: {
+                  Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
+                  Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
+                  Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+                  LabourCessCost:getAnalysisCost(ChargesCodeMapping.LabourCessCost)
+                },
+              },
+            });
+          }, 1000);
         },
         onSuccess: async (responseData) => {
+        
           setTimeout(() => {
             history.push({
               pathname: `/${window?.contextPath}/employee/estimate/view-analysis-statement`,
               state: {
                 responseData: responseData,
                 estimateId: formData?.SORtable?.[0]?.estimateId,
-                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber,
+                number: window.location.href.includes("revision") ? revisionNumber : formData?.estimateNumber?formData?.estimateNumber:estimateNumber,
+                 downloadStatus: true,
+               
               },
             });
           }, 1000);
@@ -108,13 +206,26 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     } else {
       await UtilizationMutation(payload, {
         onError: async (error) => {
-          setShowToast({
-            error: true,
-            label: error?.response?.data?.Errors?.[0].message || error,
-          });
+        
           setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
+            history.push({
+              pathname: `/${window?.contextPath}/employee/measurement/utilizationstatement`,
+              state: {
+                
+                estimateId: window.location.href.includes("measurement/update") ? props.config.formData.Measurement.id : formData?.Measurement?.id,
+                number: window.location.href.includes("measurement/update")
+                  ? props.config.formData.Measurement.measurementNumber
+                  : formData?.Measurement?.measurementNumber,
+                downloadStatus: false,
+                oldData: {
+                  Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
+                  Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
+                  Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+                   LabourCessCost:getAnalysisCost(ChargesCodeMapping.LabourCessCost)
+                },
+              },
+            });
+          }, 1000);
         },
         onSuccess: async (responseData) => {
           setTimeout(() => {
@@ -126,6 +237,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
                 number: window.location.href.includes("measurement/update")
                   ? props.config.formData.Measurement.measurementNumber
                   : formData?.Measurement?.measurementNumber,
+                downloadStatus: true,
               },
             });
           }, 1000);
@@ -148,7 +260,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
     const number = isEstimate
       ? window.location.href.includes("revision")
         ? revisionNumber
-        : formData?.estimateNumber
+        : formData?.estimateNumber?formData?.estimateNumber:estimateNumber
       : window.location.href.includes("measurement/update")
       ? props.config.formData.Measurement.measurementNumber
       : formData?.Measurement?.measurementNumber;
@@ -157,14 +269,18 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       responseData: searchResponse,
       estimateId,
       number,
+      downloadStatus: true,
     };
 
-    if (!searchResponse) {
+    if (!searchResponse || searchResponse?.statement?.length <= 0) {
       state.oldData = {
         Labour: getAnalysisCost(ChargesCodeMapping.LabourCost),
         Material: getAnalysisCost(ChargesCodeMapping.MaterialCost),
         Machinery: getAnalysisCost(ChargesCodeMapping.MachineryCost),
+         LabourCessCost:getAnalysisCost(ChargesCodeMapping.LabourCessCost)
       };
+
+      state.downloadStatus = false;
     }
 
     history.push({ pathname: path, state });
@@ -233,7 +349,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
       <div>
         <LinkButton
           className="view-Analysis-button"
-          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "17%" } : { textAlign: "center", width: "17%" }}
+          style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "282px" } : { textAlign: "center", width: "282px" }}
           onClick={handleButtonClick}
           label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
         />
@@ -244,7 +360,8 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
             success={showToast?.success}
             label={t(showToast?.label)}
             isDleteBtn={true}
-            style={{ width: "100%", display: "flex", justifyContent: "space-between", whiteSpace: "nowrap" }}
+            labelstyle={{ width: "100%" }}
+            style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
             onClose={() => setShowToast(false)}
           />
         )}

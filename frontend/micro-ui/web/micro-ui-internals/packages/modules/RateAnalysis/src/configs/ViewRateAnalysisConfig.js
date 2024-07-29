@@ -91,15 +91,15 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
               },
               {
                 key: "RA_SOR_TYPE",
-                value: rateAnalysis?.sorType ? t(`SOR_TYPE_${rateAnalysis?.sorType}`) : "NA",
+                value: rateAnalysis?.sorType ? t(`WORKS_SOR_TYPE_${rateAnalysis?.sorType}`) : "NA",
               },
               {
                 key: "RA_SOR_SUBTYPE",
-                value: rateAnalysis?.sorSubType ? t(`SOR_SUBTYPE_${rateAnalysis?.sorSubType}`) : "NA",
+                value: rateAnalysis?.sorSubType ? t(`WORKS_SOR_SUBTYPE_${rateAnalysis?.sorSubType}`) : "NA",
               },
               {
                 key: "RA_SOR_VARIENT",
-                value: rateAnalysis?.sorVariant && rateAnalysis?.sorVariant != "NA" ? t(`SOR_VARIENT_${rateAnalysis?.sorVariant}`) : "NA",
+                value: rateAnalysis?.sorVariant ? rateAnalysis?.sorVariant != "NA" ? t(`WORKS_SOR_VARIANT_${rateAnalysis?.sorVariant}`) :t(`WORKS_SOR_VARIANT_NA`):"NA",
               },
 
               {
@@ -134,7 +134,9 @@ export const viewRateAnalysisdataconfig = (data, rateAnalysis, sorId, t,infoCard
 
                 type: "DATA",
 
-                cardHeader: { value: "RA_RATE_ANALYSIS_LABEL", inlineStyles: {} },
+                cardHeader: { value: "RA_RATE_ANALYSIS_LABEL", inlineStyles: {
+                marginBottom : "10px", fontSize: "24px",lineHeight:"32px"
+                } },
                 infoCard:infoCard,
                 values: [
                   {

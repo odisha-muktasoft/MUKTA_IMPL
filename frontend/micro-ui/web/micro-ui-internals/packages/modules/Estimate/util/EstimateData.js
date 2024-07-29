@@ -52,7 +52,7 @@ export const transformStatementData = (data,screenType) => {
 
   const { sorDetails } = data;
 
-  sorDetails.forEach((sorDetail, sorIndex) => {
+  sorDetails.filter((ob) => ob?.isActive === true).forEach((sorDetail, sorIndex) => {
     const { lineItems } = sorDetail;
 
     // Main SOR data
@@ -175,7 +175,7 @@ export const sortSorsBasedonType = (statement,screenType) => {
       }
     });
   });
-
+ 
   return resultArray;
 
   // Create the array of objects based on the provided statement data
