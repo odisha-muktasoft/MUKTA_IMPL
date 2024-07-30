@@ -26,34 +26,35 @@ CONTRACT_HOST = os.getenv('CONTRACT_HOST')
 INDIVIDUAL_HOST = os.getenv('INDIVIDUAL_HOST')
 USER_HOST = os.getenv('USER_HOST')
 WORKFLOW_HOST = os.getenv('WORKFLOW_HOST')
+ESTIMATE_HOST = os.getenv('ESTIMATE_HOST')
 
 
 tenantids = [
-    "od.jatni",
-    "od.dhenkanal",
-    "od.balangir",
-    "od.balasore",
-    "od.padampur",
-    "od.bhadrak",
-    "od.boudhgarh",
-    "od.cuttack",
-    "od.athagarh",
-    "od.berhampur",
-    "od.hinjilicut",
-    "od.chatrapur",
-    "od.paradeep",
-    "od.jajpur",
-    "od.jharsuguda",
-    "od.kesinga",
-    "od.phulbani",
-    "od.keonjhargarh",
-    "od.jeypore",
-    "od.kotpad",
-    "od.baripada",
-    "od.puri",
-    "od.sambalpur",
-    "od.rourkela",
-    "od.bhubaneswar"
+    "od.jatni"
+    # "od.dhenkanal"
+    # "od.balangir"
+    # "od.balasore"
+    # "od.padampur",
+    # "od.bhadrak",
+    # "od.boudhgarh",
+    # "od.cuttack",
+    # "od.athagarh",
+    # "od.berhampur",
+    # "od.hinjilicut",
+    # "od.chatrapur",
+    # "od.paradeep",
+    # "od.jajpur",
+    # "od.jharsuguda",
+    # "od.kesinga",
+    # "od.phulbani",
+    # "od.keonjhargarh",
+    # "od.jeypore",
+    # "od.kotpad",
+    # "od.baripada",
+    # "od.puri",
+    # "od.sambalpur",
+    # "od.rourkela",
+    # "od.bhubaneswar"
 ]
 
 
@@ -84,6 +85,8 @@ def getWorkflowDates(bussinessId, tenantId):
         request_payload = {"RequestInfo": {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11","userName": "MUKTAUAT","name": "MUKTAUAT","mobileNumber": "9036774122","emailId": None,"locale": None,"type": "EMPLOYEE","roles": [{"name": "ESTIMATE APPROVER","code": "ESTIMATE_APPROVER","tenantId": "od.testing"},{"name": "WORK ORDER CREATOR","code": "WORK_ORDER_CREATOR","tenantId": "od.testing"},{"name": "Organization viewer","code": "ORG_VIEWER","tenantId": "od.testing"},{"name": "MB_VERIFIER","code": "MB_VERIFIER","tenantId": "od.testing"},{"name": "ESTIMATE CREATOR","code": "ESTIMATE_CREATOR","tenantId": "od.testing"},{"name": "MDMS Admin","code": "MDMS_ADMIN","tenantId": "od.testing"},{"name": "MB_VIEWER","code": "MB_VIEWER","tenantId": "od.testing"},{"name": "State Dashboard Admin","code": "STADMIN","tenantId": "od.testing"},{"name": "MUKTA Admin","code": "MUKTA_ADMIN","tenantId": "od.testing"},{"name": "Employee Common","code": "EMPLOYEE_COMMON","tenantId": "od.testing"},{"name": "TECHNICAL SANCTIONER","code": "TECHNICAL_SANCTIONER","tenantId": "od.testing"},{"name": "BILL_CREATOR","code": "BILL_CREATOR","tenantId": "od.testing"},{"name": "BILL_ACCOUNTANT","code": "BILL_ACCOUNTANT","tenantId": "od.testing"},{"name": "WORK_ORDER_VIEWER","code": "WORK_ORDER_VIEWER","tenantId": "od.testing"},{"name": "BILL_VERIFIER","code": "BILL_VERIFIER","tenantId": "od.testing"},{"name": "ESTIMATE VERIFIER","code": "ESTIMATE_VERIFIER","tenantId": "od.testing"},{"name": "MUSTER ROLL APPROVER","code": "MUSTER_ROLL_APPROVER","tenantId": "od.testing"},{"name": "ESTIMATE VIEWER","code": "ESTIMATE_VIEWER","tenantId": "od.testing"},{"name": "WORK ORDER APPROVER","code": "WORK_ORDER_APPROVER","tenantId": "od.testing"},{"name": "MB_APPROVER","code": "MB_APPROVER","tenantId": "od.testing"},{"name": "MDMS CITY ADMIN","code": "MDMS_CITY_ADMIN","tenantId": "od.testing"},{"name": "OFFICER IN CHARGE","code": "OFFICER_IN_CHARGE","tenantId": "od.testing"},{"name": "PROJECT CREATOR","code": "PROJECT_CREATOR","tenantId": "od.testing"},{"name": "BILL_VIEWER","code": "BILL_VIEWER","tenantId": "od.testing"},{"name": "WORK ORDER VERIFIER","code": "WORK_ORDER_VERIFIER","tenantId": "od.testing"},{"name": "PROJECT VIEWER","code": "PROJECT_VIEWER","tenantId": "od.testing"},{"name": "BILL_APPROVER","code": "BILL_APPROVER","tenantId": "od.testing"},{"name": "MB_CREATOR","code": "MB_CREATOR","tenantId": "od.testing"},{"name": "MUSTER ROLL VERIFIER","code": "MUSTER_ROLL_VERIFIER","tenantId": "od.testing"},{"name": "HRMS Admin","code": "HRMS_ADMIN","tenantId": "od.testing"}],"active": True,"tenantId": "od.testing","permanentCity": "Testing"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}}
         headers = {"Content-Type": "application/json"}
         response = requests.post(host,headers=headers,data=json.dumps(request_payload))
+        countOfSendBacks = 0
+        data["sendBacks"] = 0
         if response and response.status_code and response.status_code in [200, 202]:
             response = response.json()
             if response and response['ProcessInstances'] and len(response['ProcessInstances'])>0:
@@ -94,6 +97,9 @@ def getWorkflowDates(bussinessId, tenantId):
                         data['approveDate'] = processInstance['auditDetails']['createdTime']
                     elif processInstance['action'] == "VERIFY_AND_FORWARD":
                         data['verifyDate'] = processInstance['auditDetails']['createdTime']
+                    elif processInstance['action'] == "SENDBACK":
+                        countOfSendBacks = countOfSendBacks + 1
+                        data['sendBacks'] = countOfSendBacks
             
         return data
     except Exception as e:  
@@ -188,11 +194,13 @@ def format_business_service(business_service):
 
 def getUserName(id):
     try:
+        print(id)
         host = USER_HOST + os.getenv('USER_SEARCH')
         request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
         headers = {"Content-Type": "application/json"}
         api_payload = {"uuid": [id],"RequestInfo": request_payload}
         response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+        print(response)
         if response and response.status_code and response.status_code in [200, 202]:
             response = response.json()
             if response and response['user'] and len(response['user'])>0:
@@ -525,7 +533,48 @@ def getSuccessPaymentsDataFromExpense():
     except Exception as e:
         raise e
         
+def getEstimateData():
+    data = []
+    print("Getting Estimate Data")
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            api_limit = 100
+            api_offset = 0
+            while True:
+                host = ESTIMATE_HOST + os.getenv('ESTIMATE_SEARCH') +"?tenantId="+tenantid+"&limit=" + str(api_limit) + "&offset=" + str(api_offset)
+                request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+                headers = {"Content-Type": "application/json"}
+                api_payload = {"RequestInfo": request_payload}
+                response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+                api_offset = api_offset + api_limit
+                if response and response.status_code and response.status_code in [200, 202]:
+                    response = response.json()
+                    if response and response['estimates'] and len(response['estimates'])>0:
+                        for estimate in response['estimates']:
+                            print("Estimate number: " + estimate['estimateNumber'])
+                            temp = {}
+                            temp['ULB Name'] = format_tenant_id(tenantid)
+                            temp['Project ID'] = estimate['additionalDetails']['projectNumber']
+                            temp['Estimate ID'] = estimate['estimateNumber']
+                            temp['Date of Creation'] = convert_epoch_to_indian_time(estimate['auditDetails']['createdTime'])
+                            temp['Prepared by (Name)'] = getUserName(estimate['auditDetails']['createdBy'])
+                            print("Prepared by (Name): " + temp['Prepared by (Name)'])
+                            # workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
+                            # temp['send backs (No of times)'] = workFlowData['sendBacks']
+                            temp['Estimate Value'] = estimate['additionalDetails']['totalEstimatedAmount']
+                            temp['Current Status'] = estimate['wfStatus']
+                            temp['Labour Cose'] = estimate['additionalDetails']['labourMaterialAnalysis']['labour']
+                            temp['Material Cost'] = estimate['additionalDetails']['labourMaterialAnalysis']['material']
+                            data.append(temp)
+                    else:
+                        break
+                else:
+                    break
+        return data
 
+    except Exception as e:
+        raise e
 
 def writeDataToCSV(data, filename):
     if not data:
@@ -556,36 +605,42 @@ if __name__ == '__main__':
         musterRoll_filename = f'musterRoll_{current_date}.csv'
         project_filename = f'project_{current_date}.csv'
         success_payments_filename = f'success_payments_{current_date}.csv'
+        estimate_filename = f'estimate_{current_date}.csv'
         
-        # Process work order data
-        workOrder_data = getWorkOrderData()
-        workOrder_file_path = os.path.join(directory, workOrder_filename)
-        writeDataToCSV(workOrder_data, workOrder_file_path)
+        # # Process work order data
+        # workOrder_data = getWorkOrderData()
+        # workOrder_file_path = os.path.join(directory, workOrder_filename)
+        # writeDataToCSV(workOrder_data, workOrder_file_path)
         
-        # Process failed payments data
-        failed_payments_data = getFailedPaymentsDataFromExpense()
-        failed_payments_file_path = os.path.join(directory, failedPayments_filename)
-        writeDataToCSV(failed_payments_data, failed_payments_file_path)
+        # # Process failed payments data
+        # failed_payments_data = getFailedPaymentsDataFromExpense()
+        # failed_payments_file_path = os.path.join(directory, failedPayments_filename)
+        # writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # Process bill data
-        bill_data = getBillData()
-        bill_file_path = os.path.join(directory, bill_filename)
-        writeDataToCSV(bill_data, bill_file_path)
+        # # Process bill data
+        # bill_data = getBillData()
+        # bill_file_path = os.path.join(directory, bill_filename)
+        # writeDataToCSV(bill_data, bill_file_path)
         
-        # Process muster roll data
-        muster_Data = getMusterRollData()
-        muster_file_path = os.path.join(directory, musterRoll_filename)
-        writeDataToCSV(muster_Data, muster_file_path)
+        # # Process muster roll data
+        # muster_Data = getMusterRollData()
+        # muster_file_path = os.path.join(directory, musterRoll_filename)
+        # writeDataToCSV(muster_Data, muster_file_path)
         
-        # Process project data
-        project_data = getProjectData()
-        project_file_path = os.path.join(directory, project_filename)
-        writeDataToCSV(project_data, project_file_path)
+        # # Process project data
+        # project_data = getProjectData()
+        # project_file_path = os.path.join(directory, project_filename)
+        # writeDataToCSV(project_data, project_file_path)
 
-        # Process Success/Partial Payments
-        success_payments_data = getSuccessPaymentsDataFromExpense()
-        success_payments_file_path = os.path.join(directory, success_payments_filename)
-        writeDataToCSV(success_payments_data, success_payments_file_path)
+        # # Process Success/Partial Payments
+        # success_payments_data = getSuccessPaymentsDataFromExpense()
+        # success_payments_file_path = os.path.join(directory, success_payments_filename)
+        # writeDataToCSV(success_payments_data, success_payments_file_path)
+
+        # Estimate data
+        estimate_data = getEstimateData()
+        estimate_file_path = os.path.join(directory, estimate_filename)
+        # writeDataToCSV(estimate_data, estimate_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
