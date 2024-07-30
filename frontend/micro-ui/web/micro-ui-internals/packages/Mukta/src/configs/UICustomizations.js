@@ -252,7 +252,7 @@ export const UICustomizations = {
       let selectedOrg = _.clone(data.body.inbox.moduleSearchCriteria.orgId ? data.body.inbox.moduleSearchCriteria.orgId : null);
       delete data.body.inbox.moduleSearchCriteria.orgId;
       if (selectedOrg) {
-        data.body.inbox.moduleSearchCriteria.orgId = selectedOrg?.[0]?.applicationNumber;
+        data.body.inbox.moduleSearchCriteria.orgId = selectedOrg?.[0]?.name;
       }
 
       // let selectedWard =  _.clone(data.body.inbox.moduleSearchCriteria.ward ? data.body.inbox.moduleSearchCriteria.ward : null);
