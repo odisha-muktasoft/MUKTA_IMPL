@@ -956,7 +956,10 @@ export const UICustomizations = {
         data.body.inbox.moduleSearchCriteria.assignee = Digit.UserService.getUser().info.uuid;
       }
 
+      let ward = _.clone(data.body.inbox.moduleSearchCriteria.ward ? data.body.inbox.moduleSearchCriteria.ward : []);
       delete data.body.inbox.moduleSearchCriteria.ward;
+      ward = ward?.map((row) => row?.code);
+      if (ward.length > 0) data.body.inbox.moduleSearchCriteria.ward = ward;
 
       //cloning locality and workflow states to format them
       let locality = _.clone(data.body.inbox.moduleSearchCriteria.locality ? data.body.inbox.moduleSearchCriteria.locality : []);
