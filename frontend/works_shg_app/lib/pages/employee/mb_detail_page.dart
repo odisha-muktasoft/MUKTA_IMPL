@@ -187,6 +187,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                     );
               },
               error: (value) {
+                 Navigator.of(
+                    context,
+                    rootNavigator: true,
+                  ).popUntil(
+                    (route) => route is! PopupRoute,
+                  );
                 Notifiers.getToastMessage(
                     context, value.error.toString(), 'ERROR');
               },

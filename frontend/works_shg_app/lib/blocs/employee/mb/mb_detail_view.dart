@@ -145,16 +145,33 @@ class MeasurementDetailBloc
                   .first
               : res.allMeasurements!,
           data,
-          sorList.first.first,
-          sorList.first.last,
-          sorList.length >= 2 ? sorList[1].first : null,
-          sorList.length >= 2 ? sorList[1].last : null,
+          //sorList.first.first,
+          getSorted(sorList.first.first, res),
+          //sorList.first.last,
+          getSorted(sorList.first.last, res),
+          // sorList.length >= 2 ? sorList[1].first : null,
+          // sorList.length >= 2 ? sorList[1].last : null,
+           sorList.length >= 2 ? getSorted(sorList[1].first, res) : null,
+          sorList.length >= 2 ? getSorted(sorList[1].last, res) : null,
         ),
       );
     } on DioError catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }
+  }
+
+  List<SorObject> getSorted(List<SorObject> sorData, MBDetailResponse mb) {
+    Set<SorObject> sData = <SorObject>{};
+    for (EstimateDetail element in mb.estimate!.estimateDetails!) {
+      for (SorObject object in sorData) {
+        if (element.sorId == object.sorId) {
+          sData.add(object);
+          break;
+        }
+      }
+    }
+    return sData.toList();
   }
 
   FutureOr<void> addMeasurementLine(
