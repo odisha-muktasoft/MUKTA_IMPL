@@ -147,10 +147,10 @@ public class ContractQueryBuilder {
         }
 
         addOrderByClause(query, criteria);
-        addPaginationWrapper(query.toString(), preparedStmtList, criteria);
+        return addPaginationWrapper(query.toString(), preparedStmtList, criteria);
         //addLimitAndOffset(query, criteria, preparedStmtList);
 
-        return query.toString();
+        //return query.toString();
     }
 
     private void addOrderByClause(StringBuilder queryBuilder, ContractCriteria criteria) {
