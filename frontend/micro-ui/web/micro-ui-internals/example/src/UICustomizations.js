@@ -194,6 +194,9 @@ export const UICustomizations = {
     if(businessService === businessServiceMap?.["revisedWO"]){
       return action.action.includes("VERIFY_AND_FORWARD")
     }
+    if(businessService === businessServiceMap?.measurement){
+      return action.action.includes("VERIFY_AND_FORWARD") || action.action.includes("SEND_BACK_TO_ORIGINATOR")
+    }
 
     return false;
   },
