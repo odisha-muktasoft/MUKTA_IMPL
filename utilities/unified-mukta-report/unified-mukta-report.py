@@ -87,6 +87,9 @@ def getWorkflowDates(bussinessId, tenantId):
         response = requests.post(host,headers=headers,data=json.dumps(request_payload))
         countOfSendBacks = 0
         data["sendBacks"] = 0
+        data['technicalSanctionDate'] = "NA"
+        data['technicalSanctionBy'] = "NA"
+        data['approveDate'] = "NA"
         if response and response.status_code and response.status_code in [200, 202]:
             response = response.json()
             if response and response['ProcessInstances'] and len(response['ProcessInstances'])>0:
@@ -100,6 +103,9 @@ def getWorkflowDates(bussinessId, tenantId):
                     elif processInstance['action'] == "SENDBACK":
                         countOfSendBacks = countOfSendBacks + 1
                         data['sendBacks'] = countOfSendBacks
+                    elif processInstance['action'] == "TECHNICALSANCTION":
+                        data['technicalSanctionDate'] = processInstance['auditDetails']['createdTime']
+                        data['technicalSanctionBy'] = processInstance['auditDetails']['createdBy']
             
         return data
     except Exception as e:  
@@ -576,6 +582,51 @@ def getEstimateData():
     except Exception as e:
         raise e
 
+def getTechnicalSanctionApprovalData():
+    data = []
+    print("Getting Technical Sanction Approval Data")
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            api_limit = 100
+            api_offset = 0
+            while True:
+                host = ESTIMATE_HOST + os.getenv('ESTIMATE_SEARCH') +"?tenantId="+tenantid+"&limit=" + str(api_limit) + "&offset=" + str(api_offset)
+                request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+                headers = {"Content-Type": "application/json"}
+                api_payload = {"RequestInfo": request_payload}
+                response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+                api_offset = api_offset + api_limit
+                if response and response.status_code and response.status_code in [200, 202]:
+                    response = response.json()
+                    if response and response['estimates'] and len(response['estimates'])>0:
+                        for estimate in response['estimates']:
+                            print("Estimate number: " + estimate['estimateNumber'])
+                            temp = {}
+                            temp['ULB Name'] = format_tenant_id(tenantid)
+                            temp['Project ID'] = estimate['additionalDetails']['projectNumber']
+                            temp['Estimate ID'] = estimate['estimateNumber']
+                            temp['Date of Creation'] = convert_epoch_to_indian_time(estimate['auditDetails']['createdTime'])
+                            workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
+                            if workFlowData['technicalSanctionDate'] != 'NA':
+                                temp['Date of Technical Sanction'] = convert_epoch_to_indian_time(workFlowData['technicalSanctionDate'])
+                            else:
+                                temp['Date of Technical Sanction'] = 'NA'
+                            temp['Technical sanction by'] = getUserName(workFlowData['technicalSanctionBy']) 
+                            if workFlowData['approveDate'] != 'NA':
+                                temp['Date of admin approval'] = convert_epoch_to_indian_time(workFlowData['approveDate'])
+                            else:
+                                temp['Date of admin approval'] = 'NA'
+                            
+                            data.append(temp)
+                    else:
+                        break
+                else:
+                    break
+        return data
+    except Exception as e:
+        raise e
+
 def writeDataToCSV(data, filename):
     if not data:
         print("No data to write.")
@@ -606,6 +657,7 @@ if __name__ == '__main__':
         project_filename = f'project_{current_date}.csv'
         success_payments_filename = f'success_payments_{current_date}.csv'
         estimate_filename = f'estimate_{current_date}.csv'
+        technical_sanction_approval_data_filename = f'technical_sanction_approval_{current_date}.csv'
         
         # # Process work order data
         # workOrder_data = getWorkOrderData()
@@ -638,9 +690,14 @@ if __name__ == '__main__':
         # writeDataToCSV(success_payments_data, success_payments_file_path)
 
         # Estimate data
-        estimate_data = getEstimateData()
-        estimate_file_path = os.path.join(directory, estimate_filename)
+        # estimate_data = getEstimateData()
+        # estimate_file_path = os.path.join(directory, estimate_filename)
         # writeDataToCSV(estimate_data, estimate_file_path)
+
+        # Technical sanction and Administrative Approval
+        technical_sanction_approval_data = getTechnicalSanctionApprovalData()
+        technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
+        writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
