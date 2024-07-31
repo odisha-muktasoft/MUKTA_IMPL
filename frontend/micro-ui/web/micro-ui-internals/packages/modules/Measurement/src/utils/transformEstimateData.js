@@ -162,7 +162,8 @@ export const getDefaultValues = (data, t, mbNumber) => {
     musterRollNo: musterRoll,
     measurementPeriod: measurementPeriod,
     CurrentStartDate,
-    CurrentEndDate
+    CurrentEndDate,
+    mbNumber
   };
 
   return { SOR, NONSOR, contractDetails, uploadedDocs, documents:measurement?.documents || allMeasurements?.[0]?.documents };
