@@ -17,6 +17,7 @@ import org.egov.works.validator.ContractServiceValidator;
 import org.egov.works.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -58,11 +59,18 @@ public class ContractService {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private RedisService redisService;
+    private static final String CONTRACT_REDIS_KEY = "CONTRACT_{id}";
+
     public ContractResponse createContract(ContractRequest contractRequest) {
         log.info("Create contract");
         contractServiceValidator.validateCreateContractRequest(contractRequest);
         contractEnrichment.enrichContractOnCreate(contractRequest);
         workflowService.updateWorkflowStatus(contractRequest);
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsRedisNeeded())){
+            setCacheContract(contractRequest.getContract());
+        }
         contractProducer.push(contractServiceConfiguration.getCreateContractTopic(), contractRequest);
 
         ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(contractRequest.getRequestInfo(), true);
@@ -78,6 +86,9 @@ public class ContractService {
         contractEnrichment.enrichContractOnUpdate(contractRequest);
         workflowService.updateWorkflowStatus(contractRequest);
         contractEnrichment.enrichPreviousContractLineItems(contractRequest);
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsRedisNeeded())){
+            setCacheContract(contractRequest.getContract());
+        }
         contractProducer.push(contractServiceConfiguration.getUpdateContractTopic(), contractRequest);
         try {
             notificationService.sendNotification(contractRequest);
@@ -103,10 +114,25 @@ public class ContractService {
         //Enrich requested search criteria
         log.info("Enrich requested search criteria");
         contractEnrichment.enrichSearchContractRequest(contractCriteria);
-
+        List<Contract> contracts = new ArrayList<>();
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsRedisNeeded()) && !CollectionUtils.isEmpty(contractCriteria.getIds())){
+            log.info("get contract from cache");
+            try {
+                contracts = getContractsFromCache(contractCriteria.getIds());
+                if(contracts.size() == contractCriteria.getIds().size()){
+                    log.info("Contracts searched");
+                    return contracts;
+                }else{
+                    log.info("Contracts not found in cache");
+                    contractCriteria.getIds().removeAll(contracts.stream().map(Contract::getId).collect(Collectors.toList()));
+                }
+            }catch (Exception e) {
+                log.error("Exception while getting cache: {}", e);
+            }
+        }
         //get contracts from db
         log.info("get enriched contracts list");
-        List<Contract> contracts = getContracts(contractCriteria);
+        contracts.addAll(getContracts(contractCriteria));
 
         log.info("Contracts searched");
         return contracts;
@@ -265,6 +291,28 @@ public class ContractService {
                 .build();
     }
 
+    private List<Contract> getContractsFromCache(List<String> ids) {
+        List<Contract> contracts = new ArrayList<>();
+        for (String id : ids) {
+            String key = getContractRedisKey(id);
+            Contract contract = redisService.getCache(key, Contract.class);
+            if (contract != null) {
+                contracts.add(contract);
+            }
+        }
+        return contracts;
+    }
 
+    private void setCacheContract(Contract contract){
+        try {
+            String key = getContractRedisKey(contract.getId());
+            redisService.setCache(key, contract);
+        }catch (Exception e){
+            log.error("Exception while setting cache: " + e);
+        }
+    }
+    private String getContractRedisKey(String id) {
+        return CONTRACT_REDIS_KEY.replace("{id}", id);
+    }
 
 }
