@@ -2,17 +2,29 @@ const e = require("express");
 const { logger } = require("../logger");
 
 function formatInLakh(totalAmount) {
-    // Ensure totalAmount is a number and format it to two decimal places
-    let amount = Number(totalAmount).toFixed(2);
-    let parts = amount.split("."); // Split the amount into whole and decimal parts
-    let wholePart = parts[0];
-    let decimalPart = parts.length > 1 ? "." + parts[1] : "";
+    let amount = Number(totalAmount).toFixed(2).toString();
+    let [integerPart, decimalPart] = amount.split(".");
+    let result = "";
+    let counter = 0;
+    let first = false;
 
-    // Regular expression to insert commas correctly for Indian numbering system
-    wholePart = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Apply comma for thousands
-    wholePart = wholePart.replace(/(\d+)(?=(\d{2})+(?!\d))/g, "$1,"); // Apply comma for lakhs
+    // Insert commas for the integer part according to the Indian numbering system
+    for (let i = integerPart.length - 1; i >= 0; i--) {
+        result = integerPart[i] + result;
+        counter++;
 
-    return wholePart + decimalPart;
+        // Insert commas after the first 3 digits from the right, and then every 2 digits
+        if (counter === 3 && i !== 0) {
+            result = "," + result;
+            counter = 0;
+            first = true;
+        } else if (counter === 2 && i !== 0 && i !== 1 && first) {
+            result = "," + result;
+            counter = 0; // Reset counter to offset for next 2-digit group
+        }
+    }
+
+    return result + "." + decimalPart;
 }
 
 const transformStatementData = (data, project) => {
