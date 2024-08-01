@@ -27,11 +27,12 @@ INDIVIDUAL_HOST = os.getenv('INDIVIDUAL_HOST')
 USER_HOST = os.getenv('USER_HOST')
 WORKFLOW_HOST = os.getenv('WORKFLOW_HOST')
 ESTIMATE_HOST = os.getenv('ESTIMATE_HOST')
-
+IFMS_ADAPTER_HOST = os.getenv('IFMS_ADAPTER_HOST')
+ENC_HOST = os.getenv('ENC_HOST')
 
 tenantids = [
-    "od.jatni"
-    # "od.dhenkanal"
+    "od.jatni",
+    "od.dhenkanal"
     # "od.balangir"
     # "od.balasore"
     # "od.padampur",
@@ -108,6 +109,23 @@ def getWorkflowDates(bussinessId, tenantId):
                         data['technicalSanctionBy'] = processInstance['auditDetails']['createdBy']
             
         return data
+    except Exception as e:  
+        raise e
+
+def getDecryptedData(password):
+    try:
+        host = ENC_HOST + os.getenv('ENC_DECRYPT')
+        request_payload = [{"password": password}]
+        headers = {"Content-Type": "application/json"}
+        response = requests.post(host,headers=headers,data=json.dumps(request_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response:
+                return response[0]
+            else:
+                return "NA"
+        else:
+            return "NA"
     except Exception as e:  
         raise e
 
@@ -202,9 +220,10 @@ def getUserName(id):
     try:
         print(id)
         host = USER_HOST + os.getenv('USER_SEARCH')
-        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        # request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
         headers = {"Content-Type": "application/json"}
-        api_payload = {"uuid": [id],"RequestInfo": request_payload}
+        api_payload = {"uuid": [id]}
+        print(host)
         response = requests.post(host,headers=headers,data=json.dumps(api_payload))
         print(response)
         if response and response.status_code and response.status_code in [200, 202]:
@@ -627,6 +646,64 @@ def getTechnicalSanctionApprovalData():
     except Exception as e:
         raise e
 
+def getRevisedPaymentData():
+    data = []
+    print("Getting Revised Payment Data")
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            host = IFMS_ADAPTER_HOST + os.getenv('IFMS_PI_SEARCH')
+            request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+            headers = {"Content-Type": "application/json"}
+            api_limit = 100
+            api_offset = 0
+            while True:
+                api_payload = {"searchCriteria": {"piType": "REVISED","tenantId": tenantid,"limit": api_limit,"offset": api_offset},"RequestInfo": request_payload}
+                response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+                api_offset = api_offset + api_limit
+                if response and response.status_code and response.status_code in [200, 202]:
+                    response = response.json()
+                    if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
+                        for paymentInstruction in response['paymentInstructions']:
+                            if paymentInstruction['isActive'] is True:
+                                print("Payment Instruction ID: " + paymentInstruction['parentPiNumber'])
+                                # Extract data from the PI level
+                                piData = {
+                                    'ULB Name': format_tenant_id(tenantid),
+                                    'Payment instruction ID': paymentInstruction['parentPiNumber'],
+                                    'Bill ID': paymentInstruction['additionalDetails']['billNumber'][0],
+                                    # 'COR no': paymentInstruction['jitBillNo']
+                                }
+                                for beneficiary in paymentInstruction['beneficiaryDetails']:
+                                    # Extract data from the beneficiary level
+                                    bank_account_details = getDecryptedData(beneficiary['bankAccountId'])
+                                    print(bank_account_details['password'])
+                                    account_info = bank_account_details['password'].split('@')
+                                    account_number = account_info[0] if len(account_info) > 0 else ''
+                                    ifsc_code = account_info[1] if len(account_info) > 1 else ''
+
+                                    beneficiary_data = {
+                                        'Beneficiary Identity': beneficiary['beneficiaryNumber'],
+                                        'Revised account Number': account_number,
+                                        'Bank IFSC Code': ifsc_code
+                                    }
+                                piData2 = {
+                                    'COR No': paymentInstruction['jitBillNo']
+                                }
+                                # Combine PI data and beneficiary data
+                                combined_data = {**piData, **beneficiary_data, **piData2}
+                                data.append(combined_data)
+
+                    else:
+                        break
+                else:
+                    break
+        return data
+    except Exception as e:
+        raise e
+
+
+
 def writeDataToCSV(data, filename):
     if not data:
         print("No data to write.")
@@ -658,6 +735,7 @@ if __name__ == '__main__':
         success_payments_filename = f'success_payments_{current_date}.csv'
         estimate_filename = f'estimate_{current_date}.csv'
         technical_sanction_approval_data_filename = f'technical_sanction_approval_{current_date}.csv'
+        revised_payment_data_filename = f'revised_payment_{current_date}.csv'
         
         # # Process work order data
         # workOrder_data = getWorkOrderData()
@@ -689,7 +767,7 @@ if __name__ == '__main__':
         # success_payments_file_path = os.path.join(directory, success_payments_filename)
         # writeDataToCSV(success_payments_data, success_payments_file_path)
 
-        # Estimate data
+        # # Estimate data
         # estimate_data = getEstimateData()
         # estimate_file_path = os.path.join(directory, estimate_filename)
         # writeDataToCSV(estimate_data, estimate_file_path)
@@ -698,6 +776,11 @@ if __name__ == '__main__':
         technical_sanction_approval_data = getTechnicalSanctionApprovalData()
         technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
         writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
+
+        # # Revised payment data
+        # revised_payment_data = getRevisedPaymentData()
+        # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
+        # writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
