@@ -18,6 +18,7 @@ import org.egov.works.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -68,7 +69,7 @@ public class ContractService {
         contractServiceValidator.validateCreateContractRequest(contractRequest);
         contractEnrichment.enrichContractOnCreate(contractRequest);
         workflowService.updateWorkflowStatus(contractRequest);
-        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsRedisNeeded())){
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsCachingEnabled())){
             setCacheContract(contractRequest.getContract());
         }
         contractProducer.push(contractServiceConfiguration.getCreateContractTopic(), contractRequest);
@@ -86,7 +87,7 @@ public class ContractService {
         contractEnrichment.enrichContractOnUpdate(contractRequest);
         workflowService.updateWorkflowStatus(contractRequest);
         contractEnrichment.enrichPreviousContractLineItems(contractRequest);
-        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsRedisNeeded())){
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsCachingEnabled())){
             setCacheContract(contractRequest.getContract());
         }
         contractProducer.push(contractServiceConfiguration.getUpdateContractTopic(), contractRequest);
@@ -115,16 +116,18 @@ public class ContractService {
         log.info("Enrich requested search criteria");
         contractEnrichment.enrichSearchContractRequest(contractCriteria);
         List<Contract> contracts = new ArrayList<>();
-        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsRedisNeeded()) && !CollectionUtils.isEmpty(contractCriteria.getIds())){
+        if(Boolean.TRUE.equals(isCacheSearchRequired(contractCriteria))){
             log.info("get contract from cache");
             try {
-                contracts = getContractsFromCache(contractCriteria.getIds());
+                contracts = getContractsFromCache(new HashSet<>(contractCriteria.getIds()));
                 if(contracts.size() == contractCriteria.getIds().size()){
                     log.info("Contracts searched");
                     return contracts;
                 }else{
                     log.info("Contracts not found in cache");
                     contractCriteria.getIds().removeAll(contracts.stream().map(Contract::getId).collect(Collectors.toList()));
+                    if (contractCriteria.getIds().isEmpty())
+                        return contracts;
                 }
             }catch (Exception e) {
                 log.error("Exception while getting cache: {}", e);
@@ -291,7 +294,7 @@ public class ContractService {
                 .build();
     }
 
-    private List<Contract> getContractsFromCache(List<String> ids) {
+    private List<Contract> getContractsFromCache(Set<String> ids) {
         List<Contract> contracts = new ArrayList<>();
         for (String id : ids) {
             String key = getContractRedisKey(id);
@@ -315,4 +318,17 @@ public class ContractService {
         return CONTRACT_REDIS_KEY.replace("{id}", id);
     }
 
+    private boolean isCacheSearchRequired(ContractCriteria searchCriteria) {
+        return contractServiceConfiguration.getIsCachingEnabled() && !CollectionUtils.isEmpty(searchCriteria.getIds()) &&
+                StringUtils.isEmpty(searchCriteria.getContractNumber()) &&
+                StringUtils.isEmpty(searchCriteria.getBusinessService()) &&
+                StringUtils.isEmpty(searchCriteria.getContractType()) &&
+                StringUtils.isEmpty(searchCriteria.getSupplementNumber()) &&
+                CollectionUtils.isEmpty(searchCriteria.getEstimateIds()) &&
+                CollectionUtils.isEmpty(searchCriteria.getEstimateLineItemIds()) &&
+                StringUtils.isEmpty(searchCriteria.getContractType()) &&
+                StringUtils.isEmpty(searchCriteria.getStatus()) &&
+                StringUtils.isEmpty(searchCriteria.getWfStatus()) &&
+                CollectionUtils.isEmpty(searchCriteria.getOrgIds());
+    }
 }

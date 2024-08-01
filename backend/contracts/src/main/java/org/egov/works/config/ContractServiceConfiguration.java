@@ -217,7 +217,7 @@ public class ContractServiceConfiguration {
     @Value("${sms.isAdditonalFieldRequired}")
     private boolean isAdditonalFieldRequired;
     @Value("${is.caching.enabled}")
-    private Boolean isRedisNeeded;
+    private Boolean isCachingEnabled;
 
     @PostConstruct
     public void initialize() {
