@@ -218,7 +218,6 @@ def format_business_service(business_service):
 
 def getUserName(id):
     try:
-        print(id)
         host = USER_HOST + os.getenv('USER_SEARCH')
         headers = {"Content-Type": "application/json"}
         api_payload = {"uuid": [id]}
@@ -664,9 +663,12 @@ def getRevisedPaymentData():
                         for paymentInstruction in response['paymentInstructions']:
                             if paymentInstruction['isActive'] is True:
                                 print("Payment Instruction ID: " + paymentInstruction['parentPiNumber'])
+                                contract_number = extract_contract_number(paymentInstruction['additionalDetails']['referenceId'][0])
+                                project_id = getProjectIdfromContract(contract_number, tenantid)
                                 # Extract data from the PI level
                                 piData = {
                                     'ULB Name': format_tenant_id(tenantid),
+                                    'Project ID': project_id,
                                     'Payment instruction ID': paymentInstruction['parentPiNumber'],
                                     'Bill ID': paymentInstruction['additionalDetails']['billNumber'][0],
                                     # 'COR no': paymentInstruction['jitBillNo']
