@@ -220,12 +220,9 @@ def getUserName(id):
     try:
         print(id)
         host = USER_HOST + os.getenv('USER_SEARCH')
-        # request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
         headers = {"Content-Type": "application/json"}
         api_payload = {"uuid": [id]}
-        print(host)
         response = requests.post(host,headers=headers,data=json.dumps(api_payload))
-        print(response)
         if response and response.status_code and response.status_code in [200, 202]:
             response = response.json()
             if response and response['user'] and len(response['user'])>0:
@@ -772,15 +769,15 @@ if __name__ == '__main__':
         # estimate_file_path = os.path.join(directory, estimate_filename)
         # writeDataToCSV(estimate_data, estimate_file_path)
 
-        # Technical sanction and Administrative Approval
-        technical_sanction_approval_data = getTechnicalSanctionApprovalData()
-        technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
-        writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
+        # # Technical sanction and Administrative Approval
+        # technical_sanction_approval_data = getTechnicalSanctionApprovalData()
+        # technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
+        # writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
 
-        # # Revised payment data
-        # revised_payment_data = getRevisedPaymentData()
-        # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
-        # writeDataToCSV(revised_payment_data, revised_payment_file_path)
+        # Revised payment data
+        revised_payment_data = getRevisedPaymentData()
+        revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
+        writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
