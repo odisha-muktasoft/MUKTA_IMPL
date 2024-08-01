@@ -31,8 +31,8 @@ IFMS_ADAPTER_HOST = os.getenv('IFMS_ADAPTER_HOST')
 ENC_HOST = os.getenv('ENC_HOST')
 
 tenantids = [
-    "od.jatni",
-    "od.dhenkanal"
+    "od.jatni"
+    # "od.dhenkanal"
     # "od.balangir"
     # "od.balasore"
     # "od.padampur",
@@ -91,6 +91,7 @@ def getWorkflowDates(bussinessId, tenantId):
         data['technicalSanctionDate'] = "NA"
         data['technicalSanctionBy'] = "NA"
         data['approveDate'] = "NA"
+        data['submitDate'] = "NA"
         if response and response.status_code and response.status_code in [200, 202]:
             response = response.json()
             if response and response['ProcessInstances'] and len(response['ProcessInstances'])>0:
@@ -107,6 +108,8 @@ def getWorkflowDates(bussinessId, tenantId):
                     elif processInstance['action'] == "TECHNICALSANCTION":
                         data['technicalSanctionDate'] = processInstance['auditDetails']['createdTime']
                         data['technicalSanctionBy'] = processInstance['auditDetails']['createdBy']
+                    elif processInstance['action'] == "SUBMIT" and data['submitDate'] == "NA":
+                        data['submitDate'] = processInstance['auditDetails']['createdTime']
             
         return data
     except Exception as e:  
@@ -218,7 +221,6 @@ def format_business_service(business_service):
 
 def getUserName(id):
     try:
-        print(id)
         host = USER_HOST + os.getenv('USER_SEARCH')
         headers = {"Content-Type": "application/json"}
         api_payload = {"uuid": [id]}
@@ -581,12 +583,11 @@ def getEstimateData():
                             temp['Estimate ID'] = estimate['estimateNumber']
                             temp['Date of Creation'] = convert_epoch_to_indian_time(estimate['auditDetails']['createdTime'])
                             temp['Prepared by (Name)'] = getUserName(estimate['auditDetails']['createdBy'])
-                            print("Prepared by (Name): " + temp['Prepared by (Name)'])
-                            # workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
-                            # temp['send backs (No of times)'] = workFlowData['sendBacks']
+                            workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
+                            temp['send backs (No of times)'] = workFlowData['sendBacks']
                             temp['Estimate Value'] = estimate['additionalDetails']['totalEstimatedAmount']
                             temp['Current Status'] = estimate['wfStatus']
-                            temp['Labour Cose'] = estimate['additionalDetails']['labourMaterialAnalysis']['labour']
+                            temp['Labour Cost'] = estimate['additionalDetails']['labourMaterialAnalysis']['labour']
                             temp['Material Cost'] = estimate['additionalDetails']['labourMaterialAnalysis']['material']
                             data.append(temp)
                     else:
@@ -622,8 +623,8 @@ def getTechnicalSanctionApprovalData():
                             temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = estimate['additionalDetails']['projectNumber']
                             temp['Estimate ID'] = estimate['estimateNumber']
-                            temp['Date of Creation'] = convert_epoch_to_indian_time(estimate['auditDetails']['createdTime'])
                             workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
+                            temp['Date of Estimate Received'] = workFlowData['submitDate']
                             if workFlowData['technicalSanctionDate'] != 'NA':
                                 temp['Date of Technical Sanction'] = convert_epoch_to_indian_time(workFlowData['technicalSanctionDate'])
                             else:
@@ -664,9 +665,12 @@ def getRevisedPaymentData():
                         for paymentInstruction in response['paymentInstructions']:
                             if paymentInstruction['isActive'] is True:
                                 print("Payment Instruction ID: " + paymentInstruction['parentPiNumber'])
+                                contract_number = extract_contract_number(paymentInstruction['additionalDetails']['referenceId'][0])
+                                project_id = getProjectIdfromContract(contract_number, tenantid)
                                 # Extract data from the PI level
                                 piData = {
                                     'ULB Name': format_tenant_id(tenantid),
+                                    'Project ID': project_id,
                                     'Payment instruction ID': paymentInstruction['parentPiNumber'],
                                     'Bill ID': paymentInstruction['additionalDetails']['billNumber'][0],
                                     # 'COR no': paymentInstruction['jitBillNo']
@@ -674,7 +678,6 @@ def getRevisedPaymentData():
                                 for beneficiary in paymentInstruction['beneficiaryDetails']:
                                     # Extract data from the beneficiary level
                                     bank_account_details = getDecryptedData(beneficiary['bankAccountId'])
-                                    print(bank_account_details['password'])
                                     account_info = bank_account_details['password'].split('@')
                                     account_number = account_info[0] if len(account_info) > 0 else ''
                                     ifsc_code = account_info[1] if len(account_info) > 1 else ''
@@ -730,7 +733,7 @@ if __name__ == '__main__':
         musterRoll_filename = f'musterRoll_{current_date}.csv'
         project_filename = f'project_{current_date}.csv'
         success_payments_filename = f'success_payments_{current_date}.csv'
-        estimate_filename = f'estimate_{current_date}.csv'
+        estimate_filename = f'estimate_creation_{current_date}.csv'
         technical_sanction_approval_data_filename = f'technical_sanction_approval_{current_date}.csv'
         revised_payment_data_filename = f'revised_payment_{current_date}.csv'
         
@@ -764,20 +767,20 @@ if __name__ == '__main__':
         # success_payments_file_path = os.path.join(directory, success_payments_filename)
         # writeDataToCSV(success_payments_data, success_payments_file_path)
 
-        # # Estimate data
-        # estimate_data = getEstimateData()
-        # estimate_file_path = os.path.join(directory, estimate_filename)
-        # writeDataToCSV(estimate_data, estimate_file_path)
+        # Estimate data
+        estimate_data = getEstimateData()
+        estimate_file_path = os.path.join(directory, estimate_filename)
+        writeDataToCSV(estimate_data, estimate_file_path)
 
         # # Technical sanction and Administrative Approval
         # technical_sanction_approval_data = getTechnicalSanctionApprovalData()
         # technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
         # writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
 
-        # Revised payment data
-        revised_payment_data = getRevisedPaymentData()
-        revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
-        writeDataToCSV(revised_payment_data, revised_payment_file_path)
+        # # Revised payment data
+        # revised_payment_data = getRevisedPaymentData()
+        # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
+        # writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
