@@ -189,7 +189,7 @@ const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSession
 
     const OnModalSubmit = async (modalData) => {
         modalData = Digit.Utils.trimStringsInObject(modalData)
-        const payload = createWorkOrderUtils({tenantId, estimate, project, inputFormdata, selectedApprover, modalData, createWorkOrderConfig, modifyParams, docConfigData});
+        const payload = createWorkOrderUtils({tenantId, estimate, project, inputFormdata, selectedApprover, modalData, createWorkOrderConfig, modifyParams, docConfigData, isModify});
         if(isModify) {
             handleResponseForUpdate(payload);
         }else {
