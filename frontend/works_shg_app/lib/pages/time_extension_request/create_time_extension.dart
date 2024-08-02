@@ -116,7 +116,21 @@ class _CreateTimeExtensionRequestPage
                                           false);
                                       if (!form.valid) {
                                         return;
-                                      } else {
+                                      } 
+                                      else if (int.parse(form
+                                          .value[extensionDaysKey]
+                                          .toString()) >
+                                      365) {
+                                    Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                        i18.workOrder.extensionReqInDaysMaxVal,
+                                      ),
+                                      'ERROR',
+                                    );
+                                    return;
+                                  }
+                                  else {
                                         DateTime endDate = DateTime
                                             .fromMillisecondsSinceEpoch(
                                             contracts?.contracts?.first.endDate ?? 0);
