@@ -1,4 +1,4 @@
-export const CreateConfig = ({ defaultValue, measurement }) => {
+export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
   
   return {
     CreateConfig: [
@@ -10,6 +10,24 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
             head: "",
             subHead: "",
             body: [
+              ...(mbnumber
+                ? [
+                    {
+                      inline: true,
+                      label: "MB_MEASUREMENT_NUMBER",
+                      isMandatory: false,
+                      key: "mbNumber",
+                      type: "paragraph",
+                      disable: true,
+                      appendColon: false,
+                      populators: {
+                        name: "mbNumber",
+                        customStyle: { marginBottom: "-5px", marginTop: "10px" },
+                        customParaStyle: { marginBottom: "revert" },
+                      },
+                    },
+                  ]
+                : []),
               {
                 inline: true,
                 label: "MB_WORK_ORDER_NUMBER",
@@ -20,8 +38,8 @@ export const CreateConfig = ({ defaultValue, measurement }) => {
                 appendColon: false,
                 populators: {
                   name: "contractNumber",
-                  customStyle :{marginBottom:"-5px", marginTop:"10px"},
-                  customParaStyle : {marginBottom:"revert"}
+                  customStyle :{marginBottom:"-5px"},
+                  customParaStyle : {marginBottom:"revert"},
                 },
               },
               {
