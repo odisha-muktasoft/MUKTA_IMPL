@@ -212,6 +212,9 @@ public class ContractService {
 
 
         for (Contract contract : contractList) {
+            if("REJECTED".equals(contract.getWfStatus())){
+             continue;
+            }
             long currentCreatedTime = contract.getAuditDetails().getCreatedTime();
             if (currentCreatedTime > latestCreatedTime) {
                 latestCreatedTime = currentCreatedTime;
