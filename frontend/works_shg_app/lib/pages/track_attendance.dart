@@ -49,6 +49,7 @@ import 'package:async/async.dart';
 import 'dart:async';
 import '../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class TrackAttendancePage extends StatefulWidget {
   final String id;
   final String tenantId;
@@ -149,6 +150,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
         builder: (context, localState) {
       return Scaffold(
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),

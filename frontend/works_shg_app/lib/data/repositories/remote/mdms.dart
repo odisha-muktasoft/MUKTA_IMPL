@@ -31,7 +31,7 @@ class MdmsRepository {
       return InitMdmsModel.fromJson(
         json.decode(response.toString())['MdmsRes'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       throw Exception(ex);
     }
@@ -53,7 +53,7 @@ class MdmsRepository {
       return MusterInboxStatusList.fromJson(
         json.decode(response.toString())['MdmsRes']['commonUiConfig'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -75,7 +75,7 @@ class MdmsRepository {
       return MusterSubmissionList.fromJson(
         json.decode(response.toString())['MdmsRes']['commonUiConfig'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -97,7 +97,7 @@ class MdmsRepository {
       return AttendanceHoursList.fromJson(
         json.decode(response.toString())['MdmsRes']['common-masters'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -119,7 +119,7 @@ class MdmsRepository {
       return WageSeekerMDMS.fromJson(
         json.decode(response.toString())['MdmsRes'],
       );
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -144,7 +144,7 @@ Future<List<WageSeekerSkills>> skillsMDMS({
       return SkillsList.fromJson(
         json.decode(response.toString())['MdmsRes']['WORKS-SOR'],
       ).wageSeekerSkills??[];
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

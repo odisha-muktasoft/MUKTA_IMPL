@@ -12,7 +12,7 @@ part of 'attendee_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 AttendeeModel _$AttendeeModelFromJson(Map<String, dynamic> json) {
   return _AttendeeModel.fromJson(json);
@@ -38,7 +38,7 @@ abstract class $AttendeeModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'attendanceRegister')
-          List<AttendanceRegister>? attendanceRegister});
+      List<AttendanceRegister>? attendanceRegister});
 }
 
 /// @nodoc
@@ -66,24 +66,24 @@ class _$AttendeeModelCopyWithImpl<$Res, $Val extends AttendeeModel>
 }
 
 /// @nodoc
-abstract class _$$_AttendeeModelCopyWith<$Res>
+abstract class _$$AttendeeModelImplCopyWith<$Res>
     implements $AttendeeModelCopyWith<$Res> {
-  factory _$$_AttendeeModelCopyWith(
-          _$_AttendeeModel value, $Res Function(_$_AttendeeModel) then) =
-      __$$_AttendeeModelCopyWithImpl<$Res>;
+  factory _$$AttendeeModelImplCopyWith(
+          _$AttendeeModelImpl value, $Res Function(_$AttendeeModelImpl) then) =
+      __$$AttendeeModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {@JsonKey(name: 'attendanceRegister')
-          List<AttendanceRegister>? attendanceRegister});
+      List<AttendanceRegister>? attendanceRegister});
 }
 
 /// @nodoc
-class __$$_AttendeeModelCopyWithImpl<$Res>
-    extends _$AttendeeModelCopyWithImpl<$Res, _$_AttendeeModel>
-    implements _$$_AttendeeModelCopyWith<$Res> {
-  __$$_AttendeeModelCopyWithImpl(
-      _$_AttendeeModel _value, $Res Function(_$_AttendeeModel) _then)
+class __$$AttendeeModelImplCopyWithImpl<$Res>
+    extends _$AttendeeModelCopyWithImpl<$Res, _$AttendeeModelImpl>
+    implements _$$AttendeeModelImplCopyWith<$Res> {
+  __$$AttendeeModelImplCopyWithImpl(
+      _$AttendeeModelImpl _value, $Res Function(_$AttendeeModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -91,7 +91,7 @@ class __$$_AttendeeModelCopyWithImpl<$Res>
   $Res call({
     Object? attendanceRegister = freezed,
   }) {
-    return _then(_$_AttendeeModel(
+    return _then(_$AttendeeModelImpl(
       attendanceRegister: freezed == attendanceRegister
           ? _value._attendanceRegister
           : attendanceRegister // ignore: cast_nullable_to_non_nullable
@@ -102,14 +102,14 @@ class __$$_AttendeeModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_AttendeeModel implements _AttendeeModel {
-  const _$_AttendeeModel(
+class _$AttendeeModelImpl implements _AttendeeModel {
+  const _$AttendeeModelImpl(
       {@JsonKey(name: 'attendanceRegister')
-          final List<AttendanceRegister>? attendanceRegister})
+      final List<AttendanceRegister>? attendanceRegister})
       : _attendanceRegister = attendanceRegister;
 
-  factory _$_AttendeeModel.fromJson(Map<String, dynamic> json) =>
-      _$$_AttendeeModelFromJson(json);
+  factory _$AttendeeModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AttendeeModelImplFromJson(json);
 
   final List<AttendanceRegister>? _attendanceRegister;
   @override
@@ -129,10 +129,10 @@ class _$_AttendeeModel implements _AttendeeModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AttendeeModel &&
+            other is _$AttendeeModelImpl &&
             const DeepCollectionEquality()
                 .equals(other._attendanceRegister, _attendanceRegister));
   }
@@ -145,12 +145,12 @@ class _$_AttendeeModel implements _AttendeeModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AttendeeModelCopyWith<_$_AttendeeModel> get copyWith =>
-      __$$_AttendeeModelCopyWithImpl<_$_AttendeeModel>(this, _$identity);
+  _$$AttendeeModelImplCopyWith<_$AttendeeModelImpl> get copyWith =>
+      __$$AttendeeModelImplCopyWithImpl<_$AttendeeModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AttendeeModelToJson(
+    return _$$AttendeeModelImplToJson(
       this,
     );
   }
@@ -159,18 +159,18 @@ class _$_AttendeeModel implements _AttendeeModel {
 abstract class _AttendeeModel implements AttendeeModel {
   const factory _AttendeeModel(
           {@JsonKey(name: 'attendanceRegister')
-              final List<AttendanceRegister>? attendanceRegister}) =
-      _$_AttendeeModel;
+          final List<AttendanceRegister>? attendanceRegister}) =
+      _$AttendeeModelImpl;
 
   factory _AttendeeModel.fromJson(Map<String, dynamic> json) =
-      _$_AttendeeModel.fromJson;
+      _$AttendeeModelImpl.fromJson;
 
   @override
   @JsonKey(name: 'attendanceRegister')
   List<AttendanceRegister>? get attendanceRegister;
   @override
   @JsonKey(ignore: true)
-  _$$_AttendeeModelCopyWith<_$_AttendeeModel> get copyWith =>
+  _$$AttendeeModelImplCopyWith<_$AttendeeModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -226,23 +226,25 @@ class _$AttendeeTrackListModelCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_AttendeeTrackListModelCopyWith<$Res>
+abstract class _$$AttendeeTrackListModelImplCopyWith<$Res>
     implements $AttendeeTrackListModelCopyWith<$Res> {
-  factory _$$_AttendeeTrackListModelCopyWith(_$_AttendeeTrackListModel value,
-          $Res Function(_$_AttendeeTrackListModel) then) =
-      __$$_AttendeeTrackListModelCopyWithImpl<$Res>;
+  factory _$$AttendeeTrackListModelImplCopyWith(
+          _$AttendeeTrackListModelImpl value,
+          $Res Function(_$AttendeeTrackListModelImpl) then) =
+      __$$AttendeeTrackListModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(ignore: true) List<AttendeesTrackList>? attendeeList});
 }
 
 /// @nodoc
-class __$$_AttendeeTrackListModelCopyWithImpl<$Res>
+class __$$AttendeeTrackListModelImplCopyWithImpl<$Res>
     extends _$AttendeeTrackListModelCopyWithImpl<$Res,
-        _$_AttendeeTrackListModel>
-    implements _$$_AttendeeTrackListModelCopyWith<$Res> {
-  __$$_AttendeeTrackListModelCopyWithImpl(_$_AttendeeTrackListModel _value,
-      $Res Function(_$_AttendeeTrackListModel) _then)
+        _$AttendeeTrackListModelImpl>
+    implements _$$AttendeeTrackListModelImplCopyWith<$Res> {
+  __$$AttendeeTrackListModelImplCopyWithImpl(
+      _$AttendeeTrackListModelImpl _value,
+      $Res Function(_$AttendeeTrackListModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -250,7 +252,7 @@ class __$$_AttendeeTrackListModelCopyWithImpl<$Res>
   $Res call({
     Object? attendeeList = freezed,
   }) {
-    return _then(_$_AttendeeTrackListModel(
+    return _then(_$AttendeeTrackListModelImpl(
       attendeeList: freezed == attendeeList
           ? _value._attendeeList
           : attendeeList // ignore: cast_nullable_to_non_nullable
@@ -261,14 +263,14 @@ class __$$_AttendeeTrackListModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_AttendeeTrackListModel implements _AttendeeTrackListModel {
-  const _$_AttendeeTrackListModel(
+class _$AttendeeTrackListModelImpl implements _AttendeeTrackListModel {
+  const _$AttendeeTrackListModelImpl(
       {@JsonKey(ignore: true)
-          final List<AttendeesTrackList>? attendeeList = const []})
+      final List<AttendeesTrackList>? attendeeList = const []})
       : _attendeeList = attendeeList;
 
-  factory _$_AttendeeTrackListModel.fromJson(Map<String, dynamic> json) =>
-      _$$_AttendeeTrackListModelFromJson(json);
+  factory _$AttendeeTrackListModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AttendeeTrackListModelImplFromJson(json);
 
   final List<AttendeesTrackList>? _attendeeList;
   @override
@@ -287,10 +289,10 @@ class _$_AttendeeTrackListModel implements _AttendeeTrackListModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AttendeeTrackListModel &&
+            other is _$AttendeeTrackListModelImpl &&
             const DeepCollectionEquality()
                 .equals(other._attendeeList, _attendeeList));
   }
@@ -303,13 +305,13 @@ class _$_AttendeeTrackListModel implements _AttendeeTrackListModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AttendeeTrackListModelCopyWith<_$_AttendeeTrackListModel> get copyWith =>
-      __$$_AttendeeTrackListModelCopyWithImpl<_$_AttendeeTrackListModel>(
-          this, _$identity);
+  _$$AttendeeTrackListModelImplCopyWith<_$AttendeeTrackListModelImpl>
+      get copyWith => __$$AttendeeTrackListModelImplCopyWithImpl<
+          _$AttendeeTrackListModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AttendeeTrackListModelToJson(
+    return _$$AttendeeTrackListModelImplToJson(
       this,
     );
   }
@@ -318,19 +320,19 @@ class _$_AttendeeTrackListModel implements _AttendeeTrackListModel {
 abstract class _AttendeeTrackListModel implements AttendeeTrackListModel {
   const factory _AttendeeTrackListModel(
           {@JsonKey(ignore: true)
-              final List<AttendeesTrackList>? attendeeList}) =
-      _$_AttendeeTrackListModel;
+          final List<AttendeesTrackList>? attendeeList}) =
+      _$AttendeeTrackListModelImpl;
 
   factory _AttendeeTrackListModel.fromJson(Map<String, dynamic> json) =
-      _$_AttendeeTrackListModel.fromJson;
+      _$AttendeeTrackListModelImpl.fromJson;
 
   @override
   @JsonKey(ignore: true)
   List<AttendeesTrackList>? get attendeeList;
   @override
   @JsonKey(ignore: true)
-  _$$_AttendeeTrackListModelCopyWith<_$_AttendeeTrackListModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$AttendeeTrackListModelImplCopyWith<_$AttendeeTrackListModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 AttendeesTrackList _$AttendeesTrackListFromJson(Map<String, dynamic> json) {
@@ -600,11 +602,11 @@ class _$AttendeesTrackListCopyWithImpl<$Res, $Val extends AttendeesTrackList>
 }
 
 /// @nodoc
-abstract class _$$_AttendeesTrackListCopyWith<$Res>
+abstract class _$$AttendeesTrackListImplCopyWith<$Res>
     implements $AttendeesTrackListCopyWith<$Res> {
-  factory _$$_AttendeesTrackListCopyWith(_$_AttendeesTrackList value,
-          $Res Function(_$_AttendeesTrackList) then) =
-      __$$_AttendeesTrackListCopyWithImpl<$Res>;
+  factory _$$AttendeesTrackListImplCopyWith(_$AttendeesTrackListImpl value,
+          $Res Function(_$AttendeesTrackListImpl) then) =
+      __$$AttendeesTrackListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -644,11 +646,11 @@ abstract class _$$_AttendeesTrackListCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AttendeesTrackListCopyWithImpl<$Res>
-    extends _$AttendeesTrackListCopyWithImpl<$Res, _$_AttendeesTrackList>
-    implements _$$_AttendeesTrackListCopyWith<$Res> {
-  __$$_AttendeesTrackListCopyWithImpl(
-      _$_AttendeesTrackList _value, $Res Function(_$_AttendeesTrackList) _then)
+class __$$AttendeesTrackListImplCopyWithImpl<$Res>
+    extends _$AttendeesTrackListCopyWithImpl<$Res, _$AttendeesTrackListImpl>
+    implements _$$AttendeesTrackListImplCopyWith<$Res> {
+  __$$AttendeesTrackListImplCopyWithImpl(_$AttendeesTrackListImpl _value,
+      $Res Function(_$AttendeesTrackListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -685,7 +687,7 @@ class __$$_AttendeesTrackListCopyWithImpl<$Res>
     Object? sunIndex = freezed,
     Object? auditDetails = freezed,
   }) {
-    return _then(_$_AttendeesTrackList(
+    return _then(_$AttendeesTrackListImpl(
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -812,8 +814,8 @@ class __$$_AttendeesTrackListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_AttendeesTrackList implements _AttendeesTrackList {
-  const _$_AttendeesTrackList(
+class _$AttendeesTrackListImpl implements _AttendeesTrackList {
+  const _$AttendeesTrackListImpl(
       {this.name,
       this.aadhaar,
       this.gender,
@@ -846,8 +848,8 @@ class _$_AttendeesTrackList implements _AttendeesTrackList {
       @JsonKey(name: 'auditDetails') this.auditDetails})
       : _skillCodeList = skillCodeList;
 
-  factory _$_AttendeesTrackList.fromJson(Map<String, dynamic> json) =>
-      _$$_AttendeesTrackListFromJson(json);
+  factory _$AttendeesTrackListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AttendeesTrackListImplFromJson(json);
 
   @override
   final String? name;
@@ -932,10 +934,10 @@ class _$_AttendeesTrackList implements _AttendeesTrackList {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AttendeesTrackList &&
+            other is _$AttendeesTrackListImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.aadhaar, aadhaar) || other.aadhaar == aadhaar) &&
             (identical(other.gender, gender) || other.gender == gender) &&
@@ -1032,13 +1034,13 @@ class _$_AttendeesTrackList implements _AttendeesTrackList {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AttendeesTrackListCopyWith<_$_AttendeesTrackList> get copyWith =>
-      __$$_AttendeesTrackListCopyWithImpl<_$_AttendeesTrackList>(
+  _$$AttendeesTrackListImplCopyWith<_$AttendeesTrackListImpl> get copyWith =>
+      __$$AttendeesTrackListImplCopyWithImpl<_$AttendeesTrackListImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AttendeesTrackListToJson(
+    return _$$AttendeesTrackListImplToJson(
       this,
     );
   }
@@ -1076,10 +1078,10 @@ abstract class _AttendeesTrackList implements AttendeesTrackList {
           final String? sunExitId,
           final double? sunIndex,
           @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails}) =
-      _$_AttendeesTrackList;
+      _$AttendeesTrackListImpl;
 
   factory _AttendeesTrackList.fromJson(Map<String, dynamic> json) =
-      _$_AttendeesTrackList.fromJson;
+      _$AttendeesTrackListImpl.fromJson;
 
   @override
   String? get name;
@@ -1144,7 +1146,7 @@ abstract class _AttendeesTrackList implements AttendeesTrackList {
   AuditDetails? get auditDetails;
   @override
   @JsonKey(ignore: true)
-  _$$_AttendeesTrackListCopyWith<_$_AttendeesTrackList> get copyWith =>
+  _$$AttendeesTrackListImplCopyWith<_$AttendeesTrackListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1219,11 +1221,11 @@ class _$AttendeeAuditDetailsCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_AttendeeAuditDetailsCopyWith<$Res>
+abstract class _$$AttendeeAuditDetailsImplCopyWith<$Res>
     implements $AttendeeAuditDetailsCopyWith<$Res> {
-  factory _$$_AttendeeAuditDetailsCopyWith(_$_AttendeeAuditDetails value,
-          $Res Function(_$_AttendeeAuditDetails) then) =
-      __$$_AttendeeAuditDetailsCopyWithImpl<$Res>;
+  factory _$$AttendeeAuditDetailsImplCopyWith(_$AttendeeAuditDetailsImpl value,
+          $Res Function(_$AttendeeAuditDetailsImpl) then) =
+      __$$AttendeeAuditDetailsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1234,11 +1236,11 @@ abstract class _$$_AttendeeAuditDetailsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_AttendeeAuditDetailsCopyWithImpl<$Res>
-    extends _$AttendeeAuditDetailsCopyWithImpl<$Res, _$_AttendeeAuditDetails>
-    implements _$$_AttendeeAuditDetailsCopyWith<$Res> {
-  __$$_AttendeeAuditDetailsCopyWithImpl(_$_AttendeeAuditDetails _value,
-      $Res Function(_$_AttendeeAuditDetails) _then)
+class __$$AttendeeAuditDetailsImplCopyWithImpl<$Res>
+    extends _$AttendeeAuditDetailsCopyWithImpl<$Res, _$AttendeeAuditDetailsImpl>
+    implements _$$AttendeeAuditDetailsImplCopyWith<$Res> {
+  __$$AttendeeAuditDetailsImplCopyWithImpl(_$AttendeeAuditDetailsImpl _value,
+      $Res Function(_$AttendeeAuditDetailsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1249,7 +1251,7 @@ class __$$_AttendeeAuditDetailsCopyWithImpl<$Res>
     Object? createdTime = freezed,
     Object? lastModifiedTime = freezed,
   }) {
-    return _then(_$_AttendeeAuditDetails(
+    return _then(_$AttendeeAuditDetailsImpl(
       createdBy: freezed == createdBy
           ? _value.createdBy
           : createdBy // ignore: cast_nullable_to_non_nullable
@@ -1272,15 +1274,15 @@ class __$$_AttendeeAuditDetailsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_AttendeeAuditDetails implements _AttendeeAuditDetails {
-  const _$_AttendeeAuditDetails(
+class _$AttendeeAuditDetailsImpl implements _AttendeeAuditDetails {
+  const _$AttendeeAuditDetailsImpl(
       {this.createdBy,
       this.lastModifiedBy,
       this.createdTime,
       this.lastModifiedTime});
 
-  factory _$_AttendeeAuditDetails.fromJson(Map<String, dynamic> json) =>
-      _$$_AttendeeAuditDetailsFromJson(json);
+  factory _$AttendeeAuditDetailsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$AttendeeAuditDetailsImplFromJson(json);
 
   @override
   final String? createdBy;
@@ -1297,10 +1299,10 @@ class _$_AttendeeAuditDetails implements _AttendeeAuditDetails {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AttendeeAuditDetails &&
+            other is _$AttendeeAuditDetailsImpl &&
             (identical(other.createdBy, createdBy) ||
                 other.createdBy == createdBy) &&
             (identical(other.lastModifiedBy, lastModifiedBy) ||
@@ -1319,13 +1321,14 @@ class _$_AttendeeAuditDetails implements _AttendeeAuditDetails {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AttendeeAuditDetailsCopyWith<_$_AttendeeAuditDetails> get copyWith =>
-      __$$_AttendeeAuditDetailsCopyWithImpl<_$_AttendeeAuditDetails>(
-          this, _$identity);
+  _$$AttendeeAuditDetailsImplCopyWith<_$AttendeeAuditDetailsImpl>
+      get copyWith =>
+          __$$AttendeeAuditDetailsImplCopyWithImpl<_$AttendeeAuditDetailsImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_AttendeeAuditDetailsToJson(
+    return _$$AttendeeAuditDetailsImplToJson(
       this,
     );
   }
@@ -1336,10 +1339,10 @@ abstract class _AttendeeAuditDetails implements AttendeeAuditDetails {
       {final String? createdBy,
       final String? lastModifiedBy,
       final int? createdTime,
-      final int? lastModifiedTime}) = _$_AttendeeAuditDetails;
+      final int? lastModifiedTime}) = _$AttendeeAuditDetailsImpl;
 
   factory _AttendeeAuditDetails.fromJson(Map<String, dynamic> json) =
-      _$_AttendeeAuditDetails.fromJson;
+      _$AttendeeAuditDetailsImpl.fromJson;
 
   @override
   String? get createdBy;
@@ -1351,6 +1354,6 @@ abstract class _AttendeeAuditDetails implements AttendeeAuditDetails {
   int? get lastModifiedTime;
   @override
   @JsonKey(ignore: true)
-  _$$_AttendeeAuditDetailsCopyWith<_$_AttendeeAuditDetails> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$AttendeeAuditDetailsImplCopyWith<_$AttendeeAuditDetailsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

@@ -37,6 +37,7 @@ import '../../widgets/atoms/attachments.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class ViewWorkDetailsPage extends StatefulWidget {
   final String? contractNumber;
   final String? wfStatus;
@@ -119,6 +120,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
           titleSpacing: 0,
           title: const AppBarLogo(),
         ),
@@ -629,7 +631,9 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                   ),
                                   const Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: PoweredByDigit(),
+                                    child: PoweredByDigit(
+                                      // version: Constants.appVersion,
+                                      ),
                                   )
                                 ]),
                           ]);
@@ -1867,7 +1871,9 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                               const Align(
                                                 alignment:
                                                     Alignment.bottomCenter,
-                                                child: PoweredByDigit(),
+                                                child: PoweredByDigit(
+                                                  // version: Constants.appVersion,
+                                                  ),
                                               )
                                             ]),
                                       ]);

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +16,7 @@ import '../../../widgets/work_order/work_order_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class WorkOrderDetailPage extends StatefulWidget {
   const WorkOrderDetailPage({super.key});
 
@@ -50,6 +50,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
         ),
       ),
       appBar: AppBar(
+        iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
         titleSpacing: 0,
         title: const AppBarLogo(),
       ),
@@ -67,7 +68,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
                   callback: () {
                     // context.router.popUntilRouteWithPath('home') ;
                     // context.router.push(const WorkOrderRoute());
-                    context.router.pop();
+                    context.router.maybePopTop();
                   },
                 ),
                 CommonWidgets.downloadButton(

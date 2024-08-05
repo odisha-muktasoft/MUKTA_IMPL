@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -20,6 +21,7 @@ import '../widgets/atoms/app_bar_logo.dart';
 import '../widgets/atoms/resend_otp.dart';
 import '../widgets/atoms/sub_label.dart';
 
+@RoutePage()
 class OTPVerificationPage extends StatefulWidget {
   final String mobileNumber;
   const OTPVerificationPage({Key? key, required this.mobileNumber})
@@ -55,6 +57,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
         '{mobileNumber}', '+91 - ${widget.mobileNumber}');
     return Scaffold(
       appBar: AppBar(
+        iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
         titleSpacing: 16,
         title: const AppBarLogo(),
         automaticallyImplyLeading: false,
@@ -64,7 +67,9 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
         padding: const EdgeInsets.all(8.0),
         child: const Align(
           alignment: Alignment.bottomCenter,
-          child: PoweredByDigit(),
+          child: PoweredByDigit(
+            // version: Constants.appVersion,
+            ),
         ),
       ),
       body: SingleChildScrollView(

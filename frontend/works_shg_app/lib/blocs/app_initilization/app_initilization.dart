@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:universal_html/html.dart' as html;
@@ -136,7 +135,7 @@ class AppInitializationBloc
       localizationBloc.add(
         LocalizationEvent.onLoadLocalization(
           module:
-              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel.code}',
           tenantId: initMdmsModelData
               .commonMastersModel!.stateInfoListModel!.first.code
               .toString(),
@@ -206,7 +205,7 @@ class AppInitializationBloc
       localizationBloc.add(
         LocalizationEvent.onLoadLocalization(
           module:
-              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel?.code}',
+              'rainmaker-common,rainmaker-common-masters,rainmaker-${stateInfoListModel.code}',
           tenantId: initMdmsModelData
               .commonMastersModel!.stateInfoListModel!.first.code
               .toString(),

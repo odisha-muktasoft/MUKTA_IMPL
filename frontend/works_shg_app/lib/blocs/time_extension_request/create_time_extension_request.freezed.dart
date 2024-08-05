@@ -12,7 +12,7 @@ part of 'create_time_extension_request.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$CreateTimeExtensionRequestEvent {
@@ -84,11 +84,11 @@ class _$CreateTimeExtensionRequestEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$TimeExtensionRequestEventCopyWith<$Res> {
-  factory _$$TimeExtensionRequestEventCopyWith(
-          _$TimeExtensionRequestEvent value,
-          $Res Function(_$TimeExtensionRequestEvent) then) =
-      __$$TimeExtensionRequestEventCopyWithImpl<$Res>;
+abstract class _$$TimeExtensionRequestEventImplCopyWith<$Res> {
+  factory _$$TimeExtensionRequestEventImplCopyWith(
+          _$TimeExtensionRequestEventImpl value,
+          $Res Function(_$TimeExtensionRequestEventImpl) then) =
+      __$$TimeExtensionRequestEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {Contracts? contractsModel,
@@ -100,12 +100,13 @@ abstract class _$$TimeExtensionRequestEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$TimeExtensionRequestEventCopyWithImpl<$Res>
+class __$$TimeExtensionRequestEventImplCopyWithImpl<$Res>
     extends _$CreateTimeExtensionRequestEventCopyWithImpl<$Res,
-        _$TimeExtensionRequestEvent>
-    implements _$$TimeExtensionRequestEventCopyWith<$Res> {
-  __$$TimeExtensionRequestEventCopyWithImpl(_$TimeExtensionRequestEvent _value,
-      $Res Function(_$TimeExtensionRequestEvent) _then)
+        _$TimeExtensionRequestEventImpl>
+    implements _$$TimeExtensionRequestEventImplCopyWith<$Res> {
+  __$$TimeExtensionRequestEventImplCopyWithImpl(
+      _$TimeExtensionRequestEventImpl _value,
+      $Res Function(_$TimeExtensionRequestEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +119,7 @@ class __$$TimeExtensionRequestEventCopyWithImpl<$Res>
     Object? isEdit = null,
     Object? reason = null,
   }) {
-    return _then(_$TimeExtensionRequestEvent(
+    return _then(_$TimeExtensionRequestEventImpl(
       contractsModel: freezed == contractsModel
           ? _value.contractsModel
           : contractsModel // ignore: cast_nullable_to_non_nullable
@@ -149,10 +150,10 @@ class __$$TimeExtensionRequestEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TimeExtensionRequestEvent
+class _$TimeExtensionRequestEventImpl
     with DiagnosticableTreeMixin
     implements TimeExtensionRequestEvent {
-  const _$TimeExtensionRequestEvent(
+  const _$TimeExtensionRequestEventImpl(
       {required this.contractsModel,
       required this.extensionDays,
       required this.extensionDate,
@@ -194,10 +195,10 @@ class _$TimeExtensionRequestEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TimeExtensionRequestEvent &&
+            other is _$TimeExtensionRequestEventImpl &&
             (identical(other.contractsModel, contractsModel) ||
                 other.contractsModel == contractsModel) &&
             (identical(other.extensionDays, extensionDays) ||
@@ -216,9 +217,9 @@ class _$TimeExtensionRequestEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TimeExtensionRequestEventCopyWith<_$TimeExtensionRequestEvent>
-      get copyWith => __$$TimeExtensionRequestEventCopyWithImpl<
-          _$TimeExtensionRequestEvent>(this, _$identity);
+  _$$TimeExtensionRequestEventImplCopyWith<_$TimeExtensionRequestEventImpl>
+      get copyWith => __$$TimeExtensionRequestEventImplCopyWithImpl<
+          _$TimeExtensionRequestEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -300,7 +301,7 @@ abstract class TimeExtensionRequestEvent
       required final int extensionDate,
       required final String action,
       required final bool isEdit,
-      final String reason}) = _$TimeExtensionRequestEvent;
+      final String reason}) = _$TimeExtensionRequestEventImpl;
 
   Contracts? get contractsModel;
   String get extensionDays;
@@ -309,35 +310,35 @@ abstract class TimeExtensionRequestEvent
   bool get isEdit;
   String get reason;
   @JsonKey(ignore: true)
-  _$$TimeExtensionRequestEventCopyWith<_$TimeExtensionRequestEvent>
+  _$$TimeExtensionRequestEventImplCopyWith<_$TimeExtensionRequestEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$TimeExtensionRequestDisposeEventCopyWith<$Res> {
-  factory _$$TimeExtensionRequestDisposeEventCopyWith(
-          _$TimeExtensionRequestDisposeEvent value,
-          $Res Function(_$TimeExtensionRequestDisposeEvent) then) =
-      __$$TimeExtensionRequestDisposeEventCopyWithImpl<$Res>;
+abstract class _$$TimeExtensionRequestDisposeEventImplCopyWith<$Res> {
+  factory _$$TimeExtensionRequestDisposeEventImplCopyWith(
+          _$TimeExtensionRequestDisposeEventImpl value,
+          $Res Function(_$TimeExtensionRequestDisposeEventImpl) then) =
+      __$$TimeExtensionRequestDisposeEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$TimeExtensionRequestDisposeEventCopyWithImpl<$Res>
+class __$$TimeExtensionRequestDisposeEventImplCopyWithImpl<$Res>
     extends _$CreateTimeExtensionRequestEventCopyWithImpl<$Res,
-        _$TimeExtensionRequestDisposeEvent>
-    implements _$$TimeExtensionRequestDisposeEventCopyWith<$Res> {
-  __$$TimeExtensionRequestDisposeEventCopyWithImpl(
-      _$TimeExtensionRequestDisposeEvent _value,
-      $Res Function(_$TimeExtensionRequestDisposeEvent) _then)
+        _$TimeExtensionRequestDisposeEventImpl>
+    implements _$$TimeExtensionRequestDisposeEventImplCopyWith<$Res> {
+  __$$TimeExtensionRequestDisposeEventImplCopyWithImpl(
+      _$TimeExtensionRequestDisposeEventImpl _value,
+      $Res Function(_$TimeExtensionRequestDisposeEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$TimeExtensionRequestDisposeEvent
+class _$TimeExtensionRequestDisposeEventImpl
     with DiagnosticableTreeMixin
     implements TimeExtensionRequestDisposeEvent {
-  const _$TimeExtensionRequestDisposeEvent();
+  const _$TimeExtensionRequestDisposeEventImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -352,10 +353,10 @@ class _$TimeExtensionRequestDisposeEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TimeExtensionRequestDisposeEvent);
+            other is _$TimeExtensionRequestDisposeEventImpl);
   }
 
   @override
@@ -433,7 +434,7 @@ class _$TimeExtensionRequestDisposeEvent
 abstract class TimeExtensionRequestDisposeEvent
     implements CreateTimeExtensionRequestEvent {
   const factory TimeExtensionRequestDisposeEvent() =
-      _$TimeExtensionRequestDisposeEvent;
+      _$TimeExtensionRequestDisposeEventImpl;
 }
 
 /// @nodoc
@@ -512,24 +513,25 @@ class _$CreateTimeExtensionRequestStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial with DiagnosticableTreeMixin {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial with DiagnosticableTreeMixin {
+  const _$InitialImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -544,9 +546,9 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -628,29 +630,30 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
 }
 
 abstract class _Initial extends CreateTimeExtensionRequestState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading with DiagnosticableTreeMixin {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading with DiagnosticableTreeMixin {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -665,9 +668,9 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -749,23 +752,25 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
 }
 
 abstract class _Loading extends CreateTimeExtensionRequestState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({ContractsModel? contractsModel});
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -773,7 +778,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? contractsModel = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == contractsModel
           ? _value.contractsModel
           : contractsModel // ignore: cast_nullable_to_non_nullable
@@ -784,8 +789,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  const _$_Loaded(this.contractsModel) : super._();
+class _$LoadedImpl extends _Loaded with DiagnosticableTreeMixin {
+  const _$LoadedImpl(this.contractsModel) : super._();
 
   @override
   final ContractsModel? contractsModel;
@@ -805,10 +810,10 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.contractsModel, contractsModel) ||
                 other.contractsModel == contractsModel));
   }
@@ -819,8 +824,8 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -898,28 +903,30 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 }
 
 abstract class _Loaded extends CreateTimeExtensionRequestState {
-  const factory _Loaded(final ContractsModel? contractsModel) = _$_Loaded;
+  const factory _Loaded(final ContractsModel? contractsModel) = _$LoadedImpl;
   const _Loaded._() : super._();
 
   ContractsModel? get contractsModel;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$CreateTimeExtensionRequestStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -927,7 +934,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -938,8 +945,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error with DiagnosticableTreeMixin {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error with DiagnosticableTreeMixin {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -959,10 +966,10 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -972,8 +979,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1051,11 +1058,11 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
 }
 
 abstract class _Error extends CreateTimeExtensionRequestState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

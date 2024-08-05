@@ -23,7 +23,7 @@ class AutoCompleteSearchBar extends StatelessWidget {
   final String? hintText;
 
   const AutoCompleteSearchBar(
-      {Key? key,
+      {super.key,
       required this.labelText,
       required this.callBack,
       required this.onSuggestionSelected,
@@ -37,8 +37,7 @@ class AutoCompleteSearchBar extends StatelessWidget {
       this.textInputType,
       this.hintText,
       this.maxLength,
-      this.minCharsForSuggestions})
-      : super(key: key);
+      this.minCharsForSuggestions});
 
   @override
   Widget build(BuildContext context) {
@@ -72,29 +71,6 @@ class AutoCompleteSearchBar extends StatelessWidget {
     });
   }
 
-  Widget _text(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Wrap(direction: Axis.horizontal, children: <Widget>[
-        Text(labelText,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: (isEnabled ?? true)
-                    ? Theme.of(context).primaryColorDark
-                    : Colors.grey)),
-        Text((isRequired ?? false) ? '* ' : ' ',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 16,
-                color: (isEnabled ?? true)
-                    ? Theme.of(context).primaryColorDark
-                    : Colors.grey)),
-      ]),
-    );
-  }
 
   Widget _autoComplete(BuildContext context) {
     return TypeAheadFormField(

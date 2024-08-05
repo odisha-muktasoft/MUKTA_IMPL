@@ -131,7 +131,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               // context
                               //     .read<MeasurementDetailBloc>()
                               //     .add(const UpdateMsgCodeEvent(updateCode: 0));
-                              context.router.pop();
+                              context.router.maybePopTop();
                             },
                             icon: Icon(
                               Icons.close,
@@ -191,7 +191,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                             sorId: widget.sorId,
                                             type: widget.type,
                                           ));
-                                      context.router.pop();
+                                      context.router.maybePopTop();
                                     },
                                   ),
                                 ),

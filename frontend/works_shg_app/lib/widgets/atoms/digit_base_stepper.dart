@@ -9,7 +9,7 @@ typedef OnStepReached = void Function(int index);
 class DigitBaseStepper extends StatefulWidget {
   /// Creates a basic stepper.
   DigitBaseStepper({
-    Key? key,
+    super.key,
     this.children,
     this.textChildren,
     this.stepTappingDisabled = true,
@@ -30,7 +30,7 @@ class DigitBaseStepper extends StatefulWidget {
     this.scrollingDisabled = false,
     this.activeStep = 0,
     this.alignment,
-  }) : super(key: key) {
+  }) {
     assert(
       lineDotRadius <= 10 && lineDotRadius > 0,
       'lineDotRadius must be less than or equal to 10 and greater than 0',

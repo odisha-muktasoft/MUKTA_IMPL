@@ -1,6 +1,8 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
@@ -19,6 +21,7 @@ import '../../widgets/atoms/empty_image.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class TrackAttendanceInboxPage extends StatefulWidget {
   const TrackAttendanceInboxPage({Key? key}) : super(key: key);
 
@@ -51,6 +54,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
         builder: (context, localState) {
       return Scaffold(
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -69,7 +73,9 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                           height: 30,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: PoweredByDigit(),
+                            child: PoweredByDigit(
+                              // version: Constants.appVersion,
+                              ),
                           ),
                         )
                       : const SizedBox.shrink();
@@ -178,7 +184,9 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                             projectList.isNotEmpty && projectList.length > 1
                                 ? const Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: PoweredByDigit(),
+                                    child: PoweredByDigit(
+                                      // version: Constants.appVersion,
+                                      ),
                                   )
                                 : const SizedBox.shrink()
                           ]);

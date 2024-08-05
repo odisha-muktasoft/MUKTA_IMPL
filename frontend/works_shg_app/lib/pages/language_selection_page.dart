@@ -19,6 +19,7 @@ import '../router/app_router.dart';
 import '../utils/common_methods.dart';
 import '../widgets/loaders.dart' as shg_app;
 
+@RoutePage()
 class LanguageSelectionPage extends StatefulWidget {
   const LanguageSelectionPage({Key? key}) : super(key: key);
 
@@ -59,11 +60,11 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                       orElse: () => false,
                       loading: () => shg_app.Loaders.circularLoader(context),
                       loaded: (AppVersionModel? cboAppVersion) {
-                        CommonMethods().checkVersion(
-                            context,
-                            cboAppVersion?.packageName,
-                            cboAppVersion?.iOSId,
-                            cboAppVersion?.version);
+                        // CommonMethods().checkVersion(
+                        //     context,
+                        //     cboAppVersion?.packageName,
+                        //     cboAppVersion?.iOSId,
+                        //     cboAppVersion?.version);
                       },
                       error: (String? error) {
                         return const Center(

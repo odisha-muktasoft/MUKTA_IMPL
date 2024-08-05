@@ -6,6 +6,8 @@ import 'package:works_shg_app/pages/wage_seeker_registration/financial_details.d
 import 'package:works_shg_app/pages/wage_seeker_registration/individual_details.dart';
 import 'package:works_shg_app/pages/wage_seeker_registration/location_details.dart';
 import 'package:works_shg_app/pages/wage_seeker_registration/summary_details.dart';
+import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -28,6 +30,7 @@ import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 
+@RoutePage()
 class RegisterIndividualPage extends StatefulWidget {
   const RegisterIndividualPage({Key? key}) : super(key: key);
 
@@ -103,6 +106,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
         builder: (context, localState) {
       return Scaffold(
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -183,7 +187,9 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                   ),
                   const Align(
                     alignment: Alignment.bottomCenter,
-                    child: PoweredByDigit(),
+                    child: PoweredByDigit(
+                      // version: Constants.appVersion,
+                      ),
                   )
                 ]),
           ));

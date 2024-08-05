@@ -50,7 +50,7 @@ class MusterInboxStatusBloc
       } else {
         emit(const MusterInboxStatusState.error('MDMS_CONFIG_MISSING'));
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MusterInboxStatusState.error(e.response?.data['Errors'][0]['code']));
     }
   }

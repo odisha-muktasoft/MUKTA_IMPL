@@ -12,7 +12,7 @@ part of 'skills.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 SkillsList _$SkillsListFromJson(Map<String, dynamic> json) {
   return _SkillsList.fromJson(json);
@@ -64,22 +64,22 @@ class _$SkillsListCopyWithImpl<$Res, $Val extends SkillsList>
 }
 
 /// @nodoc
-abstract class _$$_SkillsListCopyWith<$Res>
+abstract class _$$SkillsListImplCopyWith<$Res>
     implements $SkillsListCopyWith<$Res> {
-  factory _$$_SkillsListCopyWith(
-          _$_SkillsList value, $Res Function(_$_SkillsList) then) =
-      __$$_SkillsListCopyWithImpl<$Res>;
+  factory _$$SkillsListImplCopyWith(
+          _$SkillsListImpl value, $Res Function(_$SkillsListImpl) then) =
+      __$$SkillsListImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(name: 'SOR') List<WageSeekerSkills>? wageSeekerSkills});
 }
 
 /// @nodoc
-class __$$_SkillsListCopyWithImpl<$Res>
-    extends _$SkillsListCopyWithImpl<$Res, _$_SkillsList>
-    implements _$$_SkillsListCopyWith<$Res> {
-  __$$_SkillsListCopyWithImpl(
-      _$_SkillsList _value, $Res Function(_$_SkillsList) _then)
+class __$$SkillsListImplCopyWithImpl<$Res>
+    extends _$SkillsListCopyWithImpl<$Res, _$SkillsListImpl>
+    implements _$$SkillsListImplCopyWith<$Res> {
+  __$$SkillsListImplCopyWithImpl(
+      _$SkillsListImpl _value, $Res Function(_$SkillsListImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_SkillsListCopyWithImpl<$Res>
   $Res call({
     Object? wageSeekerSkills = freezed,
   }) {
-    return _then(_$_SkillsList(
+    return _then(_$SkillsListImpl(
       wageSeekerSkills: freezed == wageSeekerSkills
           ? _value._wageSeekerSkills
           : wageSeekerSkills // ignore: cast_nullable_to_non_nullable
@@ -98,13 +98,13 @@ class __$$_SkillsListCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_SkillsList implements _SkillsList {
-  const _$_SkillsList(
+class _$SkillsListImpl implements _SkillsList {
+  const _$SkillsListImpl(
       {@JsonKey(name: 'SOR') final List<WageSeekerSkills>? wageSeekerSkills})
       : _wageSeekerSkills = wageSeekerSkills;
 
-  factory _$_SkillsList.fromJson(Map<String, dynamic> json) =>
-      _$$_SkillsListFromJson(json);
+  factory _$SkillsListImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SkillsListImplFromJson(json);
 
   final List<WageSeekerSkills>? _wageSeekerSkills;
   @override
@@ -124,10 +124,10 @@ class _$_SkillsList implements _SkillsList {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SkillsList &&
+            other is _$SkillsListImpl &&
             const DeepCollectionEquality()
                 .equals(other._wageSeekerSkills, _wageSeekerSkills));
   }
@@ -140,12 +140,12 @@ class _$_SkillsList implements _SkillsList {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SkillsListCopyWith<_$_SkillsList> get copyWith =>
-      __$$_SkillsListCopyWithImpl<_$_SkillsList>(this, _$identity);
+  _$$SkillsListImplCopyWith<_$SkillsListImpl> get copyWith =>
+      __$$SkillsListImplCopyWithImpl<_$SkillsListImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_SkillsListToJson(
+    return _$$SkillsListImplToJson(
       this,
     );
   }
@@ -154,17 +154,17 @@ class _$_SkillsList implements _SkillsList {
 abstract class _SkillsList implements SkillsList {
   const factory _SkillsList(
       {@JsonKey(name: 'SOR')
-          final List<WageSeekerSkills>? wageSeekerSkills}) = _$_SkillsList;
+      final List<WageSeekerSkills>? wageSeekerSkills}) = _$SkillsListImpl;
 
   factory _SkillsList.fromJson(Map<String, dynamic> json) =
-      _$_SkillsList.fromJson;
+      _$SkillsListImpl.fromJson;
 
   @override
   @JsonKey(name: 'SOR')
   List<WageSeekerSkills>? get wageSeekerSkills;
   @override
   @JsonKey(ignore: true)
-  _$$_SkillsListCopyWith<_$_SkillsList> get copyWith =>
+  _$$SkillsListImplCopyWith<_$SkillsListImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -245,11 +245,11 @@ class _$WageSeekerSkillsCopyWithImpl<$Res, $Val extends WageSeekerSkills>
 }
 
 /// @nodoc
-abstract class _$$_WageSeekerSkillsCopyWith<$Res>
+abstract class _$$WageSeekerSkillsImplCopyWith<$Res>
     implements $WageSeekerSkillsCopyWith<$Res> {
-  factory _$$_WageSeekerSkillsCopyWith(
-          _$_WageSeekerSkills value, $Res Function(_$_WageSeekerSkills) then) =
-      __$$_WageSeekerSkillsCopyWithImpl<$Res>;
+  factory _$$WageSeekerSkillsImplCopyWith(_$WageSeekerSkillsImpl value,
+          $Res Function(_$WageSeekerSkillsImpl) then) =
+      __$$WageSeekerSkillsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -261,11 +261,11 @@ abstract class _$$_WageSeekerSkillsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WageSeekerSkillsCopyWithImpl<$Res>
-    extends _$WageSeekerSkillsCopyWithImpl<$Res, _$_WageSeekerSkills>
-    implements _$$_WageSeekerSkillsCopyWith<$Res> {
-  __$$_WageSeekerSkillsCopyWithImpl(
-      _$_WageSeekerSkills _value, $Res Function(_$_WageSeekerSkills) _then)
+class __$$WageSeekerSkillsImplCopyWithImpl<$Res>
+    extends _$WageSeekerSkillsCopyWithImpl<$Res, _$WageSeekerSkillsImpl>
+    implements _$$WageSeekerSkillsImplCopyWith<$Res> {
+  __$$WageSeekerSkillsImplCopyWithImpl(_$WageSeekerSkillsImpl _value,
+      $Res Function(_$WageSeekerSkillsImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -277,7 +277,7 @@ class __$$_WageSeekerSkillsCopyWithImpl<$Res>
     Object? description = freezed,
     Object? id = freezed,
   }) {
-    return _then(_$_WageSeekerSkills(
+    return _then(_$WageSeekerSkillsImpl(
       freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
@@ -304,12 +304,12 @@ class __$$_WageSeekerSkillsCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WageSeekerSkills implements _WageSeekerSkills {
-  const _$_WageSeekerSkills(
+class _$WageSeekerSkillsImpl implements _WageSeekerSkills {
+  const _$WageSeekerSkillsImpl(
       this.code, this.amount, this.active, this.description, this.id);
 
-  factory _$_WageSeekerSkills.fromJson(Map<String, dynamic> json) =>
-      _$$_WageSeekerSkillsFromJson(json);
+  factory _$WageSeekerSkillsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$WageSeekerSkillsImplFromJson(json);
 
   @override
   final String? code;
@@ -328,10 +328,10 @@ class _$_WageSeekerSkills implements _WageSeekerSkills {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WageSeekerSkills &&
+            other is _$WageSeekerSkillsImpl &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.active, active) || other.active == active) &&
@@ -348,12 +348,13 @@ class _$_WageSeekerSkills implements _WageSeekerSkills {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WageSeekerSkillsCopyWith<_$_WageSeekerSkills> get copyWith =>
-      __$$_WageSeekerSkillsCopyWithImpl<_$_WageSeekerSkills>(this, _$identity);
+  _$$WageSeekerSkillsImplCopyWith<_$WageSeekerSkillsImpl> get copyWith =>
+      __$$WageSeekerSkillsImplCopyWithImpl<_$WageSeekerSkillsImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_WageSeekerSkillsToJson(
+    return _$$WageSeekerSkillsImplToJson(
       this,
     );
   }
@@ -365,10 +366,10 @@ abstract class _WageSeekerSkills implements WageSeekerSkills {
       final int? amount,
       final bool? active,
       final String? description,
-      final String? id) = _$_WageSeekerSkills;
+      final String? id) = _$WageSeekerSkillsImpl;
 
   factory _WageSeekerSkills.fromJson(Map<String, dynamic> json) =
-      _$_WageSeekerSkills.fromJson;
+      _$WageSeekerSkillsImpl.fromJson;
 
   @override
   String? get code;
@@ -382,6 +383,6 @@ abstract class _WageSeekerSkills implements WageSeekerSkills {
   String? get id;
   @override
   @JsonKey(ignore: true)
-  _$$_WageSeekerSkillsCopyWith<_$_WageSeekerSkills> get copyWith =>
+  _$$WageSeekerSkillsImplCopyWith<_$WageSeekerSkillsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -50,10 +50,10 @@ class HomeScreenBloc extends Bloc<HomeScreenBlocEvent, HomeScreenBlocState> {
       List<CBOHomeScreenConfigModel>? cboHomeScreenConfig =
           configModel.commonUiConfig?.cboHomeScreenConfig;
       cboHomeScreenConfig = cboHomeScreenConfig?.toList()
-        ?..sort((a, b) => a.order!.compareTo(b.order!.toInt()));
+        ?..sort((a, b) => a.order.compareTo(b.order.toInt()));
 
       emit(HomeScreenBlocState.loaded(cboHomeScreenConfig, null));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(HomeScreenBlocState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -76,14 +76,14 @@ class HomeScreenBloc extends Bloc<HomeScreenBlocEvent, HomeScreenBlocState> {
         tenantId: "od",
       );
 
-      print(configModel);
+     
       // List<CBOHomeScreenConfigModel>? cboHomeScreenConfig =
       //     configModel.commonUiConfig?.cboHomeScreenConfig;
       // cboHomeScreenConfig = cboHomeScreenConfig?.toList()
       //   ?..sort((a, b) => a.order!.compareTo(b.order!.toInt()));
 
       emit(HomeScreenBlocState.loaded(null, configModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(HomeScreenBlocState.error(e.response?.data['Errors'][0]['code']));
     }
   }

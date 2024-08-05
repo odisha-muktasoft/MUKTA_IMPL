@@ -27,8 +27,9 @@ import '../widgets/SideBar.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -62,7 +63,9 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+      
         appBar: AppBar(
+          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
           titleSpacing: 0,
           title:GlobalVariables.roleType == RoleType.cbo? BlocBuilder<ORGSearchBloc, ORGSearchState>(
             builder: (context, state) {
@@ -303,7 +306,9 @@ class _HomePage extends State<HomePage> {
     return ScrollableContent(
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
-          child: PoweredByDigit(),
+          child: PoweredByDigit(
+            // version: Constants.appVersion,
+          ),
         ),
         children: [
           DigitCard(

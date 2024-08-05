@@ -23,6 +23,7 @@ import '../../widgets/mb/mb_detail_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class MeasurementBookInboxPage extends StatefulWidget {
   const MeasurementBookInboxPage({super.key});
 
@@ -155,6 +156,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             },
           ),
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -187,7 +189,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               children: [
                                 Back(
                                   callback: () {
-                                    context.router.pop();
+                                    context.router.maybePop();
                                   },
                                 ),
                                 Padding(
@@ -350,14 +352,27 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       child: SizedBox(
                                         width: MediaQuery.sizeOf(context).width,
                                         child: OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                            side: BorderSide(
-                                              width: 1.0,
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                              style: BorderStyle.solid,
-                                            ),
-                                          ),
+                                          style: Theme.of(context)
+                                              .outlinedButtonTheme
+                                              .style
+                                              ?.copyWith(
+                                                side: MaterialStateProperty.all(
+                                                  BorderSide(
+                                                    width: 1.0,
+                                                    color: const DigitColors()
+                                                        .burningOrange,
+                                                    style: BorderStyle.solid,
+                                                  ),
+                                                ),
+                                                shape:
+                                                    MaterialStateProperty.all(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                ),
+                                              ),
                                           child: Text(t.translate(
                                               i18.measurementBook.openMbBook)),
                                           onPressed: () {

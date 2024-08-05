@@ -23,9 +23,9 @@ import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/empty_image.dart';
 import '../../widgets/atoms/tabs_button.dart';
 import '../../widgets/drawer_wrapper.dart';
-
+@RoutePage()
 class MyServiceRequestsPage extends StatefulWidget {
-  const MyServiceRequestsPage({Key? key}) : super(key: key);
+  const MyServiceRequestsPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -62,6 +62,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
+          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
           titleSpacing: 0,
           title: const AppBarLogo(),
         ),
@@ -80,7 +81,9 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                           height: 30,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: PoweredByDigit(),
+                            child: PoweredByDigit(
+                              // version: Constants.appVersion,
+                              ),
                           ),
                         )
                       : const SizedBox.shrink();
@@ -385,7 +388,9 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                             alignment: Alignment
                                                                 .bottomCenter,
                                                             child:
-                                                                PoweredByDigit(),
+                                                                PoweredByDigit(
+                                                                  // version: Constants.appVersion,
+                                                                  ),
                                                           )
                                                         : const SizedBox
                                                             .shrink()

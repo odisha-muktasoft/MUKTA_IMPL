@@ -1,3 +1,4 @@
+import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -31,9 +32,11 @@ class AppBarLogo extends StatelessWidget {
                                 ?.first.name ??
                             ''
                         : '',
-                    style: const TextStyle(
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
+                      color: const DigitColors().white
+
                     ),
                     textAlign: TextAlign.start,
                   ),
@@ -43,9 +46,11 @@ class AppBarLogo extends StatelessWidget {
                     GlobalVariables.organisationListModel?.organisations?.first
                             .orgNumber ??
                         '',
-                    style: const TextStyle(
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w400,
                       fontSize: 12,
+                      color: const DigitColors().white
+
                     ),
                     textAlign: TextAlign.start,
                   )

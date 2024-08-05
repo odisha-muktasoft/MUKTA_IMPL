@@ -100,7 +100,7 @@ class WorkOrderInboxBloc
           },
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -147,7 +147,7 @@ class WorkOrderInboxBloc
           emit(value.copyWith(contracts: itemList));
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -229,7 +229,7 @@ class WorkOrderInboxBloc
           },
         );
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
@@ -290,7 +290,7 @@ class WorkOrderInboxBloc
           );
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }

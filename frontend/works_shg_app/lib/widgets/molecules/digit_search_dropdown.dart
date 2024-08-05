@@ -19,7 +19,7 @@ class DigitSearchDropdown<T> extends StatelessWidget {
   final Map<String, String Function(Object object)>? validationMessages;
 
   const DigitSearchDropdown({
-    Key? key,
+    super.key,
     required this.suggestionsCallback,
     this.onSuggestionSelected,
     required this.label,
@@ -31,7 +31,7 @@ class DigitSearchDropdown<T> extends StatelessWidget {
     this.onChanged,
     this.validationMessages,
     this.initialValueText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

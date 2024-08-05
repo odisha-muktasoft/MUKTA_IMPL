@@ -49,6 +49,7 @@ import '../widgets/atoms/table_dropdown.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class SHGInboxPage extends StatefulWidget {
   final String tenantId;
   final String musterRollNo;
@@ -160,6 +161,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
           builder: (context, localState) {
         return Scaffold(
             appBar: AppBar(
+              iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
               titleSpacing: 0,
               title: const AppBarLogo(),
             ),
@@ -863,7 +865,9 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                       Alignment
                                                                           .bottomCenter,
                                                                   child:
-                                                                      PoweredByDigit(),
+                                                                      PoweredByDigit(
+                                                                        //version: Constants.appVersion,
+                                                                        ),
                                                                 )
                                                               ]))
                                                         ]),

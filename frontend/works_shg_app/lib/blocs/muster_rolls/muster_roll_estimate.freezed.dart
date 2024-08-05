@@ -12,7 +12,7 @@ part of 'muster_roll_estimate.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$MusterRollEstimateEvent {
@@ -94,21 +94,23 @@ class _$MusterRollEstimateEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$EstimateMusterRollEventCopyWith<$Res> {
-  factory _$$EstimateMusterRollEventCopyWith(_$EstimateMusterRollEvent value,
-          $Res Function(_$EstimateMusterRollEvent) then) =
-      __$$EstimateMusterRollEventCopyWithImpl<$Res>;
+abstract class _$$EstimateMusterRollEventImplCopyWith<$Res> {
+  factory _$$EstimateMusterRollEventImplCopyWith(
+          _$EstimateMusterRollEventImpl value,
+          $Res Function(_$EstimateMusterRollEventImpl) then) =
+      __$$EstimateMusterRollEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int startDate, int endDate, String registerId, String tenantId});
 }
 
 /// @nodoc
-class __$$EstimateMusterRollEventCopyWithImpl<$Res>
+class __$$EstimateMusterRollEventImplCopyWithImpl<$Res>
     extends _$MusterRollEstimateEventCopyWithImpl<$Res,
-        _$EstimateMusterRollEvent>
-    implements _$$EstimateMusterRollEventCopyWith<$Res> {
-  __$$EstimateMusterRollEventCopyWithImpl(_$EstimateMusterRollEvent _value,
-      $Res Function(_$EstimateMusterRollEvent) _then)
+        _$EstimateMusterRollEventImpl>
+    implements _$$EstimateMusterRollEventImplCopyWith<$Res> {
+  __$$EstimateMusterRollEventImplCopyWithImpl(
+      _$EstimateMusterRollEventImpl _value,
+      $Res Function(_$EstimateMusterRollEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -119,7 +121,7 @@ class __$$EstimateMusterRollEventCopyWithImpl<$Res>
     Object? registerId = null,
     Object? tenantId = null,
   }) {
-    return _then(_$EstimateMusterRollEvent(
+    return _then(_$EstimateMusterRollEventImpl(
       startDate: null == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -142,8 +144,8 @@ class __$$EstimateMusterRollEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$EstimateMusterRollEvent implements EstimateMusterRollEvent {
-  const _$EstimateMusterRollEvent(
+class _$EstimateMusterRollEventImpl implements EstimateMusterRollEvent {
+  const _$EstimateMusterRollEventImpl(
       {required this.startDate,
       required this.endDate,
       required this.registerId,
@@ -164,10 +166,10 @@ class _$EstimateMusterRollEvent implements EstimateMusterRollEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EstimateMusterRollEvent &&
+            other is _$EstimateMusterRollEventImpl &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
@@ -184,9 +186,9 @@ class _$EstimateMusterRollEvent implements EstimateMusterRollEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$EstimateMusterRollEventCopyWith<_$EstimateMusterRollEvent> get copyWith =>
-      __$$EstimateMusterRollEventCopyWithImpl<_$EstimateMusterRollEvent>(
-          this, _$identity);
+  _$$EstimateMusterRollEventImplCopyWith<_$EstimateMusterRollEventImpl>
+      get copyWith => __$$EstimateMusterRollEventImplCopyWithImpl<
+          _$EstimateMusterRollEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -274,35 +276,35 @@ abstract class EstimateMusterRollEvent implements MusterRollEstimateEvent {
       {required final int startDate,
       required final int endDate,
       required final String registerId,
-      required final String tenantId}) = _$EstimateMusterRollEvent;
+      required final String tenantId}) = _$EstimateMusterRollEventImpl;
 
   int get startDate;
   int get endDate;
   String get registerId;
   String get tenantId;
   @JsonKey(ignore: true)
-  _$$EstimateMusterRollEventCopyWith<_$EstimateMusterRollEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$EstimateMusterRollEventImplCopyWith<_$EstimateMusterRollEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ViewEstimateMusterRollEventCopyWith<$Res> {
-  factory _$$ViewEstimateMusterRollEventCopyWith(
-          _$ViewEstimateMusterRollEvent value,
-          $Res Function(_$ViewEstimateMusterRollEvent) then) =
-      __$$ViewEstimateMusterRollEventCopyWithImpl<$Res>;
+abstract class _$$ViewEstimateMusterRollEventImplCopyWith<$Res> {
+  factory _$$ViewEstimateMusterRollEventImplCopyWith(
+          _$ViewEstimateMusterRollEventImpl value,
+          $Res Function(_$ViewEstimateMusterRollEventImpl) then) =
+      __$$ViewEstimateMusterRollEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int startDate, int endDate, String registerId, String tenantId});
 }
 
 /// @nodoc
-class __$$ViewEstimateMusterRollEventCopyWithImpl<$Res>
+class __$$ViewEstimateMusterRollEventImplCopyWithImpl<$Res>
     extends _$MusterRollEstimateEventCopyWithImpl<$Res,
-        _$ViewEstimateMusterRollEvent>
-    implements _$$ViewEstimateMusterRollEventCopyWith<$Res> {
-  __$$ViewEstimateMusterRollEventCopyWithImpl(
-      _$ViewEstimateMusterRollEvent _value,
-      $Res Function(_$ViewEstimateMusterRollEvent) _then)
+        _$ViewEstimateMusterRollEventImpl>
+    implements _$$ViewEstimateMusterRollEventImplCopyWith<$Res> {
+  __$$ViewEstimateMusterRollEventImplCopyWithImpl(
+      _$ViewEstimateMusterRollEventImpl _value,
+      $Res Function(_$ViewEstimateMusterRollEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -313,7 +315,7 @@ class __$$ViewEstimateMusterRollEventCopyWithImpl<$Res>
     Object? registerId = null,
     Object? tenantId = null,
   }) {
-    return _then(_$ViewEstimateMusterRollEvent(
+    return _then(_$ViewEstimateMusterRollEventImpl(
       startDate: null == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -336,8 +338,8 @@ class __$$ViewEstimateMusterRollEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ViewEstimateMusterRollEvent implements ViewEstimateMusterRollEvent {
-  const _$ViewEstimateMusterRollEvent(
+class _$ViewEstimateMusterRollEventImpl implements ViewEstimateMusterRollEvent {
+  const _$ViewEstimateMusterRollEventImpl(
       {required this.startDate,
       required this.endDate,
       required this.registerId,
@@ -358,10 +360,10 @@ class _$ViewEstimateMusterRollEvent implements ViewEstimateMusterRollEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ViewEstimateMusterRollEvent &&
+            other is _$ViewEstimateMusterRollEventImpl &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
@@ -378,9 +380,9 @@ class _$ViewEstimateMusterRollEvent implements ViewEstimateMusterRollEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ViewEstimateMusterRollEventCopyWith<_$ViewEstimateMusterRollEvent>
-      get copyWith => __$$ViewEstimateMusterRollEventCopyWithImpl<
-          _$ViewEstimateMusterRollEvent>(this, _$identity);
+  _$$ViewEstimateMusterRollEventImplCopyWith<_$ViewEstimateMusterRollEventImpl>
+      get copyWith => __$$ViewEstimateMusterRollEventImplCopyWithImpl<
+          _$ViewEstimateMusterRollEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -468,41 +470,41 @@ abstract class ViewEstimateMusterRollEvent implements MusterRollEstimateEvent {
       {required final int startDate,
       required final int endDate,
       required final String registerId,
-      required final String tenantId}) = _$ViewEstimateMusterRollEvent;
+      required final String tenantId}) = _$ViewEstimateMusterRollEventImpl;
 
   int get startDate;
   int get endDate;
   String get registerId;
   String get tenantId;
   @JsonKey(ignore: true)
-  _$$ViewEstimateMusterRollEventCopyWith<_$ViewEstimateMusterRollEvent>
+  _$$ViewEstimateMusterRollEventImplCopyWith<_$ViewEstimateMusterRollEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DisposeEstimateMusterRollEventCopyWith<$Res> {
-  factory _$$DisposeEstimateMusterRollEventCopyWith(
-          _$DisposeEstimateMusterRollEvent value,
-          $Res Function(_$DisposeEstimateMusterRollEvent) then) =
-      __$$DisposeEstimateMusterRollEventCopyWithImpl<$Res>;
+abstract class _$$DisposeEstimateMusterRollEventImplCopyWith<$Res> {
+  factory _$$DisposeEstimateMusterRollEventImplCopyWith(
+          _$DisposeEstimateMusterRollEventImpl value,
+          $Res Function(_$DisposeEstimateMusterRollEventImpl) then) =
+      __$$DisposeEstimateMusterRollEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DisposeEstimateMusterRollEventCopyWithImpl<$Res>
+class __$$DisposeEstimateMusterRollEventImplCopyWithImpl<$Res>
     extends _$MusterRollEstimateEventCopyWithImpl<$Res,
-        _$DisposeEstimateMusterRollEvent>
-    implements _$$DisposeEstimateMusterRollEventCopyWith<$Res> {
-  __$$DisposeEstimateMusterRollEventCopyWithImpl(
-      _$DisposeEstimateMusterRollEvent _value,
-      $Res Function(_$DisposeEstimateMusterRollEvent) _then)
+        _$DisposeEstimateMusterRollEventImpl>
+    implements _$$DisposeEstimateMusterRollEventImplCopyWith<$Res> {
+  __$$DisposeEstimateMusterRollEventImplCopyWithImpl(
+      _$DisposeEstimateMusterRollEventImpl _value,
+      $Res Function(_$DisposeEstimateMusterRollEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DisposeEstimateMusterRollEvent
+class _$DisposeEstimateMusterRollEventImpl
     implements DisposeEstimateMusterRollEvent {
-  const _$DisposeEstimateMusterRollEvent();
+  const _$DisposeEstimateMusterRollEventImpl();
 
   @override
   String toString() {
@@ -510,10 +512,10 @@ class _$DisposeEstimateMusterRollEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DisposeEstimateMusterRollEvent);
+            other is _$DisposeEstimateMusterRollEventImpl);
   }
 
   @override
@@ -603,7 +605,7 @@ class _$DisposeEstimateMusterRollEvent
 abstract class DisposeEstimateMusterRollEvent
     implements MusterRollEstimateEvent {
   const factory DisposeEstimateMusterRollEvent() =
-      _$DisposeEstimateMusterRollEvent;
+      _$DisposeEstimateMusterRollEventImpl;
 }
 
 /// @nodoc
@@ -681,24 +683,25 @@ class _$MusterRollEstimateStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl() : super._();
 
   @override
   String toString() {
@@ -706,9 +709,9 @@ class _$_Initial extends _Initial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -791,29 +794,30 @@ class _$_Initial extends _Initial {
 }
 
 abstract class _Initial extends MusterRollEstimateState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -821,9 +825,9 @@ class _$_Loading extends _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -906,14 +910,15 @@ class _$_Loading extends _Loading {
 }
 
 abstract class _Loading extends MusterRollEstimateState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({EstimateMusterRollsModel? musterRollsModel});
 
@@ -921,10 +926,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -932,7 +938,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? musterRollsModel = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == musterRollsModel
           ? _value.musterRollsModel
           : musterRollsModel // ignore: cast_nullable_to_non_nullable
@@ -956,8 +962,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.musterRollsModel) : super._();
+class _$LoadedImpl extends _Loaded {
+  const _$LoadedImpl(this.musterRollsModel) : super._();
 
   @override
   final EstimateMusterRollsModel? musterRollsModel;
@@ -968,10 +974,10 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.musterRollsModel, musterRollsModel) ||
                 other.musterRollsModel == musterRollsModel));
   }
@@ -982,8 +988,8 @@ class _$_Loaded extends _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1063,28 +1069,30 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends MusterRollEstimateState {
   const factory _Loaded(final EstimateMusterRollsModel? musterRollsModel) =
-      _$_Loaded;
+      _$LoadedImpl;
   const _Loaded._() : super._();
 
   EstimateMusterRollsModel? get musterRollsModel;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$MusterRollEstimateStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1092,7 +1100,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -1103,8 +1111,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -1115,10 +1123,10 @@ class _$_Error extends _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -1128,8 +1136,8 @@ class _$_Error extends _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1208,11 +1216,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends MusterRollEstimateState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

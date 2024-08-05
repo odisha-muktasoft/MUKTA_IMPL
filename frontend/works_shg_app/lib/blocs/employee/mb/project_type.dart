@@ -52,7 +52,7 @@ class ProjectTypeBloc extends Bloc<ProjectTypeBlocEvent, ProjectTypeState> {
       emit(
         ProjectTypeState.loaded(res),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(ProjectTypeState.error(e.toString()));
     }

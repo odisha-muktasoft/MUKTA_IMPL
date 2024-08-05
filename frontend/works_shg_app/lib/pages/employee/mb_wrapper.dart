@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../blocs/employee/mb/measurement_book.dart';
 import '../../router/app_router.dart';
 
-class MeasurementBookWrapperPage extends StatefulWidget with AutoRouteWrapper {
+@RoutePage()
+class MeasurementBookWrapperPage extends StatefulWidget implements AutoRouteWrapper {
   const MeasurementBookWrapperPage({super.key});
 
   @override

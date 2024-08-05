@@ -30,7 +30,7 @@ class MBRepository {
 
       // return res.data;
       return MBInboxResponse.fromJson(res.data);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -54,7 +54,7 @@ class MBRepository {
       );
 
       return MBDetailResponse.fromJson(res.data);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }
@@ -77,7 +77,7 @@ class MBRepository {
       );
 
       return Measurement.fromJson(res.data['measurements'][0]);
-    } on DioError catch (ex) {
+    } on DioException catch (ex) {
       // Assuming there will be an errorMessage property in the JSON object
       rethrow;
     }

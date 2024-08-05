@@ -150,7 +150,7 @@ class WageSeekerCreateBloc
           });
       await Future.delayed(const Duration(seconds: 1));
       emit(WageSeekerCreateState.loaded(individualListModel));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(WageSeekerCreateState.error(e.response?.data['Errors'][0]['code']));
     }
   }

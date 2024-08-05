@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class Loaders {
   static circularLoader(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async => false,
+    return PopScope(
+        onPopInvoked: null,
+        canPop: false,
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -39,8 +40,9 @@ class Loaders {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return WillPopScope(
-              onWillPop: () async => false,
+          return PopScope(
+              onPopInvoked: null,
+              canPop: false,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,

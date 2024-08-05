@@ -55,7 +55,7 @@ class MeasurementCrudBloc
       );
 
      emit(MeasurementCrudState.loaded(res));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(MeasurementCrudState.error(e.response!.data['Errors'][0]['message']));
     }
   }

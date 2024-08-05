@@ -1,6 +1,7 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 
 import '../../utils/common_methods.dart';
 import '../Back.dart';
@@ -9,6 +10,7 @@ import '../atoms/app_bar_logo.dart';
 import '../atoms/success_message.dart';
 import '../drawer_wrapper.dart';
 
+@RoutePage()
 class SuccessResponsePage extends StatelessWidget {
   final String header;
   final String? subHeader;
@@ -57,11 +59,14 @@ class SuccessResponsePage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: const Align(
               alignment: Alignment.bottomCenter,
-              child: PoweredByDigit(),
+              child: PoweredByDigit(
+                //version: Constants.appVersion,
+              ),
             ),
           ),
           appBar: isWithoutLogin
               ? AppBar(
+                
                   title: const Text('MuktaSoft'),
                   automaticallyImplyLeading: false,
                 )

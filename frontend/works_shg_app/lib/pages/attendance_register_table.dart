@@ -31,6 +31,7 @@ import '../widgets/atoms/auto_complete_search_bar.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class AttendanceRegisterTablePage extends StatefulWidget {
   final String registerId;
   final String tenantId;
@@ -166,6 +167,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
               ),
             ),
             appBar: AppBar(
+              iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
               titleSpacing: 0,
               title: const AppBarLogo(),
             ),
@@ -609,7 +611,9 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                         const SizedBox(height: 30),
                         const Align(
                           alignment: Alignment.bottomCenter,
-                          child: PoweredByDigit(),
+                          child: PoweredByDigit(
+                            // version: Constants.appVersion,
+                            ),
                         ),
                       ]))
                 ],),

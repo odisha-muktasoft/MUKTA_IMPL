@@ -55,7 +55,7 @@ class AcceptWorkOrderBloc
               }));
       await Future.delayed(const Duration(seconds: 1));
       emit(AcceptWorkOrderState.loaded(acceptedContracts));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(AcceptWorkOrderState.error(e.response?.data['Errors'][0]['code']));
     }
   }

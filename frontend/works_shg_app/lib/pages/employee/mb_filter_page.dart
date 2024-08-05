@@ -24,6 +24,7 @@ import '../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class MBFilterPage extends StatefulWidget {
   const MBFilterPage({super.key});
 
@@ -123,6 +124,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       loaded: (location) {
                         return Scaffold(
                           appBar: AppBar(
+                            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
                             titleSpacing: 0,
                             title: const AppBarLogo(),
                           ),
@@ -171,7 +173,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                                 .tenantId!,
                                                       ),
                                                     );
-                                                context.router.pop();
+                                                context.router.maybePopTop();
                                               },
                                             ),
                                           ),
@@ -225,7 +227,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             data: s,
                                                           ),
                                                         );
-                                                    context.router.pop();
+                                                    context.router.maybePopTop();
                                                   } else {
                                                     ToastUtils.showCustomToast(
                                                         context,
@@ -486,7 +488,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                         );
                                                   }
 
-                                                  context.router.pop();
+                                                  context.router.maybePopTop();
                                                 }
                                               },
                                             ),
@@ -516,7 +518,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                                 .tenantId!,
                                                       ),
                                                     );
-                                                context.router.pop();
+                                                context.router.maybePopTop();
                                               },
                                               icon: const Icon(Icons.close)),
                                         ],

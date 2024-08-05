@@ -12,7 +12,7 @@ part of 'wage_seeker_create_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$WageSeekerCreateEvent {
@@ -97,10 +97,11 @@ class _$WageSeekerCreateEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$CreateWageSeekerEventCopyWith<$Res> {
-  factory _$$CreateWageSeekerEventCopyWith(_$CreateWageSeekerEvent value,
-          $Res Function(_$CreateWageSeekerEvent) then) =
-      __$$CreateWageSeekerEventCopyWithImpl<$Res>;
+abstract class _$$CreateWageSeekerEventImplCopyWith<$Res> {
+  factory _$$CreateWageSeekerEventImplCopyWith(
+          _$CreateWageSeekerEventImpl value,
+          $Res Function(_$CreateWageSeekerEventImpl) then) =
+      __$$CreateWageSeekerEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {IndividualDetails? individualDetails,
@@ -110,11 +111,12 @@ abstract class _$$CreateWageSeekerEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$CreateWageSeekerEventCopyWithImpl<$Res>
-    extends _$WageSeekerCreateEventCopyWithImpl<$Res, _$CreateWageSeekerEvent>
-    implements _$$CreateWageSeekerEventCopyWith<$Res> {
-  __$$CreateWageSeekerEventCopyWithImpl(_$CreateWageSeekerEvent _value,
-      $Res Function(_$CreateWageSeekerEvent) _then)
+class __$$CreateWageSeekerEventImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateEventCopyWithImpl<$Res,
+        _$CreateWageSeekerEventImpl>
+    implements _$$CreateWageSeekerEventImplCopyWith<$Res> {
+  __$$CreateWageSeekerEventImplCopyWithImpl(_$CreateWageSeekerEventImpl _value,
+      $Res Function(_$CreateWageSeekerEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -125,7 +127,7 @@ class __$$CreateWageSeekerEventCopyWithImpl<$Res>
     Object? locationDetails = freezed,
     Object? financialDetails = freezed,
   }) {
-    return _then(_$CreateWageSeekerEvent(
+    return _then(_$CreateWageSeekerEventImpl(
       individualDetails: freezed == individualDetails
           ? _value.individualDetails
           : individualDetails // ignore: cast_nullable_to_non_nullable
@@ -148,8 +150,8 @@ class __$$CreateWageSeekerEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
-  const _$CreateWageSeekerEvent(
+class _$CreateWageSeekerEventImpl implements CreateWageSeekerEvent {
+  const _$CreateWageSeekerEventImpl(
       {this.individualDetails,
       this.skillDetails,
       this.locationDetails,
@@ -170,10 +172,10 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CreateWageSeekerEvent &&
+            other is _$CreateWageSeekerEventImpl &&
             (identical(other.individualDetails, individualDetails) ||
                 other.individualDetails == individualDetails) &&
             (identical(other.skillDetails, skillDetails) ||
@@ -191,9 +193,9 @@ class _$CreateWageSeekerEvent implements CreateWageSeekerEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CreateWageSeekerEventCopyWith<_$CreateWageSeekerEvent> get copyWith =>
-      __$$CreateWageSeekerEventCopyWithImpl<_$CreateWageSeekerEvent>(
-          this, _$identity);
+  _$$CreateWageSeekerEventImplCopyWith<_$CreateWageSeekerEventImpl>
+      get copyWith => __$$CreateWageSeekerEventImplCopyWithImpl<
+          _$CreateWageSeekerEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -287,32 +289,32 @@ abstract class CreateWageSeekerEvent implements WageSeekerCreateEvent {
       {final IndividualDetails? individualDetails,
       final SkillDetails? skillDetails,
       final LocationDetails? locationDetails,
-      final FinancialDetails? financialDetails}) = _$CreateWageSeekerEvent;
+      final FinancialDetails? financialDetails}) = _$CreateWageSeekerEventImpl;
 
   IndividualDetails? get individualDetails;
   SkillDetails? get skillDetails;
   LocationDetails? get locationDetails;
   FinancialDetails? get financialDetails;
   @JsonKey(ignore: true)
-  _$$CreateWageSeekerEventCopyWith<_$CreateWageSeekerEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CreateWageSeekerEventImplCopyWith<_$CreateWageSeekerEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$VerifyAdharEventCopyWith<$Res> {
-  factory _$$VerifyAdharEventCopyWith(
-          _$VerifyAdharEvent value, $Res Function(_$VerifyAdharEvent) then) =
-      __$$VerifyAdharEventCopyWithImpl<$Res>;
+abstract class _$$VerifyAdharEventImplCopyWith<$Res> {
+  factory _$$VerifyAdharEventImplCopyWith(_$VerifyAdharEventImpl value,
+          $Res Function(_$VerifyAdharEventImpl) then) =
+      __$$VerifyAdharEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String name, String uid});
 }
 
 /// @nodoc
-class __$$VerifyAdharEventCopyWithImpl<$Res>
-    extends _$WageSeekerCreateEventCopyWithImpl<$Res, _$VerifyAdharEvent>
-    implements _$$VerifyAdharEventCopyWith<$Res> {
-  __$$VerifyAdharEventCopyWithImpl(
-      _$VerifyAdharEvent _value, $Res Function(_$VerifyAdharEvent) _then)
+class __$$VerifyAdharEventImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateEventCopyWithImpl<$Res, _$VerifyAdharEventImpl>
+    implements _$$VerifyAdharEventImplCopyWith<$Res> {
+  __$$VerifyAdharEventImplCopyWithImpl(_$VerifyAdharEventImpl _value,
+      $Res Function(_$VerifyAdharEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -321,7 +323,7 @@ class __$$VerifyAdharEventCopyWithImpl<$Res>
     Object? name = null,
     Object? uid = null,
   }) {
-    return _then(_$VerifyAdharEvent(
+    return _then(_$VerifyAdharEventImpl(
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -336,8 +338,8 @@ class __$$VerifyAdharEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$VerifyAdharEvent implements VerifyAdharEvent {
-  const _$VerifyAdharEvent({required this.name, required this.uid});
+class _$VerifyAdharEventImpl implements VerifyAdharEvent {
+  const _$VerifyAdharEventImpl({required this.name, required this.uid});
 
   @override
   final String name;
@@ -350,10 +352,10 @@ class _$VerifyAdharEvent implements VerifyAdharEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$VerifyAdharEvent &&
+            other is _$VerifyAdharEventImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.uid, uid) || other.uid == uid));
   }
@@ -364,8 +366,9 @@ class _$VerifyAdharEvent implements VerifyAdharEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$VerifyAdharEventCopyWith<_$VerifyAdharEvent> get copyWith =>
-      __$$VerifyAdharEventCopyWithImpl<_$VerifyAdharEvent>(this, _$identity);
+  _$$VerifyAdharEventImplCopyWith<_$VerifyAdharEventImpl> get copyWith =>
+      __$$VerifyAdharEventImplCopyWithImpl<_$VerifyAdharEventImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -454,38 +457,39 @@ class _$VerifyAdharEvent implements VerifyAdharEvent {
 abstract class VerifyAdharEvent implements WageSeekerCreateEvent {
   const factory VerifyAdharEvent(
       {required final String name,
-      required final String uid}) = _$VerifyAdharEvent;
+      required final String uid}) = _$VerifyAdharEventImpl;
 
   String get name;
   String get uid;
   @JsonKey(ignore: true)
-  _$$VerifyAdharEventCopyWith<_$VerifyAdharEvent> get copyWith =>
+  _$$VerifyAdharEventImplCopyWith<_$VerifyAdharEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CreateWageSeekerDisposeEventCopyWith<$Res> {
-  factory _$$CreateWageSeekerDisposeEventCopyWith(
-          _$CreateWageSeekerDisposeEvent value,
-          $Res Function(_$CreateWageSeekerDisposeEvent) then) =
-      __$$CreateWageSeekerDisposeEventCopyWithImpl<$Res>;
+abstract class _$$CreateWageSeekerDisposeEventImplCopyWith<$Res> {
+  factory _$$CreateWageSeekerDisposeEventImplCopyWith(
+          _$CreateWageSeekerDisposeEventImpl value,
+          $Res Function(_$CreateWageSeekerDisposeEventImpl) then) =
+      __$$CreateWageSeekerDisposeEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$CreateWageSeekerDisposeEventCopyWithImpl<$Res>
+class __$$CreateWageSeekerDisposeEventImplCopyWithImpl<$Res>
     extends _$WageSeekerCreateEventCopyWithImpl<$Res,
-        _$CreateWageSeekerDisposeEvent>
-    implements _$$CreateWageSeekerDisposeEventCopyWith<$Res> {
-  __$$CreateWageSeekerDisposeEventCopyWithImpl(
-      _$CreateWageSeekerDisposeEvent _value,
-      $Res Function(_$CreateWageSeekerDisposeEvent) _then)
+        _$CreateWageSeekerDisposeEventImpl>
+    implements _$$CreateWageSeekerDisposeEventImplCopyWith<$Res> {
+  __$$CreateWageSeekerDisposeEventImplCopyWithImpl(
+      _$CreateWageSeekerDisposeEventImpl _value,
+      $Res Function(_$CreateWageSeekerDisposeEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
-  const _$CreateWageSeekerDisposeEvent();
+class _$CreateWageSeekerDisposeEventImpl
+    implements CreateWageSeekerDisposeEvent {
+  const _$CreateWageSeekerDisposeEventImpl();
 
   @override
   String toString() {
@@ -493,10 +497,10 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CreateWageSeekerDisposeEvent);
+            other is _$CreateWageSeekerDisposeEventImpl);
   }
 
   @override
@@ -587,7 +591,8 @@ class _$CreateWageSeekerDisposeEvent implements CreateWageSeekerDisposeEvent {
 }
 
 abstract class CreateWageSeekerDisposeEvent implements WageSeekerCreateEvent {
-  const factory CreateWageSeekerDisposeEvent() = _$CreateWageSeekerDisposeEvent;
+  const factory CreateWageSeekerDisposeEvent() =
+      _$CreateWageSeekerDisposeEventImpl;
 }
 
 /// @nodoc
@@ -671,24 +676,25 @@ class _$WageSeekerCreateStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl() : super._();
 
   @override
   String toString() {
@@ -696,9 +702,9 @@ class _$_Initial extends _Initial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -787,29 +793,30 @@ class _$_Initial extends _Initial {
 }
 
 abstract class _Initial extends WageSeekerCreateState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -817,9 +824,9 @@ class _$_Loading extends _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -908,23 +915,25 @@ class _$_Loading extends _Loading {
 }
 
 abstract class _Loading extends WageSeekerCreateState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({SingleIndividualModel? individualListModel});
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -932,7 +941,7 @@ class __$$_LoadedCopyWithImpl<$Res>
   $Res call({
     Object? individualListModel = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == individualListModel
           ? _value.individualListModel
           : individualListModel // ignore: cast_nullable_to_non_nullable
@@ -943,8 +952,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded {
-  const _$_Loaded(this.individualListModel) : super._();
+class _$LoadedImpl extends _Loaded {
+  const _$LoadedImpl(this.individualListModel) : super._();
 
   @override
   final SingleIndividualModel? individualListModel;
@@ -955,10 +964,10 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.individualListModel, individualListModel) ||
                 other.individualListModel == individualListModel));
   }
@@ -969,8 +978,8 @@ class _$_Loaded extends _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1056,20 +1065,20 @@ class _$_Loaded extends _Loaded {
 
 abstract class _Loaded extends WageSeekerCreateState {
   const factory _Loaded(final SingleIndividualModel? individualListModel) =
-      _$_Loaded;
+      _$LoadedImpl;
   const _Loaded._() : super._();
 
   SingleIndividualModel? get individualListModel;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_VerifiedCopyWith<$Res> {
-  factory _$$_VerifiedCopyWith(
-          _$_Verified value, $Res Function(_$_Verified) then) =
-      __$$_VerifiedCopyWithImpl<$Res>;
+abstract class _$$VerifiedImplCopyWith<$Res> {
+  factory _$$VerifiedImplCopyWith(
+          _$VerifiedImpl value, $Res Function(_$VerifiedImpl) then) =
+      __$$VerifiedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({AdharCardResponse? adharCardResponse});
 
@@ -1077,11 +1086,11 @@ abstract class _$$_VerifiedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_VerifiedCopyWithImpl<$Res>
-    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$_Verified>
-    implements _$$_VerifiedCopyWith<$Res> {
-  __$$_VerifiedCopyWithImpl(
-      _$_Verified _value, $Res Function(_$_Verified) _then)
+class __$$VerifiedImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$VerifiedImpl>
+    implements _$$VerifiedImplCopyWith<$Res> {
+  __$$VerifiedImplCopyWithImpl(
+      _$VerifiedImpl _value, $Res Function(_$VerifiedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1089,7 +1098,7 @@ class __$$_VerifiedCopyWithImpl<$Res>
   $Res call({
     Object? adharCardResponse = freezed,
   }) {
-    return _then(_$_Verified(
+    return _then(_$VerifiedImpl(
       freezed == adharCardResponse
           ? _value.adharCardResponse
           : adharCardResponse // ignore: cast_nullable_to_non_nullable
@@ -1112,8 +1121,8 @@ class __$$_VerifiedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Verified extends _Verified {
-  const _$_Verified(this.adharCardResponse) : super._();
+class _$VerifiedImpl extends _Verified {
+  const _$VerifiedImpl(this.adharCardResponse) : super._();
 
   @override
   final AdharCardResponse? adharCardResponse;
@@ -1124,10 +1133,10 @@ class _$_Verified extends _Verified {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Verified &&
+            other is _$VerifiedImpl &&
             (identical(other.adharCardResponse, adharCardResponse) ||
                 other.adharCardResponse == adharCardResponse));
   }
@@ -1138,8 +1147,8 @@ class _$_Verified extends _Verified {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_VerifiedCopyWith<_$_Verified> get copyWith =>
-      __$$_VerifiedCopyWithImpl<_$_Verified>(this, _$identity);
+  _$$VerifiedImplCopyWith<_$VerifiedImpl> get copyWith =>
+      __$$VerifiedImplCopyWithImpl<_$VerifiedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1225,28 +1234,30 @@ class _$_Verified extends _Verified {
 
 abstract class _Verified extends WageSeekerCreateState {
   const factory _Verified(final AdharCardResponse? adharCardResponse) =
-      _$_Verified;
+      _$VerifiedImpl;
   const _Verified._() : super._();
 
   AdharCardResponse? get adharCardResponse;
   @JsonKey(ignore: true)
-  _$$_VerifiedCopyWith<_$_Verified> get copyWith =>
+  _$$VerifiedImplCopyWith<_$VerifiedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$WageSeekerCreateStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1254,7 +1265,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -1265,8 +1276,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -1277,10 +1288,10 @@ class _$_Error extends _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -1290,8 +1301,8 @@ class _$_Error extends _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1376,11 +1387,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends WageSeekerCreateState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

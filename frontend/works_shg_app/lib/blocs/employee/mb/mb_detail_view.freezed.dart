@@ -12,7 +12,7 @@ part of 'mb_detail_view.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$MeasurementDetailBlocEvent {
@@ -21,7 +21,8 @@ mixin _$MeasurementDetailBlocEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -52,7 +53,8 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -73,7 +75,8 @@ mixin _$MeasurementDetailBlocEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -104,7 +107,8 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -125,7 +129,8 @@ mixin _$MeasurementDetailBlocEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -156,7 +161,8 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -247,23 +253,23 @@ class _$MeasurementDetailBlocEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$MeasurementUploadDocumentBlocEventCopyWith<$Res> {
-  factory _$$MeasurementUploadDocumentBlocEventCopyWith(
-          _$MeasurementUploadDocumentBlocEvent value,
-          $Res Function(_$MeasurementUploadDocumentBlocEvent) then) =
-      __$$MeasurementUploadDocumentBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementUploadDocumentBlocEventImplCopyWith<$Res> {
+  factory _$$MeasurementUploadDocumentBlocEventImplCopyWith(
+          _$MeasurementUploadDocumentBlocEventImpl value,
+          $Res Function(_$MeasurementUploadDocumentBlocEventImpl) then) =
+      __$$MeasurementUploadDocumentBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String tenantId, List<WorkflowDocument> workflowDocument});
 }
 
 /// @nodoc
-class __$$MeasurementUploadDocumentBlocEventCopyWithImpl<$Res>
+class __$$MeasurementUploadDocumentBlocEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$MeasurementUploadDocumentBlocEvent>
-    implements _$$MeasurementUploadDocumentBlocEventCopyWith<$Res> {
-  __$$MeasurementUploadDocumentBlocEventCopyWithImpl(
-      _$MeasurementUploadDocumentBlocEvent _value,
-      $Res Function(_$MeasurementUploadDocumentBlocEvent) _then)
+        _$MeasurementUploadDocumentBlocEventImpl>
+    implements _$$MeasurementUploadDocumentBlocEventImplCopyWith<$Res> {
+  __$$MeasurementUploadDocumentBlocEventImplCopyWithImpl(
+      _$MeasurementUploadDocumentBlocEventImpl _value,
+      $Res Function(_$MeasurementUploadDocumentBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -272,7 +278,7 @@ class __$$MeasurementUploadDocumentBlocEventCopyWithImpl<$Res>
     Object? tenantId = null,
     Object? workflowDocument = null,
   }) {
-    return _then(_$MeasurementUploadDocumentBlocEvent(
+    return _then(_$MeasurementUploadDocumentBlocEventImpl(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
@@ -287,9 +293,9 @@ class __$$MeasurementUploadDocumentBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MeasurementUploadDocumentBlocEvent
+class _$MeasurementUploadDocumentBlocEventImpl
     implements MeasurementUploadDocumentBlocEvent {
-  const _$MeasurementUploadDocumentBlocEvent(
+  const _$MeasurementUploadDocumentBlocEventImpl(
       {required this.tenantId,
       required final List<WorkflowDocument> workflowDocument})
       : _workflowDocument = workflowDocument;
@@ -311,10 +317,10 @@ class _$MeasurementUploadDocumentBlocEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementUploadDocumentBlocEvent &&
+            other is _$MeasurementUploadDocumentBlocEventImpl &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
             const DeepCollectionEquality()
@@ -328,10 +334,10 @@ class _$MeasurementUploadDocumentBlocEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementUploadDocumentBlocEventCopyWith<
-          _$MeasurementUploadDocumentBlocEvent>
-      get copyWith => __$$MeasurementUploadDocumentBlocEventCopyWithImpl<
-          _$MeasurementUploadDocumentBlocEvent>(this, _$identity);
+  _$$MeasurementUploadDocumentBlocEventImplCopyWith<
+          _$MeasurementUploadDocumentBlocEventImpl>
+      get copyWith => __$$MeasurementUploadDocumentBlocEventImplCopyWithImpl<
+          _$MeasurementUploadDocumentBlocEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -339,7 +345,8 @@ class _$MeasurementUploadDocumentBlocEvent
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -370,7 +377,8 @@ class _$MeasurementUploadDocumentBlocEvent
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -394,7 +402,8 @@ class _$MeasurementUploadDocumentBlocEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -425,7 +434,8 @@ class _$MeasurementUploadDocumentBlocEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -449,7 +459,8 @@ class _$MeasurementUploadDocumentBlocEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -480,7 +491,8 @@ class _$MeasurementUploadDocumentBlocEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -571,22 +583,22 @@ abstract class MeasurementUploadDocumentBlocEvent
   const factory MeasurementUploadDocumentBlocEvent(
           {required final String tenantId,
           required final List<WorkflowDocument> workflowDocument}) =
-      _$MeasurementUploadDocumentBlocEvent;
+      _$MeasurementUploadDocumentBlocEventImpl;
 
   String get tenantId;
   List<WorkflowDocument> get workflowDocument;
   @JsonKey(ignore: true)
-  _$$MeasurementUploadDocumentBlocEventCopyWith<
-          _$MeasurementUploadDocumentBlocEvent>
+  _$$MeasurementUploadDocumentBlocEventImplCopyWith<
+          _$MeasurementUploadDocumentBlocEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementDetailBookBlocEventCopyWith<$Res> {
-  factory _$$MeasurementDetailBookBlocEventCopyWith(
-          _$MeasurementDetailBookBlocEvent value,
-          $Res Function(_$MeasurementDetailBookBlocEvent) then) =
-      __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementDetailBookBlocEventImplCopyWith<$Res> {
+  factory _$$MeasurementDetailBookBlocEventImplCopyWith(
+          _$MeasurementDetailBookBlocEventImpl value,
+          $Res Function(_$MeasurementDetailBookBlocEventImpl) then) =
+      __$$MeasurementDetailBookBlocEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String tenantId,
@@ -596,13 +608,13 @@ abstract class _$$MeasurementDetailBookBlocEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>
+class __$$MeasurementDetailBookBlocEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$MeasurementDetailBookBlocEvent>
-    implements _$$MeasurementDetailBookBlocEventCopyWith<$Res> {
-  __$$MeasurementDetailBookBlocEventCopyWithImpl(
-      _$MeasurementDetailBookBlocEvent _value,
-      $Res Function(_$MeasurementDetailBookBlocEvent) _then)
+        _$MeasurementDetailBookBlocEventImpl>
+    implements _$$MeasurementDetailBookBlocEventImplCopyWith<$Res> {
+  __$$MeasurementDetailBookBlocEventImplCopyWithImpl(
+      _$MeasurementDetailBookBlocEventImpl _value,
+      $Res Function(_$MeasurementDetailBookBlocEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -613,7 +625,7 @@ class __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>
     Object? measurementNumber = null,
     Object? screenType = null,
   }) {
-    return _then(_$MeasurementDetailBookBlocEvent(
+    return _then(_$MeasurementDetailBookBlocEventImpl(
       tenantId: null == tenantId
           ? _value.tenantId
           : tenantId // ignore: cast_nullable_to_non_nullable
@@ -636,9 +648,9 @@ class __$$MeasurementDetailBookBlocEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$MeasurementDetailBookBlocEvent
+class _$MeasurementDetailBookBlocEventImpl
     implements MeasurementDetailBookBlocEvent {
-  const _$MeasurementDetailBookBlocEvent(
+  const _$MeasurementDetailBookBlocEventImpl(
       {required this.tenantId,
       required this.contractNumber,
       required this.measurementNumber,
@@ -659,10 +671,10 @@ class _$MeasurementDetailBookBlocEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementDetailBookBlocEvent &&
+            other is _$MeasurementDetailBookBlocEventImpl &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
             (identical(other.contractNumber, contractNumber) ||
@@ -680,9 +692,10 @@ class _$MeasurementDetailBookBlocEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MeasurementDetailBookBlocEventCopyWith<_$MeasurementDetailBookBlocEvent>
-      get copyWith => __$$MeasurementDetailBookBlocEventCopyWithImpl<
-          _$MeasurementDetailBookBlocEvent>(this, _$identity);
+  _$$MeasurementDetailBookBlocEventImplCopyWith<
+          _$MeasurementDetailBookBlocEventImpl>
+      get copyWith => __$$MeasurementDetailBookBlocEventImplCopyWithImpl<
+          _$MeasurementDetailBookBlocEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -690,7 +703,8 @@ class _$MeasurementDetailBookBlocEvent
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -721,7 +735,8 @@ class _$MeasurementDetailBookBlocEvent
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -745,7 +760,8 @@ class _$MeasurementDetailBookBlocEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -776,7 +792,8 @@ class _$MeasurementDetailBookBlocEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -801,7 +818,8 @@ class _$MeasurementDetailBookBlocEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -832,7 +850,8 @@ class _$MeasurementDetailBookBlocEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -921,44 +940,46 @@ class _$MeasurementDetailBookBlocEvent
 abstract class MeasurementDetailBookBlocEvent
     implements MeasurementDetailBlocEvent {
   const factory MeasurementDetailBookBlocEvent(
-      {required final String tenantId,
-      required final String contractNumber,
-      required final String measurementNumber,
-      required final MBScreen screenType}) = _$MeasurementDetailBookBlocEvent;
+          {required final String tenantId,
+          required final String contractNumber,
+          required final String measurementNumber,
+          required final MBScreen screenType}) =
+      _$MeasurementDetailBookBlocEventImpl;
 
   String get tenantId;
   String get contractNumber;
   String get measurementNumber;
   MBScreen get screenType;
   @JsonKey(ignore: true)
-  _$$MeasurementDetailBookBlocEventCopyWith<_$MeasurementDetailBookBlocEvent>
+  _$$MeasurementDetailBookBlocEventImplCopyWith<
+          _$MeasurementDetailBookBlocEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$MeasurementDetailBlocClearEventCopyWith<$Res> {
-  factory _$$MeasurementDetailBlocClearEventCopyWith(
-          _$MeasurementDetailBlocClearEvent value,
-          $Res Function(_$MeasurementDetailBlocClearEvent) then) =
-      __$$MeasurementDetailBlocClearEventCopyWithImpl<$Res>;
+abstract class _$$MeasurementDetailBlocClearEventImplCopyWith<$Res> {
+  factory _$$MeasurementDetailBlocClearEventImplCopyWith(
+          _$MeasurementDetailBlocClearEventImpl value,
+          $Res Function(_$MeasurementDetailBlocClearEventImpl) then) =
+      __$$MeasurementDetailBlocClearEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$MeasurementDetailBlocClearEventCopyWithImpl<$Res>
+class __$$MeasurementDetailBlocClearEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$MeasurementDetailBlocClearEvent>
-    implements _$$MeasurementDetailBlocClearEventCopyWith<$Res> {
-  __$$MeasurementDetailBlocClearEventCopyWithImpl(
-      _$MeasurementDetailBlocClearEvent _value,
-      $Res Function(_$MeasurementDetailBlocClearEvent) _then)
+        _$MeasurementDetailBlocClearEventImpl>
+    implements _$$MeasurementDetailBlocClearEventImplCopyWith<$Res> {
+  __$$MeasurementDetailBlocClearEventImplCopyWithImpl(
+      _$MeasurementDetailBlocClearEventImpl _value,
+      $Res Function(_$MeasurementDetailBlocClearEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$MeasurementDetailBlocClearEvent
+class _$MeasurementDetailBlocClearEventImpl
     implements MeasurementDetailBlocClearEvent {
-  const _$MeasurementDetailBlocClearEvent();
+  const _$MeasurementDetailBlocClearEventImpl();
 
   @override
   String toString() {
@@ -966,10 +987,10 @@ class _$MeasurementDetailBlocClearEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MeasurementDetailBlocClearEvent);
+            other is _$MeasurementDetailBlocClearEventImpl);
   }
 
   @override
@@ -981,7 +1002,8 @@ class _$MeasurementDetailBlocClearEvent
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1012,7 +1034,8 @@ class _$MeasurementDetailBlocClearEvent
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1036,7 +1059,8 @@ class _$MeasurementDetailBlocClearEvent
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1067,7 +1091,8 @@ class _$MeasurementDetailBlocClearEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -1091,7 +1116,8 @@ class _$MeasurementDetailBlocClearEvent
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -1122,7 +1148,8 @@ class _$MeasurementDetailBlocClearEvent
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -1211,15 +1238,15 @@ class _$MeasurementDetailBlocClearEvent
 abstract class MeasurementDetailBlocClearEvent
     implements MeasurementDetailBlocEvent {
   const factory MeasurementDetailBlocClearEvent() =
-      _$MeasurementDetailBlocClearEvent;
+      _$MeasurementDetailBlocClearEventImpl;
 }
 
 /// @nodoc
-abstract class _$$AddToMeasurementLineEventCopyWith<$Res> {
-  factory _$$AddToMeasurementLineEventCopyWith(
-          _$AddToMeasurementLineEvent value,
-          $Res Function(_$AddToMeasurementLineEvent) then) =
-      __$$AddToMeasurementLineEventCopyWithImpl<$Res>;
+abstract class _$$AddToMeasurementLineEventImplCopyWith<$Res> {
+  factory _$$AddToMeasurementLineEventImplCopyWith(
+          _$AddToMeasurementLineEventImpl value,
+          $Res Function(_$AddToMeasurementLineEventImpl) then) =
+      __$$AddToMeasurementLineEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String sorId,
@@ -1236,12 +1263,13 @@ abstract class _$$AddToMeasurementLineEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$AddToMeasurementLineEventCopyWithImpl<$Res>
+class __$$AddToMeasurementLineEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$AddToMeasurementLineEvent>
-    implements _$$AddToMeasurementLineEventCopyWith<$Res> {
-  __$$AddToMeasurementLineEventCopyWithImpl(_$AddToMeasurementLineEvent _value,
-      $Res Function(_$AddToMeasurementLineEvent) _then)
+        _$AddToMeasurementLineEventImpl>
+    implements _$$AddToMeasurementLineEventImplCopyWith<$Res> {
+  __$$AddToMeasurementLineEventImplCopyWithImpl(
+      _$AddToMeasurementLineEventImpl _value,
+      $Res Function(_$AddToMeasurementLineEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1259,7 +1287,7 @@ class __$$AddToMeasurementLineEventCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? single = null,
   }) {
-    return _then(_$AddToMeasurementLineEvent(
+    return _then(_$AddToMeasurementLineEventImpl(
       sorId: null == sorId
           ? _value.sorId
           : sorId // ignore: cast_nullable_to_non_nullable
@@ -1310,8 +1338,8 @@ class __$$AddToMeasurementLineEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
-  const _$AddToMeasurementLineEvent(
+class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
+  const _$AddToMeasurementLineEventImpl(
       {required this.sorId,
       required this.type,
       this.index,
@@ -1353,10 +1381,10 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AddToMeasurementLineEvent &&
+            other is _$AddToMeasurementLineEventImpl &&
             (identical(other.sorId, sorId) || other.sorId == sorId) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.index, index) || other.index == index) &&
@@ -1392,9 +1420,9 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AddToMeasurementLineEventCopyWith<_$AddToMeasurementLineEvent>
-      get copyWith => __$$AddToMeasurementLineEventCopyWithImpl<
-          _$AddToMeasurementLineEvent>(this, _$identity);
+  _$$AddToMeasurementLineEventImplCopyWith<_$AddToMeasurementLineEventImpl>
+      get copyWith => __$$AddToMeasurementLineEventImplCopyWithImpl<
+          _$AddToMeasurementLineEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1402,7 +1430,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1433,7 +1462,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1468,7 +1498,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1499,7 +1530,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -1534,7 +1566,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -1565,7 +1598,8 @@ class _$AddToMeasurementLineEvent implements AddToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -1674,7 +1708,7 @@ abstract class AddToMeasurementLineEvent implements MeasurementDetailBlocEvent {
       final dynamic length,
       final dynamic number,
       final dynamic quantity,
-      required final bool single}) = _$AddToMeasurementLineEvent;
+      required final bool single}) = _$AddToMeasurementLineEventImpl;
 
   String get sorId;
   String get type;
@@ -1688,16 +1722,16 @@ abstract class AddToMeasurementLineEvent implements MeasurementDetailBlocEvent {
   dynamic get quantity;
   bool get single;
   @JsonKey(ignore: true)
-  _$$AddToMeasurementLineEventCopyWith<_$AddToMeasurementLineEvent>
+  _$$AddToMeasurementLineEventImplCopyWith<_$AddToMeasurementLineEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UpdateToMeasurementLineEventCopyWith<$Res> {
-  factory _$$UpdateToMeasurementLineEventCopyWith(
-          _$UpdateToMeasurementLineEvent value,
-          $Res Function(_$UpdateToMeasurementLineEvent) then) =
-      __$$UpdateToMeasurementLineEventCopyWithImpl<$Res>;
+abstract class _$$UpdateToMeasurementLineEventImplCopyWith<$Res> {
+  factory _$$UpdateToMeasurementLineEventImplCopyWith(
+          _$UpdateToMeasurementLineEventImpl value,
+          $Res Function(_$UpdateToMeasurementLineEventImpl) then) =
+      __$$UpdateToMeasurementLineEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {dynamic noOfUnit,
@@ -1715,13 +1749,13 @@ abstract class _$$UpdateToMeasurementLineEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$UpdateToMeasurementLineEventCopyWithImpl<$Res>
+class __$$UpdateToMeasurementLineEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$UpdateToMeasurementLineEvent>
-    implements _$$UpdateToMeasurementLineEventCopyWith<$Res> {
-  __$$UpdateToMeasurementLineEventCopyWithImpl(
-      _$UpdateToMeasurementLineEvent _value,
-      $Res Function(_$UpdateToMeasurementLineEvent) _then)
+        _$UpdateToMeasurementLineEventImpl>
+    implements _$$UpdateToMeasurementLineEventImplCopyWith<$Res> {
+  __$$UpdateToMeasurementLineEventImplCopyWithImpl(
+      _$UpdateToMeasurementLineEventImpl _value,
+      $Res Function(_$UpdateToMeasurementLineEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1740,7 +1774,7 @@ class __$$UpdateToMeasurementLineEventCopyWithImpl<$Res>
     Object? number = freezed,
     Object? quantity = freezed,
   }) {
-    return _then(_$UpdateToMeasurementLineEvent(
+    return _then(_$UpdateToMeasurementLineEventImpl(
       noOfUnit: freezed == noOfUnit
           ? _value.noOfUnit
           : noOfUnit // ignore: cast_nullable_to_non_nullable
@@ -1795,8 +1829,9 @@ class __$$UpdateToMeasurementLineEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
-  const _$UpdateToMeasurementLineEvent(
+class _$UpdateToMeasurementLineEventImpl
+    implements UpdateToMeasurementLineEvent {
+  const _$UpdateToMeasurementLineEventImpl(
       {required this.noOfUnit,
       required this.cummulativePrevQty,
       required this.sorId,
@@ -1841,10 +1876,10 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UpdateToMeasurementLineEvent &&
+            other is _$UpdateToMeasurementLineEventImpl &&
             const DeepCollectionEquality().equals(other.noOfUnit, noOfUnit) &&
             const DeepCollectionEquality()
                 .equals(other.cummulativePrevQty, cummulativePrevQty) &&
@@ -1883,9 +1918,10 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UpdateToMeasurementLineEventCopyWith<_$UpdateToMeasurementLineEvent>
-      get copyWith => __$$UpdateToMeasurementLineEventCopyWithImpl<
-          _$UpdateToMeasurementLineEvent>(this, _$identity);
+  _$$UpdateToMeasurementLineEventImplCopyWith<
+          _$UpdateToMeasurementLineEventImpl>
+      get copyWith => __$$UpdateToMeasurementLineEventImplCopyWithImpl<
+          _$UpdateToMeasurementLineEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1893,7 +1929,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1924,7 +1961,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1960,7 +1998,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1991,7 +2030,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -2027,7 +2067,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2058,7 +2099,8 @@ class _$UpdateToMeasurementLineEvent implements UpdateToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -2170,7 +2212,7 @@ abstract class UpdateToMeasurementLineEvent
       final dynamic width,
       final dynamic length,
       final dynamic number,
-      final dynamic quantity}) = _$UpdateToMeasurementLineEvent;
+      final dynamic quantity}) = _$UpdateToMeasurementLineEventImpl;
 
   dynamic get noOfUnit;
   dynamic get cummulativePrevQty;
@@ -2185,25 +2227,27 @@ abstract class UpdateToMeasurementLineEvent
   dynamic get number;
   dynamic get quantity;
   @JsonKey(ignore: true)
-  _$$UpdateToMeasurementLineEventCopyWith<_$UpdateToMeasurementLineEvent>
+  _$$UpdateToMeasurementLineEventImplCopyWith<
+          _$UpdateToMeasurementLineEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UpdateViewModeEventCopyWith<$Res> {
-  factory _$$UpdateViewModeEventCopyWith(_$UpdateViewModeEvent value,
-          $Res Function(_$UpdateViewModeEvent) then) =
-      __$$UpdateViewModeEventCopyWithImpl<$Res>;
+abstract class _$$UpdateViewModeEventImplCopyWith<$Res> {
+  factory _$$UpdateViewModeEventImplCopyWith(_$UpdateViewModeEventImpl value,
+          $Res Function(_$UpdateViewModeEventImpl) then) =
+      __$$UpdateViewModeEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({bool updateView});
 }
 
 /// @nodoc
-class __$$UpdateViewModeEventCopyWithImpl<$Res>
+class __$$UpdateViewModeEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$UpdateViewModeEvent> implements _$$UpdateViewModeEventCopyWith<$Res> {
-  __$$UpdateViewModeEventCopyWithImpl(
-      _$UpdateViewModeEvent _value, $Res Function(_$UpdateViewModeEvent) _then)
+        _$UpdateViewModeEventImpl>
+    implements _$$UpdateViewModeEventImplCopyWith<$Res> {
+  __$$UpdateViewModeEventImplCopyWithImpl(_$UpdateViewModeEventImpl _value,
+      $Res Function(_$UpdateViewModeEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2211,7 +2255,7 @@ class __$$UpdateViewModeEventCopyWithImpl<$Res>
   $Res call({
     Object? updateView = null,
   }) {
-    return _then(_$UpdateViewModeEvent(
+    return _then(_$UpdateViewModeEventImpl(
       updateView: null == updateView
           ? _value.updateView
           : updateView // ignore: cast_nullable_to_non_nullable
@@ -2222,8 +2266,8 @@ class __$$UpdateViewModeEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UpdateViewModeEvent implements UpdateViewModeEvent {
-  const _$UpdateViewModeEvent({required this.updateView});
+class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
+  const _$UpdateViewModeEventImpl({required this.updateView});
 
   @override
   final bool updateView;
@@ -2234,10 +2278,10 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UpdateViewModeEvent &&
+            other is _$UpdateViewModeEventImpl &&
             (identical(other.updateView, updateView) ||
                 other.updateView == updateView));
   }
@@ -2248,8 +2292,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UpdateViewModeEventCopyWith<_$UpdateViewModeEvent> get copyWith =>
-      __$$UpdateViewModeEventCopyWithImpl<_$UpdateViewModeEvent>(
+  _$$UpdateViewModeEventImplCopyWith<_$UpdateViewModeEventImpl> get copyWith =>
+      __$$UpdateViewModeEventImplCopyWithImpl<_$UpdateViewModeEventImpl>(
           this, _$identity);
 
   @override
@@ -2258,7 +2302,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2289,7 +2334,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -2313,7 +2359,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2344,7 +2391,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -2368,7 +2416,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2399,7 +2448,8 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -2487,19 +2537,19 @@ class _$UpdateViewModeEvent implements UpdateViewModeEvent {
 
 abstract class UpdateViewModeEvent implements MeasurementDetailBlocEvent {
   const factory UpdateViewModeEvent({required final bool updateView}) =
-      _$UpdateViewModeEvent;
+      _$UpdateViewModeEventImpl;
 
   bool get updateView;
   @JsonKey(ignore: true)
-  _$$UpdateViewModeEventCopyWith<_$UpdateViewModeEvent> get copyWith =>
+  _$$UpdateViewModeEventImplCopyWith<_$UpdateViewModeEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$CancelUpdateEventCopyWith<$Res> {
-  factory _$$CancelUpdateEventCopyWith(
-          _$CancelUpdateEvent value, $Res Function(_$CancelUpdateEvent) then) =
-      __$$CancelUpdateEventCopyWithImpl<$Res>;
+abstract class _$$CancelUpdateEventImplCopyWith<$Res> {
+  factory _$$CancelUpdateEventImplCopyWith(_$CancelUpdateEventImpl value,
+          $Res Function(_$CancelUpdateEventImpl) then) =
+      __$$CancelUpdateEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {bool cancelUpdate,
@@ -2509,11 +2559,12 @@ abstract class _$$CancelUpdateEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$CancelUpdateEventCopyWithImpl<$Res>
-    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res, _$CancelUpdateEvent>
-    implements _$$CancelUpdateEventCopyWith<$Res> {
-  __$$CancelUpdateEventCopyWithImpl(
-      _$CancelUpdateEvent _value, $Res Function(_$CancelUpdateEvent) _then)
+class __$$CancelUpdateEventImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$CancelUpdateEventImpl>
+    implements _$$CancelUpdateEventImplCopyWith<$Res> {
+  __$$CancelUpdateEventImplCopyWithImpl(_$CancelUpdateEventImpl _value,
+      $Res Function(_$CancelUpdateEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2524,7 +2575,7 @@ class __$$CancelUpdateEventCopyWithImpl<$Res>
     Object? filteredMeasurementsMeasureId = freezed,
     Object? type = null,
   }) {
-    return _then(_$CancelUpdateEvent(
+    return _then(_$CancelUpdateEventImpl(
       cancelUpdate: null == cancelUpdate
           ? _value.cancelUpdate
           : cancelUpdate // ignore: cast_nullable_to_non_nullable
@@ -2547,8 +2598,8 @@ class __$$CancelUpdateEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CancelUpdateEvent implements CancelUpdateEvent {
-  const _$CancelUpdateEvent(
+class _$CancelUpdateEventImpl implements CancelUpdateEvent {
+  const _$CancelUpdateEventImpl(
       {required this.cancelUpdate,
       required this.sorId,
       required this.filteredMeasurementsMeasureId,
@@ -2569,10 +2620,10 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CancelUpdateEvent &&
+            other is _$CancelUpdateEventImpl &&
             (identical(other.cancelUpdate, cancelUpdate) ||
                 other.cancelUpdate == cancelUpdate) &&
             (identical(other.sorId, sorId) || other.sorId == sorId) &&
@@ -2589,8 +2640,9 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$CancelUpdateEventCopyWith<_$CancelUpdateEvent> get copyWith =>
-      __$$CancelUpdateEventCopyWithImpl<_$CancelUpdateEvent>(this, _$identity);
+  _$$CancelUpdateEventImplCopyWith<_$CancelUpdateEventImpl> get copyWith =>
+      __$$CancelUpdateEventImplCopyWithImpl<_$CancelUpdateEventImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2598,7 +2650,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2629,7 +2682,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -2654,7 +2708,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2685,7 +2740,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -2710,7 +2766,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2741,7 +2798,8 @@ class _$CancelUpdateEvent implements CancelUpdateEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -2833,22 +2891,22 @@ abstract class CancelUpdateEvent implements MeasurementDetailBlocEvent {
       {required final bool cancelUpdate,
       required final String sorId,
       required final dynamic filteredMeasurementsMeasureId,
-      required final String type}) = _$CancelUpdateEvent;
+      required final String type}) = _$CancelUpdateEventImpl;
 
   bool get cancelUpdate;
   String get sorId;
   dynamic get filteredMeasurementsMeasureId;
   String get type;
   @JsonKey(ignore: true)
-  _$$CancelUpdateEventCopyWith<_$CancelUpdateEvent> get copyWith =>
+  _$$CancelUpdateEventImplCopyWith<_$CancelUpdateEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$SubmitLineEventCopyWith<$Res> {
-  factory _$$SubmitLineEventCopyWith(
-          _$SubmitLineEvent value, $Res Function(_$SubmitLineEvent) then) =
-      __$$SubmitLineEventCopyWithImpl<$Res>;
+abstract class _$$SubmitLineEventImplCopyWith<$Res> {
+  factory _$$SubmitLineEventImplCopyWith(_$SubmitLineEventImpl value,
+          $Res Function(_$SubmitLineEventImpl) then) =
+      __$$SubmitLineEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {dynamic noOfUnit,
@@ -2861,11 +2919,11 @@ abstract class _$$SubmitLineEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$SubmitLineEventCopyWithImpl<$Res>
-    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res, _$SubmitLineEvent>
-    implements _$$SubmitLineEventCopyWith<$Res> {
-  __$$SubmitLineEventCopyWithImpl(
-      _$SubmitLineEvent _value, $Res Function(_$SubmitLineEvent) _then)
+class __$$SubmitLineEventImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$SubmitLineEventImpl> implements _$$SubmitLineEventImplCopyWith<$Res> {
+  __$$SubmitLineEventImplCopyWithImpl(
+      _$SubmitLineEventImpl _value, $Res Function(_$SubmitLineEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2879,7 +2937,7 @@ class __$$SubmitLineEventCopyWithImpl<$Res>
     Object? measurementLineIndex = freezed,
     Object? filteredMeasurementMeasureId = freezed,
   }) {
-    return _then(_$SubmitLineEvent(
+    return _then(_$SubmitLineEventImpl(
       noOfUnit: freezed == noOfUnit
           ? _value.noOfUnit
           : noOfUnit // ignore: cast_nullable_to_non_nullable
@@ -2914,8 +2972,8 @@ class __$$SubmitLineEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SubmitLineEvent implements SubmitLineEvent {
-  const _$SubmitLineEvent(
+class _$SubmitLineEventImpl implements SubmitLineEvent {
+  const _$SubmitLineEventImpl(
       {required this.noOfUnit,
       required this.cummulativePrevQty,
       required this.sorId,
@@ -2945,10 +3003,10 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SubmitLineEvent &&
+            other is _$SubmitLineEventImpl &&
             const DeepCollectionEquality().equals(other.noOfUnit, noOfUnit) &&
             const DeepCollectionEquality()
                 .equals(other.cummulativePrevQty, cummulativePrevQty) &&
@@ -2977,8 +3035,9 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SubmitLineEventCopyWith<_$SubmitLineEvent> get copyWith =>
-      __$$SubmitLineEventCopyWithImpl<_$SubmitLineEvent>(this, _$identity);
+  _$$SubmitLineEventImplCopyWith<_$SubmitLineEventImpl> get copyWith =>
+      __$$SubmitLineEventImplCopyWithImpl<_$SubmitLineEventImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2986,7 +3045,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3017,7 +3077,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3042,7 +3103,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -3073,7 +3135,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -3098,7 +3161,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3129,7 +3193,8 @@ class _$SubmitLineEvent implements SubmitLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -3224,7 +3289,7 @@ abstract class SubmitLineEvent implements MeasurementDetailBlocEvent {
       required final String type,
       final int? index,
       final int? measurementLineIndex,
-      final String? filteredMeasurementMeasureId}) = _$SubmitLineEvent;
+      final String? filteredMeasurementMeasureId}) = _$SubmitLineEventImpl;
 
   dynamic get noOfUnit;
   dynamic get cummulativePrevQty;
@@ -3234,25 +3299,26 @@ abstract class SubmitLineEvent implements MeasurementDetailBlocEvent {
   int? get measurementLineIndex;
   String? get filteredMeasurementMeasureId;
   @JsonKey(ignore: true)
-  _$$SubmitLineEventCopyWith<_$SubmitLineEvent> get copyWith =>
+  _$$SubmitLineEventImplCopyWith<_$SubmitLineEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$UpdateMsgCodeEventCopyWith<$Res> {
-  factory _$$UpdateMsgCodeEventCopyWith(_$UpdateMsgCodeEvent value,
-          $Res Function(_$UpdateMsgCodeEvent) then) =
-      __$$UpdateMsgCodeEventCopyWithImpl<$Res>;
+abstract class _$$UpdateMsgCodeEventImplCopyWith<$Res> {
+  factory _$$UpdateMsgCodeEventImplCopyWith(_$UpdateMsgCodeEventImpl value,
+          $Res Function(_$UpdateMsgCodeEventImpl) then) =
+      __$$UpdateMsgCodeEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({int updateCode});
 }
 
 /// @nodoc
-class __$$UpdateMsgCodeEventCopyWithImpl<$Res>
-    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res, _$UpdateMsgCodeEvent>
-    implements _$$UpdateMsgCodeEventCopyWith<$Res> {
-  __$$UpdateMsgCodeEventCopyWithImpl(
-      _$UpdateMsgCodeEvent _value, $Res Function(_$UpdateMsgCodeEvent) _then)
+class __$$UpdateMsgCodeEventImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
+        _$UpdateMsgCodeEventImpl>
+    implements _$$UpdateMsgCodeEventImplCopyWith<$Res> {
+  __$$UpdateMsgCodeEventImplCopyWithImpl(_$UpdateMsgCodeEventImpl _value,
+      $Res Function(_$UpdateMsgCodeEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -3260,7 +3326,7 @@ class __$$UpdateMsgCodeEventCopyWithImpl<$Res>
   $Res call({
     Object? updateCode = null,
   }) {
-    return _then(_$UpdateMsgCodeEvent(
+    return _then(_$UpdateMsgCodeEventImpl(
       updateCode: null == updateCode
           ? _value.updateCode
           : updateCode // ignore: cast_nullable_to_non_nullable
@@ -3271,8 +3337,8 @@ class __$$UpdateMsgCodeEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
-  const _$UpdateMsgCodeEvent({required this.updateCode});
+class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
+  const _$UpdateMsgCodeEventImpl({required this.updateCode});
 
   @override
   final int updateCode;
@@ -3283,10 +3349,10 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UpdateMsgCodeEvent &&
+            other is _$UpdateMsgCodeEventImpl &&
             (identical(other.updateCode, updateCode) ||
                 other.updateCode == updateCode));
   }
@@ -3297,8 +3363,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$UpdateMsgCodeEventCopyWith<_$UpdateMsgCodeEvent> get copyWith =>
-      __$$UpdateMsgCodeEventCopyWithImpl<_$UpdateMsgCodeEvent>(
+  _$$UpdateMsgCodeEventImplCopyWith<_$UpdateMsgCodeEventImpl> get copyWith =>
+      __$$UpdateMsgCodeEventImplCopyWithImpl<_$UpdateMsgCodeEventImpl>(
           this, _$identity);
 
   @override
@@ -3307,7 +3373,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3338,7 +3405,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3362,7 +3430,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -3393,7 +3462,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -3417,7 +3487,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3448,7 +3519,8 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -3536,20 +3608,20 @@ class _$UpdateMsgCodeEvent implements UpdateMsgCodeEvent {
 
 abstract class UpdateMsgCodeEvent implements MeasurementDetailBlocEvent {
   const factory UpdateMsgCodeEvent({required final int updateCode}) =
-      _$UpdateMsgCodeEvent;
+      _$UpdateMsgCodeEventImpl;
 
   int get updateCode;
   @JsonKey(ignore: true)
-  _$$UpdateMsgCodeEventCopyWith<_$UpdateMsgCodeEvent> get copyWith =>
+  _$$UpdateMsgCodeEventImplCopyWith<_$UpdateMsgCodeEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DeleteMeasurementLineEventCopyWith<$Res> {
-  factory _$$DeleteMeasurementLineEventCopyWith(
-          _$DeleteMeasurementLineEvent value,
-          $Res Function(_$DeleteMeasurementLineEvent) then) =
-      __$$DeleteMeasurementLineEventCopyWithImpl<$Res>;
+abstract class _$$DeleteMeasurementLineEventImplCopyWith<$Res> {
+  factory _$$DeleteMeasurementLineEventImplCopyWith(
+          _$DeleteMeasurementLineEventImpl value,
+          $Res Function(_$DeleteMeasurementLineEventImpl) then) =
+      __$$DeleteMeasurementLineEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String sorId,
@@ -3560,13 +3632,13 @@ abstract class _$$DeleteMeasurementLineEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$DeleteMeasurementLineEventCopyWithImpl<$Res>
+class __$$DeleteMeasurementLineEventImplCopyWithImpl<$Res>
     extends _$MeasurementDetailBlocEventCopyWithImpl<$Res,
-        _$DeleteMeasurementLineEvent>
-    implements _$$DeleteMeasurementLineEventCopyWith<$Res> {
-  __$$DeleteMeasurementLineEventCopyWithImpl(
-      _$DeleteMeasurementLineEvent _value,
-      $Res Function(_$DeleteMeasurementLineEvent) _then)
+        _$DeleteMeasurementLineEventImpl>
+    implements _$$DeleteMeasurementLineEventImplCopyWith<$Res> {
+  __$$DeleteMeasurementLineEventImplCopyWithImpl(
+      _$DeleteMeasurementLineEventImpl _value,
+      $Res Function(_$DeleteMeasurementLineEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -3578,7 +3650,7 @@ class __$$DeleteMeasurementLineEventCopyWithImpl<$Res>
     Object? measurementLineIndex = null,
     Object? filteredMeasurementMeasureId = null,
   }) {
-    return _then(_$DeleteMeasurementLineEvent(
+    return _then(_$DeleteMeasurementLineEventImpl(
       sorId: null == sorId
           ? _value.sorId
           : sorId // ignore: cast_nullable_to_non_nullable
@@ -3605,8 +3677,8 @@ class __$$DeleteMeasurementLineEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
-  const _$DeleteMeasurementLineEvent(
+class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
+  const _$DeleteMeasurementLineEventImpl(
       {required this.sorId,
       required this.type,
       required this.index,
@@ -3630,10 +3702,10 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DeleteMeasurementLineEvent &&
+            other is _$DeleteMeasurementLineEventImpl &&
             (identical(other.sorId, sorId) || other.sorId == sorId) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.index, index) || other.index == index) &&
@@ -3652,9 +3724,9 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DeleteMeasurementLineEventCopyWith<_$DeleteMeasurementLineEvent>
-      get copyWith => __$$DeleteMeasurementLineEventCopyWithImpl<
-          _$DeleteMeasurementLineEvent>(this, _$identity);
+  _$$DeleteMeasurementLineEventImplCopyWith<_$DeleteMeasurementLineEventImpl>
+      get copyWith => __$$DeleteMeasurementLineEventImplCopyWithImpl<
+          _$DeleteMeasurementLineEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3662,7 +3734,8 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3693,7 +3766,8 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3718,7 +3792,8 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -3749,7 +3824,8 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -3774,7 +3850,8 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3805,7 +3882,8 @@ class _$DeleteMeasurementLineEvent implements DeleteMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -3900,7 +3978,7 @@ abstract class DeleteMeasurementLineEvent
           required final int index,
           required final int measurementLineIndex,
           required final String filteredMeasurementMeasureId}) =
-      _$DeleteMeasurementLineEvent;
+      _$DeleteMeasurementLineEventImpl;
 
   String get sorId;
   String get type;
@@ -3908,7 +3986,7 @@ abstract class DeleteMeasurementLineEvent
   int get measurementLineIndex;
   String get filteredMeasurementMeasureId;
   @JsonKey(ignore: true)
-  _$$DeleteMeasurementLineEventCopyWith<_$DeleteMeasurementLineEvent>
+  _$$DeleteMeasurementLineEventImplCopyWith<_$DeleteMeasurementLineEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -4016,24 +4094,25 @@ class _$MeasurementDetailStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl() : super._();
 
   @override
   String toString() {
@@ -4041,9 +4120,9 @@ class _$_Initial extends _Initial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -4155,29 +4234,30 @@ class _$_Initial extends _Initial {
 }
 
 abstract class _Initial extends MeasurementDetailState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -4185,9 +4265,9 @@ class _$_Loading extends _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -4299,14 +4379,15 @@ class _$_Loading extends _Loading {
 }
 
 abstract class _Loading extends MeasurementDetailState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {int qtyErrorMsg,
@@ -4321,10 +4402,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -4340,7 +4422,7 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? preSor = freezed,
     Object? preNonSor = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       null == qtyErrorMsg
           ? _value.qtyErrorMsg
           : qtyErrorMsg // ignore: cast_nullable_to_non_nullable
@@ -4383,8 +4465,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded {
-  const _$_Loaded(
+class _$LoadedImpl extends _Loaded {
+  const _$LoadedImpl(
       this.qtyErrorMsg,
       this.warningMsg,
       this.viewStatus,
@@ -4463,10 +4545,10 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.qtyErrorMsg, qtyErrorMsg) ||
                 other.qtyErrorMsg == qtyErrorMsg) &&
             (identical(other.warningMsg, warningMsg) ||
@@ -4498,8 +4580,8 @@ class _$_Loaded extends _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -4619,7 +4701,7 @@ abstract class _Loaded extends MeasurementDetailState {
       final List<SorObject>? sor,
       final List<SorObject>? nonSor,
       final List<SorObject>? preSor,
-      final List<SorObject>? preNonSor) = _$_Loaded;
+      final List<SorObject>? preNonSor) = _$LoadedImpl;
   const _Loaded._() : super._();
 
   int get qtyErrorMsg;
@@ -4632,23 +4714,25 @@ abstract class _Loaded extends MeasurementDetailState {
   List<SorObject>? get preSor;
   List<SorObject>? get preNonSor;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$MeasurementDetailStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -4656,7 +4740,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -4667,8 +4751,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -4679,10 +4763,10 @@ class _$_Error extends _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -4692,8 +4776,8 @@ class _$_Error extends _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -4801,11 +4885,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends MeasurementDetailState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/utils/constants.dart';
 
 import '../atoms/background_container.dart';
 
@@ -61,6 +62,7 @@ class MobileView extends StatelessWidget {
                                       child: const Align(
                                         alignment: Alignment.bottomCenter,
                                         child: PoweredByDigit(
+                                          //version: Constants.appVersion,
                                           isWhiteLogo: true,
                                         ),
                                       ),

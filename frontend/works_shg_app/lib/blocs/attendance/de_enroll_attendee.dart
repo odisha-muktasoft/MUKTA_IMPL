@@ -36,7 +36,7 @@ class AttendeeDeEnrollBloc
               body: {"attendees": event.attendeeList});
       await Future.delayed(const Duration(seconds: 1));
       emit(const AttendeeDeEnrollState.loaded());
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(AttendeeDeEnrollState.error(e.response?.data['Errors'][0]['code']));
     }
   }

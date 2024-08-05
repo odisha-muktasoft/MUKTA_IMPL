@@ -12,7 +12,7 @@ part of 'homeConfigModel.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 HomeConfigModel _$HomeConfigModelFromJson(Map<String, dynamic> json) {
   return _HomeConfigModel.fromJson(json);
@@ -63,22 +63,22 @@ class _$HomeConfigModelCopyWithImpl<$Res, $Val extends HomeConfigModel>
 }
 
 /// @nodoc
-abstract class _$$_HomeConfigModelCopyWith<$Res>
+abstract class _$$HomeConfigModelImplCopyWith<$Res>
     implements $HomeConfigModelCopyWith<$Res> {
-  factory _$$_HomeConfigModelCopyWith(
-          _$_HomeConfigModel value, $Res Function(_$_HomeConfigModel) then) =
-      __$$_HomeConfigModelCopyWithImpl<$Res>;
+  factory _$$HomeConfigModelImplCopyWith(_$HomeConfigModelImpl value,
+          $Res Function(_$HomeConfigModelImpl) then) =
+      __$$HomeConfigModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(name: 'actions') List<HomeAction> homeActions});
 }
 
 /// @nodoc
-class __$$_HomeConfigModelCopyWithImpl<$Res>
-    extends _$HomeConfigModelCopyWithImpl<$Res, _$_HomeConfigModel>
-    implements _$$_HomeConfigModelCopyWith<$Res> {
-  __$$_HomeConfigModelCopyWithImpl(
-      _$_HomeConfigModel _value, $Res Function(_$_HomeConfigModel) _then)
+class __$$HomeConfigModelImplCopyWithImpl<$Res>
+    extends _$HomeConfigModelCopyWithImpl<$Res, _$HomeConfigModelImpl>
+    implements _$$HomeConfigModelImplCopyWith<$Res> {
+  __$$HomeConfigModelImplCopyWithImpl(
+      _$HomeConfigModelImpl _value, $Res Function(_$HomeConfigModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -86,7 +86,7 @@ class __$$_HomeConfigModelCopyWithImpl<$Res>
   $Res call({
     Object? homeActions = null,
   }) {
-    return _then(_$_HomeConfigModel(
+    return _then(_$HomeConfigModelImpl(
       homeActions: null == homeActions
           ? _value._homeActions
           : homeActions // ignore: cast_nullable_to_non_nullable
@@ -97,13 +97,13 @@ class __$$_HomeConfigModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_HomeConfigModel implements _HomeConfigModel {
-  _$_HomeConfigModel(
+class _$HomeConfigModelImpl implements _HomeConfigModel {
+  _$HomeConfigModelImpl(
       {@JsonKey(name: 'actions') required final List<HomeAction> homeActions})
       : _homeActions = homeActions;
 
-  factory _$_HomeConfigModel.fromJson(Map<String, dynamic> json) =>
-      _$$_HomeConfigModelFromJson(json);
+  factory _$HomeConfigModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HomeConfigModelImplFromJson(json);
 
   final List<HomeAction> _homeActions;
   @override
@@ -120,10 +120,10 @@ class _$_HomeConfigModel implements _HomeConfigModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HomeConfigModel &&
+            other is _$HomeConfigModelImpl &&
             const DeepCollectionEquality()
                 .equals(other._homeActions, _homeActions));
   }
@@ -136,12 +136,13 @@ class _$_HomeConfigModel implements _HomeConfigModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HomeConfigModelCopyWith<_$_HomeConfigModel> get copyWith =>
-      __$$_HomeConfigModelCopyWithImpl<_$_HomeConfigModel>(this, _$identity);
+  _$$HomeConfigModelImplCopyWith<_$HomeConfigModelImpl> get copyWith =>
+      __$$HomeConfigModelImplCopyWithImpl<_$HomeConfigModelImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HomeConfigModelToJson(
+    return _$$HomeConfigModelImplToJson(
       this,
     );
   }
@@ -150,17 +151,17 @@ class _$_HomeConfigModel implements _HomeConfigModel {
 abstract class _HomeConfigModel implements HomeConfigModel {
   factory _HomeConfigModel(
       {@JsonKey(name: 'actions')
-          required final List<HomeAction> homeActions}) = _$_HomeConfigModel;
+      required final List<HomeAction> homeActions}) = _$HomeConfigModelImpl;
 
   factory _HomeConfigModel.fromJson(Map<String, dynamic> json) =
-      _$_HomeConfigModel.fromJson;
+      _$HomeConfigModelImpl.fromJson;
 
   @override
   @JsonKey(name: 'actions')
   List<HomeAction> get homeActions;
   @override
   @JsonKey(ignore: true)
-  _$$_HomeConfigModelCopyWith<_$_HomeConfigModel> get copyWith =>
+  _$$HomeConfigModelImplCopyWith<_$HomeConfigModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -254,11 +255,11 @@ class _$HomeActionCopyWithImpl<$Res, $Val extends HomeAction>
 }
 
 /// @nodoc
-abstract class _$$_HomeActionCopyWith<$Res>
+abstract class _$$HomeActionImplCopyWith<$Res>
     implements $HomeActionCopyWith<$Res> {
-  factory _$$_HomeActionCopyWith(
-          _$_HomeAction value, $Res Function(_$_HomeAction) then) =
-      __$$_HomeActionCopyWithImpl<$Res>;
+  factory _$$HomeActionImplCopyWith(
+          _$HomeActionImpl value, $Res Function(_$HomeActionImpl) then) =
+      __$$HomeActionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -271,11 +272,11 @@ abstract class _$$_HomeActionCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_HomeActionCopyWithImpl<$Res>
-    extends _$HomeActionCopyWithImpl<$Res, _$_HomeAction>
-    implements _$$_HomeActionCopyWith<$Res> {
-  __$$_HomeActionCopyWithImpl(
-      _$_HomeAction _value, $Res Function(_$_HomeAction) _then)
+class __$$HomeActionImplCopyWithImpl<$Res>
+    extends _$HomeActionCopyWithImpl<$Res, _$HomeActionImpl>
+    implements _$$HomeActionImplCopyWith<$Res> {
+  __$$HomeActionImplCopyWithImpl(
+      _$HomeActionImpl _value, $Res Function(_$HomeActionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -288,7 +289,7 @@ class __$$_HomeActionCopyWithImpl<$Res>
     Object? tenantId = null,
     Object? url = null,
   }) {
-    return _then(_$_HomeAction(
+    return _then(_$HomeActionImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -319,8 +320,8 @@ class __$$_HomeActionCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_HomeAction implements _HomeAction {
-  const _$_HomeAction(
+class _$HomeActionImpl implements _HomeAction {
+  const _$HomeActionImpl(
       {@JsonKey(name: 'id') required this.id,
       @JsonKey(name: 'displayName') required this.displayName,
       @JsonKey(name: 'parentModule') required this.parentModule,
@@ -328,8 +329,8 @@ class _$_HomeAction implements _HomeAction {
       @JsonKey(name: 'tenantId') required this.tenantId,
       @JsonKey(name: 'url') required this.url});
 
-  factory _$_HomeAction.fromJson(Map<String, dynamic> json) =>
-      _$$_HomeActionFromJson(json);
+  factory _$HomeActionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HomeActionImplFromJson(json);
 
   @override
   @JsonKey(name: 'id')
@@ -356,10 +357,10 @@ class _$_HomeAction implements _HomeAction {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HomeAction &&
+            other is _$HomeActionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.displayName, displayName) ||
                 other.displayName == displayName) &&
@@ -379,12 +380,12 @@ class _$_HomeAction implements _HomeAction {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HomeActionCopyWith<_$_HomeAction> get copyWith =>
-      __$$_HomeActionCopyWithImpl<_$_HomeAction>(this, _$identity);
+  _$$HomeActionImplCopyWith<_$HomeActionImpl> get copyWith =>
+      __$$HomeActionImplCopyWithImpl<_$HomeActionImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HomeActionToJson(
+    return _$$HomeActionImplToJson(
       this,
     );
   }
@@ -397,10 +398,10 @@ abstract class _HomeAction implements HomeAction {
       @JsonKey(name: 'parentModule') required final String parentModule,
       @JsonKey(name: 'enabled') required final bool enabled,
       @JsonKey(name: 'tenantId') required final String tenantId,
-      @JsonKey(name: 'url') required final String url}) = _$_HomeAction;
+      @JsonKey(name: 'url') required final String url}) = _$HomeActionImpl;
 
   factory _HomeAction.fromJson(Map<String, dynamic> json) =
-      _$_HomeAction.fromJson;
+      _$HomeActionImpl.fromJson;
 
   @override
   @JsonKey(name: 'id')
@@ -422,6 +423,6 @@ abstract class _HomeAction implements HomeAction {
   String get url;
   @override
   @JsonKey(ignore: true)
-  _$$_HomeActionCopyWith<_$_HomeAction> get copyWith =>
+  _$$HomeActionImplCopyWith<_$HomeActionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

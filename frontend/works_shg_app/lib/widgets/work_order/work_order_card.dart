@@ -9,12 +9,12 @@ class WorkOrderCard extends StatefulWidget {
   final Widget? widget1;
   final Widget? widget2;
   const WorkOrderCard({
-    Key? key,
+    super.key,
     this.headLabel,
     required this.items,
     this.widget1,
     this.widget2,
-  }) : super(key: key);
+  });
 
   @override
   State<WorkOrderCard> createState() => _WorkOrderCardState();

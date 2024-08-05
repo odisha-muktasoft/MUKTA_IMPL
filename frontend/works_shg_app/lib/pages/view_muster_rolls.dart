@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/muster_rolls/search_muster_roll.dart';
+import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
@@ -20,8 +21,9 @@ import '../widgets/atoms/app_bar_logo.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
+@RoutePage()
 class ViewMusterRollsPage extends StatefulWidget {
-  const ViewMusterRollsPage({Key? key}) : super(key: key);
+  const ViewMusterRollsPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -55,6 +57,7 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
         builder: (context, localState) {
       return Scaffold(
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -74,7 +77,9 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                           height: 30,
                           child: Align(
                             alignment: Alignment.bottomCenter,
-                            child: PoweredByDigit(),
+                            child: PoweredByDigit(
+                              // version: Constants.appVersion,
+                              ),
                           ),
                         )
                       : const SizedBox.shrink();
@@ -184,7 +189,9 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                             musterList.length > 1
                                         ? const Align(
                                             alignment: Alignment.bottomCenter,
-                                            child: PoweredByDigit(),
+                                            child: PoweredByDigit(
+                                              // version: Constants.appVersion,
+                                              ),
                                           )
                                         : const SizedBox.shrink()
                                   ]);

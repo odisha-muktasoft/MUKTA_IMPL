@@ -12,8 +12,7 @@ class Back extends StatelessWidget {
   final VoidCallback? callback;
   final String? backLabel;
 
-  const Back({Key? key, this.widget, this.callback, this.backLabel})
-      : super(key: key);
+  const Back({super.key, this.widget, this.callback, this.backLabel});
 
   @override
   Widget build(BuildContext context) {

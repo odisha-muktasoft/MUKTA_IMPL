@@ -12,7 +12,7 @@ part of 'localization.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$LocalizationEvent {
@@ -131,11 +131,12 @@ class _$LocalizationEventCopyWithImpl<$Res, $Val extends LocalizationEvent>
 }
 
 /// @nodoc
-abstract class _$$OnLoadLocalizationEventCopyWith<$Res>
+abstract class _$$OnLoadLocalizationEventImplCopyWith<$Res>
     implements $LocalizationEventCopyWith<$Res> {
-  factory _$$OnLoadLocalizationEventCopyWith(_$OnLoadLocalizationEvent value,
-          $Res Function(_$OnLoadLocalizationEvent) then) =
-      __$$OnLoadLocalizationEventCopyWithImpl<$Res>;
+  factory _$$OnLoadLocalizationEventImplCopyWith(
+          _$OnLoadLocalizationEventImpl value,
+          $Res Function(_$OnLoadLocalizationEventImpl) then) =
+      __$$OnLoadLocalizationEventImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -147,11 +148,12 @@ abstract class _$$OnLoadLocalizationEventCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$OnLoadLocalizationEventCopyWithImpl<$Res>
-    extends _$LocalizationEventCopyWithImpl<$Res, _$OnLoadLocalizationEvent>
-    implements _$$OnLoadLocalizationEventCopyWith<$Res> {
-  __$$OnLoadLocalizationEventCopyWithImpl(_$OnLoadLocalizationEvent _value,
-      $Res Function(_$OnLoadLocalizationEvent) _then)
+class __$$OnLoadLocalizationEventImplCopyWithImpl<$Res>
+    extends _$LocalizationEventCopyWithImpl<$Res, _$OnLoadLocalizationEventImpl>
+    implements _$$OnLoadLocalizationEventImplCopyWith<$Res> {
+  __$$OnLoadLocalizationEventImplCopyWithImpl(
+      _$OnLoadLocalizationEventImpl _value,
+      $Res Function(_$OnLoadLocalizationEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -163,7 +165,7 @@ class __$$OnLoadLocalizationEventCopyWithImpl<$Res>
     Object? languages = freezed,
     Object? localizationModules = freezed,
   }) {
-    return _then(_$OnLoadLocalizationEvent(
+    return _then(_$OnLoadLocalizationEventImpl(
       module: null == module
           ? _value.module
           : module // ignore: cast_nullable_to_non_nullable
@@ -190,10 +192,10 @@ class __$$OnLoadLocalizationEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OnLoadLocalizationEvent
+class _$OnLoadLocalizationEventImpl
     with DiagnosticableTreeMixin
     implements OnLoadLocalizationEvent {
-  const _$OnLoadLocalizationEvent(
+  const _$OnLoadLocalizationEventImpl(
       {required this.module,
       required this.tenantId,
       required this.locale,
@@ -247,10 +249,10 @@ class _$OnLoadLocalizationEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OnLoadLocalizationEvent &&
+            other is _$OnLoadLocalizationEventImpl &&
             (identical(other.module, module) || other.module == module) &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
@@ -273,9 +275,9 @@ class _$OnLoadLocalizationEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OnLoadLocalizationEventCopyWith<_$OnLoadLocalizationEvent> get copyWith =>
-      __$$OnLoadLocalizationEventCopyWithImpl<_$OnLoadLocalizationEvent>(
-          this, _$identity);
+  _$$OnLoadLocalizationEventImplCopyWith<_$OnLoadLocalizationEventImpl>
+      get copyWith => __$$OnLoadLocalizationEventImplCopyWithImpl<
+          _$OnLoadLocalizationEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -374,7 +376,7 @@ abstract class OnLoadLocalizationEvent implements LocalizationEvent {
           required final String locale,
           final List<Languages>? languages,
           final List<LocalizationModules>? localizationModules}) =
-      _$OnLoadLocalizationEvent;
+      _$OnLoadLocalizationEventImpl;
 
   @override
   String get module;
@@ -386,30 +388,30 @@ abstract class OnLoadLocalizationEvent implements LocalizationEvent {
   List<LocalizationModules>? get localizationModules;
   @override
   @JsonKey(ignore: true)
-  _$$OnLoadLocalizationEventCopyWith<_$OnLoadLocalizationEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$OnLoadLocalizationEventImplCopyWith<_$OnLoadLocalizationEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$OnSpecificLoadLocalizationEventCopyWith<$Res>
+abstract class _$$OnSpecificLoadLocalizationEventImplCopyWith<$Res>
     implements $LocalizationEventCopyWith<$Res> {
-  factory _$$OnSpecificLoadLocalizationEventCopyWith(
-          _$OnSpecificLoadLocalizationEvent value,
-          $Res Function(_$OnSpecificLoadLocalizationEvent) then) =
-      __$$OnSpecificLoadLocalizationEventCopyWithImpl<$Res>;
+  factory _$$OnSpecificLoadLocalizationEventImplCopyWith(
+          _$OnSpecificLoadLocalizationEventImpl value,
+          $Res Function(_$OnSpecificLoadLocalizationEventImpl) then) =
+      __$$OnSpecificLoadLocalizationEventImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String module, String tenantId, String locale});
 }
 
 /// @nodoc
-class __$$OnSpecificLoadLocalizationEventCopyWithImpl<$Res>
+class __$$OnSpecificLoadLocalizationEventImplCopyWithImpl<$Res>
     extends _$LocalizationEventCopyWithImpl<$Res,
-        _$OnSpecificLoadLocalizationEvent>
-    implements _$$OnSpecificLoadLocalizationEventCopyWith<$Res> {
-  __$$OnSpecificLoadLocalizationEventCopyWithImpl(
-      _$OnSpecificLoadLocalizationEvent _value,
-      $Res Function(_$OnSpecificLoadLocalizationEvent) _then)
+        _$OnSpecificLoadLocalizationEventImpl>
+    implements _$$OnSpecificLoadLocalizationEventImplCopyWith<$Res> {
+  __$$OnSpecificLoadLocalizationEventImplCopyWithImpl(
+      _$OnSpecificLoadLocalizationEventImpl _value,
+      $Res Function(_$OnSpecificLoadLocalizationEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -419,7 +421,7 @@ class __$$OnSpecificLoadLocalizationEventCopyWithImpl<$Res>
     Object? tenantId = null,
     Object? locale = null,
   }) {
-    return _then(_$OnSpecificLoadLocalizationEvent(
+    return _then(_$OnSpecificLoadLocalizationEventImpl(
       module: null == module
           ? _value.module
           : module // ignore: cast_nullable_to_non_nullable
@@ -438,10 +440,10 @@ class __$$OnSpecificLoadLocalizationEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$OnSpecificLoadLocalizationEvent
+class _$OnSpecificLoadLocalizationEventImpl
     with DiagnosticableTreeMixin
     implements OnSpecificLoadLocalizationEvent {
-  const _$OnSpecificLoadLocalizationEvent(
+  const _$OnSpecificLoadLocalizationEventImpl(
       {required this.module, required this.tenantId, required this.locale});
 
   @override
@@ -468,10 +470,10 @@ class _$OnSpecificLoadLocalizationEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$OnSpecificLoadLocalizationEvent &&
+            other is _$OnSpecificLoadLocalizationEventImpl &&
             (identical(other.module, module) || other.module == module) &&
             (identical(other.tenantId, tenantId) ||
                 other.tenantId == tenantId) &&
@@ -484,9 +486,10 @@ class _$OnSpecificLoadLocalizationEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$OnSpecificLoadLocalizationEventCopyWith<_$OnSpecificLoadLocalizationEvent>
-      get copyWith => __$$OnSpecificLoadLocalizationEventCopyWithImpl<
-          _$OnSpecificLoadLocalizationEvent>(this, _$identity);
+  _$$OnSpecificLoadLocalizationEventImplCopyWith<
+          _$OnSpecificLoadLocalizationEventImpl>
+      get copyWith => __$$OnSpecificLoadLocalizationEventImplCopyWithImpl<
+          _$OnSpecificLoadLocalizationEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -579,7 +582,7 @@ abstract class OnSpecificLoadLocalizationEvent implements LocalizationEvent {
   const factory OnSpecificLoadLocalizationEvent(
       {required final String module,
       required final String tenantId,
-      required final String locale}) = _$OnSpecificLoadLocalizationEvent;
+      required final String locale}) = _$OnSpecificLoadLocalizationEventImpl;
 
   @override
   String get module;
@@ -589,7 +592,8 @@ abstract class OnSpecificLoadLocalizationEvent implements LocalizationEvent {
   String get locale;
   @override
   @JsonKey(ignore: true)
-  _$$OnSpecificLoadLocalizationEventCopyWith<_$OnSpecificLoadLocalizationEvent>
+  _$$OnSpecificLoadLocalizationEventImplCopyWith<
+          _$OnSpecificLoadLocalizationEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -672,24 +676,25 @@ class _$LocalizationStateCopyWithImpl<$Res, $Val extends LocalizationState>
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$LocalizationStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$LocalizationStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial with DiagnosticableTreeMixin {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial with DiagnosticableTreeMixin {
+  const _$InitialImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -703,9 +708,9 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -793,29 +798,30 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
 }
 
 abstract class _Initial extends LocalizationState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$LocalizationStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$LocalizationStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading with DiagnosticableTreeMixin {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading with DiagnosticableTreeMixin {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -829,9 +835,9 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -919,23 +925,25 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
 }
 
 abstract class _Loading extends LocalizationState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Languages>? languages, List<ModuleStatus>? moduleStatus});
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$LocalizationStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$LocalizationStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -944,7 +952,7 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? languages = freezed,
     Object? moduleStatus = freezed,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == languages
           ? _value._languages
           : languages // ignore: cast_nullable_to_non_nullable
@@ -959,8 +967,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  _$_Loaded(
+class _$LoadedImpl extends _Loaded with DiagnosticableTreeMixin {
+  _$LoadedImpl(
       final List<Languages>? languages, final List<ModuleStatus>? moduleStatus)
       : _languages = languages,
         _moduleStatus = moduleStatus,
@@ -1001,10 +1009,10 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             const DeepCollectionEquality()
                 .equals(other._languages, _languages) &&
             const DeepCollectionEquality()
@@ -1020,8 +1028,8 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1106,29 +1114,31 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 
 abstract class _Loaded extends LocalizationState {
   factory _Loaded(final List<Languages>? languages,
-      final List<ModuleStatus>? moduleStatus) = _$_Loaded;
+      final List<ModuleStatus>? moduleStatus) = _$LoadedImpl;
   _Loaded._() : super._();
 
   List<Languages>? get languages;
   List<ModuleStatus>? get moduleStatus;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$LocalizationStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$LocalizationStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1136,7 +1146,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -1147,8 +1157,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error with DiagnosticableTreeMixin {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error with DiagnosticableTreeMixin {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -1167,10 +1177,10 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -1180,8 +1190,8 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1265,11 +1275,11 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
 }
 
 abstract class _Error extends LocalizationState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

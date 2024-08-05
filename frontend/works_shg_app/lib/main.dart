@@ -353,11 +353,11 @@ class _MainApplicationState extends State<MainApplication> {
                   navigatorObservers: () => [AppRouterObserver()],
                   routes: (handler) => [
                     authState.maybeWhen(
-                        initial: () => const UnauthenticatedRouteWrapper(),
+                        initial: () => const UnauthenticatedWrapperRoute(),
                         loaded: (UserDetailsModel? userDetailsModel,
                                 String? accessToken, RoleType? roleType) =>
-                            const AuthenticatedRouteWrapper(),
-                        orElse: () => const UnauthenticatedRouteWrapper())
+                            const AuthenticatedWrapperRoute(),
+                        orElse: () => const UnauthenticatedWrapperRoute())
                   ],
                 ),
               );

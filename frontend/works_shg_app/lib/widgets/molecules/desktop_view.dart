@@ -1,5 +1,6 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/utils/constants.dart';
 
 import '../atoms/background_container.dart';
 
@@ -23,6 +24,7 @@ class DesktopView extends StatelessWidget {
                           padding: const EdgeInsets.all(8), child: widget)))),
               const Center(
                   child: PoweredByDigit(
+                   // version: Constants.appVersion,
                 isWhiteLogo: true,
               ))
             ]),

@@ -26,6 +26,7 @@ import 'mb_inbox.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class MBHistoryBookPage extends StatefulWidget {
   final String contractNumber;
   final String mbNumber;
@@ -188,6 +189,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         ),
                   backgroundColor: const DigitColors().seaShellGray,
                   appBar: AppBar(
+                    iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
                     titleSpacing: 0,
                     title: const AppBarLogo(),
                   ),
@@ -213,7 +215,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 Back(
                                   widget: null,
                                   callback: () {
-                                    context.router.pop();
+                                    context.router.maybePopTop();
 
                                     //Navigator.of(context).pop();
                                   },

@@ -6,8 +6,8 @@ part of 'table_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TableDataModel _$$_TableDataModelFromJson(Map<String, dynamic> json) =>
-    _$_TableDataModel(
+_$TableDataModelImpl _$$TableDataModelImplFromJson(Map<String, dynamic> json) =>
+    _$TableDataModelImpl(
       name: json['name'] as String?,
       aadhaar: json['aadhaar'] as String?,
       individualGaurdianName: json['individualGaurdianName'] as String?,
@@ -25,7 +25,8 @@ _$_TableDataModel _$$_TableDataModelFromJson(Map<String, dynamic> json) =>
       satIndex: (json['satIndex'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$_TableDataModelToJson(_$_TableDataModel instance) =>
+Map<String, dynamic> _$$TableDataModelImplToJson(
+        _$TableDataModelImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'aadhaar': instance.aadhaar,

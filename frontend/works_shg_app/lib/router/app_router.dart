@@ -39,73 +39,149 @@ export 'package:auto_route/auto_route.dart';
 
 part 'app_router.gr.dart';
 
-@MaterialAutoRouter(
-  replaceInRouteName: 'Page,Route',
-  routes: [
-    AutoRoute(
-      page: UnauthenticatedPageWrapper,
+
+// @MaterialAutoRouter(
+//   replaceInRouteName: 'Page,Route',
+//   routes: [
+//     AutoRoute(
+//       page: UnauthenticatedPageWrapper,
+//       path: '/',
+//       children: [
+//         AutoRoute(
+//           page: LanguageSelectionPage,
+//           path: 'language_selection',
+//           initial: true,
+//         ),
+//         AutoRoute(page: LoginPage, path: 'login'),
+//         AutoRoute(page: OTPVerificationPage, path: 'otp')
+//       ],
+//     ),
+//     AutoRoute(
+//       page: AuthenticatedPageWrapper,
+//       path: '/',
+//       children: [
+//         AutoRoute(page: HomePage, path: 'home', initial: true),
+//         AutoRoute(page: ORGProfilePage, path: 'orgProfile'),
+//         AutoRoute(
+//             page: AttendanceRegisterTablePage,
+//             path: 'manageAttendanceTable/:registerId/:tenantId'),
+//         AutoRoute(page: WorkOrderPage, path: 'work-orders'),
+//         AutoRoute(page: ViewMusterRollsPage, path: 'muster-rolls'),
+//         AutoRoute(
+//             page: SHGInboxPage,
+//             path: 'shg-inbox/:tenantId/:musterRollNo/:sentBackCode'),
+//         AutoRoute(
+//             page: TrackAttendanceInboxPage, path: 'track-attendance-inbox'),
+//         AutoRoute(
+//             page: TrackAttendancePage, path: 'track-attendance/:id/:tenantId'),
+//         AutoRoute(page: RegisterIndividualPage, path: 'register-individual'),
+//         AutoRoute(page: ViewWorkDetailsPage, path: 'view-work-order'),
+//         AutoRoute(page: SuccessResponsePage, path: 'success'),
+//         AutoRoute(page: MyBillsPage, path: 'my-bills'),
+//         AutoRoute(
+//             page: CreateTimeExtensionRequestPage,
+//             path: 'create-time-extension'),
+//         AutoRoute(page: MyServiceRequestsPage, path: 'my-service-requests'),
+
+//         // mb for employee
+
+//         // MeasurementBookInboxPage
+//         AutoRoute(
+//           page: MeasurementBookInboxPage,
+//           path: 'measurement-inbox',
+//         ),
+//         AutoRoute(page: MBFilterPage, path: 'mb-filter'),
+//         AutoRoute(page: MBDetailPage, path: 'mb-detail'),
+//         AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
+//          AutoRoute(page: MBMusterScreenPage, path: 'mb-muster-screen'),
+//         AutoRoute(page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
+       
+
+//         // work order -employee
+
+//         AutoRoute(
+//           page: WorkOderInboxPage,
+//           path: 'workOrder-inbox',
+//         ),
+//         AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
+//         AutoRoute(page: WOFilterPage, path: 'wo-filter'),
+//       ],
+//     ),
+//   ],
+// )
+// class AppRouter extends _$AppRouter {}
+
+
+@AutoRouterConfig(replaceInRouteName: 'Page,Route')
+class AppRouter extends _$AppRouter {
+
+@override
+List<AutoRoute> get routes => [
+   AutoRoute(
+      page: UnauthenticatedWrapperRoute.page,
       path: '/',
       children: [
         AutoRoute(
-          page: LanguageSelectionPage,
+          page: LanguageSelectionRoute.page,
           path: 'language_selection',
           initial: true,
         ),
-        AutoRoute(page: LoginPage, path: 'login'),
-        AutoRoute(page: OTPVerificationPage, path: 'otp')
+        AutoRoute(page: LoginRoute.page, path: 'login'),
+        AutoRoute(page: OTPVerificationRoute.page, path: 'otp')
       ],
     ),
     AutoRoute(
-      page: AuthenticatedPageWrapper,
+      page: AuthenticatedWrapperRoute.page,
       path: '/',
       children: [
-        AutoRoute(page: HomePage, path: 'home', initial: true),
-        AutoRoute(page: ORGProfilePage, path: 'orgProfile'),
+        AutoRoute(page: HomeRoute.page, path: 'home', initial: true),
+        AutoRoute(page: ORGProfileRoute.page, path: 'orgProfile'),
         AutoRoute(
-            page: AttendanceRegisterTablePage,
+            page: AttendanceRegisterTableRoute.page,
             path: 'manageAttendanceTable/:registerId/:tenantId'),
-        AutoRoute(page: WorkOrderPage, path: 'work-orders'),
-        AutoRoute(page: ViewMusterRollsPage, path: 'muster-rolls'),
+        AutoRoute(page: WorkOrderRoute.page, path: 'work-orders'),
+        AutoRoute(page: ViewMusterRollsRoute.page, path: 'muster-rolls'),
         AutoRoute(
-            page: SHGInboxPage,
+            page: SHGInboxRoute.page,
             path: 'shg-inbox/:tenantId/:musterRollNo/:sentBackCode'),
         AutoRoute(
-            page: TrackAttendanceInboxPage, path: 'track-attendance-inbox'),
+            page: TrackAttendanceInboxRoute.page, path: 'track-attendance-inbox'),
         AutoRoute(
-            page: TrackAttendancePage, path: 'track-attendance/:id/:tenantId'),
-        AutoRoute(page: RegisterIndividualPage, path: 'register-individual'),
-        AutoRoute(page: ViewWorkDetailsPage, path: 'view-work-order'),
-        AutoRoute(page: SuccessResponsePage, path: 'success'),
-        AutoRoute(page: MyBillsPage, path: 'my-bills'),
+            page: TrackAttendanceRoute.page, path: 'track-attendance/:id/:tenantId'),
+        AutoRoute(page: RegisterIndividualRoute.page, path: 'register-individual'),
+        AutoRoute(page: ViewWorkDetailsRoute.page, path: 'view-work-order'),
+        AutoRoute(page: SuccessResponseRoute.page, path: 'success'),
+        AutoRoute(page: MyBillsRoute.page, path: 'my-bills'),
         AutoRoute(
-            page: CreateTimeExtensionRequestPage,
+            page: CreateTimeExtensionRequestRoute.page,
             path: 'create-time-extension'),
-        AutoRoute(page: MyServiceRequestsPage, path: 'my-service-requests'),
+        AutoRoute(page: MyServiceRequestsRoute.page, path: 'my-service-requests'),
 
         // mb for employee
 
         // MeasurementBookInboxPage
         AutoRoute(
-          page: MeasurementBookInboxPage,
+          page: MeasurementBookInboxRoute.page,
           path: 'measurement-inbox',
         ),
-        AutoRoute(page: MBFilterPage, path: 'mb-filter'),
-        AutoRoute(page: MBDetailPage, path: 'mb-detail'),
-        AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
-         AutoRoute(page: MBMusterScreenPage, path: 'mb-muster-screen'),
-        AutoRoute(page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
+        AutoRoute(page: MBFilterRoute.page, path: 'mb-filter'),
+        AutoRoute(page: MBDetailRoute.page, path: 'mb-detail'),
+        AutoRoute(page: MBHistoryBookRoute.page, path: 'mb-history'),
+         AutoRoute(page: MBMusterScreenRoute.page, path: 'mb-muster-screen'),
+        AutoRoute(page: MBTypeConfirmationRoute.page, path: 'mb-type-confirmation'),
        
 
         // work order -employee
 
         AutoRoute(
-          page: WorkOderInboxPage,
+          page: WorkOderInboxRoute.page,
           path: 'workOrder-inbox',
         ),
-        AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
-        AutoRoute(page: WOFilterPage, path: 'wo-filter'),
+        AutoRoute(page: WorkOrderDetailRoute.page, path: 'workOrder-details'),
+        AutoRoute(page: WOFilterRoute.page, path: 'wo-filter'),
       ],
     ),
-  ],
-)
-class AppRouter extends _$AppRouter {}
+  ];
+}
+
+

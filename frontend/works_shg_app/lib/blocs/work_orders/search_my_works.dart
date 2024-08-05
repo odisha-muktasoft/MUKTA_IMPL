@@ -6,12 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/data/repositories/work_order_repository/my_works_repository.dart';
 import 'package:works_shg_app/services/urls.dart';
-import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../data/remote_client.dart';
 import '../../models/works/contracts_model.dart';
-import '../../utils/constants.dart';
 
 part 'search_my_works.freezed.dart';
 
@@ -55,7 +53,7 @@ class SearchMyWorksBloc extends Bloc<SearchMyWorksEvent, SearchMyWorksState> {
       emit(SearchMyWorksState.loaded(ContractsModel(
           contracts: contractsModel.contracts
              )));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(SearchMyWorksState.error(e.response?.data['Errors'][0]['code']));
     }
   }

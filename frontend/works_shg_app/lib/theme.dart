@@ -2,10 +2,11 @@ import 'package:digit_components/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData get theme => ThemeData(
+  useMaterial3: false,
     primarySwatch: createMaterialColor(const Color(0XFFf47738)),
     highlightColor: createMaterialColor(const Color(0XFFC7E0F1)),
-    backgroundColor:
-        createMaterialColor(const Color.fromRGBO(238, 238, 238, 1)),
+    // backgroundColor:
+    //     createMaterialColor(const Color.fromRGBO(238, 238, 238, 1)),
     primaryColor: const Color.fromRGBO(244, 119, 56, 1),
     hintColor: const Color.fromRGBO(177, 180, 182, 1),
     primaryColorDark: const Color.fromRGBO(11, 12, 12, 1),
@@ -101,7 +102,7 @@ ColorScheme get colorScheme => ColorScheme(
       onSecondary: colors.white,
       error: colors.lavaRed,
       onError: colors.white,
-      background: colors.seaShellGray,
+     background: createMaterialColor(const Color.fromRGBO(238, 238, 238, 1)),
       onBackground: colors.woodsmokeBlack,
       surface: colors.alabasterWhite,
       onSurface: colors.woodsmokeBlack,

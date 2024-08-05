@@ -155,7 +155,7 @@ class MeasurementDetailBloc
           sorList.length >= 2 ? getSorted(sorList[1].last, res) : null,
         ),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }
@@ -653,7 +653,7 @@ class MeasurementDetailBloc
           }
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }
@@ -708,7 +708,7 @@ class MeasurementDetailBloc
           );
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }

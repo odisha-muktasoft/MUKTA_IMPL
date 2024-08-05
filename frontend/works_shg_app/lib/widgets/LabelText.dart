@@ -2,7 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 
 class LabelText extends StatelessWidget {
-  final input;
+  final String input;
   final EdgeInsets? padding;
   const LabelText(this.input, {super.key, this.padding});
   @override

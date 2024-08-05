@@ -12,7 +12,7 @@ part of 'role_based_hrms.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 HRMSResponse _$HRMSResponseFromJson(Map<String, dynamic> json) {
   return _HRMSResponse.fromJson(json);
@@ -63,22 +63,22 @@ class _$HRMSResponseCopyWithImpl<$Res, $Val extends HRMSResponse>
 }
 
 /// @nodoc
-abstract class _$$_HRMSResponseCopyWith<$Res>
+abstract class _$$HRMSResponseImplCopyWith<$Res>
     implements $HRMSResponseCopyWith<$Res> {
-  factory _$$_HRMSResponseCopyWith(
-          _$_HRMSResponse value, $Res Function(_$_HRMSResponse) then) =
-      __$$_HRMSResponseCopyWithImpl<$Res>;
+  factory _$$HRMSResponseImplCopyWith(
+          _$HRMSResponseImpl value, $Res Function(_$HRMSResponseImpl) then) =
+      __$$HRMSResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({@JsonKey(name: 'Employees') List<HRMSEmployee>? employees});
 }
 
 /// @nodoc
-class __$$_HRMSResponseCopyWithImpl<$Res>
-    extends _$HRMSResponseCopyWithImpl<$Res, _$_HRMSResponse>
-    implements _$$_HRMSResponseCopyWith<$Res> {
-  __$$_HRMSResponseCopyWithImpl(
-      _$_HRMSResponse _value, $Res Function(_$_HRMSResponse) _then)
+class __$$HRMSResponseImplCopyWithImpl<$Res>
+    extends _$HRMSResponseCopyWithImpl<$Res, _$HRMSResponseImpl>
+    implements _$$HRMSResponseImplCopyWith<$Res> {
+  __$$HRMSResponseImplCopyWithImpl(
+      _$HRMSResponseImpl _value, $Res Function(_$HRMSResponseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -86,7 +86,7 @@ class __$$_HRMSResponseCopyWithImpl<$Res>
   $Res call({
     Object? employees = freezed,
   }) {
-    return _then(_$_HRMSResponse(
+    return _then(_$HRMSResponseImpl(
       employees: freezed == employees
           ? _value._employees
           : employees // ignore: cast_nullable_to_non_nullable
@@ -97,13 +97,13 @@ class __$$_HRMSResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_HRMSResponse implements _HRMSResponse {
-  const _$_HRMSResponse(
+class _$HRMSResponseImpl implements _HRMSResponse {
+  const _$HRMSResponseImpl(
       {@JsonKey(name: 'Employees') final List<HRMSEmployee>? employees})
       : _employees = employees;
 
-  factory _$_HRMSResponse.fromJson(Map<String, dynamic> json) =>
-      _$$_HRMSResponseFromJson(json);
+  factory _$HRMSResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HRMSResponseImplFromJson(json);
 
   final List<HRMSEmployee>? _employees;
   @override
@@ -122,10 +122,10 @@ class _$_HRMSResponse implements _HRMSResponse {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HRMSResponse &&
+            other is _$HRMSResponseImpl &&
             const DeepCollectionEquality()
                 .equals(other._employees, _employees));
   }
@@ -138,12 +138,12 @@ class _$_HRMSResponse implements _HRMSResponse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HRMSResponseCopyWith<_$_HRMSResponse> get copyWith =>
-      __$$_HRMSResponseCopyWithImpl<_$_HRMSResponse>(this, _$identity);
+  _$$HRMSResponseImplCopyWith<_$HRMSResponseImpl> get copyWith =>
+      __$$HRMSResponseImplCopyWithImpl<_$HRMSResponseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HRMSResponseToJson(
+    return _$$HRMSResponseImplToJson(
       this,
     );
   }
@@ -152,17 +152,17 @@ class _$_HRMSResponse implements _HRMSResponse {
 abstract class _HRMSResponse implements HRMSResponse {
   const factory _HRMSResponse(
           {@JsonKey(name: 'Employees') final List<HRMSEmployee>? employees}) =
-      _$_HRMSResponse;
+      _$HRMSResponseImpl;
 
   factory _HRMSResponse.fromJson(Map<String, dynamic> json) =
-      _$_HRMSResponse.fromJson;
+      _$HRMSResponseImpl.fromJson;
 
   @override
   @JsonKey(name: 'Employees')
   List<HRMSEmployee>? get employees;
   @override
   @JsonKey(ignore: true)
-  _$$_HRMSResponseCopyWith<_$_HRMSResponse> get copyWith =>
+  _$$HRMSResponseImplCopyWith<_$HRMSResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -278,11 +278,11 @@ class _$HRMSEmployeeCopyWithImpl<$Res, $Val extends HRMSEmployee>
 }
 
 /// @nodoc
-abstract class _$$_HRMSEmployeeCopyWith<$Res>
+abstract class _$$HRMSEmployeeImplCopyWith<$Res>
     implements $HRMSEmployeeCopyWith<$Res> {
-  factory _$$_HRMSEmployeeCopyWith(
-          _$_HRMSEmployee value, $Res Function(_$_HRMSEmployee) then) =
-      __$$_HRMSEmployeeCopyWithImpl<$Res>;
+  factory _$$HRMSEmployeeImplCopyWith(
+          _$HRMSEmployeeImpl value, $Res Function(_$HRMSEmployeeImpl) then) =
+      __$$HRMSEmployeeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -299,11 +299,11 @@ abstract class _$$_HRMSEmployeeCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_HRMSEmployeeCopyWithImpl<$Res>
-    extends _$HRMSEmployeeCopyWithImpl<$Res, _$_HRMSEmployee>
-    implements _$$_HRMSEmployeeCopyWith<$Res> {
-  __$$_HRMSEmployeeCopyWithImpl(
-      _$_HRMSEmployee _value, $Res Function(_$_HRMSEmployee) _then)
+class __$$HRMSEmployeeImplCopyWithImpl<$Res>
+    extends _$HRMSEmployeeCopyWithImpl<$Res, _$HRMSEmployeeImpl>
+    implements _$$HRMSEmployeeImplCopyWith<$Res> {
+  __$$HRMSEmployeeImplCopyWithImpl(
+      _$HRMSEmployeeImpl _value, $Res Function(_$HRMSEmployeeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -317,7 +317,7 @@ class __$$_HRMSEmployeeCopyWithImpl<$Res>
     Object? employeeType = freezed,
     Object? employeeUser = freezed,
   }) {
-    return _then(_$_HRMSEmployee(
+    return _then(_$HRMSEmployeeImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -352,8 +352,8 @@ class __$$_HRMSEmployeeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_HRMSEmployee implements _HRMSEmployee {
-  const _$_HRMSEmployee(
+class _$HRMSEmployeeImpl implements _HRMSEmployee {
+  const _$HRMSEmployeeImpl(
       {@JsonKey(name: 'id') this.id,
       @JsonKey(name: 'uuid') this.uuid,
       @JsonKey(name: 'code') this.code,
@@ -362,8 +362,8 @@ class _$_HRMSEmployee implements _HRMSEmployee {
       @JsonKey(name: 'employeeType') this.employeeType,
       @JsonKey(name: 'user') this.employeeUser});
 
-  factory _$_HRMSEmployee.fromJson(Map<String, dynamic> json) =>
-      _$$_HRMSEmployeeFromJson(json);
+  factory _$HRMSEmployeeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$HRMSEmployeeImplFromJson(json);
 
   @override
   @JsonKey(name: 'id')
@@ -393,10 +393,10 @@ class _$_HRMSEmployee implements _HRMSEmployee {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_HRMSEmployee &&
+            other is _$HRMSEmployeeImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.code, code) || other.code == code) &&
@@ -418,12 +418,12 @@ class _$_HRMSEmployee implements _HRMSEmployee {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_HRMSEmployeeCopyWith<_$_HRMSEmployee> get copyWith =>
-      __$$_HRMSEmployeeCopyWithImpl<_$_HRMSEmployee>(this, _$identity);
+  _$$HRMSEmployeeImplCopyWith<_$HRMSEmployeeImpl> get copyWith =>
+      __$$HRMSEmployeeImplCopyWithImpl<_$HRMSEmployeeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_HRMSEmployeeToJson(
+    return _$$HRMSEmployeeImplToJson(
       this,
     );
   }
@@ -438,10 +438,10 @@ abstract class _HRMSEmployee implements HRMSEmployee {
           @JsonKey(name: 'dateOfAppointment') final int? dateOfAppointment,
           @JsonKey(name: 'employeeType') final String? employeeType,
           @JsonKey(name: 'user') final EmployeeUser? employeeUser}) =
-      _$_HRMSEmployee;
+      _$HRMSEmployeeImpl;
 
   factory _HRMSEmployee.fromJson(Map<String, dynamic> json) =
-      _$_HRMSEmployee.fromJson;
+      _$HRMSEmployeeImpl.fromJson;
 
   @override
   @JsonKey(name: 'id')
@@ -466,7 +466,7 @@ abstract class _HRMSEmployee implements HRMSEmployee {
   EmployeeUser? get employeeUser;
   @override
   @JsonKey(ignore: true)
-  _$$_HRMSEmployeeCopyWith<_$_HRMSEmployee> get copyWith =>
+  _$$HRMSEmployeeImplCopyWith<_$HRMSEmployeeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -544,11 +544,11 @@ class _$EmployeeUserCopyWithImpl<$Res, $Val extends EmployeeUser>
 }
 
 /// @nodoc
-abstract class _$$_EmployeeUserCopyWith<$Res>
+abstract class _$$EmployeeUserImplCopyWith<$Res>
     implements $EmployeeUserCopyWith<$Res> {
-  factory _$$_EmployeeUserCopyWith(
-          _$_EmployeeUser value, $Res Function(_$_EmployeeUser) then) =
-      __$$_EmployeeUserCopyWithImpl<$Res>;
+  factory _$$EmployeeUserImplCopyWith(
+          _$EmployeeUserImpl value, $Res Function(_$EmployeeUserImpl) then) =
+      __$$EmployeeUserImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -559,11 +559,11 @@ abstract class _$$_EmployeeUserCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EmployeeUserCopyWithImpl<$Res>
-    extends _$EmployeeUserCopyWithImpl<$Res, _$_EmployeeUser>
-    implements _$$_EmployeeUserCopyWith<$Res> {
-  __$$_EmployeeUserCopyWithImpl(
-      _$_EmployeeUser _value, $Res Function(_$_EmployeeUser) _then)
+class __$$EmployeeUserImplCopyWithImpl<$Res>
+    extends _$EmployeeUserCopyWithImpl<$Res, _$EmployeeUserImpl>
+    implements _$$EmployeeUserImplCopyWith<$Res> {
+  __$$EmployeeUserImplCopyWithImpl(
+      _$EmployeeUserImpl _value, $Res Function(_$EmployeeUserImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -574,7 +574,7 @@ class __$$_EmployeeUserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? userName = freezed,
   }) {
-    return _then(_$_EmployeeUser(
+    return _then(_$EmployeeUserImpl(
       correspondenceAddress: freezed == correspondenceAddress
           ? _value.correspondenceAddress
           : correspondenceAddress // ignore: cast_nullable_to_non_nullable
@@ -597,15 +597,15 @@ class __$$_EmployeeUserCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_EmployeeUser implements _EmployeeUser {
-  const _$_EmployeeUser(
+class _$EmployeeUserImpl implements _EmployeeUser {
+  const _$EmployeeUserImpl(
       {@JsonKey(name: 'correspondenceAddress') this.correspondenceAddress,
       @JsonKey(name: 'mobileNumber') this.mobileNumber,
       @JsonKey(name: 'name') this.name,
       @JsonKey(name: 'userName') this.userName});
 
-  factory _$_EmployeeUser.fromJson(Map<String, dynamic> json) =>
-      _$$_EmployeeUserFromJson(json);
+  factory _$EmployeeUserImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EmployeeUserImplFromJson(json);
 
   @override
   @JsonKey(name: 'correspondenceAddress')
@@ -626,10 +626,10 @@ class _$_EmployeeUser implements _EmployeeUser {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EmployeeUser &&
+            other is _$EmployeeUserImpl &&
             (identical(other.correspondenceAddress, correspondenceAddress) ||
                 other.correspondenceAddress == correspondenceAddress) &&
             (identical(other.mobileNumber, mobileNumber) ||
@@ -647,12 +647,12 @@ class _$_EmployeeUser implements _EmployeeUser {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EmployeeUserCopyWith<_$_EmployeeUser> get copyWith =>
-      __$$_EmployeeUserCopyWithImpl<_$_EmployeeUser>(this, _$identity);
+  _$$EmployeeUserImplCopyWith<_$EmployeeUserImpl> get copyWith =>
+      __$$EmployeeUserImplCopyWithImpl<_$EmployeeUserImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_EmployeeUserToJson(
+    return _$$EmployeeUserImplToJson(
       this,
     );
   }
@@ -661,16 +661,13 @@ class _$_EmployeeUser implements _EmployeeUser {
 abstract class _EmployeeUser implements EmployeeUser {
   const factory _EmployeeUser(
       {@JsonKey(name: 'correspondenceAddress')
-          final String? correspondenceAddress,
-      @JsonKey(name: 'mobileNumber')
-          final String? mobileNumber,
-      @JsonKey(name: 'name')
-          final String? name,
-      @JsonKey(name: 'userName')
-          final String? userName}) = _$_EmployeeUser;
+      final String? correspondenceAddress,
+      @JsonKey(name: 'mobileNumber') final String? mobileNumber,
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'userName') final String? userName}) = _$EmployeeUserImpl;
 
   factory _EmployeeUser.fromJson(Map<String, dynamic> json) =
-      _$_EmployeeUser.fromJson;
+      _$EmployeeUserImpl.fromJson;
 
   @override
   @JsonKey(name: 'correspondenceAddress')
@@ -686,6 +683,6 @@ abstract class _EmployeeUser implements EmployeeUser {
   String? get userName;
   @override
   @JsonKey(ignore: true)
-  _$$_EmployeeUserCopyWith<_$_EmployeeUser> get copyWith =>
+  _$$EmployeeUserImplCopyWith<_$EmployeeUserImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

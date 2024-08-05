@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../router/app_router.dart';
 
-class WorkOrderWrapperPage extends StatefulWidget with AutoRouteWrapper {
+@RoutePage()
+class WorkOrderWrapperPage extends StatefulWidget implements AutoRouteWrapper {
   const WorkOrderWrapperPage({super.key});
 
   @override

@@ -18,8 +18,8 @@ class DateRangePicker extends StatelessWidget {
   final DateTime? minDate;
   final DateTime? maxDate;
 
-  DateRangePicker(
-      {Key? key,
+  const DateRangePicker(
+      {super.key,
       required this.label,
       required this.controller,
       required this.rangePickerController,
@@ -32,8 +32,7 @@ class DateRangePicker extends StatelessWidget {
       this.onCancel,
         this.minDate,
       this.maxDate,
-      this.format,})
-      : super(key: key);
+      this.format,});
 
   @override
   Widget build(BuildContext context) {

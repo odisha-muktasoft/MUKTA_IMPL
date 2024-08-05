@@ -22,6 +22,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
 
 import '../../../widgets/drawer_wrapper.dart';
 
+@RoutePage()
 class WOFilterPage extends StatefulWidget {
   const WOFilterPage({super.key});
 
@@ -113,6 +114,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loaded: (organization) {
             return Scaffold(
               appBar: AppBar(
+                iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
                 title: const AppBarLogo(),
               ),
@@ -151,7 +153,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                             tenantId: GlobalVariables.tenantId!,
                                           ),
                                         );
-                                    context.router.pop();
+                                    context.router.maybePopTop();
                                   },
                                 ),
                               ),
@@ -198,7 +200,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                             data: payload,
                                             limit: 10,
                                             offset: 0));
-                                    context.router.pop();
+                                    context.router.maybePopTop();
                                   },
                                 ),
                               )
@@ -220,7 +222,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                             tenantId: GlobalVariables.tenantId!,
                                           ),
                                         );
-                                    context.router.pop();
+                                    context.router.maybePopTop();
                                   },
                                   icon: const Icon(Icons.close)),
                             ],
@@ -302,6 +304,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loading: () {
             return Scaffold(
               appBar: AppBar(
+                iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
                 title: const AppBarLogo(),
               ),

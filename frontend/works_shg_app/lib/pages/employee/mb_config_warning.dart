@@ -29,6 +29,7 @@ import '../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class MBTypeConfirmationPage extends StatefulWidget {
   final NextActions? nextActions;
   final String? contractNumber;
@@ -151,6 +152,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
       child: Scaffold(
         backgroundColor: const DigitColors().white,
         appBar: AppBar(
+          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
           titleSpacing: 0,
           title: const AppBarLogo(),
         ),
@@ -254,7 +256,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 label:
                                     t.translate(i18.measurementBook.mbCancel),
                                 onPressed: () {
-                                  context.router.pop();
+                                  context.router.maybePopTop();
                                 },
                               ),
                             ),
@@ -267,7 +269,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  context.router.pop();
+                                  context.router.maybePopTop();
                                 },
                                 icon: const Icon(Icons.close)),
                           ],
@@ -482,7 +484,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 label:
                                     t.translate(i18.measurementBook.mbCancel),
                                 onPressed: () {
-                                  context.router.pop();
+                                  context.router.maybePopTop();
                                 },
                               ),
                             ),
@@ -495,7 +497,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  context.router.pop();
+                                  context.router.maybePopTop();
                                 },
                                 icon: const Icon(Icons.close)),
                           ],

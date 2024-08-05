@@ -11,13 +11,13 @@ class MultiSelectSearchCheckBox extends StatefulWidget {
   final String? hintText;
 
   const MultiSelectSearchCheckBox({
-    Key? key,
+    super.key,
     required this.label,
     required this.options,
     required this.selectedOptions,
     this.hintText,
     this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   MultiSelectSearchCheckBoxState createState() =>

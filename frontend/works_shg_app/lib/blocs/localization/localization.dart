@@ -97,7 +97,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
       await _loadLocale(codes, event.locale);
       // Emit loaded state
       emit(LocalizationState.loaded(event.languages, module));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
     }
   }
@@ -251,7 +251,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           }
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       // Handle Dio errors and emit error state
       LocalizationState.error(e.response?.data['Errors'][0]['code']);
     }

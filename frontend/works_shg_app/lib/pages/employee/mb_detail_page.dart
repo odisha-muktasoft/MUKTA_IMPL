@@ -41,6 +41,7 @@ import '../../widgets/mb/text_button_underline.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class MBDetailPage extends StatefulWidget {
   final String contractNumber;
   final String mbNumber;
@@ -623,6 +624,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               ),
               backgroundColor: const DigitColors().seaShellGray,
               appBar: AppBar(
+                iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
                 title: const AppBarLogo(),
               ),
@@ -1899,7 +1901,7 @@ class CustomTab extends StatelessWidget {
     return GestureDetector(
       onTap: () => onTap(),
       child: Container(
-        height: 50,
+        height: 55,
         width: MediaQuery.sizeOf(context).width / 3,
         decoration: BoxDecoration(
           border: Border(
@@ -1974,7 +1976,7 @@ class SORTableCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: 10),
       child: Container(
         decoration: BoxDecoration(
             color: color,

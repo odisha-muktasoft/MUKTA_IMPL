@@ -12,7 +12,7 @@ part of 'wage_seeker_registration_bloc.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$WageSeekerBlocEvent {
@@ -152,10 +152,11 @@ class _$WageSeekerBlocEventCopyWithImpl<$Res, $Val extends WageSeekerBlocEvent>
 }
 
 /// @nodoc
-abstract class _$$WageSeekerCreateEventCopyWith<$Res> {
-  factory _$$WageSeekerCreateEventCopyWith(_$WageSeekerCreateEvent value,
-          $Res Function(_$WageSeekerCreateEvent) then) =
-      __$$WageSeekerCreateEventCopyWithImpl<$Res>;
+abstract class _$$WageSeekerCreateEventImplCopyWith<$Res> {
+  factory _$$WageSeekerCreateEventImplCopyWith(
+          _$WageSeekerCreateEventImpl value,
+          $Res Function(_$WageSeekerCreateEventImpl) then) =
+      __$$WageSeekerCreateEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {IndividualDetails? individualDetails,
@@ -165,11 +166,11 @@ abstract class _$$WageSeekerCreateEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$WageSeekerCreateEventCopyWithImpl<$Res>
-    extends _$WageSeekerBlocEventCopyWithImpl<$Res, _$WageSeekerCreateEvent>
-    implements _$$WageSeekerCreateEventCopyWith<$Res> {
-  __$$WageSeekerCreateEventCopyWithImpl(_$WageSeekerCreateEvent _value,
-      $Res Function(_$WageSeekerCreateEvent) _then)
+class __$$WageSeekerCreateEventImplCopyWithImpl<$Res>
+    extends _$WageSeekerBlocEventCopyWithImpl<$Res, _$WageSeekerCreateEventImpl>
+    implements _$$WageSeekerCreateEventImplCopyWith<$Res> {
+  __$$WageSeekerCreateEventImplCopyWithImpl(_$WageSeekerCreateEventImpl _value,
+      $Res Function(_$WageSeekerCreateEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -180,7 +181,7 @@ class __$$WageSeekerCreateEventCopyWithImpl<$Res>
     Object? locationDetails = freezed,
     Object? financialDetails = freezed,
   }) {
-    return _then(_$WageSeekerCreateEvent(
+    return _then(_$WageSeekerCreateEventImpl(
       individualDetails: freezed == individualDetails
           ? _value.individualDetails
           : individualDetails // ignore: cast_nullable_to_non_nullable
@@ -203,10 +204,10 @@ class __$$WageSeekerCreateEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WageSeekerCreateEvent
+class _$WageSeekerCreateEventImpl
     with DiagnosticableTreeMixin
     implements WageSeekerCreateEvent {
-  const _$WageSeekerCreateEvent(
+  const _$WageSeekerCreateEventImpl(
       {this.individualDetails,
       this.skillDetails,
       this.locationDetails,
@@ -238,10 +239,10 @@ class _$WageSeekerCreateEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WageSeekerCreateEvent &&
+            other is _$WageSeekerCreateEventImpl &&
             (identical(other.individualDetails, individualDetails) ||
                 other.individualDetails == individualDetails) &&
             (identical(other.skillDetails, skillDetails) ||
@@ -259,9 +260,9 @@ class _$WageSeekerCreateEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$WageSeekerCreateEventCopyWith<_$WageSeekerCreateEvent> get copyWith =>
-      __$$WageSeekerCreateEventCopyWithImpl<_$WageSeekerCreateEvent>(
-          this, _$identity);
+  _$$WageSeekerCreateEventImplCopyWith<_$WageSeekerCreateEventImpl>
+      get copyWith => __$$WageSeekerCreateEventImplCopyWithImpl<
+          _$WageSeekerCreateEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -411,23 +412,23 @@ abstract class WageSeekerCreateEvent implements WageSeekerBlocEvent {
       {final IndividualDetails? individualDetails,
       final SkillDetails? skillDetails,
       final LocationDetails? locationDetails,
-      final FinancialDetails? financialDetails}) = _$WageSeekerCreateEvent;
+      final FinancialDetails? financialDetails}) = _$WageSeekerCreateEventImpl;
 
   IndividualDetails? get individualDetails;
   SkillDetails? get skillDetails;
   LocationDetails? get locationDetails;
   FinancialDetails? get financialDetails;
   @JsonKey(ignore: true)
-  _$$WageSeekerCreateEventCopyWith<_$WageSeekerCreateEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$WageSeekerCreateEventImplCopyWith<_$WageSeekerCreateEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$WageSeekerIdentificationCreateEventCopyWith<$Res> {
-  factory _$$WageSeekerIdentificationCreateEventCopyWith(
-          _$WageSeekerIdentificationCreateEvent value,
-          $Res Function(_$WageSeekerIdentificationCreateEvent) then) =
-      __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>;
+abstract class _$$WageSeekerIdentificationCreateEventImplCopyWith<$Res> {
+  factory _$$WageSeekerIdentificationCreateEventImplCopyWith(
+          _$WageSeekerIdentificationCreateEventImpl value,
+          $Res Function(_$WageSeekerIdentificationCreateEventImpl) then) =
+      __$$WageSeekerIdentificationCreateEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String documentType,
@@ -441,13 +442,13 @@ abstract class _$$WageSeekerIdentificationCreateEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>
+class __$$WageSeekerIdentificationCreateEventImplCopyWithImpl<$Res>
     extends _$WageSeekerBlocEventCopyWithImpl<$Res,
-        _$WageSeekerIdentificationCreateEvent>
-    implements _$$WageSeekerIdentificationCreateEventCopyWith<$Res> {
-  __$$WageSeekerIdentificationCreateEventCopyWithImpl(
-      _$WageSeekerIdentificationCreateEvent _value,
-      $Res Function(_$WageSeekerIdentificationCreateEvent) _then)
+        _$WageSeekerIdentificationCreateEventImpl>
+    implements _$$WageSeekerIdentificationCreateEventImplCopyWith<$Res> {
+  __$$WageSeekerIdentificationCreateEventImplCopyWithImpl(
+      _$WageSeekerIdentificationCreateEventImpl _value,
+      $Res Function(_$WageSeekerIdentificationCreateEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -460,7 +461,7 @@ class __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>
     Object? timeStamp = null,
     Object? adharCardResponse = freezed,
   }) {
-    return _then(_$WageSeekerIdentificationCreateEvent(
+    return _then(_$WageSeekerIdentificationCreateEventImpl(
       documentType: null == documentType
           ? _value.documentType
           : documentType // ignore: cast_nullable_to_non_nullable
@@ -503,10 +504,10 @@ class __$$WageSeekerIdentificationCreateEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WageSeekerIdentificationCreateEvent
+class _$WageSeekerIdentificationCreateEventImpl
     with DiagnosticableTreeMixin
     implements WageSeekerIdentificationCreateEvent {
-  const _$WageSeekerIdentificationCreateEvent(
+  const _$WageSeekerIdentificationCreateEventImpl(
       {required this.documentType,
       required this.number,
       required this.name,
@@ -547,10 +548,10 @@ class _$WageSeekerIdentificationCreateEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WageSeekerIdentificationCreateEvent &&
+            other is _$WageSeekerIdentificationCreateEventImpl &&
             (identical(other.documentType, documentType) ||
                 other.documentType == documentType) &&
             (identical(other.number, number) || other.number == number) &&
@@ -570,10 +571,10 @@ class _$WageSeekerIdentificationCreateEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$WageSeekerIdentificationCreateEventCopyWith<
-          _$WageSeekerIdentificationCreateEvent>
-      get copyWith => __$$WageSeekerIdentificationCreateEventCopyWithImpl<
-          _$WageSeekerIdentificationCreateEvent>(this, _$identity);
+  _$$WageSeekerIdentificationCreateEventImplCopyWith<
+          _$WageSeekerIdentificationCreateEventImpl>
+      get copyWith => __$$WageSeekerIdentificationCreateEventImplCopyWithImpl<
+          _$WageSeekerIdentificationCreateEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -727,7 +728,7 @@ abstract class WageSeekerIdentificationCreateEvent
           required final bool adharVerified,
           required final int timeStamp,
           final AdharCardResponse? adharCardResponse}) =
-      _$WageSeekerIdentificationCreateEvent;
+      _$WageSeekerIdentificationCreateEventImpl;
 
   String get documentType;
   String get number;
@@ -736,17 +737,17 @@ abstract class WageSeekerIdentificationCreateEvent
   int get timeStamp;
   AdharCardResponse? get adharCardResponse;
   @JsonKey(ignore: true)
-  _$$WageSeekerIdentificationCreateEventCopyWith<
-          _$WageSeekerIdentificationCreateEvent>
+  _$$WageSeekerIdentificationCreateEventImplCopyWith<
+          _$WageSeekerIdentificationCreateEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$WageSeekerDetailsCreateEventCopyWith<$Res> {
-  factory _$$WageSeekerDetailsCreateEventCopyWith(
-          _$WageSeekerDetailsCreateEvent value,
-          $Res Function(_$WageSeekerDetailsCreateEvent) then) =
-      __$$WageSeekerDetailsCreateEventCopyWithImpl<$Res>;
+abstract class _$$WageSeekerDetailsCreateEventImplCopyWith<$Res> {
+  factory _$$WageSeekerDetailsCreateEventImplCopyWith(
+          _$WageSeekerDetailsCreateEventImpl value,
+          $Res Function(_$WageSeekerDetailsCreateEventImpl) then) =
+      __$$WageSeekerDetailsCreateEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String fatherName,
@@ -758,13 +759,13 @@ abstract class _$$WageSeekerDetailsCreateEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$WageSeekerDetailsCreateEventCopyWithImpl<$Res>
+class __$$WageSeekerDetailsCreateEventImplCopyWithImpl<$Res>
     extends _$WageSeekerBlocEventCopyWithImpl<$Res,
-        _$WageSeekerDetailsCreateEvent>
-    implements _$$WageSeekerDetailsCreateEventCopyWith<$Res> {
-  __$$WageSeekerDetailsCreateEventCopyWithImpl(
-      _$WageSeekerDetailsCreateEvent _value,
-      $Res Function(_$WageSeekerDetailsCreateEvent) _then)
+        _$WageSeekerDetailsCreateEventImpl>
+    implements _$$WageSeekerDetailsCreateEventImplCopyWith<$Res> {
+  __$$WageSeekerDetailsCreateEventImplCopyWithImpl(
+      _$WageSeekerDetailsCreateEventImpl _value,
+      $Res Function(_$WageSeekerDetailsCreateEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -777,7 +778,7 @@ class __$$WageSeekerDetailsCreateEventCopyWithImpl<$Res>
     Object? socialCategory = null,
     Object? mobileNumber = null,
   }) {
-    return _then(_$WageSeekerDetailsCreateEvent(
+    return _then(_$WageSeekerDetailsCreateEventImpl(
       fatherName: null == fatherName
           ? _value.fatherName
           : fatherName // ignore: cast_nullable_to_non_nullable
@@ -808,10 +809,10 @@ class __$$WageSeekerDetailsCreateEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WageSeekerDetailsCreateEvent
+class _$WageSeekerDetailsCreateEventImpl
     with DiagnosticableTreeMixin
     implements WageSeekerDetailsCreateEvent {
-  const _$WageSeekerDetailsCreateEvent(
+  const _$WageSeekerDetailsCreateEventImpl(
       {required this.fatherName,
       required this.dob,
       required this.relationShip,
@@ -851,10 +852,10 @@ class _$WageSeekerDetailsCreateEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WageSeekerDetailsCreateEvent &&
+            other is _$WageSeekerDetailsCreateEventImpl &&
             (identical(other.fatherName, fatherName) ||
                 other.fatherName == fatherName) &&
             (identical(other.dob, dob) || other.dob == dob) &&
@@ -874,9 +875,10 @@ class _$WageSeekerDetailsCreateEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$WageSeekerDetailsCreateEventCopyWith<_$WageSeekerDetailsCreateEvent>
-      get copyWith => __$$WageSeekerDetailsCreateEventCopyWithImpl<
-          _$WageSeekerDetailsCreateEvent>(this, _$identity);
+  _$$WageSeekerDetailsCreateEventImplCopyWith<
+          _$WageSeekerDetailsCreateEventImpl>
+      get copyWith => __$$WageSeekerDetailsCreateEventImplCopyWithImpl<
+          _$WageSeekerDetailsCreateEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1028,7 +1030,7 @@ abstract class WageSeekerDetailsCreateEvent implements WageSeekerBlocEvent {
       required final String relationShip,
       required final String gender,
       required final String socialCategory,
-      required final String mobileNumber}) = _$WageSeekerDetailsCreateEvent;
+      required final String mobileNumber}) = _$WageSeekerDetailsCreateEventImpl;
 
   String get fatherName;
   DateTime get dob;
@@ -1037,28 +1039,29 @@ abstract class WageSeekerDetailsCreateEvent implements WageSeekerBlocEvent {
   String get socialCategory;
   String get mobileNumber;
   @JsonKey(ignore: true)
-  _$$WageSeekerDetailsCreateEventCopyWith<_$WageSeekerDetailsCreateEvent>
+  _$$WageSeekerDetailsCreateEventImplCopyWith<
+          _$WageSeekerDetailsCreateEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$WageSeekerSkillCreateEventCopyWith<$Res> {
-  factory _$$WageSeekerSkillCreateEventCopyWith(
-          _$WageSeekerSkillCreateEvent value,
-          $Res Function(_$WageSeekerSkillCreateEvent) then) =
-      __$$WageSeekerSkillCreateEventCopyWithImpl<$Res>;
+abstract class _$$WageSeekerSkillCreateEventImplCopyWith<$Res> {
+  factory _$$WageSeekerSkillCreateEventImplCopyWith(
+          _$WageSeekerSkillCreateEventImpl value,
+          $Res Function(_$WageSeekerSkillCreateEventImpl) then) =
+      __$$WageSeekerSkillCreateEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({SkillDetails skillDetails});
 }
 
 /// @nodoc
-class __$$WageSeekerSkillCreateEventCopyWithImpl<$Res>
+class __$$WageSeekerSkillCreateEventImplCopyWithImpl<$Res>
     extends _$WageSeekerBlocEventCopyWithImpl<$Res,
-        _$WageSeekerSkillCreateEvent>
-    implements _$$WageSeekerSkillCreateEventCopyWith<$Res> {
-  __$$WageSeekerSkillCreateEventCopyWithImpl(
-      _$WageSeekerSkillCreateEvent _value,
-      $Res Function(_$WageSeekerSkillCreateEvent) _then)
+        _$WageSeekerSkillCreateEventImpl>
+    implements _$$WageSeekerSkillCreateEventImplCopyWith<$Res> {
+  __$$WageSeekerSkillCreateEventImplCopyWithImpl(
+      _$WageSeekerSkillCreateEventImpl _value,
+      $Res Function(_$WageSeekerSkillCreateEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1066,7 +1069,7 @@ class __$$WageSeekerSkillCreateEventCopyWithImpl<$Res>
   $Res call({
     Object? skillDetails = null,
   }) {
-    return _then(_$WageSeekerSkillCreateEvent(
+    return _then(_$WageSeekerSkillCreateEventImpl(
       skillDetails: null == skillDetails
           ? _value.skillDetails
           : skillDetails // ignore: cast_nullable_to_non_nullable
@@ -1077,10 +1080,10 @@ class __$$WageSeekerSkillCreateEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WageSeekerSkillCreateEvent
+class _$WageSeekerSkillCreateEventImpl
     with DiagnosticableTreeMixin
     implements WageSeekerSkillCreateEvent {
-  const _$WageSeekerSkillCreateEvent({required this.skillDetails});
+  const _$WageSeekerSkillCreateEventImpl({required this.skillDetails});
 
   @override
   final SkillDetails skillDetails;
@@ -1099,10 +1102,10 @@ class _$WageSeekerSkillCreateEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WageSeekerSkillCreateEvent &&
+            other is _$WageSeekerSkillCreateEventImpl &&
             (identical(other.skillDetails, skillDetails) ||
                 other.skillDetails == skillDetails));
   }
@@ -1113,9 +1116,9 @@ class _$WageSeekerSkillCreateEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$WageSeekerSkillCreateEventCopyWith<_$WageSeekerSkillCreateEvent>
-      get copyWith => __$$WageSeekerSkillCreateEventCopyWithImpl<
-          _$WageSeekerSkillCreateEvent>(this, _$identity);
+  _$$WageSeekerSkillCreateEventImplCopyWith<_$WageSeekerSkillCreateEventImpl>
+      get copyWith => __$$WageSeekerSkillCreateEventImplCopyWithImpl<
+          _$WageSeekerSkillCreateEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1260,32 +1263,32 @@ class _$WageSeekerSkillCreateEvent
 abstract class WageSeekerSkillCreateEvent implements WageSeekerBlocEvent {
   const factory WageSeekerSkillCreateEvent(
           {required final SkillDetails skillDetails}) =
-      _$WageSeekerSkillCreateEvent;
+      _$WageSeekerSkillCreateEventImpl;
 
   SkillDetails get skillDetails;
   @JsonKey(ignore: true)
-  _$$WageSeekerSkillCreateEventCopyWith<_$WageSeekerSkillCreateEvent>
+  _$$WageSeekerSkillCreateEventImplCopyWith<_$WageSeekerSkillCreateEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$WageSeekerPhotoCreateEventCopyWith<$Res> {
-  factory _$$WageSeekerPhotoCreateEventCopyWith(
-          _$WageSeekerPhotoCreateEvent value,
-          $Res Function(_$WageSeekerPhotoCreateEvent) then) =
-      __$$WageSeekerPhotoCreateEventCopyWithImpl<$Res>;
+abstract class _$$WageSeekerPhotoCreateEventImplCopyWith<$Res> {
+  factory _$$WageSeekerPhotoCreateEventImplCopyWith(
+          _$WageSeekerPhotoCreateEventImpl value,
+          $Res Function(_$WageSeekerPhotoCreateEventImpl) then) =
+      __$$WageSeekerPhotoCreateEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({File? imageFile, Uint8List? bytes, String? photo});
 }
 
 /// @nodoc
-class __$$WageSeekerPhotoCreateEventCopyWithImpl<$Res>
+class __$$WageSeekerPhotoCreateEventImplCopyWithImpl<$Res>
     extends _$WageSeekerBlocEventCopyWithImpl<$Res,
-        _$WageSeekerPhotoCreateEvent>
-    implements _$$WageSeekerPhotoCreateEventCopyWith<$Res> {
-  __$$WageSeekerPhotoCreateEventCopyWithImpl(
-      _$WageSeekerPhotoCreateEvent _value,
-      $Res Function(_$WageSeekerPhotoCreateEvent) _then)
+        _$WageSeekerPhotoCreateEventImpl>
+    implements _$$WageSeekerPhotoCreateEventImplCopyWith<$Res> {
+  __$$WageSeekerPhotoCreateEventImplCopyWithImpl(
+      _$WageSeekerPhotoCreateEventImpl _value,
+      $Res Function(_$WageSeekerPhotoCreateEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1295,7 +1298,7 @@ class __$$WageSeekerPhotoCreateEventCopyWithImpl<$Res>
     Object? bytes = freezed,
     Object? photo = freezed,
   }) {
-    return _then(_$WageSeekerPhotoCreateEvent(
+    return _then(_$WageSeekerPhotoCreateEventImpl(
       imageFile: freezed == imageFile
           ? _value.imageFile
           : imageFile // ignore: cast_nullable_to_non_nullable
@@ -1314,10 +1317,11 @@ class __$$WageSeekerPhotoCreateEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$WageSeekerPhotoCreateEvent
+class _$WageSeekerPhotoCreateEventImpl
     with DiagnosticableTreeMixin
     implements WageSeekerPhotoCreateEvent {
-  const _$WageSeekerPhotoCreateEvent({this.imageFile, this.bytes, this.photo});
+  const _$WageSeekerPhotoCreateEventImpl(
+      {this.imageFile, this.bytes, this.photo});
 
   @override
   final File? imageFile;
@@ -1342,10 +1346,10 @@ class _$WageSeekerPhotoCreateEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$WageSeekerPhotoCreateEvent &&
+            other is _$WageSeekerPhotoCreateEventImpl &&
             (identical(other.imageFile, imageFile) ||
                 other.imageFile == imageFile) &&
             const DeepCollectionEquality().equals(other.bytes, bytes) &&
@@ -1359,9 +1363,9 @@ class _$WageSeekerPhotoCreateEvent
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$WageSeekerPhotoCreateEventCopyWith<_$WageSeekerPhotoCreateEvent>
-      get copyWith => __$$WageSeekerPhotoCreateEventCopyWithImpl<
-          _$WageSeekerPhotoCreateEvent>(this, _$identity);
+  _$$WageSeekerPhotoCreateEventImplCopyWith<_$WageSeekerPhotoCreateEventImpl>
+      get copyWith => __$$WageSeekerPhotoCreateEventImplCopyWithImpl<
+          _$WageSeekerPhotoCreateEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1507,38 +1511,38 @@ abstract class WageSeekerPhotoCreateEvent implements WageSeekerBlocEvent {
   const factory WageSeekerPhotoCreateEvent(
       {final File? imageFile,
       final Uint8List? bytes,
-      final String? photo}) = _$WageSeekerPhotoCreateEvent;
+      final String? photo}) = _$WageSeekerPhotoCreateEventImpl;
 
   File? get imageFile;
   Uint8List? get bytes;
   String? get photo;
   @JsonKey(ignore: true)
-  _$$WageSeekerPhotoCreateEventCopyWith<_$WageSeekerPhotoCreateEvent>
+  _$$WageSeekerPhotoCreateEventImplCopyWith<_$WageSeekerPhotoCreateEventImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$WageSeekerClearEventCopyWith<$Res> {
-  factory _$$WageSeekerClearEventCopyWith(_$WageSeekerClearEvent value,
-          $Res Function(_$WageSeekerClearEvent) then) =
-      __$$WageSeekerClearEventCopyWithImpl<$Res>;
+abstract class _$$WageSeekerClearEventImplCopyWith<$Res> {
+  factory _$$WageSeekerClearEventImplCopyWith(_$WageSeekerClearEventImpl value,
+          $Res Function(_$WageSeekerClearEventImpl) then) =
+      __$$WageSeekerClearEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$WageSeekerClearEventCopyWithImpl<$Res>
-    extends _$WageSeekerBlocEventCopyWithImpl<$Res, _$WageSeekerClearEvent>
-    implements _$$WageSeekerClearEventCopyWith<$Res> {
-  __$$WageSeekerClearEventCopyWithImpl(_$WageSeekerClearEvent _value,
-      $Res Function(_$WageSeekerClearEvent) _then)
+class __$$WageSeekerClearEventImplCopyWithImpl<$Res>
+    extends _$WageSeekerBlocEventCopyWithImpl<$Res, _$WageSeekerClearEventImpl>
+    implements _$$WageSeekerClearEventImplCopyWith<$Res> {
+  __$$WageSeekerClearEventImplCopyWithImpl(_$WageSeekerClearEventImpl _value,
+      $Res Function(_$WageSeekerClearEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$WageSeekerClearEvent
+class _$WageSeekerClearEventImpl
     with DiagnosticableTreeMixin
     implements WageSeekerClearEvent {
-  const _$WageSeekerClearEvent();
+  const _$WageSeekerClearEventImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1552,9 +1556,10 @@ class _$WageSeekerClearEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$WageSeekerClearEvent);
+        (other.runtimeType == runtimeType &&
+            other is _$WageSeekerClearEventImpl);
   }
 
   @override
@@ -1701,7 +1706,7 @@ class _$WageSeekerClearEvent
 }
 
 abstract class WageSeekerClearEvent implements WageSeekerBlocEvent {
-  const factory WageSeekerClearEvent() = _$WageSeekerClearEvent;
+  const factory WageSeekerClearEvent() = _$WageSeekerClearEventImpl;
 }
 
 /// @nodoc
@@ -1838,11 +1843,11 @@ class _$WageSeekerBlocStateCopyWithImpl<$Res, $Val extends WageSeekerBlocState>
 }
 
 /// @nodoc
-abstract class _$$_CreateWageSeekerCopyWith<$Res>
+abstract class _$$CreateWageSeekerImplCopyWith<$Res>
     implements $WageSeekerBlocStateCopyWith<$Res> {
-  factory _$$_CreateWageSeekerCopyWith(
-          _$_CreateWageSeeker value, $Res Function(_$_CreateWageSeeker) then) =
-      __$$_CreateWageSeekerCopyWithImpl<$Res>;
+  factory _$$CreateWageSeekerImplCopyWith(_$CreateWageSeekerImpl value,
+          $Res Function(_$CreateWageSeekerImpl) then) =
+      __$$CreateWageSeekerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -1853,11 +1858,11 @@ abstract class _$$_CreateWageSeekerCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CreateWageSeekerCopyWithImpl<$Res>
-    extends _$WageSeekerBlocStateCopyWithImpl<$Res, _$_CreateWageSeeker>
-    implements _$$_CreateWageSeekerCopyWith<$Res> {
-  __$$_CreateWageSeekerCopyWithImpl(
-      _$_CreateWageSeeker _value, $Res Function(_$_CreateWageSeeker) _then)
+class __$$CreateWageSeekerImplCopyWithImpl<$Res>
+    extends _$WageSeekerBlocStateCopyWithImpl<$Res, _$CreateWageSeekerImpl>
+    implements _$$CreateWageSeekerImplCopyWith<$Res> {
+  __$$CreateWageSeekerImplCopyWithImpl(_$CreateWageSeekerImpl _value,
+      $Res Function(_$CreateWageSeekerImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1868,7 +1873,7 @@ class __$$_CreateWageSeekerCopyWithImpl<$Res>
     Object? locationDetails = freezed,
     Object? financialDetails = freezed,
   }) {
-    return _then(_$_CreateWageSeeker(
+    return _then(_$CreateWageSeekerImpl(
       individualDetails: freezed == individualDetails
           ? _value.individualDetails
           : individualDetails // ignore: cast_nullable_to_non_nullable
@@ -1891,9 +1896,9 @@ class __$$_CreateWageSeekerCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CreateWageSeeker extends _CreateWageSeeker
+class _$CreateWageSeekerImpl extends _CreateWageSeeker
     with DiagnosticableTreeMixin {
-  const _$_CreateWageSeeker(
+  const _$CreateWageSeekerImpl(
       {this.individualDetails,
       this.skillDetails,
       this.locationDetails,
@@ -1926,10 +1931,10 @@ class _$_CreateWageSeeker extends _CreateWageSeeker
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CreateWageSeeker &&
+            other is _$CreateWageSeekerImpl &&
             (identical(other.individualDetails, individualDetails) ||
                 other.individualDetails == individualDetails) &&
             (identical(other.skillDetails, skillDetails) ||
@@ -1947,8 +1952,9 @@ class _$_CreateWageSeeker extends _CreateWageSeeker
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CreateWageSeekerCopyWith<_$_CreateWageSeeker> get copyWith =>
-      __$$_CreateWageSeekerCopyWithImpl<_$_CreateWageSeeker>(this, _$identity);
+  _$$CreateWageSeekerImplCopyWith<_$CreateWageSeekerImpl> get copyWith =>
+      __$$CreateWageSeekerImplCopyWithImpl<_$CreateWageSeekerImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2051,7 +2057,7 @@ abstract class _CreateWageSeeker extends WageSeekerBlocState {
       {final IndividualDetails? individualDetails,
       final SkillDetails? skillDetails,
       final LocationDetails? locationDetails,
-      final FinancialDetails? financialDetails}) = _$_CreateWageSeeker;
+      final FinancialDetails? financialDetails}) = _$CreateWageSeekerImpl;
   const _CreateWageSeeker._() : super._();
 
   @override
@@ -2064,16 +2070,16 @@ abstract class _CreateWageSeeker extends WageSeekerBlocState {
   FinancialDetails? get financialDetails;
   @override
   @JsonKey(ignore: true)
-  _$$_CreateWageSeekerCopyWith<_$_CreateWageSeeker> get copyWith =>
+  _$$CreateWageSeekerImplCopyWith<_$CreateWageSeekerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_EditWageSeekerCopyWith<$Res>
+abstract class _$$EditWageSeekerImplCopyWith<$Res>
     implements $WageSeekerBlocStateCopyWith<$Res> {
-  factory _$$_EditWageSeekerCopyWith(
-          _$_EditWageSeeker value, $Res Function(_$_EditWageSeeker) then) =
-      __$$_EditWageSeekerCopyWithImpl<$Res>;
+  factory _$$EditWageSeekerImplCopyWith(_$EditWageSeekerImpl value,
+          $Res Function(_$EditWageSeekerImpl) then) =
+      __$$EditWageSeekerImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -2084,11 +2090,11 @@ abstract class _$$_EditWageSeekerCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_EditWageSeekerCopyWithImpl<$Res>
-    extends _$WageSeekerBlocStateCopyWithImpl<$Res, _$_EditWageSeeker>
-    implements _$$_EditWageSeekerCopyWith<$Res> {
-  __$$_EditWageSeekerCopyWithImpl(
-      _$_EditWageSeeker _value, $Res Function(_$_EditWageSeeker) _then)
+class __$$EditWageSeekerImplCopyWithImpl<$Res>
+    extends _$WageSeekerBlocStateCopyWithImpl<$Res, _$EditWageSeekerImpl>
+    implements _$$EditWageSeekerImplCopyWith<$Res> {
+  __$$EditWageSeekerImplCopyWithImpl(
+      _$EditWageSeekerImpl _value, $Res Function(_$EditWageSeekerImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2099,7 +2105,7 @@ class __$$_EditWageSeekerCopyWithImpl<$Res>
     Object? locationDetails = freezed,
     Object? financialDetails = freezed,
   }) {
-    return _then(_$_EditWageSeeker(
+    return _then(_$EditWageSeekerImpl(
       individualDetails: freezed == individualDetails
           ? _value.individualDetails
           : individualDetails // ignore: cast_nullable_to_non_nullable
@@ -2122,8 +2128,9 @@ class __$$_EditWageSeekerCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_EditWageSeeker extends _EditWageSeeker with DiagnosticableTreeMixin {
-  const _$_EditWageSeeker(
+class _$EditWageSeekerImpl extends _EditWageSeeker
+    with DiagnosticableTreeMixin {
+  const _$EditWageSeekerImpl(
       {this.individualDetails,
       this.skillDetails,
       this.locationDetails,
@@ -2156,10 +2163,10 @@ class _$_EditWageSeeker extends _EditWageSeeker with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_EditWageSeeker &&
+            other is _$EditWageSeekerImpl &&
             (identical(other.individualDetails, individualDetails) ||
                 other.individualDetails == individualDetails) &&
             (identical(other.skillDetails, skillDetails) ||
@@ -2177,8 +2184,9 @@ class _$_EditWageSeeker extends _EditWageSeeker with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_EditWageSeekerCopyWith<_$_EditWageSeeker> get copyWith =>
-      __$$_EditWageSeekerCopyWithImpl<_$_EditWageSeeker>(this, _$identity);
+  _$$EditWageSeekerImplCopyWith<_$EditWageSeekerImpl> get copyWith =>
+      __$$EditWageSeekerImplCopyWithImpl<_$EditWageSeekerImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2281,7 +2289,7 @@ abstract class _EditWageSeeker extends WageSeekerBlocState {
       {final IndividualDetails? individualDetails,
       final SkillDetails? skillDetails,
       final LocationDetails? locationDetails,
-      final FinancialDetails? financialDetails}) = _$_EditWageSeeker;
+      final FinancialDetails? financialDetails}) = _$EditWageSeekerImpl;
   const _EditWageSeeker._() : super._();
 
   @override
@@ -2294,6 +2302,6 @@ abstract class _EditWageSeeker extends WageSeekerBlocState {
   FinancialDetails? get financialDetails;
   @override
   @JsonKey(ignore: true)
-  _$$_EditWageSeekerCopyWith<_$_EditWageSeeker> get copyWith =>
+  _$$EditWageSeekerImplCopyWith<_$EditWageSeekerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

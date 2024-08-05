@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/blocs/muster_rolls/muster_roll_pdf.dart';
 import 'package:works_shg_app/blocs/muster_rolls/search_muster_roll.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
+import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/models/track_attendance_payload.dart';
@@ -29,6 +31,7 @@ import '../../widgets/Back.dart';
 import '../../widgets/atoms/table_dropdown.dart';
 import '../../widgets/drawer_wrapper.dart';
 
+@RoutePage()
 class MBMusterScreenPage extends StatefulWidget {
   final String tenantId;
   final String musterRollNumber;
@@ -81,6 +84,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
       builder: (context, localState) {
         return Scaffold(
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -402,7 +406,9 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                 ]),
                             const Align(
                               alignment: Alignment.bottomCenter,
-                              child: PoweredByDigit(),
+                              child: PoweredByDigit(
+                                // version: Constants.appVersion,
+                                ),
                             )
                           ]))
 

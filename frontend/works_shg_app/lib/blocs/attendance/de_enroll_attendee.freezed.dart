@@ -12,7 +12,7 @@ part of 'de_enroll_attendee.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AttendeeDeEnrollEvent {
@@ -76,20 +76,22 @@ class _$AttendeeDeEnrollEventCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$DeEnrollAttendeeEventCopyWith<$Res> {
-  factory _$$DeEnrollAttendeeEventCopyWith(_$DeEnrollAttendeeEvent value,
-          $Res Function(_$DeEnrollAttendeeEvent) then) =
-      __$$DeEnrollAttendeeEventCopyWithImpl<$Res>;
+abstract class _$$DeEnrollAttendeeEventImplCopyWith<$Res> {
+  factory _$$DeEnrollAttendeeEventImplCopyWith(
+          _$DeEnrollAttendeeEventImpl value,
+          $Res Function(_$DeEnrollAttendeeEventImpl) then) =
+      __$$DeEnrollAttendeeEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Map<String, dynamic>> attendeeList});
 }
 
 /// @nodoc
-class __$$DeEnrollAttendeeEventCopyWithImpl<$Res>
-    extends _$AttendeeDeEnrollEventCopyWithImpl<$Res, _$DeEnrollAttendeeEvent>
-    implements _$$DeEnrollAttendeeEventCopyWith<$Res> {
-  __$$DeEnrollAttendeeEventCopyWithImpl(_$DeEnrollAttendeeEvent _value,
-      $Res Function(_$DeEnrollAttendeeEvent) _then)
+class __$$DeEnrollAttendeeEventImplCopyWithImpl<$Res>
+    extends _$AttendeeDeEnrollEventCopyWithImpl<$Res,
+        _$DeEnrollAttendeeEventImpl>
+    implements _$$DeEnrollAttendeeEventImplCopyWith<$Res> {
+  __$$DeEnrollAttendeeEventImplCopyWithImpl(_$DeEnrollAttendeeEventImpl _value,
+      $Res Function(_$DeEnrollAttendeeEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -97,7 +99,7 @@ class __$$DeEnrollAttendeeEventCopyWithImpl<$Res>
   $Res call({
     Object? attendeeList = null,
   }) {
-    return _then(_$DeEnrollAttendeeEvent(
+    return _then(_$DeEnrollAttendeeEventImpl(
       attendeeList: null == attendeeList
           ? _value._attendeeList
           : attendeeList // ignore: cast_nullable_to_non_nullable
@@ -108,8 +110,8 @@ class __$$DeEnrollAttendeeEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DeEnrollAttendeeEvent implements DeEnrollAttendeeEvent {
-  const _$DeEnrollAttendeeEvent(
+class _$DeEnrollAttendeeEventImpl implements DeEnrollAttendeeEvent {
+  const _$DeEnrollAttendeeEventImpl(
       {required final List<Map<String, dynamic>> attendeeList})
       : _attendeeList = attendeeList;
 
@@ -127,10 +129,10 @@ class _$DeEnrollAttendeeEvent implements DeEnrollAttendeeEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DeEnrollAttendeeEvent &&
+            other is _$DeEnrollAttendeeEventImpl &&
             const DeepCollectionEquality()
                 .equals(other._attendeeList, _attendeeList));
   }
@@ -142,9 +144,9 @@ class _$DeEnrollAttendeeEvent implements DeEnrollAttendeeEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$DeEnrollAttendeeEventCopyWith<_$DeEnrollAttendeeEvent> get copyWith =>
-      __$$DeEnrollAttendeeEventCopyWithImpl<_$DeEnrollAttendeeEvent>(
-          this, _$identity);
+  _$$DeEnrollAttendeeEventImplCopyWith<_$DeEnrollAttendeeEventImpl>
+      get copyWith => __$$DeEnrollAttendeeEventImplCopyWithImpl<
+          _$DeEnrollAttendeeEventImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -212,37 +214,38 @@ class _$DeEnrollAttendeeEvent implements DeEnrollAttendeeEvent {
 abstract class DeEnrollAttendeeEvent implements AttendeeDeEnrollEvent {
   const factory DeEnrollAttendeeEvent(
           {required final List<Map<String, dynamic>> attendeeList}) =
-      _$DeEnrollAttendeeEvent;
+      _$DeEnrollAttendeeEventImpl;
 
   List<Map<String, dynamic>> get attendeeList;
   @JsonKey(ignore: true)
-  _$$DeEnrollAttendeeEventCopyWith<_$DeEnrollAttendeeEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$DeEnrollAttendeeEventImplCopyWith<_$DeEnrollAttendeeEventImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$DeEnrollAttendeeDisposeEventCopyWith<$Res> {
-  factory _$$DeEnrollAttendeeDisposeEventCopyWith(
-          _$DeEnrollAttendeeDisposeEvent value,
-          $Res Function(_$DeEnrollAttendeeDisposeEvent) then) =
-      __$$DeEnrollAttendeeDisposeEventCopyWithImpl<$Res>;
+abstract class _$$DeEnrollAttendeeDisposeEventImplCopyWith<$Res> {
+  factory _$$DeEnrollAttendeeDisposeEventImplCopyWith(
+          _$DeEnrollAttendeeDisposeEventImpl value,
+          $Res Function(_$DeEnrollAttendeeDisposeEventImpl) then) =
+      __$$DeEnrollAttendeeDisposeEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$DeEnrollAttendeeDisposeEventCopyWithImpl<$Res>
+class __$$DeEnrollAttendeeDisposeEventImplCopyWithImpl<$Res>
     extends _$AttendeeDeEnrollEventCopyWithImpl<$Res,
-        _$DeEnrollAttendeeDisposeEvent>
-    implements _$$DeEnrollAttendeeDisposeEventCopyWith<$Res> {
-  __$$DeEnrollAttendeeDisposeEventCopyWithImpl(
-      _$DeEnrollAttendeeDisposeEvent _value,
-      $Res Function(_$DeEnrollAttendeeDisposeEvent) _then)
+        _$DeEnrollAttendeeDisposeEventImpl>
+    implements _$$DeEnrollAttendeeDisposeEventImplCopyWith<$Res> {
+  __$$DeEnrollAttendeeDisposeEventImplCopyWithImpl(
+      _$DeEnrollAttendeeDisposeEventImpl _value,
+      $Res Function(_$DeEnrollAttendeeDisposeEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$DeEnrollAttendeeDisposeEvent implements DeEnrollAttendeeDisposeEvent {
-  const _$DeEnrollAttendeeDisposeEvent();
+class _$DeEnrollAttendeeDisposeEventImpl
+    implements DeEnrollAttendeeDisposeEvent {
+  const _$DeEnrollAttendeeDisposeEventImpl();
 
   @override
   String toString() {
@@ -250,10 +253,10 @@ class _$DeEnrollAttendeeDisposeEvent implements DeEnrollAttendeeDisposeEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DeEnrollAttendeeDisposeEvent);
+            other is _$DeEnrollAttendeeDisposeEventImpl);
   }
 
   @override
@@ -323,7 +326,8 @@ class _$DeEnrollAttendeeDisposeEvent implements DeEnrollAttendeeDisposeEvent {
 }
 
 abstract class DeEnrollAttendeeDisposeEvent implements AttendeeDeEnrollEvent {
-  const factory DeEnrollAttendeeDisposeEvent() = _$DeEnrollAttendeeDisposeEvent;
+  const factory DeEnrollAttendeeDisposeEvent() =
+      _$DeEnrollAttendeeDisposeEventImpl;
 }
 
 /// @nodoc
@@ -400,24 +404,25 @@ class _$AttendeeDeEnrollStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial {
+  const _$InitialImpl() : super._();
 
   @override
   String toString() {
@@ -425,9 +430,9 @@ class _$_Initial extends _Initial {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -509,29 +514,30 @@ class _$_Initial extends _Initial {
 }
 
 abstract class _Initial extends AttendeeDeEnrollState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString() {
@@ -539,9 +545,9 @@ class _$_Loading extends _Loading {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -623,28 +629,30 @@ class _$_Loading extends _Loading {
 }
 
 abstract class _Loading extends AttendeeDeEnrollState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded {
-  const _$_Loaded() : super._();
+class _$LoadedImpl extends _Loaded {
+  const _$LoadedImpl() : super._();
 
   @override
   String toString() {
@@ -652,9 +660,9 @@ class _$_Loaded extends _Loaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loaded);
+        (other.runtimeType == runtimeType && other is _$LoadedImpl);
   }
 
   @override
@@ -736,23 +744,25 @@ class _$_Loaded extends _Loaded {
 }
 
 abstract class _Loaded extends AttendeeDeEnrollState {
-  const factory _Loaded() = _$_Loaded;
+  const factory _Loaded() = _$LoadedImpl;
   const _Loaded._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String? error});
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$AttendeeDeEnrollStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -760,7 +770,7 @@ class __$$_ErrorCopyWithImpl<$Res>
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_Error(
+    return _then(_$ErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -771,8 +781,8 @@ class __$$_ErrorCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+class _$ErrorImpl extends _Error {
+  const _$ErrorImpl(this.error) : super._();
 
   @override
   final String? error;
@@ -783,10 +793,10 @@ class _$_Error extends _Error {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Error &&
+            other is _$ErrorImpl &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -796,8 +806,8 @@ class _$_Error extends _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
-      __$$_ErrorCopyWithImpl<_$_Error>(this, _$identity);
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -875,11 +885,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends AttendeeDeEnrollState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error) = _$ErrorImpl;
   const _Error._() : super._();
 
   String? get error;
   @JsonKey(ignore: true)
-  _$$_ErrorCopyWith<_$_Error> get copyWith =>
+  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

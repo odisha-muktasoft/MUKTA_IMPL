@@ -6,11 +6,11 @@ import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../blocs/localization/localization.dart';
-
-class AuthenticatedPageWrapper extends StatefulWidget {
-  const AuthenticatedPageWrapper({
-    Key? key,
-  }) : super(key: key);
+@RoutePage()
+class AuthenticatedWrapperPage extends StatefulWidget {
+  const AuthenticatedWrapperPage({
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -18,7 +18,7 @@ class AuthenticatedPageWrapper extends StatefulWidget {
   }
 }
 
-class _AuthenticatedPageWrapper extends State<AuthenticatedPageWrapper> {
+class _AuthenticatedPageWrapper extends State<AuthenticatedWrapperPage> {
   String? selectedLocale;
 
   @override

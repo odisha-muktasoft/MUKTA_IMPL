@@ -12,7 +12,7 @@ part of 'auth.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AuthEvent {
@@ -87,21 +87,21 @@ class _$AuthEventCopyWithImpl<$Res, $Val extends AuthEvent>
 }
 
 /// @nodoc
-abstract class _$$AuthLoginEventCopyWith<$Res> {
-  factory _$$AuthLoginEventCopyWith(
-          _$AuthLoginEvent value, $Res Function(_$AuthLoginEvent) then) =
-      __$$AuthLoginEventCopyWithImpl<$Res>;
+abstract class _$$AuthLoginEventImplCopyWith<$Res> {
+  factory _$$AuthLoginEventImplCopyWith(_$AuthLoginEventImpl value,
+          $Res Function(_$AuthLoginEventImpl) then) =
+      __$$AuthLoginEventImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {String userId, String password, RoleType roleType, String? tenantId});
 }
 
 /// @nodoc
-class __$$AuthLoginEventCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$AuthLoginEvent>
-    implements _$$AuthLoginEventCopyWith<$Res> {
-  __$$AuthLoginEventCopyWithImpl(
-      _$AuthLoginEvent _value, $Res Function(_$AuthLoginEvent) _then)
+class __$$AuthLoginEventImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthLoginEventImpl>
+    implements _$$AuthLoginEventImplCopyWith<$Res> {
+  __$$AuthLoginEventImplCopyWithImpl(
+      _$AuthLoginEventImpl _value, $Res Function(_$AuthLoginEventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -112,7 +112,7 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
     Object? roleType = null,
     Object? tenantId = freezed,
   }) {
-    return _then(_$AuthLoginEvent(
+    return _then(_$AuthLoginEventImpl(
       userId: null == userId
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -135,8 +135,10 @@ class __$$AuthLoginEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
-  const _$AuthLoginEvent(
+class _$AuthLoginEventImpl
+    with DiagnosticableTreeMixin
+    implements AuthLoginEvent {
+  const _$AuthLoginEventImpl(
       {required this.userId,
       required this.password,
       required this.roleType,
@@ -168,10 +170,10 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthLoginEvent &&
+            other is _$AuthLoginEventImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.password, password) ||
                 other.password == password) &&
@@ -188,8 +190,9 @@ class _$AuthLoginEvent with DiagnosticableTreeMixin implements AuthLoginEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$AuthLoginEventCopyWith<_$AuthLoginEvent> get copyWith =>
-      __$$AuthLoginEventCopyWithImpl<_$AuthLoginEvent>(this, _$identity);
+  _$$AuthLoginEventImplCopyWith<_$AuthLoginEventImpl> get copyWith =>
+      __$$AuthLoginEventImplCopyWithImpl<_$AuthLoginEventImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -272,39 +275,39 @@ abstract class AuthLoginEvent implements AuthEvent {
       {required final String userId,
       required final String password,
       required final RoleType roleType,
-      final String? tenantId}) = _$AuthLoginEvent;
+      final String? tenantId}) = _$AuthLoginEventImpl;
 
   String get userId;
   String get password;
   RoleType get roleType;
   String? get tenantId;
   @JsonKey(ignore: true)
-  _$$AuthLoginEventCopyWith<_$AuthLoginEvent> get copyWith =>
+  _$$AuthLoginEventImplCopyWith<_$AuthLoginEventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AuthLogoutEventCopyWith<$Res> {
-  factory _$$AuthLogoutEventCopyWith(
-          _$AuthLogoutEvent value, $Res Function(_$AuthLogoutEvent) then) =
-      __$$AuthLogoutEventCopyWithImpl<$Res>;
+abstract class _$$AuthLogoutEventImplCopyWith<$Res> {
+  factory _$$AuthLogoutEventImplCopyWith(_$AuthLogoutEventImpl value,
+          $Res Function(_$AuthLogoutEventImpl) then) =
+      __$$AuthLogoutEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthLogoutEventCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$AuthLogoutEvent>
-    implements _$$AuthLogoutEventCopyWith<$Res> {
-  __$$AuthLogoutEventCopyWithImpl(
-      _$AuthLogoutEvent _value, $Res Function(_$AuthLogoutEvent) _then)
+class __$$AuthLogoutEventImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthLogoutEventImpl>
+    implements _$$AuthLogoutEventImplCopyWith<$Res> {
+  __$$AuthLogoutEventImplCopyWithImpl(
+      _$AuthLogoutEventImpl _value, $Res Function(_$AuthLogoutEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthLogoutEvent
+class _$AuthLogoutEventImpl
     with DiagnosticableTreeMixin
     implements AuthLogoutEvent {
-  const _$AuthLogoutEvent();
+  const _$AuthLogoutEventImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -318,9 +321,9 @@ class _$AuthLogoutEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AuthLogoutEvent);
+        (other.runtimeType == runtimeType && other is _$AuthLogoutEventImpl);
   }
 
   @override
@@ -403,33 +406,33 @@ class _$AuthLogoutEvent
 }
 
 abstract class AuthLogoutEvent implements AuthEvent {
-  const factory AuthLogoutEvent() = _$AuthLogoutEvent;
+  const factory AuthLogoutEvent() = _$AuthLogoutEventImpl;
 }
 
 /// @nodoc
-abstract class _$$AuthClearLoggedDetailsEventCopyWith<$Res> {
-  factory _$$AuthClearLoggedDetailsEventCopyWith(
-          _$AuthClearLoggedDetailsEvent value,
-          $Res Function(_$AuthClearLoggedDetailsEvent) then) =
-      __$$AuthClearLoggedDetailsEventCopyWithImpl<$Res>;
+abstract class _$$AuthClearLoggedDetailsEventImplCopyWith<$Res> {
+  factory _$$AuthClearLoggedDetailsEventImplCopyWith(
+          _$AuthClearLoggedDetailsEventImpl value,
+          $Res Function(_$AuthClearLoggedDetailsEventImpl) then) =
+      __$$AuthClearLoggedDetailsEventImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$AuthClearLoggedDetailsEventCopyWithImpl<$Res>
-    extends _$AuthEventCopyWithImpl<$Res, _$AuthClearLoggedDetailsEvent>
-    implements _$$AuthClearLoggedDetailsEventCopyWith<$Res> {
-  __$$AuthClearLoggedDetailsEventCopyWithImpl(
-      _$AuthClearLoggedDetailsEvent _value,
-      $Res Function(_$AuthClearLoggedDetailsEvent) _then)
+class __$$AuthClearLoggedDetailsEventImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AuthClearLoggedDetailsEventImpl>
+    implements _$$AuthClearLoggedDetailsEventImplCopyWith<$Res> {
+  __$$AuthClearLoggedDetailsEventImplCopyWithImpl(
+      _$AuthClearLoggedDetailsEventImpl _value,
+      $Res Function(_$AuthClearLoggedDetailsEventImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$AuthClearLoggedDetailsEvent
+class _$AuthClearLoggedDetailsEventImpl
     with DiagnosticableTreeMixin
     implements AuthClearLoggedDetailsEvent {
-  const _$AuthClearLoggedDetailsEvent();
+  const _$AuthClearLoggedDetailsEventImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -444,10 +447,10 @@ class _$AuthClearLoggedDetailsEvent
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AuthClearLoggedDetailsEvent);
+            other is _$AuthClearLoggedDetailsEventImpl);
   }
 
   @override
@@ -530,7 +533,8 @@ class _$AuthClearLoggedDetailsEvent
 }
 
 abstract class AuthClearLoggedDetailsEvent implements AuthEvent {
-  const factory AuthClearLoggedDetailsEvent() = _$AuthClearLoggedDetailsEvent;
+  const factory AuthClearLoggedDetailsEvent() =
+      _$AuthClearLoggedDetailsEventImpl;
 }
 
 /// @nodoc
@@ -611,24 +615,25 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
 }
 
 /// @nodoc
-abstract class _$$_InitialCopyWith<$Res> {
-  factory _$$_InitialCopyWith(
-          _$_Initial value, $Res Function(_$_Initial) then) =
-      __$$_InitialCopyWithImpl<$Res>;
+abstract class _$$InitialImplCopyWith<$Res> {
+  factory _$$InitialImplCopyWith(
+          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
+      __$$InitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_InitialCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_Initial>
-    implements _$$_InitialCopyWith<$Res> {
-  __$$_InitialCopyWithImpl(_$_Initial _value, $Res Function(_$_Initial) _then)
+class __$$InitialImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$InitialImpl>
+    implements _$$InitialImplCopyWith<$Res> {
+  __$$InitialImplCopyWithImpl(
+      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Initial extends _Initial with DiagnosticableTreeMixin {
-  const _$_Initial() : super._();
+class _$InitialImpl extends _Initial with DiagnosticableTreeMixin {
+  const _$InitialImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -642,9 +647,9 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Initial);
+        (other.runtimeType == runtimeType && other is _$InitialImpl);
   }
 
   @override
@@ -732,29 +737,30 @@ class _$_Initial extends _Initial with DiagnosticableTreeMixin {
 }
 
 abstract class _Initial extends AuthState {
-  const factory _Initial() = _$_Initial;
+  const factory _Initial() = _$InitialImpl;
   const _Initial._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadingCopyWith<$Res> {
-  factory _$$_LoadingCopyWith(
-          _$_Loading value, $Res Function(_$_Loading) then) =
-      __$$_LoadingCopyWithImpl<$Res>;
+abstract class _$$LoadingImplCopyWith<$Res> {
+  factory _$$LoadingImplCopyWith(
+          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+      __$$LoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LoadingCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_Loading>
-    implements _$$_LoadingCopyWith<$Res> {
-  __$$_LoadingCopyWithImpl(_$_Loading _value, $Res Function(_$_Loading) _then)
+class __$$LoadingImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$LoadingImpl>
+    implements _$$LoadingImplCopyWith<$Res> {
+  __$$LoadingImplCopyWithImpl(
+      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Loading extends _Loading with DiagnosticableTreeMixin {
-  const _$_Loading() : super._();
+class _$LoadingImpl extends _Loading with DiagnosticableTreeMixin {
+  const _$LoadingImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -768,9 +774,9 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Loading);
+        (other.runtimeType == runtimeType && other is _$LoadingImpl);
   }
 
   @override
@@ -858,14 +864,15 @@ class _$_Loading extends _Loading with DiagnosticableTreeMixin {
 }
 
 abstract class _Loading extends AuthState {
-  const factory _Loading() = _$_Loading;
+  const factory _Loading() = _$LoadingImpl;
   const _Loading._() : super._();
 }
 
 /// @nodoc
-abstract class _$$_LoadedCopyWith<$Res> {
-  factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
-      __$$_LoadedCopyWithImpl<$Res>;
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {UserDetailsModel? userDetailsModel,
@@ -876,10 +883,11 @@ abstract class _$$_LoadedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_LoadedCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_Loaded>
-    implements _$$_LoadedCopyWith<$Res> {
-  __$$_LoadedCopyWithImpl(_$_Loaded _value, $Res Function(_$_Loaded) _then)
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -889,7 +897,7 @@ class __$$_LoadedCopyWithImpl<$Res>
     Object? accessToken = freezed,
     Object? roleType = null,
   }) {
-    return _then(_$_Loaded(
+    return _then(_$LoadedImpl(
       freezed == userDetailsModel
           ? _value.userDetailsModel
           : userDetailsModel // ignore: cast_nullable_to_non_nullable
@@ -920,8 +928,8 @@ class __$$_LoadedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
-  const _$_Loaded(this.userDetailsModel, this.accessToken, this.roleType)
+class _$LoadedImpl extends _Loaded with DiagnosticableTreeMixin {
+  const _$LoadedImpl(this.userDetailsModel, this.accessToken, this.roleType)
       : super._();
 
   @override
@@ -947,10 +955,10 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Loaded &&
+            other is _$LoadedImpl &&
             (identical(other.userDetailsModel, userDetailsModel) ||
                 other.userDetailsModel == userDetailsModel) &&
             (identical(other.accessToken, accessToken) ||
@@ -966,8 +974,8 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
-      __$$_LoadedCopyWithImpl<_$_Loaded>(this, _$identity);
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1052,35 +1060,37 @@ class _$_Loaded extends _Loaded with DiagnosticableTreeMixin {
 
 abstract class _Loaded extends AuthState {
   const factory _Loaded(final UserDetailsModel? userDetailsModel,
-      final String? accessToken, final RoleType roleType) = _$_Loaded;
+      final String? accessToken, final RoleType roleType) = _$LoadedImpl;
   const _Loaded._() : super._();
 
   UserDetailsModel? get userDetailsModel;
   String? get accessToken;
   RoleType get roleType;
   @JsonKey(ignore: true)
-  _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_ErrorCopyWith<$Res> {
-  factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
-      __$$_ErrorCopyWithImpl<$Res>;
+abstract class _$$ErrorImplCopyWith<$Res> {
+  factory _$$ErrorImplCopyWith(
+          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+      __$$ErrorImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_ErrorCopyWithImpl<$Res>
-    extends _$AuthStateCopyWithImpl<$Res, _$_Error>
-    implements _$$_ErrorCopyWith<$Res> {
-  __$$_ErrorCopyWithImpl(_$_Error _value, $Res Function(_$_Error) _then)
+class __$$ErrorImplCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res, _$ErrorImpl>
+    implements _$$ErrorImplCopyWith<$Res> {
+  __$$ErrorImplCopyWithImpl(
+      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$_Error extends _Error with DiagnosticableTreeMixin {
-  const _$_Error() : super._();
+class _$ErrorImpl extends _Error with DiagnosticableTreeMixin {
+  const _$ErrorImpl() : super._();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1094,9 +1104,9 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_Error);
+        (other.runtimeType == runtimeType && other is _$ErrorImpl);
   }
 
   @override
@@ -1184,6 +1194,6 @@ class _$_Error extends _Error with DiagnosticableTreeMixin {
 }
 
 abstract class _Error extends AuthState {
-  const factory _Error() = _$_Error;
+  const factory _Error() = _$ErrorImpl;
   const _Error._() : super._();
 }

@@ -28,6 +28,7 @@ import '../../../widgets/work_order/work_order_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
+@RoutePage()
 class WorkOderInboxPage extends StatefulWidget {
   const WorkOderInboxPage({super.key});
 
@@ -181,6 +182,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           appBar: AppBar(
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -211,7 +213,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               children: [
                                 Back(
                                   callback: () {
-                                    context.router.pop();
+                                    context.router.maybePopTop();
                                   },
                                 ),
                                 Padding(

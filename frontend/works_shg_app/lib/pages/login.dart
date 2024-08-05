@@ -1,4 +1,3 @@
-
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,8 @@ import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
-import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart' as i18;
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 import 'package:works_shg_app/widgets/atoms/app_logo.dart';
 
 import '../blocs/app_initilization/app_initilization.dart';
@@ -19,14 +19,16 @@ import '../utils/notifiers.dart';
 import '../widgets/molecules/desktop_view.dart';
 import '../widgets/molecules/mobile_view.dart';
 
+@RoutePage()
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final userIdController = TextEditingController();
   final userNameController = TextEditingController();
@@ -79,11 +81,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     }
   }
 
-  Widget getLoginCard(AppLocalizations t, BuildContext loginContext, AppInitializationState data) {
+  Widget getLoginCard(AppLocalizations t, BuildContext loginContext,
+      AppInitializationState data) {
     return Center(
       child: Form(
         key: formKey,
-        autovalidateMode: autoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+        autovalidateMode: autoValidation
+            ? AutovalidateMode.always
+            : AutovalidateMode.disabled,
         child: DigitCard(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -93,13 +98,17 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   t.translate(i18.login.loginLabel),
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w700),
                 ),
               ),
               TabBar(
                 controller: _tabController,
                 labelColor: const DigitColors().burningOrange,
                 unselectedLabelColor: Colors.black,
+                dividerHeight: 0,
+                indicatorColor: const DigitColors().burningOrange,
+                indicatorPadding: EdgeInsets.zero,
                 tabs: [
                   Tab(
                     child: Text(t.translate(i18.measurementBook.mbCbo)),
@@ -110,14 +119,20 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 ],
               ),
               AnimatedContainer(
-                height: _tabController.index == 0 ? 120 : 325,
+                height: _tabController.index == 0
+                    ? 120
+                    : MediaQuery.of(context).size.height * 0.4,
                 duration: const Duration(milliseconds: 100),
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: _tabController,
                   children: [
                     cboLogin(loginContext),
-                    employeeLogin(t, loginContext, data,),
+                    employeeLogin(
+                      t,
+                      loginContext,
+                      data,
+                    ),
                   ],
                 ),
               ),
@@ -136,7 +151,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           state.maybeWhen(
             orElse: () {},
             loaded: () {
-              context.router.push(OTPVerificationRoute(mobileNumber: userIdController.text));
+              context.router.push(
+                  OTPVerificationRoute(mobileNumber: userIdController.text));
             },
             error: () {
               Notifiers.getToastMessage(
@@ -151,7 +167,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           onPressed: canContinue
               ? () {
                   if (formKey.currentState!.validate()) {
-                    loginContext.read<OTPBloc>().add(OTPSendEvent(mobileNumber: userIdController.text));
+                    loginContext
+                        .read<OTPBloc>()
+                        .add(OTPSendEvent(mobileNumber: userIdController.text));
                   } else {
                     setState(() {
                       autoValidation = true;
@@ -180,28 +198,29 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         },
         child: DigitElevatedButton(
           onPressed: (userNameController.text.isNotEmpty &&
-                userPasswordController.text.isNotEmpty &&
-                selectTenantId.isNotEmpty)?
-           () {
-            if (userNameController.text.isNotEmpty &&
-                userPasswordController.text.isNotEmpty &&
-                selectTenantId.isNotEmpty) {
-              context.read<AuthBloc>().add(
-                    AuthLoginEvent(
-                      userId: userNameController.text,
-                      password: userPasswordController.text,
-                      roleType: RoleType.employee,
-                      tenantId: selectTenantId,
-                    ),
-                  );
-            } else {
-              Notifiers.getToastMessage(
-                context,
-                t.translate(i18.common.allFieldsMandatory),
-                'ERROR',
-              );
-            }
-          }:null,
+                  userPasswordController.text.isNotEmpty &&
+                  selectTenantId.isNotEmpty)
+              ? () {
+                  if (userNameController.text.isNotEmpty &&
+                      userPasswordController.text.isNotEmpty &&
+                      selectTenantId.isNotEmpty) {
+                    context.read<AuthBloc>().add(
+                          AuthLoginEvent(
+                            userId: userNameController.text,
+                            password: userPasswordController.text,
+                            roleType: RoleType.employee,
+                            tenantId: selectTenantId,
+                          ),
+                        );
+                  } else {
+                    Notifiers.getToastMessage(
+                      context,
+                      t.translate(i18.common.allFieldsMandatory),
+                      'ERROR',
+                    );
+                  }
+                }
+              : null,
           child: Center(
             child: Text(t.translate(i18.common.continueLabel)),
           ),
@@ -217,7 +236,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       builder: (context) {
         return AlertDialog(
           contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          titlePadding: const EdgeInsets.only(top: 16.0, left: 5.0, bottom: 2.0),
+          titlePadding:
+              const EdgeInsets.only(top: 16.0, left: 5.0, bottom: 2.0),
           title: Text(t.translate(i18.login.forgotPassword)),
           content: SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -252,12 +272,15 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       height: MediaQuery.of(loginContext).size.height * 0.7,
       child: SingleChildScrollView(
         child: DigitTextField(
-          label: '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+          label:
+              '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
           controller: userIdController,
           isRequired: true,
           prefixText: '+91 - ',
           focusNode: _numberFocus,
-          autoValidation: phoneNumberAutoValidation ? AutovalidateMode.always : AutovalidateMode.disabled,
+          autoValidation: phoneNumberAutoValidation
+              ? AutovalidateMode.always
+              : AutovalidateMode.disabled,
           textInputType: TextInputType.number,
           inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
           validator: (val) {
@@ -287,6 +310,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
           automaticallyImplyLeading: true,
         ),
         body: BlocBuilder<AppInitializationBloc, AppInitializationState>(
@@ -314,8 +338,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     );
   }
 
-  SizedBox employeeLogin(AppLocalizations t, BuildContext context, AppInitializationState data,
-     ) {
+  SizedBox employeeLogin(
+    AppLocalizations t,
+    BuildContext context,
+    AppInitializationState data,
+  ) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.7,
       child: Column(
@@ -345,8 +372,11 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 });
               },
               icon: Icon(
-                iconVisibility ? Icons.visibility_rounded : Icons.visibility_off_rounded,
+                iconVisibility
+                    ? Icons.visibility_rounded
+                    : Icons.visibility_off_rounded,
                 size: 30,
+                color: const DigitColors().burningOrange,
               ),
             ),
             validator: (val) {
@@ -366,7 +396,8 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             value: null,
             label: "${t.translate(i18.common.city)} *",
             menuItems: data.initMdmsModel!.tenant!.tenantListModel!,
-            valueMapper: (value) => t.translate(Conversion.convertToTenant(value!.code!)),
+            valueMapper: (value) =>
+                t.translate(Conversion.convertToTenant(value!.code!)),
           ),
           DigitIconButton(
             iconText: t.translate(i18.login.forgotPassword),
@@ -379,7 +410,3 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     );
   }
 }
-
-
-
-

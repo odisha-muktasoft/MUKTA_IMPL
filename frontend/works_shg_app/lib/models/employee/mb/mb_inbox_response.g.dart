@@ -6,10 +6,11 @@ part of 'mb_inbox_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_MBInboxResponse _$$_MBInboxResponseFromJson(Map<String, dynamic> json) =>
-    _$_MBInboxResponse(
-      totalCount: json['totalCount'] as int?,
-      nearingSlaCount: json['nearingSlaCount'] as int?,
+_$MBInboxResponseImpl _$$MBInboxResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$MBInboxResponseImpl(
+      totalCount: (json['totalCount'] as num?)?.toInt(),
+      nearingSlaCount: (json['nearingSlaCount'] as num?)?.toInt(),
       statusMap: (json['statusMap'] as List<dynamic>?)
           ?.map((e) => StatusMap.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -18,7 +19,8 @@ _$_MBInboxResponse _$$_MBInboxResponseFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_MBInboxResponseToJson(_$_MBInboxResponse instance) =>
+Map<String, dynamic> _$$MBInboxResponseImplToJson(
+        _$MBInboxResponseImpl instance) =>
     <String, dynamic>{
       'totalCount': instance.totalCount,
       'nearingSlaCount': instance.nearingSlaCount,
@@ -26,15 +28,16 @@ Map<String, dynamic> _$$_MBInboxResponseToJson(_$_MBInboxResponse instance) =>
       'items': instance.items,
     };
 
-_$_StatusMap _$$_StatusMapFromJson(Map<String, dynamic> json) => _$_StatusMap(
+_$StatusMapImpl _$$StatusMapImplFromJson(Map<String, dynamic> json) =>
+    _$StatusMapImpl(
       statusid: json['statusid'] as String?,
-      count: json['count'] as int?,
+      count: (json['count'] as num?)?.toInt(),
       state: json['state'] as String?,
       applicationstatus: json['applicationstatus'] as String?,
       businessservice: json['businessservice'] as String?,
     );
 
-Map<String, dynamic> _$$_StatusMapToJson(_$_StatusMap instance) =>
+Map<String, dynamic> _$$StatusMapImplToJson(_$StatusMapImpl instance) =>
     <String, dynamic>{
       'statusid': instance.statusid,
       'count': instance.count,
@@ -43,7 +46,8 @@ Map<String, dynamic> _$$_StatusMapToJson(_$_StatusMap instance) =>
       'businessservice': instance.businessservice,
     };
 
-_$_ItemData _$$_ItemDataFromJson(Map<String, dynamic> json) => _$_ItemData(
+_$ItemDataImpl _$$ItemDataImplFromJson(Map<String, dynamic> json) =>
+    _$ItemDataImpl(
       processInstance: json['ProcessInstance'] == null
           ? null
           : ProcessInstance.fromJson(
@@ -54,22 +58,23 @@ _$_ItemData _$$_ItemDataFromJson(Map<String, dynamic> json) => _$_ItemData(
               json['businessObject'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ItemDataToJson(_$_ItemData instance) =>
+Map<String, dynamic> _$$ItemDataImplToJson(_$ItemDataImpl instance) =>
     <String, dynamic>{
       'ProcessInstance': instance.processInstance,
       'businessObject': instance.businessObject,
     };
 
-_$_ProcessInstance _$$_ProcessInstanceFromJson(Map<String, dynamic> json) =>
-    _$_ProcessInstance(
+_$ProcessInstanceImpl _$$ProcessInstanceImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ProcessInstanceImpl(
       id: json['id'] as String?,
       tenantId: json['tenantId'] as String?,
       businessService: json['businessService'] as String?,
       businessId: json['businessId'] as String?,
       action: json['action'] as String?,
       moduleName: json['moduleName'] as String?,
-      businesssServiceSla: json['businesssServiceSla'] as int?,
-      rating: json['rating'] as int?,
+      businesssServiceSla: (json['businesssServiceSla'] as num?)?.toInt(),
+      rating: (json['rating'] as num?)?.toInt(),
       state: json['state'] == null
           ? null
           : State.fromJson(json['state'] as Map<String, dynamic>),
@@ -84,7 +89,8 @@ _$_ProcessInstance _$$_ProcessInstanceFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_ProcessInstanceToJson(_$_ProcessInstance instance) =>
+Map<String, dynamic> _$$ProcessInstanceImplToJson(
+        _$ProcessInstanceImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'tenantId': instance.tenantId,
@@ -100,15 +106,15 @@ Map<String, dynamic> _$$_ProcessInstanceToJson(_$_ProcessInstance instance) =>
       'assignes': instance.assignes,
     };
 
-_$_AuditDetails _$$_AuditDetailsFromJson(Map<String, dynamic> json) =>
-    _$_AuditDetails(
+_$AuditDetailsImpl _$$AuditDetailsImplFromJson(Map<String, dynamic> json) =>
+    _$AuditDetailsImpl(
       createdBy: json['createdBy'] as String?,
       lastModifiedBy: json['lastModifiedBy'] as String?,
-      createdTime: json['createdTime'] as int?,
-      lastModifiedTime: json['lastModifiedTime'] as int?,
+      createdTime: (json['createdTime'] as num?)?.toInt(),
+      lastModifiedTime: (json['lastModifiedTime'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$_AuditDetailsToJson(_$_AuditDetails instance) =>
+Map<String, dynamic> _$$AuditDetailsImplToJson(_$AuditDetailsImpl instance) =>
     <String, dynamic>{
       'createdBy': instance.createdBy,
       'lastModifiedBy': instance.lastModifiedBy,
@@ -116,11 +122,11 @@ Map<String, dynamic> _$$_AuditDetailsToJson(_$_AuditDetails instance) =>
       'lastModifiedTime': instance.lastModifiedTime,
     };
 
-_$_State _$$_StateFromJson(Map<String, dynamic> json) => _$_State(
+_$StateImpl _$$StateImplFromJson(Map<String, dynamic> json) => _$StateImpl(
       uuid: json['uuid'] as String?,
       tenantId: json['tenantId'] as String?,
       businessServiceId: json['businessServiceId'] as String?,
-      sla: json['sla'] as int?,
+      sla: (json['sla'] as num?)?.toInt(),
       state: json['state'] as String?,
       applicationStatus: json['applicationStatus'] as String?,
       docUploadRequired: json['docUploadRequired'] as bool?,
@@ -132,7 +138,8 @@ _$_State _$$_StateFromJson(Map<String, dynamic> json) => _$_State(
           .toList(),
     );
 
-Map<String, dynamic> _$$_StateToJson(_$_State instance) => <String, dynamic>{
+Map<String, dynamic> _$$StateImplToJson(_$StateImpl instance) =>
+    <String, dynamic>{
       'uuid': instance.uuid,
       'tenantId': instance.tenantId,
       'businessServiceId': instance.businessServiceId,
@@ -146,7 +153,7 @@ Map<String, dynamic> _$$_StateToJson(_$_State instance) => <String, dynamic>{
       'actions': instance.actions,
     };
 
-_$_Action _$$_ActionFromJson(Map<String, dynamic> json) => _$_Action(
+_$ActionImpl _$$ActionImplFromJson(Map<String, dynamic> json) => _$ActionImpl(
       uuid: json['uuid'] as String?,
       tenantId: json['tenantId'] as String?,
       currentState: json['currentState'] as String?,
@@ -157,7 +164,8 @@ _$_Action _$$_ActionFromJson(Map<String, dynamic> json) => _$_Action(
           (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$_ActionToJson(_$_Action instance) => <String, dynamic>{
+Map<String, dynamic> _$$ActionImplToJson(_$ActionImpl instance) =>
+    <String, dynamic>{
       'uuid': instance.uuid,
       'tenantId': instance.tenantId,
       'currentState': instance.currentState,
@@ -167,8 +175,9 @@ Map<String, dynamic> _$$_ActionToJson(_$_Action instance) => <String, dynamic>{
       'roles': instance.roles,
     };
 
-_$_Assigner _$$_AssignerFromJson(Map<String, dynamic> json) => _$_Assigner(
-      id: json['id'] as int?,
+_$AssignerImpl _$$AssignerImplFromJson(Map<String, dynamic> json) =>
+    _$AssignerImpl(
+      id: (json['id'] as num?)?.toInt(),
       userName: json['userName'] as String?,
       name: json['name'] as String?,
       type: json['type'] as String?,
@@ -181,7 +190,7 @@ _$_Assigner _$$_AssignerFromJson(Map<String, dynamic> json) => _$_Assigner(
           .toList(),
     );
 
-Map<String, dynamic> _$$_AssignerToJson(_$_Assigner instance) =>
+Map<String, dynamic> _$$AssignerImplToJson(_$AssignerImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userName': instance.userName,
@@ -194,8 +203,9 @@ Map<String, dynamic> _$$_AssignerToJson(_$_Assigner instance) =>
       'roles': instance.roles,
     };
 
-_$_Assigne _$$_AssigneFromJson(Map<String, dynamic> json) => _$_Assigne(
-      id: json['id'] as int?,
+_$AssigneImpl _$$AssigneImplFromJson(Map<String, dynamic> json) =>
+    _$AssigneImpl(
+      id: (json['id'] as num?)?.toInt(),
       userName: json['userName'] as String?,
       name: json['name'] as String?,
       type: json['type'] as String?,
@@ -208,7 +218,7 @@ _$_Assigne _$$_AssigneFromJson(Map<String, dynamic> json) => _$_Assigne(
           .toList(),
     );
 
-Map<String, dynamic> _$$_AssigneToJson(_$_Assigne instance) =>
+Map<String, dynamic> _$$AssigneImplToJson(_$AssigneImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userName': instance.userName,
@@ -221,22 +231,23 @@ Map<String, dynamic> _$$_AssigneToJson(_$_Assigne instance) =>
       'roles': instance.roles,
     };
 
-_$_Role _$$_RoleFromJson(Map<String, dynamic> json) => _$_Role(
+_$RoleImpl _$$RoleImplFromJson(Map<String, dynamic> json) => _$RoleImpl(
       name: json['name'] as String?,
       id: json['id'] as String?,
       code: json['code'] as String?,
       tenantId: json['tenantId'] as String?,
     );
 
-Map<String, dynamic> _$$_RoleToJson(_$_Role instance) => <String, dynamic>{
+Map<String, dynamic> _$$RoleImplToJson(_$RoleImpl instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'id': instance.id,
       'code': instance.code,
       'tenantId': instance.tenantId,
     };
 
-_$_BusinessObject _$$_BusinessObjectFromJson(Map<String, dynamic> json) =>
-    _$_BusinessObject(
+_$BusinessObjectImpl _$$BusinessObjectImplFromJson(Map<String, dynamic> json) =>
+    _$BusinessObjectImpl(
       measurementNumber: json['measurementNumber'] as String?,
       id: json['id'] as String?,
       referenceId: json['referenceId'] as String?,
@@ -249,14 +260,15 @@ _$_BusinessObject _$$_BusinessObjectFromJson(Map<String, dynamic> json) =>
       contract: json['contract'] == null
           ? null
           : Contract.fromJson(json['contract'] as Map<String, dynamic>),
-      serviceSla: json['serviceSla'] as int?,
+      serviceSla: (json['serviceSla'] as num?)?.toInt(),
       measurementAdditionalDetail: json['additionalDetails'] == null
           ? null
           : MeasurementAdditionalDetail.fromJson(
               json['additionalDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
+Map<String, dynamic> _$$BusinessObjectImplToJson(
+        _$BusinessObjectImpl instance) =>
     <String, dynamic>{
       'measurementNumber': instance.measurementNumber,
       'id': instance.id,
@@ -268,7 +280,8 @@ Map<String, dynamic> _$$_BusinessObjectToJson(_$_BusinessObject instance) =>
       'additionalDetails': instance.measurementAdditionalDetail,
     };
 
-_$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(
+_$MeasureImpl _$$MeasureImplFromJson(Map<String, dynamic> json) =>
+    _$MeasureImpl(
       description: json['description'] as String?,
       comments: json['comments'] as String?,
       targetId: json['targetId'] as String?,
@@ -287,7 +300,7 @@ _$_Measure _$$_MeasureFromJson(Map<String, dynamic> json) => _$_Measure(
               json['additionalDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_MeasureToJson(_$_Measure instance) =>
+Map<String, dynamic> _$$MeasureImplToJson(_$MeasureImpl instance) =>
     <String, dynamic>{
       'description': instance.description,
       'comments': instance.comments,
@@ -304,9 +317,9 @@ Map<String, dynamic> _$$_MeasureToJson(_$_Measure instance) =>
       'additionalDetails': instance.measureAdditionalDetails,
     };
 
-_$_MeasureAdditionalDetails _$$_MeasureAdditionalDetailsFromJson(
+_$MeasureAdditionalDetailsImpl _$$MeasureAdditionalDetailsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_MeasureAdditionalDetails(
+    _$MeasureAdditionalDetailsImpl(
       type: json['type'] as String?,
       mbAmount: (json['mbAmount'] as num?)?.toDouble(),
       measureLineItems: (json['measureLineItems'] as List<dynamic>?)
@@ -314,16 +327,17 @@ _$_MeasureAdditionalDetails _$$_MeasureAdditionalDetailsFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_MeasureAdditionalDetailsToJson(
-        _$_MeasureAdditionalDetails instance) =>
+Map<String, dynamic> _$$MeasureAdditionalDetailsImplToJson(
+        _$MeasureAdditionalDetailsImpl instance) =>
     <String, dynamic>{
       'type': instance.type,
       'mbAmount': instance.mbAmount,
       'measureLineItems': instance.measureLineItems,
     };
 
-_$_MeasureLineItem _$$_MeasureLineItemFromJson(Map<String, dynamic> json) =>
-    _$_MeasureLineItem(
+_$MeasureLineItemImpl _$$MeasureLineItemImplFromJson(
+        Map<String, dynamic> json) =>
+    _$MeasureLineItemImpl(
       width: json['width'],
       height: json['height'],
       length: json['length'],
@@ -332,7 +346,8 @@ _$_MeasureLineItem _$$_MeasureLineItemFromJson(Map<String, dynamic> json) =>
       measurelineitemNo: json['measurelineitemNo'],
     );
 
-Map<String, dynamic> _$$_MeasureLineItemToJson(_$_MeasureLineItem instance) =>
+Map<String, dynamic> _$$MeasureLineItemImplToJson(
+        _$MeasureLineItemImpl instance) =>
     <String, dynamic>{
       'width': instance.width,
       'height': instance.height,
@@ -342,10 +357,11 @@ Map<String, dynamic> _$$_MeasureLineItemToJson(_$_MeasureLineItem instance) =>
       'measurelineitemNo': instance.measurelineitemNo,
     };
 
-_$_Contract _$$_ContractFromJson(Map<String, dynamic> json) => _$_Contract(
+_$ContractImpl _$$ContractImplFromJson(Map<String, dynamic> json) =>
+    _$ContractImpl(
       contractNumber: json['contractNumber'] as String?,
       id: json['id'] as String?,
-      versionNumber: json['versionNumber'] as int?,
+      versionNumber: (json['versionNumber'] as num?)?.toInt(),
       oldUuid: json['oldUuid'] as String?,
       businessService: json['businessService'] as String?,
       tenantId: json['tenantId'] as String?,
@@ -355,13 +371,13 @@ _$_Contract _$$_ContractFromJson(Map<String, dynamic> json) => _$_Contract(
       totalContractedAmount:
           (json['totalContractedAmount'] as num?)?.toDouble(),
       securityDeposit: (json['securityDeposit'] as num?)?.toDouble(),
-      agreementDate: json['agreementDate'] as int?,
-      issueDate: json['issueDate'] as int?,
-      defectLiabilityPeriod: json['defectLiabilityPeriod'] as int?,
+      agreementDate: (json['agreementDate'] as num?)?.toInt(),
+      issueDate: (json['issueDate'] as num?)?.toInt(),
+      defectLiabilityPeriod: (json['defectLiabilityPeriod'] as num?)?.toInt(),
       orgId: json['orgId'] as String?,
-      startDate: json['startDate'] as int?,
-      endDate: json['endDate'] as int?,
-      completionPeriod: json['completionPeriod'] as int?,
+      startDate: (json['startDate'] as num?)?.toInt(),
+      endDate: (json['endDate'] as num?)?.toInt(),
+      completionPeriod: (json['completionPeriod'] as num?)?.toInt(),
       status: json['status'] as String?,
       lineItems: (json['lineItems'] as List<dynamic>?)
           ?.map((e) => LineItem.fromJson(e as Map<String, dynamic>))
@@ -372,7 +388,7 @@ _$_Contract _$$_ContractFromJson(Map<String, dynamic> json) => _$_Contract(
               json['additionalDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ContractToJson(_$_Contract instance) =>
+Map<String, dynamic> _$$ContractImplToJson(_$ContractImpl instance) =>
     <String, dynamic>{
       'contractNumber': instance.contractNumber,
       'id': instance.id,
@@ -397,9 +413,9 @@ Map<String, dynamic> _$$_ContractToJson(_$_Contract instance) =>
       'additionalDetails': instance.additionalDetails,
     };
 
-_$_ContractAdditionalDetails _$$_ContractAdditionalDetailsFromJson(
+_$ContractAdditionalDetailsImpl _$$ContractAdditionalDetailsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_ContractAdditionalDetails(
+    _$ContractAdditionalDetailsImpl(
       orgName: json['orgName'] as String?,
       totalEstimatedAmount: (json['totalEstimatedAmount'] as num?)?.toDouble(),
       attendanceRegisterNumber: json['attendanceRegisterNumber'] as String?,
@@ -417,7 +433,7 @@ _$_ContractAdditionalDetails _$$_ContractAdditionalDetailsFromJson(
       projectId: json['projectId'] as String?,
       cboName: json['cboName'] as String?,
       timeExt: json['timeExt'],
-      completionPeriod: json['completionPeriod'] as int?,
+      completionPeriod: (json['completionPeriod'] as num?)?.toInt(),
       estmateDocs: (json['estimateDocs'] as List<dynamic>?)
           ?.map((e) => EstmateDoc.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -426,8 +442,8 @@ _$_ContractAdditionalDetails _$$_ContractAdditionalDetailsFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_ContractAdditionalDetailsToJson(
-        _$_ContractAdditionalDetails instance) =>
+Map<String, dynamic> _$$ContractAdditionalDetailsImplToJson(
+        _$ContractAdditionalDetailsImpl instance) =>
     <String, dynamic>{
       'orgName': instance.orgName,
       'totalEstimatedAmount': instance.totalEstimatedAmount,
@@ -451,8 +467,8 @@ Map<String, dynamic> _$$_ContractAdditionalDetailsToJson(
       'termsAndConditions': instance.termsAndConditions,
     };
 
-_$_EstmateDoc _$$_EstmateDocFromJson(Map<String, dynamic> json) =>
-    _$_EstmateDoc(
+_$EstmateDocImpl _$$EstmateDocImplFromJson(Map<String, dynamic> json) =>
+    _$EstmateDocImpl(
       fileName: json['fileName'] as String?,
       fileType: json['fileType'] as String?,
       tenantId: json['tenantId'] as String?,
@@ -460,7 +476,7 @@ _$_EstmateDoc _$$_EstmateDocFromJson(Map<String, dynamic> json) =>
       fileStoreId: json['fileStoreId'] as String?,
     );
 
-Map<String, dynamic> _$$_EstmateDocToJson(_$_EstmateDoc instance) =>
+Map<String, dynamic> _$$EstmateDocImplToJson(_$EstmateDocImpl instance) =>
     <String, dynamic>{
       'fileName': instance.fileName,
       'fileType': instance.fileType,
@@ -469,19 +485,20 @@ Map<String, dynamic> _$$_EstmateDocToJson(_$_EstmateDoc instance) =>
       'fileStoreId': instance.fileStoreId,
     };
 
-_$_TermsAndConditions _$$_TermsAndConditionsFromJson(
+_$TermsAndConditionsImpl _$$TermsAndConditionsImplFromJson(
         Map<String, dynamic> json) =>
-    _$_TermsAndConditions(
+    _$TermsAndConditionsImpl(
       description: json['description'] as String?,
     );
 
-Map<String, dynamic> _$$_TermsAndConditionsToJson(
-        _$_TermsAndConditions instance) =>
+Map<String, dynamic> _$$TermsAndConditionsImplToJson(
+        _$TermsAndConditionsImpl instance) =>
     <String, dynamic>{
       'description': instance.description,
     };
 
-_$_LineItem _$$_LineItemFromJson(Map<String, dynamic> json) => _$_LineItem(
+_$LineItemImpl _$$LineItemImplFromJson(Map<String, dynamic> json) =>
+    _$LineItemImpl(
       id: json['id'] as String?,
       estimateId: json['estimateId'] as String?,
       estimateLineItemId: json['estimateLineItemId'] as String?,
@@ -500,7 +517,7 @@ _$_LineItem _$$_LineItemFromJson(Map<String, dynamic> json) => _$_LineItem(
           : AuditDetails.fromJson(json['auditDetails'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_LineItemToJson(_$_LineItem instance) =>
+Map<String, dynamic> _$$LineItemImplToJson(_$LineItemImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'estimateId': instance.estimateId,
@@ -516,15 +533,15 @@ Map<String, dynamic> _$$_LineItemToJson(_$_LineItem instance) =>
       'auditDetails': instance.auditDetails,
     };
 
-_$_AmountBreakup _$$_AmountBreakupFromJson(Map<String, dynamic> json) =>
-    _$_AmountBreakup(
+_$AmountBreakupImpl _$$AmountBreakupImplFromJson(Map<String, dynamic> json) =>
+    _$AmountBreakupImpl(
       id: json['id'] as String?,
       estimateAmountBreakupId: json['estimateAmountBreakupId'] as String?,
       amount: (json['amount'] as num?)?.toDouble(),
       status: json['status'] as String?,
     );
 
-Map<String, dynamic> _$$_AmountBreakupToJson(_$_AmountBreakup instance) =>
+Map<String, dynamic> _$$AmountBreakupImplToJson(_$AmountBreakupImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'estimateAmountBreakupId': instance.estimateAmountBreakupId,

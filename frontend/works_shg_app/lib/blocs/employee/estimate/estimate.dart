@@ -40,7 +40,7 @@ class EstimateBloc extends Bloc<EstimateBlocEvent, EstimateState> {
           res,
         ),
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(
         EstimateState.error(
           e.toString(),
