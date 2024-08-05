@@ -29,6 +29,7 @@ WORKFLOW_HOST = os.getenv('WORKFLOW_HOST')
 ESTIMATE_HOST = os.getenv('ESTIMATE_HOST')
 IFMS_ADAPTER_HOST = os.getenv('IFMS_ADAPTER_HOST')
 ENC_HOST = os.getenv('ENC_HOST')
+ORG_HOST = os.getenv('ORG_HOST')
 
 tenantids = [
     "od.jatni"
@@ -702,7 +703,63 @@ def getRevisedPaymentData():
     except Exception as e:
         raise e
 
+def getOrgDetails(org_number, tenantid):
+    data = []
+    print(" Getting org details for " + org_number)
+    try:
+        host = ORG_HOST + os.getenv('ORG_SEARCH')
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_payload = { "SearchCriteria": {"orgNumber": org_number,"tenantId": tenantid} ,"RequestInfo": request_payload}
+        response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+        if response and response.status_code and response.status_code in [200, 202]:
+            response = response.json()
+            if response and response['organisations'] and len(response['organisations'])>0:
+                organisation = response['organisations'][0]
+                return organisation
+    except Exception as e:
+        raise e
 
+
+def getCBOReportData():
+    data = []
+    print("Getting CBO Report Data")
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            host = CONTRACT_HOST + os.getenv('CONTRACT_SEARCH')
+            request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+            headers = {"Content-Type": "application/json"}
+            api_limit = 100
+            api_offset = 0
+            while True:
+                api_payload = {"tenantId": tenantid,"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
+                response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+                api_offset = api_offset + api_limit
+                if response and response.status_code and response.status_code in [200, 202]:
+                    response = response.json()
+                    if response and response['contracts'] and len(response['contracts'])>0:
+                        for contract in response['contracts']:
+                            if contract['status'] == "ACTIVE":
+                                temp = {}
+                                temp['ULB Name'] = format_tenant_id(tenantid)
+                                temp['Project ID'] = contract['additionalDetails']['projectId']
+                                temp['CBO Name'] = contract['additionalDetails']['cboName']
+                                org_number = contract['additionalDetails']['cboOrgNumber']
+                                orgDetails = getOrgDetails(org_number, tenantid)
+                                if orgDetails:
+                                    temp['CBO Type'] = orgDetails['functions'][0]['type']
+                                    temp['CBO ID'] = orgDetails['orgNumber']
+                                    temp['Mobile Number'] = orgDetails['contactDetails'][0]['contactMobileNumber']
+                                    temp['Ward Number'] = orgDetails['orgAddress'][0]['boundaryCode']
+                                    data.append(temp)
+                    else:
+                        break 
+                else:
+                    break
+        return data
+    except Exception as e:
+        raise e
 
 def writeDataToCSV(data, filename):
     if not data:
@@ -736,6 +793,7 @@ if __name__ == '__main__':
         estimate_filename = f'estimate_creation_{current_date}.csv'
         technical_sanction_approval_data_filename = f'technical_sanction_approval_{current_date}.csv'
         revised_payment_data_filename = f'revised_payment_{current_date}.csv'
+        CBO_report_data_filename = f'CBO_report_{current_date}.csv'
         
         # # Process work order data
         # workOrder_data = getWorkOrderData()
@@ -767,10 +825,10 @@ if __name__ == '__main__':
         # success_payments_file_path = os.path.join(directory, success_payments_filename)
         # writeDataToCSV(success_payments_data, success_payments_file_path)
 
-        # Estimate data
-        estimate_data = getEstimateData()
-        estimate_file_path = os.path.join(directory, estimate_filename)
-        writeDataToCSV(estimate_data, estimate_file_path)
+        # # Estimate data
+        # estimate_data = getEstimateData()
+        # estimate_file_path = os.path.join(directory, estimate_filename)
+        # writeDataToCSV(estimate_data, estimate_file_path)
 
         # # Technical sanction and Administrative Approval
         # technical_sanction_approval_data = getTechnicalSanctionApprovalData()
@@ -781,6 +839,11 @@ if __name__ == '__main__':
         # revised_payment_data = getRevisedPaymentData()
         # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
         # writeDataToCSV(revised_payment_data, revised_payment_file_path)
+
+        # CBO Report
+        CBO_report_data = getCBOReportData()
+        CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
+        writeDataToCSV(CBO_report_data, CBO_report_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
