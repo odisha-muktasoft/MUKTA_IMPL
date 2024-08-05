@@ -212,7 +212,7 @@ public class ContractService {
 
 
         for (Contract contract : contractList) {
-            if(contract.getStatus()!=Status.ACTIVE){
+            if("REJECTED".equals(contract.getWfStatus())){
              continue;
             }
             long currentCreatedTime = contract.getAuditDetails().getCreatedTime();
