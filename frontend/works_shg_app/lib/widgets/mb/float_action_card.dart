@@ -56,23 +56,29 @@ class FloatActionCard extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                                text: '$totalAmountText \n',
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .headlineMedium,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: subtext??"",
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.bodySmall,
-                                  )
-                                ]),
+                          Expanded(
+                            flex: 6,
+                            child: RichText(
+                              text: TextSpan(
+                                  text: '$totalAmountText \n',
+                                  style: DigitTheme.instance.mobileTheme.textTheme
+                                      .headlineMedium,
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: subtext??"",
+                                      style: DigitTheme.instance.mobileTheme
+                                          .textTheme.bodySmall,
+                                    )
+                                  ]),
+                            ),
                           ),
-                          Text(
-                            amount,
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.headlineMedium,
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              amount,
+                              style: DigitTheme
+                                  .instance.mobileTheme.textTheme.headlineMedium,
+                            ),
                           ),
                         ],
                       ),

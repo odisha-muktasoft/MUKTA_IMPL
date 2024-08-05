@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage>
               AnimatedContainer(
                 height: _tabController.index == 0
                     ? 120
-                    : MediaQuery.of(context).size.height * 0.4,
+                    : MediaQuery.of(context).size.height * 0.45,
                 duration: const Duration(milliseconds: 100),
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
@@ -344,7 +344,8 @@ class _LoginPageState extends State<LoginPage>
     AppInitializationState data,
   ) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height* 0.7 ,
+      width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
           DigitTextField(

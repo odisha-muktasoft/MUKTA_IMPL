@@ -458,10 +458,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   );
                                 },
                                 childCount: mbInboxResponse.isLoading
-                                    ? mbInboxResponse!
+                                    ? mbInboxResponse
                                             .mbInboxResponse.items!.length +
                                         1
-                                    : mbInboxResponse!
+                                    : mbInboxResponse
                                         .mbInboxResponse.items!.length,
                               ),
                             ),

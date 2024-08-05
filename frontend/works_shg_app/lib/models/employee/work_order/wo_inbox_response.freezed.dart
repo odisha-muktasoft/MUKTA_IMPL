@@ -436,9 +436,10 @@ class _$WOItemDataImpl implements _WOItemData {
 
 abstract class _WOItemData implements WOItemData {
   const factory _WOItemData(
-      {@JsonKey(name: 'ProcessInstance') final ProcessInstance? processInstance,
+      {@JsonKey(name: 'ProcessInstance')
+          final ProcessInstance? processInstance,
       @JsonKey(name: 'businessObject')
-      final WOBusinessObject? woBusinessObject}) = _$WOItemDataImpl;
+          final WOBusinessObject? woBusinessObject}) = _$WOItemDataImpl;
 
   factory _WOItemData.fromJson(Map<String, dynamic> json) =
       _$WOItemDataImpl.fromJson;
@@ -488,13 +489,18 @@ abstract class $WOBusinessObjectCopyWith<$Res> {
       _$WOBusinessObjectCopyWithImpl<$Res, WOBusinessObject>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'totalContractedAmount') double? totalContractedAmount,
-      @JsonKey(name: 'businessService') String? businessService,
-      @JsonKey(name: 'contractNumber') String? contractNumber,
-      @JsonKey(name: 'serviceSla') int? serviceSla,
+      {@JsonKey(name: 'totalContractedAmount')
+          double? totalContractedAmount,
+      @JsonKey(name: 'businessService')
+          String? businessService,
+      @JsonKey(name: 'contractNumber')
+          String? contractNumber,
+      @JsonKey(name: 'serviceSla')
+          int? serviceSla,
       @JsonKey(name: 'additionalDetails')
-      WOAdditionalDetails? woAdditionalDetails,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails});
+          WOAdditionalDetails? woAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails});
 
   $WOAdditionalDetailsCopyWith<$Res>? get woAdditionalDetails;
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -583,13 +589,18 @@ abstract class _$$WOBusinessObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'totalContractedAmount') double? totalContractedAmount,
-      @JsonKey(name: 'businessService') String? businessService,
-      @JsonKey(name: 'contractNumber') String? contractNumber,
-      @JsonKey(name: 'serviceSla') int? serviceSla,
+      {@JsonKey(name: 'totalContractedAmount')
+          double? totalContractedAmount,
+      @JsonKey(name: 'businessService')
+          String? businessService,
+      @JsonKey(name: 'contractNumber')
+          String? contractNumber,
+      @JsonKey(name: 'serviceSla')
+          int? serviceSla,
       @JsonKey(name: 'additionalDetails')
-      WOAdditionalDetails? woAdditionalDetails,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails});
+          WOAdditionalDetails? woAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails});
 
   @override
   $WOAdditionalDetailsCopyWith<$Res>? get woAdditionalDetails;
@@ -729,15 +740,18 @@ class _$WOBusinessObjectImpl implements _WOBusinessObject {
 
 abstract class _WOBusinessObject implements WOBusinessObject {
   const factory _WOBusinessObject(
-          {@JsonKey(name: 'totalContractedAmount')
+      {@JsonKey(name: 'totalContractedAmount')
           final double? totalContractedAmount,
-          @JsonKey(name: 'businessService') final String? businessService,
-          @JsonKey(name: 'contractNumber') final String? contractNumber,
-          @JsonKey(name: 'serviceSla') final int? serviceSla,
-          @JsonKey(name: 'additionalDetails')
+      @JsonKey(name: 'businessService')
+          final String? businessService,
+      @JsonKey(name: 'contractNumber')
+          final String? contractNumber,
+      @JsonKey(name: 'serviceSla')
+          final int? serviceSla,
+      @JsonKey(name: 'additionalDetails')
           final WOAdditionalDetails? woAdditionalDetails,
-          @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails}) =
-      _$WOBusinessObjectImpl;
+      @JsonKey(name: 'auditDetails')
+          final AuditDetails? auditDetails}) = _$WOBusinessObjectImpl;
 
   factory _WOBusinessObject.fromJson(Map<String, dynamic> json) =
       _$WOBusinessObjectImpl.fromJson;

@@ -142,7 +142,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                     '',
                             id: e.id ??
                                 (value.musterRollsModel!.musterRoll!.first.individualEntries!.any((i) => i.individualId == e.individualId)
-                                    ? value.musterRollsModel!?.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).id ?? ''
+                                    ? value.musterRollsModel!.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).id ?? ''
                                     : ''),
                             skill: value.musterRollsModel!.musterRoll!.first.individualEntries!.any((i) => i.individualId == e.individualId) ? value.musterRollsModel!?.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).musterIndividualAdditionalDetails?.skillCode ?? '' : '',
                             monEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
@@ -492,7 +492,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
           apiKey: tableDataModel.skill,
           hide: false,
           widget: DropDownDialog(
-            isDisabled: true || (tableDataModel.skillCodeList ?? []).isEmpty,
+            isDisabled: true ,
             options: tableDataModel.skillCodeList ?? [],
             label: i18.common.selectSkill,
             selectedOption: tableDataModel.skill.toString(),

@@ -16,7 +16,6 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
-import '../../services/local_storage.dart';
 import '../../utils/common_methods.dart';
 import '../../widgets/SideBar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';

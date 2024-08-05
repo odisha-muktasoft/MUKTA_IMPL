@@ -673,9 +673,10 @@ class _$ItemDataImpl implements _ItemData {
 
 abstract class _ItemData implements ItemData {
   const factory _ItemData(
-      {@JsonKey(name: 'ProcessInstance') final ProcessInstance? processInstance,
+      {@JsonKey(name: 'ProcessInstance')
+          final ProcessInstance? processInstance,
       @JsonKey(name: 'businessObject')
-      final BusinessObject? businessObject}) = _$ItemDataImpl;
+          final BusinessObject? businessObject}) = _$ItemDataImpl;
 
   factory _ItemData.fromJson(Map<String, dynamic> json) =
       _$ItemDataImpl.fromJson;
@@ -2991,15 +2992,22 @@ abstract class $BusinessObjectCopyWith<$Res> {
       _$BusinessObjectCopyWithImpl<$Res, BusinessObject>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'measurementNumber') String? measurementNumber,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'measures') List<Measure>? measures,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') Contract? contract,
-      @JsonKey(name: 'serviceSla') int? serviceSla,
+      {@JsonKey(name: 'measurementNumber')
+          String? measurementNumber,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
+      @JsonKey(name: 'contract')
+          Contract? contract,
+      @JsonKey(name: 'serviceSla')
+          int? serviceSla,
       @JsonKey(name: 'additionalDetails')
-      MeasurementAdditionalDetail? measurementAdditionalDetail});
+          MeasurementAdditionalDetail? measurementAdditionalDetail});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $ContractCopyWith<$Res>? get contract;
@@ -3111,15 +3119,22 @@ abstract class _$$BusinessObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'measurementNumber') String? measurementNumber,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'measures') List<Measure>? measures,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
-      @JsonKey(name: 'contract') Contract? contract,
-      @JsonKey(name: 'serviceSla') int? serviceSla,
+      {@JsonKey(name: 'measurementNumber')
+          String? measurementNumber,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
+      @JsonKey(name: 'contract')
+          Contract? contract,
+      @JsonKey(name: 'serviceSla')
+          int? serviceSla,
       @JsonKey(name: 'additionalDetails')
-      MeasurementAdditionalDetail? measurementAdditionalDetail});
+          MeasurementAdditionalDetail? measurementAdditionalDetail});
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -3294,15 +3309,22 @@ class _$BusinessObjectImpl implements _BusinessObject {
 
 abstract class _BusinessObject implements BusinessObject {
   const factory _BusinessObject(
-          {@JsonKey(name: 'measurementNumber') final String? measurementNumber,
-          @JsonKey(name: 'id') final String? id,
-          @JsonKey(name: 'referenceId') final String? referenceId,
-          @JsonKey(name: 'measures') final List<Measure>? measures,
-          @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails,
-          @JsonKey(name: 'contract') final Contract? contract,
-          @JsonKey(name: 'serviceSla') final int? serviceSla,
+          {@JsonKey(name: 'measurementNumber')
+              final String? measurementNumber,
+          @JsonKey(name: 'id')
+              final String? id,
+          @JsonKey(name: 'referenceId')
+              final String? referenceId,
+          @JsonKey(name: 'measures')
+              final List<Measure>? measures,
+          @JsonKey(name: 'auditDetails')
+              final AuditDetails? auditDetails,
+          @JsonKey(name: 'contract')
+              final Contract? contract,
+          @JsonKey(name: 'serviceSla')
+              final int? serviceSla,
           @JsonKey(name: 'additionalDetails')
-          final MeasurementAdditionalDetail? measurementAdditionalDetail}) =
+              final MeasurementAdditionalDetail? measurementAdditionalDetail}) =
       _$BusinessObjectImpl;
 
   factory _BusinessObject.fromJson(Map<String, dynamic> json) =
@@ -3383,20 +3405,32 @@ abstract class $MeasureCopyWith<$Res> {
       _$MeasureCopyWithImpl<$Res, Measure>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'description') String? description,
-      @JsonKey(name: 'comments') String? comments,
-      @JsonKey(name: 'targetId') String? targetId,
-      @JsonKey(name: 'breadth') double? breadth,
-      @JsonKey(name: 'length') double? length,
-      @JsonKey(name: 'isActive') bool? isActive,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'numItems') double? numItems,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'currentValue') double? currentValue,
-      @JsonKey(name: 'cumulativeValue') double? cumulativeValue,
-      @JsonKey(name: 'height') double? height,
+      {@JsonKey(name: 'description')
+          String? description,
+      @JsonKey(name: 'comments')
+          String? comments,
+      @JsonKey(name: 'targetId')
+          String? targetId,
+      @JsonKey(name: 'breadth')
+          double? breadth,
+      @JsonKey(name: 'length')
+          double? length,
+      @JsonKey(name: 'isActive')
+          bool? isActive,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'numItems')
+          double? numItems,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'currentValue')
+          double? currentValue,
+      @JsonKey(name: 'cumulativeValue')
+          double? cumulativeValue,
+      @JsonKey(name: 'height')
+          double? height,
       @JsonKey(name: 'additionalDetails')
-      MeasureAdditionalDetails? measureAdditionalDetails});
+          MeasureAdditionalDetails? measureAdditionalDetails});
 
   $MeasureAdditionalDetailsCopyWith<$Res>? get measureAdditionalDetails;
 }
@@ -3506,20 +3540,32 @@ abstract class _$$MeasureImplCopyWith<$Res> implements $MeasureCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'description') String? description,
-      @JsonKey(name: 'comments') String? comments,
-      @JsonKey(name: 'targetId') String? targetId,
-      @JsonKey(name: 'breadth') double? breadth,
-      @JsonKey(name: 'length') double? length,
-      @JsonKey(name: 'isActive') bool? isActive,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'numItems') double? numItems,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'currentValue') double? currentValue,
-      @JsonKey(name: 'cumulativeValue') double? cumulativeValue,
-      @JsonKey(name: 'height') double? height,
+      {@JsonKey(name: 'description')
+          String? description,
+      @JsonKey(name: 'comments')
+          String? comments,
+      @JsonKey(name: 'targetId')
+          String? targetId,
+      @JsonKey(name: 'breadth')
+          double? breadth,
+      @JsonKey(name: 'length')
+          double? length,
+      @JsonKey(name: 'isActive')
+          bool? isActive,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'numItems')
+          double? numItems,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'currentValue')
+          double? currentValue,
+      @JsonKey(name: 'cumulativeValue')
+          double? cumulativeValue,
+      @JsonKey(name: 'height')
+          double? height,
       @JsonKey(name: 'additionalDetails')
-      MeasureAdditionalDetails? measureAdditionalDetails});
+          MeasureAdditionalDetails? measureAdditionalDetails});
 
   @override
   $MeasureAdditionalDetailsCopyWith<$Res>? get measureAdditionalDetails;
@@ -3737,20 +3783,32 @@ class _$MeasureImpl implements _Measure {
 
 abstract class _Measure implements Measure {
   const factory _Measure(
-          {@JsonKey(name: 'description') final String? description,
-          @JsonKey(name: 'comments') final String? comments,
-          @JsonKey(name: 'targetId') final String? targetId,
-          @JsonKey(name: 'breadth') final double? breadth,
-          @JsonKey(name: 'length') final double? length,
-          @JsonKey(name: 'isActive') final bool? isActive,
-          @JsonKey(name: 'referenceId') final String? referenceId,
-          @JsonKey(name: 'numItems') final double? numItems,
-          @JsonKey(name: 'id') final String? id,
-          @JsonKey(name: 'currentValue') final double? currentValue,
-          @JsonKey(name: 'cumulativeValue') final double? cumulativeValue,
-          @JsonKey(name: 'height') final double? height,
+          {@JsonKey(name: 'description')
+              final String? description,
+          @JsonKey(name: 'comments')
+              final String? comments,
+          @JsonKey(name: 'targetId')
+              final String? targetId,
+          @JsonKey(name: 'breadth')
+              final double? breadth,
+          @JsonKey(name: 'length')
+              final double? length,
+          @JsonKey(name: 'isActive')
+              final bool? isActive,
+          @JsonKey(name: 'referenceId')
+              final String? referenceId,
+          @JsonKey(name: 'numItems')
+              final double? numItems,
+          @JsonKey(name: 'id')
+              final String? id,
+          @JsonKey(name: 'currentValue')
+              final double? currentValue,
+          @JsonKey(name: 'cumulativeValue')
+              final double? cumulativeValue,
+          @JsonKey(name: 'height')
+              final double? height,
           @JsonKey(name: 'additionalDetails')
-          final MeasureAdditionalDetails? measureAdditionalDetails}) =
+              final MeasureAdditionalDetails? measureAdditionalDetails}) =
       _$MeasureImpl;
 
   factory _Measure.fromJson(Map<String, dynamic> json) = _$MeasureImpl.fromJson;
@@ -3828,10 +3886,12 @@ abstract class $MeasureAdditionalDetailsCopyWith<$Res> {
       _$MeasureAdditionalDetailsCopyWithImpl<$Res, MeasureAdditionalDetails>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'type') String? type,
-      @JsonKey(name: 'mbAmount') double? mbAmount,
+      {@JsonKey(name: 'type')
+          String? type,
+      @JsonKey(name: 'mbAmount')
+          double? mbAmount,
       @JsonKey(name: "measureLineItems")
-      List<MeasureLineItem>? measureLineItems});
+          List<MeasureLineItem>? measureLineItems});
 }
 
 /// @nodoc
@@ -3879,10 +3939,12 @@ abstract class _$$MeasureAdditionalDetailsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'type') String? type,
-      @JsonKey(name: 'mbAmount') double? mbAmount,
+      {@JsonKey(name: 'type')
+          String? type,
+      @JsonKey(name: 'mbAmount')
+          double? mbAmount,
       @JsonKey(name: "measureLineItems")
-      List<MeasureLineItem>? measureLineItems});
+          List<MeasureLineItem>? measureLineItems});
 }
 
 /// @nodoc
@@ -3923,10 +3985,12 @@ class __$$MeasureAdditionalDetailsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MeasureAdditionalDetailsImpl implements _MeasureAdditionalDetails {
   const _$MeasureAdditionalDetailsImpl(
-      {@JsonKey(name: 'type') this.type,
-      @JsonKey(name: 'mbAmount') this.mbAmount,
+      {@JsonKey(name: 'type')
+          this.type,
+      @JsonKey(name: 'mbAmount')
+          this.mbAmount,
       @JsonKey(name: "measureLineItems")
-      final List<MeasureLineItem>? measureLineItems})
+          final List<MeasureLineItem>? measureLineItems})
       : _measureLineItems = measureLineItems;
 
   factory _$MeasureAdditionalDetailsImpl.fromJson(Map<String, dynamic> json) =>
@@ -3989,10 +4053,12 @@ class _$MeasureAdditionalDetailsImpl implements _MeasureAdditionalDetails {
 
 abstract class _MeasureAdditionalDetails implements MeasureAdditionalDetails {
   const factory _MeasureAdditionalDetails(
-          {@JsonKey(name: 'type') final String? type,
-          @JsonKey(name: 'mbAmount') final double? mbAmount,
+          {@JsonKey(name: 'type')
+              final String? type,
+          @JsonKey(name: 'mbAmount')
+              final double? mbAmount,
           @JsonKey(name: "measureLineItems")
-          final List<MeasureLineItem>? measureLineItems}) =
+              final List<MeasureLineItem>? measureLineItems}) =
       _$MeasureAdditionalDetailsImpl;
 
   factory _MeasureAdditionalDetails.fromJson(Map<String, dynamic> json) =
@@ -4246,13 +4312,18 @@ class _$MeasureLineItemImpl implements _MeasureLineItem {
 
 abstract class _MeasureLineItem implements MeasureLineItem {
   const factory _MeasureLineItem(
-      {@JsonKey(name: 'width') final dynamic width,
-      @JsonKey(name: 'height') final dynamic height,
-      @JsonKey(name: "length") final dynamic length,
-      @JsonKey(name: 'number') final dynamic number,
-      @JsonKey(name: 'quantity') final dynamic quantity,
+      {@JsonKey(name: 'width')
+          final dynamic width,
+      @JsonKey(name: 'height')
+          final dynamic height,
+      @JsonKey(name: "length")
+          final dynamic length,
+      @JsonKey(name: 'number')
+          final dynamic number,
+      @JsonKey(name: 'quantity')
+          final dynamic quantity,
       @JsonKey(name: 'measurelineitemNo')
-      final dynamic measurelineitemNo}) = _$MeasureLineItemImpl;
+          final dynamic measurelineitemNo}) = _$MeasureLineItemImpl;
 
   factory _MeasureLineItem.fromJson(Map<String, dynamic> json) =
       _$MeasureLineItemImpl.fromJson;
@@ -4343,28 +4414,48 @@ abstract class $ContractCopyWith<$Res> {
       _$ContractCopyWithImpl<$Res, Contract>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'contractNumber') String? contractNumber,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'versionNumber') int? versionNumber,
-      @JsonKey(name: 'oldUuid') String? oldUuid,
-      @JsonKey(name: 'businessService') String? businessService,
-      @JsonKey(name: 'tenantId') String? tenantId,
-      @JsonKey(name: 'wfStatus') String? wfStatus,
-      @JsonKey(name: 'executingAuthority') String? executingAuthority,
-      @JsonKey(name: 'contractType') String? contractType,
-      @JsonKey(name: 'totalContractedAmount') double? totalContractedAmount,
-      @JsonKey(name: 'securityDeposit') double? securityDeposit,
-      @JsonKey(name: 'agreementDate') int? agreementDate,
-      @JsonKey(name: 'issueDate') int? issueDate,
-      @JsonKey(name: 'defectLiabilityPeriod') int? defectLiabilityPeriod,
-      @JsonKey(name: 'orgId') String? orgId,
-      @JsonKey(name: 'startDate') int? startDate,
-      @JsonKey(name: 'endDate') int? endDate,
-      @JsonKey(name: 'completionPeriod') int? completionPeriod,
-      @JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'lineItems') List<LineItem>? lineItems,
+      {@JsonKey(name: 'contractNumber')
+          String? contractNumber,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'versionNumber')
+          int? versionNumber,
+      @JsonKey(name: 'oldUuid')
+          String? oldUuid,
+      @JsonKey(name: 'businessService')
+          String? businessService,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'wfStatus')
+          String? wfStatus,
+      @JsonKey(name: 'executingAuthority')
+          String? executingAuthority,
+      @JsonKey(name: 'contractType')
+          String? contractType,
+      @JsonKey(name: 'totalContractedAmount')
+          double? totalContractedAmount,
+      @JsonKey(name: 'securityDeposit')
+          double? securityDeposit,
+      @JsonKey(name: 'agreementDate')
+          int? agreementDate,
+      @JsonKey(name: 'issueDate')
+          int? issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod')
+          int? defectLiabilityPeriod,
+      @JsonKey(name: 'orgId')
+          String? orgId,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'lineItems')
+          List<LineItem>? lineItems,
       @JsonKey(name: 'additionalDetails')
-      ContractAdditionalDetails? additionalDetails});
+          ContractAdditionalDetails? additionalDetails});
 
   $ContractAdditionalDetailsCopyWith<$Res>? get additionalDetails;
 }
@@ -4515,28 +4606,48 @@ abstract class _$$ContractImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'contractNumber') String? contractNumber,
-      @JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'versionNumber') int? versionNumber,
-      @JsonKey(name: 'oldUuid') String? oldUuid,
-      @JsonKey(name: 'businessService') String? businessService,
-      @JsonKey(name: 'tenantId') String? tenantId,
-      @JsonKey(name: 'wfStatus') String? wfStatus,
-      @JsonKey(name: 'executingAuthority') String? executingAuthority,
-      @JsonKey(name: 'contractType') String? contractType,
-      @JsonKey(name: 'totalContractedAmount') double? totalContractedAmount,
-      @JsonKey(name: 'securityDeposit') double? securityDeposit,
-      @JsonKey(name: 'agreementDate') int? agreementDate,
-      @JsonKey(name: 'issueDate') int? issueDate,
-      @JsonKey(name: 'defectLiabilityPeriod') int? defectLiabilityPeriod,
-      @JsonKey(name: 'orgId') String? orgId,
-      @JsonKey(name: 'startDate') int? startDate,
-      @JsonKey(name: 'endDate') int? endDate,
-      @JsonKey(name: 'completionPeriod') int? completionPeriod,
-      @JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'lineItems') List<LineItem>? lineItems,
+      {@JsonKey(name: 'contractNumber')
+          String? contractNumber,
+      @JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'versionNumber')
+          int? versionNumber,
+      @JsonKey(name: 'oldUuid')
+          String? oldUuid,
+      @JsonKey(name: 'businessService')
+          String? businessService,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'wfStatus')
+          String? wfStatus,
+      @JsonKey(name: 'executingAuthority')
+          String? executingAuthority,
+      @JsonKey(name: 'contractType')
+          String? contractType,
+      @JsonKey(name: 'totalContractedAmount')
+          double? totalContractedAmount,
+      @JsonKey(name: 'securityDeposit')
+          double? securityDeposit,
+      @JsonKey(name: 'agreementDate')
+          int? agreementDate,
+      @JsonKey(name: 'issueDate')
+          int? issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod')
+          int? defectLiabilityPeriod,
+      @JsonKey(name: 'orgId')
+          String? orgId,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'lineItems')
+          List<LineItem>? lineItems,
       @JsonKey(name: 'additionalDetails')
-      ContractAdditionalDetails? additionalDetails});
+          ContractAdditionalDetails? additionalDetails});
 
   @override
   $ContractAdditionalDetailsCopyWith<$Res>? get additionalDetails;
@@ -4858,29 +4969,48 @@ class _$ContractImpl implements _Contract {
 
 abstract class _Contract implements Contract {
   const factory _Contract(
-      {@JsonKey(name: 'contractNumber') final String? contractNumber,
-      @JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'versionNumber') final int? versionNumber,
-      @JsonKey(name: 'oldUuid') final String? oldUuid,
-      @JsonKey(name: 'businessService') final String? businessService,
-      @JsonKey(name: 'tenantId') final String? tenantId,
-      @JsonKey(name: 'wfStatus') final String? wfStatus,
-      @JsonKey(name: 'executingAuthority') final String? executingAuthority,
-      @JsonKey(name: 'contractType') final String? contractType,
+      {@JsonKey(name: 'contractNumber')
+          final String? contractNumber,
+      @JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'versionNumber')
+          final int? versionNumber,
+      @JsonKey(name: 'oldUuid')
+          final String? oldUuid,
+      @JsonKey(name: 'businessService')
+          final String? businessService,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'wfStatus')
+          final String? wfStatus,
+      @JsonKey(name: 'executingAuthority')
+          final String? executingAuthority,
+      @JsonKey(name: 'contractType')
+          final String? contractType,
       @JsonKey(name: 'totalContractedAmount')
-      final double? totalContractedAmount,
-      @JsonKey(name: 'securityDeposit') final double? securityDeposit,
-      @JsonKey(name: 'agreementDate') final int? agreementDate,
-      @JsonKey(name: 'issueDate') final int? issueDate,
-      @JsonKey(name: 'defectLiabilityPeriod') final int? defectLiabilityPeriod,
-      @JsonKey(name: 'orgId') final String? orgId,
-      @JsonKey(name: 'startDate') final int? startDate,
-      @JsonKey(name: 'endDate') final int? endDate,
-      @JsonKey(name: 'completionPeriod') final int? completionPeriod,
-      @JsonKey(name: 'status') final String? status,
-      @JsonKey(name: 'lineItems') final List<LineItem>? lineItems,
+          final double? totalContractedAmount,
+      @JsonKey(name: 'securityDeposit')
+          final double? securityDeposit,
+      @JsonKey(name: 'agreementDate')
+          final int? agreementDate,
+      @JsonKey(name: 'issueDate')
+          final int? issueDate,
+      @JsonKey(name: 'defectLiabilityPeriod')
+          final int? defectLiabilityPeriod,
+      @JsonKey(name: 'orgId')
+          final String? orgId,
+      @JsonKey(name: 'startDate')
+          final int? startDate,
+      @JsonKey(name: 'endDate')
+          final int? endDate,
+      @JsonKey(name: 'completionPeriod')
+          final int? completionPeriod,
+      @JsonKey(name: 'status')
+          final String? status,
+      @JsonKey(name: 'lineItems')
+          final List<LineItem>? lineItems,
       @JsonKey(name: 'additionalDetails')
-      final ContractAdditionalDetails? additionalDetails}) = _$ContractImpl;
+          final ContractAdditionalDetails? additionalDetails}) = _$ContractImpl;
 
   factory _Contract.fromJson(Map<String, dynamic> json) =
       _$ContractImpl.fromJson;
@@ -5016,28 +5146,46 @@ abstract class $ContractAdditionalDetailsCopyWith<$Res> {
       _$ContractAdditionalDetailsCopyWithImpl<$Res, ContractAdditionalDetails>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'orgName') String? orgName,
-      @JsonKey(name: 'totalEstimatedAmount') double? totalEstimatedAmount,
+      {@JsonKey(name: 'orgName')
+          String? orgName,
+      @JsonKey(name: 'totalEstimatedAmount')
+          double? totalEstimatedAmount,
       @JsonKey(name: 'attendanceRegisterNumber')
-      String? attendanceRegisterNumber,
-      @JsonKey(name: 'officerInChargeId') String? officerInChargeId,
-      @JsonKey(name: 'cboOrgNumber') String? cboOrgNumber,
-      @JsonKey(name: 'estimateNumber') String? estimateNumber,
-      @JsonKey(name: 'locality') String? locality,
-      @JsonKey(name: 'projectType') String? projectType,
-      @JsonKey(name: 'timeExtReason') String? timeExtReason,
-      @JsonKey(name: 'ward') String? ward,
-      @JsonKey(name: 'officerInChargeDesgn') String? officerInChargeDesgn,
-      @JsonKey(name: 'projectDesc') String? projectDesc,
-      @JsonKey(name: 'projectName') String? projectName,
-      @JsonKey(name: 'cboCode') String? cboCode,
-      @JsonKey(name: 'projectId') String? projectId,
-      @JsonKey(name: 'cboName') String? cboName,
-      @JsonKey(name: 'timeExt') dynamic timeExt,
-      @JsonKey(name: 'completionPeriod') int? completionPeriod,
-      @JsonKey(name: 'estimateDocs') List<EstmateDoc>? estmateDocs,
+          String? attendanceRegisterNumber,
+      @JsonKey(name: 'officerInChargeId')
+          String? officerInChargeId,
+      @JsonKey(name: 'cboOrgNumber')
+          String? cboOrgNumber,
+      @JsonKey(name: 'estimateNumber')
+          String? estimateNumber,
+      @JsonKey(name: 'locality')
+          String? locality,
+      @JsonKey(name: 'projectType')
+          String? projectType,
+      @JsonKey(name: 'timeExtReason')
+          String? timeExtReason,
+      @JsonKey(name: 'ward')
+          String? ward,
+      @JsonKey(name: 'officerInChargeDesgn')
+          String? officerInChargeDesgn,
+      @JsonKey(name: 'projectDesc')
+          String? projectDesc,
+      @JsonKey(name: 'projectName')
+          String? projectName,
+      @JsonKey(name: 'cboCode')
+          String? cboCode,
+      @JsonKey(name: 'projectId')
+          String? projectId,
+      @JsonKey(name: 'cboName')
+          String? cboName,
+      @JsonKey(name: 'timeExt')
+          dynamic timeExt,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'estimateDocs')
+          List<EstmateDoc>? estmateDocs,
       @JsonKey(name: 'termsAndConditions')
-      List<TermsAndConditions>? termsAndConditions});
+          List<TermsAndConditions>? termsAndConditions});
 }
 
 /// @nodoc
@@ -5170,28 +5318,46 @@ abstract class _$$ContractAdditionalDetailsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'orgName') String? orgName,
-      @JsonKey(name: 'totalEstimatedAmount') double? totalEstimatedAmount,
+      {@JsonKey(name: 'orgName')
+          String? orgName,
+      @JsonKey(name: 'totalEstimatedAmount')
+          double? totalEstimatedAmount,
       @JsonKey(name: 'attendanceRegisterNumber')
-      String? attendanceRegisterNumber,
-      @JsonKey(name: 'officerInChargeId') String? officerInChargeId,
-      @JsonKey(name: 'cboOrgNumber') String? cboOrgNumber,
-      @JsonKey(name: 'estimateNumber') String? estimateNumber,
-      @JsonKey(name: 'locality') String? locality,
-      @JsonKey(name: 'projectType') String? projectType,
-      @JsonKey(name: 'timeExtReason') String? timeExtReason,
-      @JsonKey(name: 'ward') String? ward,
-      @JsonKey(name: 'officerInChargeDesgn') String? officerInChargeDesgn,
-      @JsonKey(name: 'projectDesc') String? projectDesc,
-      @JsonKey(name: 'projectName') String? projectName,
-      @JsonKey(name: 'cboCode') String? cboCode,
-      @JsonKey(name: 'projectId') String? projectId,
-      @JsonKey(name: 'cboName') String? cboName,
-      @JsonKey(name: 'timeExt') dynamic timeExt,
-      @JsonKey(name: 'completionPeriod') int? completionPeriod,
-      @JsonKey(name: 'estimateDocs') List<EstmateDoc>? estmateDocs,
+          String? attendanceRegisterNumber,
+      @JsonKey(name: 'officerInChargeId')
+          String? officerInChargeId,
+      @JsonKey(name: 'cboOrgNumber')
+          String? cboOrgNumber,
+      @JsonKey(name: 'estimateNumber')
+          String? estimateNumber,
+      @JsonKey(name: 'locality')
+          String? locality,
+      @JsonKey(name: 'projectType')
+          String? projectType,
+      @JsonKey(name: 'timeExtReason')
+          String? timeExtReason,
+      @JsonKey(name: 'ward')
+          String? ward,
+      @JsonKey(name: 'officerInChargeDesgn')
+          String? officerInChargeDesgn,
+      @JsonKey(name: 'projectDesc')
+          String? projectDesc,
+      @JsonKey(name: 'projectName')
+          String? projectName,
+      @JsonKey(name: 'cboCode')
+          String? cboCode,
+      @JsonKey(name: 'projectId')
+          String? projectId,
+      @JsonKey(name: 'cboName')
+          String? cboName,
+      @JsonKey(name: 'timeExt')
+          dynamic timeExt,
+      @JsonKey(name: 'completionPeriod')
+          int? completionPeriod,
+      @JsonKey(name: 'estimateDocs')
+          List<EstmateDoc>? estmateDocs,
       @JsonKey(name: 'termsAndConditions')
-      List<TermsAndConditions>? termsAndConditions});
+          List<TermsAndConditions>? termsAndConditions});
 }
 
 /// @nodoc
@@ -5317,27 +5483,46 @@ class __$$ContractAdditionalDetailsImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ContractAdditionalDetailsImpl implements _ContractAdditionalDetails {
   const _$ContractAdditionalDetailsImpl(
-      {@JsonKey(name: 'orgName') this.orgName,
-      @JsonKey(name: 'totalEstimatedAmount') this.totalEstimatedAmount,
-      @JsonKey(name: 'attendanceRegisterNumber') this.attendanceRegisterNumber,
-      @JsonKey(name: 'officerInChargeId') this.officerInChargeId,
-      @JsonKey(name: 'cboOrgNumber') this.cboOrgNumber,
-      @JsonKey(name: 'estimateNumber') this.estimateNumber,
-      @JsonKey(name: 'locality') this.locality,
-      @JsonKey(name: 'projectType') this.projectType,
-      @JsonKey(name: 'timeExtReason') this.timeExtReason,
-      @JsonKey(name: 'ward') this.ward,
-      @JsonKey(name: 'officerInChargeDesgn') this.officerInChargeDesgn,
-      @JsonKey(name: 'projectDesc') this.projectDesc,
-      @JsonKey(name: 'projectName') this.projectName,
-      @JsonKey(name: 'cboCode') this.cboCode,
-      @JsonKey(name: 'projectId') this.projectId,
-      @JsonKey(name: 'cboName') this.cboName,
-      @JsonKey(name: 'timeExt') this.timeExt,
-      @JsonKey(name: 'completionPeriod') this.completionPeriod,
-      @JsonKey(name: 'estimateDocs') final List<EstmateDoc>? estmateDocs,
+      {@JsonKey(name: 'orgName')
+          this.orgName,
+      @JsonKey(name: 'totalEstimatedAmount')
+          this.totalEstimatedAmount,
+      @JsonKey(name: 'attendanceRegisterNumber')
+          this.attendanceRegisterNumber,
+      @JsonKey(name: 'officerInChargeId')
+          this.officerInChargeId,
+      @JsonKey(name: 'cboOrgNumber')
+          this.cboOrgNumber,
+      @JsonKey(name: 'estimateNumber')
+          this.estimateNumber,
+      @JsonKey(name: 'locality')
+          this.locality,
+      @JsonKey(name: 'projectType')
+          this.projectType,
+      @JsonKey(name: 'timeExtReason')
+          this.timeExtReason,
+      @JsonKey(name: 'ward')
+          this.ward,
+      @JsonKey(name: 'officerInChargeDesgn')
+          this.officerInChargeDesgn,
+      @JsonKey(name: 'projectDesc')
+          this.projectDesc,
+      @JsonKey(name: 'projectName')
+          this.projectName,
+      @JsonKey(name: 'cboCode')
+          this.cboCode,
+      @JsonKey(name: 'projectId')
+          this.projectId,
+      @JsonKey(name: 'cboName')
+          this.cboName,
+      @JsonKey(name: 'timeExt')
+          this.timeExt,
+      @JsonKey(name: 'completionPeriod')
+          this.completionPeriod,
+      @JsonKey(name: 'estimateDocs')
+          final List<EstmateDoc>? estmateDocs,
       @JsonKey(name: 'termsAndConditions')
-      final List<TermsAndConditions>? termsAndConditions})
+          final List<TermsAndConditions>? termsAndConditions})
       : _estmateDocs = estmateDocs,
         _termsAndConditions = termsAndConditions;
 
@@ -5512,29 +5697,47 @@ class _$ContractAdditionalDetailsImpl implements _ContractAdditionalDetails {
 
 abstract class _ContractAdditionalDetails implements ContractAdditionalDetails {
   const factory _ContractAdditionalDetails(
-      {@JsonKey(name: 'orgName') final String? orgName,
-      @JsonKey(name: 'totalEstimatedAmount') final double? totalEstimatedAmount,
-      @JsonKey(name: 'attendanceRegisterNumber')
-      final String? attendanceRegisterNumber,
-      @JsonKey(name: 'officerInChargeId') final String? officerInChargeId,
-      @JsonKey(name: 'cboOrgNumber') final String? cboOrgNumber,
-      @JsonKey(name: 'estimateNumber') final String? estimateNumber,
-      @JsonKey(name: 'locality') final String? locality,
-      @JsonKey(name: 'projectType') final String? projectType,
-      @JsonKey(name: 'timeExtReason') final String? timeExtReason,
-      @JsonKey(name: 'ward') final String? ward,
-      @JsonKey(name: 'officerInChargeDesgn') final String? officerInChargeDesgn,
-      @JsonKey(name: 'projectDesc') final String? projectDesc,
-      @JsonKey(name: 'projectName') final String? projectName,
-      @JsonKey(name: 'cboCode') final String? cboCode,
-      @JsonKey(name: 'projectId') final String? projectId,
-      @JsonKey(name: 'cboName') final String? cboName,
-      @JsonKey(name: 'timeExt') final dynamic timeExt,
-      @JsonKey(name: 'completionPeriod') final int? completionPeriod,
-      @JsonKey(name: 'estimateDocs') final List<EstmateDoc>? estmateDocs,
-      @JsonKey(name: 'termsAndConditions')
-      final List<TermsAndConditions>?
-          termsAndConditions}) = _$ContractAdditionalDetailsImpl;
+          {@JsonKey(name: 'orgName')
+              final String? orgName,
+          @JsonKey(name: 'totalEstimatedAmount')
+              final double? totalEstimatedAmount,
+          @JsonKey(name: 'attendanceRegisterNumber')
+              final String? attendanceRegisterNumber,
+          @JsonKey(name: 'officerInChargeId')
+              final String? officerInChargeId,
+          @JsonKey(name: 'cboOrgNumber')
+              final String? cboOrgNumber,
+          @JsonKey(name: 'estimateNumber')
+              final String? estimateNumber,
+          @JsonKey(name: 'locality')
+              final String? locality,
+          @JsonKey(name: 'projectType')
+              final String? projectType,
+          @JsonKey(name: 'timeExtReason')
+              final String? timeExtReason,
+          @JsonKey(name: 'ward')
+              final String? ward,
+          @JsonKey(name: 'officerInChargeDesgn')
+              final String? officerInChargeDesgn,
+          @JsonKey(name: 'projectDesc')
+              final String? projectDesc,
+          @JsonKey(name: 'projectName')
+              final String? projectName,
+          @JsonKey(name: 'cboCode')
+              final String? cboCode,
+          @JsonKey(name: 'projectId')
+              final String? projectId,
+          @JsonKey(name: 'cboName')
+              final String? cboName,
+          @JsonKey(name: 'timeExt')
+              final dynamic timeExt,
+          @JsonKey(name: 'completionPeriod')
+              final int? completionPeriod,
+          @JsonKey(name: 'estimateDocs')
+              final List<EstmateDoc>? estmateDocs,
+          @JsonKey(name: 'termsAndConditions')
+              final List<TermsAndConditions>? termsAndConditions}) =
+      _$ContractAdditionalDetailsImpl;
 
   factory _ContractAdditionalDetails.fromJson(Map<String, dynamic> json) =
       _$ContractAdditionalDetailsImpl.fromJson;
@@ -6248,19 +6451,30 @@ class __$$LineItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$LineItemImpl implements _LineItem {
   const _$LineItemImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'estimateId') this.estimateId,
-      @JsonKey(name: 'estimateLineItemId') this.estimateLineItemId,
-      @JsonKey(name: 'contractLineItemRef') this.contractLineItemRef,
-      @JsonKey(name: 'tenantId') this.tenantId,
-      @JsonKey(name: 'unitRate') this.unitRate,
-      @JsonKey(name: 'category') this.category,
-      @JsonKey(name: 'noOfunit') this.noOfunit,
-      @JsonKey(name: 'name') this.name,
-      @JsonKey(name: 'status') this.status,
+      {@JsonKey(name: 'id')
+          this.id,
+      @JsonKey(name: 'estimateId')
+          this.estimateId,
+      @JsonKey(name: 'estimateLineItemId')
+          this.estimateLineItemId,
+      @JsonKey(name: 'contractLineItemRef')
+          this.contractLineItemRef,
+      @JsonKey(name: 'tenantId')
+          this.tenantId,
+      @JsonKey(name: 'unitRate')
+          this.unitRate,
+      @JsonKey(name: 'category')
+          this.category,
+      @JsonKey(name: 'noOfunit')
+          this.noOfunit,
+      @JsonKey(name: 'name')
+          this.name,
+      @JsonKey(name: 'status')
+          this.status,
       @JsonKey(name: 'amountBreakups')
-      final List<AmountBreakup>? amountBreakups,
-      @JsonKey(name: 'auditDetails') this.auditDetails})
+          final List<AmountBreakup>? amountBreakups,
+      @JsonKey(name: 'auditDetails')
+          this.auditDetails})
       : _amountBreakups = amountBreakups;
 
   factory _$LineItemImpl.fromJson(Map<String, dynamic> json) =>
@@ -6377,20 +6591,30 @@ class _$LineItemImpl implements _LineItem {
 
 abstract class _LineItem implements LineItem {
   const factory _LineItem(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'estimateId') final String? estimateId,
-      @JsonKey(name: 'estimateLineItemId') final String? estimateLineItemId,
-      @JsonKey(name: 'contractLineItemRef') final String? contractLineItemRef,
-      @JsonKey(name: 'tenantId') final String? tenantId,
-      @JsonKey(name: 'unitRate') final double? unitRate,
-      @JsonKey(name: 'category') final String? category,
-      @JsonKey(name: 'noOfunit') final num? noOfunit,
-      @JsonKey(name: 'name') final String? name,
-      @JsonKey(name: 'status') final String? status,
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'estimateId')
+          final String? estimateId,
+      @JsonKey(name: 'estimateLineItemId')
+          final String? estimateLineItemId,
+      @JsonKey(name: 'contractLineItemRef')
+          final String? contractLineItemRef,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'unitRate')
+          final double? unitRate,
+      @JsonKey(name: 'category')
+          final String? category,
+      @JsonKey(name: 'noOfunit')
+          final num? noOfunit,
+      @JsonKey(name: 'name')
+          final String? name,
+      @JsonKey(name: 'status')
+          final String? status,
       @JsonKey(name: 'amountBreakups')
-      final List<AmountBreakup>? amountBreakups,
+          final List<AmountBreakup>? amountBreakups,
       @JsonKey(name: 'auditDetails')
-      final AuditDetails? auditDetails}) = _$LineItemImpl;
+          final AuditDetails? auditDetails}) = _$LineItemImpl;
 
   factory _LineItem.fromJson(Map<String, dynamic> json) =
       _$LineItemImpl.fromJson;
@@ -6626,11 +6850,14 @@ class _$AmountBreakupImpl implements _AmountBreakup {
 
 abstract class _AmountBreakup implements AmountBreakup {
   const factory _AmountBreakup(
-      {@JsonKey(name: 'id') final String? id,
+      {@JsonKey(name: 'id')
+          final String? id,
       @JsonKey(name: 'estimateAmountBreakupId')
-      final String? estimateAmountBreakupId,
-      @JsonKey(name: 'amount') final double? amount,
-      @JsonKey(name: 'status') final String? status}) = _$AmountBreakupImpl;
+          final String? estimateAmountBreakupId,
+      @JsonKey(name: 'amount')
+          final double? amount,
+      @JsonKey(name: 'status')
+          final String? status}) = _$AmountBreakupImpl;
 
   factory _AmountBreakup.fromJson(Map<String, dynamic> json) =
       _$AmountBreakupImpl.fromJson;

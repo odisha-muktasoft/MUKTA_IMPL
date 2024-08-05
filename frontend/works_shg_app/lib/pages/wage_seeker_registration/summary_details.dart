@@ -22,7 +22,6 @@ import '../../models/wage_seeker/individual_details_model.dart';
 import '../../models/wage_seeker/location_details_model.dart';
 import '../../utils/global_variables.dart';
 import '../../utils/notifiers.dart';
-import 'package:async/async.dart';
 import 'dart:async';
 import '../../widgets/loaders.dart' as shg_loader;
 

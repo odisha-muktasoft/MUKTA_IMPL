@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
-import 'package:works_shg_app/blocs/employee/estimate/estimate.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
-import 'package:works_shg_app/blocs/employee/mb/project_type.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
@@ -1127,18 +1125,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       width: MediaQuery.sizeOf(
                                                                               context)
                                                                           .width,
+                                                                           height: 25,
                                                                       child:
                                                                           Text(
-                                                                        AppLocalizations.of(context)
-                                                                            .translate(
+                                                                        
                                                                           mm![index]
                                                                               .name
                                                                               .toString(),
-                                                                        ),
+                                                                        
                                                                         maxLines:
-                                                                            3,
+                                                                            1,
                                                                         overflow:
                                                                             TextOverflow.ellipsis,
+                                                                              style: DigitTheme.instance.mobileTheme.textTheme.bodyMedium,
                                                                       ),
                                                                     ),
                                                                   ),
@@ -1174,18 +1173,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                           .sizeOf(
                                                                               context)
                                                                       .width,
+                                                                      height: 25,
                                                                   child: Text(
-                                                                    AppLocalizations.of(
-                                                                            context)
-                                                                        .translate(
+                                                                   
                                                                       mm![index]
                                                                           .name
                                                                           .toString(),
-                                                                    ),
-                                                                    maxLines: 3,
+                                                                    
+                                                                    maxLines: 1,
+                                                                    softWrap: true,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
+                                                                            style: DigitTheme.instance.mobileTheme.textTheme.bodyMedium,
                                                                   ),
                                                                 ),
                                                               ),
@@ -1426,15 +1426,15 @@ class _MBDetailPageState extends State<MBDetailPage>
   double photoSize(int photok) {
     switch (photok) {
       case 1:
-        return (photok * 115) + 112;
+        return (photok * 115) + 132;
       case 2:
-        return (photok * 100) + 88;
+        return (photok * 100) + 120;
       case 3:
-        return (photok * 100) + 80;
+        return (photok * 100) + 90;
       case 4:
-        return (photok * 90) + 80;
+        return (photok * 90) + 100;
       case 5:
-        return (photok * 80) + 80;
+        return (photok * 86.2) + 100;
 
       default:
         return 350;
@@ -1473,217 +1473,214 @@ class _MBDetailPageState extends State<MBDetailPage>
           });
 
     return Card(
-      child: SizedBox(
-        height: 480,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "$cardLevel ${index + 1}",
-                  style:
-                      DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "$cardLevel ${index + 1}",
+                style:
+                    DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+              ),
+            ),
+            SORTableCard(
+              element: {
+                t.translate(i18.measurementBook.description):
+                    magic.first.contracts!.first.estimates!.first.name,
+                t.translate(i18.measurementBook.unit): line[0].uom,
+                t.translate(i18.measurementBook.rate):
+                    line[0].unitRate == null
+                        ? 0.00
+                        : double.parse(line[0].unitRate!.toString())
+                            .toStringAsFixed(2),
+                t.translate(i18.measurementBook.approvedQty): noOfQty,
+      
+                //TODO:[localization]
+                "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
+                    //  t.translate(i18.measurementBook.consumedQty):
+                    preSorNonSor == null ? "0.0000" : preConumed
+              },
+            ),
+      
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text(t.translate(i18.measurementBook.currentMBEntry),
+                      style: Theme.of(context).textTheme.headlineSmall),
                 ),
-              ),
-              SORTableCard(
-                element: {
-                  t.translate(i18.measurementBook.description):
-                      magic.first.contracts!.first.estimates!.first.name,
-                  t.translate(i18.measurementBook.unit): line[0].uom,
-                  t.translate(i18.measurementBook.rate):
-                      line[0].unitRate == null
-                          ? 0.00
-                          : double.parse(line[0].unitRate!.toString())
-                              .toStringAsFixed(2),
-                  t.translate(i18.measurementBook.approvedQty): noOfQty,
-
-                  //TODO:[localization]
-                  "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
-                      //  t.translate(i18.measurementBook.consumedQty):
-                      preSorNonSor == null ? "0.0000" : preConumed
-                },
-              ),
-
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(t.translate(i18.measurementBook.currentMBEntry),
-                        style: Theme.of(context).textTheme.headlineSmall),
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const DigitColors().cloudGray,
+                      width: 2.0,
+                    ),
+                    borderRadius: BorderRadius.circular(1),
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const DigitColors().cloudGray,
-                        width: 2.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4.0),
+                        child: Text(
+                          (magic.fold(0.0, (sum, obj) {
+                            double m;
+                            if (obj.contracts?.first.estimates?.first
+                                    .isDeduction ==
+                                false) {
+                              m = obj.measureLineItems!.fold(0.0,
+                                  (subSum, ob) {
+                                double mk =
+                                    double.parse(ob.quantity!.toString());
+                                return subSum + mk;
+                              });
+                            } else {
+                              m = obj.measureLineItems!.fold(0.0,
+                                  (subSum, ob) {
+                                double mr =
+                                    double.parse(ob.quantity!.toString());
+                                return subSum + mr;
+                              });
+                              m = -m;
+                            }
+                            return sum + m;
+                          })).toStringAsFixed(4),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 3,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 4.0),
-                          child: Text(
-                            (magic.fold(0.0, (sum, obj) {
-                              double m;
-                              if (obj.contracts?.first.estimates?.first
-                                      .isDeduction ==
-                                  false) {
-                                m = obj.measureLineItems!.fold(0.0,
-                                    (subSum, ob) {
-                                  double mk =
-                                      double.parse(ob.quantity!.toString());
-                                  return subSum + mk;
-                                });
-                              } else {
-                                m = obj.measureLineItems!.fold(0.0,
-                                    (subSum, ob) {
-                                  double mr =
-                                      double.parse(ob.quantity!.toString());
-                                  return subSum + mr;
-                                });
-                                m = -m;
-                              }
-                              return sum + m;
-                            })).toStringAsFixed(4),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            maxLines: 3,
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: ctx,
+                            builder: (_) {
+                              return HorizontalCardListDialog(
+                                lineItems: magic,
+                                index: index,
+                                type: type,
+                                // noOfUnit: line[0].noOfunit,
+                                noOfUnit: noOfQty,
+                                cummulativePrevQty: preSorNonSor == null
+                                    ? 0.0000
+                                    // : preSorNonSor!.first.cumulativeValue,
+                                    : preSorNonSor!.fold(0.0000, (sum, obj) {
+                                        double m = obj
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .isDeduction ==
+                                                true
+                                            ? -(obj.cumulativeValue!)
+                                            : (obj.cumulativeValue!);
+                                        return sum + m.toDouble();
+                                      }),
+                                sorId: sorNonSorId,
+                              );
+                            },
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 0.0),
+                          child: Icon(
+                            Icons.add_circle,
+                            size: 30,
+                            color: const DigitColors().burningOrange,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: ctx,
-                              builder: (_) {
-                                return HorizontalCardListDialog(
-                                  lineItems: magic,
-                                  index: index,
-                                  type: type,
-                                  // noOfUnit: line[0].noOfunit,
-                                  noOfUnit: noOfQty,
-                                  cummulativePrevQty: preSorNonSor == null
-                                      ? 0.0000
-                                      // : preSorNonSor!.first.cumulativeValue,
-                                      : preSorNonSor!.fold(0.0000, (sum, obj) {
-                                          double m = obj
-                                                      .contracts!
-                                                      .first
-                                                      .estimates!
-                                                      .first
-                                                      .isDeduction ==
-                                                  true
-                                              ? -(obj.cumulativeValue!)
-                                              : (obj.cumulativeValue!);
-                                          return sum + m.toDouble();
-                                        }),
-                                  sorId: sorNonSorId,
-                                );
-                              },
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 0.0),
-                            child: Icon(
-                              Icons.add_circle,
-                              size: 30,
-                              color: const DigitColors().burningOrange,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-
-              // end
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                ),
+              ],
+            ),
+      
+            // end
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                  child: Text(
+                    t.translate(i18.measurementBook.mbAmtCurrentEntry),
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    textScaleFactor: 0.99,
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.sizeOf(context).width,
+                  padding: const EdgeInsets.only(
+                      top: 10.0, left: 5.0, right: 5.0, bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: const DigitColors().cloudGray,
+                      width: 2.0,
+                    ),
+                    borderRadius: BorderRadius.circular(1),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
                     child: Text(
-                      t.translate(i18.measurementBook.mbAmtCurrentEntry),
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textScaleFactor: 0.99,
+                      (magic.fold(0.0, (sum, obj) {
+                        double m = obj.mbAmount != null
+                            ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                                ? (obj.mbAmount! * (-1))
+                                : obj.mbAmount!
+                            : 0.00;
+                        if (obj.contracts?.first.estimates?.first
+                                .isDeduction ==
+                            true) {
+                          m = -(m); // Negate the amount for deductions
+                        } else {
+                          m = (m);
+                        }
+                        return sum + m;
+                      })).toStringAsFixed(2),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      maxLines: 3,
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width,
-                    padding: const EdgeInsets.only(
-                        top: 10.0, left: 5.0, right: 5.0, bottom: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: const DigitColors().cloudGray,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: Text(
-                        (magic.fold(0.0, (sum, obj) {
-                          double m = obj.mbAmount != null
-                              ? (obj.mbAmount != null && obj.mbAmount! < 0)
-                                  ? (obj.mbAmount! * (-1))
-                                  : obj.mbAmount!
-                              : 0.00;
-                          if (obj.contracts?.first.estimates?.first
-                                  .isDeduction ==
-                              true) {
-                            m = -(m); // Negate the amount for deductions
-                          } else {
-                            m = (m);
-                          }
-                          return sum + m;
-                        })).toStringAsFixed(2),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        maxLines: 3,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-
-              //
-
-              // DigitTextField(
-              //   controller: TextEditingController()
-              //     ..value
-              //     ..text = (magic.fold(0.0, (sum, obj) {
-              //       double m = obj.mbAmount != null
-              //           ? (obj.mbAmount != null && obj.mbAmount! < 0)
-              //               ? (obj.mbAmount! * (-1))
-              //               : obj.mbAmount!
-              //           : 0.00;
-              //       if (obj.contracts?.first.estimates?.first.isDeduction ==
-              //           true) {
-              //         m = -(m); // Negate the amount for deductions
-              //       } else {
-              //         m = (m);
-              //       }
-              //       return sum + m;
-              //     })).toStringAsFixed(2),
-              //   label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
-              //   isDisabled: true,
-              // ),
-            ],
-          ),
+                ),
+              ],
+            ),
+      
+            //
+      
+            // DigitTextField(
+            //   controller: TextEditingController()
+            //     ..value
+            //     ..text = (magic.fold(0.0, (sum, obj) {
+            //       double m = obj.mbAmount != null
+            //           ? (obj.mbAmount != null && obj.mbAmount! < 0)
+            //               ? (obj.mbAmount! * (-1))
+            //               : obj.mbAmount!
+            //           : 0.00;
+            //       if (obj.contracts?.first.estimates?.first.isDeduction ==
+            //           true) {
+            //         m = -(m); // Negate the amount for deductions
+            //       } else {
+            //         m = (m);
+            //       }
+            //       return sum + m;
+            //     })).toStringAsFixed(2),
+            //   label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
+            //   isDisabled: true,
+            // ),
+          ],
         ),
       ),
     );
@@ -1737,8 +1734,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
+                      
                       // "Total SOR Amount",
                       t.translate(i18.measurementBook.totalSorAmount),
+                      maxLines: 1,
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),

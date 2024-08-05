@@ -21,8 +21,7 @@ mixin _$MeasurementDetailBlocEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -53,8 +52,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -75,8 +73,7 @@ mixin _$MeasurementDetailBlocEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -107,8 +104,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -129,8 +125,7 @@ mixin _$MeasurementDetailBlocEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -161,8 +156,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -345,8 +339,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -377,8 +370,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -402,8 +394,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -434,8 +425,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -459,8 +449,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -491,8 +480,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -703,8 +691,7 @@ class _$MeasurementDetailBookBlocEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -735,8 +722,7 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -760,8 +746,7 @@ class _$MeasurementDetailBookBlocEventImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -792,8 +777,7 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -818,8 +802,7 @@ class _$MeasurementDetailBookBlocEventImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -850,8 +833,7 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -1002,8 +984,7 @@ class _$MeasurementDetailBlocClearEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1034,8 +1015,7 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1059,8 +1039,7 @@ class _$MeasurementDetailBlocClearEventImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1091,8 +1070,7 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -1116,8 +1094,7 @@ class _$MeasurementDetailBlocClearEventImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -1148,8 +1125,7 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -1430,8 +1406,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1462,8 +1437,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1498,8 +1472,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -1530,8 +1503,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -1566,8 +1538,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -1598,8 +1569,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -1929,8 +1899,7 @@ class _$UpdateToMeasurementLineEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1961,8 +1930,7 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1998,8 +1966,7 @@ class _$UpdateToMeasurementLineEventImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2030,8 +1997,7 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -2067,8 +2033,7 @@ class _$UpdateToMeasurementLineEventImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2099,8 +2064,7 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -2302,8 +2266,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2334,8 +2297,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -2359,8 +2321,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2391,8 +2352,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -2416,8 +2376,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2448,8 +2407,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -2650,8 +2608,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2682,8 +2639,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -2708,8 +2664,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -2740,8 +2695,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -2766,8 +2720,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -2798,8 +2751,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -3045,8 +2997,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3077,8 +3028,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3103,8 +3053,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -3135,8 +3084,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -3161,8 +3109,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3193,8 +3140,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -3373,8 +3319,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3405,8 +3350,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3430,8 +3374,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -3462,8 +3405,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -3487,8 +3429,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3519,8 +3460,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,
@@ -3734,8 +3674,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3766,8 +3705,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic quantity)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3792,8 +3730,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult? Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult? Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult? Function()? clear,
     TResult? Function(
@@ -3824,8 +3761,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
-    TResult? Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult? Function(
             dynamic noOfUnit,
@@ -3850,8 +3786,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String tenantId, List<WorkflowDocument> workflowDocument)?
         uploadDocument,
-    TResult Function(String tenantId, String contractNumber,
-            String measurementNumber, MBScreen screenType)?
+    TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)?
         create,
     TResult Function()? clear,
     TResult Function(
@@ -3882,8 +3817,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic quantity)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
-    TResult Function(bool cancelUpdate, String sorId,
-            dynamic filteredMeasurementsMeasureId, String type)?
+    TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
         cancelUpdate,
     TResult Function(
             dynamic noOfUnit,

@@ -354,7 +354,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount!.toDouble().toStringAsFixed(2).toString(),
+                      totalSorAmount.toDouble().toStringAsFixed(2).toString(),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),

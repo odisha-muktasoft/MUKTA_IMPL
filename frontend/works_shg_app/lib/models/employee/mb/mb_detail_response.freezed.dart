@@ -477,11 +477,14 @@ class __$$WorkFlowImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$WorkFlowImpl implements _WorkFlow {
   const _$WorkFlowImpl(
-      {@JsonKey(name: 'action') this.action,
-      @JsonKey(name: 'comment') this.comment,
-      @JsonKey(name: 'assignees') final List<String>? assignees,
+      {@JsonKey(name: 'action')
+          this.action,
+      @JsonKey(name: 'comment')
+          this.comment,
+      @JsonKey(name: 'assignees')
+          final List<String>? assignees,
       @JsonKey(name: 'documents')
-      final List<WorkFlowSupportDocument>? documents})
+          final List<WorkFlowSupportDocument>? documents})
       : _assignees = assignees,
         _documents = documents;
 
@@ -559,11 +562,14 @@ class _$WorkFlowImpl implements _WorkFlow {
 
 abstract class _WorkFlow implements WorkFlow {
   const factory _WorkFlow(
-      {@JsonKey(name: 'action') final String? action,
-      @JsonKey(name: 'comment') final String? comment,
-      @JsonKey(name: 'assignees') final List<String>? assignees,
+      {@JsonKey(name: 'action')
+          final String? action,
+      @JsonKey(name: 'comment')
+          final String? comment,
+      @JsonKey(name: 'assignees')
+          final List<String>? assignees,
       @JsonKey(name: 'documents')
-      final List<WorkFlowSupportDocument>? documents}) = _$WorkFlowImpl;
+          final List<WorkFlowSupportDocument>? documents}) = _$WorkFlowImpl;
 
   factory _WorkFlow.fromJson(Map<String, dynamic> json) =
       _$WorkFlowImpl.fromJson;
@@ -879,19 +885,30 @@ abstract class $MusterRollCopyWith<$Res> {
       _$MusterRollCopyWithImpl<$Res, MusterRoll>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'tenantId') String? tenantId,
-      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber,
-      @JsonKey(name: 'registerId') String? registerId,
-      @JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'musterRollStatus') String? musterRollStatus,
-      @JsonKey(name: 'startDate') int? startDate,
-      @JsonKey(name: 'endDate') int? endDate,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'serviceCode') String? serviceCode,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+      {@JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'musterRollNumber')
+          dynamic musterRollNumber,
+      @JsonKey(name: 'registerId')
+          String? registerId,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'musterRollStatus')
+          String? musterRollStatus,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'serviceCode')
+          String? serviceCode,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      MusterRollAdditionalDetails? additional});
+          MusterRollAdditionalDetails? additional});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $MusterRollAdditionalDetailsCopyWith<$Res>? get additional;
@@ -1010,19 +1027,30 @@ abstract class _$$MusterRollImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'tenantId') String? tenantId,
-      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber,
-      @JsonKey(name: 'registerId') String? registerId,
-      @JsonKey(name: 'status') String? status,
-      @JsonKey(name: 'musterRollStatus') String? musterRollStatus,
-      @JsonKey(name: 'startDate') int? startDate,
-      @JsonKey(name: 'endDate') int? endDate,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'serviceCode') String? serviceCode,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+      {@JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'musterRollNumber')
+          dynamic musterRollNumber,
+      @JsonKey(name: 'registerId')
+          String? registerId,
+      @JsonKey(name: 'status')
+          String? status,
+      @JsonKey(name: 'musterRollStatus')
+          String? musterRollStatus,
+      @JsonKey(name: 'startDate')
+          int? startDate,
+      @JsonKey(name: 'endDate')
+          int? endDate,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'serviceCode')
+          String? serviceCode,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      MusterRollAdditionalDetails? additional});
+          MusterRollAdditionalDetails? additional});
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -1230,19 +1258,30 @@ class _$MusterRollImpl implements _MusterRoll {
 
 abstract class _MusterRoll implements MusterRoll {
   const factory _MusterRoll(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'tenantId') final String? tenantId,
-      @JsonKey(name: 'musterRollNumber') final dynamic musterRollNumber,
-      @JsonKey(name: 'registerId') final String? registerId,
-      @JsonKey(name: 'status') final String? status,
-      @JsonKey(name: 'musterRollStatus') final String? musterRollStatus,
-      @JsonKey(name: 'startDate') final int? startDate,
-      @JsonKey(name: 'endDate') final int? endDate,
-      @JsonKey(name: 'referenceId') final String? referenceId,
-      @JsonKey(name: 'serviceCode') final String? serviceCode,
-      @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails,
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'musterRollNumber')
+          final dynamic musterRollNumber,
+      @JsonKey(name: 'registerId')
+          final String? registerId,
+      @JsonKey(name: 'status')
+          final String? status,
+      @JsonKey(name: 'musterRollStatus')
+          final String? musterRollStatus,
+      @JsonKey(name: 'startDate')
+          final int? startDate,
+      @JsonKey(name: 'endDate')
+          final int? endDate,
+      @JsonKey(name: 'referenceId')
+          final String? referenceId,
+      @JsonKey(name: 'serviceCode')
+          final String? serviceCode,
+      @JsonKey(name: 'auditDetails')
+          final AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      final MusterRollAdditionalDetails? additional}) = _$MusterRollImpl;
+          final MusterRollAdditionalDetails? additional}) = _$MusterRollImpl;
 
   factory _MusterRoll.fromJson(Map<String, dynamic> json) =
       _$MusterRollImpl.fromJson;
@@ -1680,21 +1719,33 @@ class _$MusterRollAdditionalDetailsImpl
 abstract class _MusterRollAdditionalDetails
     implements MusterRollAdditionalDetails {
   const factory _MusterRollAdditionalDetails(
-      {@JsonKey(name: 'ward') final String? ward,
-      @JsonKey(name: 'orgId') final String? orgId,
-      @JsonKey(name: 'amount') final double? amount,
-      @JsonKey(name: 'orgName') final String? orgName,
-      @JsonKey(name: 'locality') final String? locality,
-      @JsonKey(name: 'projectId') final String? projectId,
-      @JsonKey(name: 'contractId') final String? contractId,
-      @JsonKey(name: 'projectDesc') final String? projectDesc,
-      @JsonKey(name: 'projectName') final String? projectName,
-      @JsonKey(name: 'projectType') final String? projectType,
-      @JsonKey(name: 'executingAuthority') final String? executingAuthority,
-      @JsonKey(name: 'attendanceRegisterNo') final String? attendanceRegisterNo,
-      @JsonKey(name: 'attendanceRegisterName')
-      final String?
-          attendanceRegisterName}) = _$MusterRollAdditionalDetailsImpl;
+          {@JsonKey(name: 'ward')
+              final String? ward,
+          @JsonKey(name: 'orgId')
+              final String? orgId,
+          @JsonKey(name: 'amount')
+              final double? amount,
+          @JsonKey(name: 'orgName')
+              final String? orgName,
+          @JsonKey(name: 'locality')
+              final String? locality,
+          @JsonKey(name: 'projectId')
+              final String? projectId,
+          @JsonKey(name: 'contractId')
+              final String? contractId,
+          @JsonKey(name: 'projectDesc')
+              final String? projectDesc,
+          @JsonKey(name: 'projectName')
+              final String? projectName,
+          @JsonKey(name: 'projectType')
+              final String? projectType,
+          @JsonKey(name: 'executingAuthority')
+              final String? executingAuthority,
+          @JsonKey(name: 'attendanceRegisterNo')
+              final String? attendanceRegisterNo,
+          @JsonKey(name: 'attendanceRegisterName')
+              final String? attendanceRegisterName}) =
+      _$MusterRollAdditionalDetailsImpl;
 
   factory _MusterRollAdditionalDetails.fromJson(Map<String, dynamic> json) =
       _$MusterRollAdditionalDetailsImpl.fromJson;
@@ -1791,20 +1842,32 @@ abstract class $MeasurementCopyWith<$Res> {
       _$MeasurementCopyWithImpl<$Res, Measurement>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'tenantId') String? tenantId,
-      @JsonKey(name: 'measurementNumber') String? measurementNumber,
-      @JsonKey(name: 'physicalRefNumber') String? physicalRefNumber,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'entryDate') int? entryDate,
-      @JsonKey(name: 'isActive') bool? isActive,
-      @JsonKey(name: 'wfStatus') String? wfStatus,
-      @JsonKey(name: 'workflow') WorkFlow? workflow,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+      {@JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'measurementNumber')
+          String? measurementNumber,
+      @JsonKey(name: 'physicalRefNumber')
+          String? physicalRefNumber,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'entryDate')
+          int? entryDate,
+      @JsonKey(name: 'isActive')
+          bool? isActive,
+      @JsonKey(name: 'wfStatus')
+          String? wfStatus,
+      @JsonKey(name: 'workflow')
+          WorkFlow? workflow,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      MeasurementAdditionalDetail? additionalDetail,
-      @JsonKey(name: 'measures') List<Measure>? measures,
-      @JsonKey(name: 'documents') List<WorkflowDocument>? documents});
+          MeasurementAdditionalDetail? additionalDetail,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures,
+      @JsonKey(name: 'documents')
+          List<WorkflowDocument>? documents});
 
   $WorkFlowCopyWith<$Res>? get workflow;
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -1941,20 +2004,32 @@ abstract class _$$MeasurementImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') String? id,
-      @JsonKey(name: 'tenantId') String? tenantId,
-      @JsonKey(name: 'measurementNumber') String? measurementNumber,
-      @JsonKey(name: 'physicalRefNumber') String? physicalRefNumber,
-      @JsonKey(name: 'referenceId') String? referenceId,
-      @JsonKey(name: 'entryDate') int? entryDate,
-      @JsonKey(name: 'isActive') bool? isActive,
-      @JsonKey(name: 'wfStatus') String? wfStatus,
-      @JsonKey(name: 'workflow') WorkFlow? workflow,
-      @JsonKey(name: 'auditDetails') AuditDetails? auditDetails,
+      {@JsonKey(name: 'id')
+          String? id,
+      @JsonKey(name: 'tenantId')
+          String? tenantId,
+      @JsonKey(name: 'measurementNumber')
+          String? measurementNumber,
+      @JsonKey(name: 'physicalRefNumber')
+          String? physicalRefNumber,
+      @JsonKey(name: 'referenceId')
+          String? referenceId,
+      @JsonKey(name: 'entryDate')
+          int? entryDate,
+      @JsonKey(name: 'isActive')
+          bool? isActive,
+      @JsonKey(name: 'wfStatus')
+          String? wfStatus,
+      @JsonKey(name: 'workflow')
+          WorkFlow? workflow,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      MeasurementAdditionalDetail? additionalDetail,
-      @JsonKey(name: 'measures') List<Measure>? measures,
-      @JsonKey(name: 'documents') List<WorkflowDocument>? documents});
+          MeasurementAdditionalDetail? additionalDetail,
+      @JsonKey(name: 'measures')
+          List<Measure>? measures,
+      @JsonKey(name: 'documents')
+          List<WorkflowDocument>? documents});
 
   @override
   $WorkFlowCopyWith<$Res>? get workflow;
@@ -2194,21 +2269,32 @@ class _$MeasurementImpl implements _Measurement {
 
 abstract class _Measurement implements Measurement {
   const factory _Measurement(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'tenantId') final String? tenantId,
-      @JsonKey(name: 'measurementNumber') final String? measurementNumber,
-      @JsonKey(name: 'physicalRefNumber') final String? physicalRefNumber,
-      @JsonKey(name: 'referenceId') final String? referenceId,
-      @JsonKey(name: 'entryDate') final int? entryDate,
-      @JsonKey(name: 'isActive') final bool? isActive,
-      @JsonKey(name: 'wfStatus') final String? wfStatus,
-      @JsonKey(name: 'workflow') final WorkFlow? workflow,
-      @JsonKey(name: 'auditDetails') final AuditDetails? auditDetails,
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'measurementNumber')
+          final String? measurementNumber,
+      @JsonKey(name: 'physicalRefNumber')
+          final String? physicalRefNumber,
+      @JsonKey(name: 'referenceId')
+          final String? referenceId,
+      @JsonKey(name: 'entryDate')
+          final int? entryDate,
+      @JsonKey(name: 'isActive')
+          final bool? isActive,
+      @JsonKey(name: 'wfStatus')
+          final String? wfStatus,
+      @JsonKey(name: 'workflow')
+          final WorkFlow? workflow,
+      @JsonKey(name: 'auditDetails')
+          final AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      final MeasurementAdditionalDetail? additionalDetail,
-      @JsonKey(name: 'measures') final List<Measure>? measures,
+          final MeasurementAdditionalDetail? additionalDetail,
+      @JsonKey(name: 'measures')
+          final List<Measure>? measures,
       @JsonKey(name: 'documents')
-      final List<WorkflowDocument>? documents}) = _$MeasurementImpl;
+          final List<WorkflowDocument>? documents}) = _$MeasurementImpl;
 
   factory _Measurement.fromJson(Map<String, dynamic> json) =
       _$MeasurementImpl.fromJson;
@@ -3107,25 +3193,42 @@ class __$$EstimateImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$EstimateImpl implements _Estimate {
   const _$EstimateImpl(
-      {@JsonKey(name: 'id') this.id,
-      @JsonKey(name: 'tenantId') this.tenantId,
-      @JsonKey(name: 'estimateNumber') this.estimateNumber,
-      @JsonKey(name: 'revisionNumber') this.revisionNumber,
-      @JsonKey(name: 'businessService') this.businessService,
-      @JsonKey(name: 'oldUuid') this.oldUuid,
-      @JsonKey(name: 'projectId') this.projectId,
-      @JsonKey(name: 'versionNumber') this.versionNumber,
-      @JsonKey(name: 'proposalDate') this.proposalDate,
-      @JsonKey(name: 'status') this.status,
-      @JsonKey(name: 'wfStatus') this.wfStatus,
-      @JsonKey(name: 'name') this.name,
-      @JsonKey(name: 'referenceNumber') this.referenceNumber,
-      @JsonKey(name: 'description') this.description,
-      @JsonKey(name: 'executingDepartment') this.executingDepartment,
-      @JsonKey(name: 'address') this.address,
+      {@JsonKey(name: 'id')
+          this.id,
+      @JsonKey(name: 'tenantId')
+          this.tenantId,
+      @JsonKey(name: 'estimateNumber')
+          this.estimateNumber,
+      @JsonKey(name: 'revisionNumber')
+          this.revisionNumber,
+      @JsonKey(name: 'businessService')
+          this.businessService,
+      @JsonKey(name: 'oldUuid')
+          this.oldUuid,
+      @JsonKey(name: 'projectId')
+          this.projectId,
+      @JsonKey(name: 'versionNumber')
+          this.versionNumber,
+      @JsonKey(name: 'proposalDate')
+          this.proposalDate,
+      @JsonKey(name: 'status')
+          this.status,
+      @JsonKey(name: 'wfStatus')
+          this.wfStatus,
+      @JsonKey(name: 'name')
+          this.name,
+      @JsonKey(name: 'referenceNumber')
+          this.referenceNumber,
+      @JsonKey(name: 'description')
+          this.description,
+      @JsonKey(name: 'executingDepartment')
+          this.executingDepartment,
+      @JsonKey(name: 'address')
+          this.address,
       @JsonKey(name: 'estimateDetails')
-      final List<EstimateDetail>? estimateDetails,
-      @JsonKey(name: 'auditDetails') this.auditDetails})
+          final List<EstimateDetail>? estimateDetails,
+      @JsonKey(name: 'auditDetails')
+          this.auditDetails})
       : _estimateDetails = estimateDetails;
 
   factory _$EstimateImpl.fromJson(Map<String, dynamic> json) =>
@@ -3276,26 +3379,42 @@ class _$EstimateImpl implements _Estimate {
 
 abstract class _Estimate implements Estimate {
   const factory _Estimate(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'tenantId') final String? tenantId,
-      @JsonKey(name: 'estimateNumber') final String? estimateNumber,
-      @JsonKey(name: 'revisionNumber') final String? revisionNumber,
-      @JsonKey(name: 'businessService') final String? businessService,
-      @JsonKey(name: 'oldUuid') final String? oldUuid,
-      @JsonKey(name: 'projectId') final String? projectId,
-      @JsonKey(name: 'versionNumber') final int? versionNumber,
-      @JsonKey(name: 'proposalDate') final int? proposalDate,
-      @JsonKey(name: 'status') final String? status,
-      @JsonKey(name: 'wfStatus') final String? wfStatus,
-      @JsonKey(name: 'name') final String? name,
-      @JsonKey(name: 'referenceNumber') final String? referenceNumber,
-      @JsonKey(name: 'description') final String? description,
-      @JsonKey(name: 'executingDepartment') final String? executingDepartment,
-      @JsonKey(name: 'address') final EstimateAddress? address,
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'tenantId')
+          final String? tenantId,
+      @JsonKey(name: 'estimateNumber')
+          final String? estimateNumber,
+      @JsonKey(name: 'revisionNumber')
+          final String? revisionNumber,
+      @JsonKey(name: 'businessService')
+          final String? businessService,
+      @JsonKey(name: 'oldUuid')
+          final String? oldUuid,
+      @JsonKey(name: 'projectId')
+          final String? projectId,
+      @JsonKey(name: 'versionNumber')
+          final int? versionNumber,
+      @JsonKey(name: 'proposalDate')
+          final int? proposalDate,
+      @JsonKey(name: 'status')
+          final String? status,
+      @JsonKey(name: 'wfStatus')
+          final String? wfStatus,
+      @JsonKey(name: 'name')
+          final String? name,
+      @JsonKey(name: 'referenceNumber')
+          final String? referenceNumber,
+      @JsonKey(name: 'description')
+          final String? description,
+      @JsonKey(name: 'executingDepartment')
+          final String? executingDepartment,
+      @JsonKey(name: 'address')
+          final EstimateAddress? address,
       @JsonKey(name: 'estimateDetails')
-      final List<EstimateDetail>? estimateDetails,
+          final List<EstimateDetail>? estimateDetails,
       @JsonKey(name: 'auditDetails')
-      final AuditDetails? auditDetails}) = _$EstimateImpl;
+          final AuditDetails? auditDetails}) = _$EstimateImpl;
 
   factory _Estimate.fromJson(Map<String, dynamic> json) =
       _$EstimateImpl.fromJson;
@@ -3830,24 +3949,40 @@ class _$EstimateDetailImpl implements _EstimateDetail {
 
 abstract class _EstimateDetail implements EstimateDetail {
   const factory _EstimateDetail(
-      {@JsonKey(name: 'id') final String? id,
-      @JsonKey(name: 'previousLineItemId') final String? previousLineItemId,
-      @JsonKey(name: 'sorId') final String? sorId,
-      @JsonKey(name: 'category') final String? category,
-      @JsonKey(name: 'name') final String? name,
-      @JsonKey(name: 'description') final String? description,
-      @JsonKey(name: 'unitRate') final double? unitRate,
-      @JsonKey(name: 'noOfunit') final num? noOfunit,
-      @JsonKey(name: 'uom') final String? uom,
-      @JsonKey(name: 'uomValue') final double? uomValue,
-      @JsonKey(name: 'length') final num? length,
-      @JsonKey(name: 'width') final num? width,
-      @JsonKey(name: 'height') final num? height,
-      @JsonKey(name: 'quantity') final num? quantity,
-      @JsonKey(name: 'isDeduction') final bool? isDeduction,
-      @JsonKey(name: 'isActive') final bool? isActive,
+      {@JsonKey(name: 'id')
+          final String? id,
+      @JsonKey(name: 'previousLineItemId')
+          final String? previousLineItemId,
+      @JsonKey(name: 'sorId')
+          final String? sorId,
+      @JsonKey(name: 'category')
+          final String? category,
+      @JsonKey(name: 'name')
+          final String? name,
+      @JsonKey(name: 'description')
+          final String? description,
+      @JsonKey(name: 'unitRate')
+          final double? unitRate,
+      @JsonKey(name: 'noOfunit')
+          final num? noOfunit,
+      @JsonKey(name: 'uom')
+          final String? uom,
+      @JsonKey(name: 'uomValue')
+          final double? uomValue,
+      @JsonKey(name: 'length')
+          final num? length,
+      @JsonKey(name: 'width')
+          final num? width,
+      @JsonKey(name: 'height')
+          final num? height,
+      @JsonKey(name: 'quantity')
+          final num? quantity,
+      @JsonKey(name: 'isDeduction')
+          final bool? isDeduction,
+      @JsonKey(name: 'isActive')
+          final bool? isActive,
       @JsonKey(name: 'amountDetail')
-      final List<AmoutDetail>? amountDetails}) = _$EstimateDetailImpl;
+          final List<AmoutDetail>? amountDetails}) = _$EstimateDetailImpl;
 
   factory _EstimateDetail.fromJson(Map<String, dynamic> json) =
       _$EstimateDetailImpl.fromJson;
