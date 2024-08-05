@@ -236,7 +236,7 @@ public class ContractEnrichment {
                 // Contract start date will be MID time of today's date
                 long startTime = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
                 long localDateTimeMIN = localDate.atTime(LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-                long endDate = localDateTimeMIN + TimeUnit.DAYS.toMillis(contract.getCompletionPeriod());
+                long endDate = localDateTimeMIN + TimeUnit.DAYS.toMillis(contract.getCompletionPeriod() - 1);
                 contract.setStartDate(new BigDecimal(startTime));
                 contract.setEndDate(new BigDecimal(endDate));
             }
