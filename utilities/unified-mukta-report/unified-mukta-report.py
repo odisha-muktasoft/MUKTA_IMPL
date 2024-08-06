@@ -30,6 +30,7 @@ ESTIMATE_HOST = os.getenv('ESTIMATE_HOST')
 IFMS_ADAPTER_HOST = os.getenv('IFMS_ADAPTER_HOST')
 ENC_HOST = os.getenv('ENC_HOST')
 ORG_HOST = os.getenv('ORG_HOST')
+EXPENSE_CALC_HOST = os.getenv('EXPENSE_CALC_HOST')
 
 tenantids = [
     "od.jatni"
@@ -720,6 +721,31 @@ def getOrgDetails(org_number, tenantid):
     except Exception as e:
         raise e
 
+def getExpenseCalculationBills(contract_number, tenantid):
+    data = []
+    print(" Getting bill details for " + contract_number)
+    try:
+        host = EXPENSE_CALC_HOST + os.getenv('EXPENSE_CALC_SEARCH')
+        request_payload = {"apiId": "Rainmaker","authToken": "3bb0c045-6e5c-4002-8504-6069bf20a5ba","userInfo": {"id": 271,"uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11"},"msgId": "1705908972414|en_IN","plainAccessRequest": {}}
+        headers = {"Content-Type": "application/json"}
+        api_limit = 100
+        api_offset = 0
+        while True:
+            api_payload = {"searchCriteria": {"contractNumbers": [contract_number], "tenantId": tenantid},"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
+            response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+            api_offset = api_offset + api_limit
+            if response and response.status_code and response.status_code in [200, 202]:
+                response = response.json()
+                if response and response['bills'] and len(response['bills'])>0:
+                    bills = response['bills']
+                    return bills
+                else:
+                    break
+            else:
+                break
+    except Exception as e:
+        raise e
+                        
 
 def getCBOReportData():
     data = []
@@ -741,18 +767,38 @@ def getCBOReportData():
                     if response and response['contracts'] and len(response['contracts'])>0:
                         for contract in response['contracts']:
                             if contract['status'] == "ACTIVE":
-                                temp = {}
-                                temp['ULB Name'] = format_tenant_id(tenantid)
-                                temp['Project ID'] = contract['additionalDetails']['projectId']
-                                temp['CBO Name'] = contract['additionalDetails']['cboName']
+                                parent_data = {
+                                    'ULB Name': format_tenant_id(tenantid),
+                                    'Project ID': contract['additionalDetails']['projectId'],
+                                    'CBO Name': contract['additionalDetails']['cboName'],
+                                }
                                 org_number = contract['additionalDetails']['cboOrgNumber']
                                 orgDetails = getOrgDetails(org_number, tenantid)
                                 if orgDetails:
-                                    temp['CBO Type'] = orgDetails['functions'][0]['type']
-                                    temp['CBO ID'] = orgDetails['orgNumber']
-                                    temp['Mobile Number'] = orgDetails['contactDetails'][0]['contactMobileNumber']
-                                    temp['Ward Number'] = orgDetails['orgAddress'][0]['boundaryCode']
-                                    data.append(temp)
+                                    child_data = {
+                                        'CBO Type': orgDetails['functions'][0]['type'].split(".")[1],
+                                        'CBO ID': orgDetails['orgNumber'],
+                                        'Mobile Number': orgDetails['contactDetails'][0]['contactMobileNumber'],
+                                        'Ward Number': orgDetails['orgAddress'][0]['boundaryCode'],
+                                        'Name of the Contact Person': orgDetails['contactDetails'][0]['contactName'],
+                                        'Contact Person Mobile No': orgDetails['contactDetails'][0]['contactMobileNumber'],
+                                    }
+                                contract_number = contract['contractNumber']
+                                expense_calc_bills = getExpenseCalculationBills(contract_number, tenantid)
+                                if expense_calc_bills:
+                                    for expense_bill in expense_calc_bills:
+                                        bill = expense_bill['bill']
+                                        if bill['status'] == "ACTIVE":
+                                            org_id = expense_bill['orgId']
+                                            for bill_detail in bill['billDetails']:
+                                                if bill_detail['payee']['identifier'] == org_id:
+                                                    grand_child_data = {
+                                                        'Payment Amount': bill['totalAmount'],
+                                                        'Payment Date': convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime']),
+                                                        'Payment Type': bill['businessService'].split(".")[1],
+                                                    }
+                                                    data.append({**parent_data, **child_data, **grand_child_data})
+                                                    break
                     else:
                         break 
                 else:
@@ -887,15 +933,15 @@ if __name__ == '__main__':
         # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
         # writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
-        # # CBO Report
-        # CBO_report_data = getCBOReportData()
-        # CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
-        # writeDataToCSV(CBO_report_data, CBO_report_file_path)
+        # CBO Report
+        CBO_report_data = getCBOReportData()
+        CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
+        writeDataToCSV(CBO_report_data, CBO_report_file_path)
 
-        # Wage Seeker Report
-        WageSeeker_report_data = getWageSeekerReportData()
-        WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
-        writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
+        # # Wage Seeker Report
+        # WageSeeker_report_data = getWageSeekerReportData()
+        # WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
+        # writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
