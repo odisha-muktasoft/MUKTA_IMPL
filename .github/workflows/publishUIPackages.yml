@@ -8,6 +8,7 @@ on:
       # Push events to branches matching refs/heads/mona/octocat
       - 'UAT'
       - 'MUKTA-v2.1-Develop'
+      - 'UAT-BACKUP-3-JULY-2024'
     paths:
       - 'frontend/micro-ui/web/micro-ui-internals/**'
   pull_request:
@@ -17,7 +18,9 @@ on:
       # Push events to branches matching refs/heads/mona/octocat
       - 'develop'
       # Push events to branches matching refs/heads/releases/10
-      - 'MUKTA-v2.1-Develop' 
+      - 'MUKTA-v2.1-Develop'
+      # Push events to branches matching refs/heads/releases/10
+      - 'UAT-BACKUP-3-JULY-2024'
     paths:
       - 'frontend/micro-ui/web/micro-ui-internals/**'
  
