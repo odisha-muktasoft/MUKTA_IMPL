@@ -761,6 +761,52 @@ def getCBOReportData():
     except Exception as e:
         raise e
 
+def getWageSeekerReportData():
+    data = []
+    print("Getting Wage Seeker Report Data")
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            api_limit = 100
+            api_offset = 0
+            while True:
+                host = MUSTER_HOST + os.getenv('MUSTER_ROLL_SEARCH') + "?tenantId=" + tenantid + "&limit=" + str(api_limit) + "&offset=" + str(api_offset)
+                request_payload = {"apiId": "Rainmaker", "authToken": "b09a28f2-3bb4-4c9b-9731-b1cbd98d9018", "userInfo": {"id": 271, "uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11", "userName": "MUKTAUAT", "name": "MUKTAUAT", "mobileNumber": "9036774122", "type": "EMPLOYEE", "roles": [{"name": "ESTIMATE APPROVER", "code": "ESTIMATE_APPROVER", "tenantId": "od.testing"}, {"name": "WORK ORDER CREATOR", "code": "WORK_ORDER_CREATOR", "tenantId": "od.testing"}, {"name": "Organization viewer", "code": "ORG_VIEWER", "tenantId": "od.testing"}, {"name": "MB_VERIFIER", "code": "MB_VERIFIER", "tenantId": "od.testing"}, {"name": "ESTIMATE CREATOR", "code": "ESTIMATE_CREATOR", "tenantId": "od.testing"}, {"name": "MDMS Admin", "code": "MDMS_ADMIN", "tenantId": "od.testing"}, {"name": "MB_VIEWER", "code": "MB_VIEWER", "tenantId": "od.testing"}, {"name": "State Dashboard Admin", "code": "STADMIN", "tenantId": "od.testing"}, {"name": "MUKTA Admin", "code": "MUKTA_ADMIN", "tenantId": "od.testing"}, {"name": "Employee Common", "code": "EMPLOYEE_COMMON", "tenantId": "od.testing"}, {"name": "TECHNICAL SANCTIONER", "code": "TECHNICAL_SANCTIONER", "tenantId": "od.testing"}, {"name": "BILL_CREATOR", "code": "BILL_CREATOR", "tenantId": "od.testing"}, {"name": "BILL_ACCOUNTANT", "code": "BILL_ACCOUNTANT", "tenantId": "od.testing"}, {"name": "WORK_ORDER_VIEWER", "code": "WORK_ORDER_VIEWER", "tenantId": "od.testing"}, {"name": "BILL_VERIFIER", "code": "BILL_VERIFIER", "tenantId": "od.testing"}, {"name": "ESTIMATE VERIFIER", "code": "ESTIMATE_VERIFIER", "tenantId": "od.testing"}, {"name": "MUSTER ROLL APPROVER", "code": "MUSTER_ROLL_APPROVER", "tenantId": "od.testing"}, {"name": "ESTIMATE VIEWER", "code": "ESTIMATE_VIEWER", "tenantId": "od.testing"}, {"name": "WORK ORDER APPROVER", "code": "WORK_ORDER_APPROVER", "tenantId": "od.testing"}, {"name": "MB_APPROVER", "code": "MB_APPROVER", "tenantId": "od.testing"}, {"name": "MDMS CITY ADMIN", "code": "MDMS_CITY_ADMIN", "tenantId": "od.testing"}, {"name": "OFFICER IN CHARGE", "code": "OFFICER_IN_CHARGE", "tenantId": "od.testing"}, {"name": "PROJECT CREATOR", "code": "PROJECT_CREATOR", "tenantId": "od.testing"}, {"name": "BILL_VIEWER", "code": "BILL_VIEWER", "tenantId": "od.testing"}, {"name": "WORK ORDER VERIFIER", "code": "WORK_ORDER_VERIFIER", "tenantId": "od.testing"}, {"name": "PROJECT VIEWER", "code": "PROJECT_VIEWER", "tenantId": "od.testing"}, {"name": "BILL_APPROVER", "code": "BILL_APPROVER", "tenantId": "od.testing"}, {"name": "MB_CREATOR", "code": "MB_CREATOR", "tenantId": "od.testing"}, {"name": "MUSTER ROLL VERIFIER", "code": "MUSTER_ROLL_VERIFIER", "tenantId": "od.testing"}, {"name": "HRMS Admin", "code": "HRMS_ADMIN", "tenantId": "od.testing"}], "tenantId": "od.testing", "permanentCity": "Testing"}, "msgId": "1705558029324|en_IN", "plainAccessRequest": {}}
+                headers = {"Content-Type": "application/json"}
+                api_payload = {"pagination": {"limit": api_limit,"offSet": api_offset},"RequestInfo": request_payload}
+                response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+                api_offset = api_offset + api_limit
+                if response and response.status_code and response.status_code in [200, 202]:
+                    response = response.json()
+                    if response and response['musterRolls'] and len(response['musterRolls'])>0:
+                        for roll in response['musterRolls']:
+                            parent_data = {
+                                'ULB Name': format_tenant_id(tenantid),
+                                'Project ID': roll['additionalDetails']['projectId'],
+                            }
+                            for individualEntry in roll['individualEntries']:
+                                child_data = {
+                                    'Wage Seeker Name': individualEntry['additionalDetails']['userName'],
+                                    'Gender': individualEntry['additionalDetails']['gender'],
+                                    'Wage Seeker ID': individualEntry['additionalDetails']['userId'],
+                                    'Mobile Number' : individualEntry['additionalDetails']['mobileNo'],
+                                    'skill': individualEntry['additionalDetails']['skillCode'],
+                                    'Nos of Days Engaged': individualEntry['actualTotalAttendance']
+                                }
+                                # combined parent data and child data
+                                combined_data = {**parent_data, **child_data}
+                                data.append(combined_data)
+                    else:
+                        break
+                else:
+                    break
+        return data
+
+    except Exception as e:
+        print(e)
+
+
+
 def writeDataToCSV(data, filename):
     if not data:
         print("No data to write.")
@@ -794,6 +840,7 @@ if __name__ == '__main__':
         technical_sanction_approval_data_filename = f'technical_sanction_approval_{current_date}.csv'
         revised_payment_data_filename = f'revised_payment_{current_date}.csv'
         CBO_report_data_filename = f'CBO_report_{current_date}.csv'
+        WageSeeker_report_data_filename = f'WageSeeker_report_{current_date}.csv'
         
         # # Process work order data
         # workOrder_data = getWorkOrderData()
@@ -840,10 +887,15 @@ if __name__ == '__main__':
         # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
         # writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
-        # CBO Report
-        CBO_report_data = getCBOReportData()
-        CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
-        writeDataToCSV(CBO_report_data, CBO_report_file_path)
+        # # CBO Report
+        # CBO_report_data = getCBOReportData()
+        # CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
+        # writeDataToCSV(CBO_report_data, CBO_report_file_path)
+
+        # Wage Seeker Report
+        WageSeeker_report_data = getWageSeekerReportData()
+        WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
+        writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
