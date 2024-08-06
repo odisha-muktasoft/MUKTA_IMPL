@@ -136,7 +136,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   FutureOr<void> _onClearLoggedInDetails(
       AuthClearLoggedDetailsEvent event, AuthEmitter emit) async {
-    Client client = Client();
 
     try {
       List<DigitRowCardModel>? languages = await GlobalVariables.getLanguages();

@@ -7,12 +7,11 @@ import 'package:works_shg_app/pages/wage_seeker_registration/individual_details.
 import 'package:works_shg_app/pages/wage_seeker_registration/location_details.dart';
 import 'package:works_shg_app/pages/wage_seeker_registration/summary_details.dart';
 import 'package:works_shg_app/router/app_router.dart';
-import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
-import 'package:works_shg_app/widgets/Back.dart';
+import 'package:works_shg_app/widgets/back.dart';
 import 'package:works_shg_app/widgets/molecules/digit_stepper.dart';
 
 import '../../blocs/app_initilization/app_initilization.dart';
@@ -26,13 +25,13 @@ import '../../models/mdms/location_mdms.dart';
 import '../../models/mdms/wage_seeker_mdms.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/models/file_picker_data.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 
 @RoutePage()
 class RegisterIndividualPage extends StatefulWidget {
-  const RegisterIndividualPage({Key? key}) : super(key: key);
+  const RegisterIndividualPage({super.key});
 
   @override
   State<StatefulWidget> createState() {

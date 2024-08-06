@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_check.dart';
-import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
@@ -21,8 +20,8 @@ import '../../../blocs/employee/work_order/workorder_book.dart';
 import '../../../blocs/localization/app_localization.dart';
 import '../../../utils/common_methods.dart';
 import '../../../utils/constants.dart';
-import '../../../widgets/Back.dart';
-import '../../../widgets/SideBar.dart';
+import '../../../widgets/back.dart';
+import '../../../widgets/side_bar.dart';
 import '../../../widgets/mb/text_button_underline.dart';
 import '../../../widgets/work_order/work_order_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -358,27 +357,12 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                     widget1: CommonTextButtonUnderline(
                                       label: t.translate(i18.common.viewDetails),
                                       onPressed: () {
-                                        // context
-                                        //     .read<MeasurementDetailBloc>()
-                                        //     .add(
-                                        //       MeasurementDetailBookBlocEvent(
-                                        //         tenantId: value
-                                        //             .contracts![index]
-                                        //             .tenantId!,
-                                        //         contractNumber: value
-                                        //             .contracts![index]
-                                        //             .contractNumber!,
-                                        //         measurementNumber: "",
-                                        //         screenType: MBScreen.create,
-                                        //       ),
-                                        //     );
-
-                                        // TODO:[previous code]
+                                       
                                         context.router
                                             .push(ViewWorkDetailsRoute(
                                           contractNumber: value
                                                   .contracts![index]
-                                                  ?.contractNumber ??
+                                                  .contractNumber ??
                                               "",
                                           wfStatus: "ACCEPTED",
                                         ));
@@ -395,10 +379,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             loaded: (value) {
                                               if (value.estimateStatus ==
                                                       true &&
-                                                  // TODO:[currently removed the workorder status]
-                                                  // value.workOrderStatus ==
-                                                  //     true &&
-                                                  //
+                                                  
                                                   value.existingMB == true) {
                                                 context.router
                                                     .push(MBDetailRoute(
@@ -411,17 +392,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                   type: MBScreen.create,
                                                 ));
                                               } else {
-                                                // TODO:[currently removed the workorder status]
-                                                // if (value.workOrderStatus ==
-                                                //     false) {
-                                                //   Notifiers.getToastMessage(
-                                                //       context,
-                                                //       t.translate(i18.workOrder
-                                                //           .timeExtensionError),
-                                                //       'ERROR');
-                                                // } else
-
-                                                // end of it
+                                               
                                                 if (value.estimateStatus ==
                                                     false) {
                                                   Notifiers.getToastMessage(
@@ -452,27 +423,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                     .contracts?[index]
                                                     .contractNumber ??
                                                 "";
-                                            //TODO:[previous ]
-                                            // context.router.push(MBDetailRoute(
-                                            //   contractNumber: contract,
-                                            //   mbNumber: "",
-                                            //   tenantId:
-                                            //       GlobalVariables.tenantId,
-                                            //   type: MBScreen.create,
-                                            // ));
-                                            // TODO:[working]
-                                            // context
-                                            //     .read<MeasurementDetailBloc>()
-                                            //     .add(
-                                            //       MeasurementDetailBookBlocEvent(
-                                            //         tenantId: value
-                                            //             .contracts![index]
-                                            //             .tenantId!,
-                                            //         contractNumber: contract,
-                                            //         measurementNumber: "",
-                                            //         screenType: MBScreen.create,
-                                            //       ),
-                                            //     );
+                                           
 
                                             context
                                                 .read<MeasurementCheckBloc>()
@@ -503,13 +454,13 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                       t.translate(i18.measurementBook.cboName):
                                           value
                                                   .contracts?[index]
-                                                  ?.additionalDetails
+                                                  .additionalDetails
                                                   ?.cboName ??
                                               "",
                                       t.translate(i18.measurementBook.cboRole):
                                           value
                                                   .contracts?[index]
-                                                  ?.additionalDetails
+                                                  .additionalDetails
                                                   ?.cboOrgNumber ??
                                               "",
                                       t.translate(i18.measurementBook
@@ -542,7 +493,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                           : "NA",
                                       t.translate(
                                               i18.measurementBook.workValue):
-                                          "${NumberFormat('##,##,##,##,###').format(value.contracts?[index]!.additionalDetails!.totalEstimatedAmount!.roundToDouble() ?? 0.00)}.00",
+                                          "${NumberFormat('##,##,##,##,###').format(value.contracts?[index].additionalDetails!.totalEstimatedAmount!.roundToDouble() ?? 0.00)}.00",
                                       t
                                           .translate(
                                               i18.common.status): t.translate(
@@ -551,8 +502,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                   );
                                 },
                                 childCount: value.isLoading
-                                    ? value!.contracts!.length + 1
-                                    : value!.contracts!.length,
+                                    ? value.contracts!.length + 1
+                                    : value.contracts!.length,
                               ),
                             ),
                     ],

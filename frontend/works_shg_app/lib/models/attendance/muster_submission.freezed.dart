@@ -38,7 +38,7 @@ abstract class $MusterSubmissionListCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOMusterSubmission')
-      List<MusterSubmission>? musterSubmission});
+          List<MusterSubmission>? musterSubmission});
 }
 
 /// @nodoc
@@ -76,7 +76,7 @@ abstract class _$$MusterSubmissionListImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOMusterSubmission')
-      List<MusterSubmission>? musterSubmission});
+          List<MusterSubmission>? musterSubmission});
 }
 
 /// @nodoc
@@ -106,7 +106,7 @@ class __$$MusterSubmissionListImplCopyWithImpl<$Res>
 class _$MusterSubmissionListImpl implements _MusterSubmissionList {
   const _$MusterSubmissionListImpl(
       {@JsonKey(name: 'CBOMusterSubmission')
-      final List<MusterSubmission>? musterSubmission})
+          final List<MusterSubmission>? musterSubmission})
       : _musterSubmission = musterSubmission;
 
   factory _$MusterSubmissionListImpl.fromJson(Map<String, dynamic> json) =>
@@ -162,7 +162,7 @@ class _$MusterSubmissionListImpl implements _MusterSubmissionList {
 abstract class _MusterSubmissionList implements MusterSubmissionList {
   const factory _MusterSubmissionList(
           {@JsonKey(name: 'CBOMusterSubmission')
-          final List<MusterSubmission>? musterSubmission}) =
+              final List<MusterSubmission>? musterSubmission}) =
       _$MusterSubmissionListImpl;
 
   factory _MusterSubmissionList.fromJson(Map<String, dynamic> json) =

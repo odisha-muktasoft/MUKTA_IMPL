@@ -14,9 +14,9 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/models/track_attendance_payload.dart';
-import 'package:works_shg_app/widgets/CircularButton.dart';
-import 'package:works_shg_app/widgets/SideBar.dart';
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/widgets/circular_button.dart';
+import 'package:works_shg_app/widgets/side_bar.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -27,7 +27,7 @@ import '../../models/file_store/file_store_model.dart';
 import '../../utils/common_widgets.dart';
 import '../../utils/constants.dart';
 import '../../utils/models.dart';
-import '../../widgets/Back.dart';
+import '../../widgets/back.dart';
 import '../../widgets/atoms/table_dropdown.dart';
 import '../../widgets/drawer_wrapper.dart';
 
@@ -51,22 +51,18 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
 
   @override
   void initState() {
-        
     context.read<MusterRollSearchBloc>().add(MbSearchMusterRollEvent(
         musterRollNumner: widget.musterRollNumber, tenantId: widget.tenantId));
     context.read<MusterGetWorkflowBloc>().add(
           FetchMBWorkFlowEvent(
-              tenantId: widget.tenantId,
-               mbNumber: widget.musterRollNumber),
+              tenantId: widget.tenantId, mbNumber: widget.musterRollNumber),
         );
-   
-   
+
     super.initState();
   }
 
   @override
   void dispose() {
-    
     newList.clear();
     tableData.clear();
     timeLineAttributes.clear();
@@ -84,7 +80,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
       builder: (context, localState) {
         return Scaffold(
           appBar: AppBar(
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                .copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -249,7 +246,6 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                           ],
                         ),
                       ),
-//TODO: next phase
 
                       SliverToBoxAdapter(
                           child: Column(
@@ -262,14 +258,13 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                 return state.maybeMap(
                                   orElse: SizedBox.shrink,
                                   loaded: (value) {
-                                    
                                     List<ProcessInstances> modifiedData = value
                                         .musterWorkFlowModel!.processInstances!
                                         .where((element) =>
                                             element.action !=
                                             Constants.saveAsDraft)
                                         .toList();
-                                    
+
                                     if (modifiedData.isNotEmpty &&
                                         (modifiedData.first.nextActions !=
                                                 null &&
@@ -407,8 +402,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                             const Align(
                               alignment: Alignment.bottomCenter,
                               child: PoweredByDigit(
-                                // version: Constants.appVersion,
-                                ),
+                                  // version: Constants.appVersion,
+                                  ),
                             )
                           ]))
 
@@ -417,8 +412,6 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                   );
                 },
                 loading: (value) {
-                  //TODO
-
                   return const Center(
                     child: CircularProgressIndicator.adaptive(),
                   );
@@ -492,7 +485,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
           apiKey: tableDataModel.skill,
           hide: false,
           widget: DropDownDialog(
-            isDisabled: true ,
+            isDisabled: true,
             options: tableDataModel.skillCodeList ?? [],
             label: i18.common.selectSkill,
             selectedOption: tableDataModel.skill.toString(),

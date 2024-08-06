@@ -161,7 +161,7 @@ class _$GlobalConfigModelImpl implements _GlobalConfigModel {
 abstract class _GlobalConfigModel implements GlobalConfigModel {
   const factory _GlobalConfigModel(
       {@JsonKey(name: 'globalConfigs')
-      final GlobalConfigs? globalConfigs}) = _$GlobalConfigModelImpl;
+          final GlobalConfigs? globalConfigs}) = _$GlobalConfigModelImpl;
 
   factory _GlobalConfigModel.fromJson(Map<String, dynamic> json) =
       _$GlobalConfigModelImpl.fromJson;
@@ -453,16 +453,22 @@ class _$GlobalConfigsImpl implements _GlobalConfigs {
 
 abstract class _GlobalConfigs implements GlobalConfigs {
   const factory _GlobalConfigs(
-          {@JsonKey(name: 'stateTenantId') required final String stateTenantId,
-          @JsonKey(name: 'gmaps_api_key') final String? gmaps_api_key,
-          @JsonKey(name: 'finEnv') final String? finEnv,
-          @JsonKey(name: 'contextPath') final String? contextPath,
-          @JsonKey(name: 'footerLogoURL') final String? footerLogoURL,
-          @JsonKey(name: 'footerBWLogoURL') final String? footerBWLogoURL,
-          @JsonKey(name: 'centralInstanceEnabled')
+      {@JsonKey(name: 'stateTenantId')
+          required final String stateTenantId,
+      @JsonKey(name: 'gmaps_api_key')
+          final String? gmaps_api_key,
+      @JsonKey(name: 'finEnv')
+          final String? finEnv,
+      @JsonKey(name: 'contextPath')
+          final String? contextPath,
+      @JsonKey(name: 'footerLogoURL')
+          final String? footerLogoURL,
+      @JsonKey(name: 'footerBWLogoURL')
+          final String? footerBWLogoURL,
+      @JsonKey(name: 'centralInstanceEnabled')
           final bool? centralInstanceEnabled,
-          @JsonKey(name: 'assetS3Bucket') final String? assetS3Bucket}) =
-      _$GlobalConfigsImpl;
+      @JsonKey(name: 'assetS3Bucket')
+          final String? assetS3Bucket}) = _$GlobalConfigsImpl;
 
   factory _GlobalConfigs.fromJson(Map<String, dynamic> json) =
       _$GlobalConfigsImpl.fromJson;

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'homeConfigModel.dart';
+part of 'home_config_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

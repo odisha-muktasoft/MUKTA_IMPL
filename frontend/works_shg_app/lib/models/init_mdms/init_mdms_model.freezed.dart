@@ -197,10 +197,10 @@ class _$InitMdmsModelImpl implements _InitMdmsModel {
 
 abstract class _InitMdmsModel implements InitMdmsModel {
   const factory _InitMdmsModel(
-          {@JsonKey(name: 'common-masters')
+      {@JsonKey(name: 'common-masters')
           final CommonMastersModel? commonMastersModel,
-          @JsonKey(name: 'tenant') final TenantModel? tenant}) =
-      _$InitMdmsModelImpl;
+      @JsonKey(name: 'tenant')
+          final TenantModel? tenant}) = _$InitMdmsModelImpl;
 
   factory _InitMdmsModel.fromJson(Map<String, dynamic> json) =
       _$InitMdmsModelImpl.fromJson;
@@ -320,9 +320,10 @@ class __$$TenantModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$TenantModelImpl implements _TenantModel {
   const _$TenantModelImpl(
-      {@JsonKey(name: 'tenants') final List<TenantListModel>? tenantListModel,
+      {@JsonKey(name: 'tenants')
+          final List<TenantListModel>? tenantListModel,
       @JsonKey(name: 'citymodule')
-      final List<CityModuleModel>? cityModuleModel})
+          final List<CityModuleModel>? cityModuleModel})
       : _tenantListModel = tenantListModel,
         _cityModuleModel = cityModuleModel;
 
@@ -390,9 +391,10 @@ class _$TenantModelImpl implements _TenantModel {
 
 abstract class _TenantModel implements TenantModel {
   const factory _TenantModel(
-      {@JsonKey(name: 'tenants') final List<TenantListModel>? tenantListModel,
+      {@JsonKey(name: 'tenants')
+          final List<TenantListModel>? tenantListModel,
       @JsonKey(name: 'citymodule')
-      final List<CityModuleModel>? cityModuleModel}) = _$TenantModelImpl;
+          final List<CityModuleModel>? cityModuleModel}) = _$TenantModelImpl;
 
   factory _TenantModel.fromJson(Map<String, dynamic> json) =
       _$TenantModelImpl.fromJson;
@@ -513,9 +515,9 @@ class __$$CommonMastersModelImplCopyWithImpl<$Res>
 class _$CommonMastersModelImpl implements _CommonMastersModel {
   const _$CommonMastersModelImpl(
       {@JsonKey(name: 'StateInfo')
-      final List<StateInfoListModel>? stateInfoListModel,
+          final List<StateInfoListModel>? stateInfoListModel,
       @JsonKey(name: 'AppVersion')
-      final List<AppVersionModel>? appVersionModel})
+          final List<AppVersionModel>? appVersionModel})
       : _stateInfoListModel = stateInfoListModel,
         _appVersionModel = appVersionModel;
 
@@ -585,10 +587,11 @@ class _$CommonMastersModelImpl implements _CommonMastersModel {
 
 abstract class _CommonMastersModel implements CommonMastersModel {
   const factory _CommonMastersModel(
-      {@JsonKey(name: 'StateInfo')
-      final List<StateInfoListModel>? stateInfoListModel,
-      @JsonKey(name: 'AppVersion')
-      final List<AppVersionModel>? appVersionModel}) = _$CommonMastersModelImpl;
+          {@JsonKey(name: 'StateInfo')
+              final List<StateInfoListModel>? stateInfoListModel,
+          @JsonKey(name: 'AppVersion')
+              final List<AppVersionModel>? appVersionModel}) =
+      _$CommonMastersModelImpl;
 
   factory _CommonMastersModel.fromJson(Map<String, dynamic> json) =
       _$CommonMastersModelImpl.fromJson;

@@ -166,8 +166,9 @@ class _$HomeScreenConfigModelImpl implements _HomeScreenConfigModel {
 
 abstract class _HomeScreenConfigModel implements HomeScreenConfigModel {
   const factory _HomeScreenConfigModel(
-      {@JsonKey(name: 'commonUiConfig')
-      final CommonUIConfigModel? commonUiConfig}) = _$HomeScreenConfigModelImpl;
+          {@JsonKey(name: 'commonUiConfig')
+              final CommonUIConfigModel? commonUiConfig}) =
+      _$HomeScreenConfigModelImpl;
 
   factory _HomeScreenConfigModel.fromJson(Map<String, dynamic> json) =
       _$HomeScreenConfigModelImpl.fromJson;
@@ -211,11 +212,11 @@ abstract class $CommonUIConfigModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOHomeScreenConfig')
-      List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+          List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
       @JsonKey(name: 'CBOMyWorks')
-      List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
+          List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
       @JsonKey(name: 'CBOMyServiceRequests')
-      List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig});
+          List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig});
 }
 
 /// @nodoc
@@ -262,11 +263,11 @@ abstract class _$$CommonUIConfigModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOHomeScreenConfig')
-      List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+          List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
       @JsonKey(name: 'CBOMyWorks')
-      List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
+          List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
       @JsonKey(name: 'CBOMyServiceRequests')
-      List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig});
+          List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig});
 }
 
 /// @nodoc
@@ -306,11 +307,11 @@ class __$$CommonUIConfigModelImplCopyWithImpl<$Res>
 class _$CommonUIConfigModelImpl implements _CommonUIConfigModel {
   const _$CommonUIConfigModelImpl(
       {@JsonKey(name: 'CBOHomeScreenConfig')
-      final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
+          final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
       @JsonKey(name: 'CBOMyWorks')
-      final List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
+          final List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
       @JsonKey(name: 'CBOMyServiceRequests')
-      final List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig})
+          final List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig})
       : _cboHomeScreenConfig = cboHomeScreenConfig,
         _cboMyWorksSearchCriteria = cboMyWorksSearchCriteria,
         _cboMyServiceRequestsConfig = cboMyServiceRequestsConfig;
@@ -398,13 +399,13 @@ class _$CommonUIConfigModelImpl implements _CommonUIConfigModel {
 
 abstract class _CommonUIConfigModel implements CommonUIConfigModel {
   const factory _CommonUIConfigModel(
-          {@JsonKey(name: 'CBOHomeScreenConfig')
+      {@JsonKey(name: 'CBOHomeScreenConfig')
           final List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
-          @JsonKey(name: 'CBOMyWorks')
+      @JsonKey(name: 'CBOMyWorks')
           final List<CBOMyWorksSearchCriteriaModel>? cboMyWorksSearchCriteria,
-          @JsonKey(name: 'CBOMyServiceRequests')
-          final List<CBOMyServiceRequestsConfig>? cboMyServiceRequestsConfig}) =
-      _$CommonUIConfigModelImpl;
+      @JsonKey(name: 'CBOMyServiceRequests')
+          final List<CBOMyServiceRequestsConfig>?
+              cboMyServiceRequestsConfig}) = _$CommonUIConfigModelImpl;
 
   factory _CommonUIConfigModel.fromJson(Map<String, dynamic> json) =
       _$CommonUIConfigModelImpl.fromJson;

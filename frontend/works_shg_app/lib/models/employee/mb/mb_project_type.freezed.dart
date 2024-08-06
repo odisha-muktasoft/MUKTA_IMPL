@@ -459,7 +459,7 @@ class _$MBWorksImpl implements _MBWorks {
 abstract class _MBWorks implements MBWorks {
   const factory _MBWorks(
       {@JsonKey(name: 'ProjectType')
-      final List<ProjectType>? projectType}) = _$MBWorksImpl;
+          final List<ProjectType>? projectType}) = _$MBWorksImpl;
 
   factory _MBWorks.fromJson(Map<String, dynamic> json) = _$MBWorksImpl.fromJson;
 

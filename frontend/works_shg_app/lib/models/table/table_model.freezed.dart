@@ -279,8 +279,7 @@ class __$$TableDataModelImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class _$TableDataModelImpl implements _TableDataModel {
   const _$TableDataModelImpl(
       {required this.name,

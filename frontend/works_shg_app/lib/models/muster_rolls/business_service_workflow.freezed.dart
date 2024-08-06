@@ -41,7 +41,7 @@ abstract class $BusinessServiceWorkflowModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'BusinessServices')
-      List<BusinessServices>? businessServices});
+          List<BusinessServices>? businessServices});
 }
 
 /// @nodoc
@@ -80,7 +80,7 @@ abstract class _$$BusinessServiceWorkflowModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'BusinessServices')
-      List<BusinessServices>? businessServices});
+          List<BusinessServices>? businessServices});
 }
 
 /// @nodoc
@@ -113,7 +113,7 @@ class _$BusinessServiceWorkflowModelImpl
     implements _BusinessServiceWorkflowModel {
   const _$BusinessServiceWorkflowModelImpl(
       {@JsonKey(name: 'BusinessServices')
-      final List<BusinessServices>? businessServices})
+          final List<BusinessServices>? businessServices})
       : _businessServices = businessServices;
 
   factory _$BusinessServiceWorkflowModelImpl.fromJson(
@@ -171,7 +171,7 @@ abstract class _BusinessServiceWorkflowModel
     implements BusinessServiceWorkflowModel {
   const factory _BusinessServiceWorkflowModel(
           {@JsonKey(name: 'BusinessServices')
-          final List<BusinessServices>? businessServices}) =
+              final List<BusinessServices>? businessServices}) =
       _$BusinessServiceWorkflowModelImpl;
 
   factory _BusinessServiceWorkflowModel.fromJson(Map<String, dynamic> json) =
@@ -346,7 +346,7 @@ class _$BusinessServicesImpl implements _BusinessServices {
       this.business,
       this.businessServiceSla,
       @JsonKey(name: 'states')
-      final List<BusinessWorkflowState>? workflowState})
+          final List<BusinessWorkflowState>? workflowState})
       : _workflowState = workflowState;
 
   factory _$BusinessServicesImpl.fromJson(Map<String, dynamic> json) =>
@@ -430,7 +430,7 @@ abstract class _BusinessServices implements BusinessServices {
           final String? business,
           final int? businessServiceSla,
           @JsonKey(name: 'states')
-          final List<BusinessWorkflowState>? workflowState}) =
+              final List<BusinessWorkflowState>? workflowState}) =
       _$BusinessServicesImpl;
 
   factory _BusinessServices.fromJson(Map<String, dynamic> json) =

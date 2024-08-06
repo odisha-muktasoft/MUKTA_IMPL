@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/models/app_config/app_config_model.dart';
-import 'package:works_shg_app/models/employee/homeconfig/homeConfigModel.dart';
+import 'package:works_shg_app/models/employee/homeconfig/home_config_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
-import 'package:works_shg_app/widgets/ButtonLink.dart';
+import 'package:works_shg_app/widgets/button_link.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 
@@ -18,12 +18,11 @@ import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/organisation/org_search_bloc.dart';
-import '../models/app_config/app_config_model.dart';
 import '../models/organisation/organisation_model.dart';
 import '../models/screen_config/home_screen_config.dart';
 import '../utils/constants.dart';
 import '../utils/global_variables.dart';
-import '../widgets/SideBar.dart';
+import '../widgets/side_bar.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
@@ -354,7 +353,6 @@ class _HomePage extends State<HomePage> {
   }
 
   Future<void> localeLoad(Languages data) async {
-    var currentLocale = await GlobalVariables.selectedLocale();
     context.read<LocalizationBloc>().add(
           LocalizationEvent.onSpecificLoadLocalization(
               module: CommonMethods.getLocaleModules(),

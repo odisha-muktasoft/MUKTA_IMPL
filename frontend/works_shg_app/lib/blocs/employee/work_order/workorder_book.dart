@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:works_shg_app/data/repositories/employee_repository/work_order.dart';
 import 'package:works_shg_app/models/employee/work_order/wo_inbox_response.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
@@ -95,7 +94,7 @@ class WorkOrderInboxBloc
 
             emit(
               WorkOrderInboxState.loaded(
-                  null, data!.length < 10 ? false : true, data, false, {}),
+                  null, data.length < 10 ? false : true, data, false, {}),
             );
           },
         );
@@ -163,20 +162,6 @@ class WorkOrderInboxBloc
       if (event.offset == 0) {
         emit(const WorkOrderInboxState.loading());
       }
-      final s = {
-        "tenantId": GlobalVariables.tenantId ??
-            GlobalVariables
-                .organisationListModel!.organisations!.first.tenantId,
-        "contractNumber": event.contractNumber,
-        "orgIds": [],
-        "wfStatus": ["ACCEPTED","APPROVED"],
-        "pagination": {
-          "limit": "10",
-          "offSet": event.offset.toString(),
-          "sortBy": "lastModifiedTime",
-          "order": "desc"
-        }
-      };
 
       ContractsModel contractsModel =
           await MyWorksRepository(client.init()).searchMyWorks(
@@ -195,7 +180,7 @@ class WorkOrderInboxBloc
           contractsModel.contracts!
                       .where((e) => e.status != Constants.inActive)
                       .toList()
-                      .length! <
+                      .length <
                   10
               ? false
               : true,
@@ -220,7 +205,7 @@ class WorkOrderInboxBloc
             emit(
               WorkOrderInboxState.loaded(
                 null,
-                data!.length < 10 ? false : true,
+                data.length < 10 ? false : true,
                 data,
                 true,
                 event.data,
@@ -247,23 +232,8 @@ class WorkOrderInboxBloc
           return null;
         },
         loaded: (value) async {
-          // final s = {
-          //   "inbox": {
-          //     "tenantId": "od.testing",
-          //     "moduleSearchCriteria": {
-          //       "tenantId": "od.testing",
-          //       "status": value.status,
-          //       "ward": value.ward,
-          //     },
-          //     "processSearchCriteria": {
-          //       "businessService": ["MB"],
-          //       "moduleName": "measurement-service"
-          //     },
-          //     "limit": 10,
-          //     "offset": event.offset
-          //   }
-          // };
-          value!.searchData['pagination']!['offset'] = event.offset;
+         
+          value.searchData['pagination']!['offset'] = event.offset;
           ContractsModel contractsModel =
           await MyWorksRepository(client.init()).searchMyWorks(
               url: Urls.workServices.myWorks,

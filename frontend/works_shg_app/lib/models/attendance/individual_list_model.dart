@@ -4,14 +4,14 @@ part 'individual_list_model.mapper.dart';
 
 @MappableClass()
 class IndividualListModel with IndividualListModelMappable {
-  List<IndividualModel>? Individual;
-  IndividualListModel({this.Individual});
+  List<IndividualModel>? individual;
+  IndividualListModel({this.individual});
 }
 
 @MappableClass()
 class SingleIndividualModel with SingleIndividualModelMappable {
-  IndividualModel? Individual;
-  SingleIndividualModel({this.Individual});
+  IndividualModel? individual;
+  SingleIndividualModel({this.individual});
 }
 
 @MappableClass()

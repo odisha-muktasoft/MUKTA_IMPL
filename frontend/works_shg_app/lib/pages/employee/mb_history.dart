@@ -14,14 +14,14 @@ import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/back.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/mb_detail_card.dart';
 import '../../widgets/mb/text_button_underline.dart';
-import '../../widgets/mb/workFlowButtonList.dart';
+import '../../widgets/mb/work_flow_button_list.dart';
 import 'mb_inbox.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -385,7 +385,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount!
+                      totalNonSorAmount
                           .toDouble()
                           .toStringAsFixed(2)
                           .toString(),
@@ -438,7 +438,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                mbAmount!.roundToDouble().toStringAsFixed(2),
+                                mbAmount.roundToDouble().toStringAsFixed(2),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),

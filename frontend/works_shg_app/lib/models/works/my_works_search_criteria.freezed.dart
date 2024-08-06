@@ -171,7 +171,7 @@ abstract class _MyWorksSearchCriteriaModel
     implements MyWorksSearchCriteriaModel {
   const factory _MyWorksSearchCriteriaModel(
           {@JsonKey(name: 'commonUiConfig')
-          final CommonUIConfigModel? commonUiConfig}) =
+              final CommonUIConfigModel? commonUiConfig}) =
       _$MyWorksSearchCriteriaModelImpl;
 
   factory _MyWorksSearchCriteriaModel.fromJson(Map<String, dynamic> json) =

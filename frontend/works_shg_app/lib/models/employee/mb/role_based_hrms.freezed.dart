@@ -661,10 +661,13 @@ class _$EmployeeUserImpl implements _EmployeeUser {
 abstract class _EmployeeUser implements EmployeeUser {
   const factory _EmployeeUser(
       {@JsonKey(name: 'correspondenceAddress')
-      final String? correspondenceAddress,
-      @JsonKey(name: 'mobileNumber') final String? mobileNumber,
-      @JsonKey(name: 'name') final String? name,
-      @JsonKey(name: 'userName') final String? userName}) = _$EmployeeUserImpl;
+          final String? correspondenceAddress,
+      @JsonKey(name: 'mobileNumber')
+          final String? mobileNumber,
+      @JsonKey(name: 'name')
+          final String? name,
+      @JsonKey(name: 'userName')
+          final String? userName}) = _$EmployeeUserImpl;
 
   factory _EmployeeUser.fromJson(Map<String, dynamic> json) =
       _$EmployeeUserImpl.fromJson;

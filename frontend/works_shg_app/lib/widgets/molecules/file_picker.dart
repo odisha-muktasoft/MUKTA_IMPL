@@ -13,7 +13,7 @@ import 'package:works_shg_app/models/file_store/file_store_model.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
-import 'package:works_shg_app/widgets/ButtonLink.dart';
+import 'package:works_shg_app/widgets/button_link.dart';
 
 import '../../data/repositories/core_repo/core_repository.dart';
 import '../../utils/common_methods.dart';
@@ -26,12 +26,11 @@ class SHGFilePicker extends StatefulWidget {
   final List<String>? extensions;
 
   const SHGFilePicker(
-      {Key? key,
+      {super.key,
       required this.callBack,
       required this.moduleName,
       this.extensions,
-      required this.label})
-      : super(key: key);
+      required this.label});
   @override
   SHGFilePickerState createState() => SHGFilePickerState();
 }
@@ -39,9 +38,7 @@ class SHGFilePicker extends StatefulWidget {
 class SHGFilePickerState extends State<SHGFilePicker> {
   List<dynamic> _selectedFiles = <dynamic>[];
   List<FileStoreModel> fileStoreList = <FileStoreModel>[];
-  String? _directoryPath;
   String? _extension;
-  bool _loadingPath = false;
   bool multiPick = false;
   FileType pickingType = FileType.custom;
   TextEditingController controller = TextEditingController();
@@ -54,9 +51,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
   }
 
   void _openFileExplorer(BuildContext context) async {
-    setState(() => _loadingPath = true);
     try {
-      _directoryPath = null;
       var paths = (await FilePicker.platform.pickFiles(
         type: pickingType,
         allowMultiple: multiPick,
@@ -111,13 +106,12 @@ class SHGFilePickerState extends State<SHGFilePicker> {
         uploadFiles(files);
       }
     } on PlatformException catch (e) {
-      print("Unsupported operation$e");
+     
     } catch (ex) {
-      print(ex);
+      
     }
     if (!mounted) return;
     setState(() {
-      _loadingPath = false;
     });
   }
 
@@ -351,7 +345,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
             uploadFiles(<File>[file]);
             return;
           } else {
-            return null;
+            return;
           }
         } else {
           _openFileExplorer(context);

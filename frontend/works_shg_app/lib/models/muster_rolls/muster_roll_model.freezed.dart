@@ -241,10 +241,11 @@ abstract class $MusterRollCopyWith<$Res> {
       int? startDate,
       int? endDate,
       @JsonKey(name: 'individualEntries')
-      List<IndividualEntries>? individualEntries,
+          List<IndividualEntries>? individualEntries,
       @JsonKey(name: 'additionalDetails')
-      MusterAdditionalDetails? musterAdditionalDetails,
-      @JsonKey(name: 'auditDetails') AuditDetails? musterAuditDetails});
+          MusterAdditionalDetails? musterAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? musterAuditDetails});
 
   $MusterAdditionalDetailsCopyWith<$Res>? get musterAdditionalDetails;
   $AuditDetailsCopyWith<$Res>? get musterAuditDetails;
@@ -379,10 +380,11 @@ abstract class _$$MusterRollImplCopyWith<$Res>
       int? startDate,
       int? endDate,
       @JsonKey(name: 'individualEntries')
-      List<IndividualEntries>? individualEntries,
+          List<IndividualEntries>? individualEntries,
       @JsonKey(name: 'additionalDetails')
-      MusterAdditionalDetails? musterAdditionalDetails,
-      @JsonKey(name: 'auditDetails') AuditDetails? musterAuditDetails});
+          MusterAdditionalDetails? musterAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? musterAuditDetails});
 
   @override
   $MusterAdditionalDetailsCopyWith<$Res>? get musterAdditionalDetails;
@@ -487,9 +489,11 @@ class _$MusterRollImpl implements _MusterRoll {
       this.startDate,
       this.endDate,
       @JsonKey(name: 'individualEntries')
-      final List<IndividualEntries>? individualEntries,
-      @JsonKey(name: 'additionalDetails') this.musterAdditionalDetails,
-      @JsonKey(name: 'auditDetails') this.musterAuditDetails})
+          final List<IndividualEntries>? individualEntries,
+      @JsonKey(name: 'additionalDetails')
+          this.musterAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          this.musterAuditDetails})
       : _individualEntries = individualEntries;
 
   factory _$MusterRollImpl.fromJson(Map<String, dynamic> json) =>
@@ -615,11 +619,11 @@ abstract class _MusterRoll implements MusterRoll {
       final int? startDate,
       final int? endDate,
       @JsonKey(name: 'individualEntries')
-      final List<IndividualEntries>? individualEntries,
+          final List<IndividualEntries>? individualEntries,
       @JsonKey(name: 'additionalDetails')
-      final MusterAdditionalDetails? musterAdditionalDetails,
+          final MusterAdditionalDetails? musterAdditionalDetails,
       @JsonKey(name: 'auditDetails')
-      final AuditDetails? musterAuditDetails}) = _$MusterRollImpl;
+          final AuditDetails? musterAuditDetails}) = _$MusterRollImpl;
 
   factory _MusterRoll.fromJson(Map<String, dynamic> json) =
       _$MusterRollImpl.fromJson;
@@ -692,9 +696,10 @@ abstract class $IndividualEntriesCopyWith<$Res> {
       String? individualId,
       double? totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      List<AttendanceEntries>? attendanceEntries,
+          List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      MusterIndividualAdditionalDetails? musterIndividualAdditionalDetails});
+          MusterIndividualAdditionalDetails?
+              musterIndividualAdditionalDetails});
 
   $MusterIndividualAdditionalDetailsCopyWith<$Res>?
       get musterIndividualAdditionalDetails;
@@ -773,9 +778,10 @@ abstract class _$$IndividualEntriesImplCopyWith<$Res>
       String? individualId,
       double? totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      List<AttendanceEntries>? attendanceEntries,
+          List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      MusterIndividualAdditionalDetails? musterIndividualAdditionalDetails});
+          MusterIndividualAdditionalDetails?
+              musterIndividualAdditionalDetails});
 
   @override
   $MusterIndividualAdditionalDetailsCopyWith<$Res>?
@@ -833,9 +839,9 @@ class _$IndividualEntriesImpl implements _IndividualEntries {
       this.individualId,
       this.totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      final List<AttendanceEntries>? attendanceEntries,
+          final List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      this.musterIndividualAdditionalDetails})
+          this.musterIndividualAdditionalDetails})
       : _attendanceEntries = attendanceEntries;
 
   factory _$IndividualEntriesImpl.fromJson(Map<String, dynamic> json) =>
@@ -917,10 +923,10 @@ abstract class _IndividualEntries implements IndividualEntries {
       final String? individualId,
       final double? totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      final List<AttendanceEntries>? attendanceEntries,
+          final List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      final MusterIndividualAdditionalDetails?
-          musterIndividualAdditionalDetails}) = _$IndividualEntriesImpl;
+          final MusterIndividualAdditionalDetails?
+              musterIndividualAdditionalDetails}) = _$IndividualEntriesImpl;
 
   factory _IndividualEntries.fromJson(Map<String, dynamic> json) =
       _$IndividualEntriesImpl.fromJson;
@@ -1673,7 +1679,8 @@ abstract class $AttendanceEntriesCopyWith<$Res> {
       int? time,
       AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      AttendanceEntriesAdditionalDetails? attendanceEntriesAdditionalDetails});
+          AttendanceEntriesAdditionalDetails?
+              attendanceEntriesAdditionalDetails});
 
   $AuditDetailsCopyWith<$Res>? get auditDetails;
   $AttendanceEntriesAdditionalDetailsCopyWith<$Res>?
@@ -1766,7 +1773,8 @@ abstract class _$$AttendanceEntriesImplCopyWith<$Res>
       int? time,
       AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      AttendanceEntriesAdditionalDetails? attendanceEntriesAdditionalDetails});
+          AttendanceEntriesAdditionalDetails?
+              attendanceEntriesAdditionalDetails});
 
   @override
   $AuditDetailsCopyWith<$Res>? get auditDetails;
@@ -1827,7 +1835,7 @@ class _$AttendanceEntriesImpl implements _AttendanceEntries {
       this.time,
       this.auditDetails,
       @JsonKey(name: 'additionalDetails')
-      this.attendanceEntriesAdditionalDetails});
+          this.attendanceEntriesAdditionalDetails});
 
   factory _$AttendanceEntriesImpl.fromJson(Map<String, dynamic> json) =>
       _$$AttendanceEntriesImplFromJson(json);
@@ -1893,8 +1901,8 @@ abstract class _AttendanceEntries implements AttendanceEntries {
       final int? time,
       final AuditDetails? auditDetails,
       @JsonKey(name: 'additionalDetails')
-      final AttendanceEntriesAdditionalDetails?
-          attendanceEntriesAdditionalDetails}) = _$AttendanceEntriesImpl;
+          final AttendanceEntriesAdditionalDetails?
+              attendanceEntriesAdditionalDetails}) = _$AttendanceEntriesImpl;
 
   factory _AttendanceEntries.fromJson(Map<String, dynamic> json) =
       _$AttendanceEntriesImpl.fromJson;

@@ -67,7 +67,7 @@ class WageSeekerCreateBloc
       CreateWageSeekerEvent event, WageSeekerCreateEmitter emit) async {
     Client client = Client();
     try {
-      print(event.individualDetails?.adharCardResponse?.toJson());
+      
       emit(const WageSeekerCreateState.loading());
       SingleIndividualModel individualListModel =
           await WageSeekerRepository(client.init()).createIndividual(

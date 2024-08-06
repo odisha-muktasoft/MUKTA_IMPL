@@ -6,7 +6,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/services/urls.dart';
 
 import '../../data/repositories/remote/mdms.dart';
-import '../../models/attendance/muster_submission.dart';
 import '../../models/muster_rolls/muster_inbox_status.dart';
 import '../../utils/global_variables.dart';
 

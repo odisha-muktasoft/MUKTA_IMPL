@@ -7,8 +7,8 @@ import 'package:works_shg_app/models/table/table_model.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/Back.dart';
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/widgets/back.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/delete_button.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/molecules/digit_table.dart' as shg_app;
@@ -24,8 +24,8 @@ import '../router/app_router.dart';
 import '../utils/common_methods.dart';
 import '../utils/models.dart';
 import '../utils/notifiers.dart';
-import '../widgets/ButtonLink.dart';
-import '../widgets/SideBar.dart';
+import '../widgets/button_link.dart';
+import '../widgets/side_bar.dart';
 import '../widgets/atoms/app_bar_logo.dart';
 import '../widgets/atoms/auto_complete_search_bar.dart';
 import '../widgets/drawer_wrapper.dart';
@@ -37,8 +37,7 @@ class AttendanceRegisterTablePage extends StatefulWidget {
   final String tenantId;
   const AttendanceRegisterTablePage(@PathParam('registerId') this.registerId,
       @PathParam('tenantId') this.tenantId,
-      {Key? key})
-      : super(key: key);
+      {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -83,7 +82,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
     searchUser = false;
     context.read<AttendanceIndividualProjectSearchBloc>().add(
           SearchIndividualAttendanceRegisterEvent(
-              registerNumber: widget.registerId ?? '',
+              registerNumber: widget.registerId ,
               tenantId: widget.tenantId.toString()),
         );
     await Future.delayed(const Duration(seconds: 1));
@@ -297,7 +296,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                   if (individualAttendanceRegisterModel!
                                               .attendanceRegister !=
                                           null &&
-                                      individualAttendanceRegisterModel!
+                                      individualAttendanceRegisterModel
                                           .attendanceRegister!.isNotEmpty) {
                                     registerStartDate =
                                         individualAttendanceRegisterModel
@@ -323,7 +322,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                             .toList()
                                             .isNotEmpty) {
                                       existingAttendeeList =
-                                          individualAttendanceRegisterModel!
+                                          individualAttendanceRegisterModel
                                               .attendanceRegister!
                                               .first
                                               .attendeesEntries!
@@ -341,7 +340,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                           .read<IndividualWMSSearchBloc>()
                                           .add(
                                             SearchWMSIndividualIdEvent(
-                                                ids: individualAttendanceRegisterModel!
+                                                ids: individualAttendanceRegisterModel
                                                     .attendanceRegister!
                                                     .first
                                                     .attendeesEntries
@@ -512,7 +511,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                 registerId: widget
                                                                     .registerId
                                                                     .toString(),
-                                                                tenantId: widget!
+                                                                tenantId: widget
                                                                     .tenantId
                                                                     .toString()));
                                                       },
@@ -529,7 +528,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                 registerId: widget
                                                                     .registerId
                                                                     .toString(),
-                                                                tenantId: widget!
+                                                                tenantId: widget
                                                                     .tenantId
                                                                     .toString()));
                                                       },
@@ -559,7 +558,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                   registerId: widget
                                                                       .registerId
                                                                       .toString(),
-                                                                  tenantId: widget!
+                                                                  tenantId: widget
                                                                       .tenantId
                                                                       .toString()));
                                                         },
@@ -576,7 +575,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                   registerId: widget
                                                                       .registerId
                                                                       .toString(),
-                                                                  tenantId: widget!
+                                                                  tenantId: widget
                                                                       .tenantId
                                                                       .toString()));
                                                         },

@@ -202,7 +202,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
           orElse: () => {const SizedBox.shrink()},
           verified: (adharCardResponse) {
             // Update Aadhaar verification status
-            isVerified = adharCardResponse!.adharCardResponse!.status ==
+            isVerified = adharCardResponse.adharCardResponse!.status ==
                     Constants.verifyAdhar
                 ? true
                 : false;
@@ -410,7 +410,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                             children: [
                                               Flexible(
                                                 flex: 0,
-                                                child: value!.status ==
+                                                child: value.status ==
                                                         Constants.verifyAdhar
                                                     ? CircleAvatar(
                                                         radius: 18,
@@ -444,7 +444,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                                       const EdgeInsets.only(
                                                           left: 8.0),
                                                   child: Text(
-                                                    value!.status ==
+                                                    value.status ==
                                                             Constants
                                                                 .verifyAdhar
                                                         ? t.translate(i18
@@ -455,7 +455,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                                                             .adharVerifyError),
                                                     style: TextStyle(
                                                       fontSize: 15,
-                                                      color: value!.status ==
+                                                      color: value.status ==
                                                               Constants
                                                                   .verifyAdhar
                                                           ? DigitTheme

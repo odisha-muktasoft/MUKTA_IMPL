@@ -39,7 +39,7 @@ abstract class $MyBillsInboxConfigListCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOBillInboxConfig')
-      List<MyBillsInboxConfig> myBillsInboxConfig});
+          List<MyBillsInboxConfig> myBillsInboxConfig});
 }
 
 /// @nodoc
@@ -78,7 +78,7 @@ abstract class _$$MyBillsInboxConfigListImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOBillInboxConfig')
-      List<MyBillsInboxConfig> myBillsInboxConfig});
+          List<MyBillsInboxConfig> myBillsInboxConfig});
 }
 
 /// @nodoc
@@ -110,7 +110,7 @@ class __$$MyBillsInboxConfigListImplCopyWithImpl<$Res>
 class _$MyBillsInboxConfigListImpl implements _MyBillsInboxConfigList {
   const _$MyBillsInboxConfigListImpl(
       {@JsonKey(name: 'CBOBillInboxConfig')
-      required final List<MyBillsInboxConfig> myBillsInboxConfig})
+          required final List<MyBillsInboxConfig> myBillsInboxConfig})
       : _myBillsInboxConfig = myBillsInboxConfig;
 
   factory _$MyBillsInboxConfigListImpl.fromJson(Map<String, dynamic> json) =>
@@ -163,7 +163,7 @@ class _$MyBillsInboxConfigListImpl implements _MyBillsInboxConfigList {
 abstract class _MyBillsInboxConfigList implements MyBillsInboxConfigList {
   const factory _MyBillsInboxConfigList(
           {@JsonKey(name: 'CBOBillInboxConfig')
-          required final List<MyBillsInboxConfig> myBillsInboxConfig}) =
+              required final List<MyBillsInboxConfig> myBillsInboxConfig}) =
       _$MyBillsInboxConfigListImpl;
 
   factory _MyBillsInboxConfigList.fromJson(Map<String, dynamic> json) =

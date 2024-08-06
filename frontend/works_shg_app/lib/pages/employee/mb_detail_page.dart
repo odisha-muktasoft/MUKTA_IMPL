@@ -20,20 +20,20 @@ import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_business_workflow.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../blocs/work_orders/search_individual_work.dart';
-import '../../models/employee/mb/filtered_Measures.dart';
+import '../../models/employee/mb/filtered_measures.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../models/muster_rolls/business_service_workflow.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/back.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/digit_timeline.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/multi_image.dart';
-import '../../widgets/mb/workFlowButtonList.dart';
+import '../../widgets/mb/work_flow_button_list.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
 import '../../widgets/mb/text_button_underline.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -133,7 +133,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   context.read<MusterGetWorkflowBloc>().add(
                         FetchMBWorkFlowEvent(
                             tenantId: GlobalVariables.tenantId!,
-                            mbNumber: widget.mbNumber!),
+                            mbNumber: widget.mbNumber),
                       );
 
                   context.read<MeasurementDetailBloc>().add(
@@ -180,7 +180,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         tenantId: widget.tenantId!,
                         contractNumber: widget.contractNumber,
                         measurementNumber:
-                            valueLoaded!.measurement!.measurementNumber!,
+                            valueLoaded.measurement!.measurementNumber!,
                         screenType: MBScreen.update,
                       ),
                     );
@@ -235,23 +235,23 @@ class _MBDetailPageState extends State<MBDetailPage>
                       return const SizedBox.shrink();
                     },
                     loaded: (value) {
-                      double sorprice = 0.00;
+                      // double sorprice = 0.00;
 
-                      for (int i = 0; i < value.sor!.length; i++) {
-                        final key = value.sor![i];
-                        List<FilteredMeasurementsEstimate> line =
-                            value.sor![i].filteredMeasurementsMeasure.map(
-                          (e) {
-                            return e.contracts!.first.estimates!.first;
-                          },
-                        ).toList();
-                        int consumed = value.sor![i].filteredMeasurementsMeasure
-                            .fold(0, (sum, obj) {
-                          double m = obj!.currentValue!;
-                          return sum + m.toInt();
-                        });
-                        sorprice += (line.first.unitRate! * consumed);
-                      }
+                      // for (int i = 0; i < value.sor!.length; i++) {
+                      //   final key = value.sor![i];
+                      //   List<FilteredMeasurementsEstimate> line =
+                      //       value.sor![i].filteredMeasurementsMeasure.map(
+                      //     (e) {
+                      //       return e.contracts!.first.estimates!.first;
+                      //     },
+                      //   ).toList();
+                      //   int consumed = value.sor![i].filteredMeasurementsMeasure
+                      //       .fold(0, (sum, obj) {
+                      //     double m = obj.currentValue!;
+                      //     return sum + m.toInt();
+                      //   });
+                      //   sorprice += (line.first.unitRate! * consumed);
+                      // }
                       if (widget.type == MBScreen.update) {
                         return BlocBuilder<MusterGetWorkflowBloc,
                             MusterGetWorkflowState>(
@@ -507,8 +507,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           widget.mbNumber,
                                           widget.type,
                                           bk,
-                                          (bk != null &&
-                                                  (bk != null && bk.isEmpty))
+                                          ((bk != null && bk.isEmpty))
                                               ? false
                                               : true,
                                           workorderStatus,
@@ -524,8 +523,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         i18.measurementBook.totalMbAmount),
                                     subtext: t.translate(
                                         i18.measurementBook.forCurrentEntry),
-                                    showAction: (bk != null &&
-                                            (bk != null && bk.isEmpty))
+                                    showAction: ((bk != null && bk.isEmpty))
                                         ? false
                                         : true,
                                   ),
@@ -541,8 +539,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         widget.mbNumber,
                                         widget.type,
                                         bk,
-                                        (bk != null &&
-                                                (bk != null && bk.isEmpty))
+                                        ((bk != null && bk.isEmpty))
                                             ? false
                                             : true,
                                         workorderStatus,
@@ -585,8 +582,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           widget.mbNumber,
                                           widget.type,
                                           bk,
-                                          (bk != null &&
-                                                  (bk != null && bk.isEmpty))
+                                          ((bk != null && bk.isEmpty))
                                               ? false
                                               : true,
                                           workorderStatus,
@@ -602,8 +598,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         i18.measurementBook.totalMbAmount),
                                     subtext: t.translate(
                                         i18.measurementBook.forCurrentEntry),
-                                    showAction: (bk != null &&
-                                            (bk != null && bk.isEmpty))
+                                    showAction: ((bk != null && bk.isEmpty))
                                         ? false
                                         : true,
                                   ),
@@ -1063,12 +1058,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     .mbDetail,
                                                           ),
                                                         ),
-                                                        // TODO:[text change]
+                                                        
                                                         Container(
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(4),
-                                                          //  color: DigitColors().curiousBlue,
+                                                         
                                                           child: Text(
                                                               t.translate(i18
                                                                   .measurementBook
@@ -1464,7 +1459,7 @@ class _MBDetailPageState extends State<MBDetailPage>
 
     final String preConumed = preSorNonSor == null
         ? "0.0000"
-        : preSorNonSor!.fold("0.0000", (sum, obj) {
+        : preSorNonSor.fold("0.0000", (sum, obj) {
             double m = obj.contracts!.first.estimates!.first.isDeduction == true
                 ? -(obj.cumulativeValue!)
                 : (obj.cumulativeValue!);
@@ -1498,9 +1493,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                             .toStringAsFixed(2),
                 t.translate(i18.measurementBook.approvedQty): noOfQty,
       
-                //TODO:[localization]
+               
                 "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
-                    //  t.translate(i18.measurementBook.consumedQty):
+                   
                     preSorNonSor == null ? "0.0000" : preConumed
               },
             ),
@@ -1568,12 +1563,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 lineItems: magic,
                                 index: index,
                                 type: type,
-                                // noOfUnit: line[0].noOfunit,
+                              
                                 noOfUnit: noOfQty,
                                 cummulativePrevQty: preSorNonSor == null
                                     ? 0.0000
-                                    // : preSorNonSor!.first.cumulativeValue,
-                                    : preSorNonSor!.fold(0.0000, (sum, obj) {
+                                   
+                                    : preSorNonSor.fold(0.0000, (sum, obj) {
                                         double m = obj
                                                     .contracts!
                                                     .first
@@ -1615,7 +1610,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   child: Text(
                     t.translate(i18.measurementBook.mbAmtCurrentEntry),
                     style: Theme.of(context).textTheme.headlineSmall,
-                    textScaleFactor: 0.99,
+                    textScaler:const TextScaler.linear(0.99),
                   ),
                 ),
                 Container(
@@ -1735,20 +1730,20 @@ class _MBDetailPageState extends State<MBDetailPage>
                   child: ListTile(
                     title: Text(
                       
-                      // "Total SOR Amount",
+                     
                       t.translate(i18.measurementBook.totalSorAmount),
                       maxLines: 1,
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                      // "(for current entry)",
+                     
                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount!.toDouble().toStringAsFixed(2),
+                      totalSorAmount.toDouble().toStringAsFixed(2),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -1768,19 +1763,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text(
-                      // "Total Non SOR Amount",
+                      
                       t.translate(i18.measurementBook.totalNonSorAmount),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
                     subtitle: Text(
-                      // "(for current entry)",
+                     
                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount!.toDouble().toStringAsFixed(2),
+                      totalNonSorAmount.toDouble().toStringAsFixed(2),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -1831,7 +1826,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(
-                                mbAmount!.roundToDouble().toStringAsFixed(2),
+                                mbAmount.roundToDouble().toStringAsFixed(2),
                                 style: DigitTheme.instance.mobileTheme.textTheme
                                     .headlineMedium,
                               ),

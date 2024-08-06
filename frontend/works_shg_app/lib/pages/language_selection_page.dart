@@ -16,12 +16,11 @@ import '../blocs/app_initilization/app_version_bloc.dart';
 import '../blocs/localization/localization.dart';
 import '../models/init_mdms/init_mdms_model.dart';
 import '../router/app_router.dart';
-import '../utils/common_methods.dart';
 import '../widgets/loaders.dart' as shg_app;
 
 @RoutePage()
 class LanguageSelectionPage extends StatefulWidget {
-  const LanguageSelectionPage({Key? key}) : super(key: key);
+  const LanguageSelectionPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -48,7 +47,6 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
   }
 
   Widget getLanguageCard(BuildContext context) {
-    final theme = Theme.of(context);
     return BlocBuilder<AppInitializationBloc, AppInitializationState>(
       builder: (context, state) {
         return state.isInitializationCompleted == false &&

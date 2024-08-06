@@ -233,10 +233,12 @@ class _$WageSeekerMDMSImpl implements _WageSeekerMDMS {
 
 abstract class _WageSeekerMDMS implements WageSeekerMDMS {
   const factory _WageSeekerMDMS(
-      {@JsonKey(name: 'common-masters') final WageSeekerCommonMDMS? commonMDMS,
-      @JsonKey(name: 'works') final WageSeekerWorksMDMS? worksMDMS,
+      {@JsonKey(name: 'common-masters')
+          final WageSeekerCommonMDMS? commonMDMS,
+      @JsonKey(name: 'works')
+          final WageSeekerWorksMDMS? worksMDMS,
       @JsonKey(name: 'tenant')
-      final TenantMDMS? tenantMDMS}) = _$WageSeekerMDMSImpl;
+          final TenantMDMS? tenantMDMS}) = _$WageSeekerMDMSImpl;
 
   factory _WageSeekerMDMS.fromJson(Map<String, dynamic> json) =
       _$WageSeekerMDMSImpl.fromJson;
@@ -395,7 +397,7 @@ class _$WageSeekerWorksMDMSImpl implements _WageSeekerWorksMDMS {
 abstract class _WageSeekerWorksMDMS implements WageSeekerWorksMDMS {
   const factory _WageSeekerWorksMDMS(
       {@JsonKey(name: 'BankAccType')
-      final List<BankAccType>? bankAccType}) = _$WageSeekerWorksMDMSImpl;
+          final List<BankAccType>? bankAccType}) = _$WageSeekerWorksMDMSImpl;
 
   factory _WageSeekerWorksMDMS.fromJson(Map<String, dynamic> json) =
       _$WageSeekerWorksMDMSImpl.fromJson;
@@ -962,12 +964,16 @@ abstract class $WageSeekerCommonMDMSCopyWith<$Res> {
       _$WageSeekerCommonMDMSCopyWithImpl<$Res, WageSeekerCommonMDMS>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'GenderType') List<GenderType>? genderType,
+      {@JsonKey(name: 'GenderType')
+          List<GenderType>? genderType,
       @JsonKey(name: 'WageSeekerSkills')
-      List<WageSeekerSkills>? wageSeekerSkills,
-      @JsonKey(name: 'Relationship') List<Relationship>? relationship,
-      @JsonKey(name: 'SocialCategory') List<SocialCategory>? socialCategory,
-      @JsonKey(name: 'DocumentType') List<DocumentType>? documentType});
+          List<WageSeekerSkills>? wageSeekerSkills,
+      @JsonKey(name: 'Relationship')
+          List<Relationship>? relationship,
+      @JsonKey(name: 'SocialCategory')
+          List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          List<DocumentType>? documentType});
 }
 
 /// @nodoc
@@ -1024,12 +1030,16 @@ abstract class _$$WageSeekerCommonMDMSImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'GenderType') List<GenderType>? genderType,
+      {@JsonKey(name: 'GenderType')
+          List<GenderType>? genderType,
       @JsonKey(name: 'WageSeekerSkills')
-      List<WageSeekerSkills>? wageSeekerSkills,
-      @JsonKey(name: 'Relationship') List<Relationship>? relationship,
-      @JsonKey(name: 'SocialCategory') List<SocialCategory>? socialCategory,
-      @JsonKey(name: 'DocumentType') List<DocumentType>? documentType});
+          List<WageSeekerSkills>? wageSeekerSkills,
+      @JsonKey(name: 'Relationship')
+          List<Relationship>? relationship,
+      @JsonKey(name: 'SocialCategory')
+          List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          List<DocumentType>? documentType});
 }
 
 /// @nodoc
@@ -1078,13 +1088,16 @@ class __$$WageSeekerCommonMDMSImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$WageSeekerCommonMDMSImpl implements _WageSeekerCommonMDMS {
   const _$WageSeekerCommonMDMSImpl(
-      {@JsonKey(name: 'GenderType') final List<GenderType>? genderType,
+      {@JsonKey(name: 'GenderType')
+          final List<GenderType>? genderType,
       @JsonKey(name: 'WageSeekerSkills')
-      final List<WageSeekerSkills>? wageSeekerSkills,
-      @JsonKey(name: 'Relationship') final List<Relationship>? relationship,
+          final List<WageSeekerSkills>? wageSeekerSkills,
+      @JsonKey(name: 'Relationship')
+          final List<Relationship>? relationship,
       @JsonKey(name: 'SocialCategory')
-      final List<SocialCategory>? socialCategory,
-      @JsonKey(name: 'DocumentType') final List<DocumentType>? documentType})
+          final List<SocialCategory>? socialCategory,
+      @JsonKey(name: 'DocumentType')
+          final List<DocumentType>? documentType})
       : _genderType = genderType,
         _wageSeekerSkills = wageSeekerSkills,
         _relationship = relationship,
@@ -1200,14 +1213,16 @@ class _$WageSeekerCommonMDMSImpl implements _WageSeekerCommonMDMS {
 
 abstract class _WageSeekerCommonMDMS implements WageSeekerCommonMDMS {
   const factory _WageSeekerCommonMDMS(
-      {@JsonKey(name: 'GenderType') final List<GenderType>? genderType,
+      {@JsonKey(name: 'GenderType')
+          final List<GenderType>? genderType,
       @JsonKey(name: 'WageSeekerSkills')
-      final List<WageSeekerSkills>? wageSeekerSkills,
-      @JsonKey(name: 'Relationship') final List<Relationship>? relationship,
+          final List<WageSeekerSkills>? wageSeekerSkills,
+      @JsonKey(name: 'Relationship')
+          final List<Relationship>? relationship,
       @JsonKey(name: 'SocialCategory')
-      final List<SocialCategory>? socialCategory,
+          final List<SocialCategory>? socialCategory,
       @JsonKey(name: 'DocumentType')
-      final List<DocumentType>? documentType}) = _$WageSeekerCommonMDMSImpl;
+          final List<DocumentType>? documentType}) = _$WageSeekerCommonMDMSImpl;
 
   factory _WageSeekerCommonMDMS.fromJson(Map<String, dynamic> json) =
       _$WageSeekerCommonMDMSImpl.fromJson;

@@ -26,7 +26,7 @@ import '../pages/login.dart';
 import '../pages/otp_verification.dart';
 import '../pages/service_requests/service_requests.dart';
 import '../pages/shg_inbox.dart';
-import '../pages/trackAttendance/track-attendance_inbox.dart';
+import '../pages/trackAttendance/track_attendance_inbox.dart';
 import '../pages/track_attendance.dart';
 import '../pages/unauthenticated.dart';
 import '../pages/view_muster_rolls.dart';

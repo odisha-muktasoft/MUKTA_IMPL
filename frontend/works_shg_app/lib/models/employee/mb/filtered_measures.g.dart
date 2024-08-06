@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'filtered_Measures.dart';
+part of 'filtered_measures.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -39,7 +39,7 @@ abstract class $AttendanceRegistersModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'attendanceRegister')
-      List<AttendanceRegister>? attendanceRegister});
+          List<AttendanceRegister>? attendanceRegister});
 }
 
 /// @nodoc
@@ -78,7 +78,7 @@ abstract class _$$AttendanceRegistersModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'attendanceRegister')
-      List<AttendanceRegister>? attendanceRegister});
+          List<AttendanceRegister>? attendanceRegister});
 }
 
 /// @nodoc
@@ -110,7 +110,7 @@ class __$$AttendanceRegistersModelImplCopyWithImpl<$Res>
 class _$AttendanceRegistersModelImpl implements _AttendanceRegistersModel {
   const _$AttendanceRegistersModelImpl(
       {@JsonKey(name: 'attendanceRegister')
-      final List<AttendanceRegister>? attendanceRegister})
+          final List<AttendanceRegister>? attendanceRegister})
       : _attendanceRegister = attendanceRegister;
 
   factory _$AttendanceRegistersModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -165,7 +165,7 @@ class _$AttendanceRegistersModelImpl implements _AttendanceRegistersModel {
 abstract class _AttendanceRegistersModel implements AttendanceRegistersModel {
   const factory _AttendanceRegistersModel(
           {@JsonKey(name: 'attendanceRegister')
-          final List<AttendanceRegister>? attendanceRegister}) =
+              final List<AttendanceRegister>? attendanceRegister}) =
       _$AttendanceRegistersModelImpl;
 
   factory _AttendanceRegistersModel.fromJson(Map<String, dynamic> json) =
@@ -231,10 +231,14 @@ abstract class $AttendanceRegisterCopyWith<$Res> {
       int? endDate,
       String? status,
       @JsonKey(name: 'additionalDetails')
-      AttendanceRegisterAdditionalDetails? attendanceRegisterAdditionalDetails,
-      @JsonKey(name: 'staff') List<StaffEntries>? staffEntries,
-      @JsonKey(name: 'auditDetails') RegisterAuditDetails? registerAuditDetails,
-      @JsonKey(name: 'attendees') List<AttendeesEntries>? attendeesEntries});
+          AttendanceRegisterAdditionalDetails?
+              attendanceRegisterAdditionalDetails,
+      @JsonKey(name: 'staff')
+          List<StaffEntries>? staffEntries,
+      @JsonKey(name: 'auditDetails')
+          RegisterAuditDetails? registerAuditDetails,
+      @JsonKey(name: 'attendees')
+          List<AttendeesEntries>? attendeesEntries});
 
   $AttendanceRegisterAdditionalDetailsCopyWith<$Res>?
       get attendanceRegisterAdditionalDetails;
@@ -373,10 +377,14 @@ abstract class _$$AttendanceRegisterImplCopyWith<$Res>
       int? endDate,
       String? status,
       @JsonKey(name: 'additionalDetails')
-      AttendanceRegisterAdditionalDetails? attendanceRegisterAdditionalDetails,
-      @JsonKey(name: 'staff') List<StaffEntries>? staffEntries,
-      @JsonKey(name: 'auditDetails') RegisterAuditDetails? registerAuditDetails,
-      @JsonKey(name: 'attendees') List<AttendeesEntries>? attendeesEntries});
+          AttendanceRegisterAdditionalDetails?
+              attendanceRegisterAdditionalDetails,
+      @JsonKey(name: 'staff')
+          List<StaffEntries>? staffEntries,
+      @JsonKey(name: 'auditDetails')
+          RegisterAuditDetails? registerAuditDetails,
+      @JsonKey(name: 'attendees')
+          List<AttendeesEntries>? attendeesEntries});
 
   @override
   $AttendanceRegisterAdditionalDetailsCopyWith<$Res>?
@@ -482,11 +490,13 @@ class _$AttendanceRegisterImpl implements _AttendanceRegister {
       this.endDate,
       this.status,
       @JsonKey(name: 'additionalDetails')
-      this.attendanceRegisterAdditionalDetails,
-      @JsonKey(name: 'staff') final List<StaffEntries>? staffEntries,
-      @JsonKey(name: 'auditDetails') this.registerAuditDetails,
+          this.attendanceRegisterAdditionalDetails,
+      @JsonKey(name: 'staff')
+          final List<StaffEntries>? staffEntries,
+      @JsonKey(name: 'auditDetails')
+          this.registerAuditDetails,
       @JsonKey(name: 'attendees')
-      final List<AttendeesEntries>? attendeesEntries})
+          final List<AttendeesEntries>? attendeesEntries})
       : _staffEntries = staffEntries,
         _attendeesEntries = attendeesEntries;
 
@@ -622,13 +632,14 @@ abstract class _AttendanceRegister implements AttendanceRegister {
           final int? endDate,
           final String? status,
           @JsonKey(name: 'additionalDetails')
-          final AttendanceRegisterAdditionalDetails?
-              attendanceRegisterAdditionalDetails,
-          @JsonKey(name: 'staff') final List<StaffEntries>? staffEntries,
+              final AttendanceRegisterAdditionalDetails?
+                  attendanceRegisterAdditionalDetails,
+          @JsonKey(name: 'staff')
+              final List<StaffEntries>? staffEntries,
           @JsonKey(name: 'auditDetails')
-          final RegisterAuditDetails? registerAuditDetails,
+              final RegisterAuditDetails? registerAuditDetails,
           @JsonKey(name: 'attendees')
-          final List<AttendeesEntries>? attendeesEntries}) =
+              final List<AttendeesEntries>? attendeesEntries}) =
       _$AttendanceRegisterImpl;
 
   factory _AttendanceRegister.fromJson(Map<String, dynamic> json) =
@@ -1483,7 +1494,7 @@ abstract class $AttendeesEntriesCopyWith<$Res> {
       int? enrollmentDate,
       int? denrollmentDate,
       @JsonKey(name: 'additionalDetails')
-      AttendeesAdditionalDetails? additionalDetails});
+          AttendeesAdditionalDetails? additionalDetails});
 
   $AttendeesAdditionalDetailsCopyWith<$Res>? get additionalDetails;
 }
@@ -1571,7 +1582,7 @@ abstract class _$$AttendeesEntriesImplCopyWith<$Res>
       int? enrollmentDate,
       int? denrollmentDate,
       @JsonKey(name: 'additionalDetails')
-      AttendeesAdditionalDetails? additionalDetails});
+          AttendeesAdditionalDetails? additionalDetails});
 
   @override
   $AttendeesAdditionalDetailsCopyWith<$Res>? get additionalDetails;
@@ -1714,7 +1725,7 @@ abstract class _AttendeesEntries implements AttendeesEntries {
           final int? enrollmentDate,
           final int? denrollmentDate,
           @JsonKey(name: 'additionalDetails')
-          final AttendeesAdditionalDetails? additionalDetails}) =
+              final AttendeesAdditionalDetails? additionalDetails}) =
       _$AttendeesEntriesImpl;
 
   factory _AttendeesEntries.fromJson(Map<String, dynamic> json) =

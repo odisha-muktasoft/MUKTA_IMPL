@@ -180,9 +180,10 @@ class _$EstimateMusterRollsModelImpl implements _EstimateMusterRollsModel {
 
 abstract class _EstimateMusterRollsModel implements EstimateMusterRollsModel {
   const factory _EstimateMusterRollsModel(
-      {@JsonKey(name: 'musterRolls') final List<EstimateMusterRoll>? musterRoll,
+      {@JsonKey(name: 'musterRolls')
+          final List<EstimateMusterRoll>? musterRoll,
       @JsonKey(name: 'count')
-      final int? count}) = _$EstimateMusterRollsModelImpl;
+          final int? count}) = _$EstimateMusterRollsModelImpl;
 
   factory _EstimateMusterRollsModel.fromJson(Map<String, dynamic> json) =
       _$EstimateMusterRollsModelImpl.fromJson;
@@ -244,10 +245,11 @@ abstract class $EstimateMusterRollCopyWith<$Res> {
       int? startDate,
       int? endDate,
       @JsonKey(name: 'individualEntries')
-      List<EstimateIndividualEntries>? individualEntries,
+          List<EstimateIndividualEntries>? individualEntries,
       @JsonKey(name: 'additionalDetails')
-      MusterAdditionalDetails? musterAdditionalDetails,
-      @JsonKey(name: 'auditDetails') AuditDetails? musterAuditDetails});
+          MusterAdditionalDetails? musterAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? musterAuditDetails});
 
   $MusterAdditionalDetailsCopyWith<$Res>? get musterAdditionalDetails;
   $AuditDetailsCopyWith<$Res>? get musterAuditDetails;
@@ -370,10 +372,11 @@ abstract class _$$EstimateMusterRollImplCopyWith<$Res>
       int? startDate,
       int? endDate,
       @JsonKey(name: 'individualEntries')
-      List<EstimateIndividualEntries>? individualEntries,
+          List<EstimateIndividualEntries>? individualEntries,
       @JsonKey(name: 'additionalDetails')
-      MusterAdditionalDetails? musterAdditionalDetails,
-      @JsonKey(name: 'auditDetails') AuditDetails? musterAuditDetails});
+          MusterAdditionalDetails? musterAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          AuditDetails? musterAuditDetails});
 
   @override
   $MusterAdditionalDetailsCopyWith<$Res>? get musterAdditionalDetails;
@@ -466,9 +469,11 @@ class _$EstimateMusterRollImpl implements _EstimateMusterRoll {
       this.startDate,
       this.endDate,
       @JsonKey(name: 'individualEntries')
-      final List<EstimateIndividualEntries>? individualEntries,
-      @JsonKey(name: 'additionalDetails') this.musterAdditionalDetails,
-      @JsonKey(name: 'auditDetails') this.musterAuditDetails})
+          final List<EstimateIndividualEntries>? individualEntries,
+      @JsonKey(name: 'additionalDetails')
+          this.musterAdditionalDetails,
+      @JsonKey(name: 'auditDetails')
+          this.musterAuditDetails})
       : _individualEntries = individualEntries;
 
   factory _$EstimateMusterRollImpl.fromJson(Map<String, dynamic> json) =>
@@ -583,11 +588,11 @@ abstract class _EstimateMusterRoll implements EstimateMusterRoll {
       final int? startDate,
       final int? endDate,
       @JsonKey(name: 'individualEntries')
-      final List<EstimateIndividualEntries>? individualEntries,
+          final List<EstimateIndividualEntries>? individualEntries,
       @JsonKey(name: 'additionalDetails')
-      final MusterAdditionalDetails? musterAdditionalDetails,
+          final MusterAdditionalDetails? musterAdditionalDetails,
       @JsonKey(name: 'auditDetails')
-      final AuditDetails? musterAuditDetails}) = _$EstimateMusterRollImpl;
+          final AuditDetails? musterAuditDetails}) = _$EstimateMusterRollImpl;
 
   factory _EstimateMusterRoll.fromJson(Map<String, dynamic> json) =
       _$EstimateMusterRollImpl.fromJson;
@@ -658,10 +663,10 @@ abstract class $EstimateIndividualEntriesCopyWith<$Res> {
       String? individualId,
       double? totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      List<AttendanceEntries>? attendanceEntries,
+          List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      EstimateMusterIndividualAdditionalDetails?
-          musterIndividualAdditionalDetails});
+          EstimateMusterIndividualAdditionalDetails?
+              musterIndividualAdditionalDetails});
 
   $EstimateMusterIndividualAdditionalDetailsCopyWith<$Res>?
       get musterIndividualAdditionalDetails;
@@ -742,10 +747,10 @@ abstract class _$$EstimateIndividualEntriesImplCopyWith<$Res>
       String? individualId,
       double? totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      List<AttendanceEntries>? attendanceEntries,
+          List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      EstimateMusterIndividualAdditionalDetails?
-          musterIndividualAdditionalDetails});
+          EstimateMusterIndividualAdditionalDetails?
+              musterIndividualAdditionalDetails});
 
   @override
   $EstimateMusterIndividualAdditionalDetailsCopyWith<$Res>?
@@ -805,9 +810,9 @@ class _$EstimateIndividualEntriesImpl implements _EstimateIndividualEntries {
       this.individualId,
       this.totalAttendance,
       @JsonKey(name: 'attendanceEntries')
-      final List<AttendanceEntries>? attendanceEntries,
+          final List<AttendanceEntries>? attendanceEntries,
       @JsonKey(name: 'additionalDetails')
-      this.musterIndividualAdditionalDetails})
+          this.musterIndividualAdditionalDetails})
       : _attendanceEntries = attendanceEntries;
 
   factory _$EstimateIndividualEntriesImpl.fromJson(Map<String, dynamic> json) =>
@@ -886,14 +891,15 @@ class _$EstimateIndividualEntriesImpl implements _EstimateIndividualEntries {
 
 abstract class _EstimateIndividualEntries implements EstimateIndividualEntries {
   const factory _EstimateIndividualEntries(
-      {final String? id,
-      final String? individualId,
-      final double? totalAttendance,
-      @JsonKey(name: 'attendanceEntries')
-      final List<AttendanceEntries>? attendanceEntries,
-      @JsonKey(name: 'additionalDetails')
-      final EstimateMusterIndividualAdditionalDetails?
-          musterIndividualAdditionalDetails}) = _$EstimateIndividualEntriesImpl;
+          {final String? id,
+          final String? individualId,
+          final double? totalAttendance,
+          @JsonKey(name: 'attendanceEntries')
+              final List<AttendanceEntries>? attendanceEntries,
+          @JsonKey(name: 'additionalDetails')
+              final EstimateMusterIndividualAdditionalDetails?
+                  musterIndividualAdditionalDetails}) =
+      _$EstimateIndividualEntriesImpl;
 
   factory _EstimateIndividualEntries.fromJson(Map<String, dynamic> json) =
       _$EstimateIndividualEntriesImpl.fromJson;

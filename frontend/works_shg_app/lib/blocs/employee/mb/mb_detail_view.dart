@@ -1,21 +1,18 @@
 //mb_detail_view
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../../../data/remote_client.dart';
 import '../../../data/repositories/employee_repository/mb.dart';
-import '../../../models/employee/mb/filtered_Measures.dart';
+import '../../../models/employee/mb/filtered_measures.dart';
 import '../../../models/employee/mb/mb_detail_response.dart';
 import '../../../models/muster_rolls/muster_workflow_model.dart';
 import '../../../services/urls.dart';
@@ -255,8 +252,8 @@ class MeasurementDetailBloc
             List<SorObject> data = MBLogic.deleteMeasurementLine(
               value.sor!,
               event.sorId,
-              event.filteredMeasurementMeasureId!,
-              event.measurementLineIndex!,
+              event.filteredMeasurementMeasureId,
+              event.measurementLineIndex,
             );
 
             emit(value.copyWith(
@@ -267,8 +264,8 @@ class MeasurementDetailBloc
             List<SorObject> data = MBLogic.deleteMeasurementLine(
               value.nonSor!,
               event.sorId,
-              event.filteredMeasurementMeasureId!,
-              event.measurementLineIndex!,
+              event.filteredMeasurementMeasureId,
+              event.measurementLineIndex,
             );
 
             emit(value.copyWith(

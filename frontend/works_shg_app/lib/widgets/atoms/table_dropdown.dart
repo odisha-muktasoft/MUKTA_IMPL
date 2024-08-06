@@ -63,8 +63,7 @@ class _DropDownDialogState extends State<DropDownDialog> {
                     SizedBox(
                       width: 80,
                       child: Text(
-                        widget.selectedOption != null &&
-                                widget.selectedOption.isNotEmpty
+                        widget.selectedOption.isNotEmpty
                             ? AppLocalizations.of(context).translate(
                                 'COMMON_MASTERS_SKILLS_${widget.selectedOption}')
                             : '',

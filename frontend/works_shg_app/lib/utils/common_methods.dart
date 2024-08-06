@@ -40,7 +40,7 @@ class CommonMethods {
         await storage.deleteAll();
       }
       packageInfo = await PackageInfo.fromPlatform();
-    } catch (e, s) {
+    } catch (e) {
       print(e);
     }
   }
@@ -123,7 +123,7 @@ class CommonMethods {
         }
       }
     } catch (e) {
-      print('Error');
+     
       print(e);
     }
   }

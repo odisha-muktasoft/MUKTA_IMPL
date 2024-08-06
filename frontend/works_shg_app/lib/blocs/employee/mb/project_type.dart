@@ -1,9 +1,7 @@
 //mb_detail_view
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
-import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

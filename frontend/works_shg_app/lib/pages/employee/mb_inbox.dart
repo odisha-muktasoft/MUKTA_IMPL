@@ -17,8 +17,8 @@ import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import '../../utils/common_methods.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/back.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/mb/mb_detail_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -310,7 +310,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                           height: 170,
                         ),
                       ),
-                      mbInboxResponse!.mbInboxResponse.items!.isEmpty
+                      mbInboxResponse.mbInboxResponse.items!.isEmpty
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (BuildContext context, int index) {
@@ -333,9 +333,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   // Display items
                                   if (index ==
                                           (mbInboxResponse.isLoading
-                                              ? mbInboxResponse.mbInboxResponse!
+                                              ? mbInboxResponse.mbInboxResponse
                                                   .items!.length
-                                              : mbInboxResponse.mbInboxResponse!
+                                              : mbInboxResponse.mbInboxResponse
                                                       .items!.length -
                                                   1) &&
                                       mbInboxResponse.isLoading) {

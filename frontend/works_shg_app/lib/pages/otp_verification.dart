@@ -14,8 +14,8 @@ import '../data/remote_client.dart';
 import '../data/repositories/auth_repository/auth.dart';
 import '../services/urls.dart';
 import '../utils/notifiers.dart';
-import '../widgets/Back.dart';
-import '../widgets/labelText.dart';
+import '../widgets/back.dart';
+import '../widgets/label_text.dart';
 import '../widgets/atoms/app_bar_logo.dart';
 import '../widgets/atoms/resend_otp.dart';
 import '../widgets/atoms/sub_label.dart';
@@ -23,8 +23,7 @@ import '../widgets/atoms/sub_label.dart';
 @RoutePage()
 class OTPVerificationPage extends StatefulWidget {
   final String mobileNumber;
-  const OTPVerificationPage({Key? key, required this.mobileNumber})
-      : super(key: key);
+  const OTPVerificationPage({super.key, required this.mobileNumber});
 
   @override
   State<StatefulWidget> createState() {

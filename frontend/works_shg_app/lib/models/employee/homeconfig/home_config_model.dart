@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'homeConfigModel.freezed.dart';
-part 'homeConfigModel.g.dart';
+part 'home_config_model.freezed.dart';
+part 'home_config_model.g.dart';
 
 @freezed
 class HomeConfigModel with _$HomeConfigModel {

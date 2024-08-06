@@ -1,6 +1,5 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
-import 'package:works_shg_app/utils/constants.dart';
 
 import '../atoms/background_container.dart';
 

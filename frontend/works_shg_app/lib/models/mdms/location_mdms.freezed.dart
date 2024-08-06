@@ -37,7 +37,7 @@ abstract class $LocationCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'TenantBoundary')
-      List<TenantBoundary>? tenantBoundaryList});
+          List<TenantBoundary>? tenantBoundaryList});
 }
 
 /// @nodoc
@@ -74,7 +74,7 @@ abstract class _$$LocationImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'TenantBoundary')
-      List<TenantBoundary>? tenantBoundaryList});
+          List<TenantBoundary>? tenantBoundaryList});
 }
 
 /// @nodoc
@@ -104,7 +104,7 @@ class __$$LocationImplCopyWithImpl<$Res>
 class _$LocationImpl implements _Location {
   const _$LocationImpl(
       {@JsonKey(name: 'TenantBoundary')
-      final List<TenantBoundary>? tenantBoundaryList})
+          final List<TenantBoundary>? tenantBoundaryList})
       : _tenantBoundaryList = tenantBoundaryList;
 
   factory _$LocationImpl.fromJson(Map<String, dynamic> json) =>
@@ -158,7 +158,7 @@ class _$LocationImpl implements _Location {
 abstract class _Location implements Location {
   const factory _Location(
       {@JsonKey(name: 'TenantBoundary')
-      final List<TenantBoundary>? tenantBoundaryList}) = _$LocationImpl;
+          final List<TenantBoundary>? tenantBoundaryList}) = _$LocationImpl;
 
   factory _Location.fromJson(Map<String, dynamic> json) =
       _$LocationImpl.fromJson;
@@ -504,10 +504,12 @@ class _$WardBoundaryImpl implements _WardBoundary {
 
 abstract class _WardBoundary implements WardBoundary {
   const factory _WardBoundary(
-      {@JsonKey(name: 'code') final String? code,
-      @JsonKey(name: 'name') final String? name,
+      {@JsonKey(name: 'code')
+          final String? code,
+      @JsonKey(name: 'name')
+          final String? name,
       @JsonKey(name: 'children')
-      final List<LocalityChild>? localityChildren}) = _$WardBoundaryImpl;
+          final List<LocalityChild>? localityChildren}) = _$WardBoundaryImpl;
 
   factory _WardBoundary.fromJson(Map<String, dynamic> json) =
       _$WardBoundaryImpl.fromJson;

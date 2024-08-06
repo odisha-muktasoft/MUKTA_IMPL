@@ -14,7 +14,6 @@ import 'package:universal_html/html.dart' as html;
 import '../../data/repositories/remote/localization.dart';
 import '../../data/schema/localization.dart';
 import '../../models/app_config/app_config_model.dart';
-import '../../models/init_mdms/init_mdms_model.dart';
 import '../../models/localization/localization_model.dart';
 import 'app_localization.dart';
 
@@ -52,7 +51,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
         );
       }).toList();
       // Extract selected modules
-      final List<String> selectedModules = event.module!.split(',');
+      final List<String> selectedModules = event.module.split(',');
 
 // filter the selected module for fetching the localization data
 
@@ -159,7 +158,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
             }
           }).toList();
 // Extract selected modules from the event
-          final List<String> selectedModules = event.module!.split(',');
+          final List<String> selectedModules = event.module.split(',');
           // Clone the existing module status list
           List<ModuleStatus> ss = List.from(value.moduleStatus!);
           // Create a copy of selected modules list
@@ -168,9 +167,9 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
 
           for (final selectedModule in loopingData) {
             final index =
-                ss!.indexWhere((element) => element.value == selectedModule);
+                ss.indexWhere((element) => element.value == selectedModule);
             if (index != -1) {
-              if (ss![index].status[event.locale] == true) {
+              if (ss[index].status[event.locale] == true) {
                 selectedModules.remove(selectedModule);
               } else {
                 final Map<String, bool> updatedStatus = Map.from(
@@ -245,7 +244,7 @@ class LocalizationBloc extends Bloc<LocalizationEvent, LocalizationState> {
           } else {
             // If no modules are selected, emit updated state without fetching new data
             final List codes = event.locale.split('_');
-            await _loadLocale(codes, event.locale!);
+            await _loadLocale(codes, event.locale);
 
             emit(value.copyWith(moduleStatus: ss, languages: configLanguage));
           }

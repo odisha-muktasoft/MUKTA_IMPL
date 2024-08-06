@@ -38,7 +38,7 @@ abstract class $AttendanceHoursListCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'AttendanceHours')
-      List<AttendanceHours>? attendanceHours});
+          List<AttendanceHours>? attendanceHours});
 }
 
 /// @nodoc
@@ -75,7 +75,7 @@ abstract class _$$AttendanceHoursListImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'AttendanceHours')
-      List<AttendanceHours>? attendanceHours});
+          List<AttendanceHours>? attendanceHours});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class __$$AttendanceHoursListImplCopyWithImpl<$Res>
 class _$AttendanceHoursListImpl implements _AttendanceHoursList {
   const _$AttendanceHoursListImpl(
       {@JsonKey(name: 'AttendanceHours')
-      final List<AttendanceHours>? attendanceHours})
+          final List<AttendanceHours>? attendanceHours})
       : _attendanceHours = attendanceHours;
 
   factory _$AttendanceHoursListImpl.fromJson(Map<String, dynamic> json) =>
@@ -159,7 +159,7 @@ class _$AttendanceHoursListImpl implements _AttendanceHoursList {
 abstract class _AttendanceHoursList implements AttendanceHoursList {
   const factory _AttendanceHoursList(
           {@JsonKey(name: 'AttendanceHours')
-          final List<AttendanceHours>? attendanceHours}) =
+              final List<AttendanceHours>? attendanceHours}) =
       _$AttendanceHoursListImpl;
 
   factory _AttendanceHoursList.fromJson(Map<String, dynamic> json) =

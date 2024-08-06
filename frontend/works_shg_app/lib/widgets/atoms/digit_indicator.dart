@@ -25,7 +25,7 @@ class DigitIndicator extends StatelessWidget {
   final bool isTextWidget;
 
   /// The border width of this indicator when it is selected.
-  final activeBorderWidth;
+  final double activeBorderWidth;
 
   /// Radius of this indicator.
   final double radius;

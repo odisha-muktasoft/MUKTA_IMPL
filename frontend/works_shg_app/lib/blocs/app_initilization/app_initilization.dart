@@ -11,7 +11,7 @@ import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/services/urls.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
-import '../../data/repositories/remote/getGlobalConfig_repo.dart';
+import '../../data/repositories/remote/get_global_config_repo.dart';
 import '../../data/repositories/remote/mdms.dart';
 import '../../models/init_mdms/global_config_model.dart';
 import '../../services/local_storage.dart';

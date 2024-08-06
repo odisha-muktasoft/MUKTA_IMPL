@@ -4,15 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_check.dart';
-import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/work_orders/work_order_pdf.dart';
-import 'package:works_shg_app/utils/Toast/toaster.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/ButtonLink.dart';
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/widgets/button_link.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 
 import '../../blocs/localization/app_localization.dart';
@@ -30,8 +28,8 @@ import '../../utils/common_widgets.dart';
 import '../../utils/constants.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/back.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/attachments.dart';
 import '../../widgets/drawer_wrapper.dart';
@@ -172,15 +170,12 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                           i18.workOrder.existingMBCreateError),
                                       'ERROR');
                                 }
-                                // Notifiers.getToastMessage(
-                                //     context,
-                                //     "MB can not be created as the $show in progress",
-                                //     'ERROR');
+                                
                               }
                             },
                           );
 
-                          // TODO: implement listener
+                          
                         },
                         child: SizedBox(
                           height: 60,
@@ -1568,7 +1563,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                       const WorkOrderRoute());
                                                 } else {
                                                   Navigator.of(context).pop();
-                                                  // context.router.pop();
+                                                  
                                                 }
                                               },
                                             ),

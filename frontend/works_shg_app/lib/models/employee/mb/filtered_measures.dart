@@ -5,8 +5,8 @@ import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
 
 import '../../muster_rolls/muster_workflow_model.dart';
 
-part 'filtered_Measures.freezed.dart';
-part 'filtered_Measures.g.dart';
+part 'filtered_measures.freezed.dart';
+part 'filtered_measures.g.dart';
 
 @freezed
 class FilteredMeasurements with _$FilteredMeasurements {

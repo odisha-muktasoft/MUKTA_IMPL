@@ -62,7 +62,7 @@ class IndividualRepository {
               item["businessObject"]["individualId"] != null &&
               item["businessObject"]["individualId"] != "null" &&
               item["businessObject"].containsKey("individualId")).toList();
-            print("filtered Items");
+           
           // Update the "items" key with the filtered items
           responseData["items"] = filteredItems;
         }

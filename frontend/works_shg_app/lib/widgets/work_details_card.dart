@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/ButtonLink.dart';
+import 'package:works_shg_app/widgets/button_link.dart';
 import 'package:works_shg_app/widgets/atoms/button_group.dart';
 
 import '../blocs/localization/app_localization.dart';
@@ -93,7 +93,6 @@ class WorkDetailsCard extends StatelessWidget {
             );
           }).toList(),
         );
-        break;
 
       case 2:
         return Column(
@@ -116,8 +115,6 @@ class WorkDetailsCard extends StatelessWidget {
             );
           }).toList(),
         );
-        break;
-
       case 3:
         return Column(
           children: detailsList.mapIndexed((index, e) {
@@ -130,7 +127,6 @@ class WorkDetailsCard extends StatelessWidget {
             );
           }).toList(),
         );
-        break;
 
       default:
         return Column(

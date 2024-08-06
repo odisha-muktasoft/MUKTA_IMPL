@@ -14,7 +14,7 @@ class ToastUtils {
     if (toastTimer == null || toastTimer!.isActive == false) {
       _overlayEntry = createOverlayEntry(context, message, type);
 
-      Overlay.of(context)!.insert(_overlayEntry!);
+      Overlay.of(context).insert(_overlayEntry!);
       toastTimer = Timer(const Duration(seconds: 20), () {
         if (_overlayEntry != null) {
           _overlayEntry!.remove();

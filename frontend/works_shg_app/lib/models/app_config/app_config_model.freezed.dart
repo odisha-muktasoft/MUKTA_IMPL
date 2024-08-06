@@ -405,9 +405,10 @@ abstract class $AppConfigCopyWith<$Res> {
       _$AppConfigCopyWithImpl<$Res, AppConfig>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'LANGUAGES') List<Languages> languages,
+      {@JsonKey(name: 'LANGUAGES')
+          List<Languages> languages,
       @JsonKey(name: 'LOCALIZATION_MODULES')
-      List<LocalizationModules>? localizationModules});
+          List<LocalizationModules>? localizationModules});
 }
 
 /// @nodoc
@@ -448,9 +449,10 @@ abstract class _$$AppConfigImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'LANGUAGES') List<Languages> languages,
+      {@JsonKey(name: 'LANGUAGES')
+          List<Languages> languages,
       @JsonKey(name: 'LOCALIZATION_MODULES')
-      List<LocalizationModules>? localizationModules});
+          List<LocalizationModules>? localizationModules});
 }
 
 /// @nodoc
@@ -484,9 +486,10 @@ class __$$AppConfigImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AppConfigImpl implements _AppConfig {
   _$AppConfigImpl(
-      {@JsonKey(name: 'LANGUAGES') required final List<Languages> languages,
+      {@JsonKey(name: 'LANGUAGES')
+          required final List<Languages> languages,
       @JsonKey(name: 'LOCALIZATION_MODULES')
-      required final List<LocalizationModules>? localizationModules})
+          required final List<LocalizationModules>? localizationModules})
       : _languages = languages,
         _localizationModules = localizationModules;
 
@@ -553,9 +556,10 @@ class _$AppConfigImpl implements _AppConfig {
 
 abstract class _AppConfig implements AppConfig {
   factory _AppConfig(
-          {@JsonKey(name: 'LANGUAGES') required final List<Languages> languages,
+          {@JsonKey(name: 'LANGUAGES')
+              required final List<Languages> languages,
           @JsonKey(name: 'LOCALIZATION_MODULES')
-          required final List<LocalizationModules>? localizationModules}) =
+              required final List<LocalizationModules>? localizationModules}) =
       _$AppConfigImpl;
 
   factory _AppConfig.fromJson(Map<String, dynamic> json) =
@@ -711,7 +715,7 @@ class _$LanguagesListImpl implements _LanguagesList {
 abstract class _LanguagesList implements LanguagesList {
   factory _LanguagesList(
       {@JsonKey(name: 'languages')
-      required final List<Languages>? languages}) = _$LanguagesListImpl;
+          required final List<Languages>? languages}) = _$LanguagesListImpl;
 
   factory _LanguagesList.fromJson(Map<String, dynamic> json) =
       _$LanguagesListImpl.fromJson;

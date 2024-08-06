@@ -271,14 +271,14 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                     description: locationDetails != null &&
                             locationDetails?.ward != null
                         ? t.translate(
-                            '${GlobalVariables.organisationListModel?.organisations?.first.tenantId?.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.ward.toString()}')
+                            '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.ward.toString()}')
                         : t.translate('NA')),
                 getItemWidget(context,
                     title: t.translate(i18.common.locality),
                     description: locationDetails != null &&
                             locationDetails?.locality != null
                         ? t.translate(
-                            '${GlobalVariables.organisationListModel?.organisations?.first.tenantId?.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.locality.toString()}')
+                            '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.locality.toString()}')
                         : t.translate('NA')),
                 getItemWidget(context,
                     title: t.translate(i18.common.streetName),
@@ -361,16 +361,16 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           context.read<WageSeekerBankCreateBloc>().add(
                                 CreateBankWageSeekerEvent(
                                     tenantId: individualListModel
-                                        ?.Individual?.tenantId,
+                                        ?.individual?.tenantId,
                                     accountHolderName:
                                         financialDetails?.accountHolderName,
                                     accountNo: financialDetails?.accountNumber,
                                     accountType: financialDetails?.accountType,
                                     ifscCode: financialDetails?.ifscCode,
                                     referenceId:
-                                        individualListModel?.Individual?.id,
+                                        individualListModel?.individual?.id,
                                     indId: individualListModel
-                                        ?.Individual?.individualId,
+                                        ?.individual?.individualId,
                                     bankName: '${financialDetails?.bankName}'),
                               );
                         },
@@ -411,7 +411,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                             if (debouncer != null && debouncer!.isActive) {
                               debouncer!.cancel(); // Cancel the previous timer if it's active.
                             }
-                            debouncer = Timer(Duration(milliseconds: 1000), () {
+                            debouncer = Timer(const Duration(milliseconds: 1000), () {
                           context.read<WageSeekerCreateBloc>().add(
                                 CreateWageSeekerEvent(
                                     individualDetails: individualDetails,

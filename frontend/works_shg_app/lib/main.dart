@@ -244,11 +244,7 @@ class _MainApplicationState extends State<MainApplication> {
         BlocProvider(
           create: (_) => UserSearchBloc()..add(const SearchUserEvent()),
         ),
-        //TODO:[old code]
-        // BlocProvider(
-        //   create: (_) =>
-        //       MusterRollSearchBloc()..add(const SearchMusterRollEvent()),
-        // ),
+        
          BlocProvider(
           create: (_) =>
               MusterRollSearchBloc(),

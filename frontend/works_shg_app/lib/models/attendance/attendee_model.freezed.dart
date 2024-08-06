@@ -38,7 +38,7 @@ abstract class $AttendeeModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'attendanceRegister')
-      List<AttendanceRegister>? attendanceRegister});
+          List<AttendanceRegister>? attendanceRegister});
 }
 
 /// @nodoc
@@ -75,7 +75,7 @@ abstract class _$$AttendeeModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'attendanceRegister')
-      List<AttendanceRegister>? attendanceRegister});
+          List<AttendanceRegister>? attendanceRegister});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class __$$AttendeeModelImplCopyWithImpl<$Res>
 class _$AttendeeModelImpl implements _AttendeeModel {
   const _$AttendeeModelImpl(
       {@JsonKey(name: 'attendanceRegister')
-      final List<AttendanceRegister>? attendanceRegister})
+          final List<AttendanceRegister>? attendanceRegister})
       : _attendanceRegister = attendanceRegister;
 
   factory _$AttendeeModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -159,7 +159,7 @@ class _$AttendeeModelImpl implements _AttendeeModel {
 abstract class _AttendeeModel implements AttendeeModel {
   const factory _AttendeeModel(
           {@JsonKey(name: 'attendanceRegister')
-          final List<AttendanceRegister>? attendanceRegister}) =
+              final List<AttendanceRegister>? attendanceRegister}) =
       _$AttendeeModelImpl;
 
   factory _AttendeeModel.fromJson(Map<String, dynamic> json) =
@@ -266,7 +266,7 @@ class __$$AttendeeTrackListModelImplCopyWithImpl<$Res>
 class _$AttendeeTrackListModelImpl implements _AttendeeTrackListModel {
   const _$AttendeeTrackListModelImpl(
       {@JsonKey(ignore: true)
-      final List<AttendeesTrackList>? attendeeList = const []})
+          final List<AttendeesTrackList>? attendeeList = const []})
       : _attendeeList = attendeeList;
 
   factory _$AttendeeTrackListModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -320,7 +320,7 @@ class _$AttendeeTrackListModelImpl implements _AttendeeTrackListModel {
 abstract class _AttendeeTrackListModel implements AttendeeTrackListModel {
   const factory _AttendeeTrackListModel(
           {@JsonKey(ignore: true)
-          final List<AttendeesTrackList>? attendeeList}) =
+              final List<AttendeesTrackList>? attendeeList}) =
       _$AttendeeTrackListModelImpl;
 
   factory _AttendeeTrackListModel.fromJson(Map<String, dynamic> json) =

@@ -8,8 +8,8 @@ import 'package:works_shg_app/blocs/muster_rolls/create_muster.dart';
 import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/Back.dart';
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/widgets/back.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/custom_info_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/molecules/digit_table.dart' as shg_app;
@@ -40,9 +40,9 @@ import '../utils/date_formats.dart';
 import '../utils/models.dart';
 import '../utils/models/track_attendance_payload.dart';
 import '../utils/notifiers.dart';
-import '../widgets/ButtonLink.dart';
-import '../widgets/CircularButton.dart';
-import '../widgets/SideBar.dart';
+import '../widgets/button_link.dart';
+import '../widgets/circular_button.dart';
+import '../widgets/side_bar.dart';
 import '../widgets/atoms/app_bar_logo.dart';
 import '../widgets/atoms/digit_timeline.dart';
 import '../widgets/atoms/table_dropdown.dart';
@@ -59,8 +59,7 @@ class SHGInboxPage extends StatefulWidget {
       @PathParam('tenantId') this.tenantId,
       @PathParam('musterRollNo') this.musterRollNo,
       @PathParam('sentBackCode') this.sentBackCode,
-      {Key? key})
-      : super(key: key);
+      {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -272,7 +271,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                               .tenantId
                                                               .toString()),
                                                     );
-                                                    //TODO:
+                                                   
                                                 projectDetails =
                                                     individualMusterRollModel
                                                         .musterRoll!
@@ -1560,7 +1559,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                 widget.tenantId));
           }
         }
-        ;
+        
       });
     }
   }
@@ -1686,7 +1685,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                 widget.tenantId));
           }
         }
-        ;
+        
       });
     }
   }

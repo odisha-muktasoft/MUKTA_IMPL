@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
-import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/models/muster_rolls/business_service_workflow.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
@@ -14,8 +13,6 @@ import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../models/muster_rolls/muster_workflow_model.dart';
 import '../../router/app_router.dart';
-import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
-    as i18;
 
 import '../../utils/employee/mb/mb_logic.dart';
 
@@ -79,8 +76,8 @@ class CommonButtonCard extends StatelessWidget {
                 child: Container(
                   color: Colors.transparent,
                   height: type == MBScreen.update
-                      ? g!.first.nextActions!.length!.toDouble() * 50.0
-                      : bs!.first.workflowState!.first.actions!.length!
+                      ? g!.first.nextActions!.length.toDouble() * 50.0
+                      : bs!.first.workflowState!.first.actions!.length
                               .toDouble() *
                           50.0,
                   width: MediaQuery.sizeOf(context).width,
@@ -97,9 +94,11 @@ class CommonButtonCard extends StatelessWidget {
                                         "WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
                                 // label: g!.first.nextActions![index].action! ?? "",
                                 onPressed: () {
-                                  final data = g
-                                      ?.first.nextActions![index].roles
-                                      ?.join(',');
+                                  // TODO:[temp]
+                                  // final data = g
+                                  //     ?.first.nextActions![index].roles
+                                  //     ?.join(',');
+                                  //end
                                   if (g!.first.nextActions![index].action ==
                                           "EDIT/RE-SUBMIT" &&
                                       value.viewStatus) {
@@ -108,17 +107,12 @@ class CommonButtonCard extends StatelessWidget {
                                             updateView: !value.viewStatus,
                                           ),
                                         );
-                                    //     Navigator.of(
-                                    //   context,
-                                    //   rootNavigator: false,
-                                    // ).popUntil(
-                                    //   (route) => route is! PopupRoute,
-                                    // );
+                                    
                                     Navigator.of(context).pop();
                                   } else {
                                     if (g!.first.nextActions![index].action ==
                                         "SAVE_AS_DRAFT") {
-                                      print("object");
+                                     
                                       List<List<SorObject>> sorList = [
                                         value.sor!,
                                         value.nonSor!
@@ -226,7 +220,7 @@ class CommonButtonCard extends StatelessWidget {
                                   if (bs!.first.workflowState!.first
                                           .actions![index].action ==
                                       "SAVE_AS_DRAFT") {
-                                    print("object");
+                                   
                                     List<List<SorObject>> sorList = [
                                       value.sor!,
                                       value.nonSor!

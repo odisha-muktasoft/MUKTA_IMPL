@@ -6,6 +6,26 @@ part of 'table_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+
+Map<String, dynamic> _$TableDataModelToJson(TableDataModel instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'aadhaar': instance.aadhaar,
+      'individualGaurdianName': instance.individualGaurdianName,
+      'mobileNumber': instance.mobileNumber,
+      'individualCode': instance.individualCode,
+      'skill': instance.skill,
+      'uuid': instance.uuid,
+      'individualId': instance.individualId,
+      'bankNumber': instance.bankNumber,
+      'monIndex': instance.monIndex,
+      'tueIndex': instance.tueIndex,
+      'wedIndex': instance.wedIndex,
+      'thursIndex': instance.thursIndex,
+      'friIndex': instance.friIndex,
+      'satIndex': instance.satIndex,
+    };
+
 _$TableDataModelImpl _$$TableDataModelImplFromJson(Map<String, dynamic> json) =>
     _$TableDataModelImpl(
       name: json['name'] as String?,

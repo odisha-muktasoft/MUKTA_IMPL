@@ -38,7 +38,7 @@ abstract class $MusterWorkFlowModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'ProcessInstances')
-      List<ProcessInstances>? processInstances});
+          List<ProcessInstances>? processInstances});
 }
 
 /// @nodoc
@@ -75,7 +75,7 @@ abstract class _$$MusterWorkFlowModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'ProcessInstances')
-      List<ProcessInstances>? processInstances});
+          List<ProcessInstances>? processInstances});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class __$$MusterWorkFlowModelImplCopyWithImpl<$Res>
 class _$MusterWorkFlowModelImpl implements _MusterWorkFlowModel {
   const _$MusterWorkFlowModelImpl(
       {@JsonKey(name: 'ProcessInstances')
-      final List<ProcessInstances>? processInstances})
+          final List<ProcessInstances>? processInstances})
       : _processInstances = processInstances;
 
   factory _$MusterWorkFlowModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -160,7 +160,7 @@ class _$MusterWorkFlowModelImpl implements _MusterWorkFlowModel {
 abstract class _MusterWorkFlowModel implements MusterWorkFlowModel {
   const factory _MusterWorkFlowModel(
           {@JsonKey(name: 'ProcessInstances')
-          final List<ProcessInstances>? processInstances}) =
+              final List<ProcessInstances>? processInstances}) =
       _$MusterWorkFlowModelImpl;
 
   factory _MusterWorkFlowModel.fromJson(Map<String, dynamic> json) =
@@ -927,7 +927,7 @@ abstract class $WorkflowDocumentCopyWith<$Res> {
       bool? isActive,
       int? indexing,
       @JsonKey(name: 'additionalDetails')
-      DocumentAdditionalDetails? documentAdditionalDetails});
+          DocumentAdditionalDetails? documentAdditionalDetails});
 
   $DocumentAdditionalDetailsCopyWith<$Res>? get documentAdditionalDetails;
 }
@@ -1027,7 +1027,7 @@ abstract class _$$WorkflowDocumentImplCopyWith<$Res>
       bool? isActive,
       int? indexing,
       @JsonKey(name: 'additionalDetails')
-      DocumentAdditionalDetails? documentAdditionalDetails});
+          DocumentAdditionalDetails? documentAdditionalDetails});
 
   @override
   $DocumentAdditionalDetailsCopyWith<$Res>? get documentAdditionalDetails;
@@ -1202,7 +1202,7 @@ abstract class _WorkflowDocument implements WorkflowDocument {
           final bool? isActive,
           final int? indexing,
           @JsonKey(name: 'additionalDetails')
-          final DocumentAdditionalDetails? documentAdditionalDetails}) =
+              final DocumentAdditionalDetails? documentAdditionalDetails}) =
       _$WorkflowDocumentImpl;
 
   factory _WorkflowDocument.fromJson(Map<String, dynamic> json) =

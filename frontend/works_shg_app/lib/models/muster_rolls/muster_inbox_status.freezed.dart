@@ -39,7 +39,7 @@ abstract class $MusterInboxStatusListCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOMusterInboxConfig')
-      List<MusterInboxStatus>? musterInboxStatus});
+          List<MusterInboxStatus>? musterInboxStatus});
 }
 
 /// @nodoc
@@ -78,7 +78,7 @@ abstract class _$$MusterInboxStatusListImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'CBOMusterInboxConfig')
-      List<MusterInboxStatus>? musterInboxStatus});
+          List<MusterInboxStatus>? musterInboxStatus});
 }
 
 /// @nodoc
@@ -109,7 +109,7 @@ class __$$MusterInboxStatusListImplCopyWithImpl<$Res>
 class _$MusterInboxStatusListImpl implements _MusterInboxStatusList {
   const _$MusterInboxStatusListImpl(
       {@JsonKey(name: 'CBOMusterInboxConfig')
-      final List<MusterInboxStatus>? musterInboxStatus})
+          final List<MusterInboxStatus>? musterInboxStatus})
       : _musterInboxStatus = musterInboxStatus;
 
   factory _$MusterInboxStatusListImpl.fromJson(Map<String, dynamic> json) =>
@@ -164,7 +164,7 @@ class _$MusterInboxStatusListImpl implements _MusterInboxStatusList {
 abstract class _MusterInboxStatusList implements MusterInboxStatusList {
   const factory _MusterInboxStatusList(
           {@JsonKey(name: 'CBOMusterInboxConfig')
-          final List<MusterInboxStatus>? musterInboxStatus}) =
+              final List<MusterInboxStatus>? musterInboxStatus}) =
       _$MusterInboxStatusListImpl;
 
   factory _MusterInboxStatusList.fromJson(Map<String, dynamic> json) =

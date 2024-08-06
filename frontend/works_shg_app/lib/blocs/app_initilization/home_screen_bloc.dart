@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/data/repositories/common_repository/common_repository.dart';
-import 'package:works_shg_app/models/employee/homeconfig/homeConfigModel.dart';
+import 'package:works_shg_app/models/employee/homeconfig/home_config_model.dart';
 import 'package:works_shg_app/services/urls.dart';
 
 import '../../../utils/global_variables.dart';

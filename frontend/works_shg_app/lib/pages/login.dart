@@ -121,7 +121,7 @@ class _LoginPageState extends State<LoginPage>
               AnimatedContainer(
                 height: _tabController.index == 0
                     ? 120
-                    : MediaQuery.of(context).size.height * 0.45,
+                    : MediaQuery.of(context).size.height * 0.42,
                 duration: const Duration(milliseconds: 100),
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),

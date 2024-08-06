@@ -7,7 +7,7 @@ import 'package:works_shg_app/blocs/employee/mb/project_type.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'
-    as statusMap;
+    as status_map;
 import 'package:works_shg_app/models/employee/mb/mb_project_type.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/Toast/toaster.dart';
@@ -17,7 +17,7 @@ import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import '../../utils/common_methods.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -33,7 +33,7 @@ class MBFilterPage extends StatefulWidget {
 
 class _MBFilterPageState extends State<MBFilterPage> {
   List<String> ward = []; // Initialize ward list
-  List<statusMap.StatusMap> workflow = []; // Initialize workflow list
+  List<status_map.StatusMap> workflow = []; // Initialize workflow list
 
   TextEditingController mbNumber = TextEditingController();
   TextEditingController projectId = TextEditingController();
@@ -91,7 +91,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    
     mbNumber.removeListener(mbNumberUpload);
     projectId.removeListener(projectIdUpload);
     //projectName.removeListener(projectNameUpload);
@@ -654,7 +654,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                             )
                                           : const SizedBox.shrink(),
                                       workShow
-                                          ? DigitDropdown<statusMap.StatusMap>(
+                                          ? DigitDropdown<status_map.StatusMap>(
                                               onChanged: (value) {
                                                 setState(() {
                                                   workflow.add(value!);

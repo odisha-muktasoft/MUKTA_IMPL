@@ -1,14 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/theme.dart';
 import 'package:works_shg_app/widgets/mb/multi_line_items.dart';
 
-import '../../models/employee/mb/filtered_Measures.dart';
+import '../../models/employee/mb/filtered_measures.dart';
 import '../../utils/notifiers.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -74,7 +73,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
       listenWhen: (previous, current) =>
           ((previous != current) || (previous == current)),
       listener: (context, state) {
-        // TODO: implement listener
+        
         state.maybeMap(
           orElse: () => null,
           loaded: (value) {
@@ -260,7 +259,6 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -443,7 +441,7 @@ class _CardWidgetState extends State<CardWidget> {
                                               style: DigitTheme
                                                   .instance
                                                   .mobileTheme
-                                                  .textTheme!
+                                                  .textTheme
                                                   .bodyLarge!
                                                   .copyWith(
                                                 color: const DigitColors()
@@ -542,7 +540,7 @@ class _CardWidgetState extends State<CardWidget> {
                                               style: DigitTheme
                                                   .instance
                                                   .mobileTheme
-                                                  .textTheme!
+                                                  .textTheme
                                                   .bodyLarge!
                                                   .copyWith(
                                                       color: const DigitColors()
@@ -625,12 +623,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
+                                                    data.quantity.toString(),
                                                 number: p1.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
@@ -663,13 +661,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
                                                 length: p1.toString(),
-                                                width: data?.width.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
-                                                number: data?.number.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -700,13 +698,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
                                                 width: p1.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
-                                                number: data?.number.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -737,12 +735,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity: p1.toString(),
-                                                number: data?.number.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -773,13 +771,13 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
+                                                    data.measurelineitemNo!,
                                                 height: p1.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
-                                                number: data?.number.toString(),
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .id!,
@@ -810,12 +808,12 @@ class _CardWidgetState extends State<CardWidget> {
                                                     .category!,
                                                 index: index,
                                                 measurementLineIndex:
-                                                    data!.measurelineitemNo!,
-                                                height: data?.height.toString(),
-                                                length: data?.length.toString(),
-                                                width: data?.width.toString(),
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
                                                 quantity:
-                                                    data?.quantity.toString(),
+                                                    data.quantity.toString(),
                                                 number: p1.toString(),
                                                 filteredMeasurementMeasureId: widget
                                                     .filteredMeasurementsMeasure!
@@ -831,27 +829,27 @@ class _CardWidgetState extends State<CardWidget> {
                                       ? widget
                                           .filteredMeasurementsMeasure?.height
                                           .toString()
-                                      : data?.height.toString(),
+                                      : data.height.toString(),
                                   width: data == null
                                       ? widget
                                           .filteredMeasurementsMeasure?.breath
                                           .toString()
-                                      : data?.width.toString(),
+                                      : data.width.toString(),
                                   number: data == null
                                       ? widget
                                           .filteredMeasurementsMeasure?.numItems
                                           .toString()
-                                      : data?.number.toString(),
+                                      : data.number.toString(),
                                   quantity: data == null
                                       ? widget.filteredMeasurementsMeasure
                                           ?.currentValue
                                           .toString()
-                                      : data?.quantity.toString(),
+                                      : data.quantity.toString(),
                                   length: data == null
                                       ? widget
                                           .filteredMeasurementsMeasure?.length
                                           .toString()
-                                      : data?.length.toString(),
+                                      : data.length.toString(),
                                   viewMode: widget.viewMode,
                                   filteredMeasurementMeasureId:
                                       widget.filteredMeasurementsMeasure!.id!,

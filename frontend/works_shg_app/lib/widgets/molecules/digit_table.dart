@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 
 import '../../utils/models.dart';
-import '../ScrollParent.dart';
+import '../scroll_parent.dart';
 
 class DigitTable extends StatelessWidget {
   final List<TableHeader> headerList;

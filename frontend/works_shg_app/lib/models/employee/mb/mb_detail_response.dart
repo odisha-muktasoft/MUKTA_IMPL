@@ -1,9 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart';
-import 'package:works_shg_app/models/muster_rolls/estimate_muster_roll_model.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 
-import 'filtered_Measures.dart';
+import 'filtered_measures.dart';
 
 part 'mb_detail_response.freezed.dart';
 part 'mb_detail_response.g.dart';

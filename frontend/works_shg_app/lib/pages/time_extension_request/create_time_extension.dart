@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -18,8 +17,8 @@ import '../../utils/common_methods.dart';
 import '../../utils/common_widgets.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/back.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;

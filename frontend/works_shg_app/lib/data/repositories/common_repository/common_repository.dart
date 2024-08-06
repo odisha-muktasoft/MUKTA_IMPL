@@ -8,7 +8,7 @@ import 'package:works_shg_app/Env/env_config.dart';
 import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
-import '../../../models/employee/homeconfig/homeConfigModel.dart';
+import '../../../models/employee/homeconfig/home_config_model.dart';
 import '../../../models/mdms/location_mdms.dart';
 import '../../../models/muster_rolls/business_service_workflow.dart';
 import '../../../models/screen_config/home_screen_config.dart';

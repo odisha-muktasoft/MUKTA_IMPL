@@ -6,6 +6,7 @@ import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 
 import '../blocs/localization/localization.dart';
+
 @RoutePage()
 class AuthenticatedWrapperPage extends StatefulWidget {
   const AuthenticatedWrapperPage({
@@ -40,21 +41,19 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedWrapperPage> {
     context
         .read<LocalizationBloc>()
         .add(LocalizationEvent.onSpecificLoadLocalization(
-          module: GlobalVariables.roleType==RoleType.employee?
-          'rainmaker-contracts,rainmaker-attendencemgmt,rainmaker-measurement,rainmaker-workflow'
-          :'rainmaker-contracts,rainmaker-attendencemgmt,rainmaker-workflow',
+          module: GlobalVariables.roleType == RoleType.employee
+              ? 'rainmaker-contracts,rainmaker-attendencemgmt,rainmaker-measurement,rainmaker-workflow'
+              : 'rainmaker-contracts,rainmaker-attendencemgmt,rainmaker-workflow',
           tenantId: GlobalVariables
               .globalConfigObject!.globalConfigs!.stateTenantId
               .toString(),
-          locale: selectedLocale!.value.toString() ?? "",
+          locale: selectedLocale!.value.toString(),
         ));
 
     // ignore: use_build_context_synchronously
     context
         .read<ORGSearchBloc>()
-        .add(
-          SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber'])
-          );
+        .add(SearchORGEvent(GlobalVariables.userRequestModel!['mobileNumber']));
   }
 
   @override

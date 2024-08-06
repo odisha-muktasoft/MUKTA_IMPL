@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/WorkDetailsCard.dart';
+import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
@@ -21,8 +21,8 @@ import '../../utils/common_methods.dart';
 import '../../utils/constants.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/Back.dart';
-import '../../widgets/SideBar.dart';
+import '../../widgets/back.dart';
+import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/tabs_button.dart';
 import '../../widgets/drawer_wrapper.dart';

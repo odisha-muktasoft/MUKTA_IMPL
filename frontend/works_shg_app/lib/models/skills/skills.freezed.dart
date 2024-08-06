@@ -154,7 +154,7 @@ class _$SkillsListImpl implements _SkillsList {
 abstract class _SkillsList implements SkillsList {
   const factory _SkillsList(
       {@JsonKey(name: 'SOR')
-      final List<WageSeekerSkills>? wageSeekerSkills}) = _$SkillsListImpl;
+          final List<WageSeekerSkills>? wageSeekerSkills}) = _$SkillsListImpl;
 
   factory _SkillsList.fromJson(Map<String, dynamic> json) =
       _$SkillsListImpl.fromJson;
