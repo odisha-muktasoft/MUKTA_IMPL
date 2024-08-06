@@ -9,8 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.egov.works.services.common.models.contract.LineItems;
-import org.egov.works.services.common.models.contract.Status;
+
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
