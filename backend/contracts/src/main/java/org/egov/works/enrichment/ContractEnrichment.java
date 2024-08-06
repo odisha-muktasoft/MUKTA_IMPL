@@ -188,9 +188,9 @@ public class ContractEnrichment {
             markLineItemsAndAmountBreakupsStatus(contractRequest, Status.INACTIVE);
             log.info("Contract components are marked as INACTIVE on workflow 'REJECT' action. Contract Id ["+contract.getId()+"]");
         }
-        if(contractRequest.getContract().getBusinessService() != null && (contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)
-                || contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_REVISION_ESTIMATE))
-                && ACCEPT_ACTION.equalsIgnoreCase(workflow.getAction())) {
+        if(contractRequest.getContract().getBusinessService() != null &&
+                contractRequest.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)
+                && APPROVE_ACTION.equalsIgnoreCase(workflow.getAction())){
             markContractAndDocumentsStatus(contractRequest, Status.ACTIVE);
             markLineItemsAndAmountBreakupsStatus(contractRequest, Status.ACTIVE);
         }

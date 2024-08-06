@@ -44,7 +44,7 @@ public class ContractConsumer {
             request = objectMapper.readValue(consumerRecord, EstimateRequest.class);
             if(request.getEstimate().getBusinessService().equals(REVISION_ESTIMATE)){
                 if(!request.getWorkflow().getAction().equals(APPROVE_ACTION)){
-                    throw new CustomException("REVISED_ESTIMATE_NOT_APPROVED", "Revised Estimate is not Approved");
+                    log.info("Revised Estimate is not Approved");
                 }else{
                     contractService.createAndPostRevisedContractRequest(request);
                 }
