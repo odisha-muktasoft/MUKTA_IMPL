@@ -75,8 +75,9 @@ class _CreateTimeExtensionRequestPage
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (value) async {
         if (context.router.currentUrl.contains('isEdit')) {
           context.router.popUntilRouteWithPath('home');
           context.router.push(const MyServiceRequestsRoute());
@@ -84,7 +85,7 @@ class _CreateTimeExtensionRequestPage
           context.router.popUntilRouteWithPath('home');
           context.router.push(const WorkOrderRoute());
         }
-        return false;
+       
       },
       child: Scaffold(
         appBar: AppBar(

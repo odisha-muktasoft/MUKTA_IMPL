@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -58,11 +59,11 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                       orElse: () => false,
                       loading: () => shg_app.Loaders.circularLoader(context),
                       loaded: (AppVersionModel? cboAppVersion) {
-                        // CommonMethods().checkVersion(
-                        //     context,
-                        //     cboAppVersion?.packageName,
-                        //     cboAppVersion?.iOSId,
-                        //     cboAppVersion?.version);
+                        CommonMethods().checkVersion(
+                            context,
+                            cboAppVersion?.packageName,
+                            cboAppVersion?.iOSId,
+                            cboAppVersion?.version);
                       },
                       error: (String? error) {
                         return const Center(

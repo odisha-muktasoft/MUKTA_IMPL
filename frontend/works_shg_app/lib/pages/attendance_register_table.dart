@@ -108,8 +108,9 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (value) async {
         if (context.router.stack[1].routeData.path.contains('work-order')) {
           context.router.popUntilRouteWithPath('home');
           context.router.push(const WorkOrderRoute());
@@ -117,7 +118,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           context.router.popUntilRouteWithPath('home');
           context.router.push(const TrackAttendanceInboxRoute());
         }
-        return false;
+        
       },
       child: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, localState) {

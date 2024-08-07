@@ -150,11 +150,11 @@ class _SHGInboxPage extends State<SHGInboxPage> {
         ? 150.0
         : (MediaQuery.of(context).size.width / 7.5);
     var t = AppLocalizations.of(context);
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(canPop: false,
+      onPopInvoked: (value) async {
         context.router.popUntilRouteWithPath('home');
         context.router.push(const ViewMusterRollsRoute());
-        return false;
+       
       },
       child: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, localState) {

@@ -104,16 +104,17 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (value) async {
         if (GlobalVariables.roleType == RoleType.cbo) {
           context.router.popUntilRouteWithPath('home');
           context.router.push(const WorkOrderRoute());
-          return false;
+         
         } else {
           Navigator.of(context).pop();
           // context.router.pop();
-          return false;
+        
         }
       },
       child: Scaffold(

@@ -47,10 +47,11 @@ class SuccessResponsePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (value) async {
         context.router.push(const HomeRoute());
-        return false;
+        
       },
       child: Scaffold(
           bottomNavigationBar: Container(

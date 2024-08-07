@@ -9,7 +9,7 @@ part of 'home_config_model.dart';
 _$HomeConfigModelImpl _$$HomeConfigModelImplFromJson(
         Map<String, dynamic> json) =>
     _$HomeConfigModelImpl(
-      homeActions: (json['actions'] as List<dynamic>)
+      actions: (json['actions'] as List<dynamic>)
           .map((e) => HomeAction.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -17,7 +17,7 @@ _$HomeConfigModelImpl _$$HomeConfigModelImplFromJson(
 Map<String, dynamic> _$$HomeConfigModelImplToJson(
         _$HomeConfigModelImpl instance) =>
     <String, dynamic>{
-      'actions': instance.homeActions,
+      'actions': instance.actions,
     };
 
 _$HomeActionImpl _$$HomeActionImplFromJson(Map<String, dynamic> json) =>

@@ -62,46 +62,48 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-      
-        appBar: AppBar(
-          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
-          titleSpacing: 0,
-          title:GlobalVariables.roleType == RoleType.cbo? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                  orElse: () => Container(),
-                  loaded: (OrganisationListModel? organisationListModel) {
-                    return const AppBarLogo();
-                  });
-            },
-          ):const AppBarLogo(),
-        ),
-        drawer: DrawerWrapper(
-          Drawer(
-              child: GlobalVariables.roleType == RoleType.cbo
-                  ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                      builder: (context, state) {
-                        return state.maybeMap(
-                          orElse: () {
-                            return const SideBar();
-                          },
-                          loaded: (value) {
-                            return SideBar(
-                              module: CommonMethods.getLocaleModules(),
-                            );
-                          },
-                          error: (value) {
-                            return const SideBar();
-                          },
-                        );
-                      },
-                    )
-                  : SideBar(
-                      module: CommonMethods.getLocaleModules(),
-                    )),
-        ),
-        body: BlocBuilder<LocalizationBloc, LocalizationState>(
-            builder: (context, localState) {
+      appBar: AppBar(
+        iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+            .copyWith(color: const DigitColors().white),
+        titleSpacing: 0,
+        title: GlobalVariables.roleType == RoleType.cbo
+            ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                builder: (context, state) {
+                  return state.maybeWhen(
+                      orElse: () => Container(),
+                      loaded: (OrganisationListModel? organisationListModel) {
+                        return const AppBarLogo();
+                      });
+                },
+              )
+            : const AppBarLogo(),
+      ),
+      drawer: DrawerWrapper(
+        Drawer(
+            child: GlobalVariables.roleType == RoleType.cbo
+                ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
+                    builder: (context, state) {
+                      return state.maybeMap(
+                        orElse: () {
+                          return const SideBar();
+                        },
+                        loaded: (value) {
+                          return SideBar(
+                            module: CommonMethods.getLocaleModules(),
+                          );
+                        },
+                        error: (value) {
+                          return const SideBar();
+                        },
+                      );
+                    },
+                  )
+                : SideBar(
+                    module: CommonMethods.getLocaleModules(),
+                  )),
+      ),
+      body: BlocBuilder<LocalizationBloc, LocalizationState>(
+        builder: (context, localState) {
           return localState.maybeMap(
             orElse: () => const SizedBox.shrink(),
             loaded: (value) {
@@ -158,18 +160,12 @@ class _HomePage extends State<HomePage> {
                                         loaded: (List<CBOHomeScreenConfigModel>?
                                                 cboHomeScreenConfig,
                                             HomeConfigModel? homeConfigModel) {
-                                          // role based config
-                                          // if (value.roleType == RoleType.cbo) {
                                           return cboBasedLayout(
                                             cboHomeScreenConfig,
                                             t,
                                             context,
                                             selectedLan,
                                           );
-                                          // } else {
-                                          //   return empBasedLayout(
-                                          //       context, homeConfigModel!,t);
-                                          // }
                                         });
                                   },
                                 );
@@ -179,25 +175,26 @@ class _HomePage extends State<HomePage> {
                         return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
                           builder: (context, config) {
                             return config.maybeWhen(
-                                orElse: () => Container(),
-                                loading: () =>
-                                    shg_loader.Loaders.circularLoader(context),
-                                loaded: (List<CBOHomeScreenConfigModel>?
-                                        cboHomeScreenConfig,
-                                    HomeConfigModel? homeConfigModel) {
-                                  // role based config
-                                  if (value.roleType == RoleType.cbo) {
-                                    return cboBasedLayout(
+                              orElse: () => Container(),
+                              loading: () =>
+                                  shg_loader.Loaders.circularLoader(context),
+                              loaded: (List<CBOHomeScreenConfigModel>?
                                       cboHomeScreenConfig,
-                                      t,
-                                      context,
-                                      selectedLan,
-                                    );
-                                  } else {
-                                    return empBasedLayout(
-                                        context, homeConfigModel!, t);
-                                  }
-                                });
+                                  HomeConfigModel? homeConfigModel) {
+                                // role based config
+                                if (value.roleType == RoleType.cbo) {
+                                  return cboBasedLayout(
+                                    cboHomeScreenConfig,
+                                    t,
+                                    context,
+                                    selectedLan,
+                                  );
+                                } else {
+                                  return empBasedLayout(
+                                      context, homeConfigModel!, t);
+                                }
+                              },
+                            );
                           },
                         );
                       }
@@ -210,7 +207,9 @@ class _HomePage extends State<HomePage> {
               );
             },
           );
-        }));
+        },
+      ),
+    );
   }
 
   Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,
@@ -221,11 +220,8 @@ class _HomePage extends State<HomePage> {
         slivers: [
           SliverGrid(
             delegate: SliverChildBuilderDelegate((context, index) {
-              // return _getItems(context, homeConfigModel).elementAt(index);
               return cards.elementAt(index);
-            }, childCount: cards.length
-                // childCount: _getItems(context, homeConfigModel).length,
-                ),
+            }, childCount: cards.length),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 170,
               childAspectRatio: 105 / 129,
@@ -258,7 +254,6 @@ class _HomePage extends State<HomePage> {
           context.router.push(
             const MeasurementBookInboxRoute(),
           );
-          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Employee")));
         },
       ),
       i18.measurementBook.mbWorkOrderLabel: HomeItemCard(
@@ -272,14 +267,13 @@ class _HomePage extends State<HomePage> {
       )
     };
 
-    // mukta
     final homeItemsLabel = <String>[
       i18.measurementBook.mbMeasurementNumber,
       i18.measurementBook.mbWorkOrderLabel,
     ];
 
     final List<String> filteredLabels = homeItemsLabel
-        .where((element) => homeConfigModel.homeActions
+        .where((element) => homeConfigModel.actions
             .map((e) {
               if (e.parentModule == "cards") {
                 return e.displayName;
@@ -295,7 +289,6 @@ class _HomePage extends State<HomePage> {
     return widgetList;
   }
 
-//
   ScrollableContent cboBasedLayout(
     List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
     AppLocalizations t,
@@ -306,8 +299,8 @@ class _HomePage extends State<HomePage> {
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
           child: PoweredByDigit(
-            // version: Constants.appVersion,
-          ),
+              // version: Constants.appVersion,
+              ),
         ),
         children: [
           DigitCard(
@@ -428,13 +421,6 @@ class HomeItemCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             icon,
-            // Icon(
-            //   icon,
-            //   color: onPressed == null
-            //       ? theme.disabledColor
-            //       : theme.colorScheme.secondary,
-            //   size: 30,
-            // ),
             const SizedBox(height: 20),
             Text(
               AppLocalizations.of(context).translate(

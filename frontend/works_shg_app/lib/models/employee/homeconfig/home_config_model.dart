@@ -5,7 +5,7 @@ part 'home_config_model.g.dart';
 
 @freezed
 class HomeConfigModel with _$HomeConfigModel {
-  factory HomeConfigModel({@JsonKey(name: 'actions') required List<HomeAction> homeActions}) =
+  factory HomeConfigModel({ required List<HomeAction> actions}) =
       _HomeConfigModel;
 
   factory HomeConfigModel.fromJson(
@@ -16,13 +16,14 @@ class HomeConfigModel with _$HomeConfigModel {
 
 @freezed
 class HomeAction with _$HomeAction {
+  
   const factory HomeAction({
-    @JsonKey(name: 'id') required int id,
-    @JsonKey(name: 'displayName') required String displayName,
-    @JsonKey(name: 'parentModule') required String parentModule,
-    @JsonKey(name: 'enabled')required bool enabled,
-    @JsonKey(name: 'tenantId')required String tenantId,
-     @JsonKey(name: 'url')required String url,
+    required int id,
+    required String displayName,
+    required String parentModule,
+   required bool enabled,
+   required String tenantId,
+    required String url,
     
     
   }) = _HomeAction;

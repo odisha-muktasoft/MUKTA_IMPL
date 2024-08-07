@@ -20,8 +20,7 @@ HomeConfigModel _$HomeConfigModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$HomeConfigModel {
-  @JsonKey(name: 'actions')
-  List<HomeAction> get homeActions => throw _privateConstructorUsedError;
+  List<HomeAction> get actions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $HomeConfigModelCopyWith<$Res> {
           HomeConfigModel value, $Res Function(HomeConfigModel) then) =
       _$HomeConfigModelCopyWithImpl<$Res, HomeConfigModel>;
   @useResult
-  $Res call({@JsonKey(name: 'actions') List<HomeAction> homeActions});
+  $Res call({List<HomeAction> actions});
 }
 
 /// @nodoc
@@ -51,12 +50,12 @@ class _$HomeConfigModelCopyWithImpl<$Res, $Val extends HomeConfigModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? homeActions = null,
+    Object? actions = null,
   }) {
     return _then(_value.copyWith(
-      homeActions: null == homeActions
-          ? _value.homeActions
-          : homeActions // ignore: cast_nullable_to_non_nullable
+      actions: null == actions
+          ? _value.actions
+          : actions // ignore: cast_nullable_to_non_nullable
               as List<HomeAction>,
     ) as $Val);
   }
@@ -70,7 +69,7 @@ abstract class _$$HomeConfigModelImplCopyWith<$Res>
       __$$HomeConfigModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'actions') List<HomeAction> homeActions});
+  $Res call({List<HomeAction> actions});
 }
 
 /// @nodoc
@@ -84,12 +83,12 @@ class __$$HomeConfigModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? homeActions = null,
+    Object? actions = null,
   }) {
     return _then(_$HomeConfigModelImpl(
-      homeActions: null == homeActions
-          ? _value._homeActions
-          : homeActions // ignore: cast_nullable_to_non_nullable
+      actions: null == actions
+          ? _value._actions
+          : actions // ignore: cast_nullable_to_non_nullable
               as List<HomeAction>,
     ));
   }
@@ -98,25 +97,23 @@ class __$$HomeConfigModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$HomeConfigModelImpl implements _HomeConfigModel {
-  _$HomeConfigModelImpl(
-      {@JsonKey(name: 'actions') required final List<HomeAction> homeActions})
-      : _homeActions = homeActions;
+  _$HomeConfigModelImpl({required final List<HomeAction> actions})
+      : _actions = actions;
 
   factory _$HomeConfigModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$HomeConfigModelImplFromJson(json);
 
-  final List<HomeAction> _homeActions;
+  final List<HomeAction> _actions;
   @override
-  @JsonKey(name: 'actions')
-  List<HomeAction> get homeActions {
-    if (_homeActions is EqualUnmodifiableListView) return _homeActions;
+  List<HomeAction> get actions {
+    if (_actions is EqualUnmodifiableListView) return _actions;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_homeActions);
+    return EqualUnmodifiableListView(_actions);
   }
 
   @override
   String toString() {
-    return 'HomeConfigModel(homeActions: $homeActions)';
+    return 'HomeConfigModel(actions: $actions)';
   }
 
   @override
@@ -124,14 +121,13 @@ class _$HomeConfigModelImpl implements _HomeConfigModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeConfigModelImpl &&
-            const DeepCollectionEquality()
-                .equals(other._homeActions, _homeActions));
+            const DeepCollectionEquality().equals(other._actions, _actions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_homeActions));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_actions));
 
   @JsonKey(ignore: true)
   @override
@@ -149,16 +145,14 @@ class _$HomeConfigModelImpl implements _HomeConfigModel {
 }
 
 abstract class _HomeConfigModel implements HomeConfigModel {
-  factory _HomeConfigModel(
-      {@JsonKey(name: 'actions')
-          required final List<HomeAction> homeActions}) = _$HomeConfigModelImpl;
+  factory _HomeConfigModel({required final List<HomeAction> actions}) =
+      _$HomeConfigModelImpl;
 
   factory _HomeConfigModel.fromJson(Map<String, dynamic> json) =
       _$HomeConfigModelImpl.fromJson;
 
   @override
-  @JsonKey(name: 'actions')
-  List<HomeAction> get homeActions;
+  List<HomeAction> get actions;
   @override
   @JsonKey(ignore: true)
   _$$HomeConfigModelImplCopyWith<_$HomeConfigModelImpl> get copyWith =>
@@ -171,17 +165,11 @@ HomeAction _$HomeActionFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$HomeAction {
-  @JsonKey(name: 'id')
   int get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'displayName')
   String get displayName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'parentModule')
   String get parentModule => throw _privateConstructorUsedError;
-  @JsonKey(name: 'enabled')
   bool get enabled => throw _privateConstructorUsedError;
-  @JsonKey(name: 'tenantId')
   String get tenantId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'url')
   String get url => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -197,12 +185,12 @@ abstract class $HomeActionCopyWith<$Res> {
       _$HomeActionCopyWithImpl<$Res, HomeAction>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int id,
-      @JsonKey(name: 'displayName') String displayName,
-      @JsonKey(name: 'parentModule') String parentModule,
-      @JsonKey(name: 'enabled') bool enabled,
-      @JsonKey(name: 'tenantId') String tenantId,
-      @JsonKey(name: 'url') String url});
+      {int id,
+      String displayName,
+      String parentModule,
+      bool enabled,
+      String tenantId,
+      String url});
 }
 
 /// @nodoc
@@ -263,12 +251,12 @@ abstract class _$$HomeActionImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int id,
-      @JsonKey(name: 'displayName') String displayName,
-      @JsonKey(name: 'parentModule') String parentModule,
-      @JsonKey(name: 'enabled') bool enabled,
-      @JsonKey(name: 'tenantId') String tenantId,
-      @JsonKey(name: 'url') String url});
+      {int id,
+      String displayName,
+      String parentModule,
+      bool enabled,
+      String tenantId,
+      String url});
 }
 
 /// @nodoc
@@ -322,33 +310,27 @@ class __$$HomeActionImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$HomeActionImpl implements _HomeAction {
   const _$HomeActionImpl(
-      {@JsonKey(name: 'id') required this.id,
-      @JsonKey(name: 'displayName') required this.displayName,
-      @JsonKey(name: 'parentModule') required this.parentModule,
-      @JsonKey(name: 'enabled') required this.enabled,
-      @JsonKey(name: 'tenantId') required this.tenantId,
-      @JsonKey(name: 'url') required this.url});
+      {required this.id,
+      required this.displayName,
+      required this.parentModule,
+      required this.enabled,
+      required this.tenantId,
+      required this.url});
 
   factory _$HomeActionImpl.fromJson(Map<String, dynamic> json) =>
       _$$HomeActionImplFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
   final int id;
   @override
-  @JsonKey(name: 'displayName')
   final String displayName;
   @override
-  @JsonKey(name: 'parentModule')
   final String parentModule;
   @override
-  @JsonKey(name: 'enabled')
   final bool enabled;
   @override
-  @JsonKey(name: 'tenantId')
   final String tenantId;
   @override
-  @JsonKey(name: 'url')
   final String url;
 
   @override
@@ -393,33 +375,27 @@ class _$HomeActionImpl implements _HomeAction {
 
 abstract class _HomeAction implements HomeAction {
   const factory _HomeAction(
-      {@JsonKey(name: 'id') required final int id,
-      @JsonKey(name: 'displayName') required final String displayName,
-      @JsonKey(name: 'parentModule') required final String parentModule,
-      @JsonKey(name: 'enabled') required final bool enabled,
-      @JsonKey(name: 'tenantId') required final String tenantId,
-      @JsonKey(name: 'url') required final String url}) = _$HomeActionImpl;
+      {required final int id,
+      required final String displayName,
+      required final String parentModule,
+      required final bool enabled,
+      required final String tenantId,
+      required final String url}) = _$HomeActionImpl;
 
   factory _HomeAction.fromJson(Map<String, dynamic> json) =
       _$HomeActionImpl.fromJson;
 
   @override
-  @JsonKey(name: 'id')
   int get id;
   @override
-  @JsonKey(name: 'displayName')
   String get displayName;
   @override
-  @JsonKey(name: 'parentModule')
   String get parentModule;
   @override
-  @JsonKey(name: 'enabled')
   bool get enabled;
   @override
-  @JsonKey(name: 'tenantId')
   String get tenantId;
   @override
-  @JsonKey(name: 'url')
   String get url;
   @override
   @JsonKey(ignore: true)

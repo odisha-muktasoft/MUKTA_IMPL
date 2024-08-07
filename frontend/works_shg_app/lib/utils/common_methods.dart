@@ -22,7 +22,7 @@ import 'global_variables.dart';
 class CommonMethods {
   Future<void> deleteLocalStorageKey() async {
     if (kIsWeb) {
-      html.window.sessionStorage.remove(GlobalVariables.selectedLocale());
+      html.window.sessionStorage.remove( await GlobalVariables.selectedLocale());
     } else {
       await storage.delete(key: GlobalVariables.selectedLocale().toString());
     }
@@ -55,7 +55,15 @@ class CommonMethods {
             context: context,
             barrierDismissible: false,
             builder: (BuildContext context) {
-              return WillPopScope(
+              return PopScope(
+                  onPopInvoked: (val) async {
+                    if (Platform.isAndroid) {
+                      SystemNavigator.pop();
+                    } else if (Platform.isIOS) {
+                      exit(0);
+                    }
+                    //return true;
+                  },canPop: true,
                   child: AlertDialog(
                     title: const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -75,14 +83,7 @@ class CommonMethods {
                       '${(rootedCheck) ? 'Application can not be run on a rooted device' : 'Please disable developer mode of your device to run the application'} ',
                     ),
                   ),
-                  onWillPop: () async {
-                    if (Platform.isAndroid) {
-                      SystemNavigator.pop();
-                    } else if (Platform.isIOS) {
-                      exit(0);
-                    }
-                    return true;
-                  });
+                  );
             });
       } else if (latestAppVersion != null && !kIsWeb) {
         if (int.parse(packageInfo!.version.split('.').join("").toString()) <
@@ -100,7 +101,16 @@ class CommonMethods {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return WillPopScope(
+                return PopScope(
+                    onPopInvoked: (val) async {
+                      if (Platform.isAndroid) {
+                        SystemNavigator.pop();
+                      } else if (Platform.isIOS) {
+                        exit(0);
+                      }
+                      //return true;
+                    },
+                    canPop: true,
                     child: AlertDialog(
                       title: const Text('UPDATE AVAILABLE'),
                       content: Text(
@@ -111,14 +121,8 @@ class CommonMethods {
                             child: const Text('Update'))
                       ],
                     ),
-                    onWillPop: () async {
-                      if (Platform.isAndroid) {
-                        SystemNavigator.pop();
-                      } else if (Platform.isIOS) {
-                        exit(0);
-                      }
-                      return true;
-                    });
+                    
+                    );
               });
         }
       }
