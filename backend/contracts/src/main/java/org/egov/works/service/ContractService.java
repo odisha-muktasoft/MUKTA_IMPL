@@ -17,6 +17,8 @@ import org.egov.works.validator.ContractServiceValidator;
 import org.egov.works.web.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -58,11 +60,18 @@ public class ContractService {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private RedisService redisService;
+    private static final String CONTRACT_REDIS_KEY = "CONTRACT_{id}";
+
     public ContractResponse createContract(ContractRequest contractRequest) {
         log.info("Create contract");
         contractServiceValidator.validateCreateContractRequest(contractRequest);
         contractEnrichment.enrichContractOnCreate(contractRequest);
         workflowService.updateWorkflowStatus(contractRequest);
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsCachingEnabled())){
+            setCacheContract(contractRequest.getContract());
+        }
         contractProducer.push(contractServiceConfiguration.getCreateContractTopic(), contractRequest);
 
         ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(contractRequest.getRequestInfo(), true);
@@ -78,6 +87,9 @@ public class ContractService {
         contractEnrichment.enrichContractOnUpdate(contractRequest);
         workflowService.updateWorkflowStatus(contractRequest);
         contractEnrichment.enrichPreviousContractLineItems(contractRequest);
+        if(Boolean.TRUE.equals(contractServiceConfiguration.getIsCachingEnabled())){
+            setCacheContract(contractRequest.getContract());
+        }
         contractProducer.push(contractServiceConfiguration.getUpdateContractTopic(), contractRequest);
         try {
             notificationService.sendNotification(contractRequest);
@@ -103,10 +115,27 @@ public class ContractService {
         //Enrich requested search criteria
         log.info("Enrich requested search criteria");
         contractEnrichment.enrichSearchContractRequest(contractCriteria);
-
+        List<Contract> contracts = new ArrayList<>();
+        if(Boolean.TRUE.equals(isCacheSearchRequired(contractCriteria))){
+            log.info("get contract from cache");
+            try {
+                contracts = getContractsFromCache(new HashSet<>(contractCriteria.getIds()));
+                if(contracts.size() == contractCriteria.getIds().size()){
+                    log.info("Contracts searched");
+                    return contracts;
+                }else{
+                    log.info("Contracts not found in cache");
+                    contractCriteria.getIds().removeAll(contracts.stream().map(Contract::getId).collect(Collectors.toList()));
+                    if (contractCriteria.getIds().isEmpty())
+                        return contracts;
+                }
+            }catch (Exception e) {
+                log.error("Exception while getting cache: {}", e);
+            }
+        }
         //get contracts from db
         log.info("get enriched contracts list");
-        List<Contract> contracts = getContracts(contractCriteria);
+        contracts.addAll(getContracts(contractCriteria));
 
         log.info("Contracts searched");
         return contracts;
@@ -183,6 +212,9 @@ public class ContractService {
 
 
         for (Contract contract : contractList) {
+            if("REJECTED".equals(contract.getWfStatus())){
+             continue;
+            }
             long currentCreatedTime = contract.getAuditDetails().getCreatedTime();
             if (currentCreatedTime > latestCreatedTime) {
                 latestCreatedTime = currentCreatedTime;
@@ -265,6 +297,41 @@ public class ContractService {
                 .build();
     }
 
+    private List<Contract> getContractsFromCache(Set<String> ids) {
+        List<Contract> contracts = new ArrayList<>();
+        for (String id : ids) {
+            String key = getContractRedisKey(id);
+            Contract contract = redisService.getCache(key, Contract.class);
+            if (contract != null) {
+                contracts.add(contract);
+            }
+        }
+        return contracts;
+    }
 
+    private void setCacheContract(Contract contract){
+        try {
+            String key = getContractRedisKey(contract.getId());
+            redisService.setCache(key, contract);
+        }catch (Exception e){
+            log.error("Exception while setting cache: " + e);
+        }
+    }
+    private String getContractRedisKey(String id) {
+        return CONTRACT_REDIS_KEY.replace("{id}", id);
+    }
 
+    private boolean isCacheSearchRequired(ContractCriteria searchCriteria) {
+        return contractServiceConfiguration.getIsCachingEnabled() && !CollectionUtils.isEmpty(searchCriteria.getIds()) &&
+                StringUtils.isEmpty(searchCriteria.getContractNumber()) &&
+                StringUtils.isEmpty(searchCriteria.getBusinessService()) &&
+                StringUtils.isEmpty(searchCriteria.getContractType()) &&
+                StringUtils.isEmpty(searchCriteria.getSupplementNumber()) &&
+                CollectionUtils.isEmpty(searchCriteria.getEstimateIds()) &&
+                CollectionUtils.isEmpty(searchCriteria.getEstimateLineItemIds()) &&
+                StringUtils.isEmpty(searchCriteria.getContractType()) &&
+                StringUtils.isEmpty(searchCriteria.getStatus()) &&
+                StringUtils.isEmpty(searchCriteria.getWfStatus()) &&
+                CollectionUtils.isEmpty(searchCriteria.getOrgIds());
+    }
 }

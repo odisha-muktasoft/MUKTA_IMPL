@@ -2,18 +2,22 @@ package org.egov.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import digit.models.coremodels.AuditDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.repository.ServiceRequestRepository;
+import org.egov.web.models.Contract;
 import org.egov.web.models.Estimate;
-import org.egov.web.models.EstimateRequest;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -36,7 +40,7 @@ public class ContractUtils {
     /**
      * Get the Contract details using estimate number from contract service
      *
-     * @param estimateRequest
+     * @param estimate
      * @return
      */
     public Object getContractDetails(RequestInfo requestInfo, Estimate estimate) {
@@ -57,5 +61,23 @@ public class ContractUtils {
         StringBuilder uriBuilder = new StringBuilder();
         return (uriBuilder.append(config.getContractHost())
                 .append(config.getContractSearchEndpoint()));
+    }
+
+    public Contract fetchLatestContract( List<Contract> contractsList){
+        Contract latestContract=null;
+        long latestCreatedTime = Long.MIN_VALUE;
+
+
+        for (Contract contract : contractsList) {
+            if("REJECTED".equals(contract.getWfStatus())){
+                continue;
+            }
+            long currentCreatedTime = contract.getAuditDetails().getCreatedTime();
+            if (currentCreatedTime > latestCreatedTime) {
+                latestCreatedTime = currentCreatedTime;
+                latestContract = contract;
+            }
+        }
+        return latestContract;
     }
 }

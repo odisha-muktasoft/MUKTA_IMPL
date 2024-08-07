@@ -15,6 +15,7 @@ import org.egov.repository.EstimateRepository;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.*;
 import org.egov.web.models.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -49,6 +50,7 @@ public class EstimateServiceValidator {
     private static final String FAILED_TO_PARSE_MDMS_RESPONSE = "Failed to parse mdms response";
     private static final String INVALID_ESTIMATE = "INVALID_ESTIMATE";
     private static final String INVALID_ESTIMATE_DETAIL = "INVALID_ESTIMATE_DETAIL";
+    private static final String CONTRACT_INWORKFLOW="CONTRACT_INWORKFLOW";
 
     @Autowired
     public EstimateServiceValidator(MDMSUtils mdmsUtils, EstimateRepository estimateRepository, ProjectUtil projectUtil, EstimateServiceConfiguration config, ObjectMapper mapper, ContractUtils contractUtils, MeasurementUtils measurementUtils, EstimateServiceUtil estimateServiceUtil) {
@@ -150,6 +152,7 @@ public class EstimateServiceValidator {
         Object contractResponse = contractUtils.getContractDetails(estimateRequest.getRequestInfo(), previousEstimate);
         final String jsonPathForContractNumber = "$.contracts.*.contractNumber";
         List<Object> contractNumbers = null;
+        checkLatestContractNotInWorkflow(contractResponse,mapper);
         try {
             contractNumbers = JsonPath.read(contractResponse, jsonPathForContractNumber);
         } catch (Exception e) {
@@ -164,6 +167,21 @@ public class EstimateServiceValidator {
             Object measurementResponse = measurementUtils.getMeasurementDetails(estimateRequest, contractNumber);
             validateMeasurement(measurementResponse, estimateRequest,previousEstimate,contractResponse, errorMap);
         }
+    }
+    private  void checkLatestContractNotInWorkflow(Object contractResponse, ObjectMapper mapper) {
+        final String jsonPathForContracts = "$.contracts";
+        List<Map<String, Object>> contractsData = JsonPath.read(contractResponse, jsonPathForContracts);
+        List<Contract> contracts = new ArrayList<>();
+        for (Map<String, Object> contractData : contractsData) {
+            Contract contract = mapper.convertValue(contractData, Contract.class);
+            contracts.add(contract);
+        }
+        Contract contract=contractUtils.fetchLatestContract(contracts);
+        if(null!=contract && Status.INWORKFLOW.equals(contract.getStatus())){
+            throw new CustomException(CONTRACT_INWORKFLOW,"Original contract or Time extension application is In Workflow state");
+        }
+
+
     }
 
     private void validateMeasurement(Object measurementResponse, EstimateRequest estimateRequest,Estimate previousEstimate, Object contractResponse, Map<String, String> errorMap) {
