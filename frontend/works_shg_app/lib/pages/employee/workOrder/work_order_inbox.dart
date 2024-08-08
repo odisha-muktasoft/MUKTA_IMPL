@@ -86,18 +86,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
       orElse: () => {},
       loaded: (value) {
         if (value.search && value.searchData['contractNumber'] == "") {
-          // context.read<WorkOrderInboxBloc>().add(
-          //       WorkOrderInboxSearchRepeatBlocEvent(
-          //         businessService: "Contract",
-          //         limit: 10,
-          //         moduleName: 'contract-module',
-          //         offset: s,
-          //         tenantId: GlobalVariables.tenantId!,
-          //       ),
-          //     );
-          return;
-        } else if(value.search && value.searchData['contractNumber'] != ""){
- context.read<WorkOrderInboxBloc>().add(
+          context.read<WorkOrderInboxBloc>().add(
                 WorkOrderInboxSearchRepeatBlocEvent(
                   businessService: "Contract",
                   limit: 10,
@@ -106,8 +95,19 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   tenantId: GlobalVariables.tenantId!,
                 ),
               );
-        }
-        else {
+          //return;
+        } else if (value.search && value.searchData['contractNumber'] != "") {
+//  context.read<WorkOrderInboxBloc>().add(
+//                 WorkOrderInboxSearchRepeatBlocEvent(
+//                   businessService: "Contract",
+//                   limit: 10,
+//                   moduleName: 'contract-module',
+//                   offset: s,
+//                   tenantId: GlobalVariables.tenantId!,
+//                 ),
+//               );
+          return;
+        } else {
           context.read<WorkOrderInboxBloc>().add(
                 WorkOrderInboxBlocCreateEvent(
                   businessService: "MB",
@@ -181,7 +181,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           appBar: AppBar(
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                .copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -355,9 +356,9 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
                                   return WorkOrderCard(
                                     widget1: CommonTextButtonUnderline(
-                                      label: t.translate(i18.common.viewDetails),
+                                      label:
+                                          t.translate(i18.common.viewDetails),
                                       onPressed: () {
-                                       
                                         context.router
                                             .push(ViewWorkDetailsRoute(
                                           contractNumber: value
@@ -379,20 +380,17 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             loaded: (value) {
                                               if (value.estimateStatus ==
                                                       true &&
-                                                  
                                                   value.existingMB == true) {
                                                 context.router
                                                     .push(MBDetailRoute(
                                                   contractNumber:
-                                                      value.workOrderNumber!
-                                                          ,
+                                                      value.workOrderNumber!,
                                                   mbNumber: "",
                                                   tenantId:
                                                       GlobalVariables.tenantId,
                                                   type: MBScreen.create,
                                                 ));
                                               } else {
-                                               
                                                 if (value.estimateStatus ==
                                                     false) {
                                                   Notifiers.getToastMessage(
@@ -423,7 +421,6 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                     .contracts?[index]
                                                     .contractNumber ??
                                                 "";
-                                           
 
                                             context
                                                 .read<MeasurementCheckBloc>()
@@ -452,10 +449,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                               ?.projectDesc ??
                                           "",
                                       t.translate(i18.measurementBook.cboName):
-                                          value
-                                                  .contracts?[index]
-                                                  .additionalDetails
-                                                  ?.cboName ??
+                                          value.contracts?[index]
+                                                  .additionalDetails?.cboName ??
                                               "",
                                       t.translate(i18.measurementBook.cboRole):
                                           value
