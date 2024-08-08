@@ -18,6 +18,19 @@ from dotenv import load_dotenv
 
 load_dotenv('.env')
 
+# Replace these with your PostgreSQL database details
+DB_HOST = os.getenv('DB_HOST')
+DB_PORT = os.getenv('DB_PORT')
+DB_NAME = os.getenv('DB_NAME')
+DB_USER = os.getenv('DB_USER')
+DB_PASSWORD = os.getenv('DB_PASSWORD')
+
+# Connect to PostgreSQL
+def connect_to_database():
+    return psycopg2.connect(
+        host=DB_HOST, port=DB_PORT, database=DB_NAME, user=DB_USER, password=DB_PASSWORD
+    )
+
 MUKTA_ADAPTER_HOST = os.getenv('MUKTA_ADAPTER_HOST')
 EXPENSE_HOST = os.getenv('EXPENSE_HOST')
 MUSTER_HOST = os.getenv('MUSTER_HOST')
@@ -33,31 +46,31 @@ ORG_HOST = os.getenv('ORG_HOST')
 EXPENSE_CALC_HOST = os.getenv('EXPENSE_CALC_HOST')
 
 tenantids = [
-    "od.jatni"
-    # "od.dhenkanal"
-    # "od.balangir"
-    # "od.balasore"
-    # "od.padampur",
-    # "od.bhadrak",
-    # "od.boudhgarh",
-    # "od.cuttack",
-    # "od.athagarh",
-    # "od.berhampur",
-    # "od.hinjilicut",
-    # "od.chatrapur",
-    # "od.paradeep",
-    # "od.jajpur",
-    # "od.jharsuguda",
-    # "od.kesinga",
-    # "od.phulbani",
-    # "od.keonjhargarh",
-    # "od.jeypore",
-    # "od.kotpad",
-    # "od.baripada",
-    # "od.puri",
-    # "od.sambalpur",
-    # "od.rourkela",
-    # "od.bhubaneswar"
+    "od.jatni",
+    "od.dhenkanal"
+    "od.balangir"
+    "od.balasore"
+    "od.padampur",
+    "od.bhadrak",
+    "od.boudhgarh",
+    "od.cuttack",
+    "od.athagarh",
+    "od.berhampur",
+    "od.hinjilicut",
+    "od.chatrapur",
+    "od.paradeep",
+    "od.jajpur",
+    "od.jharsuguda",
+    "od.kesinga",
+    "od.phulbani",
+    "od.keonjhargarh",
+    "od.jeypore",
+    "od.kotpad",
+    "od.baripada",
+    "od.puri",
+    "od.sambalpur",
+    "od.rourkela",
+    "od.bhubaneswar"
 ]
 
 
@@ -807,6 +820,31 @@ def getCBOReportData():
     except Exception as e:
         raise e
 
+def getIdentifierAmountMap(musterRollNumber):
+    identifier_map = {}
+    connection = connect_to_database()
+    cursor = connection.cursor()
+    print("Connection established successfully")
+
+    cursor.execute("""select id, paymentstatus, status, lastmodifiedtime from eg_expense_billdetail where referenceid = %s""", (musterRollNumber,))
+    result = cursor.fetchall()
+    print(result)
+
+    for row in result:
+        if row[1] == "SUCCESSFUL" and row[2] == "ACTIVE":
+            billdetailid = row[0]
+            cursor.execute("""select identifier from eg_expense_party where parentid = %s""", (billdetailid,))
+            identifier = cursor.fetchone()
+            identifier = identifier[0]
+            cursor.execute("""select amount from eg_expense_lineitem where billdetailid = %s and type = 'PAYABLE' and islineitempayable = 't' and status = 'ACTIVE'""", (billdetailid,))
+            amount = cursor.fetchone()
+            amount = amount[0]
+            identifier_map[identifier] = (float(amount), row[3])
+        else:
+            break
+
+    return identifier_map
+
 def getWageSeekerReportData():
     data = []
     print("Getting Wage Seeker Report Data")
@@ -826,22 +864,34 @@ def getWageSeekerReportData():
                     response = response.json()
                     if response and response['musterRolls'] and len(response['musterRolls'])>0:
                         for roll in response['musterRolls']:
-                            parent_data = {
-                                'ULB Name': format_tenant_id(tenantid),
-                                'Project ID': roll['additionalDetails']['projectId'],
-                            }
-                            for individualEntry in roll['individualEntries']:
-                                child_data = {
-                                    'Wage Seeker Name': individualEntry['additionalDetails']['userName'],
-                                    'Gender': individualEntry['additionalDetails']['gender'],
-                                    'Wage Seeker ID': individualEntry['additionalDetails']['userId'],
-                                    'Mobile Number' : individualEntry['additionalDetails']['mobileNo'],
-                                    'skill': individualEntry['additionalDetails']['skillCode'],
-                                    'Nos of Days Engaged': individualEntry['actualTotalAttendance']
-                                }
-                                # combined parent data and child data
-                                combined_data = {**parent_data, **child_data}
-                                data.append(combined_data)
+                            if roll['status'] == "ACTIVE" and roll['musterRollStatus'] == "APPROVED":
+                                musterRollNumber = roll['musterRollNumber']
+                                print("Muster Roll Number : " + musterRollNumber)
+                                identifier_map = getIdentifierAmountMap(musterRollNumber)
+                                if identifier_map:
+                                    parent_data = {
+                                        'ULB Name': format_tenant_id(tenantid),
+                                        'Project ID': roll['additionalDetails']['projectId'],
+                                    }
+                                    for individualEntry in roll['individualEntries']:
+                                        individual_id = individualEntry['individualId']
+                                        if individual_id in identifier_map:
+                                            amount, payment_date = identifier_map[individual_id]
+                                        else:
+                                            amount, payment_date = None, None
+                                        child_data = {
+                                            'Wage Seeker Name': individualEntry['additionalDetails']['userName'],
+                                            'Gender': individualEntry['additionalDetails']['gender'],
+                                            'Wage Seeker ID': individualEntry['additionalDetails']['userId'],
+                                            'Mobile Number' : individualEntry['additionalDetails']['mobileNo'],
+                                            'skill': individualEntry['additionalDetails']['skillCode'],
+                                            'Payment Amount': amount,
+                                            'Payment Date': convert_epoch_to_indian_time(payment_date) if payment_date else None,
+                                            'Nos of Days Engaged': individualEntry['actualTotalAttendance']
+                                        }
+                                        # combined parent data and child data
+                                        combined_data = {**parent_data, **child_data}
+                                        data.append(combined_data)
                     else:
                         break
                 else:
@@ -867,8 +917,8 @@ if __name__ == '__main__':
     try:
         logging.info('Report Started Generating')
 
-        directory = '/home/admin1/Music'
-        # directory = '/mukta-report/muktareport'
+        # directory = '/home/admin1/Music'
+        directory = '/demo-report/demoReport'
         if not os.path.exists(directory):
             os.makedirs(directory)
         
@@ -886,62 +936,62 @@ if __name__ == '__main__':
         technical_sanction_approval_data_filename = f'technical_sanction_approval_{current_date}.csv'
         revised_payment_data_filename = f'revised_payment_{current_date}.csv'
         CBO_report_data_filename = f'CBO_report_{current_date}.csv'
-        WageSeeker_report_data_filename = f'WageSeeker_report_{current_date}.csv'
+        WageSeeker_report_data_filename = f'WageSeeker_report1_{current_date}.csv'
         
-        # # Process work order data
-        # workOrder_data = getWorkOrderData()
-        # workOrder_file_path = os.path.join(directory, workOrder_filename)
-        # writeDataToCSV(workOrder_data, workOrder_file_path)
+        # Process work order data
+        workOrder_data = getWorkOrderData()
+        workOrder_file_path = os.path.join(directory, workOrder_filename)
+        writeDataToCSV(workOrder_data, workOrder_file_path)
         
-        # # Process failed payments data
-        # failed_payments_data = getFailedPaymentsDataFromExpense()
-        # failed_payments_file_path = os.path.join(directory, failedPayments_filename)
-        # writeDataToCSV(failed_payments_data, failed_payments_file_path)
+        # Process failed payments data
+        failed_payments_data = getFailedPaymentsDataFromExpense()
+        failed_payments_file_path = os.path.join(directory, failedPayments_filename)
+        writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # # Process bill data
-        # bill_data = getBillData()
-        # bill_file_path = os.path.join(directory, bill_filename)
-        # writeDataToCSV(bill_data, bill_file_path)
+        # Process bill data
+        bill_data = getBillData()
+        bill_file_path = os.path.join(directory, bill_filename)
+        writeDataToCSV(bill_data, bill_file_path)
         
-        # # Process muster roll data
-        # muster_Data = getMusterRollData()
-        # muster_file_path = os.path.join(directory, musterRoll_filename)
-        # writeDataToCSV(muster_Data, muster_file_path)
+        # Process muster roll data
+        muster_Data = getMusterRollData()
+        muster_file_path = os.path.join(directory, musterRoll_filename)
+        writeDataToCSV(muster_Data, muster_file_path)
         
-        # # Process project data
-        # project_data = getProjectData()
-        # project_file_path = os.path.join(directory, project_filename)
-        # writeDataToCSV(project_data, project_file_path)
+        # Process project data
+        project_data = getProjectData()
+        project_file_path = os.path.join(directory, project_filename)
+        writeDataToCSV(project_data, project_file_path)
 
-        # # Process Success/Partial Payments
-        # success_payments_data = getSuccessPaymentsDataFromExpense()
-        # success_payments_file_path = os.path.join(directory, success_payments_filename)
-        # writeDataToCSV(success_payments_data, success_payments_file_path)
+        # Process Success/Partial Payments
+        success_payments_data = getSuccessPaymentsDataFromExpense()
+        success_payments_file_path = os.path.join(directory, success_payments_filename)
+        writeDataToCSV(success_payments_data, success_payments_file_path)
 
-        # # Estimate data
-        # estimate_data = getEstimateData()
-        # estimate_file_path = os.path.join(directory, estimate_filename)
-        # writeDataToCSV(estimate_data, estimate_file_path)
+        # Estimate data
+        estimate_data = getEstimateData()
+        estimate_file_path = os.path.join(directory, estimate_filename)
+        writeDataToCSV(estimate_data, estimate_file_path)
 
-        # # Technical sanction and Administrative Approval
-        # technical_sanction_approval_data = getTechnicalSanctionApprovalData()
-        # technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
-        # writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
+        # Technical sanction and Administrative Approval
+        technical_sanction_approval_data = getTechnicalSanctionApprovalData()
+        technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
+        writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
 
-        # # Revised payment data
-        # revised_payment_data = getRevisedPaymentData()
-        # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
-        # writeDataToCSV(revised_payment_data, revised_payment_file_path)
+        # Revised payment data
+        revised_payment_data = getRevisedPaymentData()
+        revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
+        writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
         # CBO Report
         CBO_report_data = getCBOReportData()
         CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
         writeDataToCSV(CBO_report_data, CBO_report_file_path)
 
-        # # Wage Seeker Report
-        # WageSeeker_report_data = getWageSeekerReportData()
-        # WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
-        # writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
+        # Wage Seeker Report
+        WageSeeker_report_data = getWageSeekerReportData()
+        WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
+        writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
