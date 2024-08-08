@@ -43,6 +43,10 @@ const fetchData = async (sorid, state, setState, setShowToast) => {
         return validFromInMillis <= currentDateInMillis
           && currentDateInMillis < validToInMillis;
       });
+      if(Rates && Rates?.length <= 0)
+      {
+        setShowToast({show: true, error: true, label:"WORKS_RATE_NOT_FOUND_ERROR"});
+      }
       //if rates is not there then provide the error
       // state?.forEach((element) => {
       //   if (element?.sorId == sorid) {
