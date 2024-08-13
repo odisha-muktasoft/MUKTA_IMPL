@@ -98,7 +98,7 @@ const ViewRateAnalysis = () => {
   return (
     <React.Fragment>
       {
-        <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+        <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
           {
             <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
               {t("RA_VIEW_RATE_HEADER")}

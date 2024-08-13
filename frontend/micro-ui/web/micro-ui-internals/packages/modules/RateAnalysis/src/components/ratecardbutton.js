@@ -41,7 +41,7 @@ const RateCardWithRightButton = (props) => {
                       row?.isLink ? (
                         <div>
                           <Link to={row?.to}>
-                            <span className="link" style={{ color: "#F47738" }}>
+                            <span className="link" style={{ color: "#C84C0E" }}>
                               {t(displayValue)}
                             </span>
                           </Link>

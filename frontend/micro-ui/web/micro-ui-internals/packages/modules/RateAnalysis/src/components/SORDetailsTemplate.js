@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
 import { has4DecimalPlaces } from "../utils/transformData";
-
+import { Toast } from "@egovernments/digit-ui-components";
 import { calculateTotalAmount } from "../utils/transformData";
 
 const SORDetailsTemplate = (props) => {
@@ -15,7 +15,7 @@ const SORDetailsTemplate = (props) => {
   const [stateData, setStateData] = useState({});
   const [selectedSOR, setSelectedSOR] = useState(null);
   const [SORDetails, setSORDetails] = useState([]);
-  const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
+  const [showToast, setShowToast] = useState({ show: false, label: "", type: "" });
 
   let formData = watch("SORDetails");
 
@@ -300,11 +300,11 @@ const SORDetailsTemplate = (props) => {
       </table>
       {showToast?.show && (
         <Toast
-          labelstyle={{ width: "100%" }}
-          error={showToast?.error}
+          // labelstyle={{ width: "100%" }}
+          type={showToast?.type}
           label={t(showToast?.label)}
           isDleteBtn={true}
-          onClose={() => setShowToast({ show: false, label: "", error: false })}
+          onClose={() => setShowToast({ show: false, label: "", type: "" })}
         />
       )}
     </div>
