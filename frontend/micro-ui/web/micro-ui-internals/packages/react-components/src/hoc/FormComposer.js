@@ -9,27 +9,29 @@ import CardSubHeader from "../atoms/CardSubHeader";
 import CardSectionHeader from "../atoms/CardSectionHeader";
 import CardLabelDesc from "../atoms/CardLabelDesc";
 import CardLabelError from "../atoms/CardLabelError";
-import TextArea from "../atoms/TextArea";
-import TextInput from "../atoms/TextInput";
+// import TextArea from "../atoms/TextArea";
+// import TextInput from "../atoms/TextInput";
 import ActionBar from "../atoms/ActionBar";
 import SubmitBar from "../atoms/SubmitBar";
-import LabelFieldPair from "../atoms/LabelFieldPair";
+// import LabelFieldPair from "../atoms/LabelFieldPair";
 import LinkButton from "../atoms/LinkButton";
 import ApiDropdown from "../molecules/ApiDropdown";
 
 import { useTranslation } from "react-i18next";
 import MobileNumber from "../atoms/MobileNumber";
 import _ from "lodash";
-import CustomDropdown from "../molecules/CustomDropdown";
+// import CustomDropdown from "../molecules/CustomDropdown";
 import MultiUploadWrapper from "../molecules/MultiUploadWrapper";
 import HorizontalNav from "../atoms/HorizontalNav";
-import Toast from "../atoms/Toast";
+// import Toast from "../atoms/Toast";
 import UploadFileComposer from "./UploadFileComposer";
-import CheckBox from "../atoms/CheckBox";
-import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
+// import CheckBox from "../atoms/CheckBox";
+// import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
 import Paragraph from "../atoms/Paragraph";
 import InputTextAmount from "../atoms/InputTextAmount";
 import WrapperComponent from "../atoms/WrapperComponent";
+
+import { CustomDropdown,Toast, CheckBox,MultiSelectDropdown, TextArea, TextInput, LabelFieldPair,ErrorMessage,StringManipulator ,Header} from "@egovernments/digit-ui-components";
 
 const wrapperStyles = {
   // "display":"flex",
@@ -149,7 +151,7 @@ export const FormComposer = (props) => {
       case "time":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
-          <div className="field-container">
+          <div className="digit-field-container">
             {populators?.componentInFront ? (
               <span className={`component-in-front ${disable && "disabled"}`}>{populators.componentInFront}</span>
             ) : null}
@@ -165,14 +167,16 @@ export const FormComposer = (props) => {
                   errorStyle={errors?.[populators.name]}
                   max={populators?.validation?.max}
                   min={populators?.validation?.min}
-                  disable={disable}
-                  style={type === "date" ? { paddingRight: "3px" } : ""}
+                  disabled={disable}
+                  // style={type === "date" ? { paddingRight: "3px" } : ""}
                   maxlength={populators?.validation?.maxlength}
                   minlength={populators?.validation?.minlength}
                   customIcon={populators?.customIcon}
                   customClass={populators?.customClass}
                   ValidationRequired={populators?.validation?.ValidationRequired}
                   validation={populators?.validation}
+                  step={config?.step}
+                  onIconSelection={populators?.onIconSelection}
                 />
               )}
               name={populators.name}
@@ -191,7 +195,7 @@ export const FormComposer = (props) => {
                 rules={{ required: isMandatory, ...populators.validation }}
                 render={(props) => {
                   return (
-                    <div style={{ display: "grid", gridAutoFlow: "row" }}>
+                    <div style={{ display: "grid", gridAutoFlow: "row" ,width:"100%"}}>
                       <ApiDropdown
                         props={props}
                         populators={populators}
@@ -253,9 +257,9 @@ export const FormComposer = (props) => {
                 name={populators.name}
                 onChange={onChange}
                 inputRef={ref}
-                disable={disable}
+                disabled={disable}
                 errorStyle={errors?.[populators.name]}
-                style={{ marginTop: 0 }}
+                // style={{ marginTop: 0 }}
                 maxlength={populators?.validation?.maxlength}
                 minlength={populators?.validation?.minlength}
               />
@@ -324,7 +328,7 @@ export const FormComposer = (props) => {
             rules={{ required: populators?.isMandatory }}
             render={(props) => {
               return (
-                <div style={{ display: "grid", gridAutoFlow: "row" }}>
+                <div style={{ display: "grid", gridAutoFlow: "row",width:"100%" }}>
                   <CheckBox
                     onChange={(e) => {
                       // const obj = {
@@ -340,6 +344,8 @@ export const FormComposer = (props) => {
                     styles={populators?.styles}
                     style={populators?.labelStyles}
                     customLabelMarkup={populators?.customLabelMarkup}
+                    disabled={disable}
+                    isLabelFirst={populators?.isLabelFirst}
                   />
                 </div>
               );
@@ -393,6 +399,7 @@ export const FormComposer = (props) => {
       case "radio":
       case "dropdown":
       case "radioordropdown":
+      case "toggle":
         return (
           <Controller
             render={(props) => (
@@ -405,8 +412,15 @@ export const FormComposer = (props) => {
                 inputRef={props.ref}
                 onChange={props.onChange}
                 config={populators}
-                disable={config?.disable}
+                disabled={config?.disable}
                 errorStyle={errors?.[populators.name]}
+                variant={
+                  populators?.variant
+                    ? populators?.variant
+                    : errors?.[populators.name]
+                    ? "digit-field-error"
+                    : ""
+                }
               />
             )}
             rules={!disableFormValidation ? { required: isMandatory, ...populators.validation } : {}}
@@ -492,7 +506,7 @@ export const FormComposer = (props) => {
             rules={{ required: isMandatory }}
             render={(props) => {
               return (
-                <div style={{ display: "grid", gridAutoFlow: "row" }}>
+                <div style={{ display: "grid", gridAutoFlow: "row",width:"100%" }}>
                   <MultiSelectDropdown
                     options={populators?.options}
                     optionsKey={populators?.optionsKey}
@@ -511,6 +525,13 @@ export const FormComposer = (props) => {
                     defaultLabel={t(populators?.defaultText)}
                     defaultUnit={t(populators?.selectedText)}
                     config={populators}
+                    disabled={disable}
+                    variant={populators?.variant}
+                    addSelectAllCheck={populators?.addSelectAllCheck}
+                    addCategorySelectAllCheck={populators?.addCategorySelectAllCheck}
+                    selectAllLabel={populators?.selectAllLabel}
+                    categorySelectAllLabel={populators?.categorySelectAllLabel}
+                    restrictSelection={populators?.restrictSelection}
                   />
                 </div>
               );
@@ -579,7 +600,7 @@ export const FormComposer = (props) => {
     } else if (section.head) {
       return (
         <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {}} id={section.headId}>
+          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {marginBottom:"24px"}} id={section.headId}>
             {t(section.head)}
           </CardSectionHeader>
         </>
@@ -655,7 +676,7 @@ export const FormComposer = (props) => {
                     : { border: "none", background: "white", ...field?.populators?.customStyle }
                 }
               >
-                {!field.withoutLabel && (
+                {/* {!field.withoutLabel && (
                   <CardLabel
                     style={{
                       color: field.isSectionText ? "#505A5F" : "",
@@ -668,17 +689,53 @@ export const FormComposer = (props) => {
                     {field?.appendColon ? " : " : null}
                     {field.isMandatory ? " * " : null}
                   </CardLabel>
+                )} */}
+                {!field.withoutLabel && (
+                  <Header className={`label`}>
+                    <div className={`label-container`}>
+                      <div className={`label-styles`}>
+                        {StringManipulator(
+                          "TOSENTENCECASE",
+                          StringManipulator("TRUNCATESTRING", t(field.label), {
+                            maxLength: 64,
+                          })
+                        )}
+                      </div>
+                      <div>{field.appendColon ? " : " : null}</div>
+                      <div style={{ color: "#B91900" }}>{field.isMandatory ? " * " : null}</div>
+                    </div>
+                  </Header>
                 )}
-                <div style={field.withoutLabel ? { width: "100%", ...props?.fieldStyle } : { ...props?.fieldStyle }} className="field">
+
+                <div style={field.withoutLabel ? { width: "100%", ...props?.fieldStyle } : { ...props?.fieldStyle }} className="digit-field">
                   {fieldSelector(field.type, field.populators, field.isMandatory, field?.disable, field?.component, field, sectionFormCategory)}
-                  {field?.description && <CardText style={{ fontSize: "14px", marginTop: "-24px" }}>{t(field?.description)}</CardText>}
+                  {field?.description && (
+                    <CardText
+                      style={{
+                        width: "100%",
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                        marginTop: "0px",
+                        fontSize: "0.875rem",
+                        lineHeight: "1.5rem",
+                      }}
+                    >
+                      {StringManipulator(
+                        "TOSENTENCECASE",
+                        StringManipulator("TRUNCATESTRING", t(description), {
+                          maxLength: 256,
+                        })
+                      )}
+                    </CardText>
+                  )}
+                  {field?.populators?.name && errors && errors[field?.populators?.name] && Object.keys(errors[field?.populators?.name]).length ? (
+                    // <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
+                    //   {t(field?.populators?.error)}
+                    // </CardLabelError>
+                    <ErrorMessage message={t(field?.populators?.error)} truncateMessage={true} maxLength={256} showIcon={true} />
+                  ) : null}
                 </div>
               </LabelFieldPair>
-              {field?.populators?.name && errors && errors[field?.populators?.name] && Object.keys(errors[field?.populators?.name]).length ? (
-                <CardLabelError style={{ width: "70%", marginLeft: "30%", fontSize: "12px", marginTop: "-21px" }}>
-                  {t(field?.populators?.error)}
-                </CardLabelError>
-              ) : null}
             </Fragment>
           );
         })}
@@ -800,7 +857,7 @@ export const FormComposer = (props) => {
   const renderFormFields = (props, section, index, array, sectionFormCategory) => (
     <React.Fragment key={index}>
       {!props.childrenAtTheBottom && props.children}
-      {props.heading && <CardSubHeader style={{ ...props.headingStyle }}> {props.heading} </CardSubHeader>}
+      {props.heading && <CardSubHeader style={{ ...props.headingStyle}}> {props.heading} </CardSubHeader>}
       {props.description && <CardLabelDesc className={"repos"}> {props.description} </CardLabelDesc>}
       {props.text && <CardText>{props.text}</CardText>}
       {formFields(section, index, array, sectionFormCategory)}
@@ -871,7 +928,7 @@ export const FormComposer = (props) => {
           {props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />}
         </ActionBar>
       )}
-      {showErrorToast && <Toast error={true} label={t("ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS")} isDleteBtn={true} onClose={closeToast} />}
+      {showErrorToast && <Toast type={"error"} label={t("ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS")} isDleteBtn={true} onClose={closeToast} />}
     </form>
   );
 };

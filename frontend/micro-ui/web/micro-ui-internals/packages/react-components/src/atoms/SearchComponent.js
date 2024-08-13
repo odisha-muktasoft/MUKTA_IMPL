@@ -6,9 +6,10 @@ import RenderFormFields from "../molecules/RenderFormFields";
 import Header from "../atoms/Header";
 import LinkLabel from '../atoms/LinkLabel';
 import SubmitBar from "../atoms/SubmitBar";
-import Toast from "../atoms/Toast";
+// import Toast from "../atoms/Toast";
 import { FilterIcon, RefreshIcon } from "./svgindex";
 import HorizontalNavV2 from "./HorizontalNavV2";
+import { Toast} from "@egovernments/digit-ui-components";
 
 const setUIConf = (uiConfig) => {
   if(uiConfig.additionalTabs)
@@ -27,7 +28,7 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
   const [showToast,setShowToast] = useState(null)
   let updatedFields = [];
   const {apiDetails} = fullConfig
-
+console.log(fullConfig?.type,"type")
   if (fullConfig?.postProcessResult){
     //conditions can be added while calling postprocess function to pass different params
     Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.postProcess(data, uiConfig) 
@@ -85,7 +86,7 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
         }
       })
     } else {
-      setShowToast({ warning: true, label: t("ES_COMMON_MIN_SEARCH_CRITERIA_MSG") })
+      setShowToast({ type: "warning", label: t("ES_COMMON_MIN_SEARCH_CRITERIA_MSG") })
       setTimeout(closeToast, 3000);
     }
   }
@@ -159,11 +160,14 @@ const SearchComponent = ({ uiConfig, header = "", screenType = "search", fullCon
             </div>
           </div> 
         </form>
-        { showToast && <Toast 
-          error={showToast.error}
-          warning={showToast.warning}
-          label={t(showToast.label)}
+        { 
+        showToast && 
+        <Toast 
+          // error={showToast.error}
+          // warning={showToast.warning}
+          label={t(showToast?.label)}
           isDleteBtn={true}
+          type={showToast?.error ? "error" : (showToast?.type ? showToast?.type : "") }
           onClose={closeToast} />
         }
       </div>

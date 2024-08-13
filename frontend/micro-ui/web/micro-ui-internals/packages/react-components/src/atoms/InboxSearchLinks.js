@@ -19,7 +19,7 @@ const InboxSearchLinks = ({headerText, links, businessService, customClass="", l
     }, []);
     const renderHeader = () => <div className="header">
         <span className="logo">
-           {logoIcon?.component && IconComponent && <IconComponent className={logoIcon?.customClass} />}
+           {logoIcon?.component && IconComponent &&  <IconComponent className={logoIcon?.customClass} />}
         </span>
         <span className="text">{t(headerText)}</span>
     </div>
