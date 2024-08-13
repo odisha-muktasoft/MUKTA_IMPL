@@ -146,7 +146,7 @@ const ViewContract = (props) => {
     return (
         <Fragment>
             <div className={"employee-main-application-details"}>
-                <div className={"employee-application-details"}>
+                <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
                     <Header styles={{ marginLeft: "0px", paddingTop: "10px", fontSize: "32px" }}>{t("WORKS_VIEW_CONTRACT")}</Header>
                     <MultiLink
                         className="multilinkWrapper employee-mulitlink-main-div"

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment, useRef }from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { Menu, Header, ActionBar, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, Toast, MultiLink } from '@egovernments/digit-ui-react-components';
+import { Menu, Header, ActionBar, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, MultiLink } from '@egovernments/digit-ui-react-components';
 import { isWorkEndInPreviousWeek } from '../../../utils';
-
+import {Toast} from '@egovernments/digit-ui-components'
 
 const ViewContractDetails = () => {
     const { t } = useTranslation();
@@ -20,7 +20,7 @@ const ViewContractDetails = () => {
     const contractId = queryStrings?.workOrderNumber;
     const tenantId = Digit.ULBService.getCurrentTenantId();
     const businessService = revisedWONumber ? Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("revisedWO") : Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("contract")
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const ContractSession = Digit.Hooks.useSessionStorage("CONTRACT_CREATE", {});
     const [sessionFormData, setSessionFormData, clearSessionFormData] = ContractSession;
 
@@ -116,13 +116,13 @@ const ViewContractDetails = () => {
 
     useEffect(()=>{
         if(isContractError || (!isContractLoading && data?.isNoDataFound)) {
-            setToast({show : true, label : t("COMMON_WO_NOT_FOUND"), error : true});
+            setToast({show : true, label : t("COMMON_WO_NOT_FOUND"), type:"error"});
         }
     },[isContractError, data, isContractLoading]);
 
     useEffect(()=>{
         if(isProjectError) {
-            setToast({show : true, label : t("COMMON_PROJECT_NOT_FOUND"), error : true});
+            setToast({show : true, label : t("COMMON_PROJECT_NOT_FOUND"), type:"error"});
         }
     },[isProjectError]);
 
@@ -163,12 +163,12 @@ const ViewContractDetails = () => {
     const handleActionBar = (option) => {
         if(validationData && Object?.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.action))
         {
-            setToast({show : true, label : t(`${validationData?.label}_${option?.action}`), error : validationData?.error});
+            setToast({show : true, label : t(`${validationData?.label}_${option?.action}`), type : validationData?.error ? "error" : ""});
             return;
         }
         if(option?.action === "CREATE_MEASUREMENT" && isWorkEndInPreviousWeek(data?.applicationData?.endDate, mdmsData?.works?.MeasurementCriteria?.[0]?.measurementBookStartDate))
         {
-            setToast({show : true, label : t(`MB_CREATION_NOT_POSSIBLE_WORK_END_DATE_PASSED`), error : true});
+            setToast({show : true, label : t(`MB_CREATION_NOT_POSSIBLE_WORK_END_DATE_PASSED`), type:"error"});
             return;
         }
         if (option?.name === "CREATE_PURCHASE_BILL") {
@@ -187,7 +187,7 @@ const ViewContractDetails = () => {
     }
 
     const handleToastClose = () => {
-        setToast({show : false, label : "", error : false});
+        setToast({show : false, label : "", type:""});
     }
 
     useEffect(() => {
@@ -230,7 +230,7 @@ const ViewContractDetails = () => {
     return (
       <React.Fragment>
         <div className={"employee-main-application-details"}>
-          <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+          <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
             <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>{showTimeExtension || queryStrings?.isTimeExtension === "true" ? ( revisedWONumber ? t("UPDATE_TE") : t("CREATE_TE")) : revisedWONumber ? t("VIEW_TE") : t("WORKS_VIEW_WORK_ORDER")}</Header>
             {(data?.applicationData?.wfStatus === "APPROVED" || data?.applicationData?.wfStatus === "PENDING_FOR_ACCEPTANCE" || data?.applicationData?.wfStatus === "ACCEPTED") && !(queryStrings?.isTimeExtension === "true") && !(revisedWONumber) && 
                <MultiLink
@@ -275,7 +275,7 @@ const ViewContractDetails = () => {
                 </>
           }
         </div>
-        {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       </React.Fragment>
     );
 }

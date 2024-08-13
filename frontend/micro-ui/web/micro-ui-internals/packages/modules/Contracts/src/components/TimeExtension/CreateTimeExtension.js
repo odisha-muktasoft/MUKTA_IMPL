@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Loader, ActionBar, SubmitBar, WorkflowModal, LabelFieldPair, CardLabel, TextInput, Toast } from "@egovernments/digit-ui-react-components";
+import { Loader, ActionBar, SubmitBar, WorkflowModal, LabelFieldPair, CardLabel, TextInput } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from "../../../../templates/ApplicationDetails";
 import getModalConfig from "./modalConfig";
 import { useHistory } from "react-router-dom";
+import {Toast} from '@egovernments/digit-ui-components'
 const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
   
   const history = useHistory()
@@ -114,7 +115,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
     if (!extensionRequested || !reasonForExtension || extensionRequested <= 0 || extensionRequested > 365) {
       setShowToast({
         label: "TE_SUBMIT_VALIDATION",
-        isError: true,
+        type: "error",
       });
       closeToast();
       return;
@@ -179,7 +180,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
         <SubmitBar label={t("CREATE_AND_FORWARD_TE")} onSubmit={handleSubmit} />
       </ActionBar>
       {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={modalConfig} />}
-      {showToast && <Toast label={t(showToast?.label)} error={showToast?.isError}></Toast>}
+      {showToast && <Toast label={t(showToast?.label)} type={showToast?.type}></Toast>}
     </React.Fragment>
   );
 };
