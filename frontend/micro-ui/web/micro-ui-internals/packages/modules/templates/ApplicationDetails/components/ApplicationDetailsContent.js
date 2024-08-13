@@ -1,6 +1,6 @@
 import {
   BreakLine,
-  Card,
+  // Card,
   CardSectionHeader,
   CardSubHeader,
   CheckPoint,
@@ -14,6 +14,9 @@ import {
   WorkflowTimeline,
   CitizenInfoLabel
 } from "@egovernments/digit-ui-react-components";
+import {
+  Card
+} from "@egovernments/digit-ui-components";
 import { values } from "lodash";
 import React, { Fragment, useCallback, useReducer, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -336,7 +339,7 @@ function ApplicationDetailsContent({
                           window.location.href.includes("tl") || window.location.href.includes("ws") ? (
                             <div style={{ width: "200%" }}>
                               <Link to={value?.to}>
-                                <span className="link" style={{ color: "#F47738" }}>
+                                <span className="link" style={{ color: "#C84C0E" }}>
                                   {t(value?.title)}
                                 </span>
                               </Link>
@@ -350,7 +353,7 @@ function ApplicationDetailsContent({
                         text={
                           <div>
                             <Link to={value?.to}>
-                              <span className="link" style={{ color: "#F47738" }}>
+                              <span className="link" style={{ color: "#C84C0E" }}>
                                 {value?.value}
                               </span>
                             </Link>
@@ -472,7 +475,7 @@ function ApplicationDetailsContent({
           {detail?.additionalDetails?.redirectUrl && (
             <div style={{ fontSize: "16px", lineHeight: "24px", fontWeight: "400", padding: "10px 0px" }}>
               <Link to={detail?.additionalDetails?.redirectUrl?.url}>
-                <span className="link" style={{ color: "#F47738" }}>
+                <span className="link" style={{ color: "#C84C0E" }}>
                   {detail?.additionalDetails?.redirectUrl?.title}
                 </span>
               </Link>
