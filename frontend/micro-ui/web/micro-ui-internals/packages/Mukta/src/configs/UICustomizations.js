@@ -376,7 +376,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { fromProposalDate, toProposalDate } = data;
       if ((fromProposalDate === "" && toProposalDate !== "") || (fromProposalDate !== "" && toProposalDate === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -587,8 +587,8 @@ export const UICustomizations = {
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
-      if (createdTo !== "" && createdFrom === "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
-      else if (createdTo === "" && createdFrom !== "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+      if (createdTo !== "" && createdFrom === "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (createdTo === "" && createdFrom !== "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -729,8 +729,8 @@ export const UICustomizations = {
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
-      if (createdTo !== "" && createdFrom === "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
-      else if (createdTo === "" && createdFrom !== "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+      if (createdTo !== "" && createdFrom === "") return {type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (createdTo === "" && createdFrom !== "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -844,7 +844,7 @@ export const UICustomizations = {
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { startDate, endDate } = data;
-      if ((startDate === "" && endDate !== "") || (startDate !== "" && endDate === "")) return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+      if ((startDate === "" && endDate !== "") || (startDate !== "" && endDate === "")) return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1075,7 +1075,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1185,7 +1185,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1287,7 +1287,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1394,7 +1394,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1500,7 +1500,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1696,7 +1696,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -1908,7 +1908,7 @@ export const UICustomizations = {
 
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -2037,7 +2037,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -2168,7 +2168,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -2306,7 +2306,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -2480,7 +2480,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || (createdFrom !== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
@@ -2754,8 +2754,8 @@ export const UICustomizations = {
     customValidationCheck: (data) => {
       //checking both to and from date are present
       const { scheduledFrom, scheduledTo } = data;
-      if (scheduledTo !== "" && scheduledFrom === "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
-      else if (scheduledTo === "" && scheduledFrom !== "") return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+      if (scheduledTo !== "" && scheduledFrom === "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
+      else if (scheduledTo === "" && scheduledFrom !== "") return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },
