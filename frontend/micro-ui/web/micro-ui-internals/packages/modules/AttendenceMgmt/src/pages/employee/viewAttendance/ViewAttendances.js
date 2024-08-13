@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Toast,WorkflowActions,Loader,ViewDetailsCard,MultiLink } from "@egovernments/digit-ui-react-components";
+import { Header,WorkflowActions,Loader,ViewDetailsCard,MultiLink } from "@egovernments/digit-ui-react-components";
 import ApplicationDetails from "../../../../../templates/ApplicationDetails";
 import WarningPopUp from "../../../pageComponents/WarningPopUp";
+import {Toast} from '@egovernments/digit-ui-components'
 import { useHistory } from "react-router-dom";
 
 const ViewAttendance = () => {
@@ -81,7 +82,7 @@ const ViewAttendance = () => {
   if(isLoading || approverLoading || isMbValidationLoading) return <Loader />
   return (
     <React.Fragment>
-      <div className={"employee-application-details"} >
+      <div className={"employee-application-details"} style={{ marginBottom: "24px" }} >
         <Header className="works-header-view">{showEditTitle ? t('ATM_EDIT_ATTENDENCE') : t("ATM_VIEW_ATTENDENCE")}</Header>
         <MultiLink
          onHeadClick={() => HandleDownloadPdf()}
@@ -134,7 +135,7 @@ const ViewAttendance = () => {
                   for (const validation of mbValidationMr?.musterRollValidation) {
                       if (validation?.type === 'error') {
                         validationFlag = true;
-                          setShowToast({error : true, label : t(validation?.message)});
+                          setShowToast({type : "error", label : t(validation?.message)});
                           break;
                       } else if (validation?.type === 'warn') {
                         validationFlag = true;
@@ -169,10 +170,10 @@ const ViewAttendance = () => {
       }
       {showPopup && <WarningPopUp setShowWfModal={showPopup?.setShowWfModal} label={showPopup?.label} setShowPopUp={setShowPopUp} t={t} />}
       {showToast && (
-        <Toast error={showToast?.error} label={showToast?.label} isDleteBtn={true} onClose={() => closeToast()} />
+        <Toast type={showToast?.type} label={showToast?.label} isDleteBtn={true} onClose={() => closeToast()} />
       )}
       {showDataError && (
-        <Toast error={true} label={t("COMMON_ERROR_FETCHING_MUSTER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+        <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_MUSTER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
       )}
     </React.Fragment>
   );
