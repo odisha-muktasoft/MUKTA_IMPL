@@ -1,8 +1,9 @@
-import { Header, MultiLink, Card, StatusTable, Row, CardSubHeader,Loader,SubmitBar,ActionBar, HorizontalNav, Menu, Toast } from '@egovernments/digit-ui-react-components'
+import { Header, MultiLink, Card, StatusTable, Row, CardSubHeader,Loader,SubmitBar,ActionBar, HorizontalNav, Menu } from '@egovernments/digit-ui-react-components'
 import React, { Fragment,useEffect,useRef,useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import ProjectDetailsNavDetails from './ProjectDetailsNavDetails'
+import { Toast } from '@egovernments/digit-ui-components'
 
 const ProjectDetails = () => {
     const { t } = useTranslation();
@@ -23,7 +24,7 @@ const ProjectDetails = () => {
     let isProjectModifier = false;
     let isEstimateViewerAndCreator = false;
     const [actionsMenu, setActionsMenu] = useState([]);
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type:""});
     const navConfigs = [
         {
             "name":"Project_Details",
@@ -78,7 +79,7 @@ const ProjectDetails = () => {
         }
         if(option?.name === "MODIFY_PROJECT"){
             if(estimates?.length !==0 && estimates?.[0]?.wfStatus !== "" &&  estimates?.[0]?.wfStatus !== "REJECTED") {
-                setToast({show : true, label : t("COMMON_CANNOT_MODIFY_PROJECT_EST_CREATED"), error : true});
+                setToast({show : true, label : t("COMMON_CANNOT_MODIFY_PROJECT_EST_CREATED"), type:"error"});
             }else {
                 // history.push(`/${window.contextPath}/employee/project/modify-project?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
                 history.push({
@@ -90,7 +91,7 @@ const ProjectDetails = () => {
     }
 
     const handleToastClose = () => {
-      setToast({show : false, label : "", error : false});
+      setToast({show : false, label : "",type:""});
     }
 
     const HandleDownloadPdf = () => {
@@ -124,7 +125,7 @@ const ProjectDetails = () => {
     useEffect(()=>{
         let isUserEstimateCreator = loggedInUserRoles?.includes("ESTIMATE_CREATOR");
         if(isEstimateSearchError && isEstimateViewerAndCreator) {
-            setToast({show : true, label : t("COMMON_ERROR_FETCHING_ESTIMATE_DETAILS"), error : true});
+            setToast({show : true, label : t("COMMON_ERROR_FETCHING_ESTIMATE_DETAILS"), type:"error"});
             setHideActionBar(true);
         }else {
             if((estimates?.length === 0 || estimates?.[0]?.wfStatus === "" || estimates?.[0]?.wfStatus === "REJECTED")) {
@@ -182,7 +183,7 @@ const ProjectDetails = () => {
 
     return (
         <div className={"employee-main-application-details"}>
-            <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+            <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
                 <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>{t("WORKS_PROJECT_DETAILS")}</Header>
             <MultiLink
               onHeadClick={() => HandleDownloadPdf()}
@@ -215,7 +216,7 @@ const ProjectDetails = () => {
                     <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)}/>
                 </ActionBar>
             }
-        {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
         </div>
     )
 }
