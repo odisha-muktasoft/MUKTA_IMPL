@@ -4,7 +4,7 @@ class Loaders {
   static circularLoader(BuildContext context) {
     return PopScope(
         onPopInvoked: null,
-        canPop: false,
+        canPop: true,
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -42,7 +42,7 @@ class Loaders {
         builder: (BuildContext context) {
           return PopScope(
               onPopInvoked: null,
-              canPop: false,
+              canPop: true,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,

@@ -43,9 +43,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
   bool project = true;
 
   String assign = 'assign';
-  String projectTypeKey="projectTypeKey";
-  String wardNoKey="wardNoKey";
-  String statusMapKey="statusMapKey";
+  String projectTypeKey = "projectTypeKey";
+  String wardNoKey = "wardNoKey";
+  String statusMapKey = "statusMapKey";
   String genderController = '';
   @override
   void initState() {
@@ -94,7 +94,6 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
   @override
   void dispose() {
-    
     mbNumber.removeListener(mbNumberUpload);
     projectId.removeListener(projectIdUpload);
     //projectName.removeListener(projectNameUpload);
@@ -126,7 +125,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       loaded: (location) {
                         return Scaffold(
                           appBar: AppBar(
-                            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+                            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                                .copyWith(color: const DigitColors().white),
                             titleSpacing: 0,
                             title: const AppBarLogo(),
                           ),
@@ -211,8 +211,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     }
                                                   };
 
-                                                  if (formGroup.value[
-                                                              assign] ==
+                                                  if (formGroup.value[assign] ==
                                                           "MB_ASSIGNED_TO_ME" ||
                                                       assign ==
                                                           "MB_ASSIGNED_TO_ME") {
@@ -229,7 +228,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             data: s,
                                                           ),
                                                         );
-                                                    context.router.maybePopTop();
+                                                    context.router
+                                                        .maybePopTop();
                                                   } else {
                                                     ToastUtils.showCustomToast(
                                                         context,
@@ -500,31 +500,35 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                     ),
                                     children: [
                                       Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          IconButton(
-                                              onPressed: () {
-                                                context
-                                                    .read<
-                                                        MeasurementInboxBloc>()
-                                                    .add(
-                                                      MeasurementBookInboxBlocEvent(
-                                                        businessService: "MB",
-                                                        limit: 10,
-                                                        moduleName:
-                                                            'measurement-module',
-                                                        offset: 0,
-                                                        tenantId:
-                                                            GlobalVariables
-                                                                .tenantId!,
-                                                      ),
-                                                    );
-                                                context.router.maybePopTop();
-                                              },
-                                              icon: const Icon(Icons.close)),
+                                          DigitIconButton(
+                                            textDirection: TextDirection.rtl,
+                                            onPressed: () {
+                                              context
+                                                  .read<MeasurementInboxBloc>()
+                                                  .add(
+                                                    MeasurementBookInboxBlocEvent(
+                                                      businessService: "MB",
+                                                      limit: 10,
+                                                      moduleName:
+                                                          'measurement-module',
+                                                      offset: 0,
+                                                      tenantId: GlobalVariables
+                                                          .tenantId!,
+                                                    ),
+                                                  );
+                                              context.router.maybePopTop();
+                                            },
+                                            icon: Icons.close,
+                                            iconColor:
+                                                const DigitColors().black,
+                                          ),
                                         ],
                                       ),
+
                                       Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -542,11 +546,14 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   .instance
                                                   .mobileTheme
                                                   .textTheme
-                                                  .headlineLarge,
+                                                  .headlineMedium
+                                                  ?.copyWith(
+                                                      fontFamily: 'Roboto'),
                                             ),
                                           ),
                                         ],
                                       ),
+
                                       workShow
                                           ? DigitRadioButtonList<String>(
                                               isEnabled: true,
@@ -575,11 +582,14 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                             )
                                           : const SizedBox.shrink(),
                                       project
-                                          ? DigitTextField(
-                                              label: t.translate(i18
-                                                  .measurementBook.projectId),
-                                              controller: projectId,
-                                            )
+                                          ? Padding(
+                                            padding: const EdgeInsets.only(top:8.0),
+                                            child: DigitTextField(
+                                                label: t.translate(i18
+                                                    .measurementBook.projectId),
+                                                controller: projectId,
+                                              ),
+                                          )
                                           : const SizedBox.shrink(),
 
                                       project
@@ -592,7 +602,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   loaded: (value) {
                                                     return DigitDropdown<
                                                         ProjectType>(
-                                                          formControlName: projectTypeKey,
+                                                      formControlName:
+                                                          projectTypeKey,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           projectName =
@@ -601,7 +612,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           workShow = false;
                                                         });
                                                       },
-                                                      initialValue: selectedType,
+                                                      initialValue:
+                                                          selectedType,
                                                       label: t.translate(i18
                                                           .measurementBook
                                                           .projectType),
@@ -632,7 +644,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       // end of this
                                       workShow
                                           ? DigitDropdown(
-                                            formControlName: wardNoKey,
+                                              formControlName: wardNoKey,
                                               onChanged: (value) {
                                                 setState(() {
                                                   ward.add(value!);
@@ -660,7 +672,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                           : const SizedBox.shrink(),
                                       workShow
                                           ? DigitDropdown<status_map.StatusMap>(
-                                            formControlName: statusMapKey,
+                                              formControlName: statusMapKey,
                                               onChanged: (value) {
                                                 setState(() {
                                                   workflow.add(value!);
@@ -702,9 +714,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
         assign: FormControl<String>(value: "MB_ASSIGNED_TO_ALL"),
-        projectTypeKey:FormControl<ProjectType>(value: selectedType),
-        wardNoKey :FormControl<String>(value: null),
-        statusMapKey :FormControl<status_map.StatusMap>(value: null),
+        projectTypeKey: FormControl<ProjectType>(value: selectedType),
+        wardNoKey: FormControl<String>(value: null),
+        statusMapKey: FormControl<status_map.StatusMap>(value: null),
       });
 
   String convertToWard(String input) {

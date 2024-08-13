@@ -22,7 +22,7 @@ import '../../widgets/side_bar.dart';
 import '../../widgets/mb/mb_detail_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-    import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class MeasurementBookInboxPage extends StatefulWidget {
@@ -157,7 +157,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             },
           ),
           appBar: AppBar(
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                .copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -188,10 +189,20 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Back(
-                                  callback: () {
-                                    context.router.maybePop();
-                                  },
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0, bottom: 0, top: 0, right: 0),
+                                  child: DigitIconButton(
+                                    iconTextColor: const DigitColors().black,
+                                    iconColor: const DigitColors().black,
+                                    icon: Icons.arrow_left,
+                                    iconText: AppLocalizations.of(context)
+                                            .translate(i18.common.back) ??
+                                        'Back',
+                                    onPressed: () {
+                                      context.router.maybePop();
+                                    },
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 17.0),
@@ -199,11 +210,16 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.totalCount ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 0.0, right: 8.0, top: 10.0),
+                                      left: 13.0,
+                                      right: 8.0,
+                                      top: 8.0,
+                                      bottom: 0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -222,31 +238,18 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            TextButton.icon(
-                                                label: Text(
-                                                  t.translate(
-                                                      i18.common.filter),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .labelLarge!
-                                                      .copyWith(
-                                                    color: const DigitColors()
-                                                        .burningOrange,
-                                                  ),
-                                                  textDirection:
-                                                      TextDirection.ltr,
-                                                ),
-                                                onPressed: () {
-                                                  context.router.push(
-                                                      const MBFilterRoute());
-                                                },
-                                                icon: const Icon(
-                                                  Icons.filter_alt,
-                                                  textDirection:
-                                                      TextDirection.ltr,
-                                                )),
+                                            DigitIconButton(
+                                              iconText: t
+                                                  .translate(i18.common.filter),
+
+                                              onPressed: () {
+                                                context.router.push(
+                                                    const MBFilterRoute());
+                                              },
+                                              // iconSize: 30,
+                                              icon: Icons.filter_list_alt,
+                                              textDirection: TextDirection.ltr,
+                                            ),
                                             mbInboxResponse.search
                                                 ? IconButton(
                                                     onPressed: () {
@@ -278,37 +281,25 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           ],
                                         ),
                                       ),
-                                      TextButton.icon(
-                                          label: Text(
-                                            t.translate(
-                                                i18.measurementBook.sort),
-                                            style: DigitTheme
-                                                .instance
-                                                .mobileTheme
-                                                .textTheme
-                                                .labelLarge!
-                                                .copyWith(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                            ),
-                                          ),
+                                      DigitIconButton(
+                                        iconText: t.translate(
+                                            i18.measurementBook.sort),
 
-                                          // color: const DigitColors()
-                                          //     .burningOrange,
-                                          onPressed: () {
-                                            Conversion.openSortingModal(context,
-                                                listData: Conversion.sortMB,
-                                                sortType: SortType.mbSort);
-                                          },
-                                          icon:
-                                              SvgPicture.asset(Constants.sort)),
+                                        onPressed: () {
+                                          Conversion.openSortingModal(context,
+                                              listData: Conversion.sortMB,
+                                              sortType: SortType.mbSort);
+                                        },
+                                        // iconSize: 30,
+                                        icon: Icons.swap_vert,
+                                      ),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          height: 170,
+                          height: 140,
                         ),
                       ),
                       mbInboxResponse.mbInboxResponse.items!.isEmpty
@@ -334,8 +325,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   // Display items
                                   if (index ==
                                           (mbInboxResponse.isLoading
-                                              ? mbInboxResponse.mbInboxResponse
-                                                  .items!.length
+                                              ? mbInboxResponse
+                                                  .mbInboxResponse.items!.length
                                               : mbInboxResponse.mbInboxResponse
                                                       .items!.length -
                                                   1) &&
@@ -344,7 +335,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     return Container(
                                       padding: const EdgeInsets.all(16.0),
                                       alignment: Alignment.center,
-                                      child: shg_loader.Loaders.circularLoader(context),
+                                      child: CircularProgressIndicator.adaptive(
+                                        valueColor: AlwaysStoppedAnimation<
+                                                Color>(
+                                            const DigitColors().burningOrange),
+                                      ),
                                     );
                                   }
 
@@ -352,30 +347,12 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     widget: Center(
                                       child: SizedBox(
                                         width: MediaQuery.sizeOf(context).width,
-                                        child: OutlinedButton(
-                                          style: Theme.of(context)
-                                              .outlinedButtonTheme
-                                              .style
-                                              ?.copyWith(
-                                                side: MaterialStateProperty.all(
-                                                  BorderSide(
-                                                    width: 1.0,
-                                                    color: const DigitColors()
-                                                        .burningOrange,
-                                                    style: BorderStyle.solid,
-                                                  ),
-                                                ),
-                                                shape:
-                                                    MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                ),
-                                              ),
-                                          child: Text(t.translate(
-                                              i18.measurementBook.openMbBook)),
+                                        child: DigitOutLineButton(
+                                          // buttonStyle: const ButtonStyle(
+
+                                          // ),
+                                          label: t.translate(
+                                              i18.measurementBook.openMbBook),
                                           onPressed: () {
                                             final contract = mbInboxResponse
                                                     .mbInboxResponse
@@ -470,7 +447,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   );
                 },
                 loading: (value) {
-                  return  Center(
+                  return Center(
                     child: shg_loader.Loaders.circularLoader(context),
                   );
                 },

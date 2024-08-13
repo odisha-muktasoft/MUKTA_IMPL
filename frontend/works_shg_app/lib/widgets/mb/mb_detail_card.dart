@@ -26,7 +26,8 @@ class CommonMBCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     var t = AppLocalizations.of(context);
-    return Card(
+    return DigitCard(
+      padding: EdgeInsets.zero,
       child: Padding(
         padding: padding ??
             const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0, top: 0.0),
@@ -43,7 +44,7 @@ class CommonMBCard extends StatelessWidget {
                         .instance.mobileTheme.textTheme.headlineMedium,
                   )
                 : const SizedBox.shrink(),
-            TableFormCard(
+            DigitTableCard(
               element: items,
             ),
             show
@@ -53,7 +54,7 @@ class CommonMBCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
+                          width: MediaQuery.of(context).size.width / 1.81,
                           child: Text(
                             t.translate(i18.measurementBook.mbSlaDaysRemaining),
                             style: theme.textTheme.headlineSmall,
