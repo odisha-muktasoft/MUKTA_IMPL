@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
-import { Header, Loader, Toast } from '@egovernments/digit-ui-react-components';
+import { Header, Loader } from '@egovernments/digit-ui-components';
 import { CreateWageSeekerConfig } from '../../../../configs/CreateWageSeekerConfig';
 import ModifyWageSeekerForm from './ModifyWageSeekerForm';
 import { updateWageSeekerFormDefaultValues } from '../../../../utils';
+import { Toast } from '@egovernments/digit-ui-components';
 
 const ModifyWageSeeker = () => {
     const {t} = useTranslation();
@@ -97,7 +98,7 @@ const ModifyWageSeeker = () => {
                 )
             }
             {
-                showDataError && <Toast error={true} label={t("COMMON_ERROR_FETCHING_WAGE_SEEKER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+                showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_WAGE_SEEKER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
             }
         </React.Fragment>
     )

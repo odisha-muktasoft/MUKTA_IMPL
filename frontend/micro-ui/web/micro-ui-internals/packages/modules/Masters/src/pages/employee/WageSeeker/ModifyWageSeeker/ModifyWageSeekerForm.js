@@ -1,9 +1,10 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { FormComposer,Toast } from '@egovernments/digit-ui-react-components';
+import { FormComposer } from '@egovernments/digit-ui-components';
 import { getWageSeekerUpdatePayload, getBankAccountUpdatePayload, getWageSeekerSkillDeletePayload } from '../../../../utils';
 import debounce from 'lodash/debounce';
+import { Toast } from '@egovernments/digit-ui-components';
 
 const navConfig =  [{
     name:"Wage_Seeker_Details",
@@ -388,7 +389,7 @@ const requestCriteria = {
                 cardClassName = "mukta-header-card"
                 labelBold={true}
             />
-            {showToast && <Toast label={showToast?.label} error={true} isDleteBtn={true} onClose={()=>{
+            {showToast && <Toast label={showToast?.label} type={"error"} isDleteBtn={true} onClose={()=>{
                 setShowToast(null)
             }}></Toast>}
         </React.Fragment>

@@ -40,7 +40,7 @@ const MastersResponse = () => {
 
             <div style={{display: "flex", justifyContent:"space-between", width: "60%"}}>
                 <LinkLabel style={{ display: "flex" }} onClick={() => navigate("home-screen")}>
-                    <ArrowLeftWhite  fill="#F47738" style={{marginRight: "8px", marginTop : "3px"}}/>{t("ES_COMMON_GOTO_HOME")}
+                    <ArrowLeftWhite  fill="#C84C0E" style={{marginRight: "8px", marginTop : "3px"}}/>{t("ES_COMMON_GOTO_HOME")}
                 </LinkLabel> 
                 {
                     !state?.isWageSeeker && state?.isSuccess &&(

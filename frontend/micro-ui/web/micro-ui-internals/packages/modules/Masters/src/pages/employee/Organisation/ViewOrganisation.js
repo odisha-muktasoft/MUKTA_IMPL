@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Header, ViewDetailsCard, HorizontalNav, Loader, ActionBar, SubmitBar, Toast } from '@egovernments/digit-ui-react-components';
+import { Header, ViewDetailsCard, HorizontalNav, Loader, ActionBar, SubmitBar } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
+import { Toast } from "@egovernments/digit-ui-components";
 
 const ViewOrganisation = () => {
   const { t } = useTranslation()
@@ -118,7 +119,7 @@ const ViewOrganisation = () => {
       </React.Fragment> )
       }
       {
-        showDataError && <Toast error={true} label={t("COMMON_ERROR_FETCHING_ORG_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+        showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_ORG_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
       }
   </React.Fragment>
   )
