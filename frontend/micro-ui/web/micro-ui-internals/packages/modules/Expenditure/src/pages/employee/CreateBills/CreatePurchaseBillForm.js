@@ -1,6 +1,7 @@
-import { Button, CardText, FormComposer, Header, PopUp, Toast, WorkflowModal, Card, CardHeader, CardSubHeader, AlertPopUp } from "@egovernments/digit-ui-react-components";
+import { Button, CardText, FormComposer, Header, PopUp, WorkflowModal, Card, CardHeader, CardSubHeader, AlertPopUp } from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Toast } from "@egovernments/digit-ui-components";
 import _ from "lodash";
 import { useHistory } from "react-router-dom";
 import { createBillPayload } from "../../../utils/createBillUtils";
@@ -28,7 +29,7 @@ const CreatePurchaseBillForm = ({
     MBValidationData
 }) => {
     const {t} = useTranslation();
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const history = useHistory();
     const tenantId = Digit.ULBService.getCurrentTenantId();
 
@@ -115,7 +116,7 @@ const CreatePurchaseBillForm = ({
     }
 
     const handleToastClose = () => {
-        setToast({show : false, label : "", error : false});
+        setToast({show : false, label : "", type : ""});
     }
 
     //remove Toast after 3s
@@ -210,15 +211,15 @@ const CreatePurchaseBillForm = ({
         data = Digit.Utils.trimStringsInObject(data)
         setInputFormData((prevState) => data)
         if(MBValidationData?.allMeasurementsIds?.length <= 0)
-            setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_NO_MB"), error : true})
+            setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_NO_MB"), type : "error"})
         // else if(MBValidationData?.totalMaterialAmount - MBValidationData?.totalPaidAmountForSuccessfulBills <=0)
-        //     setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_UNPAID"), error : true})
+        //     setToast({show : true, label : t("WORKS_NOT_ALLOWED_TO_CREATED_PB_UNPAID"), type : "error"})
         else if(MBValidationData?.totalMaterialAmount - MBValidationData?.totalPaidAmountForSuccessfulBills < data?.totalBillAmount)
          { 
             setIsPopupOpen(true);
          }
         else if(data?.totalBillAmount <= 0)
-        setToast({show : true, label : t("EXPENDITURE_VALUE_CANNOT_BE_ZERO"), error : true})
+        setToast({show : true, label : t("EXPENDITURE_VALUE_CANNOT_BE_ZERO"), type : "error"})
         else
         setShowModal(true);
         //transform formdata to Payload
@@ -290,7 +291,7 @@ const CreatePurchaseBillForm = ({
                     />)
                 }
                 {isPopupOpen && <AlertPopUp setIsPopupOpen={setIsPopupOpen} setShowModal={setShowModal} t={t} label={"WORKS_UNPAID_AMT_MSG"} />}
-               {toast?.show && <Toast error={toast?.error} label={toast?.label} isDleteBtn={true} onClose={handleToastClose} />}
+               {toast?.show && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={handleToastClose} />}
         </React.Fragment>
     )
 }

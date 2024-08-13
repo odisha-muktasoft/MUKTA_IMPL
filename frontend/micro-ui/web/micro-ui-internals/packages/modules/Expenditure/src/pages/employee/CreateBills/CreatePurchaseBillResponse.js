@@ -39,7 +39,7 @@ const CreatePurchaseBillResponse = () => {
             />
             <div style={{display: "flex"}}>
                 <LinkLabel style={{ display: "flex", marginRight : "3rem" }} onClick={()=>navigate('billing-inbox')}>
-                    <ArrowLeftWhite  fill="#F47738" style={{marginRight: "8px", marginTop : "3px"}}/>{t("COMMON_GO_TO_INBOX")}
+                    <ArrowLeftWhite  fill="#C84C0E" style={{marginRight: "8px", marginTop : "3px"}}/>{t("COMMON_GO_TO_INBOX")}
                 </LinkLabel>
             </div>
             <ActionBar>

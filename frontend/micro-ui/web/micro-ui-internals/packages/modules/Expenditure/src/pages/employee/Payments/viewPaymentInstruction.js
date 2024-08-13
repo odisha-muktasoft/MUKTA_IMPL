@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
-import { Header, Toast,SubmitBar,ActionBar } from '@egovernments/digit-ui-react-components';
+import { Header,SubmitBar,ActionBar } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
+import {Toast } from '@egovernments/digit-ui-components';
 
 const ViewPaymentInstruction = () => {
   const { t } = useTranslation();
@@ -54,7 +55,7 @@ const ViewPaymentInstruction = () => {
     await updatePIMutation(payloadForUpdate, {
       onError: async (error, variables) => {
           setShowToast({
-            error:true,
+            type:"error",
             label:`${t("EXP_RETRY_PI_ERR_MESSAGE")} : ${error?.response.data.Errors[0].description}`
           })
           closeToast()
@@ -62,7 +63,7 @@ const ViewPaymentInstruction = () => {
         },
       onSuccess: async (responseData, variables) => {
           setShowToast({
-            error:false,
+            type:"",
             label:`${t("EXP_RETRY_PI_MESSAGE")}`
           })
           closeToast()
@@ -108,7 +109,7 @@ const ViewPaymentInstruction = () => {
         )
       }
       {
-        showDataError && <Toast error={true} label={t("COMMON_ERROR_FETCHING_PI_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+        showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_PI_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
       }
       { (piStatus==="FAILED" || piStatus==="PARTIAL") && showActionBar && 
         <ActionBar> 
@@ -116,7 +117,7 @@ const ViewPaymentInstruction = () => {
         </ActionBar>
       }
       {
-        toast && <Toast error={toast?.error} label={toast?.label} isDleteBtn={true} onClose={() => setShowToast(null)} />
+        toast && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={() => setShowToast(null)} />
       }
     </React.Fragment>
   )
