@@ -102,7 +102,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
             {rowState?.additionalDetails?.measureLineItems?.length == 1 && mode === "CREATE" && (
               <Button
                 className={"outline-btn"}
-                label={<div><AddIcon className="addIcon" fill={`#F47738`} styles={{margin:"revert"}}/> {t("MB_ADD_MORE_MBS")}</div>}
+                label={<div><AddIcon className="addIcon" fill={`#C84C0E`} styles={{margin:"revert"}}/> {t("MB_ADD_MORE_MBS")}</div>}
                 variation="secondary"
                 style={{width:"100%",borderRadius:"revert", marginLeft:"0px", marginRight:"0px"}}
                 onButtonClick={() => {
@@ -208,7 +208,7 @@ const MeasureRow = ({ value, index, rowState, dispatch, mode, fields }) => {
             {(
               <Button
                 className={"outline-btn"}
-                label={<><AddIcon className="addIcon" fill={`#F47738`} styles={{margin:"revert"}}/> {t("MB_ADD_MORE_MBS")}</>}
+                label={<><AddIcon className="addIcon" fill={`#C84C0E`} styles={{margin:"revert"}}/> {t("MB_ADD_MORE_MBS")}</>}
                 style={{width:"100%",borderRadius:"revert", marginLeft:"0px", marginRight:"0px"}}
                 onButtonClick={() => {
                   dispatch({

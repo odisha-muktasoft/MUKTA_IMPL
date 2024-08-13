@@ -77,7 +77,7 @@ const MeasurementServiceResponse = () => {
                         </Link>
                     </div> */}
                     <div className="link reponse-link" >
-                        <ArrowLeftWhite fill="#F47738" style={{ display:"inline",marginRight:"0.5rem",marginTop:"3px"}} /> 
+                        <ArrowLeftWhite fill="#C84C0E" style={{ display:"inline",marginRight:"0.5rem",marginTop:"3px"}} /> 
                         <Link to={`/${window.contextPath}/employee/measurement/inbox`}>
                             {t("MB_GO_INBOX")}
                         </Link>

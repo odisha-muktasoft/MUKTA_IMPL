@@ -1,4 +1,4 @@
-import { Loader, FormComposerV2, Header, Toast, ActionBar, Menu, SubmitBar, WorkflowModal } from "@egovernments/digit-ui-react-components";
+import { Loader, FormComposerV2, Header, ActionBar, Menu, SubmitBar, WorkflowModal } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -6,6 +6,7 @@ import { CreateConfig } from "../../configs/MeasurementCreateConfig";
 import { getDefaultValues } from "../../utils/transformEstimateData";
 import { transformData } from "../../utils/transformData";
 import getModalConfig from "./config";
+import { Toast } from '@egovernments/digit-ui-components';
 import _ from "lodash";
 
 const updateData = (data, formState, tenantId) => {
@@ -23,7 +24,7 @@ const CreateMeasurement = ({ props }) => {
   // const [sessionFormData, setSessionFormData, clearSessionFormData] = MeasurementSession;
   const [createState, setState] = useState({ SOR: [], NONSOR: [], accessors: undefined, period: {} });
   const [defaultState, setDefaultState] = useState({ SOR: [], NONSOR: [] });
-  const [showToast, setShowToast] = useState({display: false, error: false});
+  const [showToast, setShowToast] = useState({display: false, type: ""});
   const [errorMessage, setErrorMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [displayMenu, setDisplayMenu] = useState(false);
@@ -144,7 +145,7 @@ const CreateMeasurement = ({ props }) => {
   function onActionSelect(action = "SUBMIT") {
     if (createState?.period?.type == "error") {
       setErrorMessage(t(createState?.period?.message));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
       return null;
     }
     if (action?.name === "SUBMIT") {
@@ -176,13 +177,13 @@ const CreateMeasurement = ({ props }) => {
     const onError = (resp) => {
       setIsButtonDisabled(false);
       setErrorMessage(t(resp?.response?.data?.Errors?.[0]?.message));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
     };
     const onSuccess = (resp) => {
       if(action?.name === "SAVE_AS_DRAFT")
       {
         setErrorMessage(t("MB_APPLICATION_IS_SUCCESSFULLY_DRAFTED"));
-        setShowToast({display:true, error:false});
+        setShowToast({display:true, type:""});
         setTimeout(() => {history.push(`/${window.contextPath}/employee/measurement/update?tenantId=${resp.measurements[0].tenantId}&workOrderNumber=${contractNumber}&mbNumber=${resp.measurements[0].measurementNumber}`)}, 3000);;
       }
       else
@@ -204,7 +205,7 @@ const CreateMeasurement = ({ props }) => {
   };
 
   const closeToast = () => {
-    setShowToast({display:false, error:false});;
+    setShowToast({display:false, type:""});;
   };
   //remove Toast after 3s
   useEffect(() => {
@@ -256,7 +257,7 @@ const CreateMeasurement = ({ props }) => {
         onFormValueChange={onFormValueChange}
         noBreakLine={true}
       />
-      {showToast?.display && <Toast error={showToast?.error} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
+      {showToast?.display && <Toast type={showToast?.type} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
       <ActionBar>
         {displayMenu && !isButtonDisabled ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
         <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />

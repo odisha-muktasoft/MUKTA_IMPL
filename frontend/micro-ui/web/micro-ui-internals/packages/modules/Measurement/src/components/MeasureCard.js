@@ -206,7 +206,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
   return (
     <Fragment>
       <div>
-      <CardSectionHeader style={{fontSize:"18px"}}>{t("WORKS_MEASUREMENT_TABLE_HEADER")}</CardSectionHeader>
+      <CardSectionHeader style={{fontSize:"18px",marginBottom:"1rem"}}>{t("WORKS_MEASUREMENT_TABLE_HEADER")}</CardSectionHeader>
       <span className="measure-table-header" onClick={() => {
         tableData[tableIndex].showMeasure = false;
         setValue(tableData);
@@ -252,14 +252,14 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                       />
                     )}
                     {!(mode.includes("VIEW")) && <Button
-                      className={"outline-btn"}
+                      className={"outline-btn clear-button"}
                       label={t("MB_CLEAR")}
                       onButtonClick={() => {
                         dispatch({ type: "CLEAR_STATE" });
                       }}
                     />}
                     {!(mode.includes("VIEW")) && <Button
-                      className={"outline-btn"}
+                      className={"outline-btn done-button"}
                       label={t("MB_DONE")}
                       onButtonClick={() => {
                         // check for deduction and set accordingly

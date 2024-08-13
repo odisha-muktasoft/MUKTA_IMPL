@@ -71,8 +71,11 @@ const App = ({ path }) => {
   return (
     <Switch>
       <React.Fragment>
-        <div style={/(measurement\/update|measurement\/update)/.test(window.location.href) ? {marginLeft: "15px"}: {}}><MeasurementBreadCrumbs location={location} /></div>
-
+      {!location.pathname.includes("/response") && (
+          <div style={/(measurement\/update|measurement\/update)/.test(location.pathname) ? { marginLeft: "15px" } : {}}>
+            <MeasurementBreadCrumbs location={location} />
+          </div>
+        )}
         <PrivateRoute path={`${path}/create`} component={() => <CreateMeasurement {...{ path }} />} />
         <PrivateRoute path={`${path}/search`} component={() => <SearchMeasurement {...{ path }} />} />
         <PrivateRoute path={`${path}/inbox`} component={() => <InboxMeasurement {...{ path }} />} />
