@@ -61,6 +61,11 @@
   border-radius: 8px;
 }
 
+.done-button,
+.clear-button{
+  border-radius: 0px;
+}
+
 .view-utilization-card {
   display: flex;
   flex-direction: row;
@@ -68,7 +73,7 @@
   border: #cc7b2f;
 }
 
-$fill-color: #f47738;
+$fill-color: #C84C0E;
 
 .addIcon {
   fill: $fill-color;

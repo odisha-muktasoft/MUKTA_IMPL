@@ -1,7 +1,7 @@
 .horizontal-nav {
     overflow: auto;
     display: flex;
-    margin-top: 3rem;
+    margin-top: 0rem;
 
     .menu-item {
         border: 10px;
@@ -54,16 +54,17 @@
 
             &.active {
                 font-weight: 600;
-                border-bottom: 3px solid theme(colors.primary.main);
+                border: 1px solid theme(digitv2.lightTheme.primary);
+                border-bottom: 3px solid theme(digitv2.lightTheme.primary);
 
                 background-color: #FFFFFF;
 
                 .menu-label {
-                    color: theme(colors.primary.main);
+                    color: theme(digitv2.lightTheme.primary);
                 }
 
                 .icon {
-                    fill: theme(colors.primary.main);
+                    fill: theme(digitv2.lightTheme.primary);
                 }
             }
 
@@ -120,16 +121,17 @@
 
             &.active {
                 font-weight: 600;
-                border-bottom: 3px solid theme(colors.primary.main);
+                border: 1px solid theme(digitv2.lightTheme.primary);
+                border-bottom: 3px solid theme(digitv2.lightTheme.primary);
 
                 background-color: #FFFFFF;
 
                 .menu-label {
-                    color: theme(colors.primary.main);
+                    color: theme(digitv2.lightTheme.primary);
                 }
 
                 .icon {
-                    fill: theme(colors.primary.main);
+                    fill: theme(digitv2.lightTheme.primary);
                 }
             }
 
