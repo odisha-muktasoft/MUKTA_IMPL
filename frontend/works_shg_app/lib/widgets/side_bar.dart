@@ -56,6 +56,7 @@ class _SideBar extends State<SideBar> {
         orElse: () => const SizedBox.shrink(),
         loaded: (value) {
           return ScrollableContent(
+              backgroundColor: const DigitColors().white,
             footer: const PoweredByDigit(
                version: Constants.appVersion,
               ),
@@ -184,7 +185,7 @@ class _SideBar extends State<SideBar> {
                     AppLocalizations.of(context).translate(i18.common.language),
                 icon: SHGIcons.language,
                 content: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.only(top:16,bottom: 16,right: 16),
                   child: BlocBuilder<AppInitializationBloc,
                       AppInitializationState>(
                     builder: (context, state) {

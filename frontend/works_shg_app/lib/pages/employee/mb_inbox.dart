@@ -17,7 +17,6 @@ import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import '../../utils/common_methods.dart';
-import '../../widgets/back.dart';
 import '../../widgets/side_bar.dart';
 import '../../widgets/mb/mb_detail_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -164,6 +163,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
           ),
           drawer: DrawerWrapper(
             Drawer(
+              backgroundColor: const DigitColors().white,
               child: SideBar(
                 module: CommonMethods.getLocaleModules(),
               ),
@@ -224,63 +224,69 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
+                                      // GestureDetector(
+                                      //   onTap: () {
+                                      //     setState(() {
+                                      //       pageCount = 0;
+                                      //     });
+                                      //     context.router
+                                      //         .push(const MBFilterRoute());
+                                      //   },
+                                      //   child: Row(
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.start,
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.center,
+                                      //     children: [
+                                      DigitIconButton(
+                                        iconText:
+                                            t.translate(i18.common.filter),
+
+                                        onPressed: () {
                                           setState(() {
                                             pageCount = 0;
                                           });
                                           context.router
                                               .push(const MBFilterRoute());
                                         },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            DigitIconButton(
-                                              iconText: t
-                                                  .translate(i18.common.filter),
-
-                                              onPressed: () {
-                                                context.router.push(
-                                                    const MBFilterRoute());
-                                              },
-                                              // iconSize: 30,
-                                              icon: Icons.filter_list_alt,
-                                              textDirection: TextDirection.ltr,
-                                            ),
-                                            mbInboxResponse.search
-                                                ? IconButton(
-                                                    onPressed: () {
-                                                      pageCount = 0;
-                                                      context
-                                                          .read<
-                                                              MeasurementInboxBloc>()
-                                                          .add(
-                                                            MeasurementBookInboxBlocEvent(
-                                                              businessService:
-                                                                  "MB",
-                                                              limit: 10,
-                                                              moduleName:
-                                                                  'measurement-module',
-                                                              offset: pageCount,
-                                                              tenantId:
-                                                                  GlobalVariables
-                                                                      .tenantId!,
-                                                            ),
-                                                          );
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.restore_outlined,
-                                                      color: const DigitColors()
-                                                          .burningOrange,
-                                                    ),
-                                                  )
-                                                : const SizedBox.shrink(),
-                                          ],
-                                        ),
+                                        // iconSize: 30,
+                                        icon: Icons.filter_list_alt,
+                                        textDirection: TextDirection.ltr,
                                       ),
+                                      // TODO: commenting for reset button
+                                      // - it will be enhanced in future
+                                      // mbInboxResponse.search
+                                      //     ? IconButton(
+                                      //         onPressed: () {
+                                      //           pageCount = 0;
+                                      //           context
+                                      //               .read<
+                                      //                   MeasurementInboxBloc>()
+                                      //               .add(
+                                      //                 MeasurementBookInboxBlocEvent(
+                                      //                   businessService:
+                                      //                       "MB",
+                                      //                   limit: 10,
+                                      //                   moduleName:
+                                      //                       'measurement-module',
+                                      //                   offset: pageCount,
+                                      //                   tenantId:
+                                      //                       GlobalVariables
+                                      //                           .tenantId!,
+                                      //                 ),
+                                      //               );
+                                      //         },
+                                      //         icon: Icon(
+                                      //           Icons.restore_outlined,
+                                      //           color: const DigitColors()
+                                      //               .burningOrange,
+                                      //         ),
+                                      //       )
+                                      //     : const SizedBox.shrink(),
+                                      // end of it
+                                      //],
+                                      //   ),
+                                      // ),
                                       DigitIconButton(
                                         iconText: t.translate(
                                             i18.measurementBook.sort),
@@ -348,9 +354,12 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       child: SizedBox(
                                         width: MediaQuery.sizeOf(context).width,
                                         child: DigitOutLineButton(
-                                          // buttonStyle: const ButtonStyle(
-
-                                          // ),
+                                          buttonStyle: OutlinedButton.styleFrom(
+                                              padding: const EdgeInsets.all(5),
+                                              minimumSize: Size(
+                                                  MediaQuery.sizeOf(context)
+                                                      .width,
+                                                  45)),
                                           label: t.translate(
                                               i18.measurementBook.openMbBook),
                                           onPressed: () {

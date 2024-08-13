@@ -396,7 +396,7 @@ class _LoginPageState extends State<LoginPage>
                   },
                   onChange: (value) {},
                 ),
-                DigitDropdown(
+                DigitReactiveDropdown(
                   initialValue: null,
                   formControlName: cityDropDownKey,
                   onChanged: (value) {

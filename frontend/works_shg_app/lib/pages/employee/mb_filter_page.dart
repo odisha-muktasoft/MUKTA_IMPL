@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_components/widgets/atoms/digit_toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -50,6 +51,18 @@ class _MBFilterPageState extends State<MBFilterPage> {
   @override
   void initState() {
     super.initState();
+
+    // final state = context.read<MeasurementInboxBloc>().state;
+    // state.maybeMap(
+    //   orElse: () => null,
+    //   loaded: (valueMeasurement) {
+    //      valueMeasurement.data['inbox'] != null
+    //         ?ward.add( valueMeasurement.data['inbox']!['moduleSearchCriteria']['ward'][0])
+    //         : ward.isNotEmpty
+    //             ? ward.first
+    //             : [];
+    //   },
+    // );
 
     mbNumber.addListener(mbNumberUpload);
     projectId.addListener(projectIdUpload);
@@ -114,7 +127,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
           builder: (context, state) {
             return state.maybeMap(
               orElse: () => const SizedBox.shrink(),
-              loaded: (value) {
+              loaded: (valueMeasurement) {
                 return BlocBuilder<WageSeekerLocationBloc,
                     WageSeekerLocationState>(
                   builder: (context, state) {
@@ -124,6 +137,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       },
                       loaded: (location) {
                         return Scaffold(
+                          backgroundColor: const DigitColors().white,
                           appBar: AppBar(
                             iconTheme: DigitTheme.instance.mobileTheme.iconTheme
                                 .copyWith(color: const DigitColors().white),
@@ -138,12 +152,13 @@ class _MBFilterPageState extends State<MBFilterPage> {
                             ),
                           ),
                           body: ReactiveFormBuilder(
-                              form: detailBuildForm,
+                              form: () => detailBuildForm(valueMeasurement),
                               builder: (BuildContext context,
                                   FormGroup formGroup, Widget? child) {
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ScrollableContent(
+                                    backgroundColor: Colors.transparent,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -153,9 +168,11 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
                                           Expanded(
-                                            flex: 2,
+                                            flex: 10,
                                             child: DigitOutLineButton(
                                               label: t.translate(
                                                   i18.measurementBook.clear),
@@ -179,17 +196,21 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               },
                                             ),
                                           ),
+                                          const Expanded(
+                                              flex: 1,
+                                              child: SizedBox.shrink()),
                                           Expanded(
-                                            flex: 2,
+                                            flex: 10,
                                             child: DigitElevatedButton(
                                               child: Text(t.translate(
                                                   i18.measurementBook.filter)),
                                               onPressed: () async {
                                                 Map<String,
-                                                    Map<String, dynamic>> s;
+                                                        Map<String, dynamic>>
+                                                    filterPayload;
 
                                                 if (workShow && project) {
-                                                  s = {
+                                                  filterPayload = {
                                                     "inbox": {
                                                       "tenantId":
                                                           GlobalVariables
@@ -215,7 +236,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           "MB_ASSIGNED_TO_ME" ||
                                                       assign ==
                                                           "MB_ASSIGNED_TO_ME") {
-                                                    s['inbox']!['moduleSearchCriteria']![
+                                                    filterPayload['inbox']![
+                                                                'moduleSearchCriteria']![
                                                             'assignee'] =
                                                         GlobalVariables.uuid;
                                                     context
@@ -225,7 +247,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           MeasurementBookInboxSearchBlocEvent(
                                                             limit: 10,
                                                             offset: 0,
-                                                            data: s,
+                                                            data: filterPayload,
                                                           ),
                                                         );
                                                     context.router
@@ -236,12 +258,26 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                         t.translate(i18.common
                                                             .searchCriteria),
                                                         "INFO");
+
+                                                    // TODO: digit component toast
+                                                    // DigitToast.show(
+                                                    //   context,
+                                                    //   options:
+                                                    //       DigitToastOptions(
+                                                    //     t.translate(i18.common
+                                                    //         .searchCriteria),
+                                                    //     true,
+                                                    //     DigitTheme.instance
+                                                    //         .mobileTheme,
+                                                    //   ),
+                                                    // );
+                                                    // end of it
                                                   }
                                                 } else {
                                                   if (workShow && !project) {
                                                     if (workflow.isEmpty &&
                                                         ward.isNotEmpty) {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -271,7 +307,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     } else if (workflow
                                                             .isNotEmpty &&
                                                         ward.isEmpty) {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -300,7 +336,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                         }
                                                       };
                                                     } else {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -335,7 +371,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "MB_ASSIGNED_TO_ME" ||
                                                         assign ==
                                                             "MB_ASSIGNED_TO_ME") {
-                                                      s['inbox']!['moduleSearchCriteria']![
+                                                      filterPayload['inbox']![
+                                                                  'moduleSearchCriteria']![
                                                               'assignee'] =
                                                           GlobalVariables.uuid;
                                                     }
@@ -346,14 +383,14 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           MeasurementBookInboxSearchBlocEvent(
                                                             limit: 10,
                                                             offset: 0,
-                                                            data: s,
+                                                            data: filterPayload,
                                                           ),
                                                         );
                                                   } else {
                                                     if (mbNumber.text != "" &&
                                                         projectId.text == "" &&
                                                         projectName == "") {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -382,7 +419,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "" &&
                                                         projectId.text != "" &&
                                                         projectName == "") {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -411,7 +448,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "" &&
                                                         projectId.text == "" &&
                                                         projectName != "") {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -437,7 +474,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                         }
                                                       };
                                                     } else {
-                                                      s = {
+                                                      filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
                                                               GlobalVariables
@@ -473,7 +510,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "MB_ASSIGNED_TO_ME" ||
                                                         assign ==
                                                             "MB_ASSIGNED_TO_ME") {
-                                                      s['inbox']!['moduleSearchCriteria']![
+                                                      filterPayload['inbox']![
+                                                                  'moduleSearchCriteria']![
                                                               'assignee'] =
                                                           GlobalVariables.uuid;
                                                     }
@@ -485,7 +523,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           MeasurementBookInboxSearchBlocEvent(
                                                             limit: 10,
                                                             offset: 0,
-                                                            data: s,
+                                                            data: filterPayload,
                                                           ),
                                                         );
                                                   }
@@ -500,7 +538,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                     ),
                                     children: [
                                       Row(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
@@ -523,6 +562,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               context.router.maybePopTop();
                                             },
                                             icon: Icons.close,
+                                            iconSize: 30,
                                             iconColor:
                                                 const DigitColors().black,
                                           ),
@@ -583,13 +623,14 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                           : const SizedBox.shrink(),
                                       project
                                           ? Padding(
-                                            padding: const EdgeInsets.only(top:8.0),
-                                            child: DigitTextField(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: DigitTextField(
                                                 label: t.translate(i18
                                                     .measurementBook.projectId),
                                                 controller: projectId,
                                               ),
-                                          )
+                                            )
                                           : const SizedBox.shrink(),
 
                                       project
@@ -600,7 +641,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   orElse: () =>
                                                       const SizedBox.shrink(),
                                                   loaded: (value) {
-                                                    return DigitDropdown<
+                                                    return DigitReactiveDropdown<
                                                         ProjectType>(
                                                       formControlName:
                                                           projectTypeKey,
@@ -643,17 +684,17 @@ class _MBFilterPageState extends State<MBFilterPage> {
 
                                       // end of this
                                       workShow
-                                          ? DigitDropdown(
+                                          ? DigitReactiveDropdown<String>(
                                               formControlName: wardNoKey,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  ward.add(value!);
+                                                  ward.add(value);
                                                   project = false;
                                                 });
                                               },
-                                              initialValue: ward.isNotEmpty
-                                                  ? ward.first
-                                                  : null,
+                                              initialValue:  ward.isNotEmpty
+                                                      ? ward.first
+                                                      : null,
                                               label:
                                                   t.translate(i18.common.ward),
                                               menuItems: location!
@@ -671,11 +712,12 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                             )
                                           : const SizedBox.shrink(),
                                       workShow
-                                          ? DigitDropdown<status_map.StatusMap>(
+                                          ? DigitReactiveDropdown<
+                                              status_map.StatusMap>(
                                               formControlName: statusMapKey,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  workflow.add(value!);
+                                                  workflow.add(value);
                                                   project = false;
                                                 });
                                               },
@@ -685,7 +727,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               label: t.translate(i18
                                                   .measurementBook
                                                   .workflowState),
-                                              menuItems: value
+                                              menuItems: valueMeasurement
                                                   .mbInboxResponse.statusMap!
                                                   .map((e) => e)
                                                   .toList(),
@@ -712,10 +754,18 @@ class _MBFilterPageState extends State<MBFilterPage> {
     );
   }
 
-  FormGroup detailBuildForm() => fb.group(<String, Object>{
+  FormGroup detailBuildForm(dynamic valueMeasurement) =>
+      fb.group(<String, Object>{
         assign: FormControl<String>(value: "MB_ASSIGNED_TO_ALL"),
         projectTypeKey: FormControl<ProjectType>(value: selectedType),
-        wardNoKey: FormControl<String>(value: null),
+        wardNoKey: FormControl<String>(
+            value: valueMeasurement.data['inbox'] != null
+                ? valueMeasurement.data['inbox']!['moduleSearchCriteria']
+                    ['ward']!=null?valueMeasurement.data['inbox']!['moduleSearchCriteria']
+                    ['ward'][0]:null
+                : ward.isNotEmpty
+                    ? ward.first
+                    : null),
         statusMapKey: FormControl<status_map.StatusMap>(value: null),
       });
 
