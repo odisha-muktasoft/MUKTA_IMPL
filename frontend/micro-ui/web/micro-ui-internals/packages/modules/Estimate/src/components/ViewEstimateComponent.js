@@ -1,12 +1,14 @@
 import React, { Fragment, useState, useEffect, useRef, } from 'react'
-import { Loader, WorkflowActions, WorkflowTimeline,ActionBar,Menu,SubmitBar, Toast } from '@egovernments/digit-ui-react-components';
+import { Loader, WorkflowActions, WorkflowTimeline,ActionBar,Menu,SubmitBar } from '@egovernments/digit-ui-react-components';
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from '../../../templates/ApplicationDetails';
 import { useHistory } from 'react-router-dom';
+import { Toast } from '@egovernments/digit-ui-react-components';
+
 const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
     const history = useHistory();
     const [showActions, setShowActions] = useState(false);
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const menuRef = useRef();
     const [actionsMenu, setActionsMenu] = useState([
         
@@ -63,7 +65,7 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
 
     useEffect(()=>{
         if(isError || (!isLoading && applicationDetails?.isNoDataFound)) {
-            setToast({show : true, label : t("COMMON_ESTIMATE_NOT_FOUND"), error : true});
+            setToast({show : true, label : t("COMMON_ESTIMATE_NOT_FOUND"), type : "error"});
         }
     },[isLoading, isError, applicationDetails]);
 
@@ -84,7 +86,7 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
     }
 
     const handleToastClose = () => {
-        setToast({show : false, label : "", error : false});
+        setToast({show : false, label : "", type : ""});
     }
     if (isLoading) return <Loader />
     return (
@@ -133,7 +135,7 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
                 </>
                 
             }
-            {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+            {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
         </>
     )
 }

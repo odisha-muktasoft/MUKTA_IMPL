@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Toast, ActionBar, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, ActionBar, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewConfig";
 import { useHistory } from 'react-router-dom';
+import { Toast } from "@egovernments/digit-ui-components";
 
 const ViewDetailedEstimate = () => {
   const history = useHistory();
@@ -12,7 +13,7 @@ const ViewDetailedEstimate = () => {
   const { t } = useTranslation();
   const [actionsMenu, setActionsMenu] = useState([]);
   const [isStateChanged, setStateChanged] = useState(``);
-  const [toast, setToast] = useState({ show: false, label: "", error: false });
+  const [toast, setToast] = useState({ show: false, label: "", type: "" });
   const menuRef = useRef();
 
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
@@ -117,13 +118,13 @@ const ViewDetailedEstimate = () => {
   }, [detailedEstimate, isStateChanged, contracts]);
 
   const handleToastClose = () => {
-    setToast({ show: false, label: "", error: false });
+    setToast({ show: false, label: "", type: "" });
 }
 
   const handleActionBar = (option) => {
     if(validationData && Object.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.name))
     {
-      setToast({error: validationData?.error, label: validationData?.label, show:true})
+      setToast({typa: validationData?.error ? "error" : "", label: validationData?.label, show:true})
       return;
     }
     if (option?.name === "CREATE_CONTRACT") {
@@ -175,14 +176,14 @@ const ViewDetailedEstimate = () => {
 
   return (
     <div className={"employee-main-application-details"}>
-      <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {revisionNumber ? t("ESTIMATE_VIEW_REVISED_ESTIMATE") : t("ESTIMATE_VIEW_ESTIMATE")}
         </Header>
         <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
       </div>
       <ViewComposer data={config} isLoading={false} />
-      {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
         {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>

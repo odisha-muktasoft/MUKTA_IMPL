@@ -1,4 +1,4 @@
-import { Card, StatusTable, Row, Header, HorizontalNav, ActionBar, SubmitBar, WorkflowModal, FormComposer, Loader, Toast, ViewDetailsCard } from '@egovernments/digit-ui-react-components'
+import { Card, StatusTable, Row, Header, HorizontalNav, ActionBar, SubmitBar, WorkflowModal, FormComposer, Loader, ViewDetailsCard } from '@egovernments/digit-ui-react-components'
 import React,{Fragment,useEffect,useState} from 'react'
 import { useTranslation } from 'react-i18next'
 import getModalConfig from './config'
@@ -7,6 +7,7 @@ import { createEstimatePayload } from './createEstimatePayload'
 import { useHistory,useLocation } from "react-router-dom";
 import { editEstimateUtil } from './editEstimateUtil'
 import debounce from 'lodash/debounce';
+import { Toast } from '@egovernments/digit-ui-components'
 
 
 const configNavItems = [
@@ -237,14 +238,14 @@ const CreateEstimate = () => {
         let totalLabourAndMaterial = parseInt(_data.analysis.labour) + parseInt(_data.analysis.material)
         //here check totalEst amount should be less than material+labour
         if (_data.totalEstimateAmount < totalLabourAndMaterial )   {
-            setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_MISMATCH" })
+            setShowToast({ type:"warning", label: "ERR_ESTIMATE_AMOUNT_MISMATCH" })
             closeToast()
             return
         } 
         
 
         else if(totalLabourAndMaterial === 0) {
-            setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_IMPROPER" })
+            setShowToast({ type:"warning", label: "ERR_ESTIMATE_AMOUNT_IMPROPER" })
             closeToast()
             return
         }
@@ -277,7 +278,7 @@ const CreateEstimate = () => {
           await EstimateUpdateMutation(payload, {
             onError: async (error, variables) => {
 
-              setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+              setShowToast({ type:"warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
               setTimeout(() => {
                 setShowToast(false);
               }, 5000);
@@ -312,7 +313,7 @@ const CreateEstimate = () => {
         else{
           await EstimateMutation(payload, {
             onError: async (error, variables) => {
-              setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+              setShowToast({ type:"warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
               setTimeout(() => {
                 setShowToast(false);
               }, 5000);
@@ -453,8 +454,7 @@ const CreateEstimate = () => {
         />:null}
           {showToast && (
               <Toast
-                  error={showToast.error}
-                  warning={showToast.warning}
+                  type={showToast?.type}
                   label={t(showToast.label)}
                   onClose={() => {
                       setShowToast(null);

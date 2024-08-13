@@ -9,11 +9,11 @@ import {
   WorkflowModal,
   FormComposer,
   Loader,
-  Toast,
   ViewDetailsCard,
   Menu,
   FormComposerV2,
 } from "@egovernments/digit-ui-react-components";
+import { Toast } from "@egovernments/digit-ui-components";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import getModalConfig from "./config";
@@ -34,14 +34,22 @@ const configNavItems = [
     activeByDefault: true,
   },
 ];
-const CreateEstimate = ({props}) => {
+const CreateEstimate = ({ props }) => {
   const tenant = Digit.ULBService.getStateId();
   const { t } = useTranslation();
   const [showToast, setShowToast] = useState(null);
   const [displayMenu, setDisplayMenu] = useState(false);
   const [actionSelected, setActionSelected] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  let { tenantId, projectNumber, isEdit,isCreateRevisionEstimate,isEditRevisionEstimate, estimateNumber, revisionNumber } = Digit.Hooks.useQueryParams();
+  let {
+    tenantId,
+    projectNumber,
+    isEdit,
+    isCreateRevisionEstimate,
+    isEditRevisionEstimate,
+    estimateNumber,
+    revisionNumber,
+  } = Digit.Hooks.useQueryParams();
   // const [ isFormReady,setIsFormReady ] = useState(isEdit ? false : true)
   const [isFormReady, setIsFormReady] = useState(true);
 
@@ -58,12 +66,11 @@ const CreateEstimate = ({props}) => {
 
   function onActionSelect(action) {
     if (sessionFormData?.period?.type == "error") {
-      setShowToast({ error: true, label: sessionFormData?.period?.message });
+      setShowToast({ type: "error", label: sessionFormData?.period?.message });
       return null;
     }
-    setActionSelected(action?.name)
-      onFormSubmit(sessionFormData,action?.name);
-   
+    setActionSelected(action?.name);
+    onFormSubmit(sessionFormData, action?.name);
   }
 
   // const {state} = useLocation()
@@ -78,20 +85,23 @@ const CreateEstimate = ({props}) => {
     },
   });
 
- //fetching all the estimates for revision original values
- const requestrevisionCriteria = {
-  url: "/mukta-estimate/v1/_search",
-  params : {tenantId : tenantId , estimateNumber : estimateNumber},
-  config : {
-    cacheTime : 0
-  },
-  changeQueryName: "allDetailedEstimate"
-};
+  //fetching all the estimates for revision original values
+  const requestrevisionCriteria = {
+    url: "/mukta-estimate/v1/_search",
+    params: { tenantId: tenantId, estimateNumber: estimateNumber },
+    config: {
+      cacheTime: 0,
+    },
+    changeQueryName: "allDetailedEstimate",
+  };
 
-//fetching estimate data
-const {isLoading: isAllEstimateLoading, data: allEstimates} = Digit.Hooks.useCustomAPIHook(requestrevisionCriteria);
+  //fetching estimate data
+  const { isLoading: isAllEstimateLoading, data: allEstimates } = Digit.Hooks.useCustomAPIHook(requestrevisionCriteria);
 
-  actionMB = actionMB && (isEdit || isEditRevisionEstimate) && estimate && estimate?.wfStatus==="PENDINGFORCORRECTION" ? actionMB?.filter((ob) => ob?.name !== "DRAFT") : actionMB;
+  actionMB =
+    actionMB && (isEdit || isEditRevisionEstimate) && estimate && estimate?.wfStatus === "PENDINGFORCORRECTION"
+      ? actionMB?.filter((ob) => ob?.name !== "DRAFT")
+      : actionMB;
 
   const searchParams = {
     Projects: [
@@ -197,16 +207,12 @@ const {isLoading: isAllEstimateLoading, data: allEstimates} = Digit.Hooks.useCus
     }
   );
 
-  const { isLoading : isDocLoading, data : docData } = Digit.Hooks.useCustomMDMS(
-      tenant,
-      "works",
-      [
-          {
-              "name": "DocumentConfig",
-              "filter": `[?(@.module=='Estimate')]`
-          }
-      ]
-  );
+  const { isLoading: isDocLoading, data: docData } = Digit.Hooks.useCustomMDMS(tenant, "works", [
+    {
+      name: "DocumentConfig",
+      filter: `[?(@.module=='Estimate')]`,
+    },
+  ]);
 
   let { isLoading: isOverheadsLoading, data: overheads } = Digit.Hooks.useCustomMDMS(
     tenant,
@@ -226,25 +232,25 @@ const {isLoading: isAllEstimateLoading, data: allEstimates} = Digit.Hooks.useCus
   const requestCriteria = {
     url: "/mdms-v2/v1/_search",
     body: {
-    MdmsCriteria: {
+      MdmsCriteria: {
         tenantId: tenantId,
         moduleDetails: [
-        {
+          {
             moduleName: "WORKS-SOR",
             masterDetails: [
-            {
+              {
                 name: "Rates",
                 //filter: `[?(@.sorId=='${sorid}')]`,
-            },
+              },
             ],
-        },
+          },
         ],
+      },
     },
-    },
-    changeQueryName:"ratesQuery"
-};
+    changeQueryName: "ratesQuery",
+  };
 
-const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(requestCriteria);
+  const { isRatesLoading, data: RatesData } = Digit.Hooks.useCustomAPIHook(requestCriteria);
 
   const moduleName = Digit.Utils.getConfigModuleName();
   let { isLoading: isConfigLoading, data: estimateFormConfig } = Digit.Hooks.useCustomMDMS(
@@ -262,7 +268,10 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     }
   );
 
-  let currentEstimate = window.location.href.includes("/update-revision-detailed-estimate") || window.location.href.includes("/update-detailed-estimate") ?  estimate : allEstimates?.estimates?.filter((ob) => ob?.wfStatus === "APPROVED")?.[0];
+  let currentEstimate =
+    window.location.href.includes("/update-revision-detailed-estimate") || window.location.href.includes("/update-detailed-estimate")
+      ? estimate
+      : allEstimates?.estimates?.filter((ob) => ob?.wfStatus === "APPROVED")?.[0];
 
   const closeToast = () => {
     setTimeout(() => {
@@ -291,7 +300,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
 
   useEffect(() => {
     if (uom && estimate && currentEstimate && overheads && (isEdit || isCreateRevisionEstimate || isEditRevisionEstimate)) {
-       setSessionFormData(initialDefaultValues)
+      setSessionFormData(initialDefaultValues);
     }
   }, [currentEstimate, uom, overheads, RatesData]);
 
@@ -301,7 +310,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
       //     setSessionFormData({...initialDefaultValues,...formData,...sessionFormData})
       // }
       // else{
-        setSessionFormData({ ...formData });
+      setSessionFormData({ ...formData });
       // }
       // setSessionFormData({ ...sessionFormData, ...formData });
     }
@@ -310,8 +319,15 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
   function validateNonSor(items) {
     //this is to check is any one param is present for non other param should also be present or removed alltogether
     for (const item of items) {
-      if (!item.description || !item.uom || item.unitRate === undefined || item.unitRate <= 0 || item.currentMBEntry === undefined || (isCreateRevisionEstimate || isEditRevisionEstimate ? !(item?.currentMBEntry >= 0) : !item.currentMBEntry)) {
-        setShowToast({ error: true, label: `${t("ERR_NONSOR_ITEM_IS_MISSING")} ${ item?.sNo}` });
+      if (
+        !item.description ||
+        !item.uom ||
+        item.unitRate === undefined ||
+        item.unitRate <= 0 ||
+        item.currentMBEntry === undefined ||
+        (isCreateRevisionEstimate || isEditRevisionEstimate ? !(item?.currentMBEntry >= 0) : !item.currentMBEntry)
+      ) {
+        setShowToast({ type: "error", label: `${t("ERR_NONSOR_ITEM_IS_MISSING")} ${item?.sNo}` });
         setIsButtonDisabled(false);
         setShowModal(false);
         return false;
@@ -319,55 +335,62 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
 
       //this is to check if measures are there in NON sor it should have description
       if (item.measures && item.measures.length > 0) {
-          for (const measure of item.measures) {
-              if (!measure.description) {
-                  setShowToast({ error: true, label: `${t("ERR_ENTER_DESCRIPTION_IN_NONSOR")} ${ item?.sNo}` });
-                  setIsButtonDisabled(false);
-                  setShowModal(false);
-                  return false;
-              }
+        for (const measure of item.measures) {
+          if (!measure.description) {
+            setShowToast({ type: "error", label: `${t("ERR_ENTER_DESCRIPTION_IN_NONSOR")} ${item?.sNo}` });
+            setIsButtonDisabled(false);
+            setShowModal(false);
+            return false;
           }
+        }
       }
-  }
-  return true;
+    }
+    return true;
   }
 
-  function validateData(data){
-
+  function validateData(data) {
     // To validate either SOR or NON SOR must be present
-    if((!(data?.SORtable) && !(data?.NONSORtable)) || (data?.SORtable?.length <= 0 && data?.NONSORtable?.length <= 0) || (data?.SORtable?.length ===1 && data?.SORtable?.[0]?.category === "NON-SOR"))
-    {  
-      setShowToast({ error: true, label: "ERR_ATLEAST_SOR_OR_NON_SOR_PRESENT" });
+    if (
+      (!data?.SORtable && !data?.NONSORtable) ||
+      (data?.SORtable?.length <= 0 && data?.NONSORtable?.length <= 0) ||
+      (data?.SORtable?.length === 1 && data?.SORtable?.[0]?.category === "NON-SOR")
+    ) {
+      setShowToast({ type: "error", label: "ERR_ATLEAST_SOR_OR_NON_SOR_PRESENT" });
       setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
     //To validate that if SOR is present it should have measures
-    if(data?.SORtable?.filter((ob) => ob?.sorCode && (isCreateRevisionEstimate || isEditRevisionEstimate ? ob?.currentMBEntry < 0 : !(ob?.currentMBEntry)))?.length > 0)
-    {
-      setShowToast({ error: true, label: "ERR_MB_AMOUNT_IS_NOT_RIGHT_FOR_SOR" });
+    if (
+      data?.SORtable?.filter(
+        (ob) => ob?.sorCode && (isCreateRevisionEstimate || isEditRevisionEstimate ? ob?.currentMBEntry < 0 : !ob?.currentMBEntry)
+      )?.length > 0
+    ) {
+      setShowToast({ type: "error", label: "ERR_MB_AMOUNT_IS_NOT_RIGHT_FOR_SOR" });
       setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
     //To validate if the measures are present in SOR table it should have description param
-    let descriptionpresent = data?.SORtable?.find(item => item?.sorCode && item.measures.some(measure => measure?.description === "" || measure?.description === undefined || measure?.description === null));
-    if(descriptionpresent)
-    {
-      setShowToast({ error: true, label: `${t("ERR_ENTER_DESCRIPTION_IN_SOR")} ${descriptionpresent?.sorId || descriptionpresent?.sorCode}` });
+    let descriptionpresent = data?.SORtable?.find(
+      (item) =>
+        item?.sorCode &&
+        item.measures.some((measure) => measure?.description === "" || measure?.description === undefined || measure?.description === null)
+    );
+    if (descriptionpresent) {
+      setShowToast({ type: "error", label: `${t("ERR_ENTER_DESCRIPTION_IN_SOR")} ${descriptionpresent?.sorId || descriptionpresent?.sorCode}` });
       setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
     //To validate the data of NON Sor
-    if(data?.NONSORtable && !(validateNonSor(data?.NONSORtable)))
-      return false
+    if (data?.NONSORtable && !validateNonSor(data?.NONSORtable)) return false;
 
     //To validate SOR and NON SOR will not have negative values
-    let negativeValuedObject = data?.SORtable?.find(item => parseFloat(item.amount) < 0) || data?.NONSORtable?.find(item => parseFloat(item.amount) < 0)
-    if(negativeValuedObject)
-    {
-      setShowToast({ error: true, label: `${t("ERR_NEGATIVE_VALUE_IS_NOT_ALLOWED")} ${negativeValuedObject?.category}` });
+    let negativeValuedObject =
+      data?.SORtable?.find((item) => parseFloat(item.amount) < 0) || data?.NONSORtable?.find((item) => parseFloat(item.amount) < 0);
+    if (negativeValuedObject) {
+      setShowToast({ type: "error", label: `${t("ERR_NEGATIVE_VALUE_IS_NOT_ALLOWED")} ${negativeValuedObject?.category}` });
       setIsButtonDisabled(false);
       setShowModal(false);
       return false;
@@ -386,14 +409,13 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
         }
       }
     });
-    if(!documentValidated)
-    {
-      setShowToast({ error: true, label: `${t("ERR_DOCUMENT_IS_MANDATORY")}` });
+    if (!documentValidated) {
+      setShowToast({ type: "error", label: `${t("ERR_DOCUMENT_IS_MANDATORY")}` });
       setIsButtonDisabled(false);
       setShowModal(false);
       return false;
     }
-    
+
     return true;
   }
 
@@ -402,17 +424,21 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     //added this totalEst amount logic here because setValues in pageComponents don't work
     //after setting the value, in consequent renders value changes to undefined
     //check TotalEstAmount.js
-    let totalLabourAndMaterial = parseInt(getLabourMaterialAnalysisCost(_data,["LA"])) + parseInt(getLabourMaterialAnalysisCost(_data,["MA","RA","CA","EMF","DMF","ADC","LC"])) + parseInt(getLabourMaterialAnalysisCost(_data,["MHA"])) || (_data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery);
+    let totalLabourAndMaterial =
+      parseInt(getLabourMaterialAnalysisCost(_data, ["LA"])) +
+        parseInt(getLabourMaterialAnalysisCost(_data, ["MA", "RA", "CA", "EMF", "DMF", "ADC", "LC"])) +
+        parseInt(getLabourMaterialAnalysisCost(_data, ["MHA"])) ||
+      _data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery;
     //here check totalEst amount should be less than material+labour
     if (_data.totalEstimateAmount < totalLabourAndMaterial && action !== "DRAFT") {
-      setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_MISMATCH" });
+      setShowToast({ type: "warning", label: "ERR_ESTIMATE_AMOUNT_MISMATCH" });
       setIsButtonDisabled(false);
       closeToast();
       return;
-    } 
+    }
     // else if (totalLabourAndMaterial === 0  && action !== "DRAFT") {
     //   debugger;
-    //   setShowToast({ warning: true, label: "ERR_ESTIMATE_AMOUNT_IMPROPER" });
+    //   setShowToast({ type:"warning", label: "ERR_ESTIMATE_AMOUNT_IMPROPER" });
     //   closeToast();
     //   return;
     // }
@@ -420,30 +446,29 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     setInputFormData((prevState) => _data);
     //first do whatever processing you want on form data then pass it over to modal's onSubmit function
 
-    if(action === "DRAFT")
-      onModalSubmit(_data,action);
-    else
-      setShowModal(true);
+    if (action === "DRAFT") onModalSubmit(_data, action);
+    else setShowModal(true);
   };
 
   function removeNonsortableObjectWithoutRequiredParams(data) {
     const nonsorTable = data.NONSORtable;
-  
+
     if (nonsorTable && nonsorTable.length > 0) {
-      const hasAtLeastOneItemWithRequiredParams = nonsorTable.some(item =>
-       (item.unitRate !== undefined && item.unitRate > 0) ||
-        item.description ||
-        item.uom ||
-        (item.currentMBEntry !== undefined && item.currentMBEntry) ||
-        (item.measures && item.measures.length > 0 && item.measures.some(measure => measure.description))
+      const hasAtLeastOneItemWithRequiredParams = nonsorTable.some(
+        (item) =>
+          (item.unitRate !== undefined && item.unitRate > 0) ||
+          item.description ||
+          item.uom ||
+          (item.currentMBEntry !== undefined && item.currentMBEntry) ||
+          (item.measures && item.measures.length > 0 && item.measures.some((measure) => measure.description))
       );
-  
+
       if (!hasAtLeastOneItemWithRequiredParams) {
         // If none of the items in the nonsorTable have at least one required parameter, remove the entire nonsorTable
         data.NONSORtable = [];
       }
     }
-}
+  }
 
   const onModalSubmit = async (_data, action) => {
     setIsButtonDisabled(true);
@@ -452,106 +477,142 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
       ...inputFormData,
       ..._data,
       selectedApprover,
-      workflowAction : actionSelected || action,
+      workflowAction: actionSelected || action,
       // selectedDept,
       // selectedDesignation
     };
 
     removeNonsortableObjectWithoutRequiredParams(completeFormData);
     let validated = action !== "DRAFT" ? validateData(completeFormData) : true;
-    if(validated){
-    const payload = createEstimatePayload(completeFormData, projectData, isEdit,  currentEstimate, isCreateRevisionEstimate, isEditRevisionEstimate);
-    setShowModal(false);
+    if (validated) {
+      const payload = createEstimatePayload(completeFormData, projectData, isEdit, currentEstimate, isCreateRevisionEstimate, isEditRevisionEstimate);
+      setShowModal(false);
 
-    //make a util for updateEstimatePayload since there are some deviations
+      //make a util for updateEstimatePayload since there are some deviations
 
-    if ((isEdit || isEditRevisionEstimate) && (estimateNumber  || revisionNumber)) {
-      await EstimateUpdateMutation(payload, {
-        onError: async (error, variables) => {
-          setIsButtonDisabled(false);
-          setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
-          setTimeout(() => {
-            setShowToast(false);
-          }, 3000);
-          if(error?.toString().includes("not found in config for the businessId"))
-          {
-            if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${revisionNumber}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
-            else 
-              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
-          }
-        },
-        onSuccess: async (responseData, variables) => {
-          clearSessionFormData();
-          const state = {
-            header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_UPDATED_HEADER") : t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
-            id: isCreateRevisionEstimate || isEditRevisionEstimate ? responseData?.estimates[0]?.revisionNumber : responseData?.estimates[0]?.estimateNumber,
-            info: isCreateRevisionEstimate || isEditRevisionEstimate ?  t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
-            // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-            links: [
-              {
-                name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-                redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-                code: "",
-                svg: "GotoInboxIcon",
-                isVisible: true,
-                type: "inbox",
-              },
-            ],
-          };
-          if(action === "DRAFT")
-          {
-            setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
-            if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
-            else
-            setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
-          }
-          else
-          history.push(`/${window?.contextPath}/employee/estimate/response`, state);
-        },
-      });
-    } else {
-      await EstimateMutation(payload, {
-        onError: async (error, variables) => {
-          setIsButtonDisabled(false);
-          setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
-          setTimeout(() => {
-            setShowToast(false);
-          }, 5000);
-        },
-        onSuccess: async (responseData, variables) => {
-          clearSessionFormData();
-          const state = {
-            header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
-            id: isCreateRevisionEstimate || isEditRevisionEstimate ? responseData?.estimates[0]?.revisionNumber : responseData?.estimates[0]?.estimateNumber,
-            info:isCreateRevisionEstimate || isEditRevisionEstimate ?  t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
-            // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-            links: [
-              {
-                name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-                redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-                code: "",
-                svg: "GotoInboxIcon",
-                isVisible: true,
-                type: "inbox",
-              },
-            ],
-          };
-          if(action === "DRAFT")
-          {
-            setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
-            if(isCreateRevisionEstimate || isEditRevisionEstimate)
-              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
-            else
-            setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
-          }
-          else
-          setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/response`, state)}, 5000);
-        },
-      });
+      if ((isEdit || isEditRevisionEstimate) && (estimateNumber || revisionNumber)) {
+        await EstimateUpdateMutation(payload, {
+          onError: async (error, variables) => {
+            setIsButtonDisabled(false);
+            setShowToast({ type: "warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+            setTimeout(() => {
+              setShowToast(false);
+            }, 3000);
+            if (error?.toString().includes("not found in config for the businessId")) {
+              if (isCreateRevisionEstimate || isEditRevisionEstimate)
+                setTimeout(() => {
+                  history.push(
+                    `/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${revisionNumber}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`
+                  );
+                }, 3500);
+              else
+                setTimeout(() => {
+                  history.push(
+                    `/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`
+                  );
+                }, 3500);
+            }
+          },
+          onSuccess: async (responseData, variables) => {
+            clearSessionFormData();
+            const state = {
+              header:
+                isCreateRevisionEstimate || isEditRevisionEstimate
+                  ? t("WORKS_REVISION_ESTIMATE_RESPONSE_UPDATED_HEADER")
+                  : t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
+              id:
+                isCreateRevisionEstimate || isEditRevisionEstimate
+                  ? responseData?.estimates[0]?.revisionNumber
+                  : responseData?.estimates[0]?.estimateNumber,
+              info: isCreateRevisionEstimate || isEditRevisionEstimate ? t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
+              // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
+              links: [
+                {
+                  name: t("WORKS_GOTO_ESTIMATE_INBOX"),
+                  redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
+                  code: "",
+                  svg: "GotoInboxIcon",
+                  isVisible: true,
+                  type: "inbox",
+                },
+              ],
+            };
+            if (action === "DRAFT") {
+              setShowToast({ type: "", label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
+              if (isCreateRevisionEstimate || isEditRevisionEstimate)
+                setTimeout(() => {
+                  history.push(
+                    `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`,
+                    state
+                  );
+                }, 3000);
+              else
+                setTimeout(() => {
+                  history.push(
+                    `/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`,
+                    state
+                  );
+                }, 3000);
+            } else history.push(`/${window?.contextPath}/employee/estimate/response`, state);
+          },
+        });
+      } else {
+        await EstimateMutation(payload, {
+          onError: async (error, variables) => {
+            setIsButtonDisabled(false);
+            setShowToast({ type: "warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+            setTimeout(() => {
+              setShowToast(false);
+            }, 5000);
+          },
+          onSuccess: async (responseData, variables) => {
+            clearSessionFormData();
+            const state = {
+              header:
+                isCreateRevisionEstimate || isEditRevisionEstimate
+                  ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER")
+                  : t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
+              id:
+                isCreateRevisionEstimate || isEditRevisionEstimate
+                  ? responseData?.estimates[0]?.revisionNumber
+                  : responseData?.estimates[0]?.estimateNumber,
+              info: isCreateRevisionEstimate || isEditRevisionEstimate ? t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
+              // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
+              links: [
+                {
+                  name: t("WORKS_GOTO_ESTIMATE_INBOX"),
+                  redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
+                  code: "",
+                  svg: "GotoInboxIcon",
+                  isVisible: true,
+                  type: "inbox",
+                },
+              ],
+            };
+            if (action === "DRAFT") {
+              setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
+              if (isCreateRevisionEstimate || isEditRevisionEstimate)
+                setTimeout(() => {
+                  history.push(
+                    `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`,
+                    state
+                  );
+                }, 3000);
+              else
+                setTimeout(() => {
+                  history.push(
+                    `/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`,
+                    state
+                  );
+                }, 3000);
+            } else
+              setTimeout(() => {
+                history.push(`/${window?.contextPath}/employee/estimate/response`, state);
+              }, 5000);
+          },
+        });
+      }
     }
-  }
   };
 
   // const { isLoading: mdmsLoading, data: mdmsData, isSuccess: mdmsSuccess } = Digit.Hooks.useCustomMDMS(
@@ -601,7 +662,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
         selectedApprover,
         setSelectedApprover,
         approverLoading,
-        isEdit : isEdit || isEditRevisionEstimate,
+        isEdit: isEdit || isEditRevisionEstimate,
         // designation,
         // selectedDesignation,
         // setSelectedDesignation,
@@ -620,7 +681,13 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     <Fragment>
       {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} isDisabled={isButtonDisabled} />}
       <Header className="works-header-create" styles={{ marginLeft: "14px" }}>
-        {isEdit ? (isCreateRevisionEstimate || isEditRevisionEstimate ? t("ACTION_TEST_EDIT_REVISION_ESTIMATE") : t("ACTION_TEST_EDIT_ESTIMATE")) : (isCreateRevisionEstimate || isEditRevisionEstimate ? t("ACTION_TEST_CREATE_REVISION_ESTIMATE") : t("ACTION_TEST_CREATE_ESTIMATE"))}
+        {isEdit
+          ? isCreateRevisionEstimate || isEditRevisionEstimate
+            ? t("ACTION_TEST_EDIT_REVISION_ESTIMATE")
+            : t("ACTION_TEST_EDIT_ESTIMATE")
+          : isCreateRevisionEstimate || isEditRevisionEstimate
+          ? t("ACTION_TEST_CREATE_REVISION_ESTIMATE")
+          : t("ACTION_TEST_CREATE_ESTIMATE")}
       </Header>
       {/* Will fetch projectId from url params and do a search for project to show the below data in card while integrating with the API  */}
       {isLoading ? <Loader /> : <ViewDetailsCard cardState={cardState} t={t} createScreen={true} />}
@@ -639,7 +706,11 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           fieldStyle={{ marginRight: 0 }}
           inline={false}
           // className="card-no-margin"
-          defaultValues={((isEdit === "true" || isCreateRevisionEstimate === "true" || isEditRevisionEstimate === "true") && (estimateNumber || revisionNumber)) ? initialDefaultValues : sessionFormData}
+          defaultValues={
+            (isEdit === "true" || isCreateRevisionEstimate === "true" || isEditRevisionEstimate === "true") && (estimateNumber || revisionNumber)
+              ? initialDefaultValues
+              : sessionFormData
+          }
           //defaultValues={{...sessionFormData}}
           showWrapperContainers={false}
           isDescriptionBold={false}
@@ -656,8 +727,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
       ) : null}
       {showToast && (
         <Toast
-          error={showToast.error}
-          warning={showToast.warning}
+          type={showToast?.type}
           label={t(showToast.label)}
           onClose={() => {
             setShowToast(null);
@@ -666,7 +736,9 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
         />
       )}
       <ActionBar>
-        {displayMenu && !isButtonDisabled ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
+        {displayMenu && !isButtonDisabled ? (
+          <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} />
+        ) : null}
         <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />
       </ActionBar>
     </Fragment>

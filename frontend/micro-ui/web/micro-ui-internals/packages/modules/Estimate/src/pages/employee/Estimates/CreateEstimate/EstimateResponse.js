@@ -1,10 +1,11 @@
-import { Banner, Card, Loader, CardText, ActionBar, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Banner, Card, Loader, CardText, ActionBar,SubmitBar } from "@egovernments/digit-ui-react-components";
 import { useQueryClient } from "react-query";
-import React, { useEffect } from "react";
+import React, { useEffect,Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CreateEstimateIcon, DownloadImgIcon, GotoInboxIcon, ArrowLeftWhite } from "@egovernments/digit-ui-react-components";
 import { useHistory, useLocation } from "react-router-dom";
+import { PanelCard } from "@egovernments/digit-ui-components";
 
 // state = {
 //     header,idText,id,message,links
@@ -52,7 +53,7 @@ const EstimateResponse = (props) => {
             case "add":
                 return <p><CreateEstimateIcon style={{ "display": "inline" }} /> {t(link.name)}</p>
             case "inbox":
-                return <p><ArrowLeftWhite fill="#F47738" style={{ display:"inline",marginRight:"0.5rem",marginTop:"-2px"}} /> {t(link.name)}</p>
+                return <p><ArrowLeftWhite fill="#C84C0E" style={{ display:"inline",marginRight:"0.5rem",marginTop:"-2px"}} /> {t(link.name)}</p>
             case "download":
                 return <p style={{ "display": "flex", "flexDirection": "row" }}><DownloadImgIcon style={{ "display": "inline" }} />{t(link.name)}</p>
             default:
@@ -89,10 +90,10 @@ const EstimateResponse = (props) => {
     return (
         <Card>
             <Banner
-                message={state.header}
-                applicationNumber={state.id}
+                message={state?.header}
+                applicationNumber={state?.id}
                 //   info={props.mutation.isSuccess ? props.surveyTitle : ""}
-                info={state.info}
+                info={state?.info}
 
                 //successful={props.mutation.isSuccess}
                 successful={true}
@@ -108,7 +109,7 @@ const EstimateResponse = (props) => {
                   //   })
                   t("SURVEY_FORM_RESPONSE_MESSAGE")
                   : null} */}
-                {t(state.message)}
+                {t(state?.message)}
             </CardText>
             <div style={{ "display": "flex", "justifyContent": "start", "flexDirection": "row", "alignItems": "flex-end" }}>
 
@@ -117,7 +118,7 @@ const EstimateResponse = (props) => {
                     <p><CreateEstimateIcon style={{ "display": "inline" }} /> {t("Download")}</p>
               </div> */}
 
-                {state.links.map(link => (
+                {state?.links?.map(link => (
                     link.isVisible && <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginBottom: "10px", padding: "0px 8px" }}
                         onClick={
                             link.type === "download"

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Toast, Loader, LinkButton } from "@egovernments/digit-ui-react-components";
+import { Loader, LinkButton } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { Toast} from "@egovernments/digit-ui-components";
 
 const ViewAnalysisStatement = ({ formData, ...props }) => {
   const { t } = useTranslation();
@@ -311,7 +312,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   };
 
   const showToastMessage = (message) => {
-    setShowToast({ warning: true, label: message });
+    setShowToast({ type: "warning", label: message });
     setTimeout(() => setShowToast(false), 5000);
   };
 
@@ -331,9 +332,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   //     )}
   //     {showToast && (
   //       <Toast
-  //         error={showToast?.error}
-  //         warning={showToast?.warning}
-  //         success={showToast?.success}
+  //         type={showToast?.type}
   //         label={t(showToast?.label)}
   //         isDleteBtn={true}
   //         onClose={() => setShowToast(null)}
@@ -355,13 +354,11 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
         />
         {showToast && (
           <Toast
-            error={showToast?.error}
-            warning={showToast?.warning}
-            success={showToast?.success}
+            type={showToast?.type}
             label={t(showToast?.label)}
             isDleteBtn={true}
-            labelstyle={{ width: "100%" }}
-            style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
+            // labelstyle={{ width: "100%" }}
+            // style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
             onClose={() => setShowToast(false)}
           />
         )}

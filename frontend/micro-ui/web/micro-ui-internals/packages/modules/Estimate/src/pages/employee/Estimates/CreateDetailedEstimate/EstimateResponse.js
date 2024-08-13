@@ -52,7 +52,7 @@ const EstimateResponse = (props) => {
             case "add":
                 return <p><CreateEstimateIcon style={{ "display": "inline" }} /> {t(link.name)}</p>
             case "inbox":
-                return <p><ArrowLeftWhite fill="#F47738" style={{ display:"inline",marginRight:"0.5rem",marginTop:"-2px"}} /> {t(link.name)}</p>
+                return <p><ArrowLeftWhite fill="#C84C0E" style={{ display:"inline",marginRight:"0.5rem",marginTop:"-2px"}} /> {t(link.name)}</p>
             case "download":
                 return <p style={{ "display": "flex", "flexDirection": "row" }}><DownloadImgIcon style={{ "display": "inline" }} />{t(link.name)}</p>
             default:

@@ -400,8 +400,8 @@ const OverheadsTable = ({ control, watch, ...props }) => {
           {/* <td style={getStyles(1)}></td> */}
           <td colSpan={5} style={{ textAlign: "center" }} onClick={addRow}>
             <span>
-              <AddIcon fill={"#F47738"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
-              <label style={{ marginLeft: "10px", fontWeight: "600", color: " #F47738" }}>{t("WORKS_ADD_OVERHEAD")}</label>
+              <AddIcon fill={"#C84C0E"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
+              <label style={{ marginLeft: "10px", fontWeight: "600", color: " #C84C0E" }}>{t("WORKS_ADD_OVERHEAD")}</label>
             </span>
           </td>
           {/* <td style={getStyles(3)}></td>
