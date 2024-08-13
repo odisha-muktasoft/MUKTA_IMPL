@@ -361,16 +361,16 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           context.read<WageSeekerBankCreateBloc>().add(
                                 CreateBankWageSeekerEvent(
                                     tenantId: individualListModel
-                                        ?.individual?.tenantId,
+                                        ?.Individual?.tenantId,
                                     accountHolderName:
                                         financialDetails?.accountHolderName,
                                     accountNo: financialDetails?.accountNumber,
                                     accountType: financialDetails?.accountType,
                                     ifscCode: financialDetails?.ifscCode,
                                     referenceId:
-                                        individualListModel?.individual?.id,
+                                        individualListModel?.Individual?.id,
                                     indId: individualListModel
-                                        ?.individual?.individualId,
+                                        ?.Individual?.individualId,
                                     bankName: '${financialDetails?.bankName}'),
                               );
                         },

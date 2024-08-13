@@ -299,7 +299,7 @@ class _HomePage extends State<HomePage> {
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
           child: PoweredByDigit(
-              // version: Constants.appVersion,
+               version: Constants.appVersion,
               ),
         ),
         children: [

@@ -26,6 +26,7 @@ import '../../../widgets/mb/text_button_underline.dart';
 import '../../../widgets/work_order/work_order_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class WorkOderInboxPage extends StatefulWidget {
@@ -505,7 +506,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   );
                 },
                 loading: (value) =>
-                    const Center(child: CircularProgressIndicator.adaptive()),
+                     Center(child: shg_loader.Loaders.circularLoader(context)),
               );
             },
           ),

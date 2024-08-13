@@ -3,9 +3,11 @@ import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
+import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -45,6 +47,8 @@ class _LoginPageState extends State<LoginPage>
     const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
     const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
   ];
+
+  String cityDropDownKey = "cityDropDownKey";
 
   @override
   void initState() {
@@ -310,7 +314,8 @@ class _LoginPageState extends State<LoginPage>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+          iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+              .copyWith(color: const DigitColors().white),
           automaticallyImplyLeading: true,
         ),
         body: BlocBuilder<AppInitializationBloc, AppInitializationState>(
@@ -344,70 +349,79 @@ class _LoginPageState extends State<LoginPage>
     AppInitializationState data,
   ) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height* 0.7 ,
+      height: MediaQuery.of(context).size.height * 0.7,
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          DigitTextField(
-            label: '${t.translate(i18.login.loginUserName)}*',
-            controller: userNameController,
-            isRequired: true,
-            validator: (val) {
-              if (val!.trim().isEmpty) {
-                return '${t.translate(i18.login.pleaseEnterMobile)}';
-              }
-              return null;
-            },
-            onChange: (value) {},
-          ),
-          DigitTextField(
-            maxLines: 1,
-            label: '${t.translate(i18.login.loginPassword)}*',
-            controller: userPasswordController,
-            isRequired: true,
-            obscureText: iconVisibility,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  iconVisibility = !iconVisibility;
-                });
-              },
-              icon: Icon(
-                iconVisibility
-                    ? Icons.visibility_rounded
-                    : Icons.visibility_off_rounded,
-                size: 30,
-                color: const DigitColors().burningOrange,
-              ),
-            ),
-            validator: (val) {
-              if (val!.trim().isEmpty) {
-                return '${t.translate(i18.login.pleaseEnterMobile)}';
-              }
-              return null;
-            },
-            onChange: (value) {},
-          ),
-          DigitDropdown(
-            onChanged: (value) {
-              setState(() {
-                selectTenantId = value?.code ?? "";
-              });
-            },
-            value: null,
-            label: "${t.translate(i18.common.city)} *",
-            menuItems: data.initMdmsModel!.tenant!.tenantListModel!,
-            valueMapper: (value) =>
-                t.translate(Conversion.convertToTenant(value!.code!)),
-          ),
-          DigitIconButton(
-            iconText: t.translate(i18.login.forgotPassword),
-            onPressed: () {
-              forgotPassword(t);
-            },
-          ),
-        ],
-      ),
+      child: ReactiveFormBuilder(
+          form: detailBuildForm,
+          builder: (BuildContext context, FormGroup formGroup, Widget? child) {
+            return Column(
+              children: [
+                DigitTextField(
+                  label: '${t.translate(i18.login.loginUserName)}*',
+                  controller: userNameController,
+                  isRequired: true,
+                  validator: (val) {
+                    if (val!.trim().isEmpty) {
+                      return '${t.translate(i18.login.pleaseEnterMobile)}';
+                    }
+                    return null;
+                  },
+                  onChange: (value) {},
+                ),
+                DigitTextField(
+                  maxLines: 1,
+                  label: '${t.translate(i18.login.loginPassword)}*',
+                  controller: userPasswordController,
+                  isRequired: true,
+                  obscureText: iconVisibility,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        iconVisibility = !iconVisibility;
+                      });
+                    },
+                    icon: Icon(
+                      iconVisibility
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      size: 30,
+                      color: const DigitColors().burningOrange,
+                    ),
+                  ),
+                  validator: (val) {
+                    if (val!.trim().isEmpty) {
+                      return '${t.translate(i18.login.pleaseEnterMobile)}';
+                    }
+                    return null;
+                  },
+                  onChange: (value) {},
+                ),
+                DigitDropdown(
+                  initialValue: null,
+                  formControlName: cityDropDownKey,
+                  onChanged: (value) {
+                    setState(() {
+                      selectTenantId = value?.code ?? "";
+                    });
+                  },
+                  label: "${t.translate(i18.common.city)} *",
+                  menuItems: data.initMdmsModel!.tenant!.tenantListModel!,
+                  valueMapper: (value) =>
+                      t.translate(Conversion.convertToTenant(value!.code!)),
+                ),
+                DigitIconButton(
+                  iconText: t.translate(i18.login.forgotPassword),
+                  onPressed: () {
+                    forgotPassword(t);
+                  },
+                ),
+              ],
+            );
+          }),
     );
   }
+
+  FormGroup detailBuildForm() => fb.group(<String, Object>{
+        cityDropDownKey: FormControl<TenantListModel>(value: null),
+      });
 }

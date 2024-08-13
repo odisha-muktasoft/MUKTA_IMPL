@@ -93,7 +93,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         fieldHintText: 'dd/mm/yyyy',
                         confirmText: t.translate(i18.common.oK),
                         icon: Icons.info_outline_rounded,
-                        toolTipMsg: t.translate(i18.wageSeeker.ageValidation),
+                        tooltipMessage: t.translate(i18.wageSeeker.ageValidation),
                         formControlName: dobKey,
                         autoValidation: AutovalidateMode.always,
                         requiredMessage:
@@ -125,7 +125,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         formControlName: fatherNameKey,
                         isRequired: true,
                         label: t.translate(i18.common.guardianName),
-                        inputFormatter: [
+                        inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
                         ],
                         validationMessages: {
@@ -165,7 +165,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                         minLength: 10,
                         maxLength: 10,
                         keyboardType: TextInputType.phone,
-                        inputFormatter: [
+                        inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                         ],
                         validationMessages: {

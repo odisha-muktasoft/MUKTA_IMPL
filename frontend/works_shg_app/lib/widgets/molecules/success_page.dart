@@ -1,6 +1,7 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 
 import '../../utils/common_methods.dart';
 import '../back.dart';
@@ -48,7 +49,7 @@ class SuccessResponsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (value) async {
         context.router.push(const HomeRoute());
         
@@ -60,7 +61,7 @@ class SuccessResponsePage extends StatelessWidget {
             child: const Align(
               alignment: Alignment.bottomCenter,
               child: PoweredByDigit(
-                //version: Constants.appVersion,
+                version: Constants.appVersion,
               ),
             ),
           ),

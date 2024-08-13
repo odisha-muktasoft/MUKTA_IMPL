@@ -21,18 +21,18 @@ class IndividualListModelMapper extends ClassMapperBase<IndividualListModel> {
   @override
   final String id = 'IndividualListModel';
 
-  static List<IndividualModel>? _$individual(IndividualListModel v) =>
-      v.individual;
-  static const Field<IndividualListModel, List<IndividualModel>> _f$individual =
-      Field('individual', _$individual, opt: true);
+  static List<IndividualModel>? _$Individual(IndividualListModel v) =>
+      v.Individual;
+  static const Field<IndividualListModel, List<IndividualModel>> _f$Individual =
+      Field('Individual', _$Individual, opt: true);
 
   @override
   final MappableFields<IndividualListModel> fields = const {
-    #individual: _f$individual,
+    #Individual: _f$Individual,
   };
 
   static IndividualListModel _instantiate(DecodingData data) {
-    return IndividualListModel(individual: data.dec(_f$individual));
+    return IndividualListModel(Individual: data.dec(_f$Individual));
   }
 
   @override
@@ -92,8 +92,8 @@ abstract class IndividualListModelCopyWith<$R, $In extends IndividualListModel,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, IndividualModel,
           IndividualModelCopyWith<$R, IndividualModel, IndividualModel>>?
-      get individual;
-  $R call({List<IndividualModel>? individual});
+      get Individual;
+  $R call({List<IndividualModel>? Individual});
   IndividualListModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -109,16 +109,16 @@ class _IndividualListModelCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<$R, IndividualModel,
           IndividualModelCopyWith<$R, IndividualModel, IndividualModel>>?
-      get individual => $value.individual != null
-          ? ListCopyWith($value.individual!, (v, t) => v.copyWith.$chain(t),
-              (v) => call(individual: v))
+      get Individual => $value.Individual != null
+          ? ListCopyWith($value.Individual!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(Individual: v))
           : null;
   @override
-  $R call({Object? individual = $none}) => $apply(
-      FieldCopyWithData({if (individual != $none) #individual: individual}));
+  $R call({Object? Individual = $none}) => $apply(
+      FieldCopyWithData({if (Individual != $none) #Individual: Individual}));
   @override
   IndividualListModel $make(CopyWithData data) => IndividualListModel(
-      individual: data.get(#individual, or: $value.individual));
+      Individual: data.get(#Individual, or: $value.Individual));
 
   @override
   IndividualListModelCopyWith<$R2, IndividualListModel, $Out2>
@@ -2080,17 +2080,17 @@ class SingleIndividualModelMapper
   @override
   final String id = 'SingleIndividualModel';
 
-  static IndividualModel? _$individual(SingleIndividualModel v) => v.individual;
-  static const Field<SingleIndividualModel, IndividualModel> _f$individual =
-      Field('individual', _$individual, opt: true);
+  static IndividualModel? _$Individual(SingleIndividualModel v) => v.Individual;
+  static const Field<SingleIndividualModel, IndividualModel> _f$Individual =
+      Field('Individual', _$Individual, opt: true);
 
   @override
   final MappableFields<SingleIndividualModel> fields = const {
-    #individual: _f$individual,
+    #Individual: _f$Individual,
   };
 
   static SingleIndividualModel _instantiate(DecodingData data) {
-    return SingleIndividualModel(individual: data.dec(_f$individual));
+    return SingleIndividualModel(Individual: data.dec(_f$Individual));
   }
 
   @override
@@ -2150,8 +2150,8 @@ abstract class SingleIndividualModelCopyWith<
     $R,
     $In extends SingleIndividualModel,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
-  IndividualModelCopyWith<$R, IndividualModel, IndividualModel>? get individual;
-  $R call({IndividualModel? individual});
+  IndividualModelCopyWith<$R, IndividualModel, IndividualModel>? get Individual;
+  $R call({IndividualModel? Individual});
   SingleIndividualModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -2166,14 +2166,14 @@ class _SingleIndividualModelCopyWithImpl<$R, $Out>
       SingleIndividualModelMapper.ensureInitialized();
   @override
   IndividualModelCopyWith<$R, IndividualModel, IndividualModel>?
-      get individual =>
-          $value.individual?.copyWith.$chain((v) => call(individual: v));
+      get Individual =>
+          $value.Individual?.copyWith.$chain((v) => call(Individual: v));
   @override
-  $R call({Object? individual = $none}) => $apply(
-      FieldCopyWithData({if (individual != $none) #individual: individual}));
+  $R call({Object? Individual = $none}) => $apply(
+      FieldCopyWithData({if (Individual != $none) #Individual: Individual}));
   @override
   SingleIndividualModel $make(CopyWithData data) => SingleIndividualModel(
-      individual: data.get(#individual, or: $value.individual));
+      Individual: data.get(#Individual, or: $value.Individual));
 
   @override
   SingleIndividualModelCopyWith<$R2, SingleIndividualModel, $Out2>

@@ -104,7 +104,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                       label: t.translate(i18.common.pinCode),
                       keyboardType: TextInputType.number,
                       maxLength: 6,
-                      inputFormatter: [
+                      inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                       ],
                     ),
@@ -166,7 +166,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                                 i18.wageSeeker.maxStreetCharacters,
                               ),
                         },
-                        inputFormatter: [
+                        inputFormatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp("[a-zA-Z0-9 .,\\/\\-_@#\\']"))
                         ]),
@@ -180,7 +180,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                                 i18.wageSeeker.maxDoorNoCharacters,
                               ),
                         },
-                        inputFormatter: [
+                        inputFormatters: [
                           FilteringTextInputFormatter.allow(
                               RegExp("[a-zA-Z0-9 .,\\/\\-_@#\\']"))
                         ]),

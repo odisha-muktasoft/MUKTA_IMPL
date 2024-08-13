@@ -82,7 +82,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: PoweredByDigit(
-                              // version: Constants.appVersion,
+                               version: Constants.appVersion,
                               ),
                           ),
                         )
@@ -389,7 +389,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                                 .bottomCenter,
                                                             child:
                                                                 PoweredByDigit(
-                                                                  // version: Constants.appVersion,
+                                                                   version: Constants.appVersion,
                                                                   ),
                                                           )
                                                         : const SizedBox

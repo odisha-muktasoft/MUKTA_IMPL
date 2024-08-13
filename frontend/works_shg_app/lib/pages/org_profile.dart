@@ -331,7 +331,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                 const Align(
                   alignment: Alignment.bottomCenter,
                   child: PoweredByDigit(
-                    // version: Constants.appVersion,
+                     version: Constants.appVersion,
                   ),
                 ),
               ]));

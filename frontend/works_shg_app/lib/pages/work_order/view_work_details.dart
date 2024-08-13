@@ -105,7 +105,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (value) async {
         if (GlobalVariables.roleType == RoleType.cbo) {
           context.router.popUntilRouteWithPath('home');
@@ -628,7 +628,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                   const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: PoweredByDigit(
-                                      // version: Constants.appVersion,
+                                       version: Constants.appVersion,
                                       ),
                                   )
                                 ]),
@@ -1868,7 +1868,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                 alignment:
                                                     Alignment.bottomCenter,
                                                 child: PoweredByDigit(
-                                                  // version: Constants.appVersion,
+                                                   version: Constants.appVersion,
                                                   ),
                                               )
                                             ]),

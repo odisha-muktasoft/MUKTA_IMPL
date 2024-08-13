@@ -42,7 +42,10 @@ class _MBFilterPageState extends State<MBFilterPage> {
   bool workShow = true;
   bool project = true;
 
-  String genderKey = 'assign';
+  String assign = 'assign';
+  String projectTypeKey="projectTypeKey";
+  String wardNoKey="wardNoKey";
+  String statusMapKey="statusMapKey";
   String genderController = '';
   @override
   void initState() {
@@ -209,9 +212,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   };
 
                                                   if (formGroup.value[
-                                                              genderKey] ==
+                                                              assign] ==
                                                           "MB_ASSIGNED_TO_ME" ||
-                                                      genderKey ==
+                                                      assign ==
                                                           "MB_ASSIGNED_TO_ME") {
                                                     s['inbox']!['moduleSearchCriteria']![
                                                             'assignee'] =
@@ -328,9 +331,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     }
 
                                                     if (formGroup.value[
-                                                                genderKey] ==
+                                                                assign] ==
                                                             "MB_ASSIGNED_TO_ME" ||
-                                                        genderKey ==
+                                                        assign ==
                                                             "MB_ASSIGNED_TO_ME") {
                                                       s['inbox']!['moduleSearchCriteria']![
                                                               'assignee'] =
@@ -466,9 +469,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     }
 
                                                     if (formGroup.value[
-                                                                genderKey] ==
+                                                                assign] ==
                                                             "MB_ASSIGNED_TO_ME" ||
-                                                        genderKey ==
+                                                        assign ==
                                                             "MB_ASSIGNED_TO_ME") {
                                                       s['inbox']!['moduleSearchCriteria']![
                                                               'assignee'] =
@@ -549,7 +552,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                               isEnabled: true,
                                               labelText: t.translate(
                                                   i18.common.assignee),
-                                              formControlName: genderKey,
+                                              formControlName: assign,
                                               options: const [
                                                 'MB_ASSIGNED_TO_ME',
                                                 'MB_ASSIGNED_TO_ALL'
@@ -559,7 +562,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   t.translate(value),
                                               onValueChange: (value) {
                                                 setState(() {
-                                                  genderKey = value;
+                                                  assign = value;
                                                 });
                                               },
                                             )
@@ -589,6 +592,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   loaded: (value) {
                                                     return DigitDropdown<
                                                         ProjectType>(
+                                                          formControlName: projectTypeKey,
                                                       onChanged: (value) {
                                                         setState(() {
                                                           projectName =
@@ -597,7 +601,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           workShow = false;
                                                         });
                                                       },
-                                                      value: selectedType,
+                                                      initialValue: selectedType,
                                                       label: t.translate(i18
                                                           .measurementBook
                                                           .projectType),
@@ -628,13 +632,14 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       // end of this
                                       workShow
                                           ? DigitDropdown(
+                                            formControlName: wardNoKey,
                                               onChanged: (value) {
                                                 setState(() {
                                                   ward.add(value!);
                                                   project = false;
                                                 });
                                               },
-                                              value: ward.isNotEmpty
+                                              initialValue: ward.isNotEmpty
                                                   ? ward.first
                                                   : null,
                                               label:
@@ -655,13 +660,14 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                           : const SizedBox.shrink(),
                                       workShow
                                           ? DigitDropdown<status_map.StatusMap>(
+                                            formControlName: statusMapKey,
                                               onChanged: (value) {
                                                 setState(() {
                                                   workflow.add(value!);
                                                   project = false;
                                                 });
                                               },
-                                              value: workflow.isNotEmpty
+                                              initialValue: workflow.isNotEmpty
                                                   ? workflow.first
                                                   : null,
                                               label: t.translate(i18
@@ -695,7 +701,10 @@ class _MBFilterPageState extends State<MBFilterPage> {
   }
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
-        genderKey: FormControl<String>(value: "MB_ASSIGNED_TO_ALL"),
+        assign: FormControl<String>(value: "MB_ASSIGNED_TO_ALL"),
+        projectTypeKey:FormControl<ProjectType>(value: selectedType),
+        wardNoKey :FormControl<String>(value: null),
+        statusMapKey :FormControl<status_map.StatusMap>(value: null),
       });
 
   String convertToWard(String input) {

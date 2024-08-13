@@ -22,6 +22,7 @@ import '../../widgets/side_bar.dart';
 import '../../widgets/mb/mb_detail_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+    import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class MeasurementBookInboxPage extends StatefulWidget {
@@ -343,7 +344,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     return Container(
                                       padding: const EdgeInsets.all(16.0),
                                       alignment: Alignment.center,
-                                      child: const CircularProgressIndicator(),
+                                      child: shg_loader.Loaders.circularLoader(context),
                                     );
                                   }
 
@@ -469,8 +470,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   );
                 },
                 loading: (value) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
+                  return  Center(
+                    child: shg_loader.Loaders.circularLoader(context),
                   );
                 },
                 error: (value) {

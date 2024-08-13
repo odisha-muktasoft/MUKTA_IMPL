@@ -76,7 +76,7 @@ class _MyBillsPage extends State<MyBillsPage> {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: PoweredByDigit(
-                            // version: Constants.appVersion,
+                             version: Constants.appVersion,
                             ),
                         ),
                       )
@@ -354,7 +354,7 @@ class _MyBillsPage extends State<MyBillsPage> {
                                                       alignment: Alignment
                                                           .bottomCenter,
                                                       child: PoweredByDigit(
-                                                        // version: Constants.appVersion,
+                                                         version: Constants.appVersion,
                                                         ),
                                                     )
                                                   : const SizedBox.shrink()

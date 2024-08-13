@@ -282,7 +282,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       minLength: adhar ? 12 : 12,
                       maxLength: adhar ? 12 : 12,
                       keyboardType: TextInputType.number,
-                      inputFormatter: [
+                      inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                       ],
                       validationMessages: adhar
@@ -324,7 +324,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       formControlName: nameKey,
                       isRequired: true,
                       label: t.translate(i18.wageSeeker.identityNameLabel),
-                      inputFormatter: [
+                      inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
                       ],
                       validationMessages: {

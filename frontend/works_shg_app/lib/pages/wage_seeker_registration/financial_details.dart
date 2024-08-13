@@ -105,7 +105,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                       label: t.translate(i18.common.accountHolderName),
                       isRequired: true,
                       keyboardType: TextInputType.name,
-                      inputFormatter: [
+                      inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
                       ],
                       validationMessages: {
@@ -127,7 +127,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                       isRequired: true,
                       obscureText: true,
                       keyboardType: TextInputType.number,
-                      inputFormatter: [
+                      inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                       ],
                       validationMessages: {
@@ -150,7 +150,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                       label: t.translate(i18.common.reEnterAccountNo),
                       isRequired: true,
                       keyboardType: TextInputType.number,
-                      inputFormatter: [
+                      inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                       ],
                       validationMessages: {

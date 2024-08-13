@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -76,7 +77,7 @@ class _CreateTimeExtensionRequestPage
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (value) async {
         if (context.router.currentUrl.contains('isEdit')) {
           context.router.popUntilRouteWithPath('home');
@@ -100,7 +101,7 @@ class _CreateTimeExtensionRequestPage
           child: Align(
             alignment: Alignment.bottomCenter,
             child: PoweredByDigit(
-                // version: Constants.appVersion,
+                 version: Constants.appVersion,
                 ),
           ),
         ),
@@ -329,7 +330,7 @@ class _CreateTimeExtensionRequestPage
                                                             keyboardType:
                                                                 TextInputType
                                                                     .number,
-                                                            inputFormatter: [
+                                                            inputFormatters: [
                                                               FilteringTextInputFormatter
                                                                   .allow(RegExp(
                                                                       "[0-9]"))
@@ -361,7 +362,7 @@ class _CreateTimeExtensionRequestPage
                                                             keyboardType:
                                                                 TextInputType
                                                                     .text,
-                                                            inputFormatter: [
+                                                            inputFormatters: [
                                                               FilteringTextInputFormatter
                                                                   .allow(RegExp(
                                                                       "[a-zA-Z0-9 .,\\/\\-_@#\\']"))

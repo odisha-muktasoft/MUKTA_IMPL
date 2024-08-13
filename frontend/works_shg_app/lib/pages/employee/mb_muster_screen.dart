@@ -402,7 +402,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                             const Align(
                               alignment: Alignment.bottomCenter,
                               child: PoweredByDigit(
-                                  // version: Constants.appVersion,
+                                   version: Constants.appVersion,
                                   ),
                             )
                           ]))

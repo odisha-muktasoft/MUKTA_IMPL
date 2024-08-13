@@ -150,7 +150,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
         ? 150.0
         : (MediaQuery.of(context).size.width / 7.5);
     var t = AppLocalizations.of(context);
-    return PopScope(canPop: false,
+    return PopScope(canPop: true,
       onPopInvoked: (value) async {
         context.router.popUntilRouteWithPath('home');
         context.router.push(const ViewMusterRollsRoute());
@@ -865,7 +865,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                           .bottomCenter,
                                                                   child:
                                                                       PoweredByDigit(
-                                                                        //version: Constants.appVersion,
+                                                                        version: Constants.appVersion,
                                                                         ),
                                                                 )
                                                               ]))

@@ -79,6 +79,7 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                       });
                 },
                 child: Column(
+                  
                   children: [
                     state.digitRowCardItems != null &&
                             state.isInitializationCompleted

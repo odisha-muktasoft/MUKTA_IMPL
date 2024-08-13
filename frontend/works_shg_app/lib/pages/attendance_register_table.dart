@@ -109,7 +109,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvoked: (value) async {
         if (context.router.stack[1].routeData.path.contains('work-order')) {
           context.router.popUntilRouteWithPath('home');
@@ -612,7 +612,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                         const Align(
                           alignment: Alignment.bottomCenter,
                           child: PoweredByDigit(
-                            // version: Constants.appVersion,
+                             version: Constants.appVersion,
                             ),
                         ),
                       ]))

@@ -89,7 +89,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: PoweredByDigit(
-                            // version: Constants.appVersion,
+                             version: Constants.appVersion,
                           ),
                         ),
                       )
@@ -352,7 +352,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                           ? const Align(
                                               alignment: Alignment.bottomCenter,
                                               child: PoweredByDigit(
-                                                // version: Constants.appVersion,
+                                                 version: Constants.appVersion,
                                                 ),
                                             )
                                           : const SizedBox.shrink()

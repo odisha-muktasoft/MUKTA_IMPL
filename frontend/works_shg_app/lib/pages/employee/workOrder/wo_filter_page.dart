@@ -12,6 +12,7 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/widgets/molecules/digit_search_dropdown.dart';
 import 'package:works_shg_app/widgets/side_bar.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 
@@ -19,6 +20,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
     as i18;
 
 import '../../../widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class WOFilterPage extends StatefulWidget {
@@ -38,7 +40,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
   bool workShow = true;
   bool project = true;
 
-  String orgNumberKey = 'gender';
+  String orgNumberKey = 'orgNumberKey';
+  String wardNoKey = "wardNoKey";
   String genderController = '';
   @override
   void initState() {
@@ -87,7 +90,6 @@ class _WOFilterPageState extends State<WOFilterPage> {
 
   @override
   void dispose() {
-    
     woNumber.removeListener(mbNumberUpload);
     projectId.removeListener(projectIdUpload);
     projectName.removeListener(projectNameUpload);
@@ -112,7 +114,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loaded: (organization) {
             return Scaffold(
               appBar: AppBar(
-                iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+                iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                    .copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
                 title: const AppBarLogo(),
               ),
@@ -175,16 +178,12 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                           GlobalVariables.organisationListModel!
                                               .organisations!.first.tenantId,
                                       "contractNumber": woNumber.text,
-                                      // "orgIds": orgId != null
-                                      //     ? orgId!
-                                      //         .map((e) => e.orgNumber)
-                                      //         .toList()
-                                      //     : [],
+                                      
                                       "ward": ward,
                                       "orgIds": selectedOrgId != null
                                           ? [selectedOrgId]
                                           : [],
-                                      "wfStatus": ["ACCEPTED","APPROVED"],
+                                      "wfStatus": ["ACCEPTED", "APPROVED"],
                                       "pagination": {
                                         "limit": "10",
                                         "offSet": 0,
@@ -268,22 +267,23 @@ class _WOFilterPageState extends State<WOFilterPage> {
                               return value.maybeMap(
                                 orElse: () => const SizedBox.shrink(),
                                 loaded: (location) {
-                                  return DigitDropdown(
+                                  return DigitDropdown<String>(
                                     onChanged: (value) {
                                       setState(() {
-                                        ward.add(value!);
+                                        ward.add(value);
                                       });
                                     },
-                                    value: ward.isNotEmpty ? ward.first : null,
+                                    initialValue:
+                                        ward.isNotEmpty ? ward.first : null,
                                     label: t.translate(i18.common.ward),
                                     menuItems: location.location!
                                         .tenantBoundaryList!.first.boundaryList!
                                         .map((e) => e.code.toString())
                                         .toList(),
+                                    formControlName: wardNoKey,
                                     valueMapper: (value) {
                                       return t.translate(
                                           convertToWard(value.toString()));
-                                      // return value.toString();
                                     },
                                   );
                                 },
@@ -302,7 +302,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loading: () {
             return Scaffold(
               appBar: AppBar(
-                iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+                iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                    .copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
                 title: const AppBarLogo(),
               ),
@@ -313,8 +314,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
                   ),
                 ),
               ),
-              body: const Center(
-                child: CircularProgressIndicator.adaptive(),
+              body:  Center(
+                child: shg_loader.Loaders.circularLoader(context),
               ),
             );
           },
@@ -325,6 +326,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
 
   FormGroup detailBuildForm() => fb.group(<String, Object>{
         orgNumberKey: FormControl<OrganisationModel>(value: null),
+        wardNoKey: FormControl<String>(value: null),
       });
 
   String convertToWard(String input) {

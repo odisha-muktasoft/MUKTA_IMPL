@@ -1,6 +1,7 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -51,6 +52,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
   List<WorkFlowSupportDocument> supportDocument = [];
   HRMSEmployee? selectedAssignee;
   var comment = TextEditingController();
+  String hrmsKey = "hrmsKey";
 
   @override
   void initState() {
@@ -82,7 +84,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
             );
             // Navigator.of(context).popUntil((route) => route is HomeRoute);
             context.read<MusterGetWorkflowBloc>().add(
-                  //hard coded
                   FetchMBWorkFlowEvent(
                       tenantId: GlobalVariables.tenantId!,
                       mbNumber: widget.mbNumber!),
@@ -163,326 +164,63 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
         ),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, state) {
-           
-              return BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
-                builder: (context, state) {
-                  return state.maybeMap(
-                    orElse: () => const SizedBox.shrink(),
-                    loaded: (value) {
-                      if (widget.type == MBScreen.update) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ScrollableContent(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            footer: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.sizeOf(context).width,
-                                    child: DigitElevatedButton(
-                                      child: Text(
-                                        widget.nextActions!.action ==
-                                                "EDIT/RE-SUBMIT"
-                                            ? t.translate("WORKS_FORWARD")
-                                            : t.translate(
-                                                "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
-                                      ),
-                                      onPressed: () {
-                                        if (widget.nextActions!.action ==
-                                                "REJECT" &&
-                                            comment.text == "") {
-                                          Notifiers.getToastMessage(
-                                            context,
-                                            // AppLocalizations.of(context)
-                                            //     .translate(i18.login.invalidOTP),
-
-                                            t.translate(
-                                                i18.common.allFieldsMandatory),
-                                            'ERROR',
-                                          );
-                                        } else {
-                                          List<List<SorObject>> sorList = [
-                                            value.sor!,
-                                            value.nonSor!
-                                          ];
-                                          MBDetailResponse kkk =
-                                              MBLogic.getMbPayloadUpdate(
-                                            data: value.data,
-                                            sorList: sorList,
-                                            workFlow: WorkFlow(
-                                              action:
-                                                  widget.nextActions!.action,
-                                              comment: comment.text,
-                                              assignees: selectedAssignee !=
-                                                      null
-                                                  ? selectedAssignee?.uuid !=
-                                                          null
-                                                      ? [
-                                                          selectedAssignee!
-                                                              .uuid!
-                                                        ]
-                                                      : null
-                                                  : null,
-                                              documents: supportDocument,
-                                            ),
-                                            type: widget.type,
-                                          );
-
-                                          context
-                                              .read<MeasurementCrudBloc>()
-                                              .add(
-                                                MeasurementUpdateBlocEvent(
-                                                  measurement: kkk.measurement!,
-                                                  tenantId: '',
-                                                  workFlow: WorkFlow(
-                                                    action: widget
-                                                        .nextActions!.action,
-                                                    comment: comment.text,
-                                                    assignees:
-                                                        selectedAssignee != null
-                                                            ? selectedAssignee
-                                                                        ?.uuid !=
-                                                                    null
-                                                                ? [
-                                                                    selectedAssignee!
-                                                                        .uuid!
-                                                                  ]
-                                                                : null
-                                                            : null,
-                                                    documents: supportDocument,
-                                                  ),
-                                                  type: widget.type,
-                                                ),
-                                              );
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.sizeOf(context).width,
-                                    child: DigitOutLineButton(
-                                      label: t.translate(
-                                          i18.measurementBook.mbCancel),
-                                      onPressed: () {
-                                        context.router.maybePopTop();
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        context.router.maybePopTop();
-                                      },
-                                      icon: const Icon(Icons.close)),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+            return ReactiveFormBuilder(
+                form: detailBuildForm,
+                builder: (context, formGroup, child) {
+                  return BlocBuilder<MeasurementDetailBloc,
+                      MeasurementDetailState>(
+                    builder: (context, state) {
+                      return state.maybeMap(
+                        orElse: () => const SizedBox.shrink(),
+                        loaded: (value) {
+                          if (widget.type == MBScreen.update) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ScrollableContent(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 0.0),
-                                    child: Text(
-                                      widget.nextActions!.action ==
-                                              "EDIT/RE-SUBMIT"
-                                          ? t.translate(
-                                              "WORKS_UPDATE_AND_FORWARD")
-                                          : t.translate(
-                                              "WF_MB_ACTION_${widget.nextActions!.action}"),
-                                      style: DigitTheme.instance.mobileTheme
-                                          .textTheme.headlineLarge,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              (widget.nextActions!.action == "EDIT/RE-SUBMIT" ||
-                                      widget.nextActions!.action ==
-                                          "VERIFY_AND_FORWARD" ||
-                                      widget.nextActions!.action == "SUBMIT" ||
-                                      widget.nextActions!.action ==
-                                          "SEND_BACK_TO_ORIGINATOR")
-                                  ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
-                                      builder: (context, state) {
-                                        return state.maybeMap(
-                                          orElse: () => const SizedBox.shrink(),
-                                          loaded: (value) {
-                                            if (value.hrmsEmployee != null &&
-                                                value
-                                                    .hrmsEmployee!.isNotEmpty) {
-                                              return DigitDropdown<
-                                                  HRMSEmployee>(
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selectedAssignee = value!;
-                                                  });
-                                                },
-                                                value: selectedAssignee,
-                                                label: t.translate(
-                                                    "WF_MODAL_APPROVER"),
-                                                menuItems: value.hrmsEmployee!
-                                                    .map((e) => e)
-                                                    .toList(),
-                                                valueMapper: (value) {
-                                                  if (value.employeeUser !=
-                                                      null) {
-                                                    return t.translate(value
-                                                        .employeeUser!.name
-                                                        .toString());
-                                                  } else {
-                                                    return t.translate(
-                                                        value.code.toString());
-                                                  }
-                                                },
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                footer: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: MediaQuery.sizeOf(context).width,
+                                        child: DigitElevatedButton(
+                                          child: Text(
+                                            widget.nextActions!.action ==
+                                                    "EDIT/RE-SUBMIT"
+                                                ? t.translate("WORKS_FORWARD")
+                                                : t.translate(
+                                                    "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
+                                          ),
+                                          onPressed: () {
+                                            if (widget.nextActions!.action ==
+                                                    "REJECT" &&
+                                                comment.text == "") {
+                                              Notifiers.getToastMessage(
+                                                context,
+                                                // AppLocalizations.of(context)
+                                                //     .translate(i18.login.invalidOTP),
+
+                                                t.translate(i18
+                                                    .common.allFieldsMandatory),
+                                                'ERROR',
                                               );
                                             } else {
-                                              return const SizedBox.shrink();
-                                            }
-                                          },
-                                          error: (value) {
-                                            return const SizedBox.shrink();
-                                          },
-                                        );
-                                      },
-                                    )
-                                  : const SizedBox.shrink(),
-                              DigitTextField(
-                                label:
-                                    "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
-                                maxLines: 6,
-                                controller: comment,
-                                isRequired:
-                                    widget.nextActions!.action == "REJECT"
-                                        ? true
-                                        : false,
-                              ),
-                              widget.nextActions!.action != "EDIT/RE-SUBMIT" &&
-                                      widget.nextActions!.action != "SUBMIT"
-                                  ? SizedBox(
-                                      width: MediaQuery.sizeOf(context).width,
-                                      height: 306,
-                                      child: Column(
-                                        children: [
-                                          FilePickerDemo(
-                                            callBack: (List<FileStoreModel>? g,
-                                                List<WorkflowDocument>? l) {
-                                              final supportDocumentData = l!
-                                                  .where((element) =>
-                                                      element.isActive == true)
-                                                  .toList()
-                                                  .map(
-                                                (e) {
-                                                  return WorkFlowSupportDocument(
-                                                    documentType:
-                                                        e.documentType,
-                                                    documentUid: e.fileStore,
-                                                    fileName: e
-                                                        .documentAdditionalDetails
-                                                        ?.fileName,
-                                                    fileStoreId: e.fileStore,
-                                                    tenantId: e.tenantId,
-                                                  );
-                                                },
-                                              ).toList();
-                                              supportDocument.clear();
-                                              supportDocument
-                                                  .addAll(supportDocumentData);
-                                              setState(() {});
-                                            },
-                                            extensions: const [
-                                              'jpg',
-                                              'png',
-                                              'jpeg',
-                                              'pdf',
-                                              'xls',
-                                              'doc'
-                                            ],
-                                            moduleName: 'works',
-                                            headerType: MediaType.mbConfim,
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.all(4),
-                                            //  color: DigitColors().curiousBlue,
-                                            child: Text(t.translate(
-                                                i18.common.photoInfo)),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : const SizedBox.shrink(),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ScrollableContent(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            footer: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: MediaQuery.sizeOf(context).width,
-                                    child: DigitElevatedButton(
-                                      child: Text(
-                                        widget.stateActions!.action == "SUBMIT"
-                                            ? t.translate(i18
-                                                .measurementBook.mbSubmitLabel)
-                                            : t.translate(
-                                                "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
-                                      ),
-                                      onPressed: () {
-                                        List<List<SorObject>> sorList = [
-                                          value.sor!,
-                                          value.nonSor!
-                                        ];
-                                        MBDetailResponse kkk =
-                                            MBLogic.getMbPayloadUpdate(
-                                          data: value.data,
-                                          sorList: sorList,
-                                          workFlow: WorkFlow(
-                                            action: widget
-                                                        .stateActions!.action ==
-                                                    "CREATE"
-                                                ? "SUBMIT"
-                                                : widget.stateActions!.action,
-                                            comment: comment.text,
-                                            assignees: selectedAssignee != null
-                                                ? selectedAssignee?.uuid != null
-                                                    ? [selectedAssignee!.uuid!]
-                                                    : null
-                                                : null,
-                                            documents: supportDocument,
-                                          ),
-                                          type: widget.type,
-                                        );
-
-                                        context.read<MeasurementCrudBloc>().add(
-                                              MeasurementUpdateBlocEvent(
-                                                measurement: kkk.measurement!,
-                                                tenantId: '',
+                                              List<List<SorObject>> sorList = [
+                                                value.sor!,
+                                                value.nonSor!
+                                              ];
+                                              MBDetailResponse kkk =
+                                                  MBLogic.getMbPayloadUpdate(
+                                                data: value.data,
+                                                sorList: sorList,
                                                 workFlow: WorkFlow(
-                                                  action: widget.stateActions!
-                                                              .action ==
-                                                          "CREATE"
-                                                      ? "SUBMIT"
-                                                      : widget
-                                                          .stateActions!.action,
+                                                  action: widget
+                                                      .nextActions!.action,
                                                   comment: comment.text,
                                                   assignees:
                                                       selectedAssignee != null
@@ -498,176 +236,498 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                   documents: supportDocument,
                                                 ),
                                                 type: widget.type,
-                                              ),
-                                            );
-                                        // Navigator.of(context)
-                                        //     .popUntil((route) => route is HomeRoute);
-                                        // context.router.push(const HomeRoute());
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.sizeOf(context).width,
-                                    child: DigitOutLineButton(
-                                      label: t.translate(
-                                          i18.measurementBook.mbCancel),
-                                      onPressed: () {
-                                        context.router.maybePopTop();
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        context.router.maybePopTop();
-                                      },
-                                      icon: const Icon(Icons.close)),
-                                ],
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 0.0),
-                                    child: Text(
-                                      widget.stateActions!.action == "SUBMIT"
-                                          ? t.translate(
-                                              i18.measurementBook.mbcreateLabel)
-                                          : t.translate(
-                                              "WF_MB_ACTION_${widget.stateActions!.action}"),
-                                      style: DigitTheme.instance.mobileTheme
-                                          .textTheme.headlineLarge,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              (widget.stateActions!.action == "SUBMIT")
-                                  ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
-                                      builder: (context, state) {
-                                        return state.maybeMap(
-                                          orElse: () => const SizedBox.shrink(),
-                                          loaded: (value) {
-                                            if (value.hrmsEmployee != null &&
-                                                value
-                                                    .hrmsEmployee!.isNotEmpty) {
-                                              return DigitDropdown<
-                                                  HRMSEmployee>(
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    selectedAssignee = value!;
-                                                  });
-                                                },
-                                                value: selectedAssignee,
-                                                label: t.translate(
-                                                    "WF_MODAL_APPROVER"),
-                                                menuItems: value.hrmsEmployee!
-                                                    .map((e) => e)
-                                                    .toList(),
-                                                valueMapper: (value) {
-                                                  if (value.employeeUser !=
-                                                      null) {
-                                                    return t.translate(value
-                                                        .employeeUser!.name
-                                                        .toString());
-                                                  } else {
-                                                    return t.translate(
-                                                        value.code.toString());
-                                                  }
-
-                                                  // return value.toString();
-                                                },
                                               );
-                                            } else {
-                                              return const SizedBox.shrink();
+
+                                              context
+                                                  .read<MeasurementCrudBloc>()
+                                                  .add(
+                                                    MeasurementUpdateBlocEvent(
+                                                      measurement:
+                                                          kkk.measurement!,
+                                                      tenantId: '',
+                                                      workFlow: WorkFlow(
+                                                        action: widget
+                                                            .nextActions!
+                                                            .action,
+                                                        comment: comment.text,
+                                                        assignees: selectedAssignee !=
+                                                                null
+                                                            ? selectedAssignee
+                                                                        ?.uuid !=
+                                                                    null
+                                                                ? [
+                                                                    selectedAssignee!
+                                                                        .uuid!
+                                                                  ]
+                                                                : null
+                                                            : null,
+                                                        documents:
+                                                            supportDocument,
+                                                      ),
+                                                      type: widget.type,
+                                                    ),
+                                                  );
                                             }
                                           },
-                                          error: (value) {
-                                            return const SizedBox.shrink();
-                                          },
-                                        );
-                                      },
-                                    )
-                                  : const SizedBox.shrink(),
-                              DigitTextField(
-                                label: t.translate("WF_MODAL_COMMENTS"),
-                                maxLines: 6,
-                                controller: comment,
-                              ),
-                              widget.stateActions!.action != null
-                                  ? SizedBox(
-                                      width: MediaQuery.sizeOf(context).width,
-                                      height: 306,
-                                      child: Column(
-                                        children: [
-                                          FilePickerDemo(
-                                            callBack: (List<FileStoreModel>? g,
-                                                List<WorkflowDocument>? l) {
-                                              final supportDocumentData = l!
-                                                  .where((element) =>
-                                                      element.isActive == true)
-                                                  .toList()
-                                                  .map(
-                                                (e) {
-                                                  return WorkFlowSupportDocument(
-                                                    documentType:
-                                                        e.documentType,
-                                                    documentUid: e.fileStore,
-                                                    fileName: e
-                                                        .documentAdditionalDetails
-                                                        ?.fileName,
-                                                    fileStoreId: e.fileStore,
-                                                    tenantId: e.tenantId,
-                                                  );
-                                                },
-                                              ).toList();
-                                              supportDocument.clear();
-                                              supportDocument
-                                                  .addAll(supportDocumentData);
-                                              setState(() {});
-                                            },
-                                            extensions: const [
-                                              'jpg',
-                                              'png',
-                                              'jpeg',
-                                              'pdf',
-                                              'xls',
-                                              'doc'
-                                            ],
-                                            moduleName: 'works',
-                                            headerType: MediaType.mbConfim,
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.all(4),
-                                            //  color: DigitColors().curiousBlue,
-                                            child: Text(t.translate(
-                                                i18.common.photoInfo)),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    )
-                                  : const SizedBox.shrink(),
-                            ],
-                          ),
-                        );
-                      }
-                    },
-                    error: (value) {
-                      return const SizedBox.shrink();
+                                      SizedBox(
+                                        width: MediaQuery.sizeOf(context).width,
+                                        child: DigitOutLineButton(
+                                          label: t.translate(
+                                              i18.measurementBook.mbCancel),
+                                          onPressed: () {
+                                            context.router.maybePopTop();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            context.router.maybePopTop();
+                                          },
+                                          icon: const Icon(Icons.close)),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 0.0),
+                                        child: Text(
+                                          widget.nextActions!.action ==
+                                                  "EDIT/RE-SUBMIT"
+                                              ? t.translate(
+                                                  "WORKS_UPDATE_AND_FORWARD")
+                                              : t.translate(
+                                                  "WF_MB_ACTION_${widget.nextActions!.action}"),
+                                          style: DigitTheme.instance.mobileTheme
+                                              .textTheme.headlineLarge,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  (widget.nextActions!.action ==
+                                              "EDIT/RE-SUBMIT" ||
+                                          widget.nextActions!.action ==
+                                              "VERIFY_AND_FORWARD" ||
+                                          widget.nextActions!.action ==
+                                              "SUBMIT" ||
+                                          widget.nextActions!.action ==
+                                              "SEND_BACK_TO_ORIGINATOR")
+                                      ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
+                                          builder: (context, state) {
+                                            return state.maybeMap(
+                                              orElse: () =>
+                                                  const SizedBox.shrink(),
+                                              loaded: (value) {
+                                                if (value.hrmsEmployee !=
+                                                        null &&
+                                                    value.hrmsEmployee!
+                                                        .isNotEmpty) {
+                                                  return DigitDropdown<
+                                                      HRMSEmployee>(
+                                                    formControlName: hrmsKey,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectedAssignee =
+                                                            value;
+                                                      });
+                                                    },
+                                                    initialValue:
+                                                        selectedAssignee,
+                                                    label: t.translate(
+                                                        "WF_MODAL_APPROVER"),
+                                                    menuItems: value
+                                                        .hrmsEmployee!
+                                                        .map((e) => e)
+                                                        .toList(),
+                                                    valueMapper: (value) {
+                                                      if (value.employeeUser !=
+                                                          null) {
+                                                        return t.translate(value
+                                                            .employeeUser!.name
+                                                            .toString());
+                                                      } else {
+                                                        return t.translate(value
+                                                            .code
+                                                            .toString());
+                                                      }
+                                                    },
+                                                  );
+                                                } else {
+                                                  return const SizedBox
+                                                      .shrink();
+                                                }
+                                              },
+                                              error: (value) {
+                                                return const SizedBox.shrink();
+                                              },
+                                            );
+                                          },
+                                        )
+                                      : const SizedBox.shrink(),
+                                  DigitTextField(
+                                    label:
+                                        "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
+                                    maxLines: 6,
+                                    controller: comment,
+                                    isRequired:
+                                        widget.nextActions!.action == "REJECT"
+                                            ? true
+                                            : false,
+                                  ),
+                                  widget.nextActions!.action !=
+                                              "EDIT/RE-SUBMIT" &&
+                                          widget.nextActions!.action != "SUBMIT"
+                                      ? SizedBox(
+                                          width:
+                                              MediaQuery.sizeOf(context).width,
+                                          height: 306,
+                                          child: Column(
+                                            children: [
+                                              FilePickerDemo(
+                                                callBack: (List<FileStoreModel>?
+                                                        g,
+                                                    List<WorkflowDocument>? l) {
+                                                  final supportDocumentData = l!
+                                                      .where((element) =>
+                                                          element.isActive ==
+                                                          true)
+                                                      .toList()
+                                                      .map(
+                                                    (e) {
+                                                      return WorkFlowSupportDocument(
+                                                        documentType:
+                                                            e.documentType,
+                                                        documentUid:
+                                                            e.fileStore,
+                                                        fileName: e
+                                                            .documentAdditionalDetails
+                                                            ?.fileName,
+                                                        fileStoreId:
+                                                            e.fileStore,
+                                                        tenantId: e.tenantId,
+                                                      );
+                                                    },
+                                                  ).toList();
+                                                  supportDocument.clear();
+                                                  supportDocument.addAll(
+                                                      supportDocumentData);
+                                                  setState(() {});
+                                                },
+                                                extensions: const [
+                                                  'jpg',
+                                                  'png',
+                                                  'jpeg',
+                                                  'pdf',
+                                                  'xls',
+                                                  'doc'
+                                                ],
+                                                moduleName: 'works',
+                                                headerType: MediaType.mbConfim,
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                //  color: DigitColors().curiousBlue,
+                                                child: Text(t.translate(
+                                                    i18.common.photoInfo)),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ScrollableContent(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                footer: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: MediaQuery.sizeOf(context).width,
+                                        child: DigitElevatedButton(
+                                          child: Text(
+                                            widget.stateActions!.action ==
+                                                    "SUBMIT"
+                                                ? t.translate(i18
+                                                    .measurementBook
+                                                    .mbSubmitLabel)
+                                                : t.translate(
+                                                    "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
+                                          ),
+                                          onPressed: () {
+                                            List<List<SorObject>> sorList = [
+                                              value.sor!,
+                                              value.nonSor!
+                                            ];
+                                            MBDetailResponse kkk =
+                                                MBLogic.getMbPayloadUpdate(
+                                              data: value.data,
+                                              sorList: sorList,
+                                              workFlow: WorkFlow(
+                                                action: widget.stateActions!
+                                                            .action ==
+                                                        "CREATE"
+                                                    ? "SUBMIT"
+                                                    : widget
+                                                        .stateActions!.action,
+                                                comment: comment.text,
+                                                assignees: selectedAssignee !=
+                                                        null
+                                                    ? selectedAssignee?.uuid !=
+                                                            null
+                                                        ? [
+                                                            selectedAssignee!
+                                                                .uuid!
+                                                          ]
+                                                        : null
+                                                    : null,
+                                                documents: supportDocument,
+                                              ),
+                                              type: widget.type,
+                                            );
+
+                                            context
+                                                .read<MeasurementCrudBloc>()
+                                                .add(
+                                                  MeasurementUpdateBlocEvent(
+                                                    measurement:
+                                                        kkk.measurement!,
+                                                    tenantId: '',
+                                                    workFlow: WorkFlow(
+                                                      action: widget
+                                                                  .stateActions!
+                                                                  .action ==
+                                                              "CREATE"
+                                                          ? "SUBMIT"
+                                                          : widget.stateActions!
+                                                              .action,
+                                                      comment: comment.text,
+                                                      assignees:
+                                                          selectedAssignee !=
+                                                                  null
+                                                              ? selectedAssignee
+                                                                          ?.uuid !=
+                                                                      null
+                                                                  ? [
+                                                                      selectedAssignee!
+                                                                          .uuid!
+                                                                    ]
+                                                                  : null
+                                                              : null,
+                                                      documents:
+                                                          supportDocument,
+                                                    ),
+                                                    type: widget.type,
+                                                  ),
+                                                );
+                                            // Navigator.of(context)
+                                            //     .popUntil((route) => route is HomeRoute);
+                                            // context.router.push(const HomeRoute());
+                                          },
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.sizeOf(context).width,
+                                        child: DigitOutLineButton(
+                                          label: t.translate(
+                                              i18.measurementBook.mbCancel),
+                                          onPressed: () {
+                                            context.router.maybePopTop();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            context.router.maybePopTop();
+                                          },
+                                          icon: const Icon(Icons.close)),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 0.0),
+                                        child: Text(
+                                          widget.stateActions!.action ==
+                                                  "SUBMIT"
+                                              ? t.translate(i18.measurementBook
+                                                  .mbcreateLabel)
+                                              : t.translate(
+                                                  "WF_MB_ACTION_${widget.stateActions!.action}"),
+                                          style: DigitTheme.instance.mobileTheme
+                                              .textTheme.headlineLarge,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  (widget.stateActions!.action == "SUBMIT")
+                                      ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
+                                          builder: (context, state) {
+                                            return state.maybeMap(
+                                              orElse: () =>
+                                                  const SizedBox.shrink(),
+                                              loaded: (value) {
+                                                if (value.hrmsEmployee !=
+                                                        null &&
+                                                    value.hrmsEmployee!
+                                                        .isNotEmpty) {
+                                                  return DigitDropdown<
+                                                      HRMSEmployee>(
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectedAssignee =
+                                                            value;
+                                                      });
+                                                    },
+                                                    initialValue:
+                                                        selectedAssignee,
+                                                    label: t.translate(
+                                                        "WF_MODAL_APPROVER"),
+                                                    menuItems: value
+                                                        .hrmsEmployee!
+                                                        .map((e) => e)
+                                                        .toList(),
+                                                    formControlName: hrmsKey,
+                                                    valueMapper: (value) {
+                                                      if (value.employeeUser !=
+                                                          null) {
+                                                        return t.translate(value
+                                                            .employeeUser!.name
+                                                            .toString());
+                                                      } else {
+                                                        return t.translate(value
+                                                            .code
+                                                            .toString());
+                                                      }
+                                                    },
+                                                  );
+                                                } else {
+                                                  return const SizedBox
+                                                      .shrink();
+                                                }
+                                              },
+                                              error: (value) {
+                                                return const SizedBox.shrink();
+                                              },
+                                            );
+                                          },
+                                        )
+                                      : const SizedBox.shrink(),
+                                  DigitTextField(
+                                    label: t.translate("WF_MODAL_COMMENTS"),
+                                    maxLines: 6,
+                                    controller: comment,
+                                  ),
+                                  widget.stateActions!.action != null
+                                      ? SizedBox(
+                                          width:
+                                              MediaQuery.sizeOf(context).width,
+                                          height: 306,
+                                          child: Column(
+                                            children: [
+                                              FilePickerDemo(
+                                                callBack: (List<FileStoreModel>?
+                                                        g,
+                                                    List<WorkflowDocument>? l) {
+                                                  final supportDocumentData = l!
+                                                      .where((element) =>
+                                                          element.isActive ==
+                                                          true)
+                                                      .toList()
+                                                      .map(
+                                                    (e) {
+                                                      return WorkFlowSupportDocument(
+                                                        documentType:
+                                                            e.documentType,
+                                                        documentUid:
+                                                            e.fileStore,
+                                                        fileName: e
+                                                            .documentAdditionalDetails
+                                                            ?.fileName,
+                                                        fileStoreId:
+                                                            e.fileStore,
+                                                        tenantId: e.tenantId,
+                                                      );
+                                                    },
+                                                  ).toList();
+                                                  supportDocument.clear();
+                                                  supportDocument.addAll(
+                                                      supportDocumentData);
+                                                  setState(() {});
+                                                },
+                                                extensions: const [
+                                                  'jpg',
+                                                  'png',
+                                                  'jpeg',
+                                                  'pdf',
+                                                  'xls',
+                                                  'doc'
+                                                ],
+                                                moduleName: 'works',
+                                                headerType: MediaType.mbConfim,
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(4),
+                                                //  color: DigitColors().curiousBlue,
+                                                child: Text(t.translate(
+                                                    i18.common.photoInfo)),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : const SizedBox.shrink(),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        error: (value) {
+                          return const SizedBox.shrink();
+                        },
+                      );
                     },
                   );
-                },
-              );
-            
+                });
           },
         ),
       ),
     );
   }
+
+  FormGroup detailBuildForm() => fb.group(<String, Object>{
+        hrmsKey: FormControl<HRMSEmployee>(value: selectedAssignee),
+      });
 }

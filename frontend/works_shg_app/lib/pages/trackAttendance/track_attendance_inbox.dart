@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/work_details_card.dart';
@@ -73,7 +74,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: PoweredByDigit(
-                              // version: Constants.appVersion,
+                               version: Constants.appVersion,
                               ),
                           ),
                         )
@@ -184,7 +185,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                 ? const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: PoweredByDigit(
-                                      // version: Constants.appVersion,
+                                       version: Constants.appVersion,
                                       ),
                                   )
                                 : const SizedBox.shrink()

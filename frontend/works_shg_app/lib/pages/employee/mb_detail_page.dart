@@ -38,6 +38,7 @@ import '../../widgets/mb/sor_item_add_mb.dart';
 import '../../widgets/mb/text_button_underline.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class MBDetailPage extends StatefulWidget {
@@ -1361,8 +1362,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                       );
                     },
                     loading: (value) {
-                      return const Center(
-                        child: CircularProgressIndicator.adaptive(),
+                      return  Center(
+                        child: shg_loader.Loaders.circularLoader(context),
                       );
                     },
                   );

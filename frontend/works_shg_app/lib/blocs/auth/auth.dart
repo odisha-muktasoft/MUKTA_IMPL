@@ -148,7 +148,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await storage.delete(key: e.value);
         }
       });
-
+ appInitializationBloc.add(
+          AppInitializationSetupEvent(selectedLang: LanguageEnum.en_IN.name));
+          
       GlobalVariables.organisationListModel = null;
       GlobalVariables.authToken = null;
       GlobalVariables.tenantId = null;

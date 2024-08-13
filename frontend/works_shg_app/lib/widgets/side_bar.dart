@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/icons/shg_icons.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -56,7 +57,7 @@ class _SideBar extends State<SideBar> {
         loaded: (value) {
           return ScrollableContent(
             footer: const PoweredByDigit(
-              // version: Constants.appVersion,
+               version: Constants.appVersion,
               ),
             children: [
               BlocBuilder<AuthBloc, AuthState>(

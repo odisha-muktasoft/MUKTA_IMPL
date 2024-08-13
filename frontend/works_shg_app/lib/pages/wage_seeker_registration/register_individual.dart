@@ -7,6 +7,7 @@ import 'package:works_shg_app/pages/wage_seeker_registration/individual_details.
 import 'package:works_shg_app/pages/wage_seeker_registration/location_details.dart';
 import 'package:works_shg_app/pages/wage_seeker_registration/summary_details.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -187,7 +188,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                   const Align(
                     alignment: Alignment.bottomCenter,
                     child: PoweredByDigit(
-                      // version: Constants.appVersion,
+                       version: Constants.appVersion,
                       ),
                   )
                 ]),
