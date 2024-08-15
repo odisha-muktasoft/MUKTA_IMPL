@@ -15,6 +15,7 @@ import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/models/track_attendance_payload.dart';
 import 'package:works_shg_app/widgets/circular_button.dart';
+import 'package:works_shg_app/widgets/mb/back_button.dart';
 import 'package:works_shg_app/widgets/side_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
@@ -30,6 +31,7 @@ import '../../utils/models.dart';
 import '../../widgets/back.dart';
 import '../../widgets/atoms/table_dropdown.dart';
 import '../../widgets/drawer_wrapper.dart';
+import '../../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class MBMusterScreenPage extends StatefulWidget {
@@ -218,13 +220,21 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Back(
-                                  backLabel: AppLocalizations.of(context)
-                                      .translate(i18.common.back),
-                                  callback: () {
+                                IconBackButton(
+                                  iconTextColor: const DigitColors().black,
+                                  iconColor: const DigitColors().black,
+                                  icon: Icons.arrow_left,
+                                  action: () {
                                     Navigator.of(context).pop();
                                   },
                                 ),
+                                // Back(
+                                //   backLabel: AppLocalizations.of(context)
+                                //       .translate(i18.common.back),
+                                //   callback: () {
+                                //     Navigator.of(context).pop();
+                                //   },
+                                // ),
                                 CommonWidgets.downloadButton(
                                     AppLocalizations.of(context)
                                         .translate(i18.common.download), () {
@@ -314,7 +324,9 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                                       : null,
                                               documents: (i == 0 &&
                                                       e.action == "APPROVE")
-                                                  ? e.documents != null
+                                                  ? e.documents != null &&
+                                                          e.documents!
+                                                              .isNotEmpty
                                                       ? e.documents
                                                           ?.map((d) =>
                                                               FileStoreModel(
@@ -324,7 +336,9 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                                           .toList()
                                                       : null
                                                   : i != 0
-                                                      ? e.documents != null
+                                                      ? e.documents != null &&
+                                                              e.documents!
+                                                                  .isNotEmpty
                                                           ? e.documents
                                                               ?.map((d) =>
                                                                   FileStoreModel(
@@ -402,8 +416,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                             const Align(
                               alignment: Alignment.bottomCenter,
                               child: PoweredByDigit(
-                                   version: Constants.appVersion,
-                                  ),
+                                version: Constants.appVersion,
+                              ),
                             )
                           ]))
 
@@ -412,8 +426,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                   );
                 },
                 loading: (value) {
-                  return const Center(
-                    child: CircularProgressIndicator.adaptive(),
+                  return Center(
+                    child: shg_loader.Loaders.circularLoader(context),
                   );
                 },
                 error: (value) {

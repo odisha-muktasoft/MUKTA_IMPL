@@ -59,11 +59,11 @@ class CommonWidgets {
           onPressed: onPressed,
           icon: Icon(
             Icons.download_sharp,
-            color: DigitTheme.instance.colorScheme.primary,
+            color: const DigitColors().burningOrange,
           ),
           label: Text(
             label,
-            style: TextStyle(color: DigitTheme.instance.colorScheme.primary),
+            style: TextStyle(color: const DigitColors().burningOrange,),
           )),
     );
   }

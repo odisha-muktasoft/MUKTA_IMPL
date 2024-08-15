@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/widgets/mb/back_button.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -78,7 +79,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 final g = mbWorkFlow
                                     .musterWorkFlowModel?.processInstances;
                                 return Draggable(
-                                  childWhenDragging:FloatActionCard(
+                                  childWhenDragging: FloatActionCard(
                                     actions: () {
                                       DigitActionDialog.show(
                                         context,
@@ -120,7 +121,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                 g.first.nextActions!.isEmpty))
                                         ? false
                                         : true,
-                                  ) ,
+                                  ),
                                   onDragEnd: (details) {
                                     _openBottomSheet(
                                         t,
@@ -189,7 +190,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         ),
                   backgroundColor: const DigitColors().seaShellGray,
                   appBar: AppBar(
-                    iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+                    iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                        .copyWith(color: const DigitColors().white),
                     titleSpacing: 0,
                     title: const AppBarLogo(),
                   ),
@@ -212,14 +214,15 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Back(
-                                  widget: null,
-                                  callback: () {
+                                IconBackButton(
+                                  iconTextColor: const DigitColors().black,
+                                  iconColor: const DigitColors().black,
+                                  icon: Icons.arrow_left,
+                                  action: () {
                                     context.router.maybePopTop();
-
-                                    //Navigator.of(context).pop();
                                   },
                                 ),
+                               
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
@@ -242,7 +245,10 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             if (adjustedIndex <= k.length) {
                               return CommonMBCard(
                                 padding: const EdgeInsets.only(
-                                    left: 8.0, top: 8.0, right: 8.0, bottom: 0),
+                                    left: 8.0,
+                                    top: 8.0,
+                                    right: 8.0,
+                                    bottom: 8.0),
                                 headLabel:
                                     "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                 items: {
@@ -259,8 +265,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                   .toString())
                                               .toStringAsFixed(2)
                                           : '0.00',
-                                  t.translate(i18.measurementBook.mbStatus):
-                                      k[adjustedIndex].wfStatus,
+                                  // t.translate(i18.measurementBook.mbStatus):
+                                  //     k[adjustedIndex].wfStatus,
                                 },
                                 widget: (k[adjustedIndex].musterRollNumber ==
                                             null ||
@@ -281,7 +287,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                           ));
                                         },
                                       ),
-                                show: false,
+                                showSla: false, showStatus: true, status: k[adjustedIndex].wfStatus??'', 
                               );
                             } else {
                               return null; // Return null for the skipped item
@@ -320,19 +326,21 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
       context: context,
       builder: (BuildContext context) {
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(
+
+              left: 16.0, right: 16.0, top: 16.0, bottom: 0.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
-               const Center(
-                    child: SizedBox(
-                      width: 100,
-                      child: Divider(
-                        thickness: 5,
-                      ),
-                    ),
+              const Center(
+                child: SizedBox(
+                  width: 100,
+                  child: Divider(
+                    thickness: 5,
                   ),
+                ),
+              ),
               Container(
                 decoration: const BoxDecoration(
                   border: Border(
@@ -354,7 +362,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalSorAmount.toDouble().toStringAsFixed(2).toString(),
+                      totalSorAmount.toDouble().toStringAsFixed(2),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -388,7 +396,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                       totalNonSorAmount
                           .toDouble()
                           .toStringAsFixed(2)
-                          .toString(),
+                          ,
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -452,20 +460,22 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 height: 15,
               ),
               showBtn
-                  ? DigitElevatedButton(
-                      child: Text(t.translate(i18.measurementBook.mbAction)),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        DigitActionDialog.show(
-                          context,
-                          widget: CommonButtonCard(
-                            g: processInstances,
-                            contractNumber: contractNumber,
-                            mbNumber: mbNumber,
-                            type: widget.type,
-                          ),
-                        );
-                      })
+                  ? IntrinsicHeight(
+                    child: DigitElevatedButton(
+                        child: Text(t.translate(i18.measurementBook.mbAction)),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          DigitActionDialog.show(
+                            context,
+                            widget: CommonButtonCard(
+                              g: processInstances,
+                              contractNumber: contractNumber,
+                              mbNumber: mbNumber,
+                              type: widget.type,
+                            ),
+                          );
+                        }),
+                  )
                   : const SizedBox.shrink(),
             ],
           ),

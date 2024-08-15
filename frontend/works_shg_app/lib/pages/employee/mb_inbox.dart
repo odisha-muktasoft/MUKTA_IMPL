@@ -12,6 +12,7 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/widgets/mb/back_button.dart';
 
 import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -192,14 +193,11 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       left: 8.0, bottom: 0, top: 0, right: 0),
-                                  child: DigitIconButton(
+                                  child: IconBackButton(
                                     iconTextColor: const DigitColors().black,
                                     iconColor: const DigitColors().black,
                                     icon: Icons.arrow_left,
-                                    iconText: AppLocalizations.of(context)
-                                            .translate(i18.common.back) ??
-                                        'Back',
-                                    onPressed: () {
+                                    action: () {
                                       context.router.maybePop();
                                     },
                                   ),
@@ -350,6 +348,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   }
 
                                   return CommonMBCard(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0, vertical: 8.0),
                                     widget: Center(
                                       child: SizedBox(
                                         width: MediaQuery.sizeOf(context).width,
@@ -435,13 +435,15 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                   .toStringAsFixed(2) ??
                                               "0.00"
                                     },
-                                    show: true,
+                                    showSla: true,
                                     sla: mbInboxResponse
                                             .mbInboxResponse
                                             .items?[index]
                                             .businessObject
                                             ?.serviceSla ??
-                                        0,
+                                        0, 
+                                        showStatus: false,
+                                        status: '',
                                   );
                                 },
                                 childCount: mbInboxResponse.isLoading
