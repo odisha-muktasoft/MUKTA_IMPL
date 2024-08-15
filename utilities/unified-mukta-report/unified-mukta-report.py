@@ -44,33 +44,34 @@ IFMS_ADAPTER_HOST = os.getenv('IFMS_ADAPTER_HOST')
 ENC_HOST = os.getenv('ENC_HOST')
 ORG_HOST = os.getenv('ORG_HOST')
 EXPENSE_CALC_HOST = os.getenv('EXPENSE_CALC_HOST')
+EGOV_HRMS_HOST = os.getenv('EGOV_HRMS_HOST')
 
 tenantids = [
-    "od.jatni"
-    # "od.dhenkanal"
-    # "od.balangir"
-    # "od.balasore"
-    # "od.padampur",
-    # "od.bhadrak",
-    # "od.boudhgarh",
-    # "od.cuttack",
-    # "od.athagarh",
-    # "od.berhampur",
-    # "od.hinjilicut",
-    # "od.chatrapur",
-    # "od.paradeep",
-    # "od.jajpur",
-    # "od.jharsuguda",
-    # "od.kesinga",
-    # "od.phulbani",
-    # "od.keonjhargarh",
-    # "od.jeypore",
-    # "od.kotpad",
-    # "od.baripada",
-    # "od.puri",
-    # "od.sambalpur",
-    # "od.rourkela",
-    # "od.bhubaneswar"
+    "od.jatni",
+    "od.dhenkanal",
+    "od.balangir",
+    "od.balasore",
+    "od.padampur",
+    "od.bhadrak",
+    "od.boudhgarh",
+    "od.cuttack",
+    "od.athagarh",
+    "od.berhampur",
+    "od.hinjilicut",
+    "od.chatrapur",
+    "od.paradeep",
+    "od.jajpur",
+    "od.jharsuguda",
+    "od.kesinga",
+    "od.phulbani",
+    "od.keonjhargarh",
+    "od.jeypore",
+    "od.kotpad",
+    "od.baripada",
+    "od.puri",
+    "od.sambalpur",
+    "od.rourkela",
+    "od.bhubaneswar"
 ]
 
 
@@ -394,7 +395,7 @@ def getProjectIdfromContract(contract_number, tenantid):
         raise e
     
 def extract_contract_number(reference_id):
-    # Define the regular expression pattern to match the contract number
+    # Define the regular expression pattern to match the contract number 
     pattern = r'WO/\d{4}-\d{2}/\d{6}'
     match = re.search(pattern, reference_id)
     if match:
@@ -699,8 +700,8 @@ def getRevisedPaymentData():
 
                                     beneficiary_data = {
                                         'Beneficiary Identity': beneficiary['beneficiaryNumber'],
-                                        'Revised account Number': account_number,
-                                        'Bank IFSC Code': ifsc_code
+                                        # 'Revised account Number': account_number,
+                                        # 'Bank IFSC Code': ifsc_code
                                     }
                                 piData2 = {
                                     'COR No': paymentInstruction['jitBillNo']
@@ -791,10 +792,10 @@ def getCBOReportData():
                                     child_data = {
                                         'CBO Type': orgDetails['functions'][0]['type'].split(".")[1],
                                         'CBO ID': orgDetails['orgNumber'],
-                                        'Mobile Number': orgDetails['contactDetails'][0]['contactMobileNumber'],
+                                        # 'Mobile Number': orgDetails['contactDetails'][0]['contactMobileNumber'],
                                         'Ward Number': orgDetails['orgAddress'][0]['boundaryCode'],
                                         'Name of the Contact Person': orgDetails['contactDetails'][0]['contactName'],
-                                        'Contact Person Mobile No': orgDetails['contactDetails'][0]['contactMobileNumber'],
+                                        # 'Contact Person Mobile No': orgDetails['contactDetails'][0]['contactMobileNumber'],
                                     }
                                 contract_number = contract['contractNumber']
                                 expense_calc_bills = getExpenseCalculationBills(contract_number, tenantid)
@@ -911,11 +912,11 @@ def getWageSeekerReportData():
                                         else:
                                             gender = 'NA' 
                                         child_data = {
-                                            'Wage Seeker Name': individualEntry['additionalDetails']['userName'],
+                                            # 'Wage Seeker Name': individualEntry['additionalDetails']['userName'],
                                             'Gender': gender,
                                             'Social Category': social_category,
                                             'Wage Seeker ID': individualEntry['additionalDetails']['userId'],
-                                            'Mobile Number' : individualEntry['additionalDetails']['mobileNo'],
+                                            # 'Mobile Number' : individualEntry['additionalDetails']['mobileNo'],
                                             'Ward No': ward,
                                             'skill': individualEntry['additionalDetails']['skillCode'],
                                             'Payment Amount': amount,
@@ -935,6 +936,33 @@ def getWageSeekerReportData():
     except Exception as e:
         print(e)
 
+def getUlbMuktaFunctionariesData():
+    data = []
+    try:
+        for tenantid in tenantids:
+            print(tenantid)
+            api_limit = 100
+            api_offset = 0
+            host = EGOV_HRMS_HOST + os.getenv('EGOV_HRMS_SEARCH') + "?tenantId=" + tenantid + "&limit=" + str(api_limit) + "&offset=" + str(api_offset)
+            request_payload = {"apiId": "Rainmaker", "authToken": "b09a28f2-3bb4-4c9b-9731-b1cbd98d9018", "userInfo": {"id": 271, "uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11", "userName": "MUKTAUAT", "name": "MUKTAUAT", "mobileNumber": "9036774122", "type": "EMPLOYEE", "roles": [{"name": "ESTIMATE APPROVER", "code": "ESTIMATE_APPROVER", "tenantId": "od.testing"}, {"name": "WORK ORDER CREATOR", "code": "WORK_ORDER_CREATOR", "tenantId": "od.testing"}, {"name": "Organization viewer", "code": "ORG_VIEWER", "tenantId": "od.testing"}, {"name": "MB_VERIFIER", "code": "MB_VERIFIER", "tenantId": "od.testing"}, {"name": "ESTIMATE CREATOR", "code": "ESTIMATE_CREATOR", "tenantId": "od.testing"}, {"name": "MDMS Admin", "code": "MDMS_ADMIN", "tenantId": "od.testing"}, {"name": "MB_VIEWER", "code": "MB_VIEWER", "tenantId": "od.testing"}, {"name": "State Dashboard Admin", "code": "STADMIN", "tenantId": "od.testing"}, {"name": "MUKTA Admin", "code": "MUKTA_ADMIN", "tenantId": "od.testing"}, {"name": "Employee Common", "code": "EMPLOYEE_COMMON", "tenantId": "od.testing"}, {"name": "TECHNICAL SANCTIONER", "code": "TECHNICAL_SANCTIONER", "tenantId": "od.testing"}, {"name": "BILL_CREATOR", "code": "BILL_CREATOR", "tenantId": "od.testing"}, {"name": "BILL_ACCOUNTANT", "code": "BILL_ACCOUNTANT", "tenantId": "od.testing"}, {"name": "WORK_ORDER_VIEWER", "code": "WORK_ORDER_VIEWER", "tenantId": "od.testing"}, {"name": "BILL_VERIFIER", "code": "BILL_VERIFIER", "tenantId": "od.testing"}, {"name": "ESTIMATE VERIFIER", "code": "ESTIMATE_VERIFIER", "tenantId": "od.testing"}, {"name": "MUSTER ROLL APPROVER", "code": "MUSTER_ROLL_APPROVER", "tenantId": "od.testing"}, {"name": "ESTIMATE VIEWER", "code": "ESTIMATE_VIEWER", "tenantId": "od.testing"}, {"name": "WORK ORDER APPROVER", "code": "WORK_ORDER_APPROVER", "tenantId": "od.testing"}, {"name": "MB_APPROVER", "code": "MB_APPROVER", "tenantId": "od.testing"}, {"name": "MDMS CITY ADMIN", "code": "MDMS_CITY_ADMIN", "tenantId": "od.testing"}, {"name": "OFFICER IN CHARGE", "code": "OFFICER_IN_CHARGE", "tenantId": "od.testing"}, {"name": "PROJECT CREATOR", "code": "PROJECT_CREATOR", "tenantId": "od.testing"}, {"name": "BILL_VIEWER", "code": "BILL_VIEWER", "tenantId": "od.testing"}, {"name": "WORK ORDER VERIFIER", "code": "WORK_ORDER_VERIFIER", "tenantId": "od.testing"}, {"name": "PROJECT VIEWER", "code": "PROJECT_VIEWER", "tenantId": "od.testing"}, {"name": "BILL_APPROVER", "code": "BILL_APPROVER", "tenantId": "od.testing"}, {"name": "MB_CREATOR", "code": "MB_CREATOR", "tenantId": "od.testing"}, {"name": "MUSTER ROLL VERIFIER", "code": "MUSTER_ROLL_VERIFIER", "tenantId": "od.testing"}, {"name": "HRMS Admin", "code": "HRMS_ADMIN", "tenantId": "od.testing"}], "tenantId": "od.testing", "permanentCity": "Testing"}, "msgId": "1705558029324|en_IN", "plainAccessRequest": {}}
+            headers = {"Content-Type": "application/json"}
+            api_payload = {"RequestInfo": request_payload}
+            response = requests.post(host,headers=headers,data=json.dumps(api_payload))
+            api_offset = api_offset + api_limit
+            if response and response.status_code and response.status_code in [200, 202]:
+                response = response.json()
+                if response and response['Employees'] and len(response['Employees'])>0:
+                    for emp in response['Employees']:
+                        temp = {}
+                        temp['ULB Name'] = format_tenant_id(tenantid)
+                        temp['Name of the Employee'] = emp['user']['name']
+                        temp['Designation'] = emp['assignments'][0]['designation']
+                        temp['Mobile Number'] = emp['user']['mobileNumber']
+                        data.append(temp)
+        return data
+    except Exception as e:
+        raise e
+
 
 
 def writeDataToCSV(data, filename):
@@ -951,8 +979,8 @@ if __name__ == '__main__':
     try:
         logging.info('Report Started Generating')
 
-        # directory = '/home/admin1/Music'
-        directory = '/demo-report/demoReport'
+        directory = '/home/admin1/Music'
+        # directory = '/demo-report/demoReport'
         if not os.path.exists(directory):
             os.makedirs(directory)
         
@@ -971,61 +999,68 @@ if __name__ == '__main__':
         revised_payment_data_filename = f'revised_payment_{current_date}.csv'
         CBO_report_data_filename = f'cbo_report_{current_date}.csv'
         WageSeeker_report_data_filename = f'wageSeeker_report_{current_date}.csv'
+        ulb_mukta_functionaries_data_filename = f'ulb_mukta_functionaries_{current_date}.csv'
         
-        # # Process work order data
-        # workOrder_data = getWorkOrderData()
-        # workOrder_file_path = os.path.join(directory, workOrder_filename)
-        # writeDataToCSV(workOrder_data, workOrder_file_path)
+        # Process work order data
+        workOrder_data = getWorkOrderData()
+        workOrder_file_path = os.path.join(directory, workOrder_filename)
+        writeDataToCSV(workOrder_data, workOrder_file_path)
         
-        # # Process failed payments data
-        # failed_payments_data = getFailedPaymentsDataFromExpense()
-        # failed_payments_file_path = os.path.join(directory, failedPayments_filename)
-        # writeDataToCSV(failed_payments_data, failed_payments_file_path)
+        # Process failed payments data
+        failed_payments_data = getFailedPaymentsDataFromExpense()
+        failed_payments_file_path = os.path.join(directory, failedPayments_filename)
+        writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # # Process bill data
-        # bill_data = getBillData()
-        # bill_file_path = os.path.join(directory, bill_filename)
-        # writeDataToCSV(bill_data, bill_file_path)
+        # Process bill data
+        bill_data = getBillData()
+        bill_file_path = os.path.join(directory, bill_filename)
+        writeDataToCSV(bill_data, bill_file_path)
         
-        # # Process muster roll data
-        # muster_Data = getMusterRollData()
-        # muster_file_path = os.path.join(directory, musterRoll_filename)
-        # writeDataToCSV(muster_Data, muster_file_path)
+        # Process muster roll data
+        muster_Data = getMusterRollData()
+        muster_file_path = os.path.join(directory, musterRoll_filename)
+        writeDataToCSV(muster_Data, muster_file_path)
         
-        # # Process project data
-        # project_data = getProjectData()
-        # project_file_path = os.path.join(directory, project_filename)
-        # writeDataToCSV(project_data, project_file_path)
+        # Process project data
+        project_data = getProjectData()
+        project_file_path = os.path.join(directory, project_filename)
+        writeDataToCSV(project_data, project_file_path)
 
-        # # Process Success/Partial Payments
-        # success_payments_data = getSuccessPaymentsDataFromExpense()
-        # success_payments_file_path = os.path.join(directory, success_payments_filename)
-        # writeDataToCSV(success_payments_data, success_payments_file_path)
+        # Process Success/Partial Payments
+        success_payments_data = getSuccessPaymentsDataFromExpense()
+        success_payments_file_path = os.path.join(directory, success_payments_filename)
+        writeDataToCSV(success_payments_data, success_payments_file_path)
 
-        # # Estimate data
-        # estimate_data = getEstimateData()
-        # estimate_file_path = os.path.join(directory, estimate_filename)
-        # writeDataToCSV(estimate_data, estimate_file_path)
+        # Estimate data
+        estimate_data = getEstimateData()
+        estimate_file_path = os.path.join(directory, estimate_filename)
+        writeDataToCSV(estimate_data, estimate_file_path)
 
-        # # Technical sanction and Administrative Approval
-        # technical_sanction_approval_data = getTechnicalSanctionApprovalData()
-        # technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
-        # writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
+        # Technical sanction and Administrative Approval
+        technical_sanction_approval_data = getTechnicalSanctionApprovalData()
+        technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
+        writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
 
-        # # Revised payment data
-        # revised_payment_data = getRevisedPaymentData()
-        # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
-        # writeDataToCSV(revised_payment_data, revised_payment_file_path)
+        # Revised payment data
+        revised_payment_data = getRevisedPaymentData()
+        revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
+        writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
-        # # CBO Report
-        # CBO_report_data = getCBOReportData()
-        # CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
-        # writeDataToCSV(CBO_report_data, CBO_report_file_path)
+        # CBO Report
+        CBO_report_data = getCBOReportData()
+        CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
+        writeDataToCSV(CBO_report_data, CBO_report_file_path)
 
         # Wage Seeker Report
         WageSeeker_report_data = getWageSeekerReportData()
         WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
         writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
+
+        # Generate MUKTA functionaries report
+        ulb_mukta_functionaries_data = getUlbMuktaFunctionariesData()
+        ulb_mukta_functionaries_file_path = os.path.join(directory, ulb_mukta_functionaries_data_filename)
+        writeDataToCSV(ulb_mukta_functionaries_data, ulb_mukta_functionaries_file_path)
+
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
