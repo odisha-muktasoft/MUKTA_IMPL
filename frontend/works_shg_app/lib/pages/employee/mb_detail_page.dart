@@ -759,6 +759,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             )),
                                           )
                                         : ListView.builder(
+                                          shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
@@ -1396,9 +1397,9 @@ class _MBDetailPageState extends State<MBDetailPage>
   double tabViewHeight(int sork, int nonSork, int photo) {
     switch (_tabController.index) {
       case 0:
-        return sork == 0 ? 300 : (sork * 500) - (sork * 15);
+        return sork == 0 ? 300 : (sork * 500)+(sork*30) ;
       case 1:
-        return nonSork == 0 ? 300 : (nonSork * 500) - (sork * 15);
+        return nonSork == 0 ? 300 : (nonSork * 500)+(nonSork*30) ;
       case 2:
         return photoSize(photo);
       default:
@@ -1458,76 +1459,174 @@ class _MBDetailPageState extends State<MBDetailPage>
     return DigitCard(
       child: Padding(
         padding: const EdgeInsets.only(left: 0.0, bottom: 0.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Text(
-                "$cardLevel ${index + 1}",
-                style: DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
-              ),
-            ),
-            SORTableCard(
-              element: {
-                t.translate(i18.measurementBook.description):
-                    magic.first.contracts!.first.estimates!.first.name,
-                t.translate(i18.measurementBook.unit): line[0].uom,
-                t.translate(i18.measurementBook.rate): line[0].unitRate == null
-                    ? 0.00
-                    : double.parse(line[0].unitRate!.toString())
-                        .toStringAsFixed(2),
-                t.translate(i18.measurementBook.approvedQty): noOfQty,
-                "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
-                    preSorNonSor == null ? "0.0000" : preConumed
-              },
-            ),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+        child: ConstrainedBox(
+          constraints: BoxConstraints.tight(const Size.fromHeight(480)),
+          child: Center(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+             // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0),
-                  child: Text(t.translate(i18.measurementBook.currentMBEntry),
-                      style: Theme.of(context).textTheme.headlineSmall),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(5.0),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const DigitColors().cloudGray,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(1),
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    "$cardLevel ${index + 1}",
+                    style: DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
+                ),
+                SORTableCard(
+                  element: {
+                    t.translate(i18.measurementBook.description):
+                        magic.first.contracts!.first.estimates!.first.name,
+                    t.translate(i18.measurementBook.unit): line[0].uom,
+                    t.translate(i18.measurementBook.rate): line[0].unitRate == null
+                        ? 0.00
+                        : double.parse(line[0].unitRate!.toString())
+                            .toStringAsFixed(2),
+                    t.translate(i18.measurementBook.approvedQty): noOfQty,
+                    "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
+                        preSorNonSor == null ? "0.0000" : preConumed
+                  },
+                ),
+            
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(t.translate(i18.measurementBook.currentMBEntry),
+                          style: Theme.of(context).textTheme.headlineSmall),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5.0),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const DigitColors().cloudGray,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(1),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4.0),
+                            child: Text(
+                              (magic.fold(0.0, (sum, obj) {
+                                double m;
+                                if (obj.contracts?.first.estimates?.first
+                                        .isDeduction ==
+                                    false) {
+                                  m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                                    double mk =
+                                        double.parse(ob.quantity!.toString());
+                                    return subSum + mk;
+                                  });
+                                } else {
+                                  m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                                    double mr =
+                                        double.parse(ob.quantity!.toString());
+                                    return subSum + mr;
+                                  });
+                                  m = -m;
+                                }
+                                return sum + m;
+                              })).toStringAsFixed(4),
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              maxLines: 3,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: ctx,
+                                builder: (_) {
+                                  return HorizontalCardListDialog(
+                                    lineItems: magic,
+                                    index: index,
+                                    type: type,
+                                    noOfUnit: noOfQty,
+                                    cummulativePrevQty: preSorNonSor == null
+                                        ? 0.0000
+                                        : preSorNonSor.fold(0.0000, (sum, obj) {
+                                            double m = obj
+                                                        .contracts!
+                                                        .first
+                                                        .estimates!
+                                                        .first
+                                                        .isDeduction ==
+                                                    true
+                                                ? -(obj.cumulativeValue!)
+                                                : (obj.cumulativeValue!);
+                                            return sum + m.toDouble();
+                                          }),
+                                    sorId: sorNonSorId,
+                                  );
+                                },
+                              );
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 0.0),
+                              child: Icon(
+                                Icons.add_circle,
+                                size: 30,
+                                color: const DigitColors().burningOrange,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+            
+                // end
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                      child: Text(
+                        t.translate(i18.measurementBook.mbAmtCurrentEntry),
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        textScaler: const TextScaler.linear(0.99),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      height: 50,
+                      padding: const EdgeInsets.only(
+                          top: 10.0, left: 5.0, right: 5.0, bottom: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const DigitColors().cloudGray,
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(1),
+                      ),
+                      child: Padding(
                         padding: const EdgeInsets.only(left: 4.0),
                         child: Text(
                           (magic.fold(0.0, (sum, obj) {
-                            double m;
-                            if (obj.contracts?.first.estimates?.first
-                                    .isDeduction ==
-                                false) {
-                              m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-                                double mk =
-                                    double.parse(ob.quantity!.toString());
-                                return subSum + mk;
-                              });
+                            double m = obj.mbAmount != null
+                                ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                                    ? (obj.mbAmount! * (-1))
+                                    : obj.mbAmount!
+                                : 0.00;
+                            if (obj.contracts?.first.estimates?.first.isDeduction ==
+                                true) {
+                              m = -(m); // Negate the amount for deductions
                             } else {
-                              m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-                                double mr =
-                                    double.parse(ob.quantity!.toString());
-                                return subSum + mr;
-                              });
-                              m = -m;
+                              m = (m);
                             }
                             return sum + m;
-                          })).toStringAsFixed(4),
+                          })).toStringAsFixed(2),
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
@@ -1535,102 +1634,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                           maxLines: 3,
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: ctx,
-                            builder: (_) {
-                              return HorizontalCardListDialog(
-                                lineItems: magic,
-                                index: index,
-                                type: type,
-                                noOfUnit: noOfQty,
-                                cummulativePrevQty: preSorNonSor == null
-                                    ? 0.0000
-                                    : preSorNonSor.fold(0.0000, (sum, obj) {
-                                        double m = obj
-                                                    .contracts!
-                                                    .first
-                                                    .estimates!
-                                                    .first
-                                                    .isDeduction ==
-                                                true
-                                            ? -(obj.cumulativeValue!)
-                                            : (obj.cumulativeValue!);
-                                        return sum + m.toDouble();
-                                      }),
-                                sorId: sorNonSorId,
-                              );
-                            },
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 0.0),
-                          child: Icon(
-                            Icons.add_circle,
-                            size: 30,
-                            color: const DigitColors().burningOrange,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
-
-            // end
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
-                  child: Text(
-                    t.translate(i18.measurementBook.mbAmtCurrentEntry),
-                    style: Theme.of(context).textTheme.headlineSmall,
-                    textScaler: const TextScaler.linear(0.99),
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.sizeOf(context).width,
-                  padding: const EdgeInsets.only(
-                      top: 10.0, left: 5.0, right: 5.0, bottom: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const DigitColors().cloudGray,
-                      width: 2.0,
-                    ),
-                    borderRadius: BorderRadius.circular(1),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text(
-                      (magic.fold(0.0, (sum, obj) {
-                        double m = obj.mbAmount != null
-                            ? (obj.mbAmount != null && obj.mbAmount! < 0)
-                                ? (obj.mbAmount! * (-1))
-                                : obj.mbAmount!
-                            : 0.00;
-                        if (obj.contracts?.first.estimates?.first.isDeduction ==
-                            true) {
-                          m = -(m); // Negate the amount for deductions
-                        } else {
-                          m = (m);
-                        }
-                        return sum + m;
-                      })).toStringAsFixed(2),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      maxLines: 3,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -1881,11 +1890,12 @@ class SORTableCard extends StatelessWidget {
                           SizedBox(width: gap),
                           Flexible(
                               child: Padding(
-                            padding: const EdgeInsets.only(top: 1.4),
+                            padding: const EdgeInsets.only(top: 1),
                             child: Text(
                               element[e].toString(),
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
+                              
                             ),
                           )),
                         ],

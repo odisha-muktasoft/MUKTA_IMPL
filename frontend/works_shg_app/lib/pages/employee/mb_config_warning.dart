@@ -175,13 +175,15 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         loaded: (value) {
                           if (widget.type == MBScreen.update) {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              // padding: const EdgeInsets.all(8.0),
+                               padding: const EdgeInsets.only(left:8.0,right: 8.0,top:0.0,bottom: 0.0),
                               child: ScrollableContent(
+                                
+                                backgroundColor:  Colors.transparent,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 footer: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
+                                  padding: const EdgeInsets.only(top:0.0,bottom: 5.0),
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -204,7 +206,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                 context,
                                                 // AppLocalizations.of(context)
                                                 //     .translate(i18.login.invalidOTP),
-
+                                  
                                                 t.translate(i18
                                                     .common.allFieldsMandatory),
                                                 'ERROR',
@@ -237,7 +239,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                 ),
                                                 type: widget.type,
                                               );
-
+                                  
                                               context
                                                   .read<MeasurementCrudBloc>()
                                                   .add(
@@ -300,9 +302,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 0.0),
+                                      SizedBox(width: MediaQuery.sizeOf(context).width*0.9,
+                                      
                                         child: Text(
                                           widget.nextActions!.action ==
                                                   "EDIT/RE-SUBMIT"
@@ -312,6 +313,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                   "WF_MB_ACTION_${widget.nextActions!.action}"),
                                           style: DigitTheme.instance.mobileTheme
                                               .textTheme.headlineLarge,
+                                              overflow: TextOverflow.clip,
+                                              maxLines: 1,
                                         ),
                                       ),
                                     ],
@@ -379,7 +382,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   DigitTextField(
                                     label:
                                         "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
-                                    maxLines: 6,
+                                    maxLines: 5,
                                     controller: comment,
                                     isRequired:
                                         widget.nextActions!.action == "REJECT"
@@ -443,6 +446,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                 child: Text(t.translate(
                                                     i18.common.photoInfo)),
                                               ),
+
                                             ],
                                           ),
                                         )
@@ -454,11 +458,12 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ScrollableContent(
+                                backgroundColor: Colors.transparent,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 footer: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 0.0,bottom: 5.0),
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -576,9 +581,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 0.0),
+                                      SizedBox(
+                                        width: MediaQuery.sizeOf(context).width*0.9,
                                         child: Text(
                                           widget.stateActions!.action ==
                                                   "SUBMIT"
@@ -588,6 +592,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                   "WF_MB_ACTION_${widget.stateActions!.action}"),
                                           style: DigitTheme.instance.mobileTheme
                                               .textTheme.headlineLarge,
+                                              overflow: TextOverflow.clip,
+                                              maxLines: 1,
                                         ),
                                       ),
                                     ],
@@ -647,7 +653,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       : const SizedBox.shrink(),
                                   DigitTextField(
                                     label: t.translate("WF_MODAL_COMMENTS"),
-                                    maxLines: 6,
+                                    maxLines: 5,
                                     controller: comment,
                                   ),
                                   widget.stateActions!.action != null

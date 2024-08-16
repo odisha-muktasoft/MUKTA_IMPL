@@ -76,41 +76,156 @@ class CommonButtonCard extends StatelessWidget {
                 child: Container(
                   color: Colors.transparent,
                   height: type == MBScreen.update
-                      ? g!.first.nextActions!.length.toDouble() * 50.0
+                      ? g!.first.nextActions!.length.toDouble() * 55.0
                       : bs!.first.workflowState!.first.actions!.length
                               .toDouble() *
-                          50.0,
+                          55.0,
                   width: MediaQuery.sizeOf(context).width,
                   child: Center(
                     child: type == MBScreen.update
                         ? ListView.builder(
+                          
                             itemBuilder: (context, index) {
                               String editReSubmit = "EDIT_RE_SUBMIT";
-                              return DigitOutLineButton(
-                                label: g!.first.nextActions![index].action ==
-                                        "EDIT/RE-SUBMIT"
-                                    ? t.translate("WF_MB_ACTION_$editReSubmit")
-                                    : t.translate(
-                                        "WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
-                                // label: g!.first.nextActions![index].action! ?? "",
-                                onPressed: () {
-                                  // TODO:[temp]
-                                  // final data = g
-                                  //     ?.first.nextActions![index].roles
-                                  //     ?.join(',');
-                                  //end
-                                  if (g!.first.nextActions![index].action ==
-                                          "EDIT/RE-SUBMIT" &&
-                                      value.viewStatus) {
-                                    context.read<MeasurementDetailBloc>().add(
-                                          UpdateViewModeEvent(
-                                            updateView: !value.viewStatus,
-                                          ),
-                                        );
-                                    
-                                    Navigator.of(context).pop();
-                                  } else {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom:4.0),
+                                child: DigitOutLineButton(
+                                  label: g!.first.nextActions![index].action ==
+                                          "EDIT/RE-SUBMIT"
+                                      ? t.translate("WF_MB_ACTION_$editReSubmit")
+                                      : t.translate(
+                                          "WF_MB_ACTION_${g!.first.nextActions![index].action!}"),
+                                  // label: g!.first.nextActions![index].action! ?? "",
+                                  onPressed: () {
+                                    // TODO:[temp]
+                                    // final data = g
+                                    //     ?.first.nextActions![index].roles
+                                    //     ?.join(',');
+                                    //end
                                     if (g!.first.nextActions![index].action ==
+                                            "EDIT/RE-SUBMIT" &&
+                                        value.viewStatus) {
+                                      context.read<MeasurementDetailBloc>().add(
+                                            UpdateViewModeEvent(
+                                              updateView: !value.viewStatus,
+                                            ),
+                                          );
+                                      
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      if (g!.first.nextActions![index].action ==
+                                          "SAVE_AS_DRAFT") {
+                                       
+                                        List<List<SorObject>> sorList = [
+                                          value.sor!,
+                                          value.nonSor!
+                                        ];
+                                        MBDetailResponse kkk =
+                                            MBLogic.getMbPayloadUpdate(
+                                          data: value.data,
+                                          sorList: sorList,
+                                          workFlow: WorkFlow(
+                                            action: g!.first.nextActions![index]
+                                                        .action ==
+                                                    "SAVE_AS_DRAFT"
+                                                ? "SAVE_AS_DRAFT"
+                                                : g!.first.nextActions![index]
+                                                    .action,
+                                            documents: [],
+                                          ),
+                                          type: type,
+                                        );
+                                
+                                        context.read<MeasurementCrudBloc>().add(
+                                              MeasurementUpdateBlocEvent(
+                                                measurement: kkk.measurement!,
+                                                tenantId: '',
+                                                workFlow: WorkFlow(
+                                                  action: g!
+                                                              .first
+                                                              .nextActions![index]
+                                                              .action ==
+                                                          "SAVE_AS_DRAFT"
+                                                      ? "SAVE_AS_DRAFT"
+                                                      : g!
+                                                          .first
+                                                          .nextActions![index]
+                                                          .action,
+                                                  comment: "",
+                                                  assignees: [""],
+                                                  documents: [],
+                                                ),
+                                                type: type,
+                                              ),
+                                            );
+                                      } else {
+                                        context.read<EmpHRMSBloc>().add(
+                                              EmpHRMSLoadBlocEvent(
+                                                isActive: true,
+                                                // roles: g!
+                                                //             .first
+                                                //             .nextActions![index]
+                                                //             .action !=
+                                                //         "EDIT/RE-SUBMIT"
+                                                //     ? data ?? "MB_VERIFIER"
+                                                //     :
+                                
+                                                //     "MB_VERIFIER",
+                                                roles: fetchRoles(g!
+                                                        .first
+                                                        .nextActions![index]
+                                                        .action ??
+                                                    "MB_VERIFIER"),
+                                                tenantId:
+                                                    GlobalVariables.tenantId!,
+                                              ),
+                                            );
+                                        // Navigator.of(
+                                        //   context,
+                                        //   rootNavigator: true,
+                                        // ).popUntil(
+                                        //   (route) => route is! PopupRoute,
+                                        // );
+                                        Navigator.of(context).pop();
+                                        context.router.push(
+                                          MBTypeConfirmationRoute(
+                                              nextActions: type == MBScreen.update
+                                                  ? g!.first.nextActions![index]
+                                                  : null,
+                                              contractNumber: contractNumber,
+                                              mbNumber: mbNumber,
+                                              type: type,
+                                              stateActions:
+                                                  type == MBScreen.create
+                                                      ? bs!.first.workflowState!
+                                                          .first.actions![index]
+                                                      : null),
+                                        );
+                                      }
+                                    }
+                                  },
+                                ),
+                              );
+                            },
+                            itemCount: g?.first.nextActions?.length,
+                          )
+                        : ListView.builder(
+                         
+                            itemBuilder: (context, index) {
+                              String editReSubmit = "CREATE";
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom:4.0),
+                                child: DigitOutLineButton(
+                                  label: bs!.first.workflowState!.first
+                                              .actions![index].action ==
+                                          "CREATE"
+                                      ? t.translate("WF_MB_ACTION_$editReSubmit")
+                                      : t.translate(
+                                          "WF_MB_ACTION_${bs!.first.workflowState!.first.actions![index].action}"),
+                                  // label: g!.first.nextActions![index].action! ?? "",
+                                  onPressed: () {
+                                    if (bs!.first.workflowState!.first
+                                            .actions![index].action ==
                                         "SAVE_AS_DRAFT") {
                                      
                                       List<List<SorObject>> sorList = [
@@ -122,31 +237,35 @@ class CommonButtonCard extends StatelessWidget {
                                         data: value.data,
                                         sorList: sorList,
                                         workFlow: WorkFlow(
-                                          action: g!.first.nextActions![index]
-                                                      .action ==
+                                          action: bs!.first.workflowState!.first
+                                                      .actions![index].action ==
                                                   "SAVE_AS_DRAFT"
                                               ? "SAVE_AS_DRAFT"
-                                              : g!.first.nextActions![index]
-                                                  .action,
+                                              : bs!.first.workflowState!.first
+                                                  .actions![index].action,
                                           documents: [],
                                         ),
                                         type: type,
                                       );
-
+                                
                                       context.read<MeasurementCrudBloc>().add(
                                             MeasurementUpdateBlocEvent(
                                               measurement: kkk.measurement!,
                                               tenantId: '',
                                               workFlow: WorkFlow(
-                                                action: g!
+                                                action: bs!
                                                             .first
-                                                            .nextActions![index]
+                                                            .workflowState!
+                                                            .first
+                                                            .actions![index]
                                                             .action ==
                                                         "SAVE_AS_DRAFT"
                                                     ? "SAVE_AS_DRAFT"
-                                                    : g!
+                                                    : bs!
                                                         .first
-                                                        .nextActions![index]
+                                                        .workflowState!
+                                                        .first
+                                                        .actions![index]
                                                         .action,
                                                 comment: "",
                                                 assignees: [""],
@@ -159,140 +278,29 @@ class CommonButtonCard extends StatelessWidget {
                                       context.read<EmpHRMSBloc>().add(
                                             EmpHRMSLoadBlocEvent(
                                               isActive: true,
-                                              // roles: g!
-                                              //             .first
-                                              //             .nextActions![index]
-                                              //             .action !=
-                                              //         "EDIT/RE-SUBMIT"
-                                              //     ? data ?? "MB_VERIFIER"
-                                              //     :
-
-                                              //     "MB_VERIFIER",
-                                              roles: fetchRoles(g!
-                                                      .first
-                                                      .nextActions![index]
-                                                      .action ??
-                                                  "MB_VERIFIER"),
-                                              tenantId:
-                                                  GlobalVariables.tenantId!,
+                                              roles: "MB_VERIFIER",
+                                              tenantId: GlobalVariables.tenantId!,
                                             ),
                                           );
-                                      // Navigator.of(
-                                      //   context,
-                                      //   rootNavigator: true,
-                                      // ).popUntil(
-                                      //   (route) => route is! PopupRoute,
-                                      // );
+                                
                                       Navigator.of(context).pop();
                                       context.router.push(
                                         MBTypeConfirmationRoute(
-                                            nextActions: type == MBScreen.update
-                                                ? g!.first.nextActions![index]
-                                                : null,
-                                            contractNumber: contractNumber,
-                                            mbNumber: mbNumber,
-                                            type: type,
-                                            stateActions:
-                                                type == MBScreen.create
-                                                    ? bs!.first.workflowState!
-                                                        .first.actions![index]
-                                                    : null),
+                                          nextActions: type == MBScreen.update
+                                              ? g!.first.nextActions![index]
+                                              : null,
+                                          contractNumber: contractNumber,
+                                          mbNumber: mbNumber,
+                                          type: type,
+                                          stateActions: type == MBScreen.create
+                                              ? bs!.first.workflowState!.first
+                                                  .actions![index]
+                                              : null,
+                                        ),
                                       );
                                     }
-                                  }
-                                },
-                              );
-                            },
-                            itemCount: g?.first.nextActions?.length,
-                          )
-                        : ListView.builder(
-                            itemBuilder: (context, index) {
-                              String editReSubmit = "CREATE";
-                              return DigitOutLineButton(
-                                label: bs!.first.workflowState!.first
-                                            .actions![index].action ==
-                                        "CREATE"
-                                    ? t.translate("WF_MB_ACTION_$editReSubmit")
-                                    : t.translate(
-                                        "WF_MB_ACTION_${bs!.first.workflowState!.first.actions![index].action}"),
-                                // label: g!.first.nextActions![index].action! ?? "",
-                                onPressed: () {
-                                  if (bs!.first.workflowState!.first
-                                          .actions![index].action ==
-                                      "SAVE_AS_DRAFT") {
-                                   
-                                    List<List<SorObject>> sorList = [
-                                      value.sor!,
-                                      value.nonSor!
-                                    ];
-                                    MBDetailResponse kkk =
-                                        MBLogic.getMbPayloadUpdate(
-                                      data: value.data,
-                                      sorList: sorList,
-                                      workFlow: WorkFlow(
-                                        action: bs!.first.workflowState!.first
-                                                    .actions![index].action ==
-                                                "SAVE_AS_DRAFT"
-                                            ? "SAVE_AS_DRAFT"
-                                            : bs!.first.workflowState!.first
-                                                .actions![index].action,
-                                        documents: [],
-                                      ),
-                                      type: type,
-                                    );
-
-                                    context.read<MeasurementCrudBloc>().add(
-                                          MeasurementUpdateBlocEvent(
-                                            measurement: kkk.measurement!,
-                                            tenantId: '',
-                                            workFlow: WorkFlow(
-                                              action: bs!
-                                                          .first
-                                                          .workflowState!
-                                                          .first
-                                                          .actions![index]
-                                                          .action ==
-                                                      "SAVE_AS_DRAFT"
-                                                  ? "SAVE_AS_DRAFT"
-                                                  : bs!
-                                                      .first
-                                                      .workflowState!
-                                                      .first
-                                                      .actions![index]
-                                                      .action,
-                                              comment: "",
-                                              assignees: [""],
-                                              documents: [],
-                                            ),
-                                            type: type,
-                                          ),
-                                        );
-                                  } else {
-                                    context.read<EmpHRMSBloc>().add(
-                                          EmpHRMSLoadBlocEvent(
-                                            isActive: true,
-                                            roles: "MB_VERIFIER",
-                                            tenantId: GlobalVariables.tenantId!,
-                                          ),
-                                        );
-
-                                    Navigator.of(context).pop();
-                                    context.router.push(
-                                      MBTypeConfirmationRoute(
-                                        nextActions: type == MBScreen.update
-                                            ? g!.first.nextActions![index]
-                                            : null,
-                                        contractNumber: contractNumber,
-                                        mbNumber: mbNumber,
-                                        type: type,
-                                        stateActions: type == MBScreen.create
-                                            ? bs!.first.workflowState!.first
-                                                .actions![index]
-                                            : null,
-                                      ),
-                                    );
-                                  }
-                                },
+                                  },
+                                ),
                               );
                             },
                             itemCount:
