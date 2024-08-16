@@ -1,4 +1,14 @@
-import 'package:digit_components/digit_components.dart';
+import 'package:digit_components/theme/colors.dart';
+import 'package:digit_components/theme/digit_theme.dart';
+import 'package:digit_components/widgets/atoms/digit_icon_button.dart';
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_component;
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -136,10 +146,22 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
-                              color: const DigitColors().burningOrange),
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .primary
+                                  .primary1),
                         ),
                       ),
-                      label: Text(t.translate(i18.measurementBook.backToTop)),
+                      label: Text(
+                        t.translate(i18.measurementBook.backToTop),
+                        style: Theme.of(context)
+                            .digitTextTheme(context)
+                            .bodyL
+                            .copyWith(
+                              color:
+                                  Theme.of(context).colorTheme.primary.primary1,
+                            ),
+                      ),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -190,31 +212,74 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0, bottom: 0, top: 0, right: 0),
-                                  child: IconBackButton(
-                                    iconTextColor: const DigitColors().black,
-                                    iconColor: const DigitColors().black,
-                                    icon: Icons.arrow_left,
-                                    action: () {
-                                      context.router.maybePop();
-                                    },
-                                  ),
-                                ),
+                                 Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8.0, bottom: 8.0, top: 8.0, right: 8.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    BackNavigationButton(
+                                      backNavigationButtonThemeData:
+                                          const BackNavigationButtonThemeData()
+                                              .copyWith(
+                                                textColor: Theme.of(context)
+                                              .colorTheme
+                                              .primary
+                                              .primary2,
+                                        contentPadding: EdgeInsets.zero,
+                                        context: context,
+                                        backButtonIcon: Icon(
+                                          Icons.arrow_left,
+                                          // size: MediaQuery.of(context)
+                                          //             .size
+                                          //             .width <
+                                          //         500
+                                          //     ? Theme.of(context)
+                                          //         .spacerTheme
+                                          //         .spacer5
+                                          //     : Theme.of(context)
+                                          //         .spacerTheme
+                                          //         .spacer6,
+                                          color: Theme.of(context)
+                                              .colorTheme
+                                              .primary
+                                              .primary2,
+                                        ),
+                                      ),
+                                      backButtonText:
+                                          AppLocalizations.of(context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                      handleBack: () {
+                                        context.router.maybePop();
+                                      },
+                                    ),
+                                  ]),
+                            ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(
+                                //       left: 8.0, bottom: 0, top: 0, right: 0),
+                                //   child: IconBackButton(
+                                //     iconTextColor: const DigitColors().black,
+                                //     iconColor: const DigitColors().black,
+                                //     icon: Icons.arrow_left,
+                                //     action: () {
+                                //       context.router.maybePop();
+                                //     },
+                                //   ),
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 17.0),
                                   child: Text(
                                     "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.totalCount ?? 0})",
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.headlineLarge,
+                                    style: Theme.of(context).textTheme.headlineLarge,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 13.0,
+                                      left: 4.0,
                                       right: 8.0,
                                       top: 8.0,
                                       bottom: 0),
@@ -222,24 +287,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      // GestureDetector(
-                                      //   onTap: () {
-                                      //     setState(() {
-                                      //       pageCount = 0;
-                                      //     });
-                                      //     context.router
-                                      //         .push(const MBFilterRoute());
-                                      //   },
-                                      //   child: Row(
-                                      //     mainAxisAlignment:
-                                      //         MainAxisAlignment.start,
-                                      //     crossAxisAlignment:
-                                      //         CrossAxisAlignment.center,
-                                      //     children: [
-                                      DigitIconButton(
-                                        iconText:
-                                            t.translate(i18.common.filter),
-
+                                      Button(
+                                        label: t.translate(i18.common.filter),
                                         onPressed: () {
                                           setState(() {
                                             pageCount = 0;
@@ -247,10 +296,26 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                           context.router
                                               .push(const MBFilterRoute());
                                         },
-                                        // iconSize: 30,
-                                        icon: Icons.filter_list_alt,
-                                        textDirection: TextDirection.ltr,
+                                        type: ButtonType.tertiary,
+                                        size: ButtonSize.large,
+                                        prefixIcon: Icons.filter_list_alt,
                                       ),
+
+                                      // DigitIconButton(
+                                      //   iconText:
+                                      //       t.translate(i18.common.filter),
+
+                                      //   onPressed: () {
+                                      //     setState(() {
+                                      //       pageCount = 0;
+                                      //     });
+                                      //     context.router
+                                      //         .push(const MBFilterRoute());
+                                      //   },
+                                      //   // iconSize: 30,
+                                      //   icon: Icons.filter_list_alt,
+                                      //   textDirection: TextDirection.ltr,
+                                      // ),
                                       // TODO: commenting for reset button
                                       // - it will be enhanced in future
                                       // mbInboxResponse.search
@@ -285,18 +350,28 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       //],
                                       //   ),
                                       // ),
-                                      DigitIconButton(
-                                        iconText: t.translate(
-                                            i18.measurementBook.sort),
-
-                                        onPressed: () {
-                                          Conversion.openSortingModal(context,
+                                     
+                                     
+                                     Button(
+                                      prefixIcon: Icons.swap_vert,
+                                      label: t.translate(
+                                            i18.measurementBook.sort), onPressed: (){Conversion.openSortingModal(context,
                                               listData: Conversion.sortMB,
-                                              sortType: SortType.mbSort);
-                                        },
-                                        // iconSize: 30,
-                                        icon: Icons.swap_vert,
-                                      ),
+                                              sortType: SortType.mbSort);}, type: ButtonType.tertiary, size: ButtonSize.large),
+                                     
+                                     
+                                      // DigitIconButton(
+                                      //   iconText: t.translate(
+                                      //       i18.measurementBook.sort),
+
+                                      //   onPressed: () {
+                                      //     Conversion.openSortingModal(context,
+                                      //         listData: Conversion.sortMB,
+                                      //         sortType: SortType.mbSort);
+                                      //   },
+                                      //   // iconSize: 30,
+                                      //   icon: Icons.swap_vert,
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -347,104 +422,117 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                     );
                                   }
 
-                                  return CommonMBCard(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0, vertical: 8.0),
-                                    widget: Center(
-                                      child: SizedBox(
-                                        width: MediaQuery.sizeOf(context).width,
-                                        child: DigitOutLineButton(
-                                          buttonStyle: OutlinedButton.styleFrom(
-                                              padding: const EdgeInsets.all(5),
-                                              minimumSize: Size(
-                                                  MediaQuery.sizeOf(context)
-                                                      .width,
-                                                  45)),
-                                          label: t.translate(
-                                              i18.measurementBook.openMbBook),
-                                          onPressed: () {
-                                            final contract = mbInboxResponse
-                                                    .mbInboxResponse
-                                                    .items?[index]
-                                                    .businessObject
-                                                    ?.contract
-                                                    ?.contractNumber ??
-                                                "";
-                                            final mbNumber = mbInboxResponse
-                                                    .mbInboxResponse
-                                                    .items?[index]
-                                                    .businessObject
-                                                    ?.measurementNumber ??
-                                                "";
-                                            context.router.push(MBDetailRoute(
-                                              contractNumber: contract,
-                                              mbNumber: mbNumber,
-                                              tenantId:
-                                                  GlobalVariables.tenantId,
-                                              type: MBScreen.update,
-                                            ));
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    items: {
-                                      t.translate(i18.measurementBook.mbNumber):
-                                          mbInboxResponse
-                                                  .mbInboxResponse
-                                                  .items?[index]
-                                                  .businessObject
-                                                  ?.measurementNumber ??
-                                              "",
-                                      t.translate(i18.measurementBook
-                                          .projectDescription): mbInboxResponse
-                                              .mbInboxResponse
-                                              .items?[index]
-                                              .businessObject
-                                              ?.contract
-                                              ?.additionalDetails
-                                              ?.projectDesc ??
-                                          "",
-                                      t.translate(i18.common.assignee):
-                                          mbInboxResponse
-                                                  .mbInboxResponse
-                                                  .items?[index]
-                                                  .processInstance
-                                                  ?.assignes
-                                                  ?.first
-                                                  .name ??
-                                              "NA",
-                                      t.translate(i18.measurementBook
-                                          .workflowState): mbInboxResponse
-                                                  .mbInboxResponse
-                                                  .items?[index]
-                                                  .processInstance
-                                                  ?.state
-                                                  ?.state !=
-                                              null
-                                          ? t.translate(
-                                              "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
-                                          : "",
-                                      t.translate(i18.measurementBook.mbAmount):
-                                          mbInboxResponse
-                                                  .mbInboxResponse
-                                                  .items?[index]
-                                                  .businessObject
-                                                  ?.measurementAdditionalDetail
-                                                  ?.totalAmount
-                                                  ?.roundToDouble()
-                                                  .toStringAsFixed(2) ??
-                                              "0.00"
-                                    },
-                                    showSla: true,
-                                    sla: mbInboxResponse
-                                            .mbInboxResponse
-                                            .items?[index]
-                                            .businessObject
-                                            ?.serviceSla ??
-                                        0, 
-                                        showStatus: false,
-                                        status: '',
-                                  );
+                                  return ui_component.DigitCard(
+                                      cardType: CardType.primary,
+                                      margin: const EdgeInsets.only(
+                                          left: 5, bottom: 8, right: 5),
+                                      children: [
+                                        LabelValueList(
+                                            maxLines: 3,
+                                            labelFlex: 5,
+                                            valueFlex: 5,
+                                            items: [
+                                              LabelValuePair(
+                                                  label: t.translate(i18
+                                                      .measurementBook
+                                                      .mbNumber),
+                                                  value: mbInboxResponse
+                                                          .mbInboxResponse
+                                                          .items?[index]
+                                                          .businessObject
+                                                          ?.measurementNumber ??
+                                                      ""),
+                                              LabelValuePair(
+                                                  label: t.translate(i18
+                                                      .measurementBook
+                                                      .projectDescription),
+                                                  value: mbInboxResponse
+                                                          .mbInboxResponse
+                                                          .items?[index]
+                                                          .businessObject
+                                                          ?.contract
+                                                          ?.additionalDetails
+                                                          ?.projectDesc ??
+                                                      ""),
+                                              LabelValuePair(
+                                                  label: t.translate(
+                                                      i18.common.assignee),
+                                                  value: mbInboxResponse
+                                                          .mbInboxResponse
+                                                          .items?[index]
+                                                          .processInstance
+                                                          ?.assignes
+                                                          ?.first
+                                                          .name ??
+                                                      "NA"),
+                                              LabelValuePair(
+                                                  label: t.translate(i18
+                                                      .measurementBook
+                                                      .workflowState),
+                                                  value: mbInboxResponse
+                                                              .mbInboxResponse
+                                                              .items?[index]
+                                                              .processInstance
+                                                              ?.state
+                                                              ?.state !=
+                                                          null
+                                                      ? t.translate(
+                                                          "MB_WFMB_STATE_${mbInboxResponse.mbInboxResponse.items![index].processInstance!.state!.state!}")
+                                                      : ""),
+                                              LabelValuePair(
+                                                  label: t.translate(i18
+                                                      .measurementBook
+                                                      .mbAmount),
+                                                  value: mbInboxResponse
+                                                          .mbInboxResponse
+                                                          .items?[index]
+                                                          .businessObject
+                                                          ?.measurementAdditionalDetail
+                                                          ?.totalAmount
+                                                          ?.roundToDouble()
+                                                          .toStringAsFixed(2) ??
+                                                      "0.00"),
+                                              LabelValuePair(
+                                                  label: t.translate(i18
+                                                      .measurementBook
+                                                      .mbSlaDaysRemaining),
+                                                  value: (mbInboxResponse
+                                                              .mbInboxResponse
+                                                              .items?[index]
+                                                              .businessObject
+                                                              ?.serviceSla ??
+                                                          0)
+                                                      .toString())
+                                            ]),
+                                        Button(
+                                            mainAxisSize: MainAxisSize.max,
+                                            label: t.translate(
+                                                i18.measurementBook.openMbBook),
+                                            onPressed: () {
+                                              final contract = mbInboxResponse
+                                                      .mbInboxResponse
+                                                      .items?[index]
+                                                      .businessObject
+                                                      ?.contract
+                                                      ?.contractNumber ??
+                                                  "";
+                                              final mbNumber = mbInboxResponse
+                                                      .mbInboxResponse
+                                                      .items?[index]
+                                                      .businessObject
+                                                      ?.measurementNumber ??
+                                                  "";
+                                              context.router.push(MBDetailRoute(
+                                                contractNumber: contract,
+                                                mbNumber: mbNumber,
+                                                tenantId:
+                                                    GlobalVariables.tenantId,
+                                                type: MBScreen.update,
+                                              ));
+                                            },
+                                            type: ButtonType.secondary,
+                                            size: ButtonSize.large)
+                                      ]);
                                 },
                                 childCount: mbInboxResponse.isLoading
                                     ? mbInboxResponse

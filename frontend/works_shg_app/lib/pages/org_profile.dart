@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -62,7 +63,12 @@ class _ORGProfilePage extends State<ORGProfilePage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
-          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+           iconTheme: Theme.of(context).iconTheme.copyWith(
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .paper.primary
+                                   
+                            ),
           titleSpacing: 0,
           title: const AppBarLogo(),
         ),

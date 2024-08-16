@@ -1,5 +1,8 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -159,10 +162,15 @@ class _LoginPageState extends State<LoginPage>
                   OTPVerificationRoute(mobileNumber: userIdController.text));
             },
             error: () {
-              Notifiers.getToastMessage(
+              // Notifiers.getToastMessage(
+              //   context,
+              //   t.translate(i18.login.enteredMobileNotRegistered),
+              //   'ERROR',
+              // );
+              Toast.showToast(
                 context,
-                t.translate(i18.login.enteredMobileNotRegistered),
-                'ERROR',
+                message: t.translate(i18.login.enteredMobileNotRegistered),
+                type: ToastType.error,
               );
             },
           );
@@ -191,10 +199,15 @@ class _LoginPageState extends State<LoginPage>
         listener: (context, state) {
           state.maybeWhen(
             error: () {
-              Notifiers.getToastMessage(
+              // Notifiers.getToastMessage(
+              //   context,
+              //   t.translate(i18.common.empLoginError),
+              //   'ERROR',
+              // );
+              Toast.showToast(
                 context,
-                t.translate(i18.common.empLoginError),
-                'ERROR',
+                message: t.translate(i18.common.empLoginError),
+                type: ToastType.error,
               );
             },
             orElse: () {},
@@ -217,10 +230,15 @@ class _LoginPageState extends State<LoginPage>
                           ),
                         );
                   } else {
-                    Notifiers.getToastMessage(
+                    // Notifiers.getToastMessage(
+                    //   context,
+                    //   t.translate(i18.common.allFieldsMandatory),
+                    //   'ERROR',
+                    // );
+                    Toast.showToast(
                       context,
-                      t.translate(i18.common.allFieldsMandatory),
-                      'ERROR',
+                      message: t.translate(i18.common.allFieldsMandatory),
+                      type: ToastType.error,
                     );
                   }
                 }
@@ -314,8 +332,12 @@ class _LoginPageState extends State<LoginPage>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-              .copyWith(color: const DigitColors().white),
+           iconTheme: Theme.of(context).iconTheme.copyWith(
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .paper.primary
+                                   
+                            ),
           automaticallyImplyLeading: true,
         ),
         body: BlocBuilder<AppInitializationBloc, AppInitializationState>(

@@ -1,5 +1,9 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/widgets/atoms/digit_toaster.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -51,18 +55,6 @@ class _MBFilterPageState extends State<MBFilterPage> {
   @override
   void initState() {
     super.initState();
-
-    // final state = context.read<MeasurementInboxBloc>().state;
-    // state.maybeMap(
-    //   orElse: () => null,
-    //   loaded: (valueMeasurement) {
-    //      valueMeasurement.data['inbox'] != null
-    //         ?ward.add( valueMeasurement.data['inbox']!['moduleSearchCriteria']['ward'][0])
-    //         : ward.isNotEmpty
-    //             ? ward.first
-    //             : [];
-    //   },
-    // );
 
     mbNumber.addListener(mbNumberUpload);
     projectId.addListener(projectIdUpload);
@@ -139,8 +131,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                         return Scaffold(
                           backgroundColor: const DigitColors().white,
                           appBar: AppBar(
-                            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                                .copyWith(color: const DigitColors().white),
+                            iconTheme: Theme.of(context).iconTheme.copyWith(
+                                color:
+                                    Theme.of(context).colorTheme.paper.primary),
                             titleSpacing: 0,
                             title: const AppBarLogo(),
                           ),
@@ -157,7 +150,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                   FormGroup formGroup, Widget? child) {
                                 return Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: ScrollableContent(
+                                  child: ui_component.ScrollableContent(
                                     backgroundColor: Colors.transparent,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
@@ -172,111 +165,50 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Expanded(
-                                            flex: 10,
-                                            child: DigitOutLineButton(
-                                              label: t.translate(
-                                                  i18.measurementBook.clear),
-                                              onPressed: () {
-                                                context
-                                                    .read<
-                                                        MeasurementInboxBloc>()
-                                                    .add(
-                                                      MeasurementBookInboxBlocEvent(
-                                                        businessService: "MB",
-                                                        limit: 10,
-                                                        moduleName:
-                                                            'measurement-module',
-                                                        offset: 0,
-                                                        tenantId:
-                                                            GlobalVariables
-                                                                .tenantId!,
-                                                      ),
-                                                    );
-                                                context.router.maybePopTop();
-                                              },
-                                            ),
-                                          ),
-                                          const Expanded(
-                                              flex: 1,
-                                              child: SizedBox.shrink()),
-                                          Expanded(
-                                            flex: 10,
-                                            child: DigitElevatedButton(
-                                              child: Text(t.translate(
-                                                  i18.measurementBook.filter)),
-                                              onPressed: () async {
-                                                Map<String,
-                                                        Map<String, dynamic>>
-                                                    filterPayload;
-
-                                                if (workShow && project) {
-                                                  filterPayload = {
-                                                    "inbox": {
-                                                      "tenantId":
-                                                          GlobalVariables
-                                                              .tenantId,
-                                                      "moduleSearchCriteria": {
-                                                        "tenantId":
-                                                            GlobalVariables
-                                                                .tenantId,
-                                                      },
-                                                      "processSearchCriteria": {
-                                                        "businessService": [
-                                                          "MB"
-                                                        ],
-                                                        "moduleName":
-                                                            "measurement-service"
-                                                      },
-                                                      "limit": 10,
-                                                      "offset": 0
-                                                    }
-                                                  };
-
-                                                  if (formGroup.value[assign] ==
-                                                          "MB_ASSIGNED_TO_ME" ||
-                                                      assign ==
-                                                          "MB_ASSIGNED_TO_ME") {
-                                                    filterPayload['inbox']![
-                                                                'moduleSearchCriteria']![
-                                                            'assignee'] =
-                                                        GlobalVariables.uuid;
+                                              flex: 10,
+                                              child: ui_component.Button(
+                                                  label: t.translate(i18
+                                                      .measurementBook.clear),
+                                                  onPressed: () {
                                                     context
                                                         .read<
                                                             MeasurementInboxBloc>()
                                                         .add(
-                                                          MeasurementBookInboxSearchBlocEvent(
+                                                          MeasurementBookInboxBlocEvent(
+                                                            businessService:
+                                                                "MB",
                                                             limit: 10,
+                                                            moduleName:
+                                                                'measurement-module',
                                                             offset: 0,
-                                                            data: filterPayload,
+                                                            tenantId:
+                                                                GlobalVariables
+                                                                    .tenantId!,
                                                           ),
                                                         );
                                                     context.router
                                                         .maybePopTop();
-                                                  } else {
-                                                    ToastUtils.showCustomToast(
-                                                        context,
-                                                        t.translate(i18.common
-                                                            .searchCriteria),
-                                                        "INFO");
+                                                  },
+                                                  type: ui_component
+                                                      .ButtonType.secondary,
+                                                  size: ui_component
+                                                      .ButtonSize.large)),
+                                          const Expanded(
+                                              flex: 1,
+                                              child: SizedBox.shrink()),
+                                          Expanded(
+                                              flex: 10,
+                                              child: ui_component.Button(
+                                                  label: t.translate(i18
+                                                      .measurementBook.filter),
+                                                  onPressed: () async {
+                                                    Map<
+                                                            String,
+                                                            Map<String,
+                                                                dynamic>>
+                                                        filterPayload;
 
-                                                    // TODO: digit component toast
-                                                    // DigitToast.show(
-                                                    //   context,
-                                                    //   options:
-                                                    //       DigitToastOptions(
-                                                    //     t.translate(i18.common
-                                                    //         .searchCriteria),
-                                                    //     true,
-                                                    //     DigitTheme.instance
-                                                    //         .mobileTheme,
-                                                    //   ),
-                                                    // );
-                                                    // end of it
-                                                  }
-                                                } else {
-                                                  if (workShow && !project) {
-                                                    if (workflow.isEmpty &&
-                                                        ward.isNotEmpty) {
+                                                    if (workShow && project) {
                                                       filterPayload = {
                                                         "inbox": {
                                                           "tenantId":
@@ -287,10 +219,6 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                             "tenantId":
                                                                 GlobalVariables
                                                                     .tenantId,
-                                                            // "status": workflow
-                                                            //     .map((e) => e.statusid!)
-                                                            //     .toList(),
-                                                            "ward": ward,
                                                           },
                                                           "processSearchCriteria":
                                                               {
@@ -304,235 +232,639 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           "offset": 0
                                                         }
                                                       };
-                                                    } else if (workflow
-                                                            .isNotEmpty &&
-                                                        ward.isEmpty) {
-                                                      filterPayload = {
-                                                        "inbox": {
-                                                          "tenantId":
-                                                              GlobalVariables
-                                                                  .tenantId,
-                                                          "moduleSearchCriteria":
-                                                              {
-                                                            "tenantId":
-                                                                GlobalVariables
-                                                                    .tenantId,
-                                                            "status": workflow
-                                                                .map((e) =>
-                                                                    e.statusid!)
-                                                                .toList(),
-                                                            // "ward": ward,
-                                                          },
-                                                          "processSearchCriteria":
-                                                              {
-                                                            "businessService": [
-                                                              "MB"
-                                                            ],
-                                                            "moduleName":
-                                                                "measurement-service"
-                                                          },
-                                                          "limit": 10,
-                                                          "offset": 0
-                                                        }
-                                                      };
+
+                                                      if (formGroup.value[
+                                                                  assign] ==
+                                                              "MB_ASSIGNED_TO_ME" ||
+                                                          assign ==
+                                                              "MB_ASSIGNED_TO_ME") {
+                                                        filterPayload['inbox']![
+                                                                    'moduleSearchCriteria']![
+                                                                'assignee'] =
+                                                            GlobalVariables
+                                                                .uuid;
+                                                        context
+                                                            .read<
+                                                                MeasurementInboxBloc>()
+                                                            .add(
+                                                              MeasurementBookInboxSearchBlocEvent(
+                                                                limit: 10,
+                                                                offset: 0,
+                                                                data:
+                                                                    filterPayload,
+                                                              ),
+                                                            );
+                                                        context.router
+                                                            .maybePopTop();
+                                                      } else {
+                                                        Toast.showToast(context,
+                                                            message: t.translate(i18
+                                                                .common
+                                                                .searchCriteria),
+                                                            type: ToastType
+                                                                .warning);
+                                                      }
                                                     } else {
-                                                      filterPayload = {
-                                                        "inbox": {
-                                                          "tenantId":
-                                                              GlobalVariables
-                                                                  .tenantId,
-                                                          "moduleSearchCriteria":
-                                                              {
-                                                            "tenantId":
-                                                                GlobalVariables
-                                                                    .tenantId,
-                                                            "status": workflow
-                                                                .map((e) =>
-                                                                    e.statusid!)
-                                                                .toList(),
-                                                            "ward": ward,
-                                                          },
-                                                          "processSearchCriteria":
-                                                              {
-                                                            "businessService": [
-                                                              "MB"
-                                                            ],
-                                                            "moduleName":
-                                                                "measurement-service"
-                                                          },
-                                                          "limit": 10,
-                                                          "offset": 0
+                                                      if (workShow &&
+                                                          !project) {
+                                                        if (workflow.isEmpty &&
+                                                            ward.isNotEmpty) {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                // "status": workflow
+                                                                //     .map((e) => e.statusid!)
+                                                                //     .toList(),
+                                                                "ward": ward,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
+                                                        } else if (workflow
+                                                                .isNotEmpty &&
+                                                            ward.isEmpty) {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                "status": workflow
+                                                                    .map((e) =>
+                                                                        e.statusid!)
+                                                                    .toList(),
+                                                                // "ward": ward,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
+                                                        } else {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                "status": workflow
+                                                                    .map((e) =>
+                                                                        e.statusid!)
+                                                                    .toList(),
+                                                                "ward": ward,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
                                                         }
-                                                      };
-                                                    }
 
-                                                    if (formGroup.value[
-                                                                assign] ==
-                                                            "MB_ASSIGNED_TO_ME" ||
-                                                        assign ==
-                                                            "MB_ASSIGNED_TO_ME") {
-                                                      filterPayload['inbox']![
-                                                                  'moduleSearchCriteria']![
-                                                              'assignee'] =
-                                                          GlobalVariables.uuid;
-                                                    }
-                                                    context
-                                                        .read<
-                                                            MeasurementInboxBloc>()
-                                                        .add(
-                                                          MeasurementBookInboxSearchBlocEvent(
-                                                            limit: 10,
-                                                            offset: 0,
-                                                            data: filterPayload,
-                                                          ),
-                                                        );
-                                                  } else {
-                                                    if (mbNumber.text != "" &&
-                                                        projectId.text == "" &&
-                                                        projectName == "") {
-                                                      filterPayload = {
-                                                        "inbox": {
-                                                          "tenantId":
+                                                        if (formGroup.value[
+                                                                    assign] ==
+                                                                "MB_ASSIGNED_TO_ME" ||
+                                                            assign ==
+                                                                "MB_ASSIGNED_TO_ME") {
+                                                          filterPayload['inbox']![
+                                                                      'moduleSearchCriteria']![
+                                                                  'assignee'] =
                                                               GlobalVariables
-                                                                  .tenantId,
-                                                          "moduleSearchCriteria":
-                                                              {
-                                                            "tenantId":
-                                                                GlobalVariables
-                                                                    .tenantId,
-                                                            "measurementNumber":
-                                                                mbNumber.text,
-                                                          },
-                                                          "processSearchCriteria":
-                                                              {
-                                                            "businessService": [
-                                                              "MB"
-                                                            ],
-                                                            "moduleName":
-                                                                "measurement-service"
-                                                          },
-                                                          "limit": 10,
-                                                          "offset": 0
+                                                                  .uuid;
                                                         }
-                                                      };
-                                                    } else if (mbNumber.text ==
-                                                            "" &&
-                                                        projectId.text != "" &&
-                                                        projectName == "") {
-                                                      filterPayload = {
-                                                        "inbox": {
-                                                          "tenantId":
-                                                              GlobalVariables
-                                                                  .tenantId,
-                                                          "moduleSearchCriteria":
-                                                              {
-                                                            "tenantId":
-                                                                GlobalVariables
-                                                                    .tenantId,
-                                                            "projectId":
-                                                                projectId.text,
-                                                          },
-                                                          "processSearchCriteria":
-                                                              {
-                                                            "businessService": [
-                                                              "MB"
-                                                            ],
-                                                            "moduleName":
-                                                                "measurement-service"
-                                                          },
-                                                          "limit": 10,
-                                                          "offset": 0
+                                                        context
+                                                            .read<
+                                                                MeasurementInboxBloc>()
+                                                            .add(
+                                                              MeasurementBookInboxSearchBlocEvent(
+                                                                limit: 10,
+                                                                offset: 0,
+                                                                data:
+                                                                    filterPayload,
+                                                              ),
+                                                            );
+                                                      } else {
+                                                        if (mbNumber.text !=
+                                                                "" &&
+                                                            projectId.text ==
+                                                                "" &&
+                                                            projectName == "") {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                "measurementNumber":
+                                                                    mbNumber
+                                                                        .text,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
+                                                        } else if (mbNumber.text ==
+                                                                "" &&
+                                                            projectId.text !=
+                                                                "" &&
+                                                            projectName == "") {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                "projectId":
+                                                                    projectId
+                                                                        .text,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
+                                                        } else if (mbNumber.text ==
+                                                                "" &&
+                                                            projectId.text ==
+                                                                "" &&
+                                                            projectName != "") {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                "projectType":
+                                                                    projectName,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
+                                                        } else {
+                                                          filterPayload = {
+                                                            "inbox": {
+                                                              "tenantId":
+                                                                  GlobalVariables
+                                                                      .tenantId,
+                                                              "moduleSearchCriteria":
+                                                                  {
+                                                                "tenantId":
+                                                                    GlobalVariables
+                                                                        .tenantId,
+                                                                "measurementNumber":
+                                                                    mbNumber
+                                                                        .text,
+                                                                "projectId":
+                                                                    projectId
+                                                                        .text,
+                                                                "projectType":
+                                                                    projectName,
+                                                              },
+                                                              "processSearchCriteria":
+                                                                  {
+                                                                "businessService":
+                                                                    ["MB"],
+                                                                "moduleName":
+                                                                    "measurement-service"
+                                                              },
+                                                              "limit": 10,
+                                                              "offset": 0
+                                                            }
+                                                          };
                                                         }
-                                                      };
-                                                    } else if (mbNumber.text ==
-                                                            "" &&
-                                                        projectId.text == "" &&
-                                                        projectName != "") {
-                                                      filterPayload = {
-                                                        "inbox": {
-                                                          "tenantId":
-                                                              GlobalVariables
-                                                                  .tenantId,
-                                                          "moduleSearchCriteria":
-                                                              {
-                                                            "tenantId":
-                                                                GlobalVariables
-                                                                    .tenantId,
-                                                            "projectType":
-                                                                projectName,
-                                                          },
-                                                          "processSearchCriteria":
-                                                              {
-                                                            "businessService": [
-                                                              "MB"
-                                                            ],
-                                                            "moduleName":
-                                                                "measurement-service"
-                                                          },
-                                                          "limit": 10,
-                                                          "offset": 0
-                                                        }
-                                                      };
-                                                    } else {
-                                                      filterPayload = {
-                                                        "inbox": {
-                                                          "tenantId":
-                                                              GlobalVariables
-                                                                  .tenantId,
-                                                          "moduleSearchCriteria":
-                                                              {
-                                                            "tenantId":
-                                                                GlobalVariables
-                                                                    .tenantId,
-                                                            "measurementNumber":
-                                                                mbNumber.text,
-                                                            "projectId":
-                                                                projectId.text,
-                                                            "projectType":
-                                                                projectName,
-                                                          },
-                                                          "processSearchCriteria":
-                                                              {
-                                                            "businessService": [
-                                                              "MB"
-                                                            ],
-                                                            "moduleName":
-                                                                "measurement-service"
-                                                          },
-                                                          "limit": 10,
-                                                          "offset": 0
-                                                        }
-                                                      };
-                                                    }
 
-                                                    if (formGroup.value[
-                                                                assign] ==
-                                                            "MB_ASSIGNED_TO_ME" ||
-                                                        assign ==
-                                                            "MB_ASSIGNED_TO_ME") {
-                                                      filterPayload['inbox']![
-                                                                  'moduleSearchCriteria']![
-                                                              'assignee'] =
-                                                          GlobalVariables.uuid;
+                                                        if (formGroup.value[
+                                                                    assign] ==
+                                                                "MB_ASSIGNED_TO_ME" ||
+                                                            assign ==
+                                                                "MB_ASSIGNED_TO_ME") {
+                                                          filterPayload['inbox']![
+                                                                      'moduleSearchCriteria']![
+                                                                  'assignee'] =
+                                                              GlobalVariables
+                                                                  .uuid;
+                                                        }
+
+                                                        context
+                                                            .read<
+                                                                MeasurementInboxBloc>()
+                                                            .add(
+                                                              MeasurementBookInboxSearchBlocEvent(
+                                                                limit: 10,
+                                                                offset: 0,
+                                                                data:
+                                                                    filterPayload,
+                                                              ),
+                                                            );
+                                                      }
+
+                                                      context.router
+                                                          .maybePopTop();
                                                     }
+                                                  },
+                                                  type: ui_component
+                                                      .ButtonType.primary,
+                                                  size: ui_component
+                                                      .ButtonSize.large)
+                                              //  DigitElevatedButton(
+                                              //   child: Text(t.translate(
+                                              //       i18.measurementBook.filter)),
+                                              //   onPressed: () async {
+                                              //     Map<String,
+                                              //             Map<String, dynamic>>
+                                              //         filterPayload;
 
-                                                    context
-                                                        .read<
-                                                            MeasurementInboxBloc>()
-                                                        .add(
-                                                          MeasurementBookInboxSearchBlocEvent(
-                                                            limit: 10,
-                                                            offset: 0,
-                                                            data: filterPayload,
-                                                          ),
-                                                        );
-                                                  }
+                                              //     if (workShow && project) {
+                                              //       filterPayload = {
+                                              //         "inbox": {
+                                              //           "tenantId":
+                                              //               GlobalVariables
+                                              //                   .tenantId,
+                                              //           "moduleSearchCriteria": {
+                                              //             "tenantId":
+                                              //                 GlobalVariables
+                                              //                     .tenantId,
+                                              //           },
+                                              //           "processSearchCriteria": {
+                                              //             "businessService": [
+                                              //               "MB"
+                                              //             ],
+                                              //             "moduleName":
+                                              //                 "measurement-service"
+                                              //           },
+                                              //           "limit": 10,
+                                              //           "offset": 0
+                                              //         }
+                                              //       };
 
-                                                  context.router.maybePopTop();
-                                                }
-                                              },
-                                            ),
-                                          )
+                                              //       if (formGroup.value[assign] ==
+                                              //               "MB_ASSIGNED_TO_ME" ||
+                                              //           assign ==
+                                              //               "MB_ASSIGNED_TO_ME") {
+                                              //         filterPayload['inbox']![
+                                              //                     'moduleSearchCriteria']![
+                                              //                 'assignee'] =
+                                              //             GlobalVariables.uuid;
+                                              //         context
+                                              //             .read<
+                                              //                 MeasurementInboxBloc>()
+                                              //             .add(
+                                              //               MeasurementBookInboxSearchBlocEvent(
+                                              //                 limit: 10,
+                                              //                 offset: 0,
+                                              //                 data: filterPayload,
+                                              //               ),
+                                              //             );
+                                              //         context.router
+                                              //             .maybePopTop();
+                                              //       } else {
+                                              //         ToastUtils.showCustomToast(
+                                              //             context,
+                                              //             t.translate(i18.common
+                                              //                 .searchCriteria),
+                                              //             "INFO");
+
+                                              //         // TODO: digit component toast
+                                              //         // DigitToast.show(
+                                              //         //   context,
+                                              //         //   options:
+                                              //         //       DigitToastOptions(
+                                              //         //     t.translate(i18.common
+                                              //         //         .searchCriteria),
+                                              //         //     true,
+                                              //         //     DigitTheme.instance
+                                              //         //         .mobileTheme,
+                                              //         //   ),
+                                              //         // );
+                                              //         // end of it
+                                              //       }
+                                              //     } else {
+                                              //       if (workShow && !project) {
+                                              //         if (workflow.isEmpty &&
+                                              //             ward.isNotEmpty) {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 // "status": workflow
+                                              //                 //     .map((e) => e.statusid!)
+                                              //                 //     .toList(),
+                                              //                 "ward": ward,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         } else if (workflow
+                                              //                 .isNotEmpty &&
+                                              //             ward.isEmpty) {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 "status": workflow
+                                              //                     .map((e) =>
+                                              //                         e.statusid!)
+                                              //                     .toList(),
+                                              //                 // "ward": ward,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         } else {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 "status": workflow
+                                              //                     .map((e) =>
+                                              //                         e.statusid!)
+                                              //                     .toList(),
+                                              //                 "ward": ward,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         }
+
+                                              //         if (formGroup.value[
+                                              //                     assign] ==
+                                              //                 "MB_ASSIGNED_TO_ME" ||
+                                              //             assign ==
+                                              //                 "MB_ASSIGNED_TO_ME") {
+                                              //           filterPayload['inbox']![
+                                              //                       'moduleSearchCriteria']![
+                                              //                   'assignee'] =
+                                              //               GlobalVariables.uuid;
+                                              //         }
+                                              //         context
+                                              //             .read<
+                                              //                 MeasurementInboxBloc>()
+                                              //             .add(
+                                              //               MeasurementBookInboxSearchBlocEvent(
+                                              //                 limit: 10,
+                                              //                 offset: 0,
+                                              //                 data: filterPayload,
+                                              //               ),
+                                              //             );
+                                              //       } else {
+                                              //         if (mbNumber.text != "" &&
+                                              //             projectId.text == "" &&
+                                              //             projectName == "") {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 "measurementNumber":
+                                              //                     mbNumber.text,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         } else if (mbNumber.text ==
+                                              //                 "" &&
+                                              //             projectId.text != "" &&
+                                              //             projectName == "") {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 "projectId":
+                                              //                     projectId.text,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         } else if (mbNumber.text ==
+                                              //                 "" &&
+                                              //             projectId.text == "" &&
+                                              //             projectName != "") {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 "projectType":
+                                              //                     projectName,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         } else {
+                                              //           filterPayload = {
+                                              //             "inbox": {
+                                              //               "tenantId":
+                                              //                   GlobalVariables
+                                              //                       .tenantId,
+                                              //               "moduleSearchCriteria":
+                                              //                   {
+                                              //                 "tenantId":
+                                              //                     GlobalVariables
+                                              //                         .tenantId,
+                                              //                 "measurementNumber":
+                                              //                     mbNumber.text,
+                                              //                 "projectId":
+                                              //                     projectId.text,
+                                              //                 "projectType":
+                                              //                     projectName,
+                                              //               },
+                                              //               "processSearchCriteria":
+                                              //                   {
+                                              //                 "businessService": [
+                                              //                   "MB"
+                                              //                 ],
+                                              //                 "moduleName":
+                                              //                     "measurement-service"
+                                              //               },
+                                              //               "limit": 10,
+                                              //               "offset": 0
+                                              //             }
+                                              //           };
+                                              //         }
+
+                                              //         if (formGroup.value[
+                                              //                     assign] ==
+                                              //                 "MB_ASSIGNED_TO_ME" ||
+                                              //             assign ==
+                                              //                 "MB_ASSIGNED_TO_ME") {
+                                              //           filterPayload['inbox']![
+                                              //                       'moduleSearchCriteria']![
+                                              //                   'assignee'] =
+                                              //               GlobalVariables.uuid;
+                                              //         }
+
+                                              //         context
+                                              //             .read<
+                                              //                 MeasurementInboxBloc>()
+                                              //             .add(
+                                              //               MeasurementBookInboxSearchBlocEvent(
+                                              //                 limit: 10,
+                                              //                 offset: 0,
+                                              //                 data: filterPayload,
+                                              //               ),
+                                              //             );
+                                              //       }
+
+                                              //       context.router.maybePopTop();
+                                              //     }
+                                              //   },
+                                              // ),
+                                              )
                                         ],
                                       ),
                                     ),
@@ -692,9 +1024,9 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   project = false;
                                                 });
                                               },
-                                              initialValue:  ward.isNotEmpty
-                                                      ? ward.first
-                                                      : null,
+                                              initialValue: ward.isNotEmpty
+                                                  ? ward.first
+                                                  : null,
                                               label:
                                                   t.translate(i18.common.ward),
                                               menuItems: location!
@@ -761,8 +1093,11 @@ class _MBFilterPageState extends State<MBFilterPage> {
         wardNoKey: FormControl<String>(
             value: valueMeasurement.data['inbox'] != null
                 ? valueMeasurement.data['inbox']!['moduleSearchCriteria']
-                    ['ward']!=null?valueMeasurement.data['inbox']!['moduleSearchCriteria']
-                    ['ward'][0]:null
+                            ['ward'] !=
+                        null
+                    ? valueMeasurement.data['inbox']!['moduleSearchCriteria']
+                        ['ward'][0]
+                    : null
                 : ward.isNotEmpty
                     ? ward.first
                     : null),

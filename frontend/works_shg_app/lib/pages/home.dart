@@ -1,4 +1,7 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -63,8 +66,12 @@ class _HomePage extends State<HomePage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-            .copyWith(color: const DigitColors().white),
+         iconTheme: Theme.of(context).iconTheme.copyWith(
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .paper.primary
+                                   
+                            ),
         titleSpacing: 0,
         title: GlobalVariables.roleType == RoleType.cbo
             ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
@@ -119,10 +126,17 @@ class _HomePage extends State<HomePage> {
                           orgState.maybeWhen(
                               orElse: () => false,
                               error: (String? error) {
-                                Notifiers.getToastMessage(
-                                    context,
-                                    t.translate(i18.common.noOrgLinkedWithMob),
-                                    'ERROR');
+                                // Notifiers.getToastMessage(
+                                //     context,
+                                //     t.translate(i18.common.noOrgLinkedWithMob),
+                                //     'ERROR');
+
+                                Toast.showToast(
+                                  context,
+                                  message: t
+                                      .translate(i18.common.noOrgLinkedWithMob),
+                                  type: ToastType.error,
+                                );
                                 context
                                     .read<AuthBloc>()
                                     .add(const AuthLogoutEvent());
@@ -131,11 +145,17 @@ class _HomePage extends State<HomePage> {
                                   organisationListModel) async {
                                 if ((organisationListModel?.organisations ?? [])
                                     .isEmpty) {
-                                  Notifiers.getToastMessage(
-                                      context,
-                                      t.translate(
-                                          i18.common.noOrgLinkedWithMob),
-                                      'ERROR');
+                                  // Notifiers.getToastMessage(
+                                  //     context,
+                                  //     t.translate(
+                                  //         i18.common.noOrgLinkedWithMob),
+                                  //     'ERROR');
+                                  Toast.showToast(
+                                  context,
+                                  message: t
+                                      .translate(i18.common.noOrgLinkedWithMob),
+                                  type: ToastType.error,
+                                );
                                   context
                                       .read<AuthBloc>()
                                       .add(const AuthLogoutEvent());
@@ -299,8 +319,8 @@ class _HomePage extends State<HomePage> {
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
           child: PoweredByDigit(
-               version: Constants.appVersion,
-              ),
+            version: Constants.appVersion,
+          ),
         ),
         children: [
           DigitCard(

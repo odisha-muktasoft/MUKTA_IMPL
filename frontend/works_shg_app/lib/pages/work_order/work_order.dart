@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -69,7 +70,12 @@ class _WorkOrderPage extends State<WorkOrderPage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+         iconTheme: Theme.of(context).iconTheme.copyWith(
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .paper.primary
+                                   
+                            ),
         titleSpacing: 0,
         title: const AppBarLogo(),
       ),

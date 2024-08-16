@@ -146,22 +146,36 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                           controller: _scrollController,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 4.0),
-                              child: CardWidget(
-                                backward: () {
-                                  _scrollBackward();
-                                },
-                                forward: () {
-                                  _scrollForward();
-                                },
-                                filteredMeasurementsMeasure: lineItems![index],
-                                type: widget.type,
-                                viewMode: value.viewStatus,
-                                noOfUnit: widget.noOfUnit,
-                                cummulativePrevQty: widget.cummulativePrevQty,
-                                index: index,
-                              ),
+                            return AnimatedBuilder(
+                             animation: _scrollController, 
+                             builder: (context, child) {
+                                double scale = 1.0;
+                        if (_scrollController.position.haveDimensions) {
+                          double pageOffset = _scrollController.page! - index;
+                          scale = (1 - (pageOffset.abs() * 0.2)).clamp(0.9, 1.0);
+                        }
+                             
+                              return Transform.scale(
+                                scale: scale,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 4.0),
+                                  child: CardWidget(
+                                    backward: () {
+                                      _scrollBackward();
+                                    },
+                                    forward: () {
+                                      _scrollForward();
+                                    },
+                                    filteredMeasurementsMeasure: lineItems![index],
+                                    type: widget.type,
+                                    viewMode: value.viewStatus,
+                                    noOfUnit: widget.noOfUnit,
+                                    cummulativePrevQty: widget.cummulativePrevQty,
+                                    index: index,
+                                  ),
+                                ),
+                              );
+                             },
                             );
                           },
                           itemCount: lineItems?.length,

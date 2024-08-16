@@ -1,5 +1,15 @@
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as uiComponent;
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -172,11 +182,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                   );
                 }
 
-                Notifiers.getToastMessage(
-                    context,
-                    t.translate(
-                        "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
-                    'SUCCESS');
+                Toast.showToast(
+                  context,
+                  message: t.translate(
+                      "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
+                  type: ToastType.success,
+                );
 
                 context.read<MeasurementDetailBloc>().add(
                       MeasurementDetailBookBlocEvent(
@@ -195,8 +206,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                 ).popUntil(
                   (route) => route is! PopupRoute,
                 );
-                Notifiers.getToastMessage(
-                    context, value.error.toString(), 'ERROR');
+                // Notifiers.getToastMessage(
+                //     context, value.error.toString(), 'ERROR');
+
+                Toast.showToast(
+                  context,
+                  message: value.error.toString(),
+                  type: ToastType.error,
+                );
               },
             );
           },
@@ -587,28 +604,53 @@ class _MBDetailPageState extends State<MBDetailPage>
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 8.0, bottom: 8.0, top: 0, right: 0),
-                              child: IconBackButton(
-                                iconTextColor: const DigitColors().black,
-                                iconColor: const DigitColors().black,
-                                icon: Icons.arrow_left,
-                                action: () {
-                                  context.router.popUntilRouteWithPath(
-                                    widget.type == MBScreen.update
-                                        ? 'measurement-inbox'
-                                        : 'workOrder-inbox',
-                                  );
-                                },
-                              ),
+                                  left: 8.0, bottom: 8.0, top: 8.0, right: 8.0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    BackNavigationButton(
+                                      backNavigationButtonThemeData:
+                                          const BackNavigationButtonThemeData()
+                                              .copyWith(
+                                        textColor: Theme.of(context)
+                                            .colorTheme
+                                            .primary
+                                            .primary2,
+                                        contentPadding: EdgeInsets.zero,
+                                        context: context,
+                                        backButtonIcon: Icon(
+                                          Icons.arrow_left,
+                                          // size: MediaQuery.of(context)
+                                          //             .size
+                                          //             .width <
+                                          //         500
+                                          //     ? Theme.of(context)
+                                          //         .spacerTheme
+                                          //         .spacer5
+                                          //     : Theme.of(context)
+                                          //         .spacerTheme
+                                          //         .spacer6,
+                                          color: Theme.of(context)
+                                              .colorTheme
+                                              .primary
+                                              .primary2,
+                                        ),
+                                      ),
+                                      backButtonText:
+                                          AppLocalizations.of(context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                      handleBack: () {
+                                        context.router.popUntilRouteWithPath(
+                                          widget.type == MBScreen.update
+                                              ? 'measurement-inbox'
+                                              : 'workOrder-inbox',
+                                        );
+                                      },
+                                    ),
+                                  ]),
                             ),
-                            // Back(
-                            //   callback: () {
-                            //     context.router.popUntilRouteWithPath(
-                            //         widget.type == MBScreen.update
-                            //             ? 'measurement-inbox'
-                            //             : 'workOrder-inbox');
-                            //   },
-                            // ),
+
                             Padding(
                               padding: const EdgeInsets.only(left: 16.0),
                               child: Text(
@@ -759,7 +801,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             )),
                                           )
                                         : ListView.builder(
-                                          shrinkWrap: true,
+                                            shrinkWrap: true,
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
@@ -1397,9 +1439,9 @@ class _MBDetailPageState extends State<MBDetailPage>
   double tabViewHeight(int sork, int nonSork, int photo) {
     switch (_tabController.index) {
       case 0:
-        return sork == 0 ? 300 : (sork * 500)+(sork*30) ;
+        return sork == 0 ? 300 : sork==1?(sork * 500): (sork * 500)+(sork*20) ;
       case 1:
-        return nonSork == 0 ? 300 : (nonSork * 500)+(nonSork*30) ;
+        return nonSork == 0 ? 300 :nonSork == 1?(nonSork * 500): (nonSork * 500)+(sork*20) ;
       case 2:
         return photoSize(photo);
       default:
@@ -1425,7 +1467,7 @@ class _MBDetailPageState extends State<MBDetailPage>
     }
   }
 
-  DigitCard sorCard(
+  Widget sorCard(
     AppLocalizations t,
     BuildContext ctx,
     int index, {
@@ -1456,193 +1498,178 @@ class _MBDetailPageState extends State<MBDetailPage>
                 .toStringAsFixed(4);
           });
 
-    return DigitCard(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 0.0, bottom: 0.0),
-        child: ConstrainedBox(
-          constraints: BoxConstraints.tight(const Size.fromHeight(480)),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-             // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+    return uiComponent.DigitCard(
+        margin: const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
+        cardType: CardType.primary,
+        children: [
+          LabelValueList(
+            heading: "$cardLevel ${index+1}",
+            maxLines: 3, labelFlex: 5, valueFlex: 5, items: [
+            LabelValuePair(
+                label: t.translate(i18.measurementBook.description),
+                value:
+                    magic.first.contracts!.first.estimates!.first.name ?? ""),
+            LabelValuePair(
+                label: t.translate(i18.measurementBook.unit),
+                value: line[0].uom ?? ''),
+            LabelValuePair(
+                label: t.translate(i18.measurementBook.rate),
+                value: line[0].unitRate == null
+                    ? 0.00.toString()
+                    : double.parse(line[0].unitRate!.toString())
+                        .toStringAsFixed(2)),
+            LabelValuePair(
+                label: t.translate(i18.measurementBook.approvedQty),
+                value: noOfQty),
+            LabelValuePair(
+                label:
+                    "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}",
+                value: preSorNonSor == null ? "0.0000" : preConumed),
+          ]),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(t.translate(i18.measurementBook.currentMBEntry),
+                    style: Theme.of(context).textTheme.headlineSmall),
+              ),
+              Container(
+                padding: const EdgeInsets.all(5.0),
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const DigitColors().cloudGray,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(1),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4.0),
+                      child: Text(
+                        (magic.fold(0.0, (sum, obj) {
+                          double m;
+                          if (obj.contracts?.first.estimates?.first
+                                  .isDeduction ==
+                              false) {
+                            m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                              double mk = double.parse(ob.quantity!.toString());
+                              return subSum + mk;
+                            });
+                          } else {
+                            m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+                              double mr = double.parse(ob.quantity!.toString());
+                              return subSum + mr;
+                            });
+                            m = -m;
+                          }
+                          return sum + m;
+                        })).toStringAsFixed(4),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 3,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: ctx,
+                          builder: (_) {
+                            return HorizontalCardListDialog(
+                              lineItems: magic,
+                              index: index,
+                              type: type,
+                              noOfUnit: noOfQty,
+                              cummulativePrevQty: preSorNonSor == null
+                                  ? 0.0000
+                                  : preSorNonSor.fold(0.0000, (sum, obj) {
+                                      double m = obj.contracts!.first.estimates!
+                                                  .first.isDeduction ==
+                                              true
+                                          ? -(obj.cumulativeValue!)
+                                          : (obj.cumulativeValue!);
+                                      return sum + m.toDouble();
+                                    }),
+                              sorId: sorNonSorId,
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 0.0),
+                        child: Icon(
+                          Icons.add_circle,
+                          size: 30,
+                          color: const DigitColors().burningOrange,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          // end
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                child: Text(
+                  t.translate(i18.measurementBook.mbAmtCurrentEntry),
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  textScaler: const TextScaler.linear(0.99),
+                ),
+              ),
+              Container(
+                width: MediaQuery.sizeOf(context).width,
+                height: 50,
+                padding: const EdgeInsets.only(
+                    top: 10.0, left: 5.0, right: 5.0, bottom: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const DigitColors().cloudGray,
+                    width: 2.0,
+                  ),
+                  borderRadius: BorderRadius.circular(1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
                   child: Text(
-                    "$cardLevel ${index + 1}",
-                    style: DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+                    (magic.fold(0.0, (sum, obj) {
+                      double m = obj.mbAmount != null
+                          ? (obj.mbAmount != null && obj.mbAmount! < 0)
+                              ? (obj.mbAmount! * (-1))
+                              : obj.mbAmount!
+                          : 0.00;
+                      if (obj.contracts?.first.estimates?.first.isDeduction ==
+                          true) {
+                        m = -(m); // Negate the amount for deductions
+                      } else {
+                        m = (m);
+                      }
+                      return sum + m;
+                    })).toStringAsFixed(2),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    maxLines: 3,
                   ),
                 ),
-                SORTableCard(
-                  element: {
-                    t.translate(i18.measurementBook.description):
-                        magic.first.contracts!.first.estimates!.first.name,
-                    t.translate(i18.measurementBook.unit): line[0].uom,
-                    t.translate(i18.measurementBook.rate): line[0].unitRate == null
-                        ? 0.00
-                        : double.parse(line[0].unitRate!.toString())
-                            .toStringAsFixed(2),
-                    t.translate(i18.measurementBook.approvedQty): noOfQty,
-                    "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}":
-                        preSorNonSor == null ? "0.0000" : preConumed
-                  },
-                ),
-            
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: Text(t.translate(i18.measurementBook.currentMBEntry),
-                          style: Theme.of(context).textTheme.headlineSmall),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(5.0),
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const DigitColors().cloudGray,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4.0),
-                            child: Text(
-                              (magic.fold(0.0, (sum, obj) {
-                                double m;
-                                if (obj.contracts?.first.estimates?.first
-                                        .isDeduction ==
-                                    false) {
-                                  m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-                                    double mk =
-                                        double.parse(ob.quantity!.toString());
-                                    return subSum + mk;
-                                  });
-                                } else {
-                                  m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-                                    double mr =
-                                        double.parse(ob.quantity!.toString());
-                                    return subSum + mr;
-                                  });
-                                  m = -m;
-                                }
-                                return sum + m;
-                              })).toStringAsFixed(4),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              maxLines: 3,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: ctx,
-                                builder: (_) {
-                                  return HorizontalCardListDialog(
-                                    lineItems: magic,
-                                    index: index,
-                                    type: type,
-                                    noOfUnit: noOfQty,
-                                    cummulativePrevQty: preSorNonSor == null
-                                        ? 0.0000
-                                        : preSorNonSor.fold(0.0000, (sum, obj) {
-                                            double m = obj
-                                                        .contracts!
-                                                        .first
-                                                        .estimates!
-                                                        .first
-                                                        .isDeduction ==
-                                                    true
-                                                ? -(obj.cumulativeValue!)
-                                                : (obj.cumulativeValue!);
-                                            return sum + m.toDouble();
-                                          }),
-                                    sorId: sorNonSorId,
-                                  );
-                                },
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 0.0),
-                              child: Icon(
-                                Icons.add_circle,
-                                size: 30,
-                                color: const DigitColors().burningOrange,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-            
-                // end
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
-                      child: Text(
-                        t.translate(i18.measurementBook.mbAmtCurrentEntry),
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        textScaler: const TextScaler.linear(0.99),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 50,
-                      padding: const EdgeInsets.only(
-                          top: 10.0, left: 5.0, right: 5.0, bottom: 10),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: const DigitColors().cloudGray,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(1),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 4.0),
-                        child: Text(
-                          (magic.fold(0.0, (sum, obj) {
-                            double m = obj.mbAmount != null
-                                ? (obj.mbAmount != null && obj.mbAmount! < 0)
-                                    ? (obj.mbAmount! * (-1))
-                                    : obj.mbAmount!
-                                : 0.00;
-                            if (obj.contracts?.first.estimates?.first.isDeduction ==
-                                true) {
-                              m = -(m); // Negate the amount for deductions
-                            } else {
-                              m = (m);
-                            }
-                            return sum + m;
-                          })).toStringAsFixed(2),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          maxLines: 3,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
-      ),
-    );
+        ]);
   }
 
   void _openBottomSheet(
@@ -1679,8 +1706,8 @@ class _MBDetailPageState extends State<MBDetailPage>
               const Center(
                 child: SizedBox(
                   width: 100,
-                  child: Divider(
-                    thickness: 5,
+                  child: DigitDivider(
+                    dividerType: DividerType.large,
                   ),
                 ),
               ),
@@ -1800,38 +1827,40 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 15,
               ),
               showBtn
-                  ? IntrinsicHeight(
-                      child: DigitElevatedButton(
-                          child:
-                              Text(t.translate(i18.measurementBook.mbAction)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                            if (widget.type == MBScreen.update) {
-                              DigitActionDialog.show(
-                                context,
-                                widget: CommonButtonCard(
-                                  g: processInstances,
-                                  contractNumber: contractNumber,
-                                  mbNumber: mbNumber,
-                                  type: widget.type,
-                                  bs: bs,
-                                ),
-                              );
-                            } else {
-                              DigitActionDialog.show(
-                                context,
-                                widget: CommonButtonCard(
-                                  g: processInstances,
-                                  contractNumber: contractNumber,
-                                  mbNumber: mbNumber,
-                                  type: widget.type,
-                                  bs: bs,
-                                ),
-                              );
-                            }
-
-                            // before
-                          }),
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Button(
+                        mainAxisSize: MainAxisSize.max,
+                        label: t.translate(i18.measurementBook.mbAction),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          if (widget.type == MBScreen.update) {
+                            DigitActionDialog.show(
+                              context,
+                              widget: CommonButtonCard(
+                                g: processInstances,
+                                contractNumber: contractNumber,
+                                mbNumber: mbNumber,
+                                type: widget.type,
+                                bs: bs,
+                              ),
+                            );
+                          } else {
+                            DigitActionDialog.show(
+                              context,
+                              widget: CommonButtonCard(
+                                g: processInstances,
+                                contractNumber: contractNumber,
+                                mbNumber: mbNumber,
+                                type: widget.type,
+                                bs: bs,
+                              ),
+                            );
+                          }
+                        },
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                      ),
                     )
                   : const SizedBox.shrink(),
             ],
@@ -1895,7 +1924,6 @@ class SORTableCard extends StatelessWidget {
                               element[e].toString(),
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
-                              
                             ),
                           )),
                         ],
