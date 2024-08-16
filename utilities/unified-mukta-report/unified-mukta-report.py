@@ -597,6 +597,7 @@ def getEstimateData():
                             temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = estimate['additionalDetails']['projectNumber']
                             temp['Estimate ID'] = estimate['estimateNumber']
+                            temp['Revision Estimate ID'] = estimate['revisionNumber'] if estimate['revisionNumber'] else None
                             temp['Date of Creation'] = convert_epoch_to_indian_time(estimate['auditDetails']['createdTime'])
                             temp['Prepared by (Name)'] = getUserName(estimate['auditDetails']['createdBy'])
                             workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
@@ -639,6 +640,7 @@ def getTechnicalSanctionApprovalData():
                             temp['ULB Name'] = format_tenant_id(tenantid)
                             temp['Project ID'] = estimate['additionalDetails']['projectNumber']
                             temp['Estimate ID'] = estimate['estimateNumber']
+                            temp['Revision Estimate ID'] = estimate['revisionNumber'] if estimate['revisionNumber'] else None
                             workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
                             temp['Date of Estimate Received'] = convert_epoch_to_indian_time(workFlowData['submitDate'])
                             if workFlowData['technicalSanctionDate'] != 'NA':
@@ -1001,65 +1003,65 @@ if __name__ == '__main__':
         WageSeeker_report_data_filename = f'wageSeeker_report_{current_date}.csv'
         ulb_mukta_functionaries_data_filename = f'ulb_mukta_functionaries_{current_date}.csv'
         
-        # Process work order data
-        workOrder_data = getWorkOrderData()
-        workOrder_file_path = os.path.join(directory, workOrder_filename)
-        writeDataToCSV(workOrder_data, workOrder_file_path)
+        # # Process work order data
+        # workOrder_data = getWorkOrderData()
+        # workOrder_file_path = os.path.join(directory, workOrder_filename)
+        # writeDataToCSV(workOrder_data, workOrder_file_path)
         
-        # Process failed payments data
-        failed_payments_data = getFailedPaymentsDataFromExpense()
-        failed_payments_file_path = os.path.join(directory, failedPayments_filename)
-        writeDataToCSV(failed_payments_data, failed_payments_file_path)
+        # # Process failed payments data
+        # failed_payments_data = getFailedPaymentsDataFromExpense()
+        # failed_payments_file_path = os.path.join(directory, failedPayments_filename)
+        # writeDataToCSV(failed_payments_data, failed_payments_file_path)
         
-        # Process bill data
-        bill_data = getBillData()
-        bill_file_path = os.path.join(directory, bill_filename)
-        writeDataToCSV(bill_data, bill_file_path)
+        # # Process bill data
+        # bill_data = getBillData()
+        # bill_file_path = os.path.join(directory, bill_filename)
+        # writeDataToCSV(bill_data, bill_file_path)
         
-        # Process muster roll data
-        muster_Data = getMusterRollData()
-        muster_file_path = os.path.join(directory, musterRoll_filename)
-        writeDataToCSV(muster_Data, muster_file_path)
+        # # Process muster roll data
+        # muster_Data = getMusterRollData()
+        # muster_file_path = os.path.join(directory, musterRoll_filename)
+        # writeDataToCSV(muster_Data, muster_file_path)
         
-        # Process project data
-        project_data = getProjectData()
-        project_file_path = os.path.join(directory, project_filename)
-        writeDataToCSV(project_data, project_file_path)
+        # # Process project data
+        # project_data = getProjectData()
+        # project_file_path = os.path.join(directory, project_filename)
+        # writeDataToCSV(project_data, project_file_path)
 
-        # Process Success/Partial Payments
-        success_payments_data = getSuccessPaymentsDataFromExpense()
-        success_payments_file_path = os.path.join(directory, success_payments_filename)
-        writeDataToCSV(success_payments_data, success_payments_file_path)
+        # # Process Success/Partial Payments
+        # success_payments_data = getSuccessPaymentsDataFromExpense()
+        # success_payments_file_path = os.path.join(directory, success_payments_filename)
+        # writeDataToCSV(success_payments_data, success_payments_file_path)
 
         # Estimate data
         estimate_data = getEstimateData()
         estimate_file_path = os.path.join(directory, estimate_filename)
         writeDataToCSV(estimate_data, estimate_file_path)
 
-        # Technical sanction and Administrative Approval
-        technical_sanction_approval_data = getTechnicalSanctionApprovalData()
-        technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
-        writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
+        # # Technical sanction and Administrative Approval
+        # technical_sanction_approval_data = getTechnicalSanctionApprovalData()
+        # technical_sanction_file_path = os.path.join(directory, technical_sanction_approval_data_filename)
+        # writeDataToCSV(technical_sanction_approval_data, technical_sanction_file_path)
 
-        # Revised payment data
-        revised_payment_data = getRevisedPaymentData()
-        revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
-        writeDataToCSV(revised_payment_data, revised_payment_file_path)
+        # # Revised payment data
+        # revised_payment_data = getRevisedPaymentData()
+        # revised_payment_file_path = os.path.join(directory, revised_payment_data_filename)
+        # writeDataToCSV(revised_payment_data, revised_payment_file_path)
 
-        # CBO Report
-        CBO_report_data = getCBOReportData()
-        CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
-        writeDataToCSV(CBO_report_data, CBO_report_file_path)
+        # # CBO Report
+        # CBO_report_data = getCBOReportData()
+        # CBO_report_file_path = os.path.join(directory, CBO_report_data_filename)
+        # writeDataToCSV(CBO_report_data, CBO_report_file_path)
 
-        # Wage Seeker Report
-        WageSeeker_report_data = getWageSeekerReportData()
-        WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
-        writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
+        # # Wage Seeker Report
+        # WageSeeker_report_data = getWageSeekerReportData()
+        # WageSeeker_report_file_path = os.path.join(directory, WageSeeker_report_data_filename)
+        # writeDataToCSV(WageSeeker_report_data, WageSeeker_report_file_path)
 
-        # Generate MUKTA functionaries report
-        ulb_mukta_functionaries_data = getUlbMuktaFunctionariesData()
-        ulb_mukta_functionaries_file_path = os.path.join(directory, ulb_mukta_functionaries_data_filename)
-        writeDataToCSV(ulb_mukta_functionaries_data, ulb_mukta_functionaries_file_path)
+        # # Generate MUKTA functionaries report
+        # ulb_mukta_functionaries_data = getUlbMuktaFunctionariesData()
+        # ulb_mukta_functionaries_file_path = os.path.join(directory, ulb_mukta_functionaries_data_filename)
+        # writeDataToCSV(ulb_mukta_functionaries_data, ulb_mukta_functionaries_file_path)
 
 
         logging.info('Report Generated Successfully')
