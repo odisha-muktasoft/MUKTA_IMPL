@@ -418,7 +418,7 @@ def getFailedPayments(payment_number):
             api_offset = api_offset + api_limit
             if response and response.status_code and response.status_code in [200, 202]:
                 response = response.json()
-                if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0:
+                if response and response['paymentInstructions'] and len(response['paymentInstructions'])>0 and response['paymentInstructions'][0]['jitBillNo'] != "NA":
                     pi = response['paymentInstructions'][0]
                     print("Payment Instruction ID: " + pi['jitBillNo'])
                     tenantId = pi['tenantId']
