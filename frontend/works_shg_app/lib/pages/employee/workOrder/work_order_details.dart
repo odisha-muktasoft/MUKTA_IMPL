@@ -50,6 +50,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
         ),
       ),
       appBar: AppBar(
+        backgroundColor: const Color(0xff0B4B66),
         iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
         titleSpacing: 0,
         title: const AppBarLogo(),

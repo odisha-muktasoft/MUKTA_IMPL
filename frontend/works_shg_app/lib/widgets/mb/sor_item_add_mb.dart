@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
@@ -193,7 +195,8 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: DigitOutLineButton(
+                                  child: ui_component.Button(
+                                     mainAxisSize: MainAxisSize.max,
                                     label: t.translate(i18.common.close),
                                     onPressed: () {
                                       context
@@ -205,14 +208,15 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                             type: widget.type,
                                           ));
                                       context.router.maybePopTop();
-                                    },
+                                    }, type: ButtonType.secondary, size: ButtonSize.large,
                                   ),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: ElevatedButton(
+                                  child: ui_component.Button(
+                                    mainAxisSize: MainAxisSize.max,
                                     onPressed: () {
                                       //SubmitLineEvent
                                       context.read<MeasurementDetailBloc>().add(
@@ -224,7 +228,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                               type: widget.type));
                                       // Navigator.of(context).pop();
                                     },
-                                    child: Text(t.translate(i18.common.submit)),
+                                    label: t.translate(i18.common.submit), type: ButtonType.primary, size: ButtonSize.large,
                                   ),
                                 ),
                               ],

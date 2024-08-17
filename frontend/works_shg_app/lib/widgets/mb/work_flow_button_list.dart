@@ -1,5 +1,6 @@
 import 'package:digit_components/widgets/digit_outline_button.dart';
 import 'package:digit_components/widgets/molecules/digit_loader.dart';
+import 'package:digit_ui_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
@@ -56,14 +57,15 @@ class CommonButtonCard extends StatelessWidget {
             ).popUntil(
               (route) => route is! PopupRoute,
             );
-            Notifiers.getToastMessage(
-              context,
-              // AppLocalizations.of(context)
-              //     .translate(i18.login.invalidOTP),
+            // Notifiers.getToastMessage(
+            //   context,
+            //   // AppLocalizations.of(context)
+            //   //     .translate(i18.login.invalidOTP),
 
-              value.error.toString(),
-              'ERROR',
-            );
+            //   value.error.toString(),
+            //   'ERROR',
+            // );
+            Toast.showToast(context, message: value.error.toString(), type: ToastType.error);
           },
         );
       },
@@ -76,20 +78,21 @@ class CommonButtonCard extends StatelessWidget {
                 child: Container(
                   color: Colors.transparent,
                   height: type == MBScreen.update
-                      ? g!.first.nextActions!.length.toDouble() * 55.0
+                      ? g!.first.nextActions!.length.toDouble() * 45.0
                       : bs!.first.workflowState!.first.actions!.length
                               .toDouble() *
-                          55.0,
+                          45.0,
                   width: MediaQuery.sizeOf(context).width,
                   child: Center(
                     child: type == MBScreen.update
                         ? ListView.builder(
-                          
+                        
                             itemBuilder: (context, index) {
                               String editReSubmit = "EDIT_RE_SUBMIT";
                               return Padding(
                                 padding: const EdgeInsets.only(bottom:4.0),
-                                child: DigitOutLineButton(
+                                child: Button(
+                                  mainAxisSize: MainAxisSize.max,
                                   label: g!.first.nextActions![index].action ==
                                           "EDIT/RE-SUBMIT"
                                       ? t.translate("WF_MB_ACTION_$editReSubmit")
@@ -203,7 +206,8 @@ class CommonButtonCard extends StatelessWidget {
                                         );
                                       }
                                     }
-                                  },
+                                  }, type: ButtonType.secondary,
+                                  size: ButtonSize.large,
                                 ),
                               );
                             },
@@ -215,7 +219,7 @@ class CommonButtonCard extends StatelessWidget {
                               String editReSubmit = "CREATE";
                               return Padding(
                                 padding: const EdgeInsets.only(bottom:4.0),
-                                child: DigitOutLineButton(
+                                child: Button(
                                   label: bs!.first.workflowState!.first
                                               .actions![index].action ==
                                           "CREATE"
@@ -299,7 +303,8 @@ class CommonButtonCard extends StatelessWidget {
                                         ),
                                       );
                                     }
-                                  },
+                                  }, type: ButtonType.secondary,
+                                  size: ButtonSize.large,
                                 ),
                               );
                             },

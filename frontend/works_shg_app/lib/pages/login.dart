@@ -332,6 +332,7 @@ class _LoginPageState extends State<LoginPage>
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xff0B4B66),
            iconTheme: Theme.of(context).iconTheme.copyWith(
                               color: Theme.of(context)
                                   .colorTheme

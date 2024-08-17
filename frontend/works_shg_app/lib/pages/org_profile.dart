@@ -63,6 +63,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xff0B4B66),
            iconTheme: Theme.of(context).iconTheme.copyWith(
                               color: Theme.of(context)
                                   .colorTheme

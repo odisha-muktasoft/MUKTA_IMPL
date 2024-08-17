@@ -56,6 +56,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
         '{mobileNumber}', '+91 - ${widget.mobileNumber}');
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xff0B4B66),
         iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
         titleSpacing: 16,
         title: const AppBarLogo(),

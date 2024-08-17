@@ -66,6 +66,7 @@ class _HomePage extends State<HomePage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xff0B4B66),
          iconTheme: Theme.of(context).iconTheme.copyWith(
                               color: Theme.of(context)
                                   .colorTheme

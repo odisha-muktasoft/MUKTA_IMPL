@@ -131,6 +131,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                         return Scaffold(
                           backgroundColor: const DigitColors().white,
                           appBar: AppBar(
+                            backgroundColor: const Color(0xff0B4B66),
                             iconTheme: Theme.of(context).iconTheme.copyWith(
                                 color:
                                     Theme.of(context).colorTheme.paper.primary),

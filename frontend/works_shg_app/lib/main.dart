@@ -3,7 +3,8 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:digit_components/theme/digit_theme.dart';
+// import 'package:digit_components/theme/digit_theme.dart';
+import 'package:digit_ui_components/digit_components.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -2,6 +2,13 @@ import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_components/widgets/atoms/digit_action_dialog.dart';
 import 'package:digit_components/widgets/digit_elevated_button.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/button_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -190,6 +197,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         ),
                   backgroundColor: const DigitColors().seaShellGray,
                   appBar: AppBar(
+                    backgroundColor: const Color(0xff0B4B66),
                     iconTheme: DigitTheme.instance.mobileTheme.iconTheme
                         .copyWith(color: const DigitColors().white),
                     titleSpacing: 0,
@@ -222,7 +230,6 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                     context.router.maybePopTop();
                                   },
                                 ),
-                               
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
@@ -243,51 +250,68 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             final adjustedIndex =
                                 widget.type == MBScreen.update ? index : index;
                             if (adjustedIndex <= k.length) {
-                              return CommonMBCard(
-                                padding: const EdgeInsets.only(
-                                    left: 8.0,
-                                    top: 8.0,
-                                    right: 8.0,
-                                    bottom: 8.0),
-                                headLabel:
-                                    "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
-                                items: {
-                                  t.translate(i18.measurementBook.mbNumber):
-                                      k[adjustedIndex].mbNumber,
-                                  t.translate(i18.common.date):
-                                      DateFormat('dd/MM/yyyy').format(
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                              k[adjustedIndex].entryDate!)),
-                                  t.translate(i18.measurementBook.mbAmount):
-                                      k[adjustedIndex].totalAmount != null
-                                          ? double.parse((k[adjustedIndex]
-                                                      .totalAmount!)
-                                                  .toString())
-                                              .toStringAsFixed(2)
-                                          : '0.00',
-                                  // t.translate(i18.measurementBook.mbStatus):
-                                  //     k[adjustedIndex].wfStatus,
-                                },
-                                widget: (k[adjustedIndex].musterRollNumber ==
-                                            null ||
-                                        k[adjustedIndex]
-                                                .musterRollNumber
-                                                .toString() ==
-                                            "")
-                                    ? const SizedBox.shrink()
-                                    : CommonTextButtonUnderline(
-                                        label: t.translate(i18.home.musterRoll),
-                                        onPressed: () {
-                                          context.router
+                              return DigitCard(
+                                margin: const EdgeInsets.all(8.0),
+                                cardType: CardType.primary,
+                                children: [
+                                  LabelValueList(
+                                      maxLines: 3,
+                                      labelFlex: 5,
+                                      valueFlex: 5,
+                                      items: [
+                                        LabelValuePair(
+                                            label: t.translate(
+                                                i18.measurementBook.mbNumber),
+                                            value: k[adjustedIndex].mbNumber ??
+                                                ""),
+                                        LabelValuePair(
+                                            label: t.translate(i18.common.date),
+                                            value: DateFormat('dd/MM/yyyy')
+                                                .format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        k[adjustedIndex]
+                                                            .entryDate!))),
+                                        LabelValuePair(
+                                            label: t.translate(
+                                                i18.measurementBook.mbAmount),
+                                            value: k[adjustedIndex]
+                                                        .totalAmount !=
+                                                    null
+                                                ? double.parse((k[adjustedIndex]
+                                                            .totalAmount!)
+                                                        .toString())
+                                                    .toStringAsFixed(2)
+                                                : '0.00'),
+                                        LabelValuePair(
+                                            label: t.translate(
+                                                i18.measurementBook.mbStatus),
+                                            value: k[adjustedIndex].wfStatus ??
+                                                ""),
+                                      ]),
+                                  (k[adjustedIndex].musterRollNumber == null ||
+                                          k[adjustedIndex]
+                                                  .musterRollNumber
+                                                  .toString() ==
+                                              "")
+                                      ? const SizedBox.shrink()
+                                      : Button(
+                                        
+                                          label:
+                                              t.translate(i18.home.musterRoll),
+                                          onPressed: () {
+                                            context.router
                                               .push(MBMusterScreenRoute(
                                             musterRollNumber: k[adjustedIndex]
                                                 .musterRollNumber
                                                 .toString(),
                                             tenantId: widget.tenantId!,
                                           ));
-                                        },
-                                      ),
-                                showSla: false, showStatus: true, status: k[adjustedIndex].wfStatus??'', 
+                                          },
+                                          type: ButtonType.tertiary,
+                                          size: ButtonSize.medium),
+                                ],
+                              
+                                // showSla: false, showStatus: true, status: k[adjustedIndex].wfStatus??'',
                               );
                             } else {
                               return null; // Return null for the skipped item
@@ -327,7 +351,6 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
       builder: (BuildContext context) {
         return Padding(
           padding: const EdgeInsets.only(
-
               left: 16.0, right: 16.0, top: 16.0, bottom: 0.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -393,10 +416,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           DigitTheme.instance.mobileTheme.textTheme.bodySmall,
                     ),
                     trailing: Text(
-                      totalNonSorAmount
-                          .toDouble()
-                          .toStringAsFixed(2)
-                          ,
+                      totalNonSorAmount.toDouble().toStringAsFixed(2),
                       style: DigitTheme
                           .instance.mobileTheme.textTheme.headlineMedium,
                     ),
@@ -407,7 +427,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 height: 15,
               ),
               Container(
-                height: 80,
+                //  height: 80,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
                   //color: Colors.red,
@@ -460,9 +480,11 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                 height: 15,
               ),
               showBtn
-                  ? IntrinsicHeight(
-                    child: DigitElevatedButton(
-                        child: Text(t.translate(i18.measurementBook.mbAction)),
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: ui_component.Button(
+                        mainAxisSize: MainAxisSize.max,
+                        label: t.translate(i18.measurementBook.mbAction),
                         onPressed: () {
                           Navigator.of(context).pop();
                           DigitActionDialog.show(
@@ -474,8 +496,11 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               type: widget.type,
                             ),
                           );
-                        }),
-                  )
+                        },
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                      ),
+                    )
                   : const SizedBox.shrink(),
             ],
           ),

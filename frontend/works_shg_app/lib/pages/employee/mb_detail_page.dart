@@ -6,7 +6,7 @@ import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
-    as uiComponent;
+    as ui_component;
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -564,6 +564,7 @@ class _MBDetailPageState extends State<MBDetailPage>
               ),
               backgroundColor: const DigitColors().seaShellGray,
               appBar: AppBar(
+                backgroundColor: const Color(0xff0B4B66),
                 iconTheme: DigitTheme.instance.mobileTheme.iconTheme
                     .copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
@@ -1498,7 +1499,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 .toStringAsFixed(4);
           });
 
-    return uiComponent.DigitCard(
+    return ui_component.DigitCard(
         margin: const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
         cardType: CardType.primary,
         children: [
@@ -1773,7 +1774,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 15,
               ),
               Container(
-                height: 80,
+                //height: 80,
                 width: MediaQuery.sizeOf(context).width,
                 decoration: BoxDecoration(
                   //color: Colors.red,
@@ -1835,7 +1836,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         onPressed: () {
                           Navigator.of(context).pop();
                           if (widget.type == MBScreen.update) {
-                            DigitActionDialog.show(
+                           DigitActionDialog.show(
                               context,
                               widget: CommonButtonCard(
                                 g: processInstances,

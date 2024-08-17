@@ -114,6 +114,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loaded: (organization) {
             return Scaffold(
               appBar: AppBar(
+                backgroundColor: const Color(0xff0B4B66),
                 iconTheme: DigitTheme.instance.mobileTheme.iconTheme
                     .copyWith(color: const DigitColors().white),
                 titleSpacing: 0,
@@ -302,6 +303,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loading: () {
             return Scaffold(
               appBar: AppBar(
+                backgroundColor: const Color(0xff0B4B66),
                 iconTheme: DigitTheme.instance.mobileTheme.iconTheme
                     .copyWith(color: const DigitColors().white),
                 titleSpacing: 0,

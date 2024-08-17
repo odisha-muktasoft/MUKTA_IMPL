@@ -67,11 +67,12 @@ class SuccessResponsePage extends StatelessWidget {
           ),
           appBar: isWithoutLogin
               ? AppBar(
-                
+                backgroundColor: const Color(0xff0B4B66),
                   title: const Text('MuktaSoft'),
                   automaticallyImplyLeading: false,
                 )
               : AppBar(
+                backgroundColor: const Color(0xff0B4B66),
                   titleSpacing: 0,
                   title: const AppBarLogo(),
                 ),

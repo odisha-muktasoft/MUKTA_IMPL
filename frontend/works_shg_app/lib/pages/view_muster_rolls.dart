@@ -57,6 +57,7 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
         builder: (context, localState) {
       return Scaffold(
           appBar: AppBar(
+            backgroundColor: const Color(0xff0B4B66),
             iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
