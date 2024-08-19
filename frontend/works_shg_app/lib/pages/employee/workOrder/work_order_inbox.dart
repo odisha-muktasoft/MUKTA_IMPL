@@ -1,4 +1,10 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -158,10 +164,22 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
-                              color: const DigitColors().burningOrange),
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .primary
+                                  .primary1),
                         ),
                       ),
-                      label: Text(t.translate(i18.measurementBook.backToTop)),
+                      label: Text(
+                        t.translate(i18.measurementBook.backToTop),
+                        style: Theme.of(context)
+                            .digitTextTheme(context)
+                            .bodyL
+                            .copyWith(
+                              color:
+                                  Theme.of(context).colorTheme.primary.primary1,
+                            ),
+                      ),
                       onPressed: () {
                         _scrollController.animateTo(
                           0.0,
@@ -183,8 +201,9 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
           backgroundColor: const DigitColors().seaShellGray,
           appBar: AppBar(
             backgroundColor: const Color(0xff0B4B66),
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                .copyWith(color: const DigitColors().white),
+            iconTheme: Theme.of(context)
+                .iconTheme
+                .copyWith(color: Theme.of(context).colorTheme.paper.primary),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -213,100 +232,106 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Back(
-                                  callback: () {
-                                    context.router.maybePopTop();
-                                  },
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8.0,
+                                      bottom: 8.0,
+                                      top: 8.0,
+                                      right: 8.0),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        BackNavigationButton(
+                                          backNavigationButtonThemeData:
+                                              const BackNavigationButtonThemeData()
+                                                  .copyWith(
+                                            textColor: Theme.of(context)
+                                                .colorTheme
+                                                .primary
+                                                .primary2,
+                                            contentPadding: EdgeInsets.zero,
+                                            context: context,
+                                            backButtonIcon: Icon(
+                                              Icons.arrow_left,
+                                              color: Theme.of(context)
+                                                  .colorTheme
+                                                  .primary
+                                                  .primary2,
+                                            ),
+                                          ),
+                                          backButtonText: AppLocalizations.of(
+                                                      context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                          handleBack: () {
+                                            context.router.maybePop();
+                                          },
+                                        ),
+                                      ]),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
+                                  padding: const EdgeInsets.only(left: 17.0),
                                   child: Text(
                                     "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                     style: DigitTheme.instance.mobileTheme
                                         .textTheme.headlineLarge,
                                   ),
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(
-                                //       left: 20.0, top: 5.0),
-                                //   child: Text(
-                                //     t.translate(i18.measurementBook.searchHint),
-                                //     style: DigitTheme.instance.mobileTheme
-                                //         .textTheme.bodyLarge,
-                                //   ),
-                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 4.0, right: 8.0, top: 2.0),
+                                      left: 4.0,
+                                      right: 8.0,
+                                      top: 4.0,
+                                      bottom: 0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextButton.icon(
-                                          label: Text(
-                                            t.translate(i18.common.filter),
-                                            style: DigitTheme
-                                                .instance
-                                                .mobileTheme
-                                                .textTheme
-                                                .labelLarge!
-                                                .copyWith(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                            ),
-                                          ),
+                                      ui_component.Button(
+                                          prefixIcon: Icons.filter_alt,
+                                          label: t.translate(i18.common.filter),
                                           onPressed: () {
                                             context.router
                                                 .push(const WOFilterRoute());
                                           },
-                                          icon: const Icon(
-                                            Icons.filter_alt,
-                                          )),
-                                      // reset
-                                      value.search
-                                          ? IconButton(
-                                              onPressed: () {
-                                                pageCount = 0;
-                                                context
-                                                    .read<WorkOrderInboxBloc>()
-                                                    .add(
-                                                      WorkOrderInboxBlocCreateEvent(
-                                                        businessService: "MB",
-                                                        limit: 10,
-                                                        moduleName:
-                                                            'contract-service',
-                                                        offset: pageCount,
-                                                        tenantId:
-                                                            GlobalVariables
-                                                                .tenantId!,
-                                                      ),
-                                                    );
-                                              },
-                                              icon: Icon(
-                                                Icons.restore_outlined,
-                                                color: const DigitColors()
-                                                    .burningOrange,
-                                              ),
-                                            )
-                                          : const SizedBox.shrink(),
-                                      //
-                                      TextButton.icon(
-                                          label: Text(
-                                            t.translate(
-                                                i18.measurementBook.sort),
-                                            style: DigitTheme
-                                                .instance
-                                                .mobileTheme
-                                                .textTheme
-                                                .labelLarge!
-                                                .copyWith(
-                                              color: const DigitColors()
-                                                  .burningOrange,
-                                            ),
-                                          ),
+                                          type:
+                                              ui_component.ButtonType.tertiary,
+                                          size: ui_component.ButtonSize.large),
 
-                                          // color: const DigitColors()
-                                          //     .burningOrange,
+                                      // reset
+                                      //TODO: not needed
+                                      // value.search
+                                      //     ? IconButton(
+                                      //         onPressed: () {
+                                      //           pageCount = 0;
+                                      //           context
+                                      //               .read<WorkOrderInboxBloc>()
+                                      //               .add(
+                                      //                 WorkOrderInboxBlocCreateEvent(
+                                      //                   businessService: "MB",
+                                      //                   limit: 10,
+                                      //                   moduleName:
+                                      //                       'contract-service',
+                                      //                   offset: pageCount,
+                                      //                   tenantId:
+                                      //                       GlobalVariables
+                                      //                           .tenantId!,
+                                      //                 ),
+                                      //               );
+                                      //         },
+                                      //         icon: Icon(
+                                      //           Icons.restore_outlined,
+                                      //           color: const DigitColors()
+                                      //               .burningOrange,
+                                      //         ),
+                                      //       )
+                                      //     : const SizedBox.shrink(),
+                                      //
+                                      ui_component.Button(
+                                          prefixIcon: Icons.swap_vert,
+                                          label: t.translate(
+                                              i18.measurementBook.sort),
                                           onPressed: () {
                                             Conversion.openSortingModal(
                                               context,
@@ -315,15 +340,16 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                               sortType: SortType.woSort,
                                             );
                                           },
-                                          icon:
-                                              SvgPicture.asset(Constants.sort)),
+                                          type:
+                                              ui_component.ButtonType.tertiary,
+                                          size: ui_component.ButtonSize.large),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          height: 170,
+                          height: 140,
                         ),
                       ),
                       value.contracts!.isEmpty
@@ -357,7 +383,10 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                   }
 
                                   return WorkOrderCard(
-                                    widget1: CommonTextButtonUnderline(
+                                    widget1: Button(
+                                      suffixIcon: Icons.arrow_forward_outlined,
+                                      size: ButtonSize.large,
+                                      type: ButtonType.link,
                                       label:
                                           t.translate(i18.common.viewDetails),
                                       onPressed: () {
@@ -371,71 +400,68 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                         ));
                                       },
                                     ),
-                                    widget2: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: BlocListener<MeasurementCheckBloc,
-                                          MeasurementCheckState>(
-                                        listener: (context, measureMentState) {
-                                          measureMentState.maybeMap(
-                                            orElse: () =>
-                                                const SizedBox.shrink(),
-                                            loaded: (value) {
+                                    widget2: BlocListener<MeasurementCheckBloc,
+                                        MeasurementCheckState>(
+                                      listener: (context, measureMentState) {
+                                        measureMentState.maybeMap(
+                                          orElse: () => const SizedBox.shrink(),
+                                          loaded: (value) {
+                                            if (value.estimateStatus == true &&
+                                                value.existingMB == true) {
+                                              context.router.push(MBDetailRoute(
+                                                contractNumber:
+                                                    value.workOrderNumber!,
+                                                mbNumber: "",
+                                                tenantId:
+                                                    GlobalVariables.tenantId,
+                                                type: MBScreen.create,
+                                              ));
+                                            } else {
                                               if (value.estimateStatus ==
-                                                      true &&
-                                                  value.existingMB == true) {
-                                                context.router
-                                                    .push(MBDetailRoute(
-                                                  contractNumber:
-                                                      value.workOrderNumber!,
-                                                  mbNumber: "",
-                                                  tenantId:
-                                                      GlobalVariables.tenantId,
-                                                  type: MBScreen.create,
-                                                ));
+                                                  false) {
+                                                Notifiers.getToastMessage(
+                                                    context,
+                                                    t.translate(i18.workOrder
+                                                        .estimateRevisionError),
+                                                    'ERROR');
                                               } else {
-                                                if (value.estimateStatus ==
-                                                    false) {
-                                                  Notifiers.getToastMessage(
-                                                      context,
-                                                      t.translate(i18.workOrder
-                                                          .estimateRevisionError),
-                                                      'ERROR');
-                                                } else {
-                                                  Notifiers.getToastMessage(
-                                                      context,
-                                                      t.translate(i18.workOrder
-                                                          .existingMBCreateError),
-                                                      'ERROR');
-                                                }
+                                                Notifiers.getToastMessage(
+                                                    context,
+                                                    t.translate(i18.workOrder
+                                                        .existingMBCreateError),
+                                                    'ERROR');
                                               }
-                                            },
-                                            error: (value) {
-                                              Notifiers.getToastMessage(context,
-                                                  value.error!, 'ERROR');
-                                            },
-                                          );
-                                        },
-                                        child: DigitElevatedButton(
-                                          child: Text(t.translate(
-                                              i18.measurementBook.createMb)),
-                                          onPressed: () {
-                                            final contract = value
-                                                    .contracts?[index]
-                                                    .contractNumber ??
-                                                "";
-
-                                            context
-                                                .read<MeasurementCheckBloc>()
-                                                .add(MeasurementCheckEvent(
-                                                  tenantId: value
-                                                      .contracts![index]
-                                                      .tenantId!,
-                                                  contractNumber: contract,
-                                                  measurementNumber: "",
-                                                  screenType: MBScreen.create,
-                                                ));
+                                            }
                                           },
-                                        ),
+                                          error: (value) {
+                                            Notifiers.getToastMessage(
+                                                context, value.error!, 'ERROR');
+                                          },
+                                        );
+                                      },
+                                      child: Button(
+                                        mainAxisSize: MainAxisSize.max,
+                                        size: ButtonSize.large,
+                                        type: ButtonType.primary,
+                                        label: t.translate(
+                                            i18.measurementBook.createMb),
+                                        onPressed: () {
+                                          final contract = value
+                                                  .contracts?[index]
+                                                  .contractNumber ??
+                                              "";
+
+                                          context
+                                              .read<MeasurementCheckBloc>()
+                                              .add(MeasurementCheckEvent(
+                                                tenantId: value
+                                                    .contracts![index]
+                                                    .tenantId!,
+                                                contractNumber: contract,
+                                                measurementNumber: "",
+                                                screenType: MBScreen.create,
+                                              ));
+                                        },
                                       ),
                                     ),
                                     items: {
@@ -507,7 +533,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   );
                 },
                 loading: (value) =>
-                     Center(child: shg_loader.Loaders.circularLoader(context)),
+                    Center(child: shg_loader.Loaders.circularLoader(context)),
               );
             },
           ),

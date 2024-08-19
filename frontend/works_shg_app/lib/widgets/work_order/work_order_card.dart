@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
-import 'package:works_shg_app/widgets/molecules/mb/table_form_data.dart';
 
 class WorkOrderCard extends StatefulWidget {
   final String? headLabel;
@@ -27,59 +29,48 @@ class _WorkOrderCardState extends State<WorkOrderCard> {
   Widget build(BuildContext context) {
     data = widget.items.remove("Status");
     return DigitCard(
-      child: Column(
-        crossAxisAlignment: widget.widget1 != null
-            ? CrossAxisAlignment.start
-            : CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          widget.headLabel != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.headLabel!,
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+      margin: const EdgeInsets.only(left: 5, bottom: 8, right: 5),
+      cardType: CardType.primary,
+      children: [
+        LabelValueList(
+            heading: widget.headLabel,
+            maxLines: 3,
+            labelFlex: 5,
+            valueFlex: 5,
+            items: widget.items.entries.map((entry) {
+              return LabelValuePair(
+                label: entry.key,
+                value: entry.value,
+              );
+            }).toList()),
+        data != null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Text(
+                      "Status",
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.start,
                     ),
-                  ],
-                )
-              : const SizedBox.shrink(),
-          TableFormCard(
-            element: widget.items,
-          ),
-          data != null
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Text(
-                        "Status",
-                        style: DigitTheme
-                            .instance.mobileTheme.textTheme.headlineSmall,
-                        textAlign: TextAlign.start,
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Text(
+                      data.toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(width: 0),
-                    Flexible(
-                        child: Padding(
-                      padding: const EdgeInsets.only(top: 1.4),
-                      child: Text(
-                        data.toString(),
-                        style: TextStyle(
-                            color: DigitTheme
-                                .instance.colorScheme.onSurfaceVariant),
-                      ),
-                    )),
-                  ],
-                )
-              : const SizedBox.shrink(),
-          widget.widget1 ?? const SizedBox.shrink(),
-          widget.widget2 ?? const SizedBox.shrink(),
-        ],
-      ),
+                  ),
+                ],
+              )
+            : const SizedBox.shrink(),
+        widget.widget1 ?? const SizedBox.shrink(),
+        widget.widget2 ?? const SizedBox.shrink(),
+      ],
     );
   }
 }

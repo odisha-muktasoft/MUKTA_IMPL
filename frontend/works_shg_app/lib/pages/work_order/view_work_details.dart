@@ -1,4 +1,15 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
+import 'package:digit_ui_components/widgets/widgets.dart';
+// import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -110,17 +121,17 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
         if (GlobalVariables.roleType == RoleType.cbo) {
           context.router.popUntilRouteWithPath('home');
           context.router.push(const WorkOrderRoute());
-         
         } else {
           Navigator.of(context).pop();
           // context.router.pop();
-        
         }
       },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xff0B4B66),
-          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+          iconTheme: Theme.of(context)
+              .iconTheme
+              .copyWith(color: Theme.of(context).colorTheme.paper.primary),
           titleSpacing: 0,
           title: const AppBarLogo(),
         ),
@@ -160,59 +171,54 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                 // } else
                                 // end
                                 if (value.estimateStatus == false) {
-                                  Notifiers.getToastMessage(
-                                      context,
-                                      t.translate(
+                                  // Notifiers.getToastMessage(
+                                  //     context,
+                                  //     t.translate(
+                                  //         i18.workOrder.estimateRevisionError),
+                                  //     'ERROR');
+                                  ui_component.Toast.showToast(context,
+                                      message: t.translate(
                                           i18.workOrder.estimateRevisionError),
-                                      'ERROR');
+                                      type: ui_component.ToastType.error);
                                 } else {
-                                  Notifiers.getToastMessage(
-                                      context,
-                                      t.translate(
+                                  // Notifiers.getToastMessage(
+                                  //     context,
+                                  //     t.translate(
+                                  //         i18.workOrder.existingMBCreateError),
+                                  //     'ERROR');
+
+                                  ui_component.Toast.showToast(context,
+                                      message: t.translate(
                                           i18.workOrder.existingMBCreateError),
-                                      'ERROR');
+                                      type: ui_component.ToastType.error);
                                 }
-                                
                               }
                             },
                           );
-
-                          
                         },
-                        child: SizedBox(
-                          height: 60,
-                          child: DigitCard(
+                        child: ui_card.DigitCard(
+                            cardType: CardType.primary,
                             padding: const EdgeInsets.all(8.0),
                             margin: const EdgeInsets.all(0),
-                            child: DigitElevatedButton(
-                              onPressed: () {
-                                context
-                                    .read<MeasurementCheckBloc>()
-                                    .add(MeasurementCheckEvent(
-                                      tenantId: GlobalVariables.tenantId!,
-                                      contractNumber: widget.contractNumber!,
-                                      measurementNumber: "",
-                                      screenType: MBScreen.create,
-                                    ));
-                              },
-                              child: Center(
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0, horizontal: 4.0),
-                                    child: Text(
-                                        t.translate(
-                                            i18.measurementBook.createMb),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16,
-                                          color: DigitTheme
-                                              .instance.colorScheme.onPrimary,
-                                        ))),
+                            children: [
+                              ui_component.Button(
+                                mainAxisSize: MainAxisSize.max,
+                                type: ButtonType.primary,
+                                size: ButtonSize.large,
+                                onPressed: () {
+                                  context
+                                      .read<MeasurementCheckBloc>()
+                                      .add(MeasurementCheckEvent(
+                                        tenantId: GlobalVariables.tenantId!,
+                                        contractNumber: widget.contractNumber!,
+                                        measurementNumber: "",
+                                        screenType: MBScreen.create,
+                                      ));
+                                },
+                                label:
+                                    t.translate(i18.measurementBook.createMb),
                               ),
-                            ),
-                          ),
-                        ),
+                            ]),
                       )
                     : cboBottomNavigationBar(t));
           },
@@ -225,8 +231,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
   }
 
 // Content EMP
-  ScrollableContent empScrollableContent(AppLocalizations t) {
-    return ScrollableContent(
+  ui_component.ScrollableContent empScrollableContent(AppLocalizations t) {
+    return ui_component.ScrollableContent(
       children: [
         BlocBuilder<LocalizationBloc, LocalizationState>(
             builder: (context, localState) {
@@ -237,8 +243,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   orElse: () => false,
                   initial: () => false,
                   loading: () => shg_loader.Loaders.circularLoader(context),
-                  error: (String? error) => Notifiers.getToastMessage(
-                      context, error.toString(), 'ERROR'),
+                  error: (String? error) => ui_component.Toast.showToast(
+                      context,
+                      message: error.toString(),
+                      type: ToastType.error),
                   loaded: (ContractsModel? contracts) {
                     if (contracts?.contracts != null) {
                       termsNCond = contracts!.contracts!.first
@@ -418,13 +426,27 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Back(
-                                  backLabel: AppLocalizations.of(context)
+                                BackNavigationButton(
+                                  backNavigationButtonThemeData:
+                                      const BackNavigationButtonThemeData()
+                                          .copyWith(
+                                    textColor: Theme.of(context)
+                                        .colorTheme
+                                        .primary
+                                        .primary2,
+                                    contentPadding: EdgeInsets.zero,
+                                    context: context,
+                                    backButtonIcon: Icon(
+                                      Icons.arrow_left,
+                                      color: Theme.of(context)
+                                          .colorTheme
+                                          .primary
+                                          .primary2,
+                                    ),
+                                  ),
+                                  backButtonText: AppLocalizations.of(context)
                                       .translate(i18.common.back),
-                                  callback: () {
-                                    // context.router.popUntilRouteWithPath('home') ;
-                                    // context.router.push(const WorkOrderRoute());
-
+                                  handleBack: () {
                                     if (GlobalVariables.roleType ==
                                         RoleType.cbo) {
                                       context.router
@@ -437,6 +459,25 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                     }
                                   },
                                 ),
+                                // Back(
+                                // backLabel: AppLocalizations.of(context)
+                                //     .translate(i18.common.back),
+                                //   callback: () {
+                                //     // context.router.popUntilRouteWithPath('home') ;
+                                //     // context.router.push(const WorkOrderRoute());
+
+                                // if (GlobalVariables.roleType ==
+                                //     RoleType.cbo) {
+                                //   context.router
+                                //       .popUntilRouteWithPath('home');
+                                //   context.router
+                                //       .push(const WorkOrderRoute());
+                                // } else {
+                                //   Navigator.of(context).pop();
+                                //   // context.router.pop();
+                                // }
+                                //   },
+                                // ),
                                 CommonWidgets.downloadButton(
                                     AppLocalizations.of(context)
                                         .translate(i18.common.download), () {
@@ -452,7 +493,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(
+                                    padding: EdgeInsets.only(
                                         left: 8.0,
                                         right: 16.0,
                                         top: 16.0,
@@ -464,25 +505,37 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                       textAlign: TextAlign.left,
                                     ),
                                   ),
-                                  DigitInfoCard(
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: ui_component.InfoCard(
                                       title: AppLocalizations.of(context)
                                           .translate(i18.common.info),
-                                      titleStyle: DigitTheme.instance
-                                          .mobileTheme.textTheme.headlineMedium
-                                          ?.apply(
-                                              color: const DigitColors().black),
+                                      type: InfoType.info,
                                       description: AppLocalizations.of(context)
                                           .translate(i18.common.workOrderInfo),
-                                      descStyle: DigitTheme.instance.mobileTheme
-                                          .textTheme.bodyLarge
-                                          ?.apply(
-                                              color: const Color.fromRGBO(
-                                                  80, 90, 95, 1)),
-                                      icon: Icons.info,
-                                      iconColor:
-                                          const Color.fromRGBO(52, 152, 219, 1),
-                                      backgroundColor:
-                                          DigitTheme.instance.colorScheme.tertiaryContainer),
+                                    ),
+                                  ),
+                                  // TODO:[old info card]
+                                  // DigitInfoCard(
+                                  //     title: AppLocalizations.of(context)
+                                  //         .translate(i18.common.info),
+                                  //     titleStyle: DigitTheme.instance
+                                  //         .mobileTheme.textTheme.headlineMedium
+                                  //         ?.apply(
+                                  //             color: const DigitColors().black),
+                                  //     description: AppLocalizations.of(context)
+                                  //         .translate(i18.common.workOrderInfo),
+                                  //     descStyle: DigitTheme.instance.mobileTheme
+                                  //         .textTheme.bodyLarge
+                                  //         ?.apply(
+                                  //             color: const Color.fromRGBO(
+                                  //                 80, 90, 95, 1)),
+                                  //     icon: Icons.info,
+                                  //     iconColor:
+                                  //         const Color.fromRGBO(52, 152, 219, 1),
+                                  //     backgroundColor:
+                                  //         DigitTheme.instance.colorScheme.tertiaryContainer,),
+
                                   workOrderList.isNotEmpty
                                       ? Column(
                                           children: [
@@ -514,15 +567,18 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                       .translate(i18.workOrder
                                                           .timeLineDetails),
                                             ),
-                                            DigitCard(
-                                                child: Attachments(
-                                              t.translate(i18
-                                                  .workOrder.relevantDocuments),
-                                              attachedFiles,
-                                            )),
+                                            ui_card.DigitCard(
+                                                margin: EdgeInsets.all(8),
+                                                cardType: CardType.primary,
+                                                children: [
+                                                  Attachments(
+                                                    t.translate(i18.workOrder
+                                                        .relevantDocuments),
+                                                    attachedFiles,
+                                                  )
+                                                ]),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: EdgeInsets.all(8.0),
                                               child: ButtonLink(
                                                 t.translate(i18.common
                                                     .viewTermsAndConditions),
@@ -608,13 +664,22 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                               ?.contractNumber,
                                                         )),
                                                     error: (String? error) =>
-                                                        Notifiers
-                                                            .getToastMessage(
+                                                        // Notifiers
+                                                        //     .getToastMessage(
+                                                        //         context,
+                                                        //         error ?? 'ERR!',
+                                                        //         'ERROR'));
+                                                        ui_component
+                                                                .Toast
+                                                            .showToast(
                                                                 context,
-                                                                error ?? 'ERR!',
-                                                                'ERROR'));
+                                                                message:
+                                                                    error ??
+                                                                        'ERR!',
+                                                                type: ToastType
+                                                                    .error));
                                               },
-                                              child: const SizedBox.shrink(),
+                                              child: SizedBox.shrink(),
                                             ),
                                           ],
                                         )
@@ -623,14 +688,14 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                               .workOrder.noWorkOrderAssigned),
                                           align: Alignment.center,
                                         ),
-                                  const SizedBox(
+                                  SizedBox(
                                     height: 16.0,
                                   ),
-                                  const Align(
+                                  Align(
                                     alignment: Alignment.bottomCenter,
-                                    child: PoweredByDigit(
-                                       version: Constants.appVersion,
-                                      ),
+                                    child: ui_component.PoweredByDigit(
+                                      version: Constants.appVersion,
+                                    ),
                                   )
                                 ]),
                           ]);
@@ -688,295 +753,6 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
     );
   }
 
-  BlocBuilder<LocalizationBloc, LocalizationState> empBottomNavigationBar(
-      AppLocalizations t) {
-    return BlocBuilder<LocalizationBloc, LocalizationState>(
-        builder: (context, localState) {
-      return localState.maybeMap(
-          orElse: () => const SizedBox.shrink(),
-          loaded: (value) =>
-              BlocBuilder<SearchIndividualWorkBloc, SearchIndividualWorkState>(
-                  builder: (context, workState) {
-                return workState.maybeWhen(
-                    orElse: () => Container(),
-                    loading: () => shg_loader.Loaders.circularLoader(context),
-                    error: (String? error) => Notifiers.getToastMessage(
-                        context, t.translate(error.toString()), 'ERROR'),
-                    loaded: (ContractsModel? contracts) {
-                      return workOrderList.isNotEmpty &&
-                              workOrderList.first['payload']['wfStatus'] ==
-                                  "ACCEPTED"
-                          // || workOrderList.first['payload']
-                          //     ['wfStatus'] ==
-                          // "ACCEPTED"
-                          ? SizedBox(
-                              height: 100,
-                              child: DigitCard(
-                                  padding: const EdgeInsets.all(8.0),
-                                  margin: const EdgeInsets.all(0),
-                                  child: Column(
-                                    children: [
-                                      DigitElevatedButton(
-                                        onPressed: () {
-                                          context
-                                              .read<AcceptWorkOrderBloc>()
-                                              .add(
-                                                WorkOrderAcceptEvent(
-                                                    contractsModel:
-                                                        workOrderList
-                                                            .first['payload'],
-                                                    action: 'ACCEPT',
-                                                    comments:
-                                                        'Work Order has been accepted by CBO'),
-                                              );
-                                        },
-                                        child: Center(
-                                          child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 4.0,
-                                                      horizontal: 4.0),
-                                              child: Text(
-                                                  t.translate(
-                                                      i18.common.accept),
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 16,
-                                                    color: DigitTheme.instance
-                                                        .colorScheme.onPrimary,
-                                                  ))),
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: ButtonLink(
-                                            t.translate(i18.common.decline),
-                                            () => DigitDialog.show(context,
-                                                options: DigitDialogOptions(
-                                                    titleText: AppLocalizations
-                                                            .of(context)
-                                                        .translate(
-                                                            i18.common.warning),
-                                                    contentText:
-                                                        AppLocalizations.of(
-                                                                context)
-                                                            .translate(i18
-                                                                .workOrder
-                                                                .warningMsg),
-                                                    primaryAction:
-                                                        DigitDialogActions(
-                                                      label:
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .translate(i18
-                                                                  .common
-                                                                  .confirm),
-                                                      action: (BuildContext
-                                                          context) {
-                                                        context
-                                                            .read<
-                                                                DeclineWorkOrderBloc>()
-                                                            .add(
-                                                              WorkOrderDeclineEvent(
-                                                                  contractsModel:
-                                                                      workOrderList
-                                                                              .first[
-                                                                          'payload'],
-                                                                  action:
-                                                                      'DECLINE',
-                                                                  comments:
-                                                                      'Work Order has been declined by CBO'),
-                                                            );
-                                                        Navigator.of(context,
-                                                                rootNavigator:
-                                                                    true)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    secondaryAction:
-                                                        DigitDialogActions(
-                                                      label: AppLocalizations
-                                                              .of(context)
-                                                          .translate(
-                                                              i18.common.back),
-                                                      action: (BuildContext
-                                                              context) =>
-                                                          Navigator.of(context,
-                                                                  rootNavigator:
-                                                                      true)
-                                                              .pop(),
-                                                    ))),
-                                            align: Alignment.center,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )),
-                            )
-                          : workOrderList.isNotEmpty &&
-                                  workOrderList.first['payload']['wfStatus'] !=
-                                      "ACCEPTED"
-                              ? SizedBox(
-                                  height: 60,
-                                  child: DigitCard(
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(0),
-                                    child: DigitElevatedButton(
-                                      onPressed: () => DigitActionDialog.show(
-                                          context,
-                                          widget: Center(
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 8.0),
-                                                  child: DigitOutlineIconButton(
-                                                    buttonStyle: OutlinedButton.styleFrom(
-                                                        minimumSize: Size(
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2.8,
-                                                            50),
-                                                        shape:
-                                                            const RoundedRectangleBorder(),
-                                                        side: BorderSide(
-                                                            color: const DigitColors()
-                                                                .burningOrange,
-                                                            width: 1)),
-                                                    onPressed: () {
-                                                      context.router.push(AttendanceRegisterTableRoute(
-                                                          registerId: (contracts
-                                                                          ?.contracts ??
-                                                                      [])
-                                                                  .first
-                                                                  .additionalDetails
-                                                                  ?.attendanceRegisterNumber
-                                                                  .toString() ??
-                                                              ''.toString(),
-                                                          tenantId: (contracts
-                                                                      ?.contracts ??
-                                                                  [])
-                                                              .first
-                                                              .tenantId
-                                                              .toString()));
-                                                      Navigator.of(context,
-                                                              rootNavigator:
-                                                                  true)
-                                                          .pop();
-                                                    },
-                                                    label: AppLocalizations.of(
-                                                            context)
-                                                        .translate(i18.home
-                                                            .manageWageSeekers),
-                                                    icon: Icons.fingerprint,
-                                                    textStyle: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 18),
-                                                  ),
-                                                ),
-                                                /*Padding(
-                                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                                  child: DigitOutlineIconButton(
-                                                    label: AppLocalizations.of(context)
-                                                        .translate(i18.workOrder.projectClosure),
-                                                    icon: Icons.cancel_outlined,
-                                                    buttonStyle: OutlinedButton.styleFrom(
-                                                        minimumSize: Size(
-                                                            MediaQuery.of(context).size.width / 2.8,
-                                                            50),
-                                                        shape: const RoundedRectangleBorder(),
-                                                        side: BorderSide(
-                                                            color: const DigitColors().burningOrange,
-                                                            width: 1)),
-                                                    onPressed: () =>
-                                                        Navigator.of(context, rootNavigator: true)
-                                                            .pop(),
-                                                    textStyle: const TextStyle(
-                                                        fontWeight: FontWeight.w700, fontSize: 18),
-                                                  ),
-                                                )*/
-                                                DigitOutlineIconButton(
-                                                  label: AppLocalizations.of(
-                                                          context)
-                                                      .translate(i18.workOrder
-                                                          .requestTimeExtension),
-                                                  icon: Icons
-                                                      .calendar_today_rounded,
-                                                  buttonStyle: OutlinedButton.styleFrom(
-                                                      minimumSize: Size(
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              2.8,
-                                                          50),
-                                                      shape:
-                                                          const RoundedRectangleBorder(),
-                                                      side: BorderSide(
-                                                          color:
-                                                              const DigitColors()
-                                                                  .burningOrange,
-                                                          width: 1)),
-                                                  onPressed: () {
-                                                    Navigator.of(context,
-                                                            rootNavigator: true)
-                                                        .pop();
-                                                    context
-                                                        .read<
-                                                            ValidTimeExtCreationsSearchBloc>()
-                                                        .add(SearchValidTimeExtCreationsEvent(
-                                                            contract: contracts
-                                                                ?.contracts
-                                                                ?.first,
-                                                            contractNo: (contracts
-                                                                        ?.contracts ??
-                                                                    [])
-                                                                .first
-                                                                .contractNumber
-                                                                .toString(),
-                                                            tenantId: (contracts
-                                                                        ?.contracts ??
-                                                                    [])
-                                                                .first
-                                                                .tenantId
-                                                                .toString(),
-                                                            status:
-                                                                'APPROVED'));
-                                                  },
-                                                  textStyle: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontSize: 18),
-                                                )
-                                              ],
-                                            ),
-                                          )),
-                                      child: Center(
-                                        child: Text(
-                                            AppLocalizations.of(context)
-                                                .translate(
-                                                    i18.common.takeAction),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium!
-                                                .apply(color: Colors.white)),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : Container();
-                    });
-              }));
-    });
-  }
-
   BlocBuilder<LocalizationBloc, LocalizationState> cboBottomNavigationBar(
       AppLocalizations t) {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -1001,130 +777,149 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                             // || workOrderList.first['payload']
                             //     ['wfStatus'] ==
                             // "ACCEPTED"
-                            ? SizedBox(
-                                height: 100,
-                                child: DigitCard(
-                                    padding: const EdgeInsets.all(8.0),
-                                    margin: const EdgeInsets.all(0),
-                                    child: Column(
-                                      children: [
-                                        DigitElevatedButton(
-                                          onPressed: () {
-                                            context
-                                                .read<AcceptWorkOrderBloc>()
-                                                .add(
-                                                  WorkOrderAcceptEvent(
-                                                      contractsModel:
-                                                          workOrderList
-                                                              .first['payload'],
-                                                      action: 'ACCEPT',
-                                                      comments:
-                                                          'Work Order has been accepted by CBO'),
-                                                );
-                                          },
-                                          child: Center(
-                                            child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 4.0,
-                                                        horizontal: 4.0),
-                                                child: Text(
-                                                    t.translate(
-                                                        i18.common.accept),
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 16,
-                                                      color: DigitTheme
-                                                          .instance
-                                                          .colorScheme
-                                                          .onPrimary,
-                                                    ))),
+                            ? ui_card.DigitCard(
+                                cardType: CardType.primary,
+                                padding: const EdgeInsets.all(8.0),
+                                margin: const EdgeInsets.all(0),
+                                children: [
+                                  ui_component.Button(
+                                    mainAxisSize: MainAxisSize.max,
+                                    size: ButtonSize.large,
+                                    type: ButtonType.primary,
+                                    label: t.translate(i18.common.accept),
+                                    onPressed: () {
+                                      context.read<AcceptWorkOrderBloc>().add(
+                                            WorkOrderAcceptEvent(
+                                                contractsModel: workOrderList
+                                                    .first['payload'],
+                                                action: 'ACCEPT',
+                                                comments:
+                                                    'Work Order has been accepted by CBO'),
+                                          );
+                                    },
+                                  ),
+                                  // Center(
+                                  //   child: Padding(
+                                  //     padding: const EdgeInsets.all(4.0),
+                                  //     child: ButtonLink(
+                                  //       t.translate(i18.common.decline),
+                                  //       () => DigitDialog.show(context,
+                                  //           options: DigitDialogOptions(
+                                  //               titleText:
+                                  //                   AppLocalizations.of(context)
+                                  //                       .translate(
+                                  //                           i18.common.warning),
+                                  //               contentText:
+                                  //                   AppLocalizations.of(context)
+                                  //                       .translate(i18.workOrder
+                                  //                           .warningMsg),
+                                  //               primaryAction:
+                                  //                   DigitDialogActions(
+                                  //                 label: AppLocalizations.of(
+                                  //                         context)
+                                  //                     .translate(
+                                  //                         i18.common.confirm),
+                                  //                 action:
+                                  //                     (BuildContext context) {
+                                  //                   context
+                                  //                       .read<
+                                  //                           DeclineWorkOrderBloc>()
+                                  //                       .add(
+                                  //                         WorkOrderDeclineEvent(
+                                  //                             contractsModel:
+                                  //                                 workOrderList
+                                  //                                         .first[
+                                  //                                     'payload'],
+                                  //                             action: 'DECLINE',
+                                  //                             comments:
+                                  //                                 'Work Order has been declined by CBO'),
+                                  //                       );
+                                  //                   Navigator.of(context,
+                                  //                           rootNavigator: true)
+                                  //                       .pop();
+                                  //                 },
+                                  //               ),
+                                  //               secondaryAction:
+                                  //                   DigitDialogActions(
+                                  //                 label: AppLocalizations.of(
+                                  //                         context)
+                                  //                     .translate(
+                                  //                         i18.common.back),
+                                  //                 action:
+                                  //                     (BuildContext context) =>
+                                  //                         Navigator.of(context,
+                                  //                                 rootNavigator:
+                                  //                                     true)
+                                  //                             .pop(),
+                                  //               ))),
+                                  //       align: Alignment.center,
+                                  //       textAlign: TextAlign.center,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  ui_component.Button(
+                                    mainAxisSize: MainAxisSize.max,
+                                    label: t.translate(i18.common.decline),
+                                    onPressed: () {
+                                      DigitDialog.show(
+                                        context,
+                                        options: DigitDialogOptions(
+                                          titleText: AppLocalizations.of(
+                                                  context)
+                                              .translate(i18.common.warning),
+                                          contentText:
+                                              AppLocalizations.of(context)
+                                                  .translate(
+                                                      i18.workOrder.warningMsg),
+                                          primaryAction: DigitDialogActions(
+                                            label: AppLocalizations.of(context)
+                                                .translate(i18.common.confirm),
+                                            action: (BuildContext context) {
+                                              context
+                                                  .read<DeclineWorkOrderBloc>()
+                                                  .add(
+                                                    WorkOrderDeclineEvent(
+                                                        contractsModel:
+                                                            workOrderList.first[
+                                                                'payload'],
+                                                        action: 'DECLINE',
+                                                        comments:
+                                                            'Work Order has been declined by CBO'),
+                                                  );
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop();
+                                            },
+                                          ),
+                                          secondaryAction: DigitDialogActions(
+                                            label: AppLocalizations.of(context)
+                                                .translate(i18.common.back),
+                                            action: (BuildContext context) =>
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(),
                                           ),
                                         ),
-                                        Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: ButtonLink(
-                                              t.translate(i18.common.decline),
-                                              () => DigitDialog.show(context,
-                                                  options: DigitDialogOptions(
-                                                      titleText:
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .translate(i18
-                                                                  .common
-                                                                  .warning),
-                                                      contentText:
-                                                          AppLocalizations.of(
-                                                                  context)
-                                                              .translate(i18
-                                                                  .workOrder
-                                                                  .warningMsg),
-                                                      primaryAction:
-                                                          DigitDialogActions(
-                                                        label:
-                                                            AppLocalizations.of(
-                                                                    context)
-                                                                .translate(i18
-                                                                    .common
-                                                                    .confirm),
-                                                        action: (BuildContext
-                                                            context) {
-                                                          context
-                                                              .read<
-                                                                  DeclineWorkOrderBloc>()
-                                                              .add(
-                                                                WorkOrderDeclineEvent(
-                                                                    contractsModel:
-                                                                        workOrderList.first[
-                                                                            'payload'],
-                                                                    action:
-                                                                        'DECLINE',
-                                                                    comments:
-                                                                        'Work Order has been declined by CBO'),
-                                                              );
-                                                          Navigator.of(context,
-                                                                  rootNavigator:
-                                                                      true)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                      secondaryAction:
-                                                          DigitDialogActions(
-                                                        label:
-                                                            AppLocalizations.of(
-                                                                    context)
-                                                                .translate(i18
-                                                                    .common
-                                                                    .back),
-                                                        action: (BuildContext
-                                                                context) =>
-                                                            Navigator.of(
-                                                                    context,
-                                                                    rootNavigator:
-                                                                        true)
-                                                                .pop(),
-                                                      ))),
-                                              align: Alignment.center,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    )),
+                                      );
+                                    },
+                                    type: ButtonType.tertiary,
+                                    size: ButtonSize.large,
+                                  ),
+                                ],
                               )
                             : workOrderList.isNotEmpty &&
                                     workOrderList.first['payload']
                                             ['wfStatus'] !=
                                         acceptCode
-                                ? SizedBox(
-                                    height: 60,
-                                    child: DigitCard(
-                                      padding: const EdgeInsets.all(8.0),
-                                      margin: const EdgeInsets.all(0),
-                                      child: DigitElevatedButton(
+                                ? ui_card.DigitCard(
+                                    cardType: CardType.primary,
+                                    padding: const EdgeInsets.all(8.0),
+                                    margin: const EdgeInsets.all(0),
+                                    children: [
+                                      ui_component.Button(
+                                        mainAxisSize: MainAxisSize.max,
+                                        type: ButtonType.primary,
+                                        size: ButtonSize.large,
                                         onPressed: () => DigitActionDialog.show(
                                             context,
                                             widget: Center(
@@ -1186,26 +981,26 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                     ),
                                                   ),
                                                   /*Padding(
-                                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                                  child: DigitOutlineIconButton(
-                                                    label: AppLocalizations.of(context)
-                                                        .translate(i18.workOrder.projectClosure),
-                                                    icon: Icons.cancel_outlined,
-                                                    buttonStyle: OutlinedButton.styleFrom(
-                                                        minimumSize: Size(
-                                                            MediaQuery.of(context).size.width / 2.8,
-                                                            50),
-                                                        shape: const RoundedRectangleBorder(),
-                                                        side: BorderSide(
-                                                            color: const DigitColors().burningOrange,
-                                                            width: 1)),
-                                                    onPressed: () =>
-                                                        Navigator.of(context, rootNavigator: true)
-                                                            .pop(),
-                                                    textStyle: const TextStyle(
-                                                        fontWeight: FontWeight.w700, fontSize: 18),
-                                                  ),
-                                                )*/
+                                              padding: const EdgeInsets.only(bottom: 8.0),
+                                              child: DigitOutlineIconButton(
+                                                label: AppLocalizations.of(context)
+                                                    .translate(i18.workOrder.projectClosure),
+                                                icon: Icons.cancel_outlined,
+                                                buttonStyle: OutlinedButton.styleFrom(
+                                                    minimumSize: Size(
+                                                        MediaQuery.of(context).size.width / 2.8,
+                                                        50),
+                                                    shape: const RoundedRectangleBorder(),
+                                                    side: BorderSide(
+                                                        color: const DigitColors().burningOrange,
+                                                        width: 1)),
+                                                onPressed: () =>
+                                                    Navigator.of(context, rootNavigator: true)
+                                                        .pop(),
+                                                textStyle: const TextStyle(
+                                                    fontWeight: FontWeight.w700, fontSize: 18),
+                                              ),
+                                            )*/
                                                   DigitOutlineIconButton(
                                                     label: AppLocalizations.of(
                                                             context)
@@ -1262,20 +1057,12 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                 ],
                                               ),
                                             )),
-                                        child: Center(
-                                          child: Text(
-                                              AppLocalizations.of(context)
-                                                  .translate(
-                                                      i18.common.takeAction),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleMedium!
-                                                  .apply(color: Colors.white)),
-                                        ),
+                                        label: AppLocalizations.of(context)
+                                            .translate(i18.common.takeAction),
                                       ),
-                                    ),
+                                    ],
                                   )
-                                : Container();
+                                : const SizedBox.shrink();
                       });
                 }));
       });
@@ -1284,8 +1071,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
 
 // content CBO
 
-  ScrollableContent cboScrollableContent(AppLocalizations t) {
-    return ScrollableContent(
+  ui_component.ScrollableContent cboScrollableContent(AppLocalizations t) {
+    return ui_component.ScrollableContent(
       children: [
         BlocListener<WorkOrderPDFBloc, WorkOrderPDFState>(
           listener: (context, state) {
@@ -1548,14 +1335,29 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Back(
-                                              backLabel: AppLocalizations.of(
-                                                      context)
-                                                  .translate(i18.common.back),
-                                              callback: () {
-                                                // context.router.popUntilRouteWithPath('home') ;
-                                                // context.router.push(const WorkOrderRoute());
-
+                                            BackNavigationButton(
+                                              backNavigationButtonThemeData:
+                                                  const BackNavigationButtonThemeData()
+                                                      .copyWith(
+                                                textColor: Theme.of(context)
+                                                    .colorTheme
+                                                    .primary
+                                                    .primary2,
+                                                contentPadding: EdgeInsets.zero,
+                                                context: context,
+                                                backButtonIcon: Icon(
+                                                  Icons.arrow_left,
+                                                  color: Theme.of(context)
+                                                      .colorTheme
+                                                      .primary
+                                                      .primary2,
+                                                ),
+                                              ),
+                                              backButtonText:
+                                                  AppLocalizations.of(context)
+                                                      .translate(
+                                                          i18.common.back),
+                                              handleBack: () {
                                                 if (GlobalVariables.roleType ==
                                                     RoleType.cbo) {
                                                   context.router
@@ -1565,10 +1367,32 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                       const WorkOrderRoute());
                                                 } else {
                                                   Navigator.of(context).pop();
-                                                  
                                                 }
                                               },
                                             ),
+
+                                            // Back(
+
+                                            //   backLabel: AppLocalizations.of(
+                                            //           context)
+                                            //       .translate(i18.common.back),
+                                            //   callback: () {
+                                            //     // context.router.popUntilRouteWithPath('home') ;
+                                            //     // context.router.push(const WorkOrderRoute());
+
+                                            //     if (GlobalVariables.roleType ==
+                                            //         RoleType.cbo) {
+                                            //       context.router
+                                            //           .popUntilRouteWithPath(
+                                            //               'home');
+                                            //       context.router.push(
+                                            //           const WorkOrderRoute());
+                                            //     } else {
+                                            //       Navigator.of(context).pop();
+                                            //     }
+                                            //   },
+                                            // ),
+
                                             //TODO:[CBO download]
                                             CommonWidgets.downloadButton(
                                                 AppLocalizations.of(context)
@@ -1651,18 +1475,20 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                         context
                                                             .read<
                                                                 WorkOrderPDFBloc>()
-                                                            .add(PDFEventAnalysis(
-                                                                estimateId: contracts
-                                                                    .first
-                                                                    .lineItems!
-                                                                    .first
-                                                                    .estimateId,
-                                                                tenantId: contracts
-                                                                    .first
-                                                                    .tenantId,
-                                                                    workorder: widget
-                                                                    .contractNumber
-                                                                    ),);
+                                                            .add(
+                                                              PDFEventAnalysis(
+                                                                  estimateId: contracts
+                                                                      .first
+                                                                      .lineItems!
+                                                                      .first
+                                                                      .estimateId,
+                                                                  tenantId:
+                                                                      contracts
+                                                                          .first
+                                                                          .tenantId,
+                                                                  workorder: widget
+                                                                      .contractNumber),
+                                                            );
                                                         Navigator.of(
                                                           context,
                                                           rootNavigator: true,
@@ -1712,31 +1538,54 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                   textAlign: TextAlign.left,
                                                 ),
                                               ),
-                                              DigitInfoCard(
-                                                  title: AppLocalizations.of(context)
-                                                      .translate(
-                                                          i18.common.info),
-                                                  titleStyle: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .headlineMedium
-                                                      ?.apply(
-                                                          color: const DigitColors()
-                                                              .black),
-                                                  description:
-                                                      AppLocalizations.of(context)
-                                                          .translate(i18.common
-                                                              .workOrderInfo),
-                                                  descStyle: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .bodyLarge
-                                                      ?.apply(color: const Color.fromRGBO(80, 90, 95, 1)),
-                                                  icon: Icons.info,
-                                                  iconColor: const Color.fromRGBO(52, 152, 219, 1),
-                                                  backgroundColor: DigitTheme.instance.colorScheme.tertiaryContainer),
+
+                                              ui_component.InfoCard(
+                                                title: AppLocalizations.of(
+                                                        context)
+                                                    .translate(i18.common.info),
+                                                type: InfoType.info,
+                                                description:
+                                                    AppLocalizations.of(context)
+                                                        .translate(i18.common
+                                                            .workOrderInfo),
+                                              ),
+// TODO:[old info card]
+
+                                              // DigitInfoCard(
+                                              //     title: AppLocalizations.of(
+                                              //             context)
+                                              //         .translate(i18.common.info),
+                                              //     titleStyle: DigitTheme
+                                              //         .instance
+                                              //         .mobileTheme
+                                              //         .textTheme
+                                              //         .headlineMedium
+                                              //         ?.apply(
+                                              //             color:
+                                              //                 const DigitColors()
+                                              //                     .black),
+                                              //     description:
+                                              // AppLocalizations.of(context)
+                                              //     .translate(i18.common
+                                              //         .workOrderInfo),
+                                              //     descStyle: DigitTheme
+                                              //         .instance
+                                              //         .mobileTheme
+                                              //         .textTheme
+                                              //         .bodyLarge
+                                              //         ?.apply(
+                                              //             color: const Color
+                                              //                 .fromRGBO(
+                                              //                 80, 90, 95, 1)),
+                                              //     icon: Icons.info,
+                                              //     iconColor: const Color.fromRGBO(
+                                              //         52, 152, 219, 1),
+                                              //     backgroundColor: DigitTheme
+                                              //         .instance
+                                              //         .colorScheme
+                                              //         .tertiaryContainer,
+                                              //   ),
+
                                               workOrderList.isNotEmpty
                                                   ? Column(
                                                       children: [
@@ -1789,40 +1638,83 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                             t.translate(i18
                                                                 .common
                                                                 .viewTermsAndConditions),
-                                                            () => DigitDialog.show(
-                                                                context,
-                                                                options: DigitDialogOptions(
-                                                                    title: Text(t.translate(i18.common.termsAndConditions), style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 24, fontFamily: 'Roboto Condensed', fontStyle: FontStyle.normal, color: Color.fromRGBO(11, 12, 12, 1))),
-                                                                    content: termsNCond.isNotEmpty
-                                                                        ? Column(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.start,
-                                                                            children: [
-                                                                              for (var i = 0; i < termsNCond.length; i++)
-                                                                                Align(
-                                                                                  alignment: Alignment.centerLeft,
-                                                                                  child: Text(
-                                                                                    '${i + 1}. ${termsNCond[i]}',
-                                                                                    style: const TextStyle(
-                                                                                      fontSize: 16,
-                                                                                      fontWeight: FontWeight.w700,
-                                                                                    ),
-                                                                                    textAlign: TextAlign.start,
-                                                                                  ),
-                                                                                )
-                                                                            ],
-                                                                          )
-                                                                        : EmptyImage(
-                                                                            align:
-                                                                                Alignment.center,
-                                                                            label:
-                                                                                t.translate(i18.common.noTermsNConditions),
-                                                                          ),
-                                                                    titlePadding: const EdgeInsets.all(8.0),
-                                                                    contentPadding: const EdgeInsets.all(8.0),
-                                                                    barrierDismissible: true,
-                                                                    primaryAction: DigitDialogActions(label: t.translate(i18.common.close), action: (context) => Navigator.of(context, rootNavigator: true).pop()),
-                                                                    isScrollable: true)),
+                                                            () => DigitDialog
+                                                                .show(
+                                                              context,
+                                                              options:
+                                                                  DigitDialogOptions(
+                                                                title: Text(
+                                                                    t.translate(i18
+                                                                        .common
+                                                                        .termsAndConditions),
+                                                                    style: const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w700,
+                                                                        fontSize:
+                                                                            24,
+                                                                        fontFamily:
+                                                                            'Roboto Condensed',
+                                                                        fontStyle:
+                                                                            FontStyle
+                                                                                .normal,
+                                                                        color: Color.fromRGBO(
+                                                                            11,
+                                                                            12,
+                                                                            12,
+                                                                            1))),
+                                                                content: termsNCond
+                                                                        .isNotEmpty
+                                                                    ? Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          for (var i = 0;
+                                                                              i < termsNCond.length;
+                                                                              i++)
+                                                                            Align(
+                                                                              alignment: Alignment.centerLeft,
+                                                                              child: Text(
+                                                                                '${i + 1}. ${termsNCond[i]}',
+                                                                                style: const TextStyle(
+                                                                                  fontSize: 16,
+                                                                                  fontWeight: FontWeight.w700,
+                                                                                ),
+                                                                                textAlign: TextAlign.start,
+                                                                              ),
+                                                                            )
+                                                                        ],
+                                                                      )
+                                                                    : EmptyImage(
+                                                                        align: Alignment
+                                                                            .center,
+                                                                        label: t.translate(i18
+                                                                            .common
+                                                                            .noTermsNConditions),
+                                                                      ),
+                                                                titlePadding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                contentPadding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                barrierDismissible:
+                                                                    true,
+                                                                primaryAction: DigitDialogActions(
+                                                                    label: t.translate(i18
+                                                                        .common
+                                                                        .close),
+                                                                    action: (context) => Navigator.of(
+                                                                            context,
+                                                                            rootNavigator:
+                                                                                true)
+                                                                        .pop()),
+                                                                isScrollable:
+                                                                    true,
+                                                              ),
+                                                            ),
                                                             align: Alignment
                                                                 .centerLeft,
                                                           ),
@@ -1845,11 +1737,20 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                           contractNumber:
                                                                               contracts?.contractNumber,
                                                                         )),
-                                                                    error: (String? error) => Notifiers.getToastMessage(
-                                                                        context,
-                                                                        error ??
-                                                                            'ERR!',
-                                                                        'ERROR'));
+                                                                    error: (String?
+                                                                            error) =>
+                                                                        // Notifiers.getToastMessage(
+                                                                        //     context,
+                                                                        //     error ??
+                                                                        //         'ERR!',
+                                                                        //     'ERROR'));
+
+                                                                        ui_component.Toast.showToast(
+                                                                            context,
+                                                                            message: error ??
+                                                                                'ERR!',
+                                                                            type:
+                                                                                ToastType.error));
                                                           },
                                                           child: const SizedBox
                                                               .shrink(),
@@ -1868,9 +1769,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                               const Align(
                                                 alignment:
                                                     Alignment.bottomCenter,
-                                                child: PoweredByDigit(
-                                                   version: Constants.appVersion,
-                                                  ),
+                                                child:
+                                                    ui_component.PoweredByDigit(
+                                                  version: Constants.appVersion,
+                                                ),
                                               )
                                             ]),
                                       ]);

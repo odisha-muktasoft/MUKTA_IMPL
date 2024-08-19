@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
@@ -75,7 +76,6 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
       listenWhen: (previous, current) =>
           ((previous != current) || (previous == current)),
       listener: (context, state) {
-        
         state.maybeMap(
           orElse: () => null,
           loaded: (value) {
@@ -149,35 +149,39 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
                             return AnimatedBuilder(
-                             animation: _scrollController, 
-                             builder: (context, child) {
+                              animation: _scrollController,
+                              builder: (context, child) {
                                 double scale = 1.0;
-                        if (_scrollController.position.haveDimensions) {
-                          double pageOffset = _scrollController.page! - index;
-                          scale = (1 - (pageOffset.abs() * 0.2)).clamp(0.9, 1.0);
-                        }
-                             
-                              return Transform.scale(
-                                scale: scale,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 4.0),
-                                  child: CardWidget(
-                                    backward: () {
-                                      _scrollBackward();
-                                    },
-                                    forward: () {
-                                      _scrollForward();
-                                    },
-                                    filteredMeasurementsMeasure: lineItems![index],
-                                    type: widget.type,
-                                    viewMode: value.viewStatus,
-                                    noOfUnit: widget.noOfUnit,
-                                    cummulativePrevQty: widget.cummulativePrevQty,
-                                    index: index,
+                                if (_scrollController.position.haveDimensions) {
+                                  double pageOffset =
+                                      _scrollController.page! - index;
+                                  scale = (1 - (pageOffset.abs() * 0.2))
+                                      .clamp(0.9, 1.0);
+                                }
+
+                                return Transform.scale(
+                                  scale: scale,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 4.0),
+                                    child: CardWidget(
+                                      backward: () {
+                                        _scrollBackward();
+                                      },
+                                      forward: () {
+                                        _scrollForward();
+                                      },
+                                      filteredMeasurementsMeasure:
+                                          lineItems![index],
+                                      type: widget.type,
+                                      viewMode: value.viewStatus,
+                                      noOfUnit: widget.noOfUnit,
+                                      cummulativePrevQty:
+                                          widget.cummulativePrevQty,
+                                      index: index,
+                                    ),
                                   ),
-                                ),
-                              );
-                             },
+                                );
+                              },
                             );
                           },
                           itemCount: lineItems?.length,
@@ -196,7 +200,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               children: [
                                 Expanded(
                                   child: ui_component.Button(
-                                     mainAxisSize: MainAxisSize.max,
+                                    mainAxisSize: MainAxisSize.max,
                                     label: t.translate(i18.common.close),
                                     onPressed: () {
                                       context
@@ -208,7 +212,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                             type: widget.type,
                                           ));
                                       context.router.maybePopTop();
-                                    }, type: ButtonType.secondary, size: ButtonSize.large,
+                                    },
+                                    type: ButtonType.secondary,
+                                    size: ButtonSize.large,
                                   ),
                                 ),
                                 const SizedBox(
@@ -228,7 +234,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                                               type: widget.type));
                                       // Navigator.of(context).pop();
                                     },
-                                    label: t.translate(i18.common.submit), type: ButtonType.primary, size: ButtonSize.large,
+                                    label: t.translate(i18.common.submit),
+                                    type: ButtonType.primary,
+                                    size: ButtonSize.large,
                                   ),
                                 ),
                               ],
@@ -321,22 +329,14 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
-                  child: SizedBox(
-                    height: 20,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Text(
-                              t.translate(i18.measurementBook.isDeduction),
-                              style: theme.textTheme.displayMedium?.copyWith(),
-                            )),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            (widget
+                  child: LabelValueList(
+                      maxLines: 2,
+                      labelFlex: 5,
+                      valueFlex: 5,
+                      items: [
+                        LabelValuePair(
+                            label: t.translate(i18.measurementBook.isDeduction),
+                            value: (widget
                                             .filteredMeasurementsMeasure!
                                             .contracts!
                                             .first
@@ -352,48 +352,22 @@ class _CardWidgetState extends State<CardWidget> {
                                         .first
                                         .isDeduction!)
                                 ? t.translate(i18.measurementBook.yes)
-                                : t.translate(i18.measurementBook.no),
-                            style: theme.textTheme.labelSmall?.copyWith(),
-                            maxLines: 1,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 3.0),
-                  child: SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            t.translate(
+                                : t.translate(i18.measurementBook.no)),
+                        LabelValuePair(
+                            label: t.translate(
                               i18.measurementBook.description,
                             ),
-                            style: theme.textTheme.displayMedium?.copyWith(),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            widget.filteredMeasurementsMeasure!.contracts!.first
-                                    .estimates!.first.description ??
-                                "",
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            maxLines: 3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                            value: widget
+                                    .filteredMeasurementsMeasure!
+                                    .contracts!
+                                    .first
+                                    .estimates!
+                                    .first
+                                    .description ??
+                                "")
+                      ]),
                 ),
+                
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.40,

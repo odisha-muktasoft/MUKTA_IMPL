@@ -4,7 +4,10 @@ import 'package:digit_components/widgets/atoms/digit_action_dialog.dart';
 import 'package:digit_components/widgets/digit_elevated_button.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/button_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
@@ -222,14 +225,60 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                IconBackButton(
-                                  iconTextColor: const DigitColors().black,
-                                  iconColor: const DigitColors().black,
-                                  icon: Icons.arrow_left,
-                                  action: () {
-                                    context.router.maybePopTop();
-                                  },
-                                ),
+                                 Padding(
+                                    padding: const EdgeInsets.only(
+                                  left: 0.0, bottom: 8.0, top: 8.0, right: 8.0),
+                                   child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                     children: [
+                                       BackNavigationButton(
+                                            backNavigationButtonThemeData:
+                                                const BackNavigationButtonThemeData()
+                                                    .copyWith(
+                                                      textColor: Theme.of(context)
+                                                    .colorTheme
+                                                    .primary
+                                                    .primary2,
+                                              contentPadding: EdgeInsets.zero,
+                                              context: context,
+                                              backButtonIcon: Icon(
+                                                Icons.arrow_left,
+                                                // size: MediaQuery.of(context)
+                                                //             .size
+                                                //             .width <
+                                                //         500
+                                                //     ? Theme.of(context)
+                                                //         .spacerTheme
+                                                //         .spacer5
+                                                //     : Theme.of(context)
+                                                //         .spacerTheme
+                                                //         .spacer6,
+                                                color: Theme.of(context)
+                                                    .colorTheme
+                                                    .primary
+                                                    .primary2,
+                                              ),
+                                            ),
+                                            backButtonText:
+                                                AppLocalizations.of(context)
+                                                        .translate(i18.common.back) ??
+                                                    'Back',
+                                            handleBack: () {
+                                             context.router.maybePopTop();
+                                            },
+                                          ),
+                                     ],
+                                   ),
+                                 ),
+                                // IconBackButton(
+                                //   iconTextColor: const DigitColors().black,
+                                //   iconColor: const DigitColors().black,
+                                //   icon: Icons.arrow_left,
+                                //   action: () {
+                                //     context.router.maybePopTop();
+                                //   },
+                                // ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: Text(
@@ -251,10 +300,11 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.type == MBScreen.update ? index : index;
                             if (adjustedIndex <= k.length) {
                               return DigitCard(
+                                
                                 margin: const EdgeInsets.all(8.0),
                                 cardType: CardType.primary,
                                 children: [
-                                  LabelValueList(
+                                  LabelValueList(heading: "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                       maxLines: 3,
                                       labelFlex: 5,
                                       valueFlex: 5,

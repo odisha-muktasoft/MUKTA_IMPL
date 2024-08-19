@@ -181,8 +181,12 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
           appBar: AppBar(
            backgroundColor: const Color(0xff0B4B66),
             
-            iconTheme:  DigitTheme.instance.mobileTheme.iconTheme
-                .copyWith(color: const DigitColors().white),
+             iconTheme: Theme.of(context).iconTheme.copyWith(
+                              color: Theme.of(context)
+                                  .colorTheme
+                                  .paper.primary
+                                   
+                            ),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),

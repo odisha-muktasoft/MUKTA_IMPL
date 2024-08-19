@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -287,7 +289,8 @@ class WorkDetailsCard extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
-            child: DigitElevatedButton(
+            child: ui_component.Button(type:ButtonType.primary ,
+            size: ButtonSize.large,
               onPressed: () => DigitActionDialog.show(context,
                   widget: Center(
                     child: Column(
@@ -367,15 +370,9 @@ class WorkDetailsCard extends StatelessWidget {
                       ],
                     ),
                   )),
-              child: Center(
-                child: Text(
-                    AppLocalizations.of(context)
-                        .translate(i18.common.takeAction),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .apply(color: Colors.white)),
-              ),
+              label: AppLocalizations.of(context)
+                      .translate(i18.common.takeAction),
+                      mainAxisSize: MainAxisSize.max,
             ),
           ),
         ],
