@@ -124,7 +124,7 @@ def getWorkflowDates(bussinessId, tenantId):
                     elif processInstance['action'] == "TECHNICALSANCTION":
                         data['technicalSanctionDate'] = processInstance['auditDetails']['createdTime']
                         data['technicalSanctionBy'] = processInstance['auditDetails']['createdBy']
-                    elif processInstance['action'] == "SUBMIT" and data['submitDate'] == "NA":
+                    elif processInstance['action'] == "SUBMIT":
                         data['submitDate'] = processInstance['auditDetails']['createdTime']
             
         return data
@@ -642,7 +642,10 @@ def getTechnicalSanctionApprovalData():
                             temp['Estimate ID'] = estimate['estimateNumber']
                             temp['Revision Estimate ID'] = estimate['revisionNumber'] if estimate['revisionNumber'] else None
                             workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
-                            temp['Date of Estimate Received'] = convert_epoch_to_indian_time(workFlowData['submitDate'])
+                            if workFlowData['submitDate'] != 'NA':
+                                temp['Date of Estimate Received'] = convert_epoch_to_indian_time(workFlowData['submitDate'])
+                            else:
+                                temp['Date of Estimate Received'] = 'NA'
                             if workFlowData['technicalSanctionDate'] != 'NA':
                                 temp['Date of Technical Sanction'] = convert_epoch_to_indian_time(workFlowData['technicalSanctionDate'])
                             else:
@@ -888,6 +891,7 @@ def getWageSeekerReportData():
                                     parent_data = {
                                         'ULB Name': format_tenant_id(tenantid),
                                         'Project ID': roll['additionalDetails']['projectId'],
+                                        'Muster Roll Number': musterRollNumber
                                     }
                                     for individualEntry in roll['individualEntries']:
                                         individual_id = individualEntry['individualId']
@@ -982,6 +986,7 @@ if __name__ == '__main__':
         logging.info('Report Started Generating')
 
         directory = '/home/admin1/Music'
+        # directory = '/mukta-report/muktareport'
         # directory = '/demo-report/demoReport'
         if not os.path.exists(directory):
             os.makedirs(directory)
