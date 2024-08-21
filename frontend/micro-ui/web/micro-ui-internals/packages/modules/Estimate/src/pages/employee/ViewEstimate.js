@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard } from '@egovernments/digit-ui-react-components';
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from '../../../../templates/ApplicationDetails';
-import { Toast } from '@egovernments/digit-ui-components';
+import { Toast, Button } from '@egovernments/digit-ui-components';
 
 const ViewEstimate = (props) => {
 
@@ -85,33 +85,39 @@ const ViewEstimate = (props) => {
     if (isProjectLoading || isEstimateLoading) return <Loader />
 
     return (
-        <div className={"employee-main-application-details"}>
-            <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
-                <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>{t("ESTIMATE_VIEW_ESTIMATE")}</Header>
-                <MultiLink
+      <div className={"employee-main-application-details"}>
+        <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
+          <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+            {t("ESTIMATE_VIEW_ESTIMATE")}
+          </Header>
+          {/* <MultiLink
                     onHeadClick={() => HandleDownloadPdf()}
                     downloadBtnClassName={"employee-download-btn-className"}
                     label={t("CS_COMMON_DOWNLOAD")}
-                />
-            </div>
-            {(project || estimate) && <ViewDetailsCard cardState={cardState} t={t} />}
-            {
-                estimate && <HorizontalNav showNav={true} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
-                    {
-                        (activeLink === "Project_Details") && (
-                            <ViewProject fromUrl={false} tenantId={tenantId} projectNumber={project?.projectNumber} module="estimate" />
-                        )
-                    }
-                    {
-                        (activeLink === "Estimate_Details") && (
-                            <ViewEstimate editApplicationNumber={project?.projectNumber} />
-                        )
-                    }
-                </HorizontalNav>
-            }
-            {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+                /> */}
+          {
+            <Button
+              label={t("CS_COMMON_DOWNLOAD")}
+              onClick={() => HandleDownloadPdf()}
+              className={"employee-download-btn-className"}
+              variation={"teritiary"}
+              type="button"
+              icon={"FileDownload"}
+            />
+          }
         </div>
-    )
+        {(project || estimate) && <ViewDetailsCard cardState={cardState} t={t} />}
+        {estimate && (
+          <HorizontalNav showNav={true} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
+            {activeLink === "Project_Details" && (
+              <ViewProject fromUrl={false} tenantId={tenantId} projectNumber={project?.projectNumber} module="estimate" />
+            )}
+            {activeLink === "Estimate_Details" && <ViewEstimate editApplicationNumber={project?.projectNumber} />}
+          </HorizontalNav>
+        )}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      </div>
+    );
 }
 
 export default ViewEstimate

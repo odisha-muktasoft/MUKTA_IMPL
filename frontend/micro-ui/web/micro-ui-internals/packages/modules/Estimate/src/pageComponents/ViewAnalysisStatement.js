@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Loader, LinkButton } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Toast} from "@egovernments/digit-ui-components";
+import { Toast, Button} from "@egovernments/digit-ui-components";
 
 const ViewAnalysisStatement = ({ formData, ...props }) => {
   const { t } = useTranslation();
@@ -346,12 +346,20 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
   if (!window.location.href.includes("create"))
     return (
       <div>
-        <LinkButton
+        {/* <LinkButton
           className="view-Analysis-button"
           style={isCreateOrUpdate ? { marginTop: "-3.5%", textAlign: "center", width: "282px" } : { textAlign: "center", width: "282px" }}
           onClick={handleButtonClick}
           label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
-        />
+        /> */}
+        {
+          <Button
+            label={isEstimate ? t("ESTIMATE_ANALYSIS_STM") : t("MB_UTILIZATION_STM")}
+            onClick={handleButtonClick}
+            variation={"secondary"}
+            type="button"
+          />
+        }
         {showToast && (
           <Toast
             type={showToast?.type}

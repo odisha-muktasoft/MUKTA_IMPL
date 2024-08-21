@@ -86,7 +86,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "MB_SORS", inlineStyles: {} },
+            cardHeader: { value: "MB_SORS", inlineStyles: {}, className:"estimateTable-header-class"},
             component: "EstimateMeasureTableWrapper",
             props: {
               config: {
@@ -107,7 +107,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "MB_NONSOR", inlineStyles: {} },
+            cardHeader: { value: "MB_NONSOR", inlineStyles: {},className:"estimateTable-header-class" },
             component: "EstimateMeasureTableWrapper",
             props: {
               config: {
@@ -128,7 +128,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
         sections: [
           {
             type: "COMPONENT",
-            cardHeader: { value: "ES_OTHER_CHARGES", inlineStyles: {} },
+            cardHeader: { value: "ES_OTHER_CHARGES", inlineStyles: {},className:"estimateTable-header-class" },
             component: "OverheadDetailsTable",
             props: {data : overheadDetails}
           }
@@ -136,6 +136,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
       },
       {
         navigationKey: "card1",
+        className:"totalEstimateAmoutCrad",
         sections: [
           {
             type: "COMPONENT",
@@ -164,7 +165,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
               },
             ],
             inlineStyles: {
-              marginTop: "1rem",
+              // marginTop: "1rem",
             },
           }
         ],
@@ -204,7 +205,8 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
         sections: [
           {
             type: "DATA",
-            sectionHeader: { value: "WORKS_PROJECT_DETAILS", inlineStyles: {marginBottom : "16px", marginTop:"32px", fontSize: "24px"} },
+            isDividerBelow:true,
+            sectionHeader: { value: "WORKS_PROJECT_DETAILS", inlineStyles: {marginBottom : "16px", fontSize: "24px"} },
             values: [
               {
                 key: "PROJECT_LOR",
@@ -225,7 +227,11 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
             ],
           },
           {
+            type:"DIVIDER"
+          },
+          {
             type: "DATA",
+            isDividerBelow:true,
             sectionHeader: { value: "WORKS_LOCATION_DETAILS", inlineStyles: {marginBottom : "16px", marginTop:"32px", fontSize: "24px"} },
             values: [
               {
@@ -247,6 +253,9 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
             ],
           },
           {
+            type:"DIVIDER"
+          },
+          {
             type: "DOCUMENTS",
             documents: [
               {
@@ -256,7 +265,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
               },
             ],
             inlineStyles: {
-              marginTop: "1rem",
+              // marginTop: "1rem",
             },
             headerStyle: {
               marginTop: "32px",

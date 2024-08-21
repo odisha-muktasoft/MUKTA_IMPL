@@ -3,7 +3,7 @@ import React, { Fragment,useEffect,useRef,useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import ProjectDetailsNavDetails from './ProjectDetailsNavDetails'
-import { Toast } from '@egovernments/digit-ui-components'
+import { Toast,Button,TextBlock } from '@egovernments/digit-ui-components'
 
 const ProjectDetails = () => {
     const { t } = useTranslation();
@@ -182,43 +182,38 @@ const ProjectDetails = () => {
     },[location]);
 
     return (
-        <div className={"employee-main-application-details"}>
-            <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
-                <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>{t("WORKS_PROJECT_DETAILS")}</Header>
-            <MultiLink
+      <div className={`employee-main-application-details ${"project-details"}`}>
+        <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
+          <Header className="works-header-view" styles={{ margin: "0px"}}>
+            {t("WORKS_PROJECT_DETAILS")}
+          </Header>
+          {/* <MultiLink
               onHeadClick={() => HandleDownloadPdf()}
               downloadBtnClassName={"employee-download-btn-className"}
               label={t("CS_COMMON_DOWNLOAD")}
-            />
-            </div>
-
- 
-            <HorizontalNav showNav={false} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>  
-              <ProjectDetailsNavDetails 
-                activeLink={activeLink}
-                subProjects={subProjects}
-                searchParams={searchParams}
-                filters={filters}
-              />
-            </HorizontalNav>
-            {
-                !hideActionBar &&
-                <ActionBar>
-                    {showActions ? 
-                        <Menu
-                            localeKeyPrefix={`COMMON`}
-                            options={actionsMenu}
-                            optionKey={"name"}
-                            t={t}
-                            onSelect={handleActionBar}
-                        /> : null
-                    }
-                    <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)}/>
-                </ActionBar>
-            }
-        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+            /> */}
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
         </div>
-    )
+
+        <HorizontalNav showNav={false} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
+          <ProjectDetailsNavDetails activeLink={activeLink} subProjects={subProjects} searchParams={searchParams} filters={filters} />
+        </HorizontalNav>
+        {!hideActionBar && (
+          <ActionBar>
+            {showActions ? <Menu localeKeyPrefix={`COMMON`} options={actionsMenu} optionKey={"name"} t={t} onSelect={handleActionBar} /> : null}
+            <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
+          </ActionBar>
+        )}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      </div>
+    );
 }
 
 export default ProjectDetails;

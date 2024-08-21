@@ -24,12 +24,13 @@ const ViewOnlyCard = (props) => {
           padding: "1rem",
           border: "1px solid #D6D5D4",
           borderRadius: "5px",
+          width:"fit-content"
         }}
       >
-        <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize: "18px" }}>
+        <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize: "18px",width:"fit-content" }}>
           {t("MB_AMOUNT_TOTAL")}
         </CardSectionHeader>
-        <CardSectionHeader style={{ marginBottom: "0px", fontSize: "24px", fontWeight: "700" }}>{`₹ ${Digit.Utils.dss.formatterWithoutRound(
+        <CardSectionHeader style={{ marginBottom: "0px", fontSize: "24px", fontWeight: "700" ,width:"fit-content"}}>{`₹ ${Digit.Utils.dss.formatterWithoutRound(
           Math.round(parseFloat(totalAmount)).toFixed(2),
           "number",
           undefined,

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewConfig";
 import { useHistory } from 'react-router-dom';
-import { Toast } from "@egovernments/digit-ui-components";
+import { Toast ,Button} from "@egovernments/digit-ui-components";
 
 const ViewDetailedEstimate = () => {
   const history = useHistory();
@@ -180,22 +180,30 @@ const ViewDetailedEstimate = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {revisionNumber ? t("ESTIMATE_VIEW_REVISED_ESTIMATE") : t("ESTIMATE_VIEW_ESTIMATE")}
         </Header>
-        <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+        {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}
+        {
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
+        }
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
-        {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
+        {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" &&
+        !isLoadingContracts &&
+        actionsMenu?.length > 0 ? (
           <ActionBar>
-          {showActions ? <Menu
-              localeKeyPrefix={`EST_VIEW_ACTIONS`}
-              options={actionsMenu}
-              optionKey={"name"}
-              t={t}
-              onSelect={handleActionBar}
-          />:null} 
-          <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-      </ActionBar>
+            {showActions ? (
+              <Menu localeKeyPrefix={`EST_VIEW_ACTIONS`} options={actionsMenu} optionKey={"name"} t={t} onSelect={handleActionBar} />
+            ) : null}
+            <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
+          </ActionBar>
         ) : null}
       </>
     </div>

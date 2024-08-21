@@ -14,7 +14,7 @@ import {
   CitizenInfoLabel,
 } from "@egovernments/digit-ui-react-components";
 import {
-  Toast,InfoCard
+  Toast,InfoCard, Button
 } from "@egovernments/digit-ui-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
@@ -445,19 +445,29 @@ const ViewUtilization = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("MB_VIEW_UTLIZATION")}
         </Header>
-        {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />}
+        {/* {downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />} */}
+        {downloadStatus && (
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
+        )}
       </div>
       <div>
-      <InfoCard
+        <InfoCard
           populators={{
             name: "doc-banner-infoCard",
           }}
           variant="default"
           text={t("STATEMENT_UTILIZATION_INFO_RATE")}
           label={t("CS_INFO")}
-          style={{ margin:"0px", maxWidth:"100%", marginBottom:"1.5rem" }}
+          style={{ margin: "0px", maxWidth: "100%", marginBottom: "1.5rem" }}
         />
-      {/* <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} /> */}
+        {/* <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_UTILIZATION_INFO_RATE")} /> */}
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && (

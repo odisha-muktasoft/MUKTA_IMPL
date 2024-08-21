@@ -5,7 +5,7 @@ import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewStatementConfig";
 import { InfoCard } from "@egovernments/digit-ui-components";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Toast } from "@egovernments/digit-ui-components";
+import { Toast ,Button} from "@egovernments/digit-ui-components";
 
 const ViewAnalysisStatement = () => {
 
@@ -467,26 +467,36 @@ const ViewAnalysisStatement = () => {
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
-        { downloadStatus&&<MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> }
+        {downloadStatus && (
+          // <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+          <Button
+            label={t("CS_COMMON_DOWNLOAD")}
+            onClick={() => HandleDownloadPdf()}
+            className={"employee-download-btn-className"}
+            variation={"teritiary"}
+            type="button"
+            icon={"FileDownload"}
+          />
+        )}
       </div>
       <div>
-      <InfoCard
+        <InfoCard
           populators={{
             name: "doc-banner-infoCard",
           }}
           variant="default"
           text={t("STATEMENT_ANALYSIS_INFO_RATE")}
           label={t("CS_INFO")}
-          style={{ margin:"0px", maxWidth:"100%", marginBottom:"1.5rem" }}
+          style={{ margin: "0px", maxWidth: "100%", marginBottom: "1.5rem" }}
         />
-      {/* <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_ANALYSIS_INFO_RATE")}  /> */}
+        {/* <CitizenInfoLabel className="doc-banner" textType={"Componenet"} style={{margin:"0px", maxWidth:"100%", marginBottom:"1.5rem"}} info={t("CS_INFO")} text={t("STATEMENT_ANALYSIS_INFO_RATE")}  /> */}
       </div>
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
-      <ActionBar >
-      <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
-      </ActionBar>
+        <ActionBar>
+          <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
+        </ActionBar>
         {/* {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>
           {showActions ? <Menu

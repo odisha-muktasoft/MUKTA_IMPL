@@ -1,0 +1,31 @@
+.totalEstimateAmoutCrad {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.view-composer-subheader {
+    color: theme(digitv2.lightTheme.text-primary) !important;
+    margin-bottom: theme(digitv2.spacers.spacer4);
+}
+
+.employee-main-application-details{
+    &.project-details,
+    &.estimate-details,
+    &.contract-details{
+        padding: theme(digitv2.spacers.spacer0) !important;
+    }
+}
+
+
+.row {
+    .extension-label{
+        color: theme(digitv2.lightTheme.primary) !important;
+    }
+}
+
+.digit-employee-card{
+    .card-label{
+        color: theme(digitv2.lightTheme.primary) !important;
+    }
+}

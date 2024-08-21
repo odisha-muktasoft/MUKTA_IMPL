@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Loader, ActionBar, SubmitBar, WorkflowModal, LabelFieldPair, CardLabel, TextInput } from "@egovernments/digit-ui-react-components";
+import { Loader, ActionBar, SubmitBar, WorkflowModal, CardLabel,TextInput } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from "../../../../templates/ApplicationDetails";
 import getModalConfig from "./modalConfig";
@@ -129,7 +129,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
         <div style={{ lineHeight: "19px", maxWidth: "950px", minWidth: "280px",marginTop:"1rem" }}>
           <div className={"employee-data-table"} >
             <div className={"row border-none"} style={{alignItems:"center"}}>
-              <CardLabel style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px" }}>{`${t(`EXTENSION_REQ`)}*`}</CardLabel>
+              <CardLabel className={"extension-label"} style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px" }}>{`${t(`EXTENSION_REQ`)}*`}</CardLabel>
               <TextInput
                 className={"value"}
                 textInputStyle={{ width: "60%", marginLeft: "2%" }}
@@ -143,7 +143,7 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
               />
             </div>
             <div className={"row border-none"} style={{alignItems:"center"}}>
-              <CardLabel style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px" }}>{`${t(`EXTENSION_REASON`)}*`}</CardLabel>
+              <CardLabel className={"extension-label"} style={{ fontSize: "16px", fontWeight: "500", lineHeight: "24px"}}>{`${t(`EXTENSION_REASON`)}*`}</CardLabel>
               <TextInput
                 className={"field"}
                 textInputStyle={{ width: "60%", marginLeft: "2%" }}

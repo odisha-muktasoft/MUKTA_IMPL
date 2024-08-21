@@ -2,7 +2,9 @@
     overflow: auto;
     display: flex;
     margin-top: 0rem;
-
+    background-color: transparent !important;
+    margin-left: 0px !important;
+    
     .menu-item {
         border: 10px;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { PrivateRoute, BreadCrumb } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, BreadCrumb, AppContainer } from "@egovernments/digit-ui-react-components";
 import { Switch, useLocation } from "react-router-dom";
 import ViewMeasurement from "./ViewMeasurement";
 import SearchMeasurement from "./SearchMeasurement";
@@ -8,10 +8,9 @@ import InboxMeasurement from "./InboxMeasurement";
 import CreateMeasurement from "./CreateMeasurement";
 import SearchPlain from "./SearchPlain";
 
-import ResponseBanner from "./ResponseBanner"
+import ResponseBanner from "./ResponseBanner";
 import UpdateMeasurement from "./UpdateMeasurement";
 import ViewUtilization from "./viewUtilization";
-
 
 const MeasurementBreadCrumbs = ({ location }) => {
   const { t } = useTranslation();
@@ -27,7 +26,7 @@ const MeasurementBreadCrumbs = ({ location }) => {
     },
     {
       path: `/${window.contextPath}/employee/measurement/search`,
-      content:  t("MB_SEARCH_MEASUREMENT"),
+      content: t("MB_SEARCH_MEASUREMENT"),
       show: location.pathname.includes("/measurement/search") ? true : false,
       isBack: fromScreen && true,
     },
@@ -67,14 +66,13 @@ const MeasurementBreadCrumbs = ({ location }) => {
 
 const App = ({ path }) => {
   const location = useLocation();
-
   return (
     <Switch>
-      <React.Fragment>
-      {!location.pathname.includes("/response") && (
-          <div style={/(measurement\/update|measurement\/update)/.test(location.pathname) ? { marginLeft: "15px" } : {}}>
+      <AppContainer className="ground-container">
+        {!location.pathname.includes("/response") && (
+          <React.Fragment>
             <MeasurementBreadCrumbs location={location} />
-          </div>
+          </React.Fragment>
         )}
         <PrivateRoute path={`${path}/create`} component={() => <CreateMeasurement {...{ path }} />} />
         <PrivateRoute path={`${path}/search`} component={() => <SearchMeasurement {...{ path }} />} />
@@ -84,7 +82,7 @@ const App = ({ path }) => {
         <PrivateRoute path={`${path}/searchplain`} component={() => <SearchPlain {...{ path }} />} />
         <PrivateRoute path={`${path}/update`} component={() => <UpdateMeasurement {...{ path }} />} />
         <PrivateRoute path={`${path}/utilizationstatement`} component={() => <ViewUtilization {...{ path }} />} />
-      </React.Fragment>
+      </AppContainer>
     </Switch>
   );
 };

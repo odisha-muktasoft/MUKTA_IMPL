@@ -1,4 +1,4 @@
-import { AddIcon, TextInput, Amount, Button, Dropdown, Loader, DeleteIcon, TextArea } from "@egovernments/digit-ui-react-components";
+import { AddIcon, TextInput, Amount, Button, Dropdown, Loader, DeleteIcon, TextArea,CardSectionHeader } from "@egovernments/digit-ui-react-components";
 
 import React, { Fragment, useEffect, useCallback} from "react";
 import { useTranslation } from "react-i18next";
@@ -446,8 +446,8 @@ const MeasureTable = (props) => {
                   append({
                     amount: 0,
                     consumedQ: 0,
-                    category:"NON-SOR",
-                    sNo: fields?.length+1,
+                    category: "NON-SOR",
+                    sNo: fields?.length + 1,
                     currentMBEntry: 0,
                     uom: null,
                     description: "",
@@ -468,7 +468,7 @@ const MeasureTable = (props) => {
           </tr>
         </tbody>
       </table>
-      <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
+      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
         <div style={{ display: "flex", flexDirection: "row", fontSize: "16px" }}>
           <span style={{ fontWeight: "bold", marginTop:"6px" }}>
             {t("WORKS_TABLE_TOTAL_AMOUNT")} :
@@ -476,6 +476,36 @@ const MeasureTable = (props) => {
           <span style={{ marginLeft: "8px" }}>
             <Amount customStyle={{ textAlign: "right", fontSize:"24px", fontWeight:"700" }} value={Digit.Utils.dss.formatterWithoutRound(formattedSum, "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} rupeeSymbol={true} sameDisplay={true}></Amount>
           </span>
+        </div>
+      </div> */}
+
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: "1rem",
+            border: "1px solid #D6D5D4",
+            borderRadius: "5px",
+            width:"fit-content"
+          }}
+        >
+          <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",fontSize:"18px",width:"fit-content"}}>{`${t(
+            "WORKS_TABLE_TOTAL_AMOUNT"
+          )} :`}</CardSectionHeader>
+          <CardSectionHeader style={{ width:"fit-content",marginBottom: "0px" }}>
+            {
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedSum, "number", undefined, true, undefined, 2) || 0}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+                sameDisplay={true}
+              ></Amount>
+            }
+          </CardSectionHeader>
         </div>
       </div>
     </React.Fragment>

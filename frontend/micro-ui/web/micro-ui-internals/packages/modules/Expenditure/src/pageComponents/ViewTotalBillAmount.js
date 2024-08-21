@@ -14,12 +14,13 @@ const TotalBillAmountView = ({ detail, ...props }) => {
           padding: "1rem",
           border: "1px solid #D6D5D4",
           borderRadius: "5px",
+          width:"fit-content"
         }}
       >
-        <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F" }}>
+        <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",width:"fit-content" }}>
           {detail?.key ? t(detail.key) : t("RT_TOTAL")}
         </CardSectionHeader>
-        <CardSectionHeader style={{ marginBottom: "0px" }}>{`₹ ${detail?.value}`}</CardSectionHeader>
+        <CardSectionHeader style={{ marginBottom: "0px",width:"fit-content" }}>{`₹ ${detail?.value}`}</CardSectionHeader>
       </div>
     </div>
   );
