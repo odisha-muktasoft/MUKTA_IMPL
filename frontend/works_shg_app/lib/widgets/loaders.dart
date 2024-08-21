@@ -15,7 +15,7 @@ class Loaders {
                 Center(
                   child: Column(children: [
                     CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(
                       height: 10,
@@ -58,7 +58,7 @@ class Loaders {
 //                            controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1200)),
                           // ),
                           CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           const SizedBox(
                             height: 10,

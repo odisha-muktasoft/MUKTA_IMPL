@@ -323,7 +323,7 @@ class ContractAdditionalDetails with _$ContractAdditionalDetails {
           {@JsonKey(name: 'orgName')
               String? orgName,
           @JsonKey(name: 'totalEstimatedAmount')
-              double? totalEstimatedAmount,
+              dynamic totalEstimatedAmount,
           @JsonKey(name: 'attendanceRegisterNumber')
               String? attendanceRegisterNumber,
           @JsonKey(name: 'officerInChargeId')

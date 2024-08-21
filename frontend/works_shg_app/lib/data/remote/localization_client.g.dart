@@ -12,6 +12,7 @@ class _LocalizationClient implements LocalizationClient {
   _LocalizationClient(
     this._dio, {
     this.baseUrl,
+    this.errorLogger,
   }) {
     baseUrl ??= 'https://works-dev.digit.org//localization/messages/v1';
   }
@@ -19,6 +20,8 @@ class _LocalizationClient implements LocalizationClient {
   final Dio _dio;
 
   String? baseUrl;
+
+  final ParseErrorLogger? errorLogger;
 
   @override
   Future<LocalizationModel?> search(
@@ -34,25 +37,32 @@ class _LocalizationClient implements LocalizationClient {
     };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>?>(_setStreamType<LocalizationModel>(Options(
+    final _options = _setStreamType<LocalizationModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/_search?',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(
-                baseUrl: _combineBaseUrls(
-              _dio.options.baseUrl,
-              baseUrl,
-            ))));
-    final _value =
-        _result.data == null ? null : LocalizationModel.fromJson(_result.data!);
+        .compose(
+          _dio.options,
+          '/_search?',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>?>(_options);
+    late LocalizationModel? _value;
+    try {
+      _value = _result.data == null
+          ? null
+          : LocalizationModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
     return _value;
   }
 

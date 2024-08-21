@@ -417,7 +417,7 @@ _$ContractAdditionalDetailsImpl _$$ContractAdditionalDetailsImplFromJson(
         Map<String, dynamic> json) =>
     _$ContractAdditionalDetailsImpl(
       orgName: json['orgName'] as String?,
-      totalEstimatedAmount: (json['totalEstimatedAmount'] as num?)?.toDouble(),
+      totalEstimatedAmount: json['totalEstimatedAmount'],
       attendanceRegisterNumber: json['attendanceRegisterNumber'] as String?,
       officerInChargeId: json['officerInChargeId'] as String?,
       cboOrgNumber: json['cboOrgNumber'] as String?,

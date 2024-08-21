@@ -39,7 +39,6 @@ import '../../utils/common_widgets.dart';
 import '../../utils/constants.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/back.dart';
 import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/attachments.dart';
@@ -245,7 +244,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   loading: () => shg_loader.Loaders.circularLoader(context),
                   error: (String? error) => ui_component.Toast.showToast(
                       context,
-                      message: error.toString(),
+                      message: t.translate(error.toString()),
                       type: ToastType.error),
                   loaded: (ContractsModel? contracts) {
                     if (contracts?.contracts != null) {
@@ -493,7 +492,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(
+                                    padding: const EdgeInsets.only(
                                         left: 8.0,
                                         right: 16.0,
                                         top: 16.0,
@@ -506,7 +505,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: ui_component.InfoCard(
                                       title: AppLocalizations.of(context)
                                           .translate(i18.common.info),
@@ -568,7 +567,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                           .timeLineDetails),
                                             ),
                                             ui_card.DigitCard(
-                                                margin: EdgeInsets.all(8),
+                                                margin: const EdgeInsets.all(8),
                                                 cardType: CardType.primary,
                                                 children: [
                                                   Attachments(
@@ -578,74 +577,80 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                   )
                                                 ]),
                                             Padding(
-                                              padding: EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: ButtonLink(
                                                 t.translate(i18.common
                                                     .viewTermsAndConditions),
-                                                () => DigitDialog.show(context,
-                                                    options: DigitDialogOptions(
-                                                        title: Text(t.translate(i18.common.termsAndConditions),
-                                                            style: const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                                fontSize: 24,
-                                                                fontFamily:
-                                                                    'Roboto Condensed',
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                color: Color.fromRGBO(
-                                                                    11, 12, 12, 1))),
-                                                        content:
-                                                            termsNCond
-                                                                    .isNotEmpty
-                                                                ? Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      for (var i =
-                                                                              0;
-                                                                          i < termsNCond.length;
-                                                                          i++)
-                                                                        Align(
-                                                                          alignment:
-                                                                              Alignment.centerLeft,
-                                                                          child:
-                                                                              Text(
-                                                                            '${i + 1}. ${termsNCond[i]}',
-                                                                            style:
-                                                                                const TextStyle(
-                                                                              fontSize: 16,
-                                                                              fontWeight: FontWeight.w700,
-                                                                            ),
-                                                                            textAlign:
-                                                                                TextAlign.start,
-                                                                          ),
-                                                                        )
-                                                                    ],
-                                                                  )
-                                                                : EmptyImage(
+                                                () => showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Popup(
+                                                      actions: [
+                                                        Button(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .max,
+                                                            label: t.translate(
+                                                                i18.common
+                                                                    .close),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context,
+                                                                      rootNavigator:
+                                                                          true)
+                                                                  .pop();
+                                                            },
+                                                            type: ButtonType
+                                                                .primary,
+                                                            size: ButtonSize
+                                                                .large)
+                                                      ],
+                                                      onCrossTap: () {
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop();
+                                                      },
+                                                      title: t.translate(i18
+                                                          .common
+                                                          .termsAndConditions),
+                                                      additionalWidgets:
+                                                          termsNCond.isNotEmpty
+                                                              ? List.generate(
+                                                                  termsNCond
+                                                                      .length,
+                                                                  (i) => Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Text(
+                                                                      '${i + 1}. ${termsNCond[i]}',
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                      ),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .start,
+                                                                    ),
+                                                                  ),
+                                                                ).toList()
+                                                              : [
+                                                                  EmptyImage(
                                                                     align: Alignment
                                                                         .center,
                                                                     label: t.translate(i18
                                                                         .common
                                                                         .noTermsNConditions),
                                                                   ),
-                                                        titlePadding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
-                                                        contentPadding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
-                                                        barrierDismissible:
-                                                            true,
-                                                        primaryAction: DigitDialogActions(
-                                                            label: t.translate(
-                                                                i18.common.close),
-                                                            action: (context) => Navigator.of(context, rootNavigator: true).pop()),
-                                                        isScrollable: true)),
+                                                                ],
+                                                    );
+                                                  },
+                                                ),
                                                 align: Alignment.centerLeft,
                                               ),
                                             ),
@@ -669,17 +674,17 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                         //         context,
                                                         //         error ?? 'ERR!',
                                                         //         'ERROR'));
-                                                        ui_component
-                                                                .Toast
+                                                        ui_component.Toast
                                                             .showToast(
                                                                 context,
                                                                 message:
-                                                                    error ??
-                                                                        'ERR!',
+                                                                    t.translate(
+                                                                        error ??
+                                                                            'ERR!'),
                                                                 type: ToastType
                                                                     .error));
                                               },
-                                              child: SizedBox.shrink(),
+                                              child: const SizedBox.shrink(),
                                             ),
                                           ],
                                         )
@@ -688,10 +693,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                               .workOrder.noWorkOrderAssigned),
                                           align: Alignment.center,
                                         ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 16.0,
                                   ),
-                                  Align(
+                                  const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: ui_component.PoweredByDigit(
                                       version: Constants.appVersion,
@@ -712,13 +717,17 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 initial: () => Container(),
                 loading: () => hasLoaded = false,
                 error: (String? error) {
-                  Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                  // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+              ui_component.Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
                   Notifiers.getToastMessage(
                       context,
                       '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
                       'SUCCESS');
+
+                      
+
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(const WorkOrderRoute());
                 },
@@ -1109,8 +1118,11 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                               loading: () =>
                                   shg_loader.Loaders.circularLoader(context),
                               error: (String? error) =>
-                                  Notifiers.getToastMessage(
-                                      context, error.toString(), 'ERROR'),
+                                  // Notifiers.getToastMessage(
+                                  //     context, error.toString(), 'ERROR'),
+                                  ui_component.Toast.showToast(context,
+                                      message: t.translate(error.toString()),
+                                      type: ToastType.error),
                               loaded: (ContractsModel? contracts) {
                                 if (contracts?.contracts != null) {
                                   termsNCond = contracts!
@@ -1638,82 +1650,71 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                             t.translate(i18
                                                                 .common
                                                                 .viewTermsAndConditions),
-                                                            () => DigitDialog
-                                                                .show(
-                                                              context,
-                                                              options:
-                                                                  DigitDialogOptions(
-                                                                title: Text(
-                                                                    t.translate(i18
-                                                                        .common
-                                                                        .termsAndConditions),
-                                                                    style: const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontSize:
-                                                                            24,
-                                                                        fontFamily:
-                                                                            'Roboto Condensed',
-                                                                        fontStyle:
-                                                                            FontStyle
-                                                                                .normal,
-                                                                        color: Color.fromRGBO(
-                                                                            11,
-                                                                            12,
-                                                                            12,
-                                                                            1))),
-                                                                content: termsNCond
-                                                                        .isNotEmpty
-                                                                    ? Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
-                                                                        children: [
-                                                                          for (var i = 0;
-                                                                              i < termsNCond.length;
-                                                                              i++)
-                                                                            Align(
-                                                                              alignment: Alignment.centerLeft,
-                                                                              child: Text(
-                                                                                '${i + 1}. ${termsNCond[i]}',
-                                                                                style: const TextStyle(
-                                                                                  fontSize: 16,
-                                                                                  fontWeight: FontWeight.w700,
-                                                                                ),
-                                                                                textAlign: TextAlign.start,
-                                                                              ),
-                                                                            )
-                                                                        ],
-                                                                      )
-                                                                    : EmptyImage(
-                                                                        align: Alignment
-                                                                            .center,
+                                                            () => showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return Popup(
+                                                                  actions: [
+                                                                    Button(
+                                                                        mainAxisSize:
+                                                                            MainAxisSize
+                                                                                .max,
                                                                         label: t.translate(i18
                                                                             .common
-                                                                            .noTermsNConditions),
-                                                                      ),
-                                                                titlePadding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                contentPadding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                barrierDismissible:
-                                                                    true,
-                                                                primaryAction: DigitDialogActions(
-                                                                    label: t.translate(i18
-                                                                        .common
-                                                                        .close),
-                                                                    action: (context) => Navigator.of(
+                                                                            .close),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context, rootNavigator: true)
+                                                                              .pop();
+                                                                        },
+                                                                        type: ButtonType
+                                                                            .primary,
+                                                                        size: ButtonSize
+                                                                            .large)
+                                                                  ],
+                                                                  onCrossTap:
+                                                                      () {
+                                                                    Navigator.of(
                                                                             context,
                                                                             rootNavigator:
                                                                                 true)
-                                                                        .pop()),
-                                                                isScrollable:
-                                                                    true,
-                                                              ),
+                                                                        .pop();
+                                                                  },
+                                                                  title: t.translate(i18
+                                                                      .common
+                                                                      .termsAndConditions),
+                                                                  additionalWidgets: termsNCond
+                                                                          .isNotEmpty
+                                                                      ? List
+                                                                          .generate(
+                                                                          termsNCond
+                                                                              .length,
+                                                                          (i) =>
+                                                                              Align(
+                                                                            alignment:
+                                                                                Alignment.centerLeft,
+                                                                            child:
+                                                                                Text(
+                                                                              '${i + 1}. ${termsNCond[i]}',
+                                                                              style: const TextStyle(
+                                                                                fontSize: 16,
+                                                                                fontWeight: FontWeight.w700,
+                                                                              ),
+                                                                              textAlign: TextAlign.start,
+                                                                            ),
+                                                                          ),
+                                                                        ).toList()
+                                                                      : [
+                                                                          EmptyImage(
+                                                                            align:
+                                                                                Alignment.center,
+                                                                            label:
+                                                                                t.translate(i18.common.noTermsNConditions),
+                                                                          ),
+                                                                        ],
+                                                                );
+                                                              },
                                                             ),
                                                             align: Alignment
                                                                 .centerLeft,
@@ -1747,8 +1748,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
 
                                                                         ui_component.Toast.showToast(
                                                                             context,
-                                                                            message: error ??
-                                                                                'ERR!',
+                                                                            message: t.translate(error ??
+                                                                                'ERR!'),
                                                                             type:
                                                                                 ToastType.error));
                                                           },
@@ -1791,19 +1792,23 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 initial: () => Container(),
                 loading: () => hasLoaded = false,
                 error: (String? error) {
-                  Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                  // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                ui_component.Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
-                  Notifiers.getToastMessage(
-                      context,
-                      '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
-                      'SUCCESS');
+                  // Notifiers.getToastMessage(
+                  //     context,
+                  //     '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
+                  //     'SUCCESS');
+
+                ui_component.Toast.showToast(context, message: t.translate('${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}'), type: ToastType.success);
+
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(const WorkOrderRoute());
                 },
                 orElse: () => false);
           },
-          child: Container(),
+          child: const SizedBox.shrink(),
         ),
         BlocListener<AcceptWorkOrderBloc, AcceptWorkOrderState>(
           listener: (context, state) {
@@ -1811,13 +1816,16 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 initial: () => Container(),
                 loading: () => shg_loader.Loaders.circularLoader(context),
                 error: (String? error) {
-                  Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                  // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                ui_component.Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
-                  Notifiers.getToastMessage(
-                      context,
-                      '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
-                      'SUCCESS');
+                  // Notifiers.getToastMessage(
+                  //     context,
+                  //     '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
+                  //     'SUCCESS');
+
+                  ui_component.Toast.showToast(context, message: t.translate('${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}'), type: ToastType.success);
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(ViewWorkDetailsRoute(
                       contractNumber: workOrderList.first['payload']

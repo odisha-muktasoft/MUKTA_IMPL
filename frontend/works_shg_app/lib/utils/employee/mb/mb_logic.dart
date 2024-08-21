@@ -286,7 +286,7 @@ class MBLogic {
           height: e.height != null ? e.height!.toInt() : 0,
           quantity: e.quantity != null
               ? e.quantity!.toDouble()
-              : e.noOfunit!.toDouble(),
+              : 0.0,
           isDeduction: e.isDeduction,
           status: mb.estimate?.status,
           wfStatus: mb.estimate?.wfStatus,

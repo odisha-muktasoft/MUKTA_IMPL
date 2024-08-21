@@ -4,6 +4,7 @@ import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,6 +33,7 @@ import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class MBTypeConfirmationPage extends StatefulWidget {
@@ -136,7 +138,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
             ).popUntil(
               (route) => route is! PopupRoute,
             );
-            Loaders.showLoadingDialog(context);
+            //Loaders.showLoadingDialog(context);
+             shg_loader.Loaders.showLoadingDialog(context);
           },
           error: (value) {
             Navigator.of(
@@ -308,17 +311,17 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         width:
                                             MediaQuery.sizeOf(context).width *
                                                 0.9,
-                                        child: Text(
-                                          widget.nextActions!.action ==
+                                        child: TextChunk(
+                                          heading: widget.nextActions!.action ==
                                                   "EDIT/RE-SUBMIT"
                                               ? t.translate(
                                                   "WORKS_UPDATE_AND_FORWARD")
                                               : t.translate(
                                                   "WF_MB_ACTION_${widget.nextActions!.action}"),
-                                          style: DigitTheme.instance.mobileTheme
-                                              .textTheme.headlineLarge,
-                                          overflow: TextOverflow.clip,
-                                          maxLines: 1,
+                                          // style: DigitTheme.instance.mobileTheme
+                                          //     .textTheme.headlineLarge,
+                                          // overflow: TextOverflow.clip,
+                                          // maxLines: 1,
                                         ),
                                       ),
                                     ],
@@ -341,30 +344,36 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                         null &&
                                                     value.hrmsEmployee!
                                                         .isNotEmpty) {
-                                                  return ui_component.DigitDropdown<
-                                                          HRMSEmployee>(
-                                                      valueMapper: value
-                                                          .hrmsEmployee!
-                                                          .map((e) => ValueMapper(
-                                                              code: e.uuid!,
-                                                              name: t.translate(e
-                                                                  .employeeUser!
-                                                                  .name
-                                                                  .toString())))
-                                                          .toList(),
-                                                      onSelect: (p0) {
-                                                        setState(() {
-                                                          selectedAssignee =
-                                                              p0.code!;
-                                                        });
-                                                      },
-                                                      items: value.hrmsEmployee!
-                                                          .map((e) => DropdownItem(
-                                                              name: e
-                                                                  .employeeUser!
-                                                                  .name!,
-                                                              code: e.uuid!))
-                                                          .toList());
+                                                  return ui_component
+                                                      .LabeledField(
+                                                    label: t.translate(
+                                                        "WF_MODAL_APPROVER"),
+                                                    child: ui_component.DigitDropdown<
+                                                            HRMSEmployee>(
+                                                        valueMapper: value
+                                                            .hrmsEmployee!
+                                                            .map((e) => ValueMapper(
+                                                                code: e.uuid!,
+                                                                name: t.translate(e
+                                                                    .employeeUser!
+                                                                    .name
+                                                                    .toString())))
+                                                            .toList(),
+                                                        onSelect: (p0) {
+                                                          setState(() {
+                                                            selectedAssignee =
+                                                                p0.code!;
+                                                          });
+                                                        },
+                                                        items: value
+                                                            .hrmsEmployee!
+                                                            .map((e) => DropdownItem(
+                                                                name: e
+                                                                    .employeeUser!
+                                                                    .name!,
+                                                                code: e.uuid!))
+                                                            .toList()),
+                                                  );
 
                                                   //       DigitDropdown<
                                                   //     HRMSEmployee>(
@@ -377,8 +386,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                   //   },
                                                   //   initialValue:
                                                   //       selectedAssignee,
-                                                  //   label: t.translate(
-                                                  //       "WF_MODAL_APPROVER"),
+                                                  // label: t.translate(
+                                                  //     "WF_MODAL_APPROVER"),
                                                   //   menuItems: value
                                                   //       .hrmsEmployee!
                                                   //       .map((e) => e)
@@ -408,15 +417,31 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           },
                                         )
                                       : const SizedBox.shrink(),
-                                  DigitTextField(
-                                    label:
-                                        "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
-                                    maxLines: 5,
-                                    controller: comment,
-                                    isRequired:
-                                        widget.nextActions!.action == "REJECT"
-                                            ? true
-                                            : false,
+                                  // DigitTextField(
+                                  //   label:
+                                  //       "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
+                                  //   maxLines: 5,
+                                  //   controller: comment,
+                                  //   isRequired:
+                                  // widget.nextActions!.action == "REJECT"
+                                  //     ? true
+                                  //     : false,
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: ui_component.LabeledField(
+                                      
+                                      label:
+                                          "${t.translate("WF_MODAL_COMMENTS")}",
+                                      child: DigitTextAreaFormInput(
+                                        controller: comment,
+                                        maxLine: 5,
+                                        isRequired:
+                                            widget.nextActions!.action == "REJECT"
+                                                ? true
+                                                : false,
+                                      ),
+                                    ),
                                   ),
                                   widget.nextActions!.action !=
                                               "EDIT/RE-SUBMIT" &&
@@ -633,30 +658,36 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                         null &&
                                                     value.hrmsEmployee!
                                                         .isNotEmpty) {
-                                                  return ui_component.DigitDropdown<
-                                                          HRMSEmployee>(
-                                                      valueMapper: value
-                                                          .hrmsEmployee!
-                                                          .map((e) => ValueMapper(
-                                                              code: e.uuid!,
-                                                              name: t.translate(e
-                                                                  .employeeUser!
-                                                                  .name
-                                                                  .toString())))
-                                                          .toList(),
-                                                      onSelect: (p0) {
-                                                        setState(() {
-                                                          selectedAssignee =
-                                                              p0.code!;
-                                                        });
-                                                      },
-                                                      items: value.hrmsEmployee!
-                                                          .map((e) => DropdownItem(
-                                                              name: e
-                                                                  .employeeUser!
-                                                                  .userName!,
-                                                              code: e.uuid!))
-                                                          .toList());
+                                                  return ui_component
+                                                      .LabeledField(
+                                                    label: t.translate(
+                                                        "WF_MODAL_APPROVER"),
+                                                    child: ui_component.DigitDropdown<
+                                                            HRMSEmployee>(
+                                                        valueMapper: value
+                                                            .hrmsEmployee!
+                                                            .map((e) => ValueMapper(
+                                                                code: e.uuid!,
+                                                                name: t.translate(e
+                                                                    .employeeUser!
+                                                                    .name
+                                                                    .toString())))
+                                                            .toList(),
+                                                        onSelect: (p0) {
+                                                          setState(() {
+                                                            selectedAssignee =
+                                                                p0.code!;
+                                                          });
+                                                        },
+                                                        items: value
+                                                            .hrmsEmployee!
+                                                            .map((e) => DropdownItem(
+                                                                name: e
+                                                                    .employeeUser!
+                                                                    .userName!,
+                                                                code: e.uuid!))
+                                                            .toList()),
+                                                  );
                                                   // return  DigitDropdown<
                                                   //     HRMSEmployee>(
                                                   //   onChanged: (value) {
@@ -667,8 +698,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                   //   },
                                                   //   initialValue:
                                                   //       selectedAssignee,
-                                                  //   label: t.translate(
-                                                  //       "WF_MODAL_APPROVER"),
+                                                  // label: t.translate(
+                                                  //     "WF_MODAL_APPROVER"),
                                                   //   menuItems: value
                                                   //       .hrmsEmployee!
                                                   //       .map((e) => e)
@@ -699,10 +730,20 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           },
                                         )
                                       : const SizedBox.shrink(),
-                                  DigitTextField(
-                                    label: t.translate("WF_MODAL_COMMENTS"),
-                                    maxLines: 5,
-                                    controller: comment,
+                                  // DigitTextField(
+                                  // label: t.translate("WF_MODAL_COMMENTS"),
+                                  //   maxLines: 5,
+                                  //   controller: comment,
+                                  // ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: ui_component.LabeledField(
+                                      label: t.translate("WF_MODAL_COMMENTS"),
+                                      child: DigitTextAreaFormInput(
+                                        maxLine: 5,
+                                        controller: comment,
+                                      ),
+                                    ),
                                   ),
                                   widget.stateActions!.action != null
                                       ? SizedBox(

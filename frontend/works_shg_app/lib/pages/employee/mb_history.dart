@@ -9,6 +9,7 @@ import 'package:digit_ui_components/theme/ComponentTheme/button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -91,9 +92,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 return Draggable(
                                   childWhenDragging: FloatActionCard(
                                     actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
+                                      showDialog(
+                                       context: context,
+                                        builder:(context)=> CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -152,9 +153,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   feedback: const SizedBox.shrink(),
                                   child: FloatActionCard(
                                     actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
+                                      showDialog(
+                                       context: context,
+                                        builder:(context)=> CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -225,66 +226,47 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Padding(
-                                    padding: const EdgeInsets.only(
-                                  left: 0.0, bottom: 8.0, top: 8.0, right: 8.0),
-                                   child: Row(
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 0.0,
+                                      bottom: 0.0,
+                                      top: 8.0,
+                                      right: 8.0),
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                     children: [
-                                       BackNavigationButton(
-                                            backNavigationButtonThemeData:
-                                                const BackNavigationButtonThemeData()
-                                                    .copyWith(
-                                                      textColor: Theme.of(context)
-                                                    .colorTheme
-                                                    .primary
-                                                    .primary2,
-                                              contentPadding: EdgeInsets.zero,
-                                              context: context,
-                                              backButtonIcon: Icon(
-                                                Icons.arrow_left,
-                                                // size: MediaQuery.of(context)
-                                                //             .size
-                                                //             .width <
-                                                //         500
-                                                //     ? Theme.of(context)
-                                                //         .spacerTheme
-                                                //         .spacer5
-                                                //     : Theme.of(context)
-                                                //         .spacerTheme
-                                                //         .spacer6,
-                                                color: Theme.of(context)
-                                                    .colorTheme
-                                                    .primary
-                                                    .primary2,
-                                              ),
-                                            ),
-                                            backButtonText:
-                                                AppLocalizations.of(context)
-                                                        .translate(i18.common.back) ??
-                                                    'Back',
-                                            handleBack: () {
-                                             context.router.maybePopTop();
-                                            },
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: BackNavigationButton(
+                                          backNavigationButtonThemeData:
+                                              const BackNavigationButtonThemeData()
+                                                  .copyWith(
+                                            textColor: Theme.of(context)
+                                                .colorTheme
+                                                .primary
+                                                .primary2,
+                                            contentPadding: EdgeInsets.zero,
+                                            context: context,
                                           ),
-                                     ],
-                                   ),
-                                 ),
-                                // IconBackButton(
-                                //   iconTextColor: const DigitColors().black,
-                                //   iconColor: const DigitColors().black,
-                                //   icon: Icons.arrow_left,
-                                //   action: () {
-                                //     context.router.maybePopTop();
-                                //   },
-                                // ),
+                                          backButtonText: AppLocalizations.of(
+                                                      context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                          handleBack: () {
+                                            context.router.maybePopTop();
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    t.translate(i18.measurementBook.mbHistory),
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.headlineLarge,
+                                  child: TextChunk(
+                                    heading: t.translate(
+                                        i18.measurementBook.mbHistory),
                                   ),
                                 ),
                               ],
@@ -300,11 +282,24 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.type == MBScreen.update ? index : index;
                             if (adjustedIndex <= k.length) {
                               return DigitCard(
-                                
+                                padding: const EdgeInsets.only(
+                                  left: 4.0,
+                                  bottom: 8.0,
+                                  right: 4.0,
+                                  top: 8.0,
+                                ),
                                 margin: const EdgeInsets.all(8.0),
                                 cardType: CardType.primary,
                                 children: [
-                                  LabelValueList(heading: "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
+                                  LabelValueList(
+                                      padding: const EdgeInsets.only(
+                                        left: 4.0,
+                                        bottom: 8.0,
+                                        right: 4.0,
+                                        top: 8.0,
+                                      ),
+                                      heading:
+                                          "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                       maxLines: 3,
                                       labelFlex: 5,
                                       valueFlex: 5,
@@ -345,22 +340,23 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                               "")
                                       ? const SizedBox.shrink()
                                       : Button(
-                                        
+                                          suffixIcon:
+                                              Icons.arrow_forward_outlined,
                                           label:
                                               t.translate(i18.home.musterRoll),
                                           onPressed: () {
                                             context.router
-                                              .push(MBMusterScreenRoute(
-                                            musterRollNumber: k[adjustedIndex]
-                                                .musterRollNumber
-                                                .toString(),
-                                            tenantId: widget.tenantId!,
-                                          ));
+                                                .push(MBMusterScreenRoute(
+                                              musterRollNumber: k[adjustedIndex]
+                                                  .musterRollNumber
+                                                  .toString(),
+                                              tenantId: widget.tenantId!,
+                                            ));
                                           },
-                                          type: ButtonType.tertiary,
+                                          type: ButtonType.link,
                                           size: ButtonSize.medium),
                                 ],
-                              
+
                                 // showSla: false, showStatus: true, status: k[adjustedIndex].wfStatus??'',
                               );
                             } else {
@@ -537,9 +533,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         label: t.translate(i18.measurementBook.mbAction),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          DigitActionDialog.show(
-                            context,
-                            widget: CommonButtonCard(
+                          showDialog(
+                           context: context,
+                            builder:(context)=> CommonButtonCard(
                               g: processInstances,
                               contractNumber: contractNumber,
                               mbNumber: mbNumber,

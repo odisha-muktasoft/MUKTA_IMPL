@@ -2,7 +2,10 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/widgets/atoms/digit_toaster.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/models/models.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,7 +50,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
   bool workShow = true;
   bool project = true;
 
-  String assign = 'assign';
+  // String assign = 'assign';
+  String assign = "MB_ASSIGNED_TO_ALL";
   String projectTypeKey = "projectTypeKey";
   String wardNoKey = "wardNoKey";
   String statusMapKey = "statusMapKey";
@@ -234,11 +238,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                         }
                                                       };
 
-                                                      if (formGroup.value[
-                                                                  assign] ==
-                                                              "MB_ASSIGNED_TO_ME" ||
-                                                          assign ==
-                                                              "MB_ASSIGNED_TO_ME") {
+                                                      if (assign ==
+                                                          "MB_ASSIGNED_TO_ME") {
                                                         filterPayload['inbox']![
                                                                     'moduleSearchCriteria']![
                                                                 'assignee'] =
@@ -356,11 +357,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           };
                                                         }
 
-                                                        if (formGroup.value[
-                                                                    assign] ==
-                                                                "MB_ASSIGNED_TO_ME" ||
-                                                            assign ==
-                                                                "MB_ASSIGNED_TO_ME") {
+                                                        if (assign ==
+                                                            "MB_ASSIGNED_TO_ME") {
                                                           filterPayload['inbox']![
                                                                       'moduleSearchCriteria']![
                                                                   'assignee'] =
@@ -501,11 +499,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                           };
                                                         }
 
-                                                        if (formGroup.value[
-                                                                    assign] ==
-                                                                "MB_ASSIGNED_TO_ME" ||
-                                                            assign ==
-                                                                "MB_ASSIGNED_TO_ME") {
+                                                        if (assign ==
+                                                            "MB_ASSIGNED_TO_ME") {
                                                           filterPayload['inbox']![
                                                                       'moduleSearchCriteria']![
                                                                   'assignee'] =
@@ -876,8 +871,12 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [
-                                          DigitIconButton(
-                                            textDirection: TextDirection.rtl,
+                                          Button(
+                                            size: ButtonSize.large,
+                                            type: ButtonType.tertiary,
+                                            label: '',
+                                            suffixIcon: Icons.close,
+                                            // textDirection: TextDirection.rtl,
                                             onPressed: () {
                                               context
                                                   .read<MeasurementInboxBloc>()
@@ -894,10 +893,10 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                   );
                                               context.router.maybePopTop();
                                             },
-                                            icon: Icons.close,
-                                            iconSize: 30,
-                                            iconColor:
-                                                const DigitColors().black,
+                                            // icon: Icons.close,
+                                            // iconSize: 30,
+                                            // iconColor:
+                                            //     const DigitColors().black,
                                           ),
                                         ],
                                       ),
@@ -908,166 +907,349 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          const Icon(Icons.filter_alt),
+                                          const SizedBox(
+                                            child: Icon(
+                                              Icons.filter_alt,
+                                              size: 35,
+                                            ),
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 8.0),
-                                            child: Text(
-                                              t.translate(
+                                                left: 0.0),
+                                            child: TextChunk(
+                                              heading: t.translate(
                                                   i18.measurementBook.filter),
-                                              style: DigitTheme
-                                                  .instance
-                                                  .mobileTheme
-                                                  .textTheme
-                                                  .headlineMedium
-                                                  ?.copyWith(
-                                                      fontFamily: 'Roboto'),
+                                              // style: DigitTheme
+                                              //     .instance
+                                              //     .mobileTheme
+                                              //     .textTheme
+                                              //     .headlineMedium
+                                              //     ?.copyWith(
+                                              //         fontFamily: 'Roboto'),
                                             ),
                                           ),
                                         ],
                                       ),
 
+                                      // workShow
+                                      //     ? DigitRadioButtonList<String>(
+                                      //         isEnabled: true,
+                                      //         labelText: t.translate(
+                                      //             i18.common.assignee),
+                                      //         formControlName: assign,
+                                      //         options: const [
+                                      //           'MB_ASSIGNED_TO_ME',
+                                      //           'MB_ASSIGNED_TO_ALL'
+                                      //         ],
+                                      //         isRequired: false,
+                                      //         valueMapper: (value) =>
+                                      //             t.translate(value),
+                                      //         onValueChange: (value) {
+                                      //           setState(() {
+                                      //             assign = value;
+                                      //           });
+                                      //         },
+                                      //       )
+                                      //     : const SizedBox.shrink(),
                                       workShow
-                                          ? DigitRadioButtonList<String>(
-                                              isEnabled: true,
-                                              labelText: t.translate(
-                                                  i18.common.assignee),
-                                              formControlName: assign,
-                                              options: const [
-                                                'MB_ASSIGNED_TO_ME',
-                                                'MB_ASSIGNED_TO_ALL'
-                                              ],
-                                              isRequired: false,
-                                              valueMapper: (value) =>
-                                                  t.translate(value),
-                                              onValueChange: (value) {
-                                                setState(() {
-                                                  assign = value;
-                                                });
-                                              },
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 6.0,
+                                                  left: 0.0,
+                                                  bottom: 16),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  RadioList(
+                                                    groupValue: assign,
+                                                    containerPadding:
+                                                        const EdgeInsets.only(
+                                                            left: 0.0, top: 10),
+                                                    radioButtons: [
+                                                      RadioButtonModel(
+                                                          code:
+                                                              "MB_ASSIGNED_TO_ME",
+                                                          name: t.translate(
+                                                              "MB_ASSIGNED_TO_ME")),
+                                                      RadioButtonModel(
+                                                          code:
+                                                              "MB_ASSIGNED_TO_ALL",
+                                                          name: t.translate(
+                                                              "MB_ASSIGNED_TO_ALL")),
+                                                    ],
+                                                    onChanged: (RadioButtonModel
+                                                        value) {
+                                                      setState(() {
+                                                        assign = value.code;
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
+                                              ),
                                             )
                                           : const SizedBox.shrink(),
+
+                                      // project
+                                      //     ? DigitTextField(
+                                      // label: t.translate(
+                                      //     i18.measurementBook.mbNumber),
+                                      //         controller: mbNumber,
+                                      //       )
+                                      //     : const SizedBox.shrink(),
                                       project
-                                          ? DigitTextField(
+                                          ? ui_component.LabeledField(
                                               label: t.translate(
                                                   i18.measurementBook.mbNumber),
-                                              controller: mbNumber,
+                                              child: DigitTextFormInput(
+                                                controller: projectId,
+                                              ),
                                             )
                                           : const SizedBox.shrink(),
                                       project
                                           ? Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 8.0),
-                                              child: DigitTextField(
+                                              child: ui_component.LabeledField(
                                                 label: t.translate(i18
                                                     .measurementBook.projectId),
-                                                controller: projectId,
+                                                child: DigitTextFormInput(
+                                                  controller: projectId,
+                                                ),
                                               ),
                                             )
                                           : const SizedBox.shrink(),
 
                                       project
-                                          ? BlocBuilder<ProjectTypeBloc,
-                                              ProjectTypeState>(
-                                              builder: (context, state) {
-                                                return state.maybeMap(
-                                                  orElse: () =>
-                                                      const SizedBox.shrink(),
-                                                  loaded: (value) {
-                                                    return DigitReactiveDropdown<
-                                                        ProjectType>(
-                                                      formControlName:
-                                                          projectTypeKey,
-                                                      onChanged: (value) {
-                                                        setState(() {
-                                                          projectName =
-                                                              value!.code!;
-                                                          selectedType = value;
-                                                          workShow = false;
-                                                        });
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: ui_component.LabeledField(
+                                                label: t.translate(i18
+                                                    .measurementBook
+                                                    .projectType),
+                                                child: BlocBuilder<
+                                                    ProjectTypeBloc,
+                                                    ProjectTypeState>(
+                                                  builder: (context, state) {
+                                                    return state.maybeMap(
+                                                      orElse: () =>
+                                                          const SizedBox
+                                                              .shrink(),
+                                                      loaded: (value) {
+                                                        return ui_component
+                                                            .DigitDropdown<
+                                                                ProjectType>(
+                                                          onSelect: (value) {
+                                                            setState(() {
+                                                              projectName =
+                                                                  value!.code!;
+                                                              //selectedType = ProjectType(name: value.name,code: value.code) ;
+                                                              workShow = false;
+                                                            });
+                                                          },
+                                                          // formControlName:
+                                                          //     projectTypeKey,
+                                                          // onChanged: (value) {
+                                                          // setState(() {
+                                                          //   projectName =
+                                                          //       value!.code!;
+                                                          //   selectedType = value;
+                                                          //   workShow = false;
+                                                          // });
+                                                          // },
+                                                          // initialValue:
+                                                          //     selectedType,
+                                                          // label: t.translate(i18
+                                                          //     .measurementBook
+                                                          //     .projectType),
+                                                          items: value
+                                                              .mbProjectType!
+                                                              .mdmsRes!
+                                                              .mbWorks!
+                                                              .projectType!
+                                                              .map((e) => DropdownItem(
+                                                                  name:
+                                                                      e.name ??
+                                                                          '',
+                                                                  code:
+                                                                      e.code ??
+                                                                          ''))
+                                                              .toList(),
+
+                                                          // valueMapper:  value
+                                                          //     .mbProjectType!
+                                                          //     .mdmsRes!
+                                                          //     .mbWorks!
+                                                          //     .projectType!.map((e) => ValueMapper(name: t.translate(e.name??''), code: e.code??'')).toList()
+                                                        );
                                                       },
-                                                      initialValue:
-                                                          selectedType,
-                                                      label: t.translate(i18
-                                                          .measurementBook
-                                                          .projectType),
-                                                      menuItems: value
-                                                          .mbProjectType!
-                                                          .mdmsRes!
-                                                          .mbWorks!
-                                                          .projectType!,
-                                                      valueMapper: (value) {
-                                                        return value.name!
-                                                            .trim();
+                                                      error: (value) {
+                                                        return const SizedBox
+                                                            .shrink();
+                                                      },
+                                                      loading: (value) {
+                                                        return const SizedBox
+                                                            .shrink();
                                                       },
                                                     );
                                                   },
-                                                  error: (value) {
-                                                    return const SizedBox
-                                                        .shrink();
-                                                  },
-                                                  loading: (value) {
-                                                    return const SizedBox
-                                                        .shrink();
-                                                  },
-                                                );
-                                              },
+                                                ),
+                                              ),
                                             )
                                           : const SizedBox.shrink(),
 
                                       // end of this
                                       workShow
-                                          ? DigitReactiveDropdown<String>(
-                                              formControlName: wardNoKey,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  ward.add(value);
-                                                  project = false;
-                                                });
-                                              },
-                                              initialValue: ward.isNotEmpty
-                                                  ? ward.first
-                                                  : null,
-                                              label:
-                                                  t.translate(i18.common.ward),
-                                              menuItems: location!
-                                                  .tenantBoundaryList!
-                                                  .first
-                                                  .boundaryList!
-                                                  .map((e) => e.code.toString())
-                                                  .toList(),
-                                              valueMapper: (value) {
-                                                return t.translate(
-                                                    convertToWard(
-                                                        value.toString()));
-                                                // return value.toString();
-                                              },
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: ui_component.LabeledField(
+                                                label: t
+                                                    .translate(i18.common.ward),
+                                                child: ui_component
+                                                    .DigitDropdown<String>(
+                                                  // formControlName: wardNoKey,
+                                                  // onChanged: (value) {
+                                                  // setState(() {
+                                                  //   ward.add(value);
+                                                  //   project = false;
+                                                  // });
+                                                  // },
+                                                  // initialValue: ward.isNotEmpty
+                                                  //     ? ward.first
+                                                  //     : null,
+                                                  // label:
+                                                  // t.translate(i18.common.ward),
+                                                  onSelect: (value) {
+                                                    setState(() {
+                                                      ward.add(value.code);
+                                                      project = false;
+                                                    });
+                                                  },
+                                                  items: location!
+                                                      .tenantBoundaryList!
+                                                      .first
+                                                      .boundaryList!
+                                                      .map((e) => DropdownItem(
+                                                          name: e.name!,
+                                                          code: e.code
+                                                              .toString()))
+                                                      .toList(),
+                                                  // valueMapper: (value) {
+                                                  //   return t.translate(
+                                                  //       convertToWard(
+                                                  //           value.toString()));
+
+                                                  // },
+                                                ),
+                                              ),
                                             )
                                           : const SizedBox.shrink(),
+                                      // workShow
+                                      //     ? DigitReactiveDropdown<String>(
+                                      //         formControlName: wardNoKey,
+                                      //         onChanged: (value) {
+                                      //           setState(() {
+                                      //             ward.add(value);
+                                      //             project = false;
+                                      //           });
+                                      //         },
+                                      //         initialValue: ward.isNotEmpty
+                                      //             ? ward.first
+                                      //             : null,
+                                      //         label:
+                                      //             t.translate(i18.common.ward),
+                                      //         menuItems: location!
+                                      //             .tenantBoundaryList!
+                                      //             .first
+                                      //             .boundaryList!
+                                      //             .map((e) => e.code.toString())
+                                      //             .toList(),
+                                      //         valueMapper: (value) {
+                                      //           return t.translate(
+                                      //               convertToWard(
+                                      //                   value.toString()));
+                                      //           // return value.toString();
+                                      //         },
+                                      //       )
+                                      //     : const SizedBox.shrink(),
+                                      // workShow
+                                      //     ? DigitReactiveDropdown<
+                                      //         status_map.StatusMap>(
+                                      //         formControlName: statusMapKey,
+                                      //         onChanged: (value) {
+                                      //           setState(() {
+                                      //             workflow.add(value);
+                                      //             project = false;
+                                      //           });
+                                      //         },
+                                      //         initialValue: workflow.isNotEmpty
+                                      //             ? workflow.first
+                                      //             : null,
+                                      //         label: t.translate(i18
+                                      //             .measurementBook
+                                      //             .workflowState),
+                                      //         menuItems: valueMeasurement
+                                      //             .mbInboxResponse.statusMap!
+                                      //             .map((e) => e)
+                                      //             .toList(),
+                                      //         valueMapper: (value) {
+                                      //           return t.translate(
+                                      //               "MB_WFMB_STATE_${value.state.toString()}");
+                                      //         },
+                                      //       )
+                                      //     : const SizedBox.shrink(),
+
                                       workShow
-                                          ? DigitReactiveDropdown<
-                                              status_map.StatusMap>(
-                                              formControlName: statusMapKey,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  workflow.add(value);
-                                                  project = false;
-                                                });
-                                              },
-                                              initialValue: workflow.isNotEmpty
-                                                  ? workflow.first
-                                                  : null,
-                                              label: t.translate(i18
-                                                  .measurementBook
-                                                  .workflowState),
-                                              menuItems: valueMeasurement
-                                                  .mbInboxResponse.statusMap!
-                                                  .map((e) => e)
-                                                  .toList(),
-                                              valueMapper: (value) {
-                                                return t.translate(
-                                                    "MB_WFMB_STATE_${value.state.toString()}");
-                                              },
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0),
+                                              child: ui_component.LabeledField(
+                                                label: t.translate(i18
+                                                    .measurementBook
+                                                    .workflowState),
+                                                child:
+                                                    ui_component.DigitDropdown<
+                                                        status_map.StatusMap>(
+                                                  // formControlName: statusMapKey,
+                                                  // onChanged: (value) {
+                                                  // setState(() {
+                                                  //   workflow.add(value);
+                                                  //   project = false;
+                                                  // });
+                                                  // },
+                                                  // initialValue: workflow.isNotEmpty
+                                                  //     ? workflow.first
+                                                  //     : null,
+                                                  // label: t.translate(i18
+                                                  //     .measurementBook
+                                                  //     .workflowState),
+                                                  onSelect: (value) {
+                                                    setState(() {
+                                                      workflow.add(
+                                                          status_map.StatusMap(
+                                                              statusid:
+                                                                  value.code));
+                                                      project = false;
+                                                    });
+                                                  },
+                                                  items: valueMeasurement
+                                                      .mbInboxResponse
+                                                      .statusMap!
+                                                      .map((e) => DropdownItem(
+                                                          name: t.translate(
+                                                              "MB_WFMB_STATE_${e.state.toString()}"),
+                                                          code: e.statusid!))
+                                                      .toList(),
+                                                  // valueMapper: (value) {
+                                                  // return t.translate(
+                                                  //     "MB_WFMB_STATE_${value.state.toString()}");
+                                                  // },
+                                                ),
+                                              ),
                                             )
                                           : const SizedBox.shrink(),
                                     ],

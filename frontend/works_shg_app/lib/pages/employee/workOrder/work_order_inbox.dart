@@ -1,10 +1,14 @@
+import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/toast_theme_data.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,6 +17,7 @@ import 'package:works_shg_app/blocs/employee/mb/mb_check.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
+import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
@@ -147,7 +152,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return BlocBuilder<LocalizationBloc, LocalizationState>(
-      builder: (context, state) {
+      builder: (context, localizationState) {
         return Scaffold(
           floatingActionButton:
               BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
@@ -226,131 +231,149 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                         pinned: true,
                         floating: true,
                         delegate: MyHeaderDelegate(
-                          child: Container(
-                            color: const DigitColors().seaShellGray,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0,
-                                      bottom: 8.0,
-                                      top: 8.0,
-                                      right: 8.0),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        BackNavigationButton(
-                                          backNavigationButtonThemeData:
-                                              const BackNavigationButtonThemeData()
-                                                  .copyWith(
-                                            textColor: Theme.of(context)
-                                                .colorTheme
-                                                .primary
-                                                .primary2,
-                                            contentPadding: EdgeInsets.zero,
-                                            context: context,
-                                            backButtonIcon: Icon(
-                                              Icons.arrow_left,
-                                              color: Theme.of(context)
+                            child: Container(
+                              color: const DigitColors().seaShellGray,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0,
+                                        bottom: 8.0,
+                                        top: 8.0,
+                                        right: 8.0),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          BackNavigationButton(
+                                            backNavigationButtonThemeData:
+                                                const BackNavigationButtonThemeData()
+                                                    .copyWith(
+                                              textColor: Theme.of(context)
                                                   .colorTheme
                                                   .primary
                                                   .primary2,
+                                              contentPadding: EdgeInsets.zero,
+                                              context: context,
+                                              // backButtonIcon: Icon(
+                                              //   Icons.arrow_left,
+                                              //   color: Theme.of(context)
+                                              //       .colorTheme
+                                              //       .primary
+                                              //       .primary2,
+                                              // ),
                                             ),
+                                            backButtonText:
+                                                AppLocalizations.of(context)
+                                                        .translate(
+                                                            i18.common.back) ??
+                                                    'Back',
+                                            handleBack: () {
+                                              context.router.maybePop();
+                                            },
                                           ),
-                                          backButtonText: AppLocalizations.of(
-                                                      context)
-                                                  .translate(i18.common.back) ??
-                                              'Back',
-                                          handleBack: () {
-                                            context.router.maybePop();
-                                          },
-                                        ),
-                                      ]),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 17.0),
-                                  child: Text(
-                                    "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.headlineLarge,
+                                        ]),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0,
-                                      right: 8.0,
-                                      top: 4.0,
-                                      bottom: 0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ui_component.Button(
-                                          prefixIcon: Icons.filter_alt,
-                                          label: t.translate(i18.common.filter),
-                                          onPressed: () {
-                                            context.router
-                                                .push(const WOFilterRoute());
-                                          },
-                                          type:
-                                              ui_component.ButtonType.tertiary,
-                                          size: ui_component.ButtonSize.large),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 12.0),
+                                    child: TextChunk(
+                                     heading: "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
+                                     
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 4.0,
+                                        right: 8.0,
+                                        top: 4.0,
+                                        bottom: 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ui_component.Button(
+                                            prefixIcon: Icons.filter_alt,
+                                            label:
+                                                t.translate(i18.common.filter),
+                                            onPressed: () {
+                                              context.router
+                                                  .push(const WOFilterRoute());
+                                            },
+                                            type: ui_component
+                                                .ButtonType.tertiary,
+                                            size:
+                                                ui_component.ButtonSize.large),
 
-                                      // reset
-                                      //TODO: not needed
-                                      // value.search
-                                      //     ? IconButton(
-                                      //         onPressed: () {
-                                      //           pageCount = 0;
-                                      //           context
-                                      //               .read<WorkOrderInboxBloc>()
-                                      //               .add(
-                                      //                 WorkOrderInboxBlocCreateEvent(
-                                      //                   businessService: "MB",
-                                      //                   limit: 10,
-                                      //                   moduleName:
-                                      //                       'contract-service',
-                                      //                   offset: pageCount,
-                                      //                   tenantId:
-                                      //                       GlobalVariables
-                                      //                           .tenantId!,
-                                      //                 ),
-                                      //               );
-                                      //         },
-                                      //         icon: Icon(
-                                      //           Icons.restore_outlined,
-                                      //           color: const DigitColors()
-                                      //               .burningOrange,
-                                      //         ),
-                                      //       )
-                                      //     : const SizedBox.shrink(),
-                                      //
-                                      ui_component.Button(
-                                          prefixIcon: Icons.swap_vert,
-                                          label: t.translate(
-                                              i18.measurementBook.sort),
-                                          onPressed: () {
-                                            Conversion.openSortingModal(
-                                              context,
-                                              listData:
-                                                  Conversion.sortWorkOrder,
-                                              sortType: SortType.woSort,
-                                            );
-                                          },
-                                          type:
-                                              ui_component.ButtonType.tertiary,
-                                          size: ui_component.ButtonSize.large),
-                                    ],
+                                        // reset
+                                        //TODO: not needed
+                                        // value.search
+                                        //     ? IconButton(
+                                        //         onPressed: () {
+                                        //           pageCount = 0;
+                                        //           context
+                                        //               .read<WorkOrderInboxBloc>()
+                                        //               .add(
+                                        //                 WorkOrderInboxBlocCreateEvent(
+                                        //                   businessService: "MB",
+                                        //                   limit: 10,
+                                        //                   moduleName:
+                                        //                       'contract-service',
+                                        //                   offset: pageCount,
+                                        //                   tenantId:
+                                        //                       GlobalVariables
+                                        //                           .tenantId!,
+                                        //                 ),
+                                        //               );
+                                        //         },
+                                        //         icon: Icon(
+                                        //           Icons.restore_outlined,
+                                        //           color: const DigitColors()
+                                        //               .burningOrange,
+                                        //         ),
+                                        //       )
+                                        //     : const SizedBox.shrink(),
+                                        //
+                                        ui_component.Button(
+                                            prefixIcon: Icons.swap_vert,
+                                            label: t.translate(
+                                                i18.measurementBook.sort),
+                                            onPressed: () {
+                                              Conversion.openSortingModal(
+                                                context,
+                                                listData:
+                                                    Conversion.sortWorkOrder,
+                                                sortType: SortType.woSort,
+                                              );
+                                            },
+                                            type: ui_component
+                                                .ButtonType.tertiary,
+                                            size:
+                                                ui_component.ButtonSize.large),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          height: 140,
-                        ),
+                            height: localizationState.maybeMap(
+                              orElse: () => 160,
+                              loaded: (value) {
+                                Languages? ll = value.languages
+                                    ?.firstWhereOrNull((element) =>
+                                        element.isSelected == true);
+                                if (ll != null &&
+                                    ll.value == LanguageEnum.en_IN.name) {
+                                  return 140;
+                                } else {
+                                  return 160;
+                                }
+                              },
+                              error: (value) => 160,
+                            ),
+                            
+                            ),
                       ),
                       value.contracts!.isEmpty
                           ? SliverList(
@@ -424,18 +447,28 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                     t.translate(i18.workOrder
                                                         .estimateRevisionError),
                                                     'ERROR');
+                                                // Toast.showToast(context, message: t.translate(i18.workOrder
+                                                //         .estimateRevisionError), type: ToastType.error);
                                               } else {
                                                 Notifiers.getToastMessage(
                                                     context,
                                                     t.translate(i18.workOrder
                                                         .existingMBCreateError),
                                                     'ERROR');
+                                                //  Toast.showToast(context, message: t.translate(i18.workOrder
+                                                //         .existingMBCreateError), type: ToastType.error);
                                               }
                                             }
                                           },
                                           error: (value) {
-                                            Notifiers.getToastMessage(
-                                                context, value.error!, 'ERROR');
+                                            // Notifiers.getToastMessage(
+                                            //     context, value.error!, 'ERROR');
+                                            Toast.showToast(
+                                              context,
+                                              message:
+                                                  t.translate(value.error!),
+                                              type: ToastType.error,
+                                            );
                                           },
                                         );
                                       },

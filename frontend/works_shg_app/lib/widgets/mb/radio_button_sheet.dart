@@ -1,4 +1,10 @@
 import 'package:digit_components/digit_components.dart';
+
+import 'package:digit_ui_components/models/RadioButtonModel.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/divider_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_radio_list.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
@@ -27,18 +33,22 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: Text(
-              t.translate(i18.measurementBook.sortBy),
-              style: DigitTheme.instance.mobileTheme.textTheme.headlineMedium!
-                  .copyWith(
-                      fontWeight: FontWeight.w100,
-                      color: const DigitColors().cloudGray),
-            ),
-          ),
-          const Divider(),
+            padding: const EdgeInsets.only(left: 8.0,bottom: 8,top: 16.0),
+            child: TextChunk(
+            heading:  t.translate(i18.measurementBook.sortBy),
+              
+          ),),
+          DigitDivider(
+        dividerThemeData: const DigitDividerThemeData().copyWith(
+          color: Colors.blue,
+          indent: 20,
+          endIndent: 30,
+          width: 400,
+        ),
+      ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return ListView.builder(
@@ -78,6 +88,34 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
                   );
                 },
               );
+
+              // return RadioList(
+              //   radioButtons: List.generate(
+              //       widget.dataList.length,
+              //       (index) => RadioButtonModel(
+              //           code: widget.dataList[index].number.toString(),
+              //           name: t.translate( widget.dataList[index].name.toString()))).toList(),
+              //   onChanged: (RadioButtonModel radioButtonModel) async {
+              //     setState(() {
+              //       _selectedValue = int.parse(radioButtonModel.code!).toInt();
+              //     });
+              //     if (widget.sortType == SortType.mbSort) {
+              //       context.read<MeasurementInboxBloc>().add(
+              //           MeasurementBookInboxSortBlocEvent(
+              //               sortCode:
+              //                   int.parse(radioButtonModel.code!).toInt()));
+              //     } else {
+              //       context.read<WorkOrderInboxBloc>().add(
+              //           WorkOrderInboxSortBlocEvent(
+              //               sortCode:
+              //                   int.parse(radioButtonModel.code!).toInt()));
+              //     }
+
+              //     await Future.delayed(const Duration(milliseconds: 500), () {
+              //       Navigator.pop(context);
+              //     });
+              //   },
+              // );
             },
           ),
         ],

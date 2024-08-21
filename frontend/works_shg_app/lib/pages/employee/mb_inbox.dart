@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_components/widgets/atoms/digit_icon_button.dart';
@@ -6,6 +7,7 @@ import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart'
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_component;
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -14,6 +16,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:works_shg_app/blocs/employee/mb/project_type.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
@@ -179,14 +182,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
             },
           ),
           appBar: AppBar(
-           backgroundColor: const Color(0xff0B4B66),
-            
-             iconTheme: Theme.of(context).iconTheme.copyWith(
-                              color: Theme.of(context)
-                                  .colorTheme
-                                  .paper.primary
-                                   
-                            ),
+            backgroundColor: const Color(0xff0B4B66),
+            iconTheme: Theme.of(context)
+                .iconTheme
+                .copyWith(color: Theme.of(context).colorTheme.paper.primary),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -212,179 +211,113 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                         floating: true,
                         pinned: true,
                         delegate: MyHeaderDelegate(
-                          child: Container(
-                            color: const DigitColors().seaShellGray,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, bottom: 8.0, top: 8.0, right: 8.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    BackNavigationButton(
-                                      backNavigationButtonThemeData:
-                                          const BackNavigationButtonThemeData()
-                                              .copyWith(
-                                                textColor: Theme.of(context)
-                                              .colorTheme
-                                              .primary
-                                              .primary2,
-                                        contentPadding: EdgeInsets.zero,
-                                        context: context,
-                                        backButtonIcon: Icon(
-                                          Icons.arrow_left,
-                                          // size: MediaQuery.of(context)
-                                          //             .size
-                                          //             .width <
-                                          //         500
-                                          //     ? Theme.of(context)
-                                          //         .spacerTheme
-                                          //         .spacer5
-                                          //     : Theme.of(context)
-                                          //         .spacerTheme
-                                          //         .spacer6,
-                                          color: Theme.of(context)
-                                              .colorTheme
-                                              .primary
-                                              .primary2,
-                                        ),
-                                      ),
-                                      backButtonText:
-                                          AppLocalizations.of(context)
-                                                  .translate(i18.common.back) ??
-                                              'Back',
-                                      handleBack: () {
-                                        context.router.maybePop();
-                                      },
+                          child: LayoutBuilder(
+                            builder: (context, constraints) => 
+                             Container(
+                              color: const DigitColors().seaShellGray,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0,
+                                        bottom: 8.0,
+                                        top: 8.0,
+                                        right: 8.0),
+                                    child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          BackNavigationButton(
+                                            backNavigationButtonThemeData:
+                                                const BackNavigationButtonThemeData()
+                                                    .copyWith(
+                                              textColor: Theme.of(context)
+                                                  .colorTheme
+                                                  .primary
+                                                  .primary2,
+                                              contentPadding: EdgeInsets.zero,
+                                              context: context,
+                                              
+                                            ),
+                                            backButtonText: AppLocalizations.of(
+                                                        context)
+                                                    .translate(i18.common.back) ??
+                                                'Back',
+                                            handleBack: () {
+                                              context.router.maybePop();
+                                            },
+                                          ),
+                                        ]),
+                                  ),
+                                 
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15.0),
+                                    child: TextChunk(
+                                     heading: "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.totalCount ?? 0})",
+                                     
+                                      
                                     ),
-                                  ]),
-                            ),
-                                // Padding(
-                                //   padding: const EdgeInsets.only(
-                                //       left: 8.0, bottom: 0, top: 0, right: 0),
-                                //   child: IconBackButton(
-                                //     iconTextColor: const DigitColors().black,
-                                //     iconColor: const DigitColors().black,
-                                //     icon: Icons.arrow_left,
-                                //     action: () {
-                                //       context.router.maybePop();
-                                //     },
-                                //   ),
-                                // ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 17.0),
-                                  child: Text(
-                                    "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.totalCount ?? 0})",
-                                    style: Theme.of(context).textTheme.headlineLarge,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0,
-                                      right: 8.0,
-                                      top: 8.0,
-                                      bottom: 0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Button(
-                                        label: t.translate(i18.common.filter),
-                                        onPressed: () {
-                                          setState(() {
-                                            pageCount = 0;
-                                          });
-                                          context.router
-                                              .push(const MBFilterRoute());
-                                        },
-                                        type: ButtonType.tertiary,
-                                        size: ButtonSize.large,
-                                        prefixIcon: Icons.filter_list_alt,
-                                      ),
-
-                                      // DigitIconButton(
-                                      //   iconText:
-                                      //       t.translate(i18.common.filter),
-
-                                      //   onPressed: () {
-                                      //     setState(() {
-                                      //       pageCount = 0;
-                                      //     });
-                                      //     context.router
-                                      //         .push(const MBFilterRoute());
-                                      //   },
-                                      //   // iconSize: 30,
-                                      //   icon: Icons.filter_list_alt,
-                                      //   textDirection: TextDirection.ltr,
-                                      // ),
-                                      // TODO: commenting for reset button
-                                      // - it will be enhanced in future
-                                      // mbInboxResponse.search
-                                      //     ? IconButton(
-                                      //         onPressed: () {
-                                      //           pageCount = 0;
-                                      //           context
-                                      //               .read<
-                                      //                   MeasurementInboxBloc>()
-                                      //               .add(
-                                      //                 MeasurementBookInboxBlocEvent(
-                                      //                   businessService:
-                                      //                       "MB",
-                                      //                   limit: 10,
-                                      //                   moduleName:
-                                      //                       'measurement-module',
-                                      //                   offset: pageCount,
-                                      //                   tenantId:
-                                      //                       GlobalVariables
-                                      //                           .tenantId!,
-                                      //                 ),
-                                      //               );
-                                      //         },
-                                      //         icon: Icon(
-                                      //           Icons.restore_outlined,
-                                      //           color: const DigitColors()
-                                      //               .burningOrange,
-                                      //         ),
-                                      //       )
-                                      //     : const SizedBox.shrink(),
-                                      // end of it
-                                      //],
-                                      //   ),
-                                      // ),
-                                     
-                                     
-                                     Button(
-                                      prefixIcon: Icons.swap_vert,
-                                      label: t.translate(
-                                            i18.measurementBook.sort), onPressed: (){Conversion.openSortingModal(context,
-                                              listData: Conversion.sortMB,
-                                              sortType: SortType.mbSort);}, type: ButtonType.tertiary, size: ButtonSize.large),
-                                     
-                                     
-                                      // DigitIconButton(
-                                      //   iconText: t.translate(
-                                      //       i18.measurementBook.sort),
-
-                                      //   onPressed: () {
-                                      //     Conversion.openSortingModal(context,
-                                      //         listData: Conversion.sortMB,
-                                      //         sortType: SortType.mbSort);
-                                      //   },
-                                      //   // iconSize: 30,
-                                      //   icon: Icons.swap_vert,
-                                      // ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 4.0,
+                                        right: 8.0,
+                                        top: 8.0,
+                                        bottom: 0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Button(
+                                          label: t.translate(i18.common.filter),
+                                          onPressed: () {
+                                            setState(() {
+                                              pageCount = 0;
+                                            });
+                                            context.router
+                                                .push(const MBFilterRoute());
+                                          },
+                                          type: ButtonType.tertiary,
+                                          size: ButtonSize.large,
+                                          prefixIcon: Icons.filter_list_alt,
+                                        ),
+                            
+                            
+                                        Button(
+                                            prefixIcon: Icons.swap_vert,
+                                            label: t.translate(
+                                                i18.measurementBook.sort),
+                                            onPressed: () {
+                                              Conversion.openSortingModal(context,
+                                                  listData: Conversion.sortMB,
+                                                  sortType: SortType.mbSort);
+                                            },
+                                            type: ButtonType.tertiary,
+                                            size: ButtonSize.large),
+                            
+                                        
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                          height: 140,
+                          height:  localizationState.maybeMap(orElse:()=> 140,
+                         loaded: (value) {
+                        Languages? ll=  value.languages?.firstWhereOrNull((element) => element.isSelected==true);
+                         if(ll!=null && ll.value==LanguageEnum.en_IN.name) {
+                           return 140;
+                         } else {
+                           return 190;
+                         }
+                         },
+
+                         error: (value) => 140,
+                        
+                          ) ,
                         ),
                       ),
                       mbInboxResponse.mbInboxResponse.items!.isEmpty
@@ -431,7 +364,10 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                   return ui_component.DigitCard(
                                       cardType: CardType.primary,
                                       margin: const EdgeInsets.only(
-                                          left: 5, bottom: 8, right: 5),
+                                          left: 8,
+                                          bottom: 8,
+                                          right: 8,
+                                          top: 8),
                                       children: [
                                         LabelValueList(
                                             maxLines: 3,

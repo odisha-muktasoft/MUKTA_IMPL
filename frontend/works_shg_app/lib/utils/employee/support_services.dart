@@ -41,11 +41,10 @@ class Conversion {
         return SizedBox(
           height: (listData.length * 80),
           width: MediaQuery.of(context).size.width,
-          child: Center(
-              child: MyBottomSheet(
-            dataList: listData,
-            sortType: sortType,
-          )),
+          child: MyBottomSheet(
+                      dataList: listData,
+                      sortType: sortType,
+                    ),
         );
       },
       context: context,

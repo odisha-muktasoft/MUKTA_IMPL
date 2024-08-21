@@ -67,12 +67,9 @@ class _HomePage extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff0B4B66),
-         iconTheme: Theme.of(context).iconTheme.copyWith(
-                              color: Theme.of(context)
-                                  .colorTheme
-                                  .paper.primary
-                                   
-                            ),
+        iconTheme: Theme.of(context)
+            .iconTheme
+            .copyWith(color: Theme.of(context).colorTheme.paper.primary),
         titleSpacing: 0,
         title: GlobalVariables.roleType == RoleType.cbo
             ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
@@ -152,11 +149,11 @@ class _HomePage extends State<HomePage> {
                                   //         i18.common.noOrgLinkedWithMob),
                                   //     'ERROR');
                                   Toast.showToast(
-                                  context,
-                                  message: t
-                                      .translate(i18.common.noOrgLinkedWithMob),
-                                  type: ToastType.error,
-                                );
+                                    context,
+                                    message: t.translate(
+                                        i18.common.noOrgLinkedWithMob),
+                                    type: ToastType.error,
+                                  );
                                   context
                                       .read<AuthBloc>()
                                       .add(const AuthLogoutEvent());

@@ -3,12 +3,15 @@ import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart'
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
-import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
+    as ui_label;
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_component;
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,11 +24,8 @@ import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
-import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
-import 'package:works_shg_app/widgets/mb/back_button.dart';
 import 'package:works_shg_app/widgets/mb/custom_tab.dart';
-import 'package:works_shg_app/widgets/mb/mb_detail_card.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
@@ -38,7 +38,6 @@ import '../../models/muster_rolls/business_service_workflow.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/back.dart';
 import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/digit_timeline.dart';
@@ -47,7 +46,6 @@ import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/multi_image.dart';
 import '../../widgets/mb/work_flow_button_list.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
-import '../../widgets/mb/text_button_underline.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
@@ -77,6 +75,9 @@ class _MBDetailPageState extends State<MBDetailPage>
   int phots = 0;
   List<DigitTimelineOptions> timeLineAttributes = [];
 
+  late TextEditingController consumedQty;
+  late TextEditingController currentAmt;
+
   // check points for creating new MB
 //  ACTIVE
   String workorderStatus = "";
@@ -84,6 +85,9 @@ class _MBDetailPageState extends State<MBDetailPage>
   String estimateStatus = "";
   @override
   void initState() {
+    consumedQty = TextEditingController();
+    currentAmt = TextEditingController();
+
     if (widget.type == MBScreen.create) {
       context.read<BusinessWorkflowBloc>().add(
             //hard coded
@@ -268,9 +272,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 return Draggable(
                                   childWhenDragging: FloatActionCard(
                                     actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -352,15 +356,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   feedback: const SizedBox.shrink(),
                                   child: FloatActionCard(
                                     actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                        ),
-                                      );
+                                      showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (context) =>
+                                              CommonButtonCard(
+                                                g: g,
+                                                contractNumber:
+                                                    widget.contractNumber,
+                                                mbNumber: widget.mbNumber,
+                                                type: widget.type,
+                                              ));
                                     },
                                     // amount: sorprice.toString(),
                                     amount: value.data.first.totalAmount != null
@@ -426,9 +432,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 return Draggable(
                                   childWhenDragging: FloatActionCard(
                                     actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -501,9 +507,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   feedback: const SizedBox.shrink(),
                                   child: FloatActionCard(
                                     actions: () {
-                                      DigitActionDialog.show(
-                                        context,
-                                        widget: CommonButtonCard(
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -605,7 +611,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 8.0, bottom: 8.0, top: 8.0, right: 8.0),
+                                  left: 12.0,
+                                  bottom: 8.0,
+                                  top: 8.0,
+                                  right: 8.0),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -619,23 +628,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             .primary2,
                                         contentPadding: EdgeInsets.zero,
                                         context: context,
-                                        backButtonIcon: Icon(
-                                          Icons.arrow_left,
-                                          // size: MediaQuery.of(context)
-                                          //             .size
-                                          //             .width <
-                                          //         500
-                                          //     ? Theme.of(context)
-                                          //         .spacerTheme
-                                          //         .spacer5
-                                          //     : Theme.of(context)
-                                          //         .spacerTheme
-                                          //         .spacer6,
-                                          color: Theme.of(context)
-                                              .colorTheme
-                                              .primary
-                                              .primary2,
-                                        ),
                                       ),
                                       backButtonText:
                                           AppLocalizations.of(context)
@@ -654,11 +646,9 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                             Padding(
                               padding: const EdgeInsets.only(left: 16.0),
-                              child: Text(
-                                t.translate(
+                              child: TextChunk(
+                                heading: t.translate(
                                     i18.measurementBook.measurementBookTitle),
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .headlineLarge,
                               ),
                             ),
                             DigitCard(
@@ -670,44 +660,58 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 expandedCrossAxisAlignment:
                                     CrossAxisAlignment.start,
                                 expandedAlignment: Alignment.topLeft,
-                                title: Text(
-                                  t.translate(
+                                title: TextChunk(
+                                  subHeading: t.translate(
                                       i18.measurementBook.primaryDetails),
-                                  style: DigitTheme.instance.mobileTheme
-                                      .textTheme.headlineMedium,
+                                  subHeadingStyle: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
                                 children: [
-                                  CommonMBCard(
-                                    margin: EdgeInsets.zero,
-                                    padding: const EdgeInsets.only(
-                                        left: 4.0,
-                                        right: 4.0,
-                                        bottom: 4.0,
-                                        top: 0.0),
-                                    items: primaryItems(
-                                        t, value.data, widget.type),
-                                    widget: value.data.length > 1
-                                        ? CommonTextButtonUnderline(
-                                            label: t.translate(i18
-                                                .measurementBook.mbShowHistory),
-                                            onPressed: () {
-                                              context.router.push(
-                                                MBHistoryBookRoute(
-                                                  contractNumber:
-                                                      widget.contractNumber,
-                                                  mbNumber: widget.mbNumber,
-                                                  tenantId: widget.tenantId,
-                                                  type: widget.type,
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : const SizedBox.shrink(),
-                                    showSla: false,
-                                    sla: 1,
-                                    showStatus: false,
-                                    status: '',
-                                  ),
+                                  ui_component.DigitCard(
+                                      padding: const EdgeInsets.only(
+                                          top: 0.0,
+                                          left: 8.0,
+                                          right: 8.0,
+                                          bottom: 0.0),
+                                      cardType: CardType.primary,
+                                      children: [
+                                        LabelValueList(
+                                            maxLines: 3,
+                                            labelFlex: 5,
+                                            valueFlex: 5,
+                                            items: primaryItems(
+                                                    t, value.data, widget.type)
+                                                .entries
+                                                .map(
+                                              (e) {
+                                                return LabelValuePair(
+                                                    label: e.key,
+                                                    value: e.value);
+                                              },
+                                            ).toList()),
+                                        value.data.length > 1
+                                            ? Button(
+                                                suffixIcon: Icons
+                                                    .arrow_forward_outlined,
+                                                label: t.translate(i18
+                                                    .measurementBook
+                                                    .mbShowHistory),
+                                                onPressed: () {
+                                                  context.router.push(
+                                                    MBHistoryBookRoute(
+                                                      contractNumber:
+                                                          widget.contractNumber,
+                                                      mbNumber: widget.mbNumber,
+                                                      tenantId: widget.tenantId,
+                                                      type: widget.type,
+                                                    ),
+                                                  );
+                                                },
+                                                type: ButtonType.link,
+                                                size: ButtonSize.large)
+                                            : const SizedBox.shrink(),
+                                      ]),
                                 ],
                               ),
                             ),
@@ -793,13 +797,22 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   controller: _tabController,
                                   children: [
                                     value.sor!.isEmpty
-                                        ? Card(
-                                            child: Center(
-                                                child: EmptyImage(
-                                              align: Alignment.center,
-                                              label: t.translate(
-                                                  i18.common.notFound),
-                                            )),
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 8.0),
+                                            child: ui_component.DigitCard(
+                                              cardType: CardType.primary,
+                                              children: [
+                                                Center(
+                                                    child: EmptyImage(
+                                                  align: Alignment.center,
+                                                  label: t.translate(
+                                                      i18.common.notFound),
+                                                ))
+                                              ],
+                                            ),
                                           )
                                         : ListView.builder(
                                             shrinkWrap: true,
@@ -809,6 +822,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               return sorCard(
+                                                consumedQty: consumedQty,
+                                                currentAmt: currentAmt,
                                                 t,
                                                 context,
                                                 index,
@@ -850,13 +865,22 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             itemCount: value.sor!.length,
                                           ),
                                     value.nonSor!.isEmpty
-                                        ? Card(
-                                            child: Center(
-                                              child: EmptyImage(
-                                                align: Alignment.center,
-                                                label: t.translate(
-                                                    i18.common.notFound),
-                                              ),
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 8.0),
+                                            child: ui_component.DigitCard(
+                                              cardType: CardType.primary,
+                                              children: [
+                                                Center(
+                                                  child: EmptyImage(
+                                                    align: Alignment.center,
+                                                    label: t.translate(
+                                                        i18.common.notFound),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           )
                                         : ListView.builder(
@@ -865,6 +889,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             itemBuilder: (BuildContext context,
                                                 int index) {
                                               return sorCard(
+                                                consumedQty: consumedQty,
+                                                currentAmt: currentAmt,
                                                 t,
                                                 context,
                                                 index,
@@ -903,327 +929,393 @@ class _MBDetailPageState extends State<MBDetailPage>
                                             itemCount: value.nonSor!.length,
                                           ),
                                     widget.type == MBScreen.create
-                                        ? Card(
-                                            child: Center(
-                                              child: Column(
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 8.0,
+                                                top: 0.0),
+                                            child: ui_component.DigitCard(
+                                                cardType: CardType.primary,
                                                 children: [
-                                                  Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8.0),
-                                                    child: FilePickerDemo(
-                                                      fromServerFile: value
-                                                          .data.first.documents,
-                                                      callBack: (List<
-                                                                  FileStoreModel>?
-                                                              g,
-                                                          List<WorkflowDocument>?
-                                                              l) {
-                                                        context
-                                                            .read<
-                                                                MeasurementDetailBloc>()
-                                                            .add(
-                                                              MeasurementUploadDocumentBlocEvent(
-                                                                tenantId: '',
-                                                                workflowDocument:
-                                                                    l!,
-                                                              ),
-                                                            );
-                                                      },
-                                                      extensions: const [
-                                                        'jpg',
-                                                        'png',
-                                                        'jpeg',
+                                                  Center(
+                                                    child: Column(
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      8.0),
+                                                          // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                                                          //    print(filenames);
+                                                          //  },
+                                                          //     allowMultiples: true,),
+                                                          child: FilePickerDemo(
+                                                            fromServerFile:
+                                                                value.data.first
+                                                                    .documents,
+                                                            callBack: (List<
+                                                                        FileStoreModel>?
+                                                                    g,
+                                                                List<WorkflowDocument>?
+                                                                    l) {
+                                                              context
+                                                                  .read<
+                                                                      MeasurementDetailBloc>()
+                                                                  .add(
+                                                                    MeasurementUploadDocumentBlocEvent(
+                                                                      tenantId:
+                                                                          '',
+                                                                      workflowDocument:
+                                                                          l!,
+                                                                    ),
+                                                                  );
+                                                            },
+                                                            extensions: const [
+                                                              'jpg',
+                                                              'png',
+                                                              'jpeg',
+                                                            ],
+                                                            moduleName:
+                                                                'img_measurement_book',
+                                                            headerType:
+                                                                MediaType
+                                                                    .mbDetail,
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4),
+                                                          //  color: DigitColors().curiousBlue,
+                                                          child: Text(
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .mbPhotoInfo)),
+                                                        ),
                                                       ],
-                                                      moduleName:
-                                                          'img_measurement_book',
-                                                      headerType:
-                                                          MediaType.mbDetail,
                                                     ),
                                                   ),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(4),
-                                                    //  color: DigitColors().curiousBlue,
-                                                    child: Text(t.translate(i18
-                                                        .measurementBook
-                                                        .mbPhotoInfo)),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
+                                                ]),
                                           )
                                         : value.data.first.documents != null &&
                                                 value.data.first.documents!
                                                     .isEmpty
                                             ? !value.viewStatus
-                                                ? Card(
-                                                    child: Center(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
+                                                ? Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8.0,
+                                                            right: 8.0,
+                                                            bottom: 8.0,
+                                                            top: 0.0),
+                                                    child:
+                                                        ui_component.DigitCard(
+                                                      cardType:
+                                                          CardType.primary,
+                                                      children: [
+                                                        Center(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Padding(
+                                                                padding: const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
                                                                         8.0),
-                                                            child:
-                                                                FilePickerDemo(
-                                                              fromServerFile:
-                                                                  value
-                                                                      .data
-                                                                      .first
-                                                                      .documents,
-                                                              callBack: (List<
-                                                                          FileStoreModel>?
-                                                                      g,
-                                                                  List<WorkflowDocument>?
-                                                                      l) {
-                                                                context
-                                                                    .read<
-                                                                        MeasurementDetailBloc>()
-                                                                    .add(
-                                                                      MeasurementUploadDocumentBlocEvent(
-                                                                        tenantId:
-                                                                            '',
-                                                                        workflowDocument:
-                                                                            l!,
-                                                                      ),
-                                                                    );
-                                                              },
-                                                              extensions: const [
-                                                                'jpg',
-                                                                'png',
-                                                                'jpeg',
-                                                              ],
-                                                              moduleName:
-                                                                  'img_measurement_book',
-                                                              headerType:
-                                                                  MediaType
-                                                                      .mbDetail,
-                                                            ),
+                                                                child:
+                                                                    FilePickerDemo(
+                                                                  fromServerFile:
+                                                                      value
+                                                                          .data
+                                                                          .first
+                                                                          .documents,
+                                                                  callBack: (List<
+                                                                              FileStoreModel>?
+                                                                          g,
+                                                                      List<WorkflowDocument>?
+                                                                          l) {
+                                                                    context
+                                                                        .read<
+                                                                            MeasurementDetailBloc>()
+                                                                        .add(
+                                                                          MeasurementUploadDocumentBlocEvent(
+                                                                            tenantId:
+                                                                                '',
+                                                                            workflowDocument:
+                                                                                l!,
+                                                                          ),
+                                                                        );
+                                                                  },
+                                                                  extensions: const [
+                                                                    'jpg',
+                                                                    'png',
+                                                                    'jpeg',
+                                                                  ],
+                                                                  moduleName:
+                                                                      'img_measurement_book',
+                                                                  headerType:
+                                                                      MediaType
+                                                                          .mbDetail,
+                                                                ),
+
+                                                                // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                                                                //    print(filenames);
+                                                                //  },
+                                                                // allowMultiples: true,),
+                                                              ),
+                                                              // TODO:[text change]
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(4),
+                                                                child: Text(t
+                                                                    .translate(i18
+                                                                        .measurementBook
+                                                                        .mbPhotoInfo)),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          // TODO:[text change]
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(4),
-                                                            child: Text(t.translate(i18
-                                                                .measurementBook
-                                                                .mbPhotoInfo)),
-                                                          ),
-                                                        ],
-                                                      ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   )
-                                                : Card(
-                                                    child: Center(
-                                                    child: EmptyImage(
-                                                      align: Alignment.center,
-                                                      label: t.translate(i18
-                                                          .measurementBook
-                                                          .noDocumentFound),
-                                                    ),
-                                                  ))
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child:
+                                                        ui_component.DigitCard(
+                                                            cardType: CardType
+                                                                .primary,
+                                                            children: [
+                                                          Center(
+                                                            child: EmptyImage(
+                                                              align: Alignment
+                                                                  .center,
+                                                              label: t.translate(i18
+                                                                  .measurementBook
+                                                                  .noDocumentFound),
+                                                            ),
+                                                          )
+                                                        ]),
+                                                  )
                                             : !value.viewStatus
-                                                ? Card(
-                                                    child: Center(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
+                                                ? ui_component.DigitCard(
+                                                    cardType: CardType.primary,
+                                                    children: [
+                                                        Center(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Padding(
+                                                                padding: const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
                                                                         8.0),
-                                                            child:
-                                                                FilePickerDemo(
-                                                              fromServerFile:
-                                                                  value
-                                                                      .data
-                                                                      .first
-                                                                      .documents,
-                                                              callBack: (List<
-                                                                          FileStoreModel>?
-                                                                      g,
-                                                                  List<WorkflowDocument>?
-                                                                      l) {
-                                                                context
-                                                                    .read<
-                                                                        MeasurementDetailBloc>()
-                                                                    .add(
-                                                                      MeasurementUploadDocumentBlocEvent(
-                                                                        tenantId:
-                                                                            '',
-                                                                        workflowDocument:
-                                                                            l!,
-                                                                      ),
-                                                                    );
-                                                              },
-                                                              extensions: const [
-                                                                'jpg',
-                                                                'png',
-                                                                'jpeg',
-                                                              ],
-                                                              moduleName:
-                                                                  'img_measurement_book',
-                                                              headerType:
-                                                                  MediaType
-                                                                      .mbDetail,
-                                                            ),
+                                                                //             child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                                                                //               print(filenames);
+                                                                //              },
+                                                                // allowMultiples: true,),
+                                                                child:
+                                                                    FilePickerDemo(
+                                                                  fromServerFile:
+                                                                      value
+                                                                          .data
+                                                                          .first
+                                                                          .documents,
+                                                                  callBack: (List<
+                                                                              FileStoreModel>?
+                                                                          g,
+                                                                      List<WorkflowDocument>?
+                                                                          l) {
+                                                                    context
+                                                                        .read<
+                                                                            MeasurementDetailBloc>()
+                                                                        .add(
+                                                                          MeasurementUploadDocumentBlocEvent(
+                                                                            tenantId:
+                                                                                '',
+                                                                            workflowDocument:
+                                                                                l!,
+                                                                          ),
+                                                                        );
+                                                                  },
+                                                                  extensions: const [
+                                                                    'jpg',
+                                                                    'png',
+                                                                    'jpeg',
+                                                                  ],
+                                                                  moduleName:
+                                                                      'img_measurement_book',
+                                                                  headerType:
+                                                                      MediaType
+                                                                          .mbDetail,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(4),
+                                                                child: Text(t
+                                                                    .translate(i18
+                                                                        .measurementBook
+                                                                        .mbPhotoInfo)),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          Container(
+                                                        ),
+                                                      ])
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 8.0,
+                                                            right: 8.0,
+                                                            bottom: 8.0,
+                                                            top: 0.0),
+                                                    child:
+                                                        ui_component.DigitCard(
+                                                      cardType:
+                                                          CardType.primary,
+                                                      children: List.generate(
+                                                          value
+                                                              .data
+                                                              .first
+                                                              .documents!
+                                                              .length, (index) {
+                                                        if (index == 0) {
+                                                          return Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                    .all(4),
-                                                            child: Text(t.translate(i18
-                                                                .measurementBook
-                                                                .mbPhotoInfo)),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  )
-                                                : DigitCard(
-                                                    child: ListView.builder(
-                                                        physics:
-                                                            const NeverScrollableScrollPhysics(),
-                                                        itemBuilder:
-                                                            (BuildContext
-                                                                    context,
-                                                                int index) {
-                                                          if (index == 0) {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
+                                                                    .only(
+                                                                    bottom:
+                                                                        8.0),
+                                                            child: Column(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
                                                                       .only(
                                                                       bottom:
-                                                                          8.0),
-                                                              child: Column(
-                                                                children: [
-                                                                  DigitInfoCard(
+                                                                          16.0),
+                                                                  child:
+                                                                      InfoCard(
                                                                     title: t.translate(i18
                                                                         .common
                                                                         .info),
+                                                                    type: InfoType
+                                                                        .info,
                                                                     description:
                                                                         t.translate(i18
                                                                             .measurementBook
                                                                             .infoImageTip),
                                                                   ),
-                                                                  InkWell(
-                                                                    onTap: () =>
-                                                                        CommonMethods()
-                                                                            .onTapOfAttachment(
-                                                                      mm![index],
-                                                                      mm![index]
-                                                                          .tenantId!,
-                                                                      context,
-                                                                      roleType:
-                                                                          RoleType
-                                                                              .employee,
-                                                                    ),
-                                                                    child: Chip(
-                                                                      labelPadding:
-                                                                          const EdgeInsets
-                                                                              .all(
-                                                                              10),
-                                                                      label:
-                                                                          SizedBox(
-                                                                        width: MediaQuery.sizeOf(context)
-                                                                            .width,
-                                                                        height:
-                                                                            25,
-                                                                        child:
-                                                                            Text(
-                                                                          mm![index]
-                                                                              .name
-                                                                              .toString(),
-                                                                          maxLines:
-                                                                              1,
-                                                                          overflow:
-                                                                              TextOverflow.ellipsis,
-                                                                          style: DigitTheme
-                                                                              .instance
-                                                                              .mobileTheme
-                                                                              .textTheme
-                                                                              .bodyMedium,
-                                                                        ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () =>
+                                                                      CommonMethods()
+                                                                          .onTapOfAttachment(
+                                                                    mm![index],
+                                                                    mm![index]
+                                                                        .tenantId!,
+                                                                    context,
+                                                                    roleType:
+                                                                        RoleType
+                                                                            .employee,
+                                                                  ),
+                                                                  child: Chip(
+                                                                    labelPadding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            10),
+                                                                    label:
+                                                                        SizedBox(
+                                                                      width: MediaQuery.sizeOf(
+                                                                              context)
+                                                                          .width,
+                                                                      height:
+                                                                          25,
+                                                                      child:
+                                                                          Text(
+                                                                        mm![index]
+                                                                            .name
+                                                                            .toString(),
+                                                                        maxLines:
+                                                                            1,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style: Theme.of(context)
+                                                                            .textTheme
+                                                                            .bodyMedium,
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          } else {
-                                                            return Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      bottom:
-                                                                          8.0),
-                                                              child: InkWell(
-                                                                onTap: () =>
-                                                                    CommonMethods()
-                                                                        .onTapOfAttachment(
-                                                                  mm![index],
-                                                                  mm![index]
-                                                                      .tenantId!,
-                                                                  context,
-                                                                  roleType: RoleType
-                                                                      .employee,
                                                                 ),
-                                                                child: Chip(
-                                                                  labelPadding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          10),
-                                                                  // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                                                                  label:
-                                                                      SizedBox(
-                                                                    width: MediaQuery.sizeOf(
+                                                              ],
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    bottom:
+                                                                        8.0),
+                                                            child: InkWell(
+                                                              onTap: () =>
+                                                                  CommonMethods()
+                                                                      .onTapOfAttachment(
+                                                                mm![index],
+                                                                mm![index]
+                                                                    .tenantId!,
+                                                                context,
+                                                                roleType: RoleType
+                                                                    .employee,
+                                                              ),
+                                                              child: Chip(
+                                                                labelPadding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        10),
+                                                                // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                                label: SizedBox(
+                                                                  width: MediaQuery
+                                                                          .sizeOf(
+                                                                              context)
+                                                                      .width,
+                                                                  height: 25,
+                                                                  child: Text(
+                                                                    mm![index]
+                                                                        .name
+                                                                        .toString(),
+                                                                    maxLines: 1,
+                                                                    softWrap:
+                                                                        true,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style: Theme.of(
                                                                             context)
-                                                                        .width,
-                                                                    height: 25,
-                                                                    child: Text(
-                                                                      mm![index]
-                                                                          .name
-                                                                          .toString(),
-                                                                      maxLines:
-                                                                          1,
-                                                                      softWrap:
-                                                                          true,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      style: DigitTheme
-                                                                          .instance
-                                                                          .mobileTheme
-                                                                          .textTheme
-                                                                          .bodyMedium,
-                                                                    ),
+                                                                        .textTheme
+                                                                        .bodyMedium,
                                                                   ),
                                                                 ),
                                                               ),
-                                                            );
-                                                          }
-                                                        },
-                                                        itemCount: value
-                                                            .data
-                                                            .first
-                                                            .documents!
-                                                            .length),
+                                                            ),
+                                                          );
+                                                        }
+                                                      }).toList(),
+                                                    ),
                                                   ),
                                   ],
                                 ),
@@ -1355,33 +1447,96 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             : null,
                                                   ))
                                               .toList();
+                                          timeLineAttributes =
+                                              timeLineAttributes.reversed
+                                                  .toList();
 
                                           return timeLineAttributes.isNotEmpty
-                                              ? DigitCard(
-                                                  child: ExpansionTile(
-                                                    title: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 8.0),
-                                                      child: Text(
-                                                        t.translate(i18.common
-                                                            .workflowTimeline),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
-                                                      ),
+                                              ? ui_component.DigitCard(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(horizontal: 8),
+                                                  cardType: CardType.secondary,
+                                                  children: [
+                                                    LabelValueList(
+                                                      heading: t.translate(i18
+                                                          .common
+                                                          .workflowTimeline),
+                                                      items: const [],
                                                     ),
-                                                    children: [
-                                                      DigitTimeline(
-                                                        timelineOptions:
-                                                            timeLineAttributes,
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    Builder(
+                                                      builder: (context) {
+                                                        return TimelineMolecule(
+                                                          steps: List.generate(
+                                                            timeLineAttributes
+                                                                .length,
+                                                            (i) => TimelineStep(
+                                                              additionalWidgets: timeLineAttributes[i]
+                                                                              .documents !=
+                                                                          null &&
+                                                                      timeLineAttributes[
+                                                                              i]
+                                                                          .documents!
+                                                                          .isNotEmpty
+                                                                  ? List.generate(
+                                                                      timeLineAttributes[i].documents!.length,
+                                                                      (index) => InkWell(
+                                                                            onTap: () => CommonMethods().onTapOfAttachment(
+                                                                                timeLineAttributes[i].documents![index],
+                                                                                timeLineAttributes[i].documents![index].tenantId == null
+                                                                                    ? GlobalVariables.roleType == RoleType.employee
+                                                                                        ? GlobalVariables.tenantId!
+                                                                                        : GlobalVariables.stateInfoListModel!.code.toString()
+                                                                                    : timeLineAttributes[i].documents![index].tenantId!,
+                                                                                // "od.testing",
+                                                                                context,
+                                                                                roleType: GlobalVariables.roleType == RoleType.employee ? RoleType.employee : RoleType.cbo),
+                                                                            child: Container(
+                                                                                width: 50,
+                                                                                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                                                                child: Wrap(runSpacing: 5, spacing: 8, children: [
+                                                                                  Image.asset('assets/png/attachment.png'),
+                                                                                  Text(
+                                                                                    AppLocalizations.of(context).translate(timeLineAttributes[i].documents![index].name.toString()),
+                                                                                    maxLines: 2,
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                  )
+                                                                                ])),
+                                                                          )).toList()
+                                                                  : [],
+                                                              description: [
+                                                                timeLineAttributes[
+                                                                            i]
+                                                                        .subTitle ??
+                                                                    '',
+                                                                timeLineAttributes[
+                                                                            i]
+                                                                        .assignee ??
+                                                                    '',
+                                                                timeLineAttributes[
+                                                                            i]
+                                                                        .mobileNumber ??
+                                                                    '',
+                                                              ],
+                                                              label:
+                                                                  timeLineAttributes[
+                                                                          i]
+                                                                      .title,
+                                                              state: timeLineAttributes[
+                                                                          i]
+                                                                      .isCurrentState
+                                                                  ? TimelineStepState
+                                                                      .future
+                                                                  : TimelineStepState
+                                                                      .completed,
+                                                            ),
+                                                          ).toList(),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
                                                 )
                                               : const SizedBox.shrink();
+
                                           //
                                         },
                                       );
@@ -1440,9 +1595,17 @@ class _MBDetailPageState extends State<MBDetailPage>
   double tabViewHeight(int sork, int nonSork, int photo) {
     switch (_tabController.index) {
       case 0:
-        return sork == 0 ? 300 : sork==1?(sork * 500): (sork * 500)+(sork*20) ;
+        return sork == 0
+            ? 300
+            : sork == 1
+                ? (sork * 500)
+                : (sork * 500) + (sork * 20);
       case 1:
-        return nonSork == 0 ? 300 :nonSork == 1?(nonSork * 500): (nonSork * 500)+(sork*20) ;
+        return nonSork == 0
+            ? 300
+            : nonSork == 1
+                ? (nonSork * 500)
+                : (nonSork * 500) + (sork * 20);
       case 2:
         return photoSize(photo);
       default:
@@ -1477,6 +1640,8 @@ class _MBDetailPageState extends State<MBDetailPage>
     required String type,
     required String sorNonSorId,
     required String cardLevel,
+    required TextEditingController consumedQty,
+    required TextEditingController currentAmt,
   }) {
     List<FilteredMeasurementsEstimate> line = magic!.map(
       (e) {
@@ -1504,29 +1669,66 @@ class _MBDetailPageState extends State<MBDetailPage>
         cardType: CardType.primary,
         children: [
           LabelValueList(
-            heading: "$cardLevel ${index+1}",
-            maxLines: 3, labelFlex: 5, valueFlex: 5, items: [
-            LabelValuePair(
-                label: t.translate(i18.measurementBook.description),
-                value:
-                    magic.first.contracts!.first.estimates!.first.name ?? ""),
-            LabelValuePair(
-                label: t.translate(i18.measurementBook.unit),
-                value: line[0].uom ?? ''),
-            LabelValuePair(
-                label: t.translate(i18.measurementBook.rate),
-                value: line[0].unitRate == null
-                    ? 0.00.toString()
-                    : double.parse(line[0].unitRate!.toString())
-                        .toStringAsFixed(2)),
-            LabelValuePair(
-                label: t.translate(i18.measurementBook.approvedQty),
-                value: noOfQty),
-            LabelValuePair(
-                label:
-                    "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}",
-                value: preSorNonSor == null ? "0.0000" : preConumed),
-          ]),
+              heading: "$cardLevel ${index + 1}",
+              maxLines: 3,
+              labelFlex: 5,
+              valueFlex: 5,
+              items: [
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.description),
+                    value: magic.first.contracts!.first.estimates!.first.name ??
+                        ""),
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.unit),
+                    value: line[0].uom ?? ''),
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.rate),
+                    value: line[0].unitRate == null
+                        ? 0.00.toString()
+                        : double.parse(line[0].unitRate!.toString())
+                            .toStringAsFixed(2)),
+                LabelValuePair(
+                    label: t.translate(i18.measurementBook.approvedQty),
+                    value: noOfQty),
+                LabelValuePair(
+                    label:
+                        "${t.translate(i18.measurementBook.preConsumedKey)}\n${t.translate(i18.measurementBook.preConsumedPre)}",
+                    value: preSorNonSor == null ? "0.0000" : preConumed),
+              ]),
+
+          //  InputField(type: InputType.search,
+          //  readOnly: true,
+          //  suffixIcon: Icons.add_circle,
+
+          //  ),
+          // ui_label.LabeledField(
+          //   label: t.translate(i18.measurementBook.currentMBEntry),
+          //   labelStyle: Theme.of(context).textTheme.labelLarge,
+          //   child: DigitSearchFormInput(
+          //     controller: consumedQty
+          //       ..text = (magic.fold(0.0, (sum, obj) {
+          //         double m;
+          //         if (obj.contracts?.first.estimates?.first.isDeduction ==
+          //             false) {
+          //           m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+          //             double mk = double.parse(ob.quantity!.toString());
+          //             return subSum + mk;
+          //           });
+          //         } else {
+          //           m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
+          //             double mr = double.parse(ob.quantity!.toString());
+          //             return subSum + mr;
+          //           });
+          //           m = -m;
+          //         }
+          //         return sum + m;
+          //       })).toStringAsFixed(4),
+          //     readOnly: false,
+          //     suffixIcon: Icons.ac_unit_sharp,
+          //     iconColor: Theme.of(context).colorTheme.primary.primary1,
+          //     onSuffixTap: (p0) {},
+          //   ),
+          // ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1618,7 +1820,7 @@ class _MBDetailPageState extends State<MBDetailPage>
             ],
           ),
 
-          // end
+          // // end
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -1724,18 +1926,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                     title: Text(
                       t.translate(i18.measurementBook.totalSorAmount),
                       maxLines: 1,
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context)
+                          .textTheme.headlineMedium,
                     ),
                     subtitle: Text(
                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
-                          DigitTheme.instance.mobileTheme.textTheme.bodySmall,
+                          Theme.of(context)
+                          .textTheme.bodySmall,
                     ),
                     trailing: Text(
                       totalSorAmount.toDouble().toStringAsFixed(2),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style:Theme.of(context)
+                          .textTheme.headlineMedium,
                     ),
                   ),
                 ),
@@ -1754,18 +1957,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                   child: ListTile(
                     title: Text(
                       t.translate(i18.measurementBook.totalNonSorAmount),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context)
+                          .textTheme.headlineMedium,
                     ),
                     subtitle: Text(
                       t.translate(i18.measurementBook.forCurrentEntry),
                       style:
-                          DigitTheme.instance.mobileTheme.textTheme.bodySmall,
+                         Theme.of(context)
+                          .textTheme.bodySmall,
                     ),
                     trailing: Text(
                       totalNonSorAmount.toDouble().toStringAsFixed(2),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context)
+                          .textTheme.headlineMedium,
                     ),
                   ),
                 ),
@@ -1797,14 +2001,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                           title: Text(
                             // "Total MB Amount",
                             t.translate(i18.measurementBook.totalMbAmount),
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.headlineMedium,
+                            style: Theme.of(context)
+                          .textTheme.headlineMedium,
                           ),
                           subtitle: Text(
                             // "(for current entry)",
                             t.translate(i18.measurementBook.forCurrentEntry),
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.bodySmall,
+                            style:Theme.of(context)
+                          .textTheme.bodySmall,
                           ),
                         ),
                       ),
@@ -1815,7 +2019,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                             children: [
                               Text(
                                 mbAmount.roundToDouble().toStringAsFixed(2),
-                                style: DigitTheme.instance.mobileTheme.textTheme
+                                style: Theme.of(context)
+                          .textTheme
                                     .headlineMedium,
                               ),
                             ],
@@ -1836,9 +2041,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                         onPressed: () {
                           Navigator.of(context).pop();
                           if (widget.type == MBScreen.update) {
-                           DigitActionDialog.show(
-                              context,
-                              widget: CommonButtonCard(
+                            showDialog(
+                              context: context,
+                              builder: (context) => CommonButtonCard(
                                 g: processInstances,
                                 contractNumber: contractNumber,
                                 mbNumber: mbNumber,
@@ -1847,9 +2052,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                               ),
                             );
                           } else {
-                            DigitActionDialog.show(
-                              context,
-                              widget: CommonButtonCard(
+                            showDialog(
+                              context: context,
+                              builder: (context) => CommonButtonCard(
                                 g: processInstances,
                                 contractNumber: contractNumber,
                                 mbNumber: mbNumber,
