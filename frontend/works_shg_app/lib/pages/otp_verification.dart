@@ -1,4 +1,8 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +18,6 @@ import '../blocs/auth/auth.dart';
 import '../data/remote_client.dart';
 import '../data/repositories/auth_repository/auth.dart';
 import '../services/urls.dart';
-import '../utils/notifiers.dart';
-import '../widgets/back.dart';
-import '../widgets/label_text.dart';
 import '../widgets/atoms/app_bar_logo.dart';
 import '../widgets/atoms/resend_otp.dart';
 import '../widgets/atoms/sub_label.dart';
@@ -57,7 +58,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xff0B4B66),
-        iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+        iconTheme: Theme.of(context).iconTheme,
         titleSpacing: 16,
         title: const AppBarLogo(),
         automaticallyImplyLeading: false,
@@ -68,22 +69,41 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
         child: const Align(
           alignment: Alignment.bottomCenter,
           child: PoweredByDigit(
-             version: Constants.appVersion,
-            ),
+            version: Constants.appVersion,
+          ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(children: [
-          Back(
-            backLabel: AppLocalizations.of(context).translate(i18.common.back),
-          ),
-          DigitCard(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  BackNavigationButton(
+                    handleBack: () {
+                      Navigator.pop(context);
+                    },
+                    backButtonText:
+                        AppLocalizations.of(context).translate(i18.common.back),
+                  ),
+                ],
+              ),
+            ),
+            DigitCard(
+              cardType: CardType.primary,
+              //children:
+              // mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                LabelText(AppLocalizations.of(context)
-                    .translate(i18.login.otpVerification)),
-                const SizedBox(height: 10),
+                // LabelText(AppLocalizations.of(context)
+                //     .translate(i18.login.otpVerification)),
+                TextChunk(
+                  heading: AppLocalizations.of(context)
+                      .translate(i18.login.otpVerification),
+                ),
+
+                // const SizedBox(height: 10),
                 SubLabelText(localizationText),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -148,23 +168,27 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: DigitElevatedButton(
-                    onPressed: next
-                        ? () {
-                            context.read<AuthBloc>().add(
-                                  AuthLoginEvent(
-                                    userId: widget.mobileNumber,
-                                    password: otpController.text, roleType: RoleType.cbo,
-                                  ),
-                                );
-                          }
-                        : null,
-                    child: Center(
-                      child: Text(AppLocalizations.of(context)
-                          .translate(i18.common.next)),
+                // const SizedBox(height: 10),
+                InkWell(
+                  onTap: next
+                      ? () {
+                          context.read<AuthBloc>().add(
+                                AuthLoginEvent(
+                                  userId: widget.mobileNumber,
+                                  password: otpController.text,
+                                  roleType: RoleType.cbo,
+                                ),
+                              );
+                        }
+                      : null,
+                  child: IgnorePointer(
+                    child: Button(
+                      mainAxisSize: MainAxisSize.max,
+                      size: ButtonSize.large,
+                      type: ButtonType.primary,
+                      onPressed: () {},
+                      label: AppLocalizations.of(context)
+                          .translate(i18.common.next),
                     ),
                   ),
                 ),
@@ -172,22 +196,28 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                   listener: (context, state) {
                     state.maybeWhen(
                         error: () {
-                          Notifiers.getToastMessage(
-                              context,
-                              AppLocalizations.of(context)
+                          // Notifiers.getToastMessage(
+                          //     context,
+                          //     AppLocalizations.of(context)
+                          //         .translate(i18.login.invalidOTP),
+                          //     'ERROR');
+
+                          Toast.showToast(context,
+                              message: AppLocalizations.of(context)
                                   .translate(i18.login.invalidOTP),
-                              'ERROR');
+                              type: ToastType.error);
+
                           context.router.popAndPush(OTPVerificationRoute(
                               mobileNumber: widget.mobileNumber));
                         },
-                        orElse: () => Container());
+                        orElse: () => const SizedBox.shrink());
                   },
-                  child: Container(),
+                  child: const SizedBox.shrink(),
                 ),
               ],
             ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }
