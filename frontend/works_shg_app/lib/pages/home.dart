@@ -1,7 +1,9 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/models/DropdownModels.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -65,6 +67,81 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+      // appBar: PreferredSize(
+      //     preferredSize:  const Size.fromHeight(64), // here the desired height
+      //     child: Builder(
+      //       builder: (context) => CustomHeaderMolecule(
+      //         //title: 'City Municipal Corporation',
+      //         type: HeaderType.dark,
+      //         leadingDigitLogo: false,
+      //         trailingDigitLogo: true,
+      //         onMenuTap: () {
+      //           Scaffold.of(context).openDrawer();
+      //         },
+              
+      //         actions: [
+                
+      //          HeaderAction(
+      //             widget: Row(
+      //               children: [
+      //                 const Text('City'),
+      //                 const SizedBox(
+      //                   width: 8,
+      //                 ),
+      //                 Icon(
+      //                   Icons.arrow_drop_down,
+      //                   color: Colors.white,
+      //                 )
+      //               ],
+      //             ),
+      //             isSearchable: true,
+      //             dropdownItems: const [
+      //               DropdownItem(code: '1', name: 'Option 1'),
+      //               DropdownItem(code: '2', name: 'Option 2'),
+      //               DropdownItem(code: '3', name: 'Option 3'),
+      //               DropdownItem(code: '4', name: 'Option 4'),
+      //             ],
+      //           ),
+      //         ],
+      //       ),
+            
+      //     ),
+      //   ),
+        // drawer: SideBar(
+        //   sidebarItems: [
+        //     SidebarItem(
+        //       title: 'Home',
+        //       icon: Icons.home,
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //         // Navigate to Home
+        //       },
+        //     ),
+        //     SidebarItem(
+        //       title: 'Language',
+        //       icon: Icons.language,
+        //       onPressed: () {
+        //         // Implement language change
+        //       },
+        //     ),
+        //     SidebarItem(
+        //       title: 'Profile',
+        //       icon: Icons.person,
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //         // Navigate to Profile
+        //       },
+        //     ),
+        //     SidebarItem(
+        //       title: 'View Downloaded Data',
+        //       icon: Icons.download,
+        //       onPressed: () {
+        //         Navigator.of(context).pop();
+        //         // Navigate to Downloaded Data
+        //       },
+        //     ),
+        //   ],
+        // ),
       appBar: AppBar(
         backgroundColor: const Color(0xff0B4B66),
         iconTheme: Theme.of(context)
@@ -107,6 +184,8 @@ class _HomePage extends State<HomePage> {
                     module: CommonMethods.getLocaleModules(),
                   )),
       ),
+
+
       body: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
           return localState.maybeMap(

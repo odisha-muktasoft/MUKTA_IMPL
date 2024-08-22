@@ -231,149 +231,143 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                         pinned: true,
                         floating: true,
                         delegate: MyHeaderDelegate(
-                            child: Container(
-                              color: const DigitColors().seaShellGray,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0,
-                                        bottom: 8.0,
-                                        top: 8.0,
-                                        right: 8.0),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          BackNavigationButton(
-                                            backNavigationButtonThemeData:
-                                                const BackNavigationButtonThemeData()
-                                                    .copyWith(
-                                              textColor: Theme.of(context)
-                                                  .colorTheme
-                                                  .primary
-                                                  .primary2,
-                                              contentPadding: EdgeInsets.zero,
-                                              context: context,
-                                              // backButtonIcon: Icon(
-                                              //   Icons.arrow_left,
-                                              //   color: Theme.of(context)
-                                              //       .colorTheme
-                                              //       .primary
-                                              //       .primary2,
-                                              // ),
-                                            ),
-                                            backButtonText:
-                                                AppLocalizations.of(context)
-                                                        .translate(
-                                                            i18.common.back) ??
-                                                    'Back',
-                                            handleBack: () {
-                                              context.router.maybePop();
-                                            },
-                                          ),
-                                        ]),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 12.0),
-                                    child: TextChunk(
-                                     heading: "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
-                                     
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 4.0,
-                                        right: 8.0,
-                                        top: 4.0,
-                                        bottom: 0),
-                                    child: Row(
+                          child: Container(
+                            color: const DigitColors().seaShellGray,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10.0,
+                                      bottom: 8.0,
+                                      top: 8.0,
+                                      right: 8.0),
+                                  child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        ui_component.Button(
-                                            prefixIcon: Icons.filter_alt,
-                                            label:
-                                                t.translate(i18.common.filter),
-                                            onPressed: () {
-                                              context.router
-                                                  .push(const WOFilterRoute());
-                                            },
-                                            type: ui_component
-                                                .ButtonType.tertiary,
-                                            size:
-                                                ui_component.ButtonSize.large),
-
-                                        // reset
-                                        //TODO: not needed
-                                        // value.search
-                                        //     ? IconButton(
-                                        //         onPressed: () {
-                                        //           pageCount = 0;
-                                        //           context
-                                        //               .read<WorkOrderInboxBloc>()
-                                        //               .add(
-                                        //                 WorkOrderInboxBlocCreateEvent(
-                                        //                   businessService: "MB",
-                                        //                   limit: 10,
-                                        //                   moduleName:
-                                        //                       'contract-service',
-                                        //                   offset: pageCount,
-                                        //                   tenantId:
-                                        //                       GlobalVariables
-                                        //                           .tenantId!,
-                                        //                 ),
-                                        //               );
-                                        //         },
-                                        //         icon: Icon(
-                                        //           Icons.restore_outlined,
-                                        //           color: const DigitColors()
-                                        //               .burningOrange,
-                                        //         ),
-                                        //       )
-                                        //     : const SizedBox.shrink(),
-                                        //
-                                        ui_component.Button(
-                                            prefixIcon: Icons.swap_vert,
-                                            label: t.translate(
-                                                i18.measurementBook.sort),
-                                            onPressed: () {
-                                              Conversion.openSortingModal(
-                                                context,
-                                                listData:
-                                                    Conversion.sortWorkOrder,
-                                                sortType: SortType.woSort,
-                                              );
-                                            },
-                                            type: ui_component
-                                                .ButtonType.tertiary,
-                                            size:
-                                                ui_component.ButtonSize.large),
-                                      ],
-                                    ),
+                                        BackNavigationButton(
+                                          backNavigationButtonThemeData:
+                                              const BackNavigationButtonThemeData()
+                                                  .copyWith(
+                                            textColor: Theme.of(context)
+                                                .colorTheme
+                                                .primary
+                                                .primary2,
+                                            contentPadding: EdgeInsets.zero,
+                                            context: context,
+                                            // backButtonIcon: Icon(
+                                            //   Icons.arrow_left,
+                                            //   color: Theme.of(context)
+                                            //       .colorTheme
+                                            //       .primary
+                                            //       .primary2,
+                                            // ),
+                                          ),
+                                          backButtonText: AppLocalizations.of(
+                                                      context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                          handleBack: () {
+                                            context.router.maybePop();
+                                          },
+                                        ),
+                                      ]),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: TextChunk(
+                                    heading:
+                                        "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                   ),
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4.0,
+                                      right: 8.0,
+                                      top: 4.0,
+                                      bottom: 0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ui_component.Button(
+                                          prefixIcon: Icons.filter_alt,
+                                          label: t.translate(i18.common.filter),
+                                          onPressed: () {
+                                            context.router
+                                                .push(const WOFilterRoute());
+                                          },
+                                          type:
+                                              ui_component.ButtonType.tertiary,
+                                          size: ui_component.ButtonSize.large),
+
+                                      // reset
+                                      //TODO: not needed
+                                      // value.search
+                                      //     ? IconButton(
+                                      //         onPressed: () {
+                                      //           pageCount = 0;
+                                      //           context
+                                      //               .read<WorkOrderInboxBloc>()
+                                      //               .add(
+                                      //                 WorkOrderInboxBlocCreateEvent(
+                                      //                   businessService: "MB",
+                                      //                   limit: 10,
+                                      //                   moduleName:
+                                      //                       'contract-service',
+                                      //                   offset: pageCount,
+                                      //                   tenantId:
+                                      //                       GlobalVariables
+                                      //                           .tenantId!,
+                                      //                 ),
+                                      //               );
+                                      //         },
+                                      //         icon: Icon(
+                                      //           Icons.restore_outlined,
+                                      //           color: const DigitColors()
+                                      //               .burningOrange,
+                                      //         ),
+                                      //       )
+                                      //     : const SizedBox.shrink(),
+                                      //
+                                      ui_component.Button(
+                                          prefixIcon: Icons.swap_vert,
+                                          label: t.translate(
+                                              i18.measurementBook.sort),
+                                          onPressed: () {
+                                            Conversion.openSortingModal(
+                                              context,
+                                              listData:
+                                                  Conversion.sortWorkOrder,
+                                              sortType: SortType.woSort,
+                                            );
+                                          },
+                                          type:
+                                              ui_component.ButtonType.tertiary,
+                                          size: ui_component.ButtonSize.large),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            height: localizationState.maybeMap(
-                              orElse: () => 160,
-                              loaded: (value) {
-                                Languages? ll = value.languages
-                                    ?.firstWhereOrNull((element) =>
-                                        element.isSelected == true);
-                                if (ll != null &&
-                                    ll.value == LanguageEnum.en_IN.name) {
-                                  return 140;
-                                } else {
-                                  return 160;
-                                }
-                              },
-                              error: (value) => 160,
-                            ),
-                            
-                            ),
+                          ),
+                          height: localizationState.maybeMap(
+                            orElse: () => 160,
+                            loaded: (value) {
+                              Languages? ll = value.languages?.firstWhereOrNull(
+                                  (element) => element.isSelected == true);
+                              if (ll != null &&
+                                  ll.value == LanguageEnum.en_IN.name) {
+                                return 140;
+                              } else {
+                                return 160;
+                              }
+                            },
+                            error: (value) => 160,
+                          ),
+                        ),
                       ),
                       value.contracts!.isEmpty
                           ? SliverList(

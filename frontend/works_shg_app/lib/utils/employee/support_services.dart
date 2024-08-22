@@ -37,14 +37,17 @@ class Conversion {
   static void openSortingModal(BuildContext context,
       {required List<SortObject> listData, required SortType sortType}) {
     showModalBottomSheet(
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       builder: (BuildContext context) {
-        return SizedBox(
-          height: (listData.length * 80),
-          width: MediaQuery.of(context).size.width,
-          child: MyBottomSheet(
-                      dataList: listData,
-                      sortType: sortType,
-                    ),
+        return MyBottomSheet(
+          dataList: listData,
+          sortType: sortType,
         );
       },
       context: context,

@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
 
 import 'package:digit_ui_components/models/RadioButtonModel.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/divider_theme.dart';
@@ -36,86 +37,90 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8.0,bottom: 8,top: 16.0),
+            padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 16.0),
             child: TextChunk(
-            heading:  t.translate(i18.measurementBook.sortBy),
-              
-          ),),
-          DigitDivider(
-        dividerThemeData: const DigitDividerThemeData().copyWith(
-          color: Colors.blue,
-          indent: 20,
-          endIndent: 30,
-          width: 400,
-        ),
-      ),
+              heading: t.translate(i18.measurementBook.sortBy),
+            ),
+          ),
+          const DigitDivider(
+            dividerType: DividerType.large,
+            // dividerThemeData: const DigitDividerThemeData().copyWith(
+            //   color: Colors.blue,
+            //   indent: 20,
+            //   endIndent: 30,
+            //   width: 400,
+            // ),
+          ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: widget.dataList.length,
-                itemBuilder: (context, index) {
-                  return RadioListTile<int>(
-                    contentPadding: const EdgeInsets.only(left: 16, right: 16),
-                    controlAffinity: ListTileControlAffinity.trailing,
-                    title: Text(
-                      t.translate(widget.dataList[index].name),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineSmall,
-                    ),
-                    value: widget.dataList[index].number,
-                    groupValue: _selectedValue,
-                    onChanged: (value) async {
-                      setState(() {
-                        _selectedValue = value!;
-                      });
-                      if (widget.sortType == SortType.mbSort) {
-                        context.read<MeasurementInboxBloc>().add(
-                            MeasurementBookInboxSortBlocEvent(
-                                sortCode: value!));
-                      } else {
-                        context
-                            .read<WorkOrderInboxBloc>()
-                            .add(WorkOrderInboxSortBlocEvent(sortCode: value!));
-                      }
+              // return ListView.builder(
+              //   physics: const NeverScrollableScrollPhysics(),
+              //   shrinkWrap: true,
+              //   itemCount: widget.dataList.length,
+              //   itemBuilder: (context, index) {
+              //     return RadioListTile<int>(
+              //       contentPadding: const EdgeInsets.only(left: 16, right: 16),
+              //       controlAffinity: ListTileControlAffinity.trailing,
+              //       title: Text(
+              //         t.translate(widget.dataList[index].name),
+              //         style: Theme.of(context)
+              //             .textTheme.headlineSmall,
+              //       ),
+              //       value: widget.dataList[index].number,
+              //       groupValue: _selectedValue,
+              //       onChanged: (value) async {
+              //         setState(() {
+              //           _selectedValue = value!;
+              //         });
+              //         if (widget.sortType == SortType.mbSort) {
+              //           context.read<MeasurementInboxBloc>().add(
+              //               MeasurementBookInboxSortBlocEvent(
+              //                   sortCode: value!));
+              //         } else {
+              //           context
+              //               .read<WorkOrderInboxBloc>()
+              //               .add(WorkOrderInboxSortBlocEvent(sortCode: value!));
+              //         }
 
-                      await Future.delayed(const Duration(milliseconds: 500),
-                          () {
-                        Navigator.pop(context);
-                      });
-                    },
-                  );
-                },
-              );
-
-              // return RadioList(
-              //   radioButtons: List.generate(
-              //       widget.dataList.length,
-              //       (index) => RadioButtonModel(
-              //           code: widget.dataList[index].number.toString(),
-              //           name: t.translate( widget.dataList[index].name.toString()))).toList(),
-              //   onChanged: (RadioButtonModel radioButtonModel) async {
-              //     setState(() {
-              //       _selectedValue = int.parse(radioButtonModel.code!).toInt();
-              //     });
-              //     if (widget.sortType == SortType.mbSort) {
-              //       context.read<MeasurementInboxBloc>().add(
-              //           MeasurementBookInboxSortBlocEvent(
-              //               sortCode:
-              //                   int.parse(radioButtonModel.code!).toInt()));
-              //     } else {
-              //       context.read<WorkOrderInboxBloc>().add(
-              //           WorkOrderInboxSortBlocEvent(
-              //               sortCode:
-              //                   int.parse(radioButtonModel.code!).toInt()));
-              //     }
-
-              //     await Future.delayed(const Duration(milliseconds: 500), () {
-              //       Navigator.pop(context);
-              //     });
+              //         await Future.delayed(const Duration(milliseconds: 500),
+              //             () {
+              //           Navigator.pop(context);
+              //         });
+              //       },
+              //     );
               //   },
               // );
+
+              return RadioList(
+                groupValue: _selectedValue.toString(),
+                containerPadding: const EdgeInsets.all(16),
+                radioButtons: List.generate(
+                    widget.dataList.length,
+                    (index) => RadioButtonModel(
+                        code: widget.dataList[index].number.toString(),
+                        name: t.translate(
+                            widget.dataList[index].name.toString()))).toList(),
+                onChanged: (RadioButtonModel radioButtonModel) async {
+                  setState(() {
+                    _selectedValue = int.parse(radioButtonModel.code!).toInt();
+                  });
+                  if (widget.sortType == SortType.mbSort) {
+                    context.read<MeasurementInboxBloc>().add(
+                        MeasurementBookInboxSortBlocEvent(
+                            sortCode:
+                                int.parse(radioButtonModel.code!).toInt()));
+                  } else {
+                    context.read<WorkOrderInboxBloc>().add(
+                        WorkOrderInboxSortBlocEvent(
+                            sortCode:
+                                int.parse(radioButtonModel.code!).toInt()));
+                  }
+
+                  await Future.delayed(const Duration(milliseconds: 500), () {
+                    Navigator.pop(context);
+                  });
+                },
+              );
             },
           ),
         ],

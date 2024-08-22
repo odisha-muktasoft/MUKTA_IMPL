@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_text_form_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,21 +63,17 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     super.initState();
 
     // Initialize text controllers and set initial values
-    numberController = TextEditingController(
-        text:checkValue(widget.number.toString())
-            );
-    lengthController = TextEditingController(
-        text: checkValue(widget.length.toString())
-            );
-    widthController = TextEditingController(
-        text: checkValue(widget.width.toString())
-            );
-    heightController = TextEditingController(
-        text: checkValue(widget.height.toString()));
+    numberController =
+        TextEditingController(text: checkValue(widget.number.toString()));
+    lengthController =
+        TextEditingController(text: checkValue(widget.length.toString()));
+    widthController =
+        TextEditingController(text: checkValue(widget.width.toString()));
+    heightController =
+        TextEditingController(text: checkValue(widget.height.toString()));
 
-    quantityController = TextEditingController(
-        text: checkValue(widget.quantity.toString())
-            );
+    quantityController =
+        TextEditingController(text: checkValue(widget.quantity.toString()));
 
     numberController.addListener(numberUpload);
     lengthController.addListener(lengthUpload);
@@ -143,10 +140,14 @@ class _MultiLineItemsState extends State<MultiLineItems> {
       lengthController.text = checkValue(widget.length.toString());
     }
     if (!widthFocusNode.hasFocus && oldWidget.width != widget.width) {
-      widthController.text =checkValue( widget.width.toString());
+      widthController.text = checkValue(widget.width.toString());
     }
     if (!heightFocusNode.hasFocus && oldWidget.height != widget.height) {
       heightController.text = checkValue(widget.height.toString());
+    }
+
+    if (oldWidget.quantity != widget.quantity) {
+      quantityController.text = checkValue(widget.quantity.toString());
     }
   }
 
@@ -214,15 +215,18 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                   ],
                 )
               : const SizedBox.shrink(),
-          DigitTextField(
-            inputFormatter: [
-              FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
-            ],
-            textInputType: TextInputType.number,
+          LabeledField(
             label: t.translate(i18.measurementBook.numberLabel),
-            controller: numberController,
-            focusNode: numberFocusNode,
-            isDisabled: widget.viewMode,
+            child: DigitTextFormInput(
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
+              ],
+              keyboardType: TextInputType.number,
+              // label: t.translate(i18.measurementBook.numberLabel),
+              controller: numberController,
+              focusNode: numberFocusNode,
+              isDisabled: widget.viewMode,
+            ),
           ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,16 +236,19 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 padding: const EdgeInsets.only(left: 0.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
-                  child: DigitTextField(
-                    inputFormatter: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,4}')),
-                    ],
+                  child: LabeledField(
                     label: t.translate(i18.measurementBook.lengthLabel),
-                    isDisabled: widget.viewMode,
-                    textInputType: TextInputType.number,
-                    controller: lengthController,
-                    focusNode: lengthFocusNode,
+                    child: DigitTextFormInput(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d*\.?\d{0,4}')),
+                      ],
+                      // label: t.translate(i18.measurementBook.lengthLabel),
+                      isDisabled: widget.viewMode,
+                      keyboardType: TextInputType.number,
+                      controller: lengthController,
+                      focusNode: lengthFocusNode,
+                    ),
                   ),
                 ),
               ),
@@ -249,16 +256,20 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 padding: const EdgeInsets.only(left: 3.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
-                  child: DigitTextField(
-                    inputFormatter: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,4}'),),
-                    ],
+                  child: LabeledField(
                     label: t.translate(i18.measurementBook.widthLabel),
-                    isDisabled: widget.viewMode,
-                    textInputType: TextInputType.number,
-                    controller: widthController,
-                    focusNode: widthFocusNode,
+                    child: DigitTextFormInput(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d*\.?\d{0,4}'),
+                        ),
+                      ],
+                      // label: t.translate(i18.measurementBook.widthLabel),
+                      isDisabled: widget.viewMode,
+                      keyboardType: TextInputType.number,
+                      controller: widthController,
+                      focusNode: widthFocusNode,
+                    ),
                   ),
                 ),
               ),
@@ -266,53 +277,66 @@ class _MultiLineItemsState extends State<MultiLineItems> {
                 padding: const EdgeInsets.only(left: 3, right: 0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8 / 3,
-                  child: DigitTextField(
-                    inputFormatter: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'^\d*\.?\d{0,4}')),
-                    ],
+                  child: LabeledField(
                     label: t.translate(i18.measurementBook.heightLabel),
-                    isDisabled: widget.viewMode,
-                    textInputType: TextInputType.number,
-                    controller: heightController,
-                    focusNode: heightFocusNode,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  t.translate(i18.measurementBook.quantityLabel),
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: const DigitColors().cloudGray, width: 2),
-                    color: DigitTheme.instance.colorScheme.background),
-                width: MediaQuery.sizeOf(context).width,
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    checkValue(
-                      widget.quantity!.toString())==""?"":
-                    double.parse(checkValue(
-                      widget.quantity!.toString())).toStringAsFixed(4),
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
+                    child: DigitTextFormInput(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d*\.?\d{0,4}')),
+                      ],
+                      // label: t.translate(i18.measurementBook.heightLabel),
+                      isDisabled: widget.viewMode,
+                      keyboardType: TextInputType.number,
+                      controller: heightController,
+                      focusNode: heightFocusNode,
                     ),
                   ),
                 ),
               ),
             ],
+          ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.symmetric(vertical: 8.0),
+          //       child: Text(
+          // t.translate(i18.measurementBook.quantityLabel),
+          //         style: Theme.of(context).textTheme.labelSmall,
+          //       ),
+          //     ),
+          //     Container(
+          //       decoration: BoxDecoration(
+          //           border: Border.all(
+          //               color: const DigitColors().cloudGray, width: 2),
+          //           color: DigitTheme.instance.colorScheme.background),
+          //       width: MediaQuery.sizeOf(context).width,
+          //       child: Padding(
+          //         padding: const EdgeInsets.all(12.0),
+          //         child: Text(
+          //           checkValue(
+          //             widget.quantity!.toString())==""?"":
+          //           double.parse(checkValue(
+          //             widget.quantity!.toString())).toStringAsFixed(4),
+          //           style: const TextStyle(
+          //             fontSize: 16,
+          //             fontWeight: FontWeight.w400,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
+
+          LabeledField(
+            label: t.translate(i18.measurementBook.quantityLabel),
+            child: DigitTextFormInput(
+              readOnly: true,
+              isDisabled: true,
+              keyboardType: TextInputType.number,
+              controller: quantityController,
+            ),
           ),
         ],
       ),

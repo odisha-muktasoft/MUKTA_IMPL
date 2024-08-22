@@ -156,6 +156,9 @@ class MeasurementDetailBloc
       // emit(MeasurementInboxState.error(e.response?.data['Errors'][0]['code']));
       emit(MeasurementDetailState.error(e.toString()));
     }
+    on Exception catch(ex){
+       emit(MeasurementDetailState.error(ex.toString()));
+    }
   }
 
   List<SorObject> getSorted(List<SorObject> sorData, MBDetailResponse mb) {

@@ -3,6 +3,8 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_detail_view.dart';
@@ -81,8 +83,11 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
           loaded: (value) {
             if (value.warningMsg != null && value.qtyErrorMsg == 2) {
               // SystemChannels.textInput.invokeMethod('TextInput.hide');
-              Notifiers.getToastMessage(context,
-                  t.translate(i18.measurementBook.mbQtyErrMsg), 'ERROR');
+              // Notifiers.getToastMessage(context,
+              //     t.translate(i18.measurementBook.mbQtyErrMsg), 'ERROR');
+              Toast.showToast(context,
+                  message: t.translate(i18.measurementBook.mbQtyErrMsg),
+                  type: ToastType.error);
               context
                   .read<MeasurementDetailBloc>()
                   .add(const UpdateMsgCodeEvent(updateCode: 1));
@@ -320,12 +325,12 @@ class _CardWidgetState extends State<CardWidget> {
               children: [
                 Text(
                   widget.type.toUpperCase(),
-                  style: DigitTheme.instance.mobileTheme.textTheme.displayLarge,
+                  style:Theme.of(context).textTheme.headlineMedium
                 ),
-                Text(
-                  '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
-                  style:
-                      DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+                TextChunk(
+                 heading: '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
+                  // style:
+                  //     DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
@@ -367,7 +372,6 @@ class _CardWidgetState extends State<CardWidget> {
                                 "")
                       ]),
                 ),
-                
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.40,
@@ -408,42 +412,95 @@ class _CardWidgetState extends State<CardWidget> {
                                   type: widget.type, totalCount: 1,
                                 ),
                               ),
+                              // !widget.viewMode
+                              //     ? GestureDetector(
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.center,
+                              //           crossAxisAlignment:
+                              //               CrossAxisAlignment.center,
+                              //           children: [
+                              //             Icon(
+                              // Icons.add_circle,
+                              //               size: 30,
+                              //               color: const DigitColors()
+                              //                   .burningOrange,
+                              //             ),
+                              //             Padding(
+                              //               padding: const EdgeInsets.only(
+                              //                   left: 4.0),
+                              //               child: Text(
+                              // t.translate(
+                              //   i18.measurementBook
+                              //       .addMeasurement,
+                              // ),
+                              //                 style: DigitTheme
+                              //                     .instance
+                              //                     .mobileTheme
+                              //                     .textTheme
+                              //                     .bodyLarge!
+                              //                     .copyWith(
+                              //                   color: const DigitColors()
+                              //                       .burningOrange,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //         onTap: () {
+                              // context
+                              //     .read<MeasurementDetailBloc>()
+                              //     .add(
+                              //       AddToMeasurementLineEvent(
+                              //         sorId: widget
+                              //             .filteredMeasurementsMeasure!
+                              //             .contracts!
+                              //             .first
+                              //             .estimates!
+                              //             .first
+                              //             .sorId!,
+                              //         type: widget
+                              //             .filteredMeasurementsMeasure!
+                              //             .contracts!
+                              //             .first
+                              //             .estimates!
+                              //             .first
+                              //             .category!,
+                              //         index: 0,
+                              //         measurementLineIndex: widget
+                              //                 .filteredMeasurementsMeasure!
+                              //                 .measureLineItems!
+                              //                 .last
+                              //                 .measurelineitemNo +
+                              //             1,
+                              //         height: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.height,
+                              //         length: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.length,
+                              //         width: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.breath,
+                              //         number: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.numItems,
+                              //         quantity: widget
+                              //             .filteredMeasurementsMeasure
+                              //             ?.height,
+                              //         filteredMeasurementMeasureId: widget
+                              //             .filteredMeasurementsMeasure!
+                              //             .id!,
+                              //         single: true,
+                              //       ),
+                              //     );
+                              //         },
+                              //       )
+                              //     : const SizedBox.shrink(),
                               !widget.viewMode
-                                  ? GestureDetector(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.add_circle,
-                                            size: 30,
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0),
-                                            child: Text(
-                                              t.translate(
-                                                i18.measurementBook
-                                                    .addMeasurement,
-                                              ),
-                                              style: DigitTheme
-                                                  .instance
-                                                  .mobileTheme
-                                                  .textTheme
-                                                  .bodyLarge!
-                                                  .copyWith(
-                                                color: const DigitColors()
-                                                    .burningOrange,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () {
+                                  ? Button(
+                                      prefixIcon: Icons.add_circle,
+                                      onPressed: () {
                                         context
                                             .read<MeasurementDetailBloc>()
                                             .add(
@@ -491,8 +548,13 @@ class _CardWidgetState extends State<CardWidget> {
                                               ),
                                             );
                                       },
+                                      size: ButtonSize.large,
+                                      type: ButtonType.tertiary,
+                                      label: t.translate(
+                                        i18.measurementBook.addMeasurement,
+                                      ),
                                     )
-                                  : const SizedBox.shrink(),
+                                  : const SizedBox.shrink()
                             ],
                           )
                         : ListView.builder(
@@ -508,80 +570,131 @@ class _CardWidgetState extends State<CardWidget> {
                                     widget.filteredMeasurementsMeasure!
                                         .measureLineItems!.length) {
                                   // TO add line items
+                                  // return Padding(
+                                  // padding: const EdgeInsets.only(top: 1.0),
+                                  //   child: GestureDetector(
+                                  //     child: Row(
+                                  //       crossAxisAlignment:
+                                  //           CrossAxisAlignment.center,
+                                  //       mainAxisAlignment:
+                                  //           MainAxisAlignment.center,
+                                  //       children: [
+                                  //         Icon(
+                                  // Icons.add_circle,
+                                  //           size: 30,
+                                  //           color: const DigitColors()
+                                  //               .burningOrange,
+                                  //         ),
+                                  //         Padding(
+                                  //           padding: const EdgeInsets.only(
+                                  //               left: 4.0),
+                                  //           child: Text(
+                                  // t.translate(i18.measurementBook
+                                  //     .addMeasurement),
+                                  //             style: DigitTheme
+                                  //                 .instance
+                                  //                 .mobileTheme
+                                  //                 .textTheme
+                                  //                 .bodyLarge!
+                                  //                 .copyWith(
+                                  //                     color: const DigitColors()
+                                  //                         .burningOrange),
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //     onTap: () {
+                                  // context
+                                  //     .read<MeasurementDetailBloc>()
+                                  //     .add(
+                                  //       AddToMeasurementLineEvent(
+                                  //         sorId: widget
+                                  //             .filteredMeasurementsMeasure!
+                                  //             .contracts!
+                                  //             .first
+                                  //             .estimates!
+                                  //             .first
+                                  //             .sorId!,
+                                  //         type: widget
+                                  //             .filteredMeasurementsMeasure!
+                                  //             .contracts!
+                                  //             .first
+                                  //             .estimates!
+                                  //             .first
+                                  //             .category!,
+                                  //         index: index,
+                                  //         measurementLineIndex: widget
+                                  //                 .filteredMeasurementsMeasure!
+                                  //                 .measureLineItems!
+                                  //                 .last
+                                  //                 .measurelineitemNo +
+                                  //             1,
+                                  //         // index: 0,
+                                  //         //         measurementLineIndex: 0,
+                                  //         height: 0,
+                                  //         length: 0,
+                                  //         width: 0,
+                                  //         number: 0,
+                                  //         quantity: 0,
+                                  //         filteredMeasurementMeasureId: widget
+                                  //             .filteredMeasurementsMeasure!
+                                  //             .id!,
+                                  //         single: false,
+                                  //       ),
+                                  //     );
+                                  //     },
+                                  //   ),
+                                  // );
+
                                   return Padding(
                                     padding: const EdgeInsets.only(top: 1.0),
-                                    child: GestureDetector(
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.add_circle,
-                                            size: 30,
-                                            color: const DigitColors()
-                                                .burningOrange,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 4.0),
-                                            child: Text(
-                                              t.translate(i18.measurementBook
-                                                  .addMeasurement),
-                                              style: DigitTheme
-                                                  .instance
-                                                  .mobileTheme
-                                                  .textTheme
-                                                  .bodyLarge!
-                                                  .copyWith(
-                                                      color: const DigitColors()
-                                                          .burningOrange),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      onTap: () {
-                                        context
-                                            .read<MeasurementDetailBloc>()
-                                            .add(
-                                              AddToMeasurementLineEvent(
-                                                sorId: widget
-                                                    .filteredMeasurementsMeasure!
-                                                    .contracts!
-                                                    .first
-                                                    .estimates!
-                                                    .first
-                                                    .sorId!,
-                                                type: widget
-                                                    .filteredMeasurementsMeasure!
-                                                    .contracts!
-                                                    .first
-                                                    .estimates!
-                                                    .first
-                                                    .category!,
-                                                index: index,
-                                                measurementLineIndex: widget
-                                                        .filteredMeasurementsMeasure!
-                                                        .measureLineItems!
-                                                        .last
-                                                        .measurelineitemNo +
-                                                    1,
-                                                // index: 0,
-                                                //         measurementLineIndex: 0,
-                                                height: 0,
-                                                length: 0,
-                                                width: 0,
-                                                number: 0,
-                                                quantity: 0,
-                                                filteredMeasurementMeasureId: widget
-                                                    .filteredMeasurementsMeasure!
-                                                    .id!,
-                                                single: false,
-                                              ),
-                                            );
-                                      },
-                                    ),
+                                    child: Button(
+                                        prefixIcon: Icons.add_circle,
+                                        label: t.translate(
+                                            i18.measurementBook.addMeasurement),
+                                        onPressed: () {
+                                          context
+                                              .read<MeasurementDetailBloc>()
+                                              .add(
+                                                AddToMeasurementLineEvent(
+                                                  sorId: widget
+                                                      .filteredMeasurementsMeasure!
+                                                      .contracts!
+                                                      .first
+                                                      .estimates!
+                                                      .first
+                                                      .sorId!,
+                                                  type: widget
+                                                      .filteredMeasurementsMeasure!
+                                                      .contracts!
+                                                      .first
+                                                      .estimates!
+                                                      .first
+                                                      .category!,
+                                                  index: index,
+                                                  measurementLineIndex: widget
+                                                          .filteredMeasurementsMeasure!
+                                                          .measureLineItems!
+                                                          .last
+                                                          .measurelineitemNo +
+                                                      1,
+                                                  // index: 0,
+                                                  //         measurementLineIndex: 0,
+                                                  height: 0,
+                                                  length: 0,
+                                                  width: 0,
+                                                  number: 0,
+                                                  quantity: 0,
+                                                  filteredMeasurementMeasureId:
+                                                      widget
+                                                          .filteredMeasurementsMeasure!
+                                                          .id!,
+                                                  single: false,
+                                                ),
+                                              );
+                                        },
+                                        type: ButtonType.tertiary,
+                                        size: ButtonSize.large),
                                   );
                                 }
                               }
@@ -879,7 +992,7 @@ class _CardWidgetState extends State<CardWidget> {
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
-                        color: const DigitColors().burningOrange,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: widget.backward,
                     ),
@@ -895,7 +1008,7 @@ class _CardWidgetState extends State<CardWidget> {
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_forward,
-                        color: const DigitColors().burningOrange,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                       onPressed: widget.forward,
                     ),

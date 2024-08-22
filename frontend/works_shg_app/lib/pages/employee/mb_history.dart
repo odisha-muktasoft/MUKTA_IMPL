@@ -1,16 +1,13 @@
 import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
-import 'package:digit_components/widgets/atoms/digit_action_dialog.dart';
-import 'package:digit_components/widgets/digit_elevated_button.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
-import 'package:digit_ui_components/theme/ComponentTheme/button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
-import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -19,20 +16,16 @@ import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
-import 'package:works_shg_app/widgets/mb/back_button.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/back.dart';
 import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
-import '../../widgets/mb/mb_detail_card.dart';
-import '../../widgets/mb/text_button_underline.dart';
 import '../../widgets/mb/work_flow_button_list.dart';
 import 'mb_inbox.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -93,8 +86,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   childWhenDragging: FloatActionCard(
                                     actions: () {
                                       showDialog(
-                                       context: context,
-                                        builder:(context)=> CommonButtonCard(
+                                        context: context,
+                                        builder: (context) => CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -154,8 +147,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   child: FloatActionCard(
                                     actions: () {
                                       showDialog(
-                                       context: context,
-                                        builder:(context)=> CommonButtonCard(
+                                        context: context,
+                                        builder: (context) => CommonButtonCard(
                                           g: g,
                                           contractNumber: widget.contractNumber,
                                           mbNumber: widget.mbNumber,
@@ -282,22 +275,17 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                 widget.type == MBScreen.update ? index : index;
                             if (adjustedIndex <= k.length) {
                               return DigitCard(
-                                padding: const EdgeInsets.only(
-                                  left: 4.0,
-                                  bottom: 8.0,
-                                  right: 4.0,
-                                  top: 8.0,
-                                ),
-                                margin: const EdgeInsets.all(8.0),
+                                margin: const EdgeInsets.only(
+                                    left: 8, bottom: 8, right: 8, top: 8),
                                 cardType: CardType.primary,
                                 children: [
                                   LabelValueList(
-                                      padding: const EdgeInsets.only(
-                                        left: 4.0,
-                                        bottom: 8.0,
-                                        right: 4.0,
-                                        top: 8.0,
-                                      ),
+                                      // padding: const EdgeInsets.only(
+                                      //   left: 8.0,
+                                      //   bottom: 8.0,
+                                      //   right: 4.0,
+                                      //   top: 8.0,
+                                      // ),
                                       heading:
                                           "${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].startDate!))} - ${DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(k[adjustedIndex].endDate!))}",
                                       maxLines: 3,
@@ -405,8 +393,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
               const Center(
                 child: SizedBox(
                   width: 100,
-                  child: Divider(
-                    thickness: 5,
+                  child: DigitDivider(
+                    dividerType: DividerType.large,
                   ),
                 ),
               ),
@@ -534,8 +522,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                         onPressed: () {
                           Navigator.of(context).pop();
                           showDialog(
-                           context: context,
-                            builder:(context)=> CommonButtonCard(
+                            context: context,
+                            builder: (context) => CommonButtonCard(
                               g: processInstances,
                               contractNumber: contractNumber,
                               mbNumber: mbNumber,

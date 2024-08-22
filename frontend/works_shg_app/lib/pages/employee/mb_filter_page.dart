@@ -154,7 +154,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                               builder: (BuildContext context,
                                   FormGroup formGroup, Widget? child) {
                                 return Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(16.0),
                                   child: ui_component.ScrollableContent(
                                     backgroundColor: Colors.transparent,
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -1000,18 +1000,20 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       //       )
                                       //     : const SizedBox.shrink(),
                                       project
-                                          ? ui_component.LabeledField(
-                                              label: t.translate(
-                                                  i18.measurementBook.mbNumber),
-                                              child: DigitTextFormInput(
-                                                controller: projectId,
+                                          ? Padding(
+                                            padding: const EdgeInsets.only(top:16.0),
+                                            child: ui_component.LabeledField(
+                                                label: t.translate(
+                                                    i18.measurementBook.mbNumber),
+                                                child: DigitTextFormInput(
+                                                  controller: projectId,
+                                                ),
                                               ),
-                                            )
+                                          )
                                           : const SizedBox.shrink(),
                                       project
                                           ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0),
+                                             padding: const EdgeInsets.only(top:16.0),
                                               child: ui_component.LabeledField(
                                                 label: t.translate(i18
                                                     .measurementBook.projectId),
@@ -1025,7 +1027,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       project
                                           ? Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 8.0),
+                                                  top: 16.0),
                                               child: ui_component.LabeledField(
                                                 label: t.translate(i18
                                                     .measurementBook
@@ -1105,7 +1107,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       workShow
                                           ? Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 8.0),
+                                                  top: 16.0),
                                               child: ui_component.LabeledField(
                                                 label: t
                                                     .translate(i18.common.ward),
@@ -1206,7 +1208,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       workShow
                                           ? Padding(
                                               padding: const EdgeInsets.only(
-                                                  top: 8.0),
+                                                  top: 16.0),
                                               child: ui_component.LabeledField(
                                                 label: t.translate(i18
                                                     .measurementBook

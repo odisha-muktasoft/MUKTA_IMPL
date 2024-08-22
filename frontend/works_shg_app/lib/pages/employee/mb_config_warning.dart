@@ -139,7 +139,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
               (route) => route is! PopupRoute,
             );
             //Loaders.showLoadingDialog(context);
-             shg_loader.Loaders.showLoadingDialog(context);
+            shg_loader.Loaders.showLoadingDialog(context);
           },
           error: (value) {
             Navigator.of(
@@ -185,9 +185,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         loaded: (value) {
                           if (widget.type == MBScreen.update) {
                             return Padding(
-                              // padding: const EdgeInsets.all(8.0),
-                              padding: const EdgeInsets.only(
-                                  left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
+                               padding: const EdgeInsets.all(16.0),
+                              // padding: const EdgeInsets.only(
+                              //     left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
                               child: ui_component.ScrollableContent(
                                 backgroundColor: Colors.transparent,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -276,7 +276,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         },
                                       ),
                                       const SizedBox(
-                                        height: 4,
+                                        height: 16,
                                       ),
                                       Button(
                                         mainAxisSize: MainAxisSize.max,
@@ -294,12 +294,18 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      IconButton(
+                                      Button(
+                                        mainAxisSize: MainAxisSize.min,
+                                        label: '',
+                                        size: ButtonSize.large,
+                                        type: ButtonType.tertiary,
                                           onPressed: () {
                                             context.router.maybePopTop();
                                           },
-                                          icon: const Icon(Icons.close)),
+                                          suffixIcon: Icons.close,
+                                          ),
                                     ],
                                   ),
                                   Row(
@@ -344,35 +350,38 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                         null &&
                                                     value.hrmsEmployee!
                                                         .isNotEmpty) {
-                                                  return ui_component
-                                                      .LabeledField(
-                                                    label: t.translate(
-                                                        "WF_MODAL_APPROVER"),
-                                                    child: ui_component.DigitDropdown<
-                                                            HRMSEmployee>(
-                                                        valueMapper: value
-                                                            .hrmsEmployee!
-                                                            .map((e) => ValueMapper(
-                                                                code: e.uuid!,
-                                                                name: t.translate(e
-                                                                    .employeeUser!
-                                                                    .name
-                                                                    .toString())))
-                                                            .toList(),
-                                                        onSelect: (p0) {
-                                                          setState(() {
-                                                            selectedAssignee =
-                                                                p0.code!;
-                                                          });
-                                                        },
-                                                        items: value
-                                                            .hrmsEmployee!
-                                                            .map((e) => DropdownItem(
-                                                                name: e
-                                                                    .employeeUser!
-                                                                    .name!,
-                                                                code: e.uuid!))
-                                                            .toList()),
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(top:16.0),
+                                                    child: ui_component
+                                                        .LabeledField(
+                                                      label: t.translate(
+                                                          "WF_MODAL_APPROVER"),
+                                                      child: ui_component.DigitDropdown<
+                                                              HRMSEmployee>(
+                                                          valueMapper: value
+                                                              .hrmsEmployee!
+                                                              .map((e) => ValueMapper(
+                                                                  code: e.uuid!,
+                                                                  name: t.translate(e
+                                                                      .employeeUser!
+                                                                      .name
+                                                                      .toString())))
+                                                              .toList(),
+                                                          onSelect: (p0) {
+                                                            setState(() {
+                                                              selectedAssignee =
+                                                                  p0.code!;
+                                                            });
+                                                          },
+                                                          items: value
+                                                              .hrmsEmployee!
+                                                              .map((e) => DropdownItem(
+                                                                  name: e
+                                                                      .employeeUser!
+                                                                      .name!,
+                                                                  code: e.uuid!))
+                                                              .toList()),
+                                                    ),
                                                   );
 
                                                   //       DigitDropdown<
@@ -428,16 +437,16 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   //     : false,
                                   // ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
+                                    padding: const EdgeInsets.only(top: 16.0),
                                     child: ui_component.LabeledField(
-                                      
                                       label:
                                           "${t.translate("WF_MODAL_COMMENTS")}",
                                       child: DigitTextAreaFormInput(
                                         controller: comment,
                                         maxLine: 5,
                                         isRequired:
-                                            widget.nextActions!.action == "REJECT"
+                                            widget.nextActions!.action ==
+                                                    "REJECT"
                                                 ? true
                                                 : false,
                                       ),
@@ -509,7 +518,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             );
                           } else {
                             return Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(16.0),
                               child: ui_component.ScrollableContent(
                                 backgroundColor: Colors.transparent,
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -521,93 +530,86 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      SizedBox(
-                                        width: MediaQuery.sizeOf(context).width,
-                                        child: DigitElevatedButton(
-                                          child: Text(
-                                            widget.stateActions!.action ==
-                                                    "SUBMIT"
-                                                ? t.translate(i18
-                                                    .measurementBook
-                                                    .mbSubmitLabel)
-                                                : t.translate(
-                                                    "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
-                                          ),
-                                          onPressed: () {
-                                            List<List<SorObject>> sorList = [
-                                              value.sor!,
-                                              value.nonSor!
-                                            ];
-                                            MBDetailResponse kkk =
-                                                MBLogic.getMbPayloadUpdate(
-                                              data: value.data,
-                                              sorList: sorList,
-                                              workFlow: WorkFlow(
-                                                action: widget.stateActions!
-                                                            .action ==
-                                                        "CREATE"
-                                                    ? "SUBMIT"
-                                                    : widget
-                                                        .stateActions!.action,
-                                                comment: comment.text,
-                                                assignees: selectedAssignee !=
-                                                        null
-                                                    ? selectedAssignee != null
-                                                        ? [selectedAssignee!]
-                                                        : null
-                                                    : null,
-                                                documents: supportDocument,
-                                              ),
-                                              type: widget.type,
-                                            );
+                                      Button(
+                                        mainAxisSize: MainAxisSize.max,
+                                        size: ButtonSize.large,
+                                        type: ButtonType.primary,
+                                        label: widget.stateActions!.action ==
+                                                "SUBMIT"
+                                            ? t.translate(i18
+                                                .measurementBook.mbSubmitLabel)
+                                            : t.translate(
+                                                "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
+                                        onPressed: () {
+                                          List<List<SorObject>> sorList = [
+                                            value.sor!,
+                                            value.nonSor!
+                                          ];
+                                          MBDetailResponse kkk =
+                                              MBLogic.getMbPayloadUpdate(
+                                            data: value.data,
+                                            sorList: sorList,
+                                            workFlow: WorkFlow(
+                                              action: widget.stateActions!
+                                                          .action ==
+                                                      "CREATE"
+                                                  ? "SUBMIT"
+                                                  : widget.stateActions!.action,
+                                              comment: comment.text,
+                                              assignees:
+                                                  selectedAssignee != null
+                                                      ? selectedAssignee != null
+                                                          ? [selectedAssignee!]
+                                                          : null
+                                                      : null,
+                                              documents: supportDocument,
+                                            ),
+                                            type: widget.type,
+                                          );
 
-                                            context
-                                                .read<MeasurementCrudBloc>()
-                                                .add(
-                                                  MeasurementUpdateBlocEvent(
-                                                    measurement:
-                                                        kkk.measurement!,
-                                                    tenantId: '',
-                                                    workFlow: WorkFlow(
-                                                      action: widget
-                                                                  .stateActions!
-                                                                  .action ==
-                                                              "CREATE"
-                                                          ? "SUBMIT"
-                                                          : widget.stateActions!
-                                                              .action,
-                                                      comment: comment.text,
-                                                      assignees:
-                                                          selectedAssignee !=
-                                                                  null
-                                                              ? selectedAssignee !=
-                                                                      null
-                                                                  ? [
-                                                                      selectedAssignee!
-                                                                    ]
-                                                                  : null
-                                                              : null,
-                                                      documents:
-                                                          supportDocument,
-                                                    ),
-                                                    type: widget.type,
+                                          context
+                                              .read<MeasurementCrudBloc>()
+                                              .add(
+                                                MeasurementUpdateBlocEvent(
+                                                  measurement: kkk.measurement!,
+                                                  tenantId: '',
+                                                  workFlow: WorkFlow(
+                                                    action: widget.stateActions!
+                                                                .action ==
+                                                            "CREATE"
+                                                        ? "SUBMIT"
+                                                        : widget.stateActions!
+                                                            .action,
+                                                    comment: comment.text,
+                                                    assignees:
+                                                        selectedAssignee != null
+                                                            ? selectedAssignee !=
+                                                                    null
+                                                                ? [
+                                                                    selectedAssignee!
+                                                                  ]
+                                                                : null
+                                                            : null,
+                                                    documents: supportDocument,
                                                   ),
-                                                );
-                                            // Navigator.of(context)
-                                            //     .popUntil((route) => route is HomeRoute);
-                                            // context.router.push(const HomeRoute());
-                                          },
-                                        ),
+                                                  type: widget.type,
+                                                ),
+                                              );
+                                          // Navigator.of(context)
+                                          //     .popUntil((route) => route is HomeRoute);
+                                          // context.router.push(const HomeRoute());
+                                        },
                                       ),
-                                      SizedBox(
-                                        width: MediaQuery.sizeOf(context).width,
-                                        child: DigitOutLineButton(
-                                          label: t.translate(
-                                              i18.measurementBook.mbCancel),
-                                          onPressed: () {
-                                            context.router.maybePopTop();
-                                          },
-                                        ),
+                                     const SizedBox(height: 16.0,),
+                                      Button(
+                                        mainAxisSize: MainAxisSize.max,
+                                        type: ButtonType.secondary,
+                                        size: ButtonSize.large,
+                                        label: t.translate(
+                                            i18.measurementBook.mbCancel),
+                                        onPressed: () {
+                                          context.router.maybePopTop();
+                                        },
                                       ),
                                     ],
                                   ),
@@ -616,11 +618,15 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      IconButton(
+                                      Button(
+                                        mainAxisSize: MainAxisSize.min,
+                                        label: '',
+                                        size: ButtonSize.large,
+                                        type: ButtonType.tertiary,
                                           onPressed: () {
                                             context.router.maybePopTop();
                                           },
-                                          icon: const Icon(Icons.close)),
+                                          suffixIcon: Icons.close),
                                     ],
                                   ),
                                   Row(
@@ -632,17 +638,17 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         width:
                                             MediaQuery.sizeOf(context).width *
                                                 0.9,
-                                        child: Text(
-                                          widget.stateActions!.action ==
+                                        child: TextChunk(
+                                         heading: widget.stateActions!.action ==
                                                   "SUBMIT"
                                               ? t.translate(i18.measurementBook
                                                   .mbcreateLabel)
                                               : t.translate(
                                                   "WF_MB_ACTION_${widget.stateActions!.action}"),
-                                          style: DigitTheme.instance.mobileTheme
-                                              .textTheme.headlineLarge,
-                                          overflow: TextOverflow.clip,
-                                          maxLines: 1,
+                                          // style: DigitTheme.instance.mobileTheme
+                                          //     .textTheme.headlineLarge,
+                                          // overflow: TextOverflow.clip,
+                                          // maxLines: 1,
                                         ),
                                       ),
                                     ],
@@ -658,35 +664,38 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                         null &&
                                                     value.hrmsEmployee!
                                                         .isNotEmpty) {
-                                                  return ui_component
-                                                      .LabeledField(
-                                                    label: t.translate(
-                                                        "WF_MODAL_APPROVER"),
-                                                    child: ui_component.DigitDropdown<
-                                                            HRMSEmployee>(
-                                                        valueMapper: value
-                                                            .hrmsEmployee!
-                                                            .map((e) => ValueMapper(
-                                                                code: e.uuid!,
-                                                                name: t.translate(e
-                                                                    .employeeUser!
-                                                                    .name
-                                                                    .toString())))
-                                                            .toList(),
-                                                        onSelect: (p0) {
-                                                          setState(() {
-                                                            selectedAssignee =
-                                                                p0.code!;
-                                                          });
-                                                        },
-                                                        items: value
-                                                            .hrmsEmployee!
-                                                            .map((e) => DropdownItem(
-                                                                name: e
-                                                                    .employeeUser!
-                                                                    .userName!,
-                                                                code: e.uuid!))
-                                                            .toList()),
+                                                  return Padding(
+                                                    padding: const EdgeInsets.only(top:16.0),
+                                                    child: ui_component
+                                                        .LabeledField(
+                                                      label: t.translate(
+                                                          "WF_MODAL_APPROVER"),
+                                                      child: ui_component.DigitDropdown<
+                                                              HRMSEmployee>(
+                                                          valueMapper: value
+                                                              .hrmsEmployee!
+                                                              .map((e) => ValueMapper(
+                                                                  code: e.uuid!,
+                                                                  name: t.translate(e
+                                                                      .employeeUser!
+                                                                      .name
+                                                                      .toString())))
+                                                              .toList(),
+                                                          onSelect: (p0) {
+                                                            setState(() {
+                                                              selectedAssignee =
+                                                                  p0.code!;
+                                                            });
+                                                          },
+                                                          items: value
+                                                              .hrmsEmployee!
+                                                              .map((e) => DropdownItem(
+                                                                  name: e
+                                                                      .employeeUser!
+                                                                      .userName!,
+                                                                  code: e.uuid!))
+                                                              .toList()),
+                                                    ),
                                                   );
                                                   // return  DigitDropdown<
                                                   //     HRMSEmployee>(
@@ -736,7 +745,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   //   controller: comment,
                                   // ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
+                                    padding: const EdgeInsets.only(top: 16.0),
                                     child: ui_component.LabeledField(
                                       label: t.translate("WF_MODAL_COMMENTS"),
                                       child: DigitTextAreaFormInput(

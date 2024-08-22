@@ -295,7 +295,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                                   sortType: SortType.mbSort);
                                             },
                                             type: ButtonType.tertiary,
-                                            size: ButtonSize.large),
+                                            size: ButtonSize.large,),
                             
                                         
                                       ],
@@ -356,7 +356,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                       child: CircularProgressIndicator.adaptive(
                                         valueColor: AlwaysStoppedAnimation<
                                                 Color>(
-                                            const DigitColors().burningOrange),
+                                            Theme.of(context).colorScheme.primary,
+                                            ),
                                       ),
                                     );
                                   }
