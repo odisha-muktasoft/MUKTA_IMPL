@@ -124,7 +124,7 @@ def getWorkflowDates(bussinessId, tenantId):
                     elif processInstance['action'] == "TECHNICALSANCTION":
                         data['technicalSanctionDate'] = processInstance['auditDetails']['createdTime']
                         data['technicalSanctionBy'] = processInstance['auditDetails']['createdBy']
-                    elif processInstance['action'] == "SUBMIT" and data['submitDate'] == "NA":
+                    elif processInstance['action'] == "SUBMIT":
                         data['submitDate'] = processInstance['auditDetails']['createdTime']
             
         return data
@@ -446,10 +446,10 @@ def getFailedPayments(payment_number):
                         # Extract data from the beneficiary level
                         beneficiary_data = {
                             'Beneficiary ID': beneficiary['beneficiaryNumber'],
-                            'Beneficiary Name': beneficiary_name,
+                            # 'Beneficiary Name': beneficiary_name,
                             'Type Of Beneficiary': beneficiary['beneficiaryType'],
-                            'Account Number': account_number,
-                            'IFSC Code': ifsc_code    
+                            # 'Account Number': account_number,
+                            # 'IFSC Code': ifsc_code    
                         }
                         # Combine PI data and beneficiary data
                         combined_data = {**pi_data, **beneficiary_data}
@@ -599,7 +599,7 @@ def getEstimateData():
                             temp['Estimate ID'] = estimate['estimateNumber']
                             temp['Revision Estimate ID'] = estimate['revisionNumber'] if estimate['revisionNumber'] else None
                             temp['Date of Creation'] = convert_epoch_to_indian_time(estimate['auditDetails']['createdTime'])
-                            temp['Prepared by (Name)'] = getUserName(estimate['auditDetails']['createdBy'])
+                            # temp['Prepared by (Name)'] = getUserName(estimate['auditDetails']['createdBy'])
                             workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
                             temp['send backs (No of times)'] = workFlowData['sendBacks']
                             temp['Estimate Value'] = estimate['additionalDetails']['totalEstimatedAmount']
@@ -642,7 +642,10 @@ def getTechnicalSanctionApprovalData():
                             temp['Estimate ID'] = estimate['estimateNumber']
                             temp['Revision Estimate ID'] = estimate['revisionNumber'] if estimate['revisionNumber'] else None
                             workFlowData = getWorkflowDates(estimate['estimateNumber'], tenantid)
-                            temp['Date of Estimate Received'] = convert_epoch_to_indian_time(workFlowData['submitDate'])
+                            if workFlowData['submitDate'] != 'NA':
+                                temp['Date of Estimate Received'] = convert_epoch_to_indian_time(workFlowData['submitDate'])
+                            else:
+                                temp['Date of Estimate Received'] = 'NA'
                             if workFlowData['technicalSanctionDate'] != 'NA':
                                 temp['Date of Technical Sanction'] = convert_epoch_to_indian_time(workFlowData['technicalSanctionDate'])
                             else:
@@ -786,7 +789,7 @@ def getCBOReportData():
                                 parent_data = {
                                     'ULB Name': format_tenant_id(tenantid),
                                     'Project ID': contract['additionalDetails']['projectId'],
-                                    'CBO Name': contract['additionalDetails']['cboName'],
+                                    # 'CBO Name': contract['additionalDetails']['cboName'],
                                 }
                                 org_number = contract['additionalDetails']['cboOrgNumber']
                                 orgDetails = getOrgDetails(org_number, tenantid)
@@ -796,7 +799,7 @@ def getCBOReportData():
                                         'CBO ID': orgDetails['orgNumber'],
                                         # 'Mobile Number': orgDetails['contactDetails'][0]['contactMobileNumber'],
                                         'Ward Number': orgDetails['orgAddress'][0]['boundaryCode'],
-                                        'Name of the Contact Person': orgDetails['contactDetails'][0]['contactName'],
+                                        # 'Name of the Contact Person': orgDetails['contactDetails'][0]['contactName'],
                                         # 'Contact Person Mobile No': orgDetails['contactDetails'][0]['contactMobileNumber'],
                                     }
                                 contract_number = contract['contractNumber']
@@ -804,17 +807,18 @@ def getCBOReportData():
                                 if expense_calc_bills:
                                     for expense_bill in expense_calc_bills:
                                         bill = expense_bill['bill']
-                                        if bill['status'] == "ACTIVE":
-                                            org_id = expense_bill['orgId']
-                                            for bill_detail in bill['billDetails']:
-                                                if bill_detail['payee']['identifier'] == org_id:
-                                                    grand_child_data = {
-                                                        'Payment Amount': bill['totalAmount'],
-                                                        'Payment Date': convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime']),
-                                                        'Payment Type': bill['businessService'].split(".")[1],
-                                                    }
-                                                    data.append({**parent_data, **child_data, **grand_child_data})
-                                                    break
+                                        if bill:
+                                            if bill['status'] == "ACTIVE":
+                                                org_id = expense_bill['orgId']
+                                                for bill_detail in bill['billDetails']:
+                                                    if bill_detail['payee']['identifier'] == org_id:
+                                                        grand_child_data = {
+                                                            'Payment Amount': bill['totalAmount'],
+                                                            'Payment Date': convert_epoch_to_indian_time(bill['auditDetails']['lastModifiedTime']),
+                                                            'Payment Type': bill['businessService'].split(".")[1],
+                                                        }
+                                                        data.append({**parent_data, **child_data, **grand_child_data})
+                                                        break
                     else:
                         break 
                 else:
@@ -888,6 +892,7 @@ def getWageSeekerReportData():
                                     parent_data = {
                                         'ULB Name': format_tenant_id(tenantid),
                                         'Project ID': roll['additionalDetails']['projectId'],
+                                        'Muster Roll Number': musterRollNumber
                                     }
                                     for individualEntry in roll['individualEntries']:
                                         individual_id = individualEntry['individualId']
@@ -957,9 +962,9 @@ def getUlbMuktaFunctionariesData():
                     for emp in response['Employees']:
                         temp = {}
                         temp['ULB Name'] = format_tenant_id(tenantid)
-                        temp['Name of the Employee'] = emp['user']['name']
+                        # temp['Name of the Employee'] = emp['user']['name']
                         temp['Designation'] = emp['assignments'][0]['designation']
-                        temp['Mobile Number'] = emp['user']['mobileNumber']
+                        # temp['Mobile Number'] = emp['user']['mobileNumber']
                         data.append(temp)
         return data
     except Exception as e:
@@ -981,7 +986,8 @@ if __name__ == '__main__':
     try:
         logging.info('Report Started Generating')
 
-        directory = '/home/admin1/Music'
+        # directory = '/home/admin1/Music'
+        directory = '/mukta-report/muktareport'
         # directory = '/demo-report/demoReport'
         if not os.path.exists(directory):
             os.makedirs(directory)
