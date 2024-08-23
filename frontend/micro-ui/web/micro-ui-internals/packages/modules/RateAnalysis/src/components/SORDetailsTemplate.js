@@ -1,4 +1,4 @@
-import { Card, Header, Button, Loader, TextInput, DeleteIcon } from "@egovernments/digit-ui-react-components";
+import { Card, Header, Button, Loader, TextInput, DeleteIcon, Toast } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import SearchBar from "../../../Estimate/src/pageComponents/SearchBar";
@@ -51,6 +51,12 @@ const SORDetailsTemplate = (props) => {
   }, [SORDetails]);
 
   const buttonClick = async () => {
+    if(formData?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
+    {
+      setShowToast({ show: true, label: "SOR Already present", error: true });
+      setSelectedSOR(null);
+      return;
+    }
     if (window.location.href.includes("update")) {
       const sor = transformSOR(stateData?.selectedSor, isUpdate);
       sor?.sorId && SORDetails?.push({ ...sor, sorType: props?.config?.sorType });
@@ -241,7 +247,7 @@ const SORDetailsTemplate = (props) => {
                             //value={row?.quantity}
                             onChange={(e) => {
                               const { value } = e.target;
-                              if (value ? has4DecimalPlaces(parseFloat(value)) : true) {
+                              if (value ? has4DecimalPlaces(value) : true) {
                                 let detailsPicked = window.location.href.includes("update") ? SORDetails : formData;
                                 let newSOR = detailsPicked?.map((obj) => {
                                   if (obj?.sorCode === row?.sorCode) {

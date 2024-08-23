@@ -161,7 +161,7 @@ const generateId = async (tenantId = Digit.ULBService.getCurrentTenantId()) => {
 };
 
 export const has4DecimalPlaces = (value) => {
-  const regex = /^\d*\.?\d{0,4}$/;
+  const regex = /^[0-9]*\.?[0-9]{0,4}$/;
   return regex.test(value);
 };
 
