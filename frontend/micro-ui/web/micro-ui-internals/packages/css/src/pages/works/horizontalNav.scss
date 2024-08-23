@@ -56,17 +56,17 @@
 
             &.active {
                 font-weight: 600;
-                border: 1px solid theme(digitv2.lightTheme.primary);
-                border-bottom: 3px solid theme(digitv2.lightTheme.primary);
+                border: 1px solid theme(digitv2.lightTheme.primary-1);
+                border-bottom: 3px solid theme(digitv2.lightTheme.primary-1);
 
                 background-color: #FFFFFF;
 
                 .menu-label {
-                    color: theme(digitv2.lightTheme.primary);
+                    color: theme(digitv2.lightTheme.primary-1);
                 }
 
                 .icon {
-                    fill: theme(digitv2.lightTheme.primary);
+                    fill: theme(digitv2.lightTheme.primary-1);
                 }
             }
 
@@ -123,17 +123,17 @@
 
             &.active {
                 font-weight: 600;
-                border: 1px solid theme(digitv2.lightTheme.primary);
-                border-bottom: 3px solid theme(digitv2.lightTheme.primary);
+                border: 1px solid theme(digitv2.lightTheme.primary-1);
+                border-bottom: 3px solid theme(digitv2.lightTheme.primary-1);
 
                 background-color: #FFFFFF;
 
                 .menu-label {
-                    color: theme(digitv2.lightTheme.primary);
+                    color: theme(digitv2.lightTheme.primary-1);
                 }
 
                 .icon {
-                    fill: theme(digitv2.lightTheme.primary);
+                    fill: theme(digitv2.lightTheme.primary-1);
                 }
             }
 

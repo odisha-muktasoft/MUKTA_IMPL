@@ -1,9 +1,8 @@
-import { Button } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import EstimateDropdown from "./EstimateDropdown";
 import SearchBar from "./SearchBar";
-import { Toast } from "@egovernments/digit-ui-components";
+import { Toast,Button } from "@egovernments/digit-ui-components";
 
 
 const fetchData = async (sorid, state, setState, setShowToast) => {
@@ -182,7 +181,7 @@ const searchSor = (props) => {
       <SearchBar stateData={stateData} selectedSOR={selectedSOR} setSelectedSOR={setSelectedSOR} />
       <Button
         label={t("ESTIMATE_ADD_LABEL")}
-        onButtonClick={buttonClick}
+        onClick={buttonClick}
         className={"add-sor-button"}
       />
       </div>

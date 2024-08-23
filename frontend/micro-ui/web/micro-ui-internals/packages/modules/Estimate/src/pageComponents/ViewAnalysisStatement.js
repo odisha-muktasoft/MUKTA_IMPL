@@ -372,7 +372,7 @@ const ViewAnalysisStatement = ({ formData, ...props }) => {
         )}
       </div>
     );
-  else return <div></div>;
+  else return null;
 };
 
 export default ViewAnalysisStatement;

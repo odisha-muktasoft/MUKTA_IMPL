@@ -225,11 +225,11 @@ const WorkflowTimeline = ({
                       }
                       subElements={index === 0 && !checkpoint?.isTerminateState ? [] : getTimelineCaptions(checkpoint, index)}
                       variant={
-                        index === 0 && !checkpoint?.isTerminateState
-                          ? "upcoming"
-                          : checkpoint?.isTerminateState && index === 0
-                          ? "upcoming"
-                          : "completed"
+                        ((index === 0 && !checkpoint?.isTerminateState) || checkpoint?.variant === "inprogress")
+                          ? "inprogress"
+                          : ((checkpoint?.isTerminateState && index === 0) || (checkpoint?.variant === "inprogress"))
+                          ? "inprogress"
+                          : (checkpoint?.variant==="upcoming") ? "upcoming": "completed"
                       }
                       showConnector={true}
                     />

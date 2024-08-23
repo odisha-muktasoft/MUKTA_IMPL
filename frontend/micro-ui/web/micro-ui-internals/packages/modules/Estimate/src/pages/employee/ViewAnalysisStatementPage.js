@@ -462,9 +462,9 @@ const ViewAnalysisStatement = () => {
   //if (isProjectLoading || isDetailedEstimateLoading | isDetailedEstimatesLoading) return <Loader />;
 
   return (
-    <div className={"employee-main-application-details"}>
-      <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
+    <div className={`employee-main-application-details ${"analysis-details"}`}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center"}}>
+        <Header className="works-header-view" styles={{ marginLeft: "0px"}}>
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
         {downloadStatus && (

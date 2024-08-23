@@ -4,34 +4,44 @@ import BreakLine from "../atoms/BreakLine";
 import Card from "../atoms/Card";
 import CardLabel from "../atoms/CardLabel";
 import CardText from "../atoms/CardText";
-// import CardLabelError from "../atoms/CardLabelError";
 import CardSubHeader from "../atoms/CardSubHeader";
-import CardSectionHeader from "../atoms/CardSectionHeader";
 import CardLabelDesc from "../atoms/CardLabelDesc";
 import CardLabelError from "../atoms/CardLabelError";
-// import TextArea from "../atoms/TextArea";
-// import TextInput from "../atoms/TextInput";
 import ActionBar from "../atoms/ActionBar";
 import SubmitBar from "../atoms/SubmitBar";
-// import LabelFieldPair from "../atoms/LabelFieldPair";
 import LinkButton from "../atoms/LinkButton";
 import ApiDropdown from "../molecules/ApiDropdown";
-
 import { useTranslation } from "react-i18next";
 import MobileNumber from "../atoms/MobileNumber";
 import _ from "lodash";
-// import CustomDropdown from "../molecules/CustomDropdown";
 import MultiUploadWrapper from "../molecules/MultiUploadWrapper";
 import HorizontalNav from "../atoms/HorizontalNav";
-// import Toast from "../atoms/Toast";
 import UploadFileComposer from "./UploadFileComposer";
-// import CheckBox from "../atoms/CheckBox";
-// import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
 import Paragraph from "../atoms/Paragraph";
 import InputTextAmount from "../atoms/InputTextAmount";
 import WrapperComponent from "../atoms/WrapperComponent";
-
-import { CustomDropdown,Toast, CheckBox,MultiSelectDropdown, TextArea, TextInput, LabelFieldPair,ErrorMessage,StringManipulator ,Header} from "@egovernments/digit-ui-components";
+// import CheckBox from "../atoms/CheckBox";
+// import MultiSelectDropdown from "../atoms/MultiSelectDropdown";
+// import Toast from "../atoms/Toast";
+// import CustomDropdown from "../molecules/CustomDropdown";
+// import LabelFieldPair from "../atoms/LabelFieldPair";
+// import TextArea from "../atoms/TextArea";
+// import TextInput from "../atoms/TextInput";
+// import CardLabelError from "../atoms/CardLabelError";
+// import CardSectionHeader from "../atoms/CardSectionHeader";
+import {
+  CustomDropdown,
+  Toast,
+  CheckBox,
+  MultiSelectDropdown,
+  TextArea,
+  TextInput,
+  LabelFieldPair,
+  ErrorMessage,
+  StringManipulator,
+  Header,
+  TextBlock,
+} from "@egovernments/digit-ui-components";
 
 const wrapperStyles = {
   // "display":"flex",
@@ -142,7 +152,6 @@ export const FormComposer = (props) => {
     const customRules = customValidation ? { validate: customValidation } : {};
     const customProps = config?.customProps;
 
-
     switch (type) {
       case "date":
       case "text":
@@ -186,28 +195,22 @@ export const FormComposer = (props) => {
           </div>
         );
 
-        case "apidropdown":
-            return (
-              <Controller
-                name={`${populators.name}`}
-                control={control}
-                defaultValue={formData?.[populators.name]}
-                rules={{ required: isMandatory, ...populators.validation }}
-                render={(props) => {
-                  return (
-                    <div style={{ display: "grid", gridAutoFlow: "row" ,width:"100%"}}>
-                      <ApiDropdown
-                        props={props}
-                        populators={populators}
-                        formData={formData}
-                        inputRef={props.ref}
-                        errors={errors}
-                      />
-                    </div>
-                  );
-                }}
-              />
-            );
+      case "apidropdown":
+        return (
+          <Controller
+            name={`${populators.name}`}
+            control={control}
+            defaultValue={formData?.[populators.name]}
+            rules={{ required: isMandatory, ...populators.validation }}
+            render={(props) => {
+              return (
+                <div style={{ display: "grid", gridAutoFlow: "row", width: "100%" }}>
+                  <ApiDropdown props={props} populators={populators} formData={formData} inputRef={props.ref} errors={errors} />
+                </div>
+              );
+            }}
+          />
+        );
 
       case "amount":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
@@ -328,7 +331,7 @@ export const FormComposer = (props) => {
             rules={{ required: populators?.isMandatory }}
             render={(props) => {
               return (
-                <div style={{ display: "grid", gridAutoFlow: "row",width:"100%" }}>
+                <div style={{ display: "grid", gridAutoFlow: "row", width: "100%" }}>
                   <CheckBox
                     onChange={(e) => {
                       // const obj = {
@@ -414,13 +417,7 @@ export const FormComposer = (props) => {
                 config={populators}
                 disabled={config?.disable}
                 errorStyle={errors?.[populators.name]}
-                variant={
-                  populators?.variant
-                    ? populators?.variant
-                    : errors?.[populators.name]
-                    ? "digit-field-error"
-                    : ""
-                }
+                variant={populators?.variant ? populators?.variant : errors?.[populators.name] ? "digit-field-error" : ""}
               />
             )}
             rules={!disableFormValidation ? { required: isMandatory, ...populators.validation } : {}}
@@ -506,7 +503,7 @@ export const FormComposer = (props) => {
             rules={{ required: isMandatory }}
             render={(props) => {
               return (
-                <div style={{ display: "grid", gridAutoFlow: "row",width:"100%" }}>
+                <div style={{ display: "grid", gridAutoFlow: "row", width: "100%" }}>
                   <MultiSelectDropdown
                     options={populators?.options}
                     optionsKey={populators?.optionsKey}
@@ -588,25 +585,34 @@ export const FormComposer = (props) => {
   const getCombinedComponent = (section) => {
     if (section.head && section.subHead) {
       return (
+        // <>
+        //   <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : { margin: "5px 0px" }} id={section.headId}>
+        //     {t(section.head)}
+        //   </CardSectionHeader>
+        //   <CardSectionHeader style={titleStyle} id={`${section.headId}_DES`}>
+        //     {t(section.subHead)}
+        //   </CardSectionHeader>
+        // </>
         <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : { margin: "5px 0px" }} id={section.headId}>
-            {t(section.head)}
-          </CardSectionHeader>
-          <CardSectionHeader style={titleStyle} id={`${section.headId}_DES`}>
-            {t(section.subHead)}
-          </CardSectionHeader>
+          <TextBlock subHeader={t(section?.head)} subHeaderClasName={`${props?.sectionHeaderClassName} ${section?.headId}`}></TextBlock>
+          <TextBlock
+            subHeader={t(section?.subHead)}
+            subHeaderClasName={`${props?.sectionSubHeaderClassName} ${`${section?.headId}_DES`}`}
+          ></TextBlock>
         </>
       );
     } else if (section.head) {
       return (
-        <>
-          <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {marginBottom:"24px"}} id={section.headId}>
-            {t(section.head)}
-          </CardSectionHeader>
-        </>
+        // <>
+        //   <CardSectionHeader style={props?.sectionHeadStyle ? props?.sectionHeadStyle : {marginBottom:"24px"}} id={section.headId}>
+        //     {t(section.head)}
+        //   </CardSectionHeader>
+        // </>
+
+        <TextBlock subHeader={t(section?.head)} subHeaderClasName={`${props?.sectionHeaderClassName} ${section?.headId} create-header`}></TextBlock>
       );
     } else {
-      return <div></div>;
+      return null;
     }
   };
 
@@ -673,7 +679,7 @@ export const FormComposer = (props) => {
                 style={
                   props?.showWrapperContainers && !field.hideContainer
                     ? { ...wrapperStyles, ...field?.populators?.customStyle }
-                    : { border: "none", background: "white", ...field?.populators?.customStyle }
+                    : props?.fieldPairNoMargin ? {marginBottom : "0px"} : { border: "none", background: "white", ...field?.populators?.customStyle }
                 }
               >
                 {/* {!field.withoutLabel && (
@@ -857,7 +863,7 @@ export const FormComposer = (props) => {
   const renderFormFields = (props, section, index, array, sectionFormCategory) => (
     <React.Fragment key={index}>
       {!props.childrenAtTheBottom && props.children}
-      {props.heading && <CardSubHeader style={{ ...props.headingStyle}}> {props.heading} </CardSubHeader>}
+      {props.heading && <CardSubHeader style={{ ...props.headingStyle }}> {props.heading} </CardSubHeader>}
       {props.description && <CardLabelDesc className={"repos"}> {props.description} </CardLabelDesc>}
       {props.text && <CardText>{props.text}</CardText>}
       {formFields(section, index, array, sectionFormCategory)}

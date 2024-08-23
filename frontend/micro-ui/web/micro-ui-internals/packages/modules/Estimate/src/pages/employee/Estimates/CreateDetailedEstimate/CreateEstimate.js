@@ -680,7 +680,7 @@ const CreateEstimate = ({ props }) => {
   return (
     <Fragment>
       {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} isDisabled={isButtonDisabled} />}
-      <Header className="works-header-create" styles={{ marginLeft: "14px" }}>
+      <Header className="works-header-create">
         {isEdit
           ? isCreateRevisionEstimate || isEditRevisionEstimate
             ? t("ACTION_TEST_EDIT_REVISION_ESTIMATE")
@@ -720,9 +720,10 @@ const CreateEstimate = ({ props }) => {
           horizontalNavConfig={configNavItems}
           showFormInNav={true}
           showNavs={true}
-          sectionHeadStyle={{ marginTop: "2rem" }}
+          // sectionHeadStyle={{ marginTop: "2rem" }}
           labelBold={true}
           onFormValueChange={onFormValueChange}
+          fieldPairNoMargin={true}
         />
       ) : null}
       {showToast && (

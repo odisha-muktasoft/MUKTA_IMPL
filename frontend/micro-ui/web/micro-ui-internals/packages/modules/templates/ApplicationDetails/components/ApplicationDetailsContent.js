@@ -16,6 +16,7 @@ import {
 } from "@egovernments/digit-ui-react-components";
 import {
   Card,
+  TextBlock
 } from "@egovernments/digit-ui-components";
 import { values } from "lodash";
 import React, { Fragment, useCallback, useReducer, useState } from "react";
@@ -259,6 +260,7 @@ function ApplicationDetailsContent({
     return styles;
   };
 
+
   return (
     <CollapseAndExpandGroups
       groupElements={applicationDetails?.CollapseConfig?.collapseAll}
@@ -287,11 +289,23 @@ function ApplicationDetailsContent({
           >
             <React.Fragment key={index}>
               <div style={detail.mainDivStyles ? detail.mainDivStyles : getMainDivStyles()} className={customClass}>
-                {index === 0 && !detail.asSectionHeader ? (
-                  <CardSubHeader style={{ marginBottom: "16px", fontSize: "24px" }}>{t(detail?.title)}</CardSubHeader>
+                {index === 0 && !detail.asSectionHeader && detail?.title &&  detail?.title !== "" && detail?.title !== " "  ? (
+                  // <CardSubHeader style={{ marginBottom: "16px", fontSize: "24px" }}>{t(detail?.title)}</CardSubHeader>
+                  <TextBlock subHeader={t(detail?.title)} subHeaderClasName={"view-subheader"}></TextBlock>
                 ) : (
-                  <React.Fragment>
-                    <CardSectionHeader
+                  ((detail?.title &&  detail?.title !=="" && detail?.title !== " ") || detail?.Component) && (
+                    <React.Fragment>
+                      <TextBlock
+                        subHeader={
+                          <>
+                            {isNocLocation ? `${t(detail?.title)}` : t(detail?.title)}
+                            {detail?.Component ? <detail.Component detail={detail} /> : null}
+                          </>
+                        }
+                        subHeaderClasName={`view-subheader`}
+                        style={sectionHeadStyle ? sectionHeadStyle : {}}
+                      ></TextBlock>
+                      {/* <CardSectionHeader
                       style={
                         index == 0 && checkLocation
                           ? { marginBottom: "16px", fontSize: "24px" }
@@ -303,8 +317,9 @@ function ApplicationDetailsContent({
                       {isNocLocation ? `${t(detail.title)}` : t(detail.title)}
 
                       {detail?.Component ? <detail.Component detail={detail} /> : null}
-                    </CardSectionHeader>
-                  </React.Fragment>
+                    </CardSectionHeader> */}
+                    </React.Fragment>
+                  )
                 )}
                 {/* TODO, Later will move to classes */}
                 {/* Here Render the table for adjustment amount details detail.isTable is true for that table*/}
@@ -331,7 +346,6 @@ function ApplicationDetailsContent({
               </table>
             )} */}
                 {detail?.isTable && <SubWorkTableDetails data={detail} />}
-
                 {detail?.isInfoLabel && (
                   <CitizenInfoLabel
                     info={detail?.infoHeader}
@@ -342,9 +356,7 @@ function ApplicationDetailsContent({
                     textStyle={detail?.textStyle}
                   ></CitizenInfoLabel>
                 )}
-
                 {detail?.isMbDetails && <MBDetailes formdata={applicationDetails?.applicationDetails?.filter((ob) => ob?.isMbDetails)?.[0]} />}
-
                 <StatusTable style={getTableStyles()}>
                   {detail?.title &&
                     !detail?.title.includes("NOC") &&
@@ -432,9 +444,10 @@ function ApplicationDetailsContent({
               {detail?.additionalDetails?.table
                 ? detail?.additionalDetails?.table?.weekTable?.tableHeader && (
                     <>
-                      <CardSectionHeader style={{ marginBottom: "16px", fontSize: "24px" }}>
+                      {/* <CardSectionHeader style={{ marginBottom: "16px", fontSize: "24px" }}>
                         {t(detail?.additionalDetails?.table?.weekTable?.tableHeader)}
-                      </CardSectionHeader>
+                      </CardSectionHeader> */}
+                      <TextBlock subHeader={t(detail?.additionalDetails?.table?.weekTable?.tableHeader)} subHeaderClasName={"view-subheader"}></TextBlock>
                       {detail?.additionalDetails?.table.weekTable.renderTable && (
                         <WeekAttendence
                           state={state}

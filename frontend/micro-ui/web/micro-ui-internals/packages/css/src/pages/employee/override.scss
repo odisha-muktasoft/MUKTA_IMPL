@@ -12,7 +12,8 @@
 .employee-main-application-details{
     &.project-details,
     &.estimate-details,
-    &.contract-details{
+    &.contract-details,
+    &.analysis-details{
         padding: theme(digitv2.spacers.spacer0) !important;
     }
 }
@@ -20,12 +21,45 @@
 
 .row {
     .extension-label{
-        color: theme(digitv2.lightTheme.primary) !important;
+        color: theme(digitv2.lightTheme.primary-1) !important;
     }
 }
 
 .digit-employee-card{
     .card-label{
-        color: theme(digitv2.lightTheme.primary) !important;
+        color: theme(digitv2.lightTheme.primary-1) !important;
     }
+}
+
+.total_amount_wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: theme(digitv2.spacers.spacer4);
+    border: 0.063rem solid theme(digitv2.lightTheme.generic-divider);
+    border-radius: theme(digitv2.spacers.spacer1);
+    width: fit-content;
+}
+
+.table_total_amount{
+    margin-right: theme(digitv2.spacers.spacer4);
+    width: fit-content;
+    color: theme(digitv2.lightTheme.primary-2) !important;
+}
+
+.table_total_amount_value{
+    width: fit-content;
+    color: theme(digitv2.lightTheme.primary-2) !important;
+}
+
+.view-subheader,
+.create-header{
+    margin-bottom: theme(digitv2.spacers.spacer6);
+    color: theme(digitv2.lightTheme.text-primary) !important;
+}
+
+.create-est-viewAnalysis-totalEstAmt{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

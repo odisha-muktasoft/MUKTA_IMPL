@@ -14,9 +14,11 @@ export const RenderDataSection = ({ section }) => {
   const { t } = useTranslation();
   return (
     <>
-      {section.cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSubHeader>}
+      {/* {section.cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSubHeader>} */}
+      {section.cardHeader && <TextBlock style={section?.cardHeader?.inlineStyles} headerClasName={`view-composer-header ${section?.cardHeader?.cardHeaderClassName}`} subHeader={t(section.cardHeader.value)}></TextBlock>}
       <StatusTable style={section?.inlineStyles}>
-        {section.sectionHeader && <CardSectionHeader style={section?.sectionHeader?.inlineStyles}>{t(section.sectionHeader.value)}</CardSectionHeader>}
+        {/* {section.sectionHeader && <CardSectionHeader style={section?.sectionHeader?.inlineStyles}>{t(section.sectionHeader.value)}</CardSectionHeader>} */}
+        {section.sectionHeader && <TextBlock style={section?.sectionHeader?.inlineStyles} subHeaderClasName={`view-composer-subheader ${section?.sectionHeader?.sectionheaderClassName}`} subHeader={t(section.sectionHeader.value)}></TextBlock>}
         {section?.values?.filter((ob) => ob !== null && Object?.keys(ob)?.length > 0).map((row, rowIdx) => {
           const displayValue = row?.value !== undefined && row?.value !== null ? row.value : 'NA';
           

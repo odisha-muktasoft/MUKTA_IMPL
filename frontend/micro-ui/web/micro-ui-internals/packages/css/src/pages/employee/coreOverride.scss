@@ -2,94 +2,94 @@
 
 /* language selection issue*/
 .customBtn-selected {
-  background-color: theme(digitv2.lightTheme.primary) !important;
+  background-color: theme(digitv2.lightTheme.primary-1) !important;
 }
 
 /* login  screen  issue*/
 
 .primary-label-btn {
-  color: theme(digitv2.lightTheme.primary) !important;
+  color: theme(digitv2.lightTheme.primary-1) !important;
 }
 
 /* landing  screen  issue*/
 
 .employeeCard {
   .complaint-links-container .header .logo {
-    background-color: theme(digitv2.lightTheme.primary) !important;
+    background-color: theme(digitv2.lightTheme.primary-1) !important;
   }
 
   .complaint-links-container .body {
     &.link {
-      color: theme(digitv2.lightTheme.primary) !important;
+      color: theme(digitv2.lightTheme.primary-1) !important;
     }
     .inbox-total {
-      background-color: theme(digitv2.lightTheme.primary) !important;
+      background-color: theme(digitv2.lightTheme.primary-1) !important;
     }
   }
 }
 
 .employee .topbar .right .user-img-txt {
-  background-color: theme(digitv2.lightTheme.primary) !important;
+  background-color: theme(digitv2.lightTheme.primary-1) !important;
 }
 /* button component   issue*/
 
 .action-bar-wrap {
   .submit-bar {
-    background-color: theme(digitv2.lightTheme.primary) !important;
+    background-color: theme(digitv2.lightTheme.primary-1) !important;
   }
 }
 
 .jk-digit-secondary-btn {
-  color: theme(digitv2.lightTheme.primary) !important;
-  border-color: theme(digitv2.lightTheme.primary) !important;
+  color: theme(digitv2.lightTheme.primary-1) !important;
+  border-color: theme(digitv2.lightTheme.primary-1) !important;
 
   svg {
-    fill: theme(digitv2.lightTheme.primary) !important;
+    fill: theme(digitv2.lightTheme.primary-1) !important;
 
     path {
-      fill: theme(digitv2.lightTheme.primary) !important;
+      fill: theme(digitv2.lightTheme.primary-1) !important;
     }
   }
 }
 .error-boundary .error-container button {
-  background-color: theme(digitv2.lightTheme.primary) !important;
+  background-color: theme(digitv2.lightTheme.primary-1) !important;
 }
 
 /* inbox  screen  issue*/
 
 .inbox-search-wrapper {
   .search-tabs-container .search-tab-head-selected {
-    color: theme(digitv2.lightTheme.primary) !important;
-    border-color: theme(digitv2.lightTheme.primary) !important;
+    color: theme(digitv2.lightTheme.primary-1) !important;
+    border-color: theme(digitv2.lightTheme.primary-1) !important;
   }
   .submit-bar {
-    background-color: theme(digitv2.lightTheme.primary) !important;
+    background-color: theme(digitv2.lightTheme.primary-1) !important;
   }
   .search-component-table .link {
-    color: theme(digitv2.lightTheme.primary) !important;
+    color: theme(digitv2.lightTheme.primary-1) !important;
   }
   .link-label {
-    color: theme(digitv2.lightTheme.primary) !important;
+    color: theme(digitv2.lightTheme.primary-1) !important;
   }
 }
 .drag-drop-container .drag-drop-text .browse-text {
-  color: theme(digitv2.lightTheme.primary) !important;
+  color: theme(digitv2.lightTheme.primary-1) !important;
 }
 /* toast new componnet css added */
 
 .toast-success {
-  gap: 0.5rem;
-  height: 3rem;
-  padding: 0.75rem 0.5rem 0.75rem 0.75rem !important;
-  background-color: theme(digitv2.alert.success);
+  gap: theme(digitv2.spacers.spacer2);
+  height: theme(digitv2.spacers.spacer12);
+  padding: theme(digitv2.spacers.spacer3) theme(digitv2.spacers.spacer2) theme(digitv2.spacers.spacer3) theme(digitv2.spacers.spacer3) !important;
+  background-color: theme(digitv2.lightTheme.alert-success);
   transition: bottom 0.5s ease;
-  grid-gap: 0.5rem;
+  grid-gap: theme(digitv2.spacers.spacer2);
   &.error {
-    background-color: theme(digitv2.alert.error) !important;
+    background-color: theme(digitv2.lightTheme.alert-error) !important;
   }
 
   &.warning {
-    background-color: #f19100;
+    background-color: theme(digitv2.lightTheme.alert-warning);
 
     &.warning-buttons {
       @apply block;
@@ -98,14 +98,14 @@
 
   h2 {
     @apply text-left overflow-hidden flex-grow flex items-center h-6;
-    letter-spacing: 0rem;
-    color: theme(digitv2.lightTheme.paper);
-    margin: 0rem;
+    letter-spacing: theme(digitv2.spacers.spacer0);
+    color: theme(digitv2.lightTheme.paper-primary);
+    margin: theme(digitv2.spacers.spacer0);
     white-space: nowrap;
     text-overflow: ellipsis;
     font-family: Roboto;
     font-weight: 500;
-    font-size: 1.25rem;
+    font-size: theme(digitv2.spacers.spacer5);
     font-style: normal;
   }
   svg {
@@ -128,18 +128,18 @@
 
 @media screen and (max-width: 768px) {
   .topbar {
-    background: #0b4b66 !important;
-    color: #fff;
+    background: theme(digitv2.lightTheme.primary-2) !important;
+    color: theme(digitv2.lightTheme.paper-primary);
   }
 }
 
 .digit-button-primary{
-  background-color: theme(digitv2.lightTheme.primary) !important;
+  background-color: theme(digitv2.lightTheme.primary-1) !important;
 }
 .digit-button-secondary{
   .icon-label-container{
     h2{
-      color: theme(digitv2.lightTheme.primary) !important;
+      color: theme(digitv2.lightTheme.primary-1) !important;
     }
   }
 }
@@ -153,24 +153,24 @@
 }
 
 .inbox-search-wrapper .inbox-search-component-wrapper .sections-parent.inbox .links .inbox-links-icon{
-  color: #C84C0E !important;
-  fill: #C84C0E !important;
+  color: theme(digitv2.lightTheme.primary-1) !important;
+  fill: theme(digitv2.lightTheme.primary-1) !important;
 }
 
 .inbox-search-wrapper .inbox-search-component-wrapper .sections-parent.inbox .links .inbox-links-icon path{
-  fill: #C84C0E !important;
+  fill: theme(digitv2.lightTheme.primary-1) !important;
 }
 
 .link-label{
-  color: #C84C0E !important;
+  color: theme(digitv2.lightTheme.primary-1) !important;
 }
 
 .bread-crumb{
-  margin-bottom: 1.5rem;
+  margin-bottom: theme(digitv2.spacers.spacer6);
 }
 
 .table{
-  border-bottom: 1px solid #d6d5d4;
+  border-bottom: 0.063rem solid theme(digitv2.lightTheme.generic-divider);
 }
 
 .pagination{
@@ -189,17 +189,10 @@
 
 .employee-download-btn-className{
   svg{
-    color: #C84C0E;
+    color: theme(digitv2.lightTheme.primary-1);
   }
 }
 
 .multilink-link-button{
-  color: #C84C0E !important;
+  color: theme(digitv2.lightTheme.primary-1) !important;
 }
-/*.employee-main-application-details {
-  padding-top: 0px !important;
-}
-
-.employee-application-details {
-  margin-bottom: 1.5rem;
-}*/

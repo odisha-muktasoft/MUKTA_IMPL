@@ -1,7 +1,7 @@
-import { Button, TextInput } from "@egovernments/digit-ui-react-components";
+import { TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import {Toast } from "@egovernments/digit-ui-components";
+import {Toast,Button } from "@egovernments/digit-ui-components";
 
 const fetchSorDetails = async (inputDATA) => {
  //method to fetch the data for estimate template
@@ -260,7 +260,7 @@ const searchTemplate = (props) => {
 
 
    let newnonsorIndex = formNonSORdata[formNonSORdata?.length - 1]?.sNo+1;
-   let nosSorData = stateData?.selectedTemplate.nonSorLineItems? stateData?.selectedTemplate.nonSorLineItems?.map((item, index) => ({
+   let nosSorData = stateData?.selectedTemplate?.nonSorLineItems? stateData?.selectedTemplate.nonSorLineItems?.map((item, index) => ({
      sNo: newnonsorIndex++,
      description: item?.description,
      uom: item?.uom,
@@ -382,7 +382,7 @@ const searchTemplate = (props) => {
              </ul>
            )}
          </div>
-         <Button label={t("ESTIMATE_ADD_LABEL")} onButtonClick={buttonClick} className={"add-sor-button"} />
+         <Button label={t("ESTIMATE_ADD_LABEL")} onClick={buttonClick} className={"add-sor-button"} />
        </div>
      </div>
      {showToast?.show && (

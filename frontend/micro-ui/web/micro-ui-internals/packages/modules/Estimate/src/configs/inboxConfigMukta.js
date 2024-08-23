@@ -232,6 +232,7 @@ const inboxConfigMukta = () => {
                 defaultText: "COMMON_SELECT_WARD",
                 selectedText: "COMMON_SELECTED",
                 allowMultiSelect: true,
+                isDropdownWithChip:true,
               },
             },
             {
@@ -246,6 +247,7 @@ const inboxConfigMukta = () => {
                 defaultText: "COMMON_SELECT_LOCALITY",
                 selectedText: "COMMON_SELECTED",
                 allowMultiSelect: true,
+                isDropdownWithChip:true,
               },
             },
             {

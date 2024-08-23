@@ -206,7 +206,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
           {
             type: "DATA",
             isDividerBelow:true,
-            sectionHeader: { value: "WORKS_PROJECT_DETAILS", inlineStyles: {marginBottom : "16px", fontSize: "24px"} },
+            sectionHeader: { value: "WORKS_PROJECT_DETAILS"},
             values: [
               {
                 key: "PROJECT_LOR",
@@ -232,7 +232,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
           {
             type: "DATA",
             isDividerBelow:true,
-            sectionHeader: { value: "WORKS_LOCATION_DETAILS", inlineStyles: {marginBottom : "16px", marginTop:"32px", fontSize: "24px"} },
+            sectionHeader: { value: "WORKS_LOCATION_DETAILS", inlineStyles: {marginTop:"24px"}},
             values: [
               {
                 key: "WORKS_GEO_LOCATION",
@@ -268,8 +268,7 @@ export const data = (projectDetails, estimateDetails, overheadDetails, revisionN
               // marginTop: "1rem",
             },
             headerStyle: {
-              marginTop: "32px",
-              marginBottom: "8px"
+              marginTop: "24px",
             }
           },
         ],

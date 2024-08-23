@@ -76,7 +76,7 @@ const ViewProject = ({ fromUrl = true, module, ...props }) => {
             forcedActionPrefix={"WORKS"}
             noBoxShadow={true}
             customClass="status-table-custom-class"
-            sectionHeadStyle={{marginBottom: "16px", marginTop: "0px", fontSize: "24px"}}
+            // sectionHeadStyle={{marginBottom: "16px", marginTop: "0px", fontSize: "24px"}}
           />
         ))}
       {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}

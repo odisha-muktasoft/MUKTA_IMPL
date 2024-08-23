@@ -2,6 +2,7 @@ import { EditIcon, DownloadImgIcon, InfoBannerIcon, Modal, Row, StatusTable, Amo
 import React, { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, Link } from "react-router-dom";
+import { TextBlock } from "@egovernments/digit-ui-components";
 
 const OverheadDetailsTable = ({ data }) => {
   const tableStyles = data?.tableStyles;
@@ -142,22 +143,14 @@ const OverheadDetailsTable = ({ data }) => {
      </div>
      </div> */}
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem",width:"fit-content" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem", width: "100%" }}>
         <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            padding: "1rem",
-            border: "1px solid #D6D5D4",
-            borderRadius: "5px",
-            width:"fit-content"
-          }}
+          className={"total_amount_wrapper"}
         >
-          <CardSectionHeader
+          {/* <CardSectionHeader
             style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",width:"fit-content" }}
-          >{`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`}</CardSectionHeader>
-          <CardSectionHeader style={{ marginBottom: "0px",width:"fit-content" }}>
+          >{`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`}</CardSectionHeader> */}
+          {/* <CardSectionHeader style={{ marginBottom: "0px",width:"fit-content" }}>
             {
               <Amount
                 customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
@@ -168,7 +161,21 @@ const OverheadDetailsTable = ({ data }) => {
                 rupeeSymbol={true}
               ></Amount>
             }
-          </CardSectionHeader>
+          </CardSectionHeader> */}
+          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+          <TextBlock
+            subHeader={
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedTotalAmount, "number", undefined, true, undefined, 2) || 0}
+                sameDisplay={true}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+              ></Amount>
+            }
+            subHeaderClasName={"table_total_amount_value"}
+          ></TextBlock>
         </div>
       </div>
     </React.Fragment>

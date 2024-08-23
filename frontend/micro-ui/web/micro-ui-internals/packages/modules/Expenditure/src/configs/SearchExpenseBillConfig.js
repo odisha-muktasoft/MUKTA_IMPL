@@ -52,7 +52,8 @@ export const SearchExpenseBillConfig = {
                                     allowMultiSelect: false,
                                     // optionsCustomStyle : {
                                     //     top : "2.3rem"
-                                    // }
+                                    // },
+                                    isDropdownWithChip:true,
                                 }
                             },
                             {

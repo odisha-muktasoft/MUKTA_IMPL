@@ -26,23 +26,18 @@ const TotalBillAmount = ({ formData, setValue, ...props }) => {
 
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", ...props?.containerStyles }}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          padding: "1rem",
-          border: "1px solid #D6D5D4",
-          borderRadius: "4px",
-        }}
-      >
+      <div className={"total_amount_wrapper"}>
         {/* <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F" }}>
           {t("EXP_NET_PAYABLE")}
         </CardSectionHeader> */}
-        <TextBlock subHeader={t("EXP_NET_PAYABLE")} subHeaderClasName={"net-payable-classname"}></TextBlock>
-        <CardSectionHeader
+        {/* <CardSectionHeader
           style={{ marginBottom: "0px", fontFamily: "Roboto", fontSize: "28px", fontWeight: 700, lineHeight: "32.81px", textAlign: "left" }}
-        >{`₹ ${Digit.Utils.dss.formatterWithoutRound(getTotalAmount, "number")}`}</CardSectionHeader>
+        >{`₹ ${Digit.Utils.dss.formatterWithoutRound(getTotalAmount, "number")}`}</CardSectionHeader> */}
+        <TextBlock subHeader={t("EXP_NET_PAYABLE")} subHeaderClasName={"table_total_amount"}></TextBlock>
+        <TextBlock
+          subHeader={`₹ ${Digit.Utils.dss.formatterWithoutRound(getTotalAmount, "number")}`}
+          subHeaderClasName={`table_total_amount_value`}
+        ></TextBlock>
       </div>
     </div>
   );

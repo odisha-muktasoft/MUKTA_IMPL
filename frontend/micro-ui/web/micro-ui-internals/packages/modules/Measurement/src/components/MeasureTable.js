@@ -1,5 +1,5 @@
 import { AddIcon, TextInput, Amount, Button, Dropdown, Loader, DeleteIcon, TextArea,CardSectionHeader } from "@egovernments/digit-ui-react-components";
-
+import { TextBlock } from "@egovernments/digit-ui-components";
 import React, { Fragment, useEffect, useCallback} from "react";
 import { useTranslation } from "react-i18next";
 import MeasureCard from "./MeasureCard";
@@ -480,18 +480,8 @@ const MeasureTable = (props) => {
       </div> */}
 
       <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            padding: "1rem",
-            border: "1px solid #D6D5D4",
-            borderRadius: "5px",
-            width:"fit-content"
-          }}
-        >
-          <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",fontSize:"18px",width:"fit-content"}}>{`${t(
+        <div className={"total_amount_wrapper"}>
+          {/* <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",fontSize:"18px",width:"fit-content"}}>{`${t(
             "WORKS_TABLE_TOTAL_AMOUNT"
           )} :`}</CardSectionHeader>
           <CardSectionHeader style={{ width:"fit-content",marginBottom: "0px" }}>
@@ -505,7 +495,22 @@ const MeasureTable = (props) => {
                 sameDisplay={true}
               ></Amount>
             }
-          </CardSectionHeader>
+          </CardSectionHeader> */}
+
+          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+          <TextBlock
+            subHeader={
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedSum, "number", undefined, true, undefined, 2) || 0}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+                sameDisplay={true}
+              ></Amount>
+            }
+            subHeaderClasName={`table_total_amount_value`}
+          ></TextBlock>
         </div>
       </div>
     </React.Fragment>
