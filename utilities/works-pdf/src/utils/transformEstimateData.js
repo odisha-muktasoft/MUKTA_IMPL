@@ -47,11 +47,12 @@ const transformEstimateData = (lineItems, contract, measurement, allMeasurements
         estimateDetailsArray[0].mbAmount += estimateDetailsArray[j].amountDetail[0].amount;
       }
 
+      const quantity = estimateDetailsArray[j].quantity ?? 1;
       const numItems = estimateDetailsArray[j].noOfunit ?? 1;
       const length = estimateDetailsArray[j].length ?? 1;
       const width = estimateDetailsArray[j].width ?? 1;
       const height = estimateDetailsArray[j].height ?? 1;
-      const estQ = numItems * length * width * height;
+      const estQ = quantity * length * width * height;
 
       // if isDeduction is true then subtract quantity from estimatedQuantity and if isDeduction is false then add quantity to estimatedQuantity
       if (estimateDetailsArray[j].isDeduction) {
