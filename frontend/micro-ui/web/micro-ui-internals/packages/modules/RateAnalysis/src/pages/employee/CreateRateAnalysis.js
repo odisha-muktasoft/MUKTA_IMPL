@@ -17,6 +17,7 @@ const CreateRateAnalysis = ({ props }) => {
   const queryStrings = Digit.Hooks.useQueryParams();
   // const [sessionFormData, setSessionFormData, clearSessionFormData] = MeasurementSession;
   const [createState, setState] = useState({ SORDetails:[], extraCharges:[], accessors: undefined, period: {} });
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [defaultState, setDefaultState] = useState({ SORDetails:[], extraCharges:[] });
   const [showToast, setShowToast] = useState({display: false, error: false});
   const [errorMessage, setErrorMessage] = useState("");
@@ -177,11 +178,13 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
 
   // Handle form submission
   const handleCreateRateAnalysis = async (data, action) => {
+    setIsButtonDisabled(true);
     if(createState?.SORType !== "Works")
     {
       setErrorMessage(t("RA_ONLY_FOR_WORKS"));
       setShowToast({display:true, error:true});
       setIsPopupOpen(false);
+      setIsButtonDisabled(false);
       return;
     }
     if(createState?.SORDetails?.length <= 0)
@@ -189,6 +192,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       setErrorMessage(t("RA_SOR_DETAILS_MANDATORY"));
       setShowToast({display:true, error:true});
       setIsPopupOpen(false);
+      setIsButtonDisabled(false);
       return;
     }
     if(createState?.SORDetails?.filter((ob) => ob?.quantity === null || ob?.quantity === "")?.length > 0)
@@ -196,13 +200,15 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
       setErrorMessage(t("RA_SOR_DETAILS_QUANTITY_MANDATORY"));
       setShowToast({display:true, error:true});
       setIsPopupOpen(false);
+      setIsButtonDisabled(false);
       return;
     }
 
     if(!isUpdate && allcompositionData?.mdms?.length > 0 && Digit.Utils.date.convertDateToEpoch(createState?.effective_from_date) <= allcompositionData?.mdms?.sort((a, b) => b.data.effectiveFrom - a.data.effectiveFrom)[0].data.effectiveFrom)
     {
-      setErrorMessage("Rate analysis cannot be added as a record with the same effective from date already exists.");
+      setErrorMessage(t("RA_NOT_ADDED_SAME_RECORD_EXIST"));
       setShowToast({display:true, error:true});
+      setIsButtonDisabled(false);
       return;
     }
 
@@ -219,11 +225,12 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
 
     //call the createMutation for Rate Analysis and route to view page on onSuccess or show error
     const onError = (resp) => {
+      setIsButtonDisabled(false);
       setErrorMessage(resp?.response?.data?.Errors?.[0]?.message);
       setShowToast({display:true, error:true});
     };
     const onSuccess = (resp) => {
-    
+      setIsButtonDisabled(false);
         // if(isUpdate) setErrorMessage(`${t("RA_SUCCESS_UPDATE_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_UPDATE_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
         // else setErrorMessage(`${t("RA_SUCCESS_MEESAGE_1")} ${resp?.mdms[0]?.data?.sorId} ${t("RA_SUCCESS_MESSAGE_2")} ${resp?.mdms?.[0]?.data?.effectiveFrom}`);
         // setShowToast({display:true, error:false});
@@ -301,6 +308,7 @@ const { isLoading : isallCompositionLoading, data : allcompositionData} = Digit.
         getFormAccessors={getFormAccessors}
         defaultValues={{ ...createState }}
         onSubmit={(_data) => isUpdate && isUpdate !== undefined? validateRateAnalysis() : handleCreateRateAnalysis({..._data,...createState},"SUBMIT")}
+        isDisabled={isButtonDisabled}
         fieldStyle={{ marginRight: 0 }}
         showMultipleCardsWithoutNavs={true}
         onFormValueChange={onFormValueChange}
