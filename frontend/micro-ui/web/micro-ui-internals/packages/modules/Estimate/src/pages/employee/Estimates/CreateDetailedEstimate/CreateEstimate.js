@@ -4,7 +4,6 @@ import {
   Row,
   Header,
   HorizontalNav,
-  ActionBar,
   SubmitBar,
   WorkflowModal,
   FormComposer,
@@ -13,7 +12,7 @@ import {
   Menu,
   FormComposerV2,
 } from "@egovernments/digit-ui-react-components";
-import { Toast } from "@egovernments/digit-ui-components";
+import { Toast ,ActionBar,Button} from "@egovernments/digit-ui-components";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import getModalConfig from "./config";
@@ -35,6 +34,7 @@ const configNavItems = [
   },
 ];
 const CreateEstimate = ({ props }) => {
+  console.log("buttonnnnnnnnnn")
   const tenant = Digit.ULBService.getStateId();
   const { t } = useTranslation();
   const [showToast, setShowToast] = useState(null);
@@ -57,10 +57,10 @@ const CreateEstimate = ({ props }) => {
 
   let actionMB = [
     {
-      name: "SUBMIT",
+      name: "WF_SUBMIT",
     },
     {
-      name: "DRAFT",
+      name: "WF_DRAFT",
     },
   ];
 
@@ -736,12 +736,28 @@ const CreateEstimate = ({ props }) => {
           isDleteBtn={true}
         />
       )}
-      <ActionBar>
-        {displayMenu && !isButtonDisabled ? (
-          <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} />
-        ) : null}
-        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />
-      </ActionBar>
+
+      {
+        <ActionBar
+          actionFields={[
+            <Button
+              isDisabled={isButtonDisabled}
+              t={t}
+              type={"actionButton"}
+              options={actionMB}
+              label={t("ACTIONS")}
+              variation={"primary"}
+              optionsKey={"name"}
+              isSearchable={false}
+              onOptionSelect={(option) => {
+                onActionSelect(option);
+              }}
+            ></Button>,
+          ]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
+      }
     </Fragment>
   );
 };

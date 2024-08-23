@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect, useRef, } from 'react'
-import { Loader, WorkflowActions, WorkflowTimeline,ActionBar,Menu,SubmitBar } from '@egovernments/digit-ui-react-components';
+import { Loader, WorkflowActions, WorkflowTimeline,Menu,SubmitBar } from '@egovernments/digit-ui-react-components';
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from '../../../templates/ApplicationDetails';
 import { useHistory } from 'react-router-dom';
-import { Toast } from '@egovernments/digit-ui-react-components';
+import { Toast ,ActionBar,Button} from '@egovernments/digit-ui-components';
 
 const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
     const history = useHistory();
@@ -49,7 +49,7 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
         let isUserContractCreator = loggedInUserRoles?.includes("WORK_ORDER_CREATOR");
         if (applicationDetails?.applicationData?.wfStatus === "APPROVED" && isUserContractCreator && !(actionsMenu?.find((ob) => ob?.name === "CREATE_CONTRACT"))){
             setActionsMenu((prevState => [...prevState,{
-                name:"CREATE_CONTRACT"
+                name:"EST_VIEW_ACTIONS_CREATE_CONTRACT"
             }]))
         }
         //checking if any work order is inworflow, if it is then view contract will be shown otherwise create contract
@@ -58,7 +58,7 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
         //if contract is already there just remove the prevState and push View contract state
         if(contract?.contractNumber && isCreateContractallowed) {
             setActionsMenu((prevState => [{
-                name: "VIEW_CONTRACT"
+                name: "EST_VIEW_ACTIONS_VIEW_CONTRACT"
             }]))
         }
     }, [applicationDetails, isStateChanged,contract])
@@ -77,10 +77,10 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
     }, [location]);
     
     const handleActionBar = (option) => {
-        if (option?.name === "CREATE_CONTRACT") {
+        if (option?.name === "EST_VIEW_ACTIONS_CREATE_CONTRACT") {
             history.push(`/${window.contextPath}/employee/contracts/create-contract?tenantId=${tenantId}&estimateNumber=${estimateNumber}`);
         }
-        if (option?.name === "VIEW_CONTRACT") {
+        if (option?.name === "EST_VIEW_ACTIONS_VIEW_CONTRACT") {
             history.push(`/${window.contextPath}/employee/contracts/contract-details?tenantId=${tenantId}&workOrderNumber=${inWorkflowContract?.contractNumber}`);
         }
     }
@@ -90,54 +90,59 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
     }
     if (isLoading) return <Loader />
     return (
-        <>
-            {
-                (!applicationDetails?.isNoDataFound) && !isError && 
-                <>
-                    <ApplicationDetails
-                        applicationDetails={applicationDetails}
-                        isLoading={isLoading}
-                        applicationData={applicationDetails?.applicationData}
-                        moduleCode="Estimate"
-                        showTimeLine={true}
-                        timelineStatusPrefix={`WF_${businessService}_`}
-                        businessService={businessService}
-                        // forcedActionPrefix={"ACTION_"}
-                        tenantId={tenantId}
-                        applicationNo={estimateNumber}
-                        statusAttribute={"state"}
-                    />
-                    <WorkflowActions
-                        forcedActionPrefix={`WF_${businessService}_ACTION`}
-                        businessService={businessService}
-                        applicationNo={estimateNumber}
-                        tenantId={tenantId}
-                        applicationDetails={applicationDetails?.applicationData}
-                        url={Digit.Utils.Urls.works.updateEstimate}
-                        setStateChanged={setStateChanged}
-                        moduleCode="Estimate"
-                        editApplicationNumber={editApplicationNumber}
-                    />
-                    {/* Adding another action bar to show Create Contract Option */}
-                    {applicationDetails?.applicationData?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length>0 ?
-                        <ActionBar>
-                            {showActions ? <Menu
-                                localeKeyPrefix={`EST_VIEW_ACTIONS`}
-                                options={actionsMenu}
-                                optionKey={"name"}
-                                t={t}
-                                onSelect={handleActionBar}
-                            />:null} 
-                            <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-                        </ActionBar>
-                        : null
-                    }
-                </>
-                
-            }
-            {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
-        </>
-    )
+      <>
+        {!applicationDetails?.isNoDataFound && !isError && (
+          <>
+            <ApplicationDetails
+              applicationDetails={applicationDetails}
+              isLoading={isLoading}
+              applicationData={applicationDetails?.applicationData}
+              moduleCode="Estimate"
+              showTimeLine={true}
+              timelineStatusPrefix={`WF_${businessService}_`}
+              businessService={businessService}
+              // forcedActionPrefix={"ACTION_"}
+              tenantId={tenantId}
+              applicationNo={estimateNumber}
+              statusAttribute={"state"}
+            />
+            <WorkflowActions
+              forcedActionPrefix={`WF_${businessService}_ACTION`}
+              businessService={businessService}
+              applicationNo={estimateNumber}
+              tenantId={tenantId}
+              applicationDetails={applicationDetails?.applicationData}
+              url={Digit.Utils.Urls.works.updateEstimate}
+              setStateChanged={setStateChanged}
+              moduleCode="Estimate"
+              editApplicationNumber={editApplicationNumber}
+            />
+            {/* Adding another action bar to show Create Contract Option */}
+            {applicationDetails?.applicationData?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
+
+              <ActionBar
+                actionFields={[
+                  <Button
+                    type={"actionButton"}
+                    options={actionsMenu}
+                    label={t("WORKS_ACTIONS")}
+                    variation={"primary"}
+                    optionsKey={"name"}
+                    isSearchable={false}
+                    onOptionSelect={(option) => {
+                      handleActionBar(option);
+                    }}
+                  ></Button>,
+                ]}
+                setactionFieldsToRight={true}
+                className={"new-actionbar"}
+              />
+            ) : null}
+          </>
+        )}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+      </>
+    );
 }
 
 export default ViewEstimateComponent

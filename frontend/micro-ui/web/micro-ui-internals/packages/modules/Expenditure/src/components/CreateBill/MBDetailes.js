@@ -3,23 +3,29 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from "react-router-dom";
 import { CardSectionHeader, Card, CardHeader, CardLabel, LinkLabel, Row, StatusTable, CitizenInfoLabel} from "@egovernments/digit-ui-react-components";
 import ApplicationDetails from "../../../../templates/ApplicationDetails";
-import { InfoCard } from "@egovernments/digit-ui-components";
+import { InfoCard,Button } from "@egovernments/digit-ui-components";
 
 const getMBLinks = (mblinks, tenantId, workOrderNumber, history) => {
-
-    return(
+  return (
     <React.Fragment>
-    <div style={{}}>
-    {mblinks?.map((measurementNumber) => (
-    <LinkLabel style={{marginRight:"13px", display:"inline", backgroundColor:"white", border:"1px solid #ed9e5b", padding:"1.5px"}} onClick={() => history.push(`/${window.contextPath}/employee/measurement/view?tenantId=${tenantId}&workOrderNumber=${workOrderNumber}&mbNumber=${measurementNumber}`)}>
-        {measurementNumber}
-    </LinkLabel>
-    ))}
-    </div>
+      <div style={{}}>
+        {mblinks?.map((measurementNumber) => (
+          <Button
+            label={measurementNumber}
+            onClick={() =>
+              history.push(
+                `/${window.contextPath}/employee/measurement/view?tenantId=${tenantId}&workOrderNumber=${workOrderNumber}&mbNumber=${measurementNumber}`
+              )
+            }
+            style={{display:"inline"}}
+            variation={"link"}
+            textStyles={{width:"fit-content"}}
+          />
+        ))}
+      </div>
     </React.Fragment>
-    );
-
-}
+  );
+};
 
 const MBDetailes = ({ formdata }) => {
   const { t } = useTranslation();

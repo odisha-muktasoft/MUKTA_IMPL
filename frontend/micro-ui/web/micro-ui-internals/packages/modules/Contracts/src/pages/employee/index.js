@@ -88,7 +88,7 @@ const App = ({ path }) => {
 
   return (
     <Switch>
-      <AppContainer className="ground-container">
+      <AppContainer>
         <React.Fragment>
           <ContractsBreadCrumbs location={location} />
         </React.Fragment>

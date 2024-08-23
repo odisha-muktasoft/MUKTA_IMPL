@@ -1,10 +1,10 @@
-import { Banner, Card, Loader, CardText, ActionBar, SubmitBar } from "@egovernments/digit-ui-react-components";
 import { useQueryClient } from "react-query";
-import React, { useEffect } from "react";
+import React, { useEffect,Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { CreateEstimateIcon, DownloadImgIcon, GotoInboxIcon, ArrowLeftWhite } from "@egovernments/digit-ui-react-components";
 import { useHistory, useLocation } from "react-router-dom";
+import { PanelCard, Button } from "@egovernments/digit-ui-components";
 
 // state = {
 //     header,idText,id,message,links
@@ -86,58 +86,47 @@ const EstimateResponse = (props) => {
         }
     };
 
-    return (
-        <Card>
-            <Banner
-                message={state.header}
-                applicationNumber={state.id}
-                //   info={props.mutation.isSuccess ? props.surveyTitle : ""}
-                info={state.info}
-
-                //successful={props.mutation.isSuccess}
-                successful={true}
-                whichSvg={"tick"}
-            // svg={() => <TickMark fillColor="green" />}
-            />
-            <CardText>
-                {/* {mutation.isSuccess ?
-                  // ? t(`SURVEY_FORM_CREATION_MESSAGE`, {
-                  //     surveyName: survey?.title,
-                  //     fromDate: Digit.DateUtils.ConvertTimestampToDate(survey?.startDate),
-                  //     toDate: Digit.DateUtils.ConvertTimestampToDate(survey?.endDate),
-                  //   })
-                  t("SURVEY_FORM_RESPONSE_MESSAGE")
-                  : null} */}
-                {t(state.message)}
-            </CardText>
-            <div style={{ "display": "flex", "justifyContent": "start", "flexDirection": "row", "alignItems": "flex-end" }}>
-
-                {/* <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginBottom: "10px", padding: "0px 8px" }} 
-                    onClick={handleDownloadPdf}>
-                    <p><CreateEstimateIcon style={{ "display": "inline" }} /> {t("Download")}</p>
-              </div> */}
-
-                {state.links.map(link => (
-                    link.isVisible && <div className="primary-label-btn d-grid" style={{ marginLeft: "unset", marginBottom: "10px", padding: "0px 8px" }}
-                        onClick={
-                            link.type === "download"
-                                ? () => { HandleDownloadPdf(tenantId, state.id) }
-                                : () => { history.push(link.redirectUrl) }
-                        }>
-                        {renderIcon(link.type, link)}
-                        {/* <p><CreateEstimateIcon style={{ "display": "inline" }} /> {t(link.name)}</p> */}
-                    </div>
-                ))}
-
-            </div>
-            <ActionBar>
-                <Link to={`/${window.contextPath}/employee`}>
-                    <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
-                </Link>
-            </ActionBar>
-
-        </Card>
-    )
+    const children = [
+        <div style={{ display: "flex", justifyContent: "start", flexDirection: "row", alignItems: "flex-end" }}>
+          {state?.links?.map(
+            (link) =>
+              link.isVisible && (
+                <div
+                  className="primary-label-btn d-grid"
+                  style={{ marginLeft: "unset", marginBottom: "10px", padding: "0px 8px" }}
+                  onClick={
+                    link.type === "download"
+                      ? () => {
+                          HandleDownloadPdf(tenantId, state.id);
+                        }
+                      : () => {
+                          history.push(link.redirectUrl);
+                        }
+                  }
+                >
+                  {renderIcon(link.type, link)}
+                </div>
+              )
+          )}
+        </div>
+      ];
+      return (
+        <>
+          <PanelCard
+            type={"success"}
+            message={state?.header}
+            footerChildren={[
+              <Link to={`/${window.contextPath}/employee`}>
+                <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
+              </Link>
+            ]}
+            children={children}
+            info={state?.info}
+            response={state?.id}
+            description={t(state?.message)}
+          />
+        </>
+      );
 }
 
 export default EstimateResponse

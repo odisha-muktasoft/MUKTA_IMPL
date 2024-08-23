@@ -63,3 +63,41 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.digit-home-ground{
+    padding: theme(digitv2.spacers.spacer5);
+}
+
+.digit-home-moduleCardWrapper{
+    padding:theme(digitv2.spacers.spacer0);
+}
+
+.inbox-search-wrapper {
+    .inbox-search-component-wrapper{
+        .sections-parent{
+            &.search{
+                .search-wrapper .search-button-wrapper{
+                    gap:theme(digitv2.spacers.spacer6);
+                }
+            }
+
+            &.inbox{
+                .section{
+                    &.search{
+                        .search-button-wrapper{
+                            gap:theme(digitv2.spacers.spacer6);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.digit-action-bar-wrap {
+    &.new-actionbar {
+        div {
+            width: unset;
+        }
+    }
+}

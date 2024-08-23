@@ -70,7 +70,7 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
     { label: t("MB_STATUS"), key: "status" },
     { label: t("MB_ONLY_AMOUNT"), key: "amount" },
   ];
-  let relevantMbs = window?.location.href.includes("/measurement/view") ? data?.allMeasurements.filter(obj => obj.auditDetails.lastModifiedTime < data?.allMeasurements.find(o => o.measurementNumber === measurementNumber).auditDetails.lastModifiedTime) : data?.allMeasurements;
+  let relevantMbs = window?.location.href.includes("/measurement/view") ? data?.allMeasurements?.filter(obj => obj.auditDetails.lastModifiedTime < data?.allMeasurements.find(o => o.measurementNumber === measurementNumber).auditDetails.lastModifiedTime) : data?.allMeasurements;
   const filteredArray =  relevantMbs && relevantMbs?.length > 0 && relevantMbs?.code !== "NO_MEASUREMENT_ROLL_FOUND"? relevantMbs?.filter((item) => item.measurementNumber !== measurementNumber && item?.wfStatus === "APPROVED") : [];
 
   const sortedRows = (filteredArray || [])

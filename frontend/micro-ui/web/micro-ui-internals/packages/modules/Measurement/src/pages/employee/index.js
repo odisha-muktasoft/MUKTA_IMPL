@@ -68,7 +68,8 @@ const App = ({ path }) => {
   const location = useLocation();
   return (
     <Switch>
-      <AppContainer className="ground-container">
+      <AppContainer 
+      >
         {!location.pathname.includes("/response") && (
           <React.Fragment>
             <MeasurementBreadCrumbs location={location} />

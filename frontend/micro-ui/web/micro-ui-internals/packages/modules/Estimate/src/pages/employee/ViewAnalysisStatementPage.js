@@ -1,11 +1,11 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, ActionBar, Menu, SubmitBar, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
+import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Menu, SubmitBar, CitizenInfoLabel } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewStatementConfig";
 import { InfoCard } from "@egovernments/digit-ui-components";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Toast ,Button} from "@egovernments/digit-ui-components";
+import { Toast ,Button,ActionBar} from "@egovernments/digit-ui-components";
 
 const ViewAnalysisStatement = () => {
 
@@ -463,8 +463,8 @@ const ViewAnalysisStatement = () => {
 
   return (
     <div className={`employee-main-application-details ${"analysis-details"}`}>
-      <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center"}}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px"}}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px", alignItems: "center" }}>
+        <Header className="works-header-view" styles={{ margin: "0px" }}>
           {t("ESTIMATE_ANALYSIS_STATEMENT")}
         </Header>
         {downloadStatus && (
@@ -494,9 +494,11 @@ const ViewAnalysisStatement = () => {
       <ViewComposer data={config} isLoading={false} />
       {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       <>
-        <ActionBar>
-          <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
-        </ActionBar>
+        <ActionBar
+          actionFields={[<Button type={"button"} label={t("STATEMENT_GO_BACK")} variation={"primary"} onClick={() => history.goBack()}></Button>]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
         {/* {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>
           {showActions ? <Menu

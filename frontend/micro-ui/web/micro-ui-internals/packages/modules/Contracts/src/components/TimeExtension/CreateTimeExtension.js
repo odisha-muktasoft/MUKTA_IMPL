@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Loader, ActionBar, SubmitBar, WorkflowModal, CardLabel,TextInput } from "@egovernments/digit-ui-react-components";
+import { Loader, SubmitBar, WorkflowModal, CardLabel,TextInput } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from "../../../../templates/ApplicationDetails";
 import getModalConfig from "./modalConfig";
 import { useHistory } from "react-router-dom";
-import {Toast} from '@egovernments/digit-ui-components'
+import {Toast,ActionBar,Button} from '@egovernments/digit-ui-components'
 const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
   
   const history = useHistory()
@@ -176,9 +176,18 @@ const CreateTimeExtension = ({isEdit,revisedWONumber,...props}) => {
           getTimeExtensionJSX,
         }}
       />
-      <ActionBar>
-        <SubmitBar label={t("CREATE_AND_FORWARD_TE")} onSubmit={handleSubmit} />
-      </ActionBar>
+      <ActionBar
+                actionFields={[
+                  <Button
+                    type={"submit"}
+                    label={t("CREATE_AND_FORWARD_TE")}
+                    variation={"primary"}
+                    onClick={handleSubmit}
+                  ></Button>
+                ]}
+                setactionFieldsToRight={true}
+                className={"new-actionbar"}
+              />
       {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={modalConfig} />}
       {showToast && <Toast label={t(showToast?.label)} type={showToast?.type}></Toast>}
     </React.Fragment>

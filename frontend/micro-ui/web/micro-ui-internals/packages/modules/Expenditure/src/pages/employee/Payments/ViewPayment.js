@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from "react-i18next";
-import { Header,SubmitBar,ActionBar } from '@egovernments/digit-ui-react-components';
+import { Header } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
-import { Toast } from '@egovernments/digit-ui-components';
+import { Toast,ActionBar } from '@egovernments/digit-ui-components';
 
 const ViewPayment = () => {
   const { t } = useTranslation();
@@ -85,45 +85,52 @@ const ViewPayment = () => {
   return (
     <React.Fragment>
       <Header className="works-header-view">{t("EXP_PAYMENT_DETAILS")}</Header>
-      {
-        showDataError === null && (
-          <ApplicationDetails
-            applicationDetails={data?.[0]?.applicationDetails}
-            isLoading={isLoading}
-            applicationData={data?.[0]?.applicationData}
-            moduleCode="AttendenceMgmt"
-            showTimeLine={false}
-            businessService={businessService}
-            tenantId={tenantId}
-          />
-        )
-      }
-      {
-        showDataError === null && (
-          <ApplicationDetails
-            applicationDetails={data?.[1]?.applicationDetails}
-            isLoading={isLoading}
-            applicationData={data?.[1]?.applicationData}
-            moduleCode="AttendenceMgmt"
-            showTimeLine={false}
-            businessService={businessService}
-            tenantId={tenantId}
-          />
-        )
-      }
-      {
-        showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_PI_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
-      }
-      { (paStatus==="FAILED" || paStatus==="PARTIAL") && showActionBar && 
-        <ActionBar> 
-          <SubmitBar label={paStatus==="FAILED" ? t("EXP_RETRY_PI"):t("EXP_GENERATE_REVISED_PI")} onSubmit={handleUpdatePI} />
-        </ActionBar>
-      }
-      {
-        toast && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={() => setShowToast(null)} />
-      }
+      {showDataError === null && (
+        <ApplicationDetails
+          applicationDetails={data?.[0]?.applicationDetails}
+          isLoading={isLoading}
+          applicationData={data?.[0]?.applicationData}
+          moduleCode="AttendenceMgmt"
+          showTimeLine={false}
+          businessService={businessService}
+          tenantId={tenantId}
+        />
+      )}
+      {showDataError === null && (
+        <ApplicationDetails
+          applicationDetails={data?.[1]?.applicationDetails}
+          isLoading={isLoading}
+          applicationData={data?.[1]?.applicationData}
+          moduleCode="AttendenceMgmt"
+          showTimeLine={false}
+          businessService={businessService}
+          tenantId={tenantId}
+        />
+      )}
+      {showDataError && (
+        <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_PI_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+      )}
+      {(paStatus === "FAILED" || paStatus === "PARTIAL") && showActionBar && (
+        // <ActionBar>
+        //   <SubmitBar label={paStatus==="FAILED" ? t("EXP_RETRY_PI"):t("EXP_GENERATE_REVISED_PI")} onSubmit={handleUpdatePI} />
+        // </ActionBar>
+
+        <ActionBar
+          actionFields={[
+            <Button
+              type={"submit"}
+              label={paStatus === "FAILED" ? t("EXP_RETRY_PI") : t("EXP_GENERATE_REVISED_PI")}
+              variation={"primary"}
+              onClick={handleUpdatePI}
+            ></Button>,
+          ]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
+      )}
+      {toast && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={() => setShowToast(null)} />}
     </React.Fragment>
-  )
+  );
 }
 
 export default ViewPayment;

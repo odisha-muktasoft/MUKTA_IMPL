@@ -1,9 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Banner, Card, LinkLabel, AddFileFilled, ArrowLeftWhite, ActionBar } from "@egovernments/digit-ui-react-components";
-
-import { PanelCard, SubmitBar } from "@egovernments/digit-ui-components";
+import { PanelCard, SubmitBar, Button } from "@egovernments/digit-ui-components";
 
 const CreateProjectResponse = () => {
   const { t } = useTranslation();
@@ -40,49 +38,33 @@ const CreateProjectResponse = () => {
     }
   };
 
-  // return (
-  //     <Card>
-  //         <Banner
-  //             successful={isResponseSuccess}
-  //             message={t(state?.message)}
-  //             info={`${state?.showProjectID ? t("WORKS_PROJECT_ID") : ""}`}
-  //             multipleResponseIDs={projectIDsList}
-  //             whichSvg={`${isResponseSuccess ? "tick" : null}`}
-  //         />
-  // <div style={{display: "flex"}}>
-  //     <LinkLabel style={{ display: "flex", marginRight : "3rem" }} onClick={()=>navigate('search-project')}>
-  //         <ArrowLeftWhite  fill="#C84C0E" style={{marginRight: "8px", marginTop : "3px"}}/>{t("PROJECT_GO_TO_SEARCH_PROJECT")}
-  //     </LinkLabel>
-  //     {isResponseSuccess && isEstimateCreator && <LinkLabel style={{ display: "flex" }} onClick={()=>navigate('create-estimate')}>
-  //         <AddFileFilled style={{marginRight: "8px", marginTop : "3px"}}/>{t("COMMON_CREATE_ESTIMATE")}
-  //     </LinkLabel>  }
-  // </div>
-  //         <ActionBar>
-  //             <Link to={`/${window.contextPath}/employee`}>
-  //                 <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
-  //             </Link>
-  //         </ActionBar>
-  //     </Card>
-  // )
-
   const children = [
-    <div style={{ display: "flex" }}>
-      <LinkLabel style={{ display: "flex", marginRight: "3rem" }} onClick={() => navigate("search-project")}>
-        <ArrowLeftWhite fill="#C84C0E" style={{ marginRight: "8px", marginTop: "3px" }} />
-        {t("PROJECT_GO_TO_SEARCH_PROJECT")}
-      </LinkLabel>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Button
+        label={t("PROJECT_GO_TO_SEARCH_PROJECT")}
+        variation="link"
+        icon={"ArrowBack"}
+        onClick={() => navigate("search-project")}
+        type="button"
+        style={{ display: "flex", marginRight: "3rem" }}
+      />
+
       {isResponseSuccess && isEstimateCreator && (
-        <LinkLabel style={{ display: "flex" }} onClick={() => navigate("create-estimate")}>
-          <AddFileFilled style={{ marginRight: "8px", marginTop: "3px" }} fill={"#C84C0E"} />
-          {t("COMMON_CREATE_ESTIMATE")}
-        </LinkLabel>
+        <Button
+          label={t("COMMON_CREATE_ESTIMATE")}
+          variation="link"
+          icon={"AddExpenseTwo"}
+          onClick={() => navigate("create-estimate")}
+          type="button"
+          style={{ marginRight: "8px" }}
+        />
       )}
     </div>,
   ];
 
   const footerChildren = [
     <Link to={`/${window.contextPath}/employee`}>
-      <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
+      <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
     </Link>,
   ];
   return (

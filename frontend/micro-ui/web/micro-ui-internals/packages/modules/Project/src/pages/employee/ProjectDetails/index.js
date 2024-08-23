@@ -1,9 +1,9 @@
-import { Header, MultiLink, Card, StatusTable, Row, CardSubHeader,Loader,SubmitBar,ActionBar, HorizontalNav, Menu } from '@egovernments/digit-ui-react-components'
+import { Header, MultiLink, Card, StatusTable, Row, CardSubHeader,Loader,SubmitBar, HorizontalNav, Menu } from '@egovernments/digit-ui-react-components'
 import React, { Fragment,useEffect,useRef,useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory, useLocation } from 'react-router-dom'
 import ProjectDetailsNavDetails from './ProjectDetailsNavDetails'
-import { Toast,Button,TextBlock } from '@egovernments/digit-ui-components'
+import { Toast,Button,TextBlock,ActionBar } from '@egovernments/digit-ui-components'
 
 const ProjectDetails = () => {
     const { t } = useTranslation();
@@ -68,16 +68,17 @@ const ProjectDetails = () => {
     }
 
     const handleActionBar = (option) => {
-        if(option?.name === "CREATE_ESTIMATE"){
+        console.log(option,"option")
+        if(option?.name === "COMMON_CREATE_ESTIMATE"){
             history.push(`/${window.contextPath}/employee/estimate/create-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
         }
-        if(option?.name === "VIEW_ESTIMATE"){
+        if(option?.name === "COMMON_VIEW_ESTIMATE"){
             if(estimates?.[0]?.wfStatus?.includes("DRAFTED") && !(estimates?.[0]?.revisionNumber))
                 history.push(`/${window.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}&isEdit=true`);
             else
                 history.push(`/${window.contextPath}/employee/estimate/estimate-details?tenantId=${searchParams?.Projects?.[0]?.tenantId}&estimateNumber=${estimates?.[0]?.estimateNumber}`);
         }
-        if(option?.name === "MODIFY_PROJECT"){
+        if(option?.name === "COMMON_MODIFY_PROJECT"){
             if(estimates?.length !==0 && estimates?.[0]?.wfStatus !== "" &&  estimates?.[0]?.wfStatus !== "REJECTED") {
                 setToast({show : true, label : t("COMMON_CANNOT_MODIFY_PROJECT_EST_CREATED"), type:"error"});
             }else {
@@ -132,7 +133,7 @@ const ProjectDetails = () => {
                 if(isUserEstimateCreator) {
                     setHideActionBar(false);
                     setUniqueActions({
-                        name : "CREATE_ESTIMATE"
+                        name : "COMMON_CREATE_ESTIMATE"
                     })
                 }else {
                     // setHideActionBar(true);
@@ -141,13 +142,13 @@ const ProjectDetails = () => {
                 //we have given search estimate access to project creator
                 setHideActionBar(false);
                 estimates && estimates?.length !== 0 && setUniqueActions({
-                    name : "VIEW_ESTIMATE"
+                    name : "COMMON_VIEW_ESTIMATE"
                 })
             }
             if(isProjectModifier) {
                 setHideActionBar(false);
                 setUniqueActions({
-                    name : "MODIFY_PROJECT"
+                    name : "COMMON_MODIFY_PROJECT"
                 })
             }
         }
@@ -183,15 +184,10 @@ const ProjectDetails = () => {
 
     return (
       <div className={`employee-main-application-details ${"project-details"}`}>
-        <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
-          <Header className="works-header-view" styles={{ margin: "0px"}}>
+        <div className={"employee-application-details"} style={{ marginBottom: "24px", alignItems: "center" }}>
+          <Header className="works-header-view" styles={{ margin: "0px" }}>
             {t("WORKS_PROJECT_DETAILS")}
           </Header>
-          {/* <MultiLink
-              onHeadClick={() => HandleDownloadPdf()}
-              downloadBtnClassName={"employee-download-btn-className"}
-              label={t("CS_COMMON_DOWNLOAD")}
-            /> */}
           <Button
             label={t("CS_COMMON_DOWNLOAD")}
             onClick={() => HandleDownloadPdf()}
@@ -206,10 +202,24 @@ const ProjectDetails = () => {
           <ProjectDetailsNavDetails activeLink={activeLink} subProjects={subProjects} searchParams={searchParams} filters={filters} />
         </HorizontalNav>
         {!hideActionBar && (
-          <ActionBar>
-            {showActions ? <Menu localeKeyPrefix={`COMMON`} options={actionsMenu} optionKey={"name"} t={t} onSelect={handleActionBar} /> : null}
-            <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-          </ActionBar>
+          <ActionBar
+            actionFields={[
+              <Button
+                t={t}
+                type={"actionButton"}
+                options={actionsMenu}
+                label={t("WORKS_ACTIONS")}
+                variation={"primary"}
+                optionsKey={"name"}
+                isSearchable={false}
+                onOptionSelect={(option) => {
+                    handleActionBar(option)
+                }}
+              ></Button>,
+            ]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
         )}
         {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       </div>

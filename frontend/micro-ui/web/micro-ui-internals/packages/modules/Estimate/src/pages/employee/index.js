@@ -146,34 +146,9 @@ const App = ({ path }) => {
     }
   }, [location]);
 
-  // return (
-  //     <Switch>
-  //         <React.Fragment>
-  //             <div>
-  //                 <div style={getBreadCrumbStyles(window.location.href)}>
-  //                     <EstimateBreadCrumbs location={location} />
-  //                 </div>
-  //                 <PrivateRoute path={`${path}/create-estimate`} component={() => <CreateEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/create-detailed-estimate`} component={() => <CreateDetailedEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/search-estimate`} component={() => <EstimateSearch {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/search-estimate-plain`} component={() => <EstimateSearchPlain {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/inbox`} component={() => <EstimateInbox {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/view-estimate`} component={() => <ViewEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/estimate-details`} component={() => <ViewDetailedEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/update-detailed-estimate`} component={() => <UpdateDetailedEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/create-revision-detailed-estimate`} component={() => <CreateRevisionDetailedEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/update-revision-detailed-estimate`} component={() => <UpdateRevisionDetailedEstimate {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/view-analysis-statement`} component={() => <ViewAnalysisStatementPage {...{ path }} />} />
-  //                 <PrivateRoute path={`${path}/response`} component={() => <EstimateResponse {...{ path }} />} />
-
-  //             </div>
-  //         </React.Fragment>
-  //     </Switch>
-  // );
-
   return (
     <Switch>
-      <AppContainer className="ground-container">
+      <AppContainer>
         <React.Fragment>
           <EstimateBreadCrumbs location={location} />
         </React.Fragment>

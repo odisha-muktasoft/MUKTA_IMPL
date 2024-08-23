@@ -58,7 +58,7 @@ const ProjectSearch = () => {
           <Button
           label={t(configs?.actionLabel)}
           variation="secondary"
-          icon="AddFilled"
+          icon="Add"
           onClick={() => {
             history.push(`/${window?.contextPath}/employee/${configs?.actionLink}`);
           }}

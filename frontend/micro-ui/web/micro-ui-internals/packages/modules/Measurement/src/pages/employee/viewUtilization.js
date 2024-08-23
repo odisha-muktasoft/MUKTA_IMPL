@@ -8,13 +8,12 @@ import {
   Row,
   HorizontalNav,
   ViewDetailsCard,
-  ActionBar,
   Menu,
   SubmitBar,
   CitizenInfoLabel,
 } from "@egovernments/digit-ui-react-components";
 import {
-  Toast,InfoCard, Button
+  Toast,InfoCard, Button,ActionBar
 } from "@egovernments/digit-ui-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
@@ -480,9 +479,11 @@ const ViewUtilization = () => {
         ></Toast>
       )}
       <>
-        <ActionBar>
-          <SubmitBar onSubmit={() => history.goBack()} label={t("STATEMENT_GO_BACK")} />
-        </ActionBar>
+          <ActionBar
+            actionFields={[<Button type={"submit"} label={t("STATEMENT_GO_BACK")} variation={"primary"} onClick={() => history.goBack()}></Button>]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
         {/* {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" && !isLoadingContracts && actionsMenu?.length > 0 ? (
           <ActionBar>
           {showActions ? <Menu

@@ -70,7 +70,7 @@ const ViewMeasurement = () => {
   }
   return (
     <React.Fragment>
-      <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("MB_VIEW_MEASUREMENT_BOOK")}
         </Header>

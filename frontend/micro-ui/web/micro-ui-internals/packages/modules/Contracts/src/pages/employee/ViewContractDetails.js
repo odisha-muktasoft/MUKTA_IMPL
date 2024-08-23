@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment, useRef }from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { Menu, Header, ActionBar, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, MultiLink } from '@egovernments/digit-ui-react-components';
+import { Menu, Header, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, MultiLink } from '@egovernments/digit-ui-react-components';
 import { isWorkEndInPreviousWeek } from '../../../utils';
-import {Toast,Button} from '@egovernments/digit-ui-components'
+import {Toast,Button,ActionBar} from '@egovernments/digit-ui-components'
 
 const ViewContractDetails = () => {
     const { t } = useTranslation();
@@ -128,19 +128,19 @@ const ViewContractDetails = () => {
 
       useEffect(() => {
         let isCreeateTEUser = verifiedRolesForAction?.["CREATE_TE"].some(role => loggedInUserRoles.includes(role));
-        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "CREATE_TIME_EXTENSION_REQUEST") && isCreeateTEUser) {
+        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "WF_CONTRACT_ACTION_CREATE_TIME_EXTENSION_REQUEST") && isCreeateTEUser) {
             
             setActionsMenu((prevState => [...prevState,{
-                name:"CREATE_TIME_EXTENSION_REQUEST",
+                name:"WF_CONTRACT_ACTION_CREATE_TIME_EXTENSION_REQUEST",
                 action:"TIME_EXTENSTION"
             }]))
         }
 
         let isCreeateMBUser = verifiedRolesForAction?.["CREATE_MB"].some(role => loggedInUserRoles.includes(role));
         console.log(isInWorkflowMeasurementPresent,measurementData,actionsMenu,isCreeateMBUser);
-        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
+        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "WF_CONTRACT_ACTION_CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
         setActionsMenu((prevState => [...prevState,{
-            name:"CREATE_MEASUREMENT_REQUEST",
+            name:"WF_CONTRACT_ACTION_CREATE_MEASUREMENT_REQUEST",
             action:"CREATE_MEASUREMENT"
         }]))
 
@@ -151,7 +151,7 @@ const ViewContractDetails = () => {
         let isUserBillCreator = loggedInUserRoles?.includes("BILL_CREATOR");
         if (data?.applicationData?.wfStatus === "ACCEPTED" && isUserBillCreator){
             setActionsMenu((prevState => [...prevState,{
-                name:"CREATE_PURCHASE_BILL"
+                name:"WF_CONTRACT_ACTION_CREATE_PURCHASE_BILL"
             }]))
         }
 
@@ -171,7 +171,7 @@ const ViewContractDetails = () => {
             setToast({show : true, label : t(`MB_CREATION_NOT_POSSIBLE_WORK_END_DATE_PASSED`), type:"error"});
             return;
         }
-        if (option?.name === "CREATE_PURCHASE_BILL") {
+        if (option?.name === "WF_CONTRACT_ACTION_CREATE_PURCHASE_BILL") {
             history.push(`/${window.contextPath}/employee/expenditure/create-purchase-bill?tenantId=${tenantId}&workOrderNumber=${contractId}`);
         }
         if (option?.action === "CREATE_MEASUREMENT") {
@@ -309,12 +309,23 @@ const ViewContractDetails = () => {
               actionsMenu?.length > 0 &&
               !showTimeExtension &&
               !(queryStrings?.isTimeExtension === "true") ? (
-                <ActionBar>
-                  {showActions ? (
-                    <Menu localeKeyPrefix={`WF_CONTRACT_ACTION`} options={actionsMenu} optionKey={"name"} t={t} onSelect={handleActionBar} />
-                  ) : null}
-                  <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-                </ActionBar>
+                <ActionBar
+                actionFields={[
+                  <Button
+                    type={"actionButton"}
+                    options={actionsMenu}
+                    label={t("WORKS_ACTIONS")}
+                    variation={"primary"}
+                    optionsKey={"name"}
+                    isSearchable={false}
+                    onOptionSelect={(option) => {
+                      handleActionBar(option)
+                    }}
+                  ></Button>
+                ]}
+                setactionFieldsToRight={true}
+                className={"new-actionbar"}
+              />
               ) : null}
             </>
           )}

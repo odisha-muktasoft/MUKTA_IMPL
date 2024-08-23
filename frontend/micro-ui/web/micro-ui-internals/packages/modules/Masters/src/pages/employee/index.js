@@ -105,7 +105,7 @@ const App = ({ path }) => {
 
   return (
     <Switch>
-      <AppContainer className="ground-container">
+      <AppContainer>
         <React.Fragment>
           <MastersBreadCrumb location={location} />
         </React.Fragment>

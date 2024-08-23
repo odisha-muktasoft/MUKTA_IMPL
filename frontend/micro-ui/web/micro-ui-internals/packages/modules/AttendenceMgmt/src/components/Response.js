@@ -1,8 +1,7 @@
-import React,{Fragment} from "react";
+import React, { Fragment } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { ActionBar, Banner, Card, CardText } from "@egovernments/digit-ui-react-components";
-import { PanelCard, SubmitBar } from "@egovernments/digit-ui-components";
+import { PanelCard, Button } from "@egovernments/digit-ui-components";
 
 const Response = () => {
   const { t } = useTranslation();
@@ -11,36 +10,17 @@ const Response = () => {
     state.message = `${state?.message} ${t("BILL_CREATED")}`;
   }
   return (
-    // <Card>
-    //     <Banner
-    //         successful={true}
-    //         message={state?.header}
-    //         info={state?.info}
-    //         applicationNumber={state?.id}
-    //         whichSvg={"tick"}
-    //     />
-
-    //     <CardText>{state?.message}</CardText>
-
-    // <ActionBar>
-    //     <Link to={`/${window.contextPath}/employee`}>
-    //         <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
-    //     </Link>
-    // </ActionBar>
-    // </Card>
-
     <>
       <PanelCard
         type={"success"}
         message={t(state?.header)}
-        applicationNumber={state?.id}
+        response={state?.id}
         info={state?.info}
+        description={state?.message}
         footerChildren={[
-          <ActionBar>
-            <Link to={`/${window.contextPath}/employee`}>
-              <SubmitBar label={t("CORE_COMMON_GO_TO_HOME")} />
-            </Link>
-          </ActionBar>,
+          <Link to={`/${window.contextPath}/employee`}>
+            <Button label={t("CORE_COMMON_GO_TO_HOME")} variation="primary" type="button" />
+          </Link>
         ]}
         children={[state?.message]}
       />

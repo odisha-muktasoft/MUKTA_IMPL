@@ -82,8 +82,8 @@ const ViewAttendance = () => {
   if(isLoading || approverLoading || isMbValidationLoading) return <Loader />
   return (
     <React.Fragment>
-      <div className={"employee-application-details"} style={{ marginBottom: "24px" }}>
-        <Header className="works-header-view">{showEditTitle ? t("ATM_EDIT_ATTENDENCE") : t("ATM_VIEW_ATTENDENCE")}</Header>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
+        <Header styles={{paddingTop: "10px"}} className="works-header-view">{showEditTitle ? t("ATM_EDIT_ATTENDENCE") : t("ATM_VIEW_ATTENDENCE")}</Header>
         {/* <MultiLink
          onHeadClick={() => HandleDownloadPdf()}
          downloadBtnClassName={"employee-download-btn-className"}

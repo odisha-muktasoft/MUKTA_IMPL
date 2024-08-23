@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Header, ViewDetailsCard, HorizontalNav, Loader, ActionBar, SubmitBar } from '@egovernments/digit-ui-react-components';
+import { Header, ViewDetailsCard, HorizontalNav, Loader, SubmitBar } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
-import { Toast } from "@egovernments/digit-ui-components";
+import { Toast,ActionBar } from "@egovernments/digit-ui-components";
 
 const ViewOrganisation = () => {
   const { t } = useTranslation()
@@ -64,65 +64,70 @@ const ViewOrganisation = () => {
   return (
     <React.Fragment>
       <Header className="works-header-view">{t("MASTERS_VIEW_VENDOR_ORG")}</Header>
-      {
-        showDataError === null && ( <React.Fragment>
-          {
-            organisation && <ViewDetailsCard cardState={organisation?.applicationDetails?.orgDetails} t={t} />
-          }
-          {
-            organisation && 
-              <HorizontalNav showNav={true} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
-                { activeLink === "Location_Details" && (
-                  <ApplicationDetails
-                    applicationDetails={{ applicationDetails : [organisation?.applicationDetails?.locationDetails] }}
-                    isLoading={isLoading}
-                    applicationData={organisation?.applicationData}
-                    moduleCode="Masters"
-                    isDataLoading={false}
-                    workflowDetails={organisation?.workflowDetails}
-                    showTimeLine={false}
-                    mutate={()=>{}}
-                    tenantId={tenantId}
-                  />) 
-                }
-                { activeLink === "Contact_Details" &&  (
-                  <ApplicationDetails
-                    applicationDetails={{ applicationDetails : [organisation?.applicationDetails?.contactDetails] }}
-                    isLoading={isLoading}
-                    applicationData={organisation?.applicationData}
-                    moduleCode="Masters"
-                    isDataLoading={false}
-                    workflowDetails={organisation?.workflowDetails}
-                    showTimeLine={false}
-                    mutate={()=>{}}
-                    tenantId={tenantId}
-                  />) 
-                }
-                { activeLink === "Financial_Details" &&  (
-                  <ApplicationDetails
-                    applicationDetails={{ applicationDetails : organisation?.applicationDetails?.financialDetails }}
-                    isLoading={isLoading}
-                    applicationData={organisation?.applicationData}
-                    moduleCode="Masters"
-                    isDataLoading={false}
-                    workflowDetails={organisation?.workflowDetails}
-                    showTimeLine={false}
-                    mutate={()=>{}}
-                    tenantId={tenantId}
-                  />) 
-                } 
-              </HorizontalNav>
-          }
-          <ActionBar>
-            <SubmitBar label={t("ES_COMMON_MODIFY")} onSubmit={handleModify} />
-          </ActionBar>
-      </React.Fragment> )
-      }
-      {
-        showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_ORG_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
-      }
-  </React.Fragment>
-  )
+      {showDataError === null && (
+        <React.Fragment>
+          {organisation && <ViewDetailsCard cardState={organisation?.applicationDetails?.orgDetails} t={t} />}
+          {organisation && (
+            <HorizontalNav
+              showNav={true}
+              configNavItems={configNavItems}
+              activeLink={activeLink}
+              setActiveLink={setActiveLink}
+              inFormComposer={false}
+            >
+              {activeLink === "Location_Details" && (
+                <ApplicationDetails
+                  applicationDetails={{ applicationDetails: [organisation?.applicationDetails?.locationDetails] }}
+                  isLoading={isLoading}
+                  applicationData={organisation?.applicationData}
+                  moduleCode="Masters"
+                  isDataLoading={false}
+                  workflowDetails={organisation?.workflowDetails}
+                  showTimeLine={false}
+                  mutate={() => {}}
+                  tenantId={tenantId}
+                />
+              )}
+              {activeLink === "Contact_Details" && (
+                <ApplicationDetails
+                  applicationDetails={{ applicationDetails: [organisation?.applicationDetails?.contactDetails] }}
+                  isLoading={isLoading}
+                  applicationData={organisation?.applicationData}
+                  moduleCode="Masters"
+                  isDataLoading={false}
+                  workflowDetails={organisation?.workflowDetails}
+                  showTimeLine={false}
+                  mutate={() => {}}
+                  tenantId={tenantId}
+                />
+              )}
+              {activeLink === "Financial_Details" && (
+                <ApplicationDetails
+                  applicationDetails={{ applicationDetails: organisation?.applicationDetails?.financialDetails }}
+                  isLoading={isLoading}
+                  applicationData={organisation?.applicationData}
+                  moduleCode="Masters"
+                  isDataLoading={false}
+                  workflowDetails={organisation?.workflowDetails}
+                  showTimeLine={false}
+                  mutate={() => {}}
+                  tenantId={tenantId}
+                />
+              )}
+            </HorizontalNav>
+          )}
+          <ActionBar
+            actionFields={[<Button type={"submit"} label={t("ES_COMMON_MODIFY")} variation={"primary"} onClick={handleModify}></Button>]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
+        </React.Fragment>
+      )}
+      {showDataError && (
+        <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_ORG_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+      )}
+    </React.Fragment>
+  );
 }
 
 export default ViewOrganisation

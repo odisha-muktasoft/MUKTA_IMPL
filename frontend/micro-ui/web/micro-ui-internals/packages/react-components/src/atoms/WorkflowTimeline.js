@@ -208,7 +208,7 @@ const WorkflowTimeline = ({
               )} */}
 
               {workflowDetails?.data?.timeline && (
-                <TimelineMolecule>
+                <TimelineMolecule initialVisibleCount={5} hideFutureLabel ={true} hidePastLabel ={workflowDetails?.data?.timeline.length < 5 ? true : false}>
                   {workflowDetails.data.timeline.map((checkpoint, index) => (
                     <Timeline
                       key={index}

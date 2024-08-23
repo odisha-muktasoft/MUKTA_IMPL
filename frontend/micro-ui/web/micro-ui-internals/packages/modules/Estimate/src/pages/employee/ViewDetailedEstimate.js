@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, ActionBar, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Loader, Header, MultiLink, StatusTable, Card, Row, HorizontalNav, ViewDetailsCard, Menu, SubmitBar } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import { ViewComposer } from "@egovernments/digit-ui-react-components";
 import { data } from "../../configs/viewConfig";
 import { useHistory } from 'react-router-dom';
-import { Toast ,Button} from "@egovernments/digit-ui-components";
+import { Toast ,Button,ActionBar} from "@egovernments/digit-ui-components";
 
 const ViewDetailedEstimate = () => {
   const history = useHistory();
@@ -86,7 +86,7 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "CREATE_CONTRACT",
+          name: "EST_VIEW_ACTIONS_CREATE_CONTRACT",
         },
       ]);
     }
@@ -97,7 +97,7 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "VIEW_CONTRACT",
+          name: "EST_VIEW_ACTIONS_VIEW_CONTRACT",
         },
       ]);
     }
@@ -110,7 +110,7 @@ const ViewDetailedEstimate = () => {
       setActionsMenu((prevState) => [
         ...prevState,
         {
-          name: "CREATE_REVISION_ESTIMATE",
+          name: "EST_VIEW_ACTIONS_CREATE_REVISION_ESTIMATE",
         },
       ]);
     }
@@ -127,15 +127,15 @@ const ViewDetailedEstimate = () => {
       setToast({typa: validationData?.error ? "error" : "", label: validationData?.label, show:true})
       return;
     }
-    if (option?.name === "CREATE_CONTRACT") {
+    if (option?.name === "EST_VIEW_ACTIONS_CREATE_CONTRACT") {
       history.push(`/${window.contextPath}/employee/contracts/create-contract?tenantId=${tenantId}&estimateNumber=${estimateNumber}`);
     }
-    if (option?.name === "VIEW_CONTRACT") {
+    if (option?.name === "EST_VIEW_ACTIONS_VIEW_CONTRACT") {
       history.push(
         `/${window.contextPath}/employee/contracts/contract-details?tenantId=${tenantId}&workOrderNumber=${inWorkflowContract?.contractNumber}`
       );
     }
-    if (option?.name === "CREATE_REVISION_ESTIMATE") {
+    if (option?.name === "EST_VIEW_ACTIONS_CREATE_REVISION_ESTIMATE") {
       history.push(
         `/${window.contextPath}/employee/estimate/create-revision-detailed-estimate?tenantId=${tenantId}&projectNumber=${project?.projectNumber}&estimateNumber=${estimateNumber}&isCreateRevisionEstimate=true`
       );
@@ -177,7 +177,7 @@ const ViewDetailedEstimate = () => {
   return (
     <div className={`employee-main-application-details ${"estimate-details"}`}>
       <div className={"employee-application-details"} style={{ marginBottom: "24px" ,alignItems:"center"}}>
-        <Header className="works-header-view" styles={{ marginLeft: "0px"}}>
+        <Header className="works-header-view" styles={{ margin: "0px" }}>
           {revisionNumber ? t("ESTIMATE_VIEW_REVISED_ESTIMATE") : t("ESTIMATE_VIEW_ESTIMATE")}
         </Header>
         {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}
@@ -198,12 +198,25 @@ const ViewDetailedEstimate = () => {
         {detailedEstimate?.estimates?.filter((ob) => ob?.businessService !== "REVISION-ESTIMATE")?.[0]?.wfStatus === "APPROVED" &&
         !isLoadingContracts &&
         actionsMenu?.length > 0 ? (
-          <ActionBar>
-            {showActions ? (
-              <Menu localeKeyPrefix={`EST_VIEW_ACTIONS`} options={actionsMenu} optionKey={"name"} t={t} onSelect={handleActionBar} />
-            ) : null}
-            <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-          </ActionBar>
+        <ActionBar
+        actionFields={[
+          <Button
+            t={t}
+            type={"actionButton"}
+            options={actionsMenu}
+            label={t("WORKS_ACTIONS")}
+            variation={"primary"}
+            optionsKey={"name"}
+            isSearchable={false}
+            onOptionSelect={(option) => {
+              handleActionBar(option);
+            }}
+          ></Button>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
+      />
+
         ) : null}
       </>
     </div>

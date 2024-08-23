@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Header, ActionBar, SubmitBar } from '@egovernments/digit-ui-react-components';
+import { Header, SubmitBar } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
-import { Toast } from '@egovernments/digit-ui-components';
+import { Toast,ActionBar } from '@egovernments/digit-ui-components';
 
 const ViewWageSeeker = () => {
   const { t } = useTranslation()
@@ -60,9 +60,11 @@ const ViewWageSeeker = () => {
             mutate={()=>{}}
             tenantId={tenantId}
           />
-          <ActionBar>
-              <SubmitBar label={t("ES_COMMON_MODIFY")} onSubmit={handleModify} />
-          </ActionBar>
+           <ActionBar
+            actionFields={[<Button type={"submit"} label={t("ES_COMMON_MODIFY")} variation={"primary"} onClick={handleModify}></Button>]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
           </React.Fragment>
       }
       {
