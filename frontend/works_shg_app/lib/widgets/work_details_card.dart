@@ -82,15 +82,13 @@ class WorkDetailsCard extends StatelessWidget {
       case 1:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return GestureDetector(
-              child: DigitCard(
-                padding: const EdgeInsets.all(8.0),
-                child: getCardDetails(
-                  context,
-                  e,
-                  attendanceRegisterId: attendanceRegistersModel![index].id,
-                  attendanceRegister: attendanceRegistersModel![index],
-                ),
+            return DigitCard(
+              padding: const EdgeInsets.all(8.0),
+              child: getCardDetails(
+                context,
+                e,
+                attendanceRegisterId: attendanceRegistersModel![index].id,
+                attendanceRegister: attendanceRegistersModel![index],
               ),
             );
           }).toList(),
@@ -99,20 +97,18 @@ class WorkDetailsCard extends StatelessWidget {
       case 2:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return GestureDetector(
-              child: DigitCard(
-                padding: const EdgeInsets.all(8.0),
-                child: getCardDetails(
-                  context,
-                  e['cardDetails'],
-                  payload: e['payload'],
-                  isAccept: acceptWorkOrderCode != null &&
-                          e['cardDetails'][Constants.activeInboxStatus] ==
-                              'true'
-                      ? false
-                      : true,
-                  contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
-                ),
+            return DigitCard(
+              padding: const EdgeInsets.all(8.0),
+              child: getCardDetails(
+                context,
+                e['cardDetails'],
+                payload: e['payload'],
+                isAccept: acceptWorkOrderCode != null &&
+                        e['cardDetails'][Constants.activeInboxStatus] ==
+                            'true'
+                    ? false
+                    : true,
+                contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
               ),
             );
           }).toList(),
@@ -120,12 +116,10 @@ class WorkDetailsCard extends StatelessWidget {
       case 3:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return GestureDetector(
-              child: DigitCard(
-                padding: const EdgeInsets.all(8.0),
-                child: getCardDetails(context, e,
-                    musterRoll: musterRollsModel![index]),
-              ),
+            return DigitCard(
+              padding: const EdgeInsets.all(8.0),
+              child: getCardDetails(context, e,
+                  musterRoll: musterRollsModel![index]),
             );
           }).toList(),
         );
@@ -133,11 +127,9 @@ class WorkDetailsCard extends StatelessWidget {
       default:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return GestureDetector(
-              child: DigitCard(
-                padding: const EdgeInsets.all(8.0),
-                child: getCardDetails(context, e),
-              ),
+            return DigitCard(
+              padding: const EdgeInsets.all(8.0),
+              child: getCardDetails(context, e),
             );
           }).toList(),
         );
@@ -448,7 +440,7 @@ class WorkDetailsCard extends StatelessWidget {
     return title != Constants.activeInboxStatus
         ? Container(
             padding: const EdgeInsets.all(4.0),
-            child: (Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -490,7 +482,7 @@ class WorkDetailsCard extends StatelessWidget {
                       textAlign: TextAlign.left,
                     ))
               ],
-            )))
+            ))
         : const SizedBox.shrink();
   }
 }

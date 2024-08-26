@@ -335,6 +335,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                           onPressed: () {
                                             context.router
                                                 .push(MBMusterScreenRoute(
+                                                  mbNumber:widget.mbNumber,
                                               musterRollNumber: k[adjustedIndex]
                                                   .musterRollNumber
                                                   .toString(),

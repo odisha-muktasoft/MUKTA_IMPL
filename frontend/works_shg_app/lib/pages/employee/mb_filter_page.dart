@@ -964,10 +964,11 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   RadioList(
+                                                   
                                                     groupValue: assign,
                                                     containerPadding:
                                                         const EdgeInsets.only(
-                                                            left: 0.0, top: 10),
+                                                            left: 0.0, bottom: 16,top: 16),
                                                     radioButtons: [
                                                       RadioButtonModel(
                                                           code:
@@ -1001,7 +1002,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       //     : const SizedBox.shrink(),
                                       project
                                           ? Padding(
-                                            padding: const EdgeInsets.only(top:16.0),
+                                            padding: const EdgeInsets.only(top:0.0),
                                             child: ui_component.LabeledField(
                                                 label: t.translate(
                                                     i18.measurementBook.mbNumber),

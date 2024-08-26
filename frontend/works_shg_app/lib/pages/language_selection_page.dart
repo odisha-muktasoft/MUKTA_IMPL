@@ -133,6 +133,6 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
         ? DesktopView(getLanguageCard(context),
             GlobalVariables.stateInfoListModel!.bannerUrl.toString())
         : MobileView(getLanguageCard(context),
-            GlobalVariables.stateInfoListModel!.bannerUrl.toString());
+            GlobalVariables.stateInfoListModel!.bannerUrl.toString(), );
   }
 }

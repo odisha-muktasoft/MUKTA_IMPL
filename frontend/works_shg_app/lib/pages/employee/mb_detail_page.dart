@@ -1410,7 +1410,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                         ?.lastModifiedTime ??
                                                                     0)
                                                             : null,
-                                                    isCurrentState: i == 0,
+                                                    isCurrentState:
+                                                        e.action == "APPROVE"
+                                                            ? false
+                                                            : i == 0,
                                                     comments: (i == 0 &&
                                                             e.action ==
                                                                 "APPROVE")

@@ -1,8 +1,14 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
+import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
+    as ui_label;
+import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +18,7 @@ import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/auth/otp_bloc.dart';
 import 'package:works_shg_app/models/init_mdms/init_mdms_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -20,9 +27,8 @@ import 'package:works_shg_app/widgets/atoms/app_logo.dart';
 import '../blocs/app_initilization/app_initilization.dart';
 import '../blocs/localization/app_localization.dart';
 import '../utils/employee/support_services.dart';
-import '../utils/notifiers.dart';
 import '../widgets/molecules/desktop_view.dart';
-import '../widgets/molecules/mobile_view.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -90,60 +96,131 @@ class _LoginPageState extends State<LoginPage>
 
   Widget getLoginCard(AppLocalizations t, BuildContext loginContext,
       AppInitializationState data) {
+    // return Center(
+    //   child: Form(
+    //     key: formKey,
+    //     autovalidateMode: autoValidation
+    //         ? AutovalidateMode.always
+    //         : AutovalidateMode.disabled,
+    //     child: DigitCard(
+    //       child: Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           const AppLogo(),
+    //           Padding(
+    //             padding: const EdgeInsets.all(8.0),
+    //             child: TextChunk(
+    //               heading: t.translate(i18.login.loginLabel),
+    //               // style: const TextStyle(
+    //               //     fontSize: 18, fontWeight: FontWeight.w700),
+    //             ),
+    //           ),
+    //           TabBar(
+    //             controller: _tabController,
+    //             labelColor: Theme.of(context).colorScheme.primary,
+    //             unselectedLabelColor: Colors.black,
+    //             dividerHeight: 0,
+    //             indicatorColor: Theme.of(context).colorScheme.primary,
+    //             indicatorPadding: EdgeInsets.zero,
+    //             tabs: [
+    //               Tab(
+    //                 child: Text(t.translate(i18.measurementBook.mbCbo)),
+    //               ),
+    //               Tab(
+    //                 child: Text(t.translate(i18.measurementBook.mbEmployee)),
+    //               ),
+    //             ],
+    //           ),
+    //           AnimatedContainer(
+    //             height:_tabController.index == 0
+    //                 ? 120
+    //                 : MediaQuery.of(context).size.height * 0.38,
+    //             duration: const Duration(milliseconds: 0),
+    //             child: TabBarView(
+    //               physics: const NeverScrollableScrollPhysics(),
+    //               controller: _tabController,
+    //               children: [
+    //                 cboLogin(loginContext),
+    //                 employeeLogin(
+    //                   t,
+    //                   loginContext,
+    //                   data,
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //           _buildLoginButton(t, loginContext),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+    //}
     return Center(
       child: Form(
         key: formKey,
         autovalidateMode: autoValidation
             ? AutovalidateMode.always
             : AutovalidateMode.disabled,
-        child: DigitCard(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+        child: Center(
+          child: DigitCard(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.all(16),
+            cardType: CardType.primary,
             children: [
+              // Top part (AppLogo and Text) - constant height
               const AppLogo(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  t.translate(i18.login.loginLabel),
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w700),
+              Center(
+                child: TextChunk(
+                  heading: t.translate(i18.login.loginLabel),
                 ),
               ),
+
+              // TabBar - constant height
               TabBar(
                 controller: _tabController,
-                labelColor: const DigitColors().burningOrange,
+                labelColor: Theme.of(context).colorScheme.primary,
                 unselectedLabelColor: Colors.black,
                 dividerHeight: 0,
-                indicatorColor: const DigitColors().burningOrange,
+                indicatorColor: Theme.of(context).colorScheme.primary,
                 indicatorPadding: EdgeInsets.zero,
                 tabs: [
                   Tab(
-                    child: Text(t.translate(i18.measurementBook.mbCbo)),
+                    child: Text(
+                      t.translate(i18.measurementBook.mbCbo),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
                   ),
                   Tab(
-                    child: Text(t.translate(i18.measurementBook.mbEmployee)),
+                    child: Text(
+                      t.translate(i18.measurementBook.mbEmployee),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
                   ),
                 ],
               ),
-              AnimatedContainer(
-                height: _tabController.index == 0
-                    ? 120
-                    : MediaQuery.of(context).size.height * 0.42,
-                duration: const Duration(milliseconds: 100),
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  controller: _tabController,
-                  children: [
-                    cboLogin(loginContext),
-                    employeeLogin(
-                      t,
-                      loginContext,
-                      data,
+
+              // Dynamic part - TabBarView and Button
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AnimatedContainer(
+                    height: _tabController.index == 0
+                        ? 120
+                        : MediaQuery.of(context).size.height * 0.38,
+                    duration: const Duration(milliseconds: 000),
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _tabController,
+                      children: [
+                        cboLogin(loginContext),
+                        employeeLogin(t, loginContext, data),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  _buildLoginButton(t, loginContext),
+                ],
               ),
-              _buildLoginButton(t, loginContext),
             ],
           ),
         ),
@@ -175,22 +252,44 @@ class _LoginPageState extends State<LoginPage>
             },
           );
         },
-        child: DigitElevatedButton(
-          onPressed: canContinue
-              ? () {
-                  if (formKey.currentState!.validate()) {
-                    loginContext
-                        .read<OTPBloc>()
-                        .add(OTPSendEvent(mobileNumber: userIdController.text));
-                  } else {
-                    setState(() {
-                      autoValidation = true;
-                    });
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: InkWell(
+            onTap: canContinue
+                ? () {
+                    if (formKey.currentState!.validate()) {
+                      loginContext.read<OTPBloc>().add(
+                          OTPSendEvent(mobileNumber: userIdController.text));
+                    } else {
+                      setState(() {
+                        autoValidation = true;
+                      });
+                    }
                   }
-                }
-              : null,
-          child: Center(
-            child: Text(t.translate(i18.common.continueLabel)),
+                : null,
+            child: IgnorePointer(
+              child: Button(
+                mainAxisSize: MainAxisSize.max,
+                isDisabled: !canContinue,
+                size: ButtonSize.large,
+                type: ButtonType.primary,
+                onPressed: () {},
+                // onPressed: canContinue
+                //     ? () {
+                //         if (formKey.currentState!.validate()) {
+                //           loginContext
+                //               .read<OTPBloc>()
+                //               .add(OTPSendEvent(mobileNumber: userIdController.text));
+                //         } else {
+                //           setState(() {
+                //             autoValidation = true;
+                //           });
+                //         }
+                //       }
+                //     : null,
+                label: t.translate(i18.common.continueLabel),
+              ),
+            ),
           ),
         ),
       );
@@ -213,113 +312,185 @@ class _LoginPageState extends State<LoginPage>
             orElse: () {},
           );
         },
-        child: DigitElevatedButton(
-          onPressed: (userNameController.text.isNotEmpty &&
-                  userPasswordController.text.isNotEmpty &&
-                  selectTenantId.isNotEmpty)
-              ? () {
-                  if (userNameController.text.isNotEmpty &&
-                      userPasswordController.text.isNotEmpty &&
-                      selectTenantId.isNotEmpty) {
-                    context.read<AuthBloc>().add(
-                          AuthLoginEvent(
-                            userId: userNameController.text,
-                            password: userPasswordController.text,
-                            roleType: RoleType.employee,
-                            tenantId: selectTenantId,
-                          ),
-                        );
-                  } else {
-                    // Notifiers.getToastMessage(
-                    //   context,
-                    //   t.translate(i18.common.allFieldsMandatory),
-                    //   'ERROR',
-                    // );
-                    Toast.showToast(
-                      context,
-                      message: t.translate(i18.common.allFieldsMandatory),
-                      type: ToastType.error,
-                    );
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: InkWell(
+            onTap: (userNameController.text.isNotEmpty &&
+                    userPasswordController.text.isNotEmpty &&
+                    selectTenantId.isNotEmpty)
+                ? () {
+                    if (userNameController.text.isNotEmpty &&
+                        userPasswordController.text.isNotEmpty &&
+                        selectTenantId.isNotEmpty) {
+                      context.read<AuthBloc>().add(
+                            AuthLoginEvent(
+                              userId: userNameController.text,
+                              password: userPasswordController.text,
+                              roleType: RoleType.employee,
+                              tenantId: selectTenantId,
+                            ),
+                          );
+                    } else {
+                      // Notifiers.getToastMessage(
+                      //   context,
+                      //   t.translate(i18.common.allFieldsMandatory),
+                      //   'ERROR',
+                      // );
+                      Toast.showToast(
+                        context,
+                        message: t.translate(i18.common.allFieldsMandatory),
+                        type: ToastType.error,
+                      );
+                    }
                   }
-                }
-              : null,
-          child: Center(
-            child: Text(t.translate(i18.common.continueLabel)),
+                : null,
+            child: IgnorePointer(
+              child: Button(
+                mainAxisSize: MainAxisSize.max,
+                isDisabled: !(userNameController.text.isNotEmpty &&
+                    userPasswordController.text.isNotEmpty &&
+                    selectTenantId.isNotEmpty),
+                size: ButtonSize.large,
+                type: ButtonType.primary,
+                onPressed: () {},
+
+                // onPressed: (userNameController.text.isNotEmpty &&
+                //         userPasswordController.text.isNotEmpty &&
+                //         selectTenantId.isNotEmpty)
+                //     ? () {
+                //         if (userNameController.text.isNotEmpty &&
+                //             userPasswordController.text.isNotEmpty &&
+                //             selectTenantId.isNotEmpty) {
+                //           context.read<AuthBloc>().add(
+                //                 AuthLoginEvent(
+                //                   userId: userNameController.text,
+                //                   password: userPasswordController.text,
+                //                   roleType: RoleType.employee,
+                //                   tenantId: selectTenantId,
+                //                 ),
+                //               );
+                //         } else {
+                //           // Notifiers.getToastMessage(
+                //           //   context,
+                //           //   t.translate(i18.common.allFieldsMandatory),
+                //           //   'ERROR',
+                //           // );
+                //           Toast.showToast(
+                //             context,
+                //             message: t.translate(i18.common.allFieldsMandatory),
+                //             type: ToastType.error,
+                //           );
+                //         }
+                //       }
+                //     : null,
+                label: t.translate(i18.common.continueLabel),
+              ),
+            ),
           ),
         ),
       );
     }
   }
 
-  Future<dynamic> forgotPassword(AppLocalizations t) {
-    return showDialog(
+  forgotPassword(AppLocalizations t) {
+    showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          titlePadding:
-              const EdgeInsets.only(top: 16.0, left: 5.0, bottom: 2.0),
-          title: Text(t.translate(i18.login.forgotPassword)),
-          content: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 120,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Text(
-                    t.translate(i18.login.forgotPasswordMsg),
-                    style: DigitTheme.instance.mobileTheme.textTheme.titleSmall,
-                  ),
+        return Popup(
+            // contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            // titlePadding:
+            //     const EdgeInsets.only(top: 16.0, left: 5.0, bottom: 2.0),
+            title: t.translate(i18.login.forgotPassword),
+            additionalWidgets: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: 122,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Text(
+                        t.translate(i18.login.forgotPasswordMsg),
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                    Button(
+                      size: ButtonSize.large,
+                      mainAxisSize: MainAxisSize.max,
+                      type: ButtonType.primary,
+                      label: t.translate(i18.common.oK),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
                 ),
-                DigitElevatedButton(
-                  child: Text(t.translate(i18.common.oK)),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          ),
-        );
+              ),
+            ]);
       },
     );
   }
 
-  SizedBox cboLogin(BuildContext loginContext) {
-    return SizedBox(
-      height: MediaQuery.of(loginContext).size.height * 0.7,
-      child: SingleChildScrollView(
-        child: DigitTextField(
-          label:
-              '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
-          controller: userIdController,
-          isRequired: true,
-          prefixText: '+91 - ',
-          focusNode: _numberFocus,
-          autoValidation: phoneNumberAutoValidation
-              ? AutovalidateMode.always
-              : AutovalidateMode.disabled,
-          textInputType: TextInputType.number,
-          inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-          validator: (val) {
-            if (val!.trim().isEmpty || val.trim().length != 10) {
-              return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-            }
-            return null;
-          },
-          onChange: (value) {
-            setState(() {
-              canContinue = value.length == 10;
-            });
-            if (value.length == 10) {
-              _numberFocus.unfocus();
-            }
-          },
-          maxLength: 10,
+  Padding cboLogin(BuildContext loginContext) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: SizedBox(
+        height: MediaQuery.of(loginContext).size.height * 0.7,
+        child: SingleChildScrollView(
+          // child: DigitTextField(
+          //   label:
+          // '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+          //   controller: userIdController,
+          //   isRequired: true,
+          //   prefixText: '+91 - ',
+          //   focusNode: _numberFocus,
+          //   autoValidation: phoneNumberAutoValidation
+          //       ? AutovalidateMode.always
+          //       : AutovalidateMode.disabled,
+          //   textInputType: TextInputType.number,
+          //   inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+          //   validator: (val) {
+          //     if (val!.trim().isEmpty || val.trim().length != 10) {
+          //       return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
+          //     }
+          //     return null;
+          //   },
+          // onChange: (value) {
+          //   setState(() {
+          //     canContinue = value.length == 10;
+          //   });
+          //   if (value.length == 10) {
+          //     _numberFocus.unfocus();
+          //   }
+          // },
+          //   maxLength: 10,
+          // ),
+
+          child: ui_label.LabeledField(
+            label:
+                '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+            child: DigitTextFormInput(
+              keyboardType: TextInputType.number,
+              // focusNode: _numberFocus,
+              prefixText: '+91',
+              controller: userIdController,
+              isRequired: true,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+              ],
+              onChange: (value) {
+                setState(() {
+                  canContinue = value.length == 10;
+                });
+                // if (value.length == 10) {
+                //   _numberFocus.unfocus();
+                // }
+              },
+            ),
+          ),
         ),
       ),
     );
@@ -333,25 +504,60 @@ class _LoginPageState extends State<LoginPage>
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xff0B4B66),
-           iconTheme: Theme.of(context).iconTheme.copyWith(
-                              color: Theme.of(context)
-                                  .colorTheme
-                                  .paper.primary
-                                   
-                            ),
+          iconTheme: Theme.of(context)
+              .iconTheme
+              .copyWith(color: Theme.of(context).colorTheme.paper.primary),
           automaticallyImplyLeading: true,
         ),
         body: BlocBuilder<AppInitializationBloc, AppInitializationState>(
           builder: (context, state) {
             return LayoutBuilder(builder: (context, constraints) {
               if (constraints.maxWidth < 720) {
-                return Center(
-                  child: MobileView(
-                    getLoginCard(t, context, state),
-                    GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
-                    logoBottomPosition: (constraints.maxHeight / 8) + 50,
-                    cardBottomPosition: (constraints.maxHeight / 4.5),
-                  ),
+                // return Center(
+                //   child: MobileView(
+                //     getLoginCard(t, context, state),
+                //     GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
+                //     logoBottomPosition: 10,
+                //     cardBottomPosition: (constraints.maxHeight / 4.5),
+
+                //   ),
+                // );
+
+                return Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xff0B4B66),
+                        image: DecorationImage(
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                          image: NetworkImage(GlobalVariables
+                              .stateInfoListModel!.bannerUrl
+                              .toString()),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.sizeOf(context).height * 0.08),
+                      child: IntrinsicHeight(
+                        child: getLoginCard(t, context, state),
+                      ),
+                    ),
+                    (Positioned(
+                      bottom: 10,
+                      left: MediaQuery.of(context).size.width / 4,
+                      right: MediaQuery.of(context).size.width / 4,
+                      child: const Align(
+                        alignment: Alignment.bottomCenter,
+                        child: PoweredByDigit(
+                          version: Constants.appVersion,
+                          //isWhiteLogo: true,
+                        ),
+                      ),
+                    )),
+                  ],
                 );
               } else {
                 return DesktopView(
@@ -366,81 +572,91 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  SizedBox employeeLogin(
+  Widget employeeLogin(
     AppLocalizations t,
     BuildContext context,
     AppInitializationState data,
   ) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.7,
-      width: MediaQuery.of(context).size.width,
-      child: ReactiveFormBuilder(
-          form: detailBuildForm,
-          builder: (BuildContext context, FormGroup formGroup, Widget? child) {
-            return Column(
-              children: [
-                DigitTextField(
-                  label: '${t.translate(i18.login.loginUserName)}*',
-                  controller: userNameController,
-                  isRequired: true,
-                  validator: (val) {
-                    if (val!.trim().isEmpty) {
-                      return '${t.translate(i18.login.pleaseEnterMobile)}';
-                    }
-                    return null;
-                  },
-                  onChange: (value) {},
-                ),
-                DigitTextField(
-                  maxLines: 1,
-                  label: '${t.translate(i18.login.loginPassword)}*',
-                  controller: userPasswordController,
-                  isRequired: true,
-                  obscureText: iconVisibility,
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        iconVisibility = !iconVisibility;
-                      });
-                    },
-                    icon: Icon(
-                      iconVisibility
-                          ? Icons.visibility_rounded
-                          : Icons.visibility_off_rounded,
-                      size: 30,
-                      color: const DigitColors().burningOrange,
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        width: MediaQuery.of(context).size.width,
+        child: ReactiveFormBuilder(
+            form: detailBuildForm,
+            builder:
+                (BuildContext context, FormGroup formGroup, Widget? child) {
+              return Column(
+                children: [
+                  ui_label.LabeledField(
+                    label: '${t.translate(i18.login.loginUserName)}*',
+                    child: DigitTextFormInput(
+                      controller: userNameController,
+                      isRequired: true,
+                      onChange: (value) {},
                     ),
                   ),
-                  validator: (val) {
-                    if (val!.trim().isEmpty) {
-                      return '${t.translate(i18.login.pleaseEnterMobile)}';
-                    }
-                    return null;
-                  },
-                  onChange: (value) {},
-                ),
-                DigitReactiveDropdown(
-                  initialValue: null,
-                  formControlName: cityDropDownKey,
-                  onChanged: (value) {
-                    setState(() {
-                      selectTenantId = value?.code ?? "";
-                    });
-                  },
-                  label: "${t.translate(i18.common.city)} *",
-                  menuItems: data.initMdmsModel!.tenant!.tenantListModel!,
-                  valueMapper: (value) =>
-                      t.translate(Conversion.convertToTenant(value!.code!)),
-                ),
-                DigitIconButton(
-                  iconText: t.translate(i18.login.forgotPassword),
-                  onPressed: () {
-                    forgotPassword(t);
-                  },
-                ),
-              ],
-            );
-          }),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: ui_label.LabeledField(
+                      wrapLabelText: true,
+                      label: '${t.translate(i18.login.loginPassword)}*',
+                      child: DigitPasswordFormInput(
+                        toggleSuffixIcon: iconVisibility
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                        controller: userPasswordController,
+                        isRequired: true,
+                        onSuffixTap: (p0) {
+                          setState(() {
+                            iconVisibility = !iconVisibility;
+                          });
+                        },
+                        onChange: (value) {},
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 16),
+                    child: ui_label.LabeledField(
+                      label: "${t.translate(i18.common.city)} *",
+                      child: ui_component.DigitDropdown(
+                        // initialValue: null,
+                        // formControlName: cityDropDownKey,
+                        // onChanged: (value) {
+                        // setState(() {
+                        //   selectTenantId = value?.code ?? "";
+                        // });
+                        // },
+                        onSelect: (value) {
+                          setState(() {
+                            selectTenantId = value?.code ?? "";
+                          });
+                        },
+                        // label: "${t.translate(i18.common.city)} *",
+                        items: data.initMdmsModel!.tenant!.tenantListModel!
+                            .map((e) => DropdownItem(
+                                name: t.translate(
+                                    Conversion.convertToTenant(e!.code!)),
+                                code: e!.code!))
+                            .toList(),
+                        // valueMapper: (value) =>
+                        //     t.translate(Conversion.convertToTenant(value!.code!)),
+                      ),
+                    ),
+                  ),
+                  Button(
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                    label: t.translate(i18.login.forgotPassword),
+                    onPressed: () {
+                      forgotPassword(t);
+                    },
+                  ),
+                ],
+              );
+            }),
+      ),
     );
   }
 

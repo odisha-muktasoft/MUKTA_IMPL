@@ -111,6 +111,7 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           tenantId: args.tenantId,
           musterRollNumber: args.musterRollNumber,
+          mbNumber: args.mbNumber,
         ),
       );
     },
@@ -584,6 +585,7 @@ class MBMusterScreenRoute extends PageRouteInfo<MBMusterScreenRouteArgs> {
     Key? key,
     required String tenantId,
     required String musterRollNumber,
+    required String mbNumber,
     List<PageRouteInfo>? children,
   }) : super(
           MBMusterScreenRoute.name,
@@ -591,6 +593,7 @@ class MBMusterScreenRoute extends PageRouteInfo<MBMusterScreenRouteArgs> {
             key: key,
             tenantId: tenantId,
             musterRollNumber: musterRollNumber,
+            mbNumber: mbNumber,
           ),
           initialChildren: children,
         );
@@ -606,6 +609,7 @@ class MBMusterScreenRouteArgs {
     this.key,
     required this.tenantId,
     required this.musterRollNumber,
+    required this.mbNumber,
   });
 
   final Key? key;
@@ -614,9 +618,11 @@ class MBMusterScreenRouteArgs {
 
   final String musterRollNumber;
 
+  final String mbNumber;
+
   @override
   String toString() {
-    return 'MBMusterScreenRouteArgs{key: $key, tenantId: $tenantId, musterRollNumber: $musterRollNumber}';
+    return 'MBMusterScreenRouteArgs{key: $key, tenantId: $tenantId, musterRollNumber: $musterRollNumber, mbNumber: $mbNumber}';
   }
 }
 
