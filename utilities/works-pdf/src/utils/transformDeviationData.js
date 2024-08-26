@@ -89,7 +89,8 @@ for(const estimateDetail of data.estimates[0].estimateDetails) {
     }
 }
 
-for (const estimateDetail of originalEstimateDetails) {
+for (let i = 0; i < originalEstimateDetails.length; i++) {
+    const estimateDetail = originalEstimateDetails[i];
     if (estimateDetail.category === "OVERHEAD") {
         continue;
     }
@@ -106,13 +107,11 @@ for (const estimateDetail of originalEstimateDetails) {
     const sorIdEntry = sorIdMap[sorId];
 
     if (sorIdEntry !== undefined) {
-        const amountChange = isDeduction ? -amountDetail[0].amount : amountDetail[0].amount;
-
-        sorIdEntry.originalAmount += isDeduction ? -amountChange : amountChange;
+        sorIdEntry.originalAmount += isDeduction ? -amountDetail[0].amount : amountDetail[0].amount;
         sorIdEntry.originalQuantity += isDeduction ? -estimatedQuantity : estimatedQuantity;
 
         // Set deviation based on originalAmount and amount
-        if (sorIdEntry.originalAmount === sorIdEntry.amount) {
+        if (sorIdEntry.originalAmount.toFixed(4) === sorIdEntry.amount.toFixed(4)) {
             sorIdEntry.deviation = "No";
         } else if (sorIdEntry.originalAmount < sorIdEntry.amount) {
             sorIdEntry.deviation = "Excess";
