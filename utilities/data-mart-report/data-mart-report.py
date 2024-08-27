@@ -328,6 +328,7 @@ if __name__ == '__main__':
 
         # Generate filenames with the current date
         mukta_datamart_filename = f"{directory}/mukta_datamart_report_{current_date}.csv"
+        project_type_filename = f"{directory}/project_type_report_{current_date}.csv"
 
         connection = connect_to_database()
         print("Connected to PostgreSQL")
@@ -339,6 +340,8 @@ if __name__ == '__main__':
 
         # Generate Mukta Datamart Project Type Report
         mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch)
+        project_type_data_file_path = os.path.join(directory, project_type_filename)
+        writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
