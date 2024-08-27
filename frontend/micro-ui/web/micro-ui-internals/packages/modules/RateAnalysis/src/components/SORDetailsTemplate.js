@@ -53,7 +53,13 @@ const SORDetailsTemplate = (props) => {
   const buttonClick = async () => {
     if(formData?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
     {
-      setShowToast({ show: true, label: "SOR Already present", error: true });
+      setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
+      setSelectedSOR(null);
+      return;
+    }
+    if(window.location.href.includes("update") && SORDetails?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
+    {
+      setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
       setSelectedSOR(null);
       return;
     }
