@@ -5071,7 +5071,7 @@ mixin _$ContractAdditionalDetails {
   @JsonKey(name: 'orgName')
   String? get orgName => throw _privateConstructorUsedError;
   @JsonKey(name: 'totalEstimatedAmount')
-  double? get totalEstimatedAmount => throw _privateConstructorUsedError;
+  dynamic get totalEstimatedAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'attendanceRegisterNumber')
   String? get attendanceRegisterNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'officerInChargeId')
@@ -5126,7 +5126,7 @@ abstract class $ContractAdditionalDetailsCopyWith<$Res> {
       {@JsonKey(name: 'orgName')
           String? orgName,
       @JsonKey(name: 'totalEstimatedAmount')
-          double? totalEstimatedAmount,
+          dynamic totalEstimatedAmount,
       @JsonKey(name: 'attendanceRegisterNumber')
           String? attendanceRegisterNumber,
       @JsonKey(name: 'officerInChargeId')
@@ -5208,7 +5208,7 @@ class _$ContractAdditionalDetailsCopyWithImpl<$Res,
       totalEstimatedAmount: freezed == totalEstimatedAmount
           ? _value.totalEstimatedAmount
           : totalEstimatedAmount // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as dynamic,
       attendanceRegisterNumber: freezed == attendanceRegisterNumber
           ? _value.attendanceRegisterNumber
           : attendanceRegisterNumber // ignore: cast_nullable_to_non_nullable
@@ -5298,7 +5298,7 @@ abstract class _$$_ContractAdditionalDetailsCopyWith<$Res>
       {@JsonKey(name: 'orgName')
           String? orgName,
       @JsonKey(name: 'totalEstimatedAmount')
-          double? totalEstimatedAmount,
+          dynamic totalEstimatedAmount,
       @JsonKey(name: 'attendanceRegisterNumber')
           String? attendanceRegisterNumber,
       @JsonKey(name: 'officerInChargeId')
@@ -5379,7 +5379,7 @@ class __$$_ContractAdditionalDetailsCopyWithImpl<$Res>
       totalEstimatedAmount: freezed == totalEstimatedAmount
           ? _value.totalEstimatedAmount
           : totalEstimatedAmount // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as dynamic,
       attendanceRegisterNumber: freezed == attendanceRegisterNumber
           ? _value.attendanceRegisterNumber
           : attendanceRegisterNumber // ignore: cast_nullable_to_non_nullable
@@ -5511,7 +5511,7 @@ class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
   final String? orgName;
   @override
   @JsonKey(name: 'totalEstimatedAmount')
-  final double? totalEstimatedAmount;
+  final dynamic totalEstimatedAmount;
   @override
   @JsonKey(name: 'attendanceRegisterNumber')
   final String? attendanceRegisterNumber;
@@ -5594,8 +5594,8 @@ class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
         (other.runtimeType == runtimeType &&
             other is _$_ContractAdditionalDetails &&
             (identical(other.orgName, orgName) || other.orgName == orgName) &&
-            (identical(other.totalEstimatedAmount, totalEstimatedAmount) ||
-                other.totalEstimatedAmount == totalEstimatedAmount) &&
+            const DeepCollectionEquality()
+                .equals(other.totalEstimatedAmount, totalEstimatedAmount) &&
             (identical(
                     other.attendanceRegisterNumber, attendanceRegisterNumber) ||
                 other.attendanceRegisterNumber == attendanceRegisterNumber) &&
@@ -5636,7 +5636,7 @@ class _$_ContractAdditionalDetails implements _ContractAdditionalDetails {
   int get hashCode => Object.hashAll([
         runtimeType,
         orgName,
-        totalEstimatedAmount,
+        const DeepCollectionEquality().hash(totalEstimatedAmount),
         attendanceRegisterNumber,
         officerInChargeId,
         cboOrgNumber,
@@ -5677,7 +5677,7 @@ abstract class _ContractAdditionalDetails implements ContractAdditionalDetails {
           {@JsonKey(name: 'orgName')
               final String? orgName,
           @JsonKey(name: 'totalEstimatedAmount')
-              final double? totalEstimatedAmount,
+              final dynamic totalEstimatedAmount,
           @JsonKey(name: 'attendanceRegisterNumber')
               final String? attendanceRegisterNumber,
           @JsonKey(name: 'officerInChargeId')
@@ -5724,7 +5724,7 @@ abstract class _ContractAdditionalDetails implements ContractAdditionalDetails {
   String? get orgName;
   @override
   @JsonKey(name: 'totalEstimatedAmount')
-  double? get totalEstimatedAmount;
+  dynamic get totalEstimatedAmount;
   @override
   @JsonKey(name: 'attendanceRegisterNumber')
   String? get attendanceRegisterNumber;

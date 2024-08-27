@@ -401,7 +401,7 @@ _$_ContractAdditionalDetails _$$_ContractAdditionalDetailsFromJson(
         Map<String, dynamic> json) =>
     _$_ContractAdditionalDetails(
       orgName: json['orgName'] as String?,
-      totalEstimatedAmount: (json['totalEstimatedAmount'] as num?)?.toDouble(),
+      totalEstimatedAmount: json['totalEstimatedAmount'],
       attendanceRegisterNumber: json['attendanceRegisterNumber'] as String?,
       officerInChargeId: json['officerInChargeId'] as String?,
       cboOrgNumber: json['cboOrgNumber'] as String?,
