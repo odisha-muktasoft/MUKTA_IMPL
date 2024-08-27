@@ -265,6 +265,7 @@ def getValueOfProjectInitiated(connection, epoch):
     df = pd.DataFrame(data, columns=['ulb', 'totalestimateamount'])
     return df
 
+
 def generateTotalCountByProjectType(connection, epoch):
     cursor = connection.cursor()
     data = []
@@ -306,6 +307,158 @@ def generateTotalCountByProjectType(connection, epoch):
     return data
 
 
+def generateTotalAmountPaidAndCountOfBills(connection, epoch):
+    cursor = connection.cursor()
+
+    ############### WAGE BILL ############### 
+    #Value of Wage Bill Paid
+    cursor.execute("""select tenantid as ulb, sum(totalpaidamount) as amount from eg_expense_bill where businessservice='EXPENSE.WAGES' and paymentstatus='SUCCESSFUL' and lastmodifiedtime<=%s group by tenantid order by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valueWageBillDataFrame = pd.DataFrame(result)
+
+    #Value of Wage Bill Paid PARTIAL
+    cursor.execute("""select  sum(totalpaidamount) as amount, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.WAGES' and paymentstatus='PARTIAL' and lastmodifiedtime<=%s group by tenantid order by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valueWageBillPartialDataFrame = pd.DataFrame(result)
+
+    #Count of Wage Bills Paid
+    cursor.execute("""select count(*) as num, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s and paymentstatus='SUCCESSFUL' group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countWageBillPaidDataFrame = pd.DataFrame(result)
+
+    #Count of Wage Bills Paid PARTIAL
+    cursor.execute("""select count(*) as num, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s and paymentstatus='PARTIAL' group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countWageBillPartialPaidDataFrame = pd.DataFrame(result)
+
+    #Count of Wage Bills Created
+    cursor.execute("""select count(*) as num,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countWageBillCreatedDataFrame = pd.DataFrame(result)
+
+    #Value of Wage Bills Created
+    cursor.execute("""select sum(totalamount),tenantid from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valueWageBillCreatedDataFrame = pd.DataFrame(result)
+
+
+    ###############Purchase Bill###############
+    #Value of Purchase Bill Paid
+    cursor.execute("""select sum(totalpaidamount) as amount,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and paymentstatus='SUCCESSFUL' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valuePurchaseBillDataFrame = pd.DataFrame(result)
+
+    #Value of Purchase Bill Paid PARTIAL
+    cursor.execute("""select sum(totalpaidamount) as amount,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and paymentstatus='PARTIAL' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valuePurchaseBillPartialDataFrame = pd.DataFrame(result)
+
+    #Count of Purchase Bills Paid
+    cursor.execute("""select count(*) as num, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and lastmodifiedtime<=%s and paymentstatus='SUCCESSFUL' group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countPurchaseBillPaidDataFrame = pd.DataFrame(result)
+
+    #Count of Purchase Bills Paid PARTIAL
+    cursor.execute("""select count(*) as num, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and lastmodifiedtime<=%s and paymentstatus='PARTIAL' group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countPurchaseBillPartialPaidDataFrame = pd.DataFrame(result)
+
+    #Count of Purchase Bills Created
+    cursor.execute("""select count(*) as num,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countPurchaseBillCreatedDataFrame = pd.DataFrame(result)
+
+    #Value of Purchase Bills Created
+    cursor.execute("""select sum(totalamount) as amount,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valuePurchaseBillCreatedDataFrame = pd.DataFrame(result)
+
+
+    ###############Supervision Bill###############
+    #Value of Supervision Bill Paid
+    cursor.execute("""select sum(totalpaidamount) as amount,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and paymentstatus='SUCCESSFUL' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valueSupervisionBillDataFrame = pd.DataFrame(result)
+
+    #Value of Supervision Bill Paid PARTIAL
+    cursor.execute("""select sum(totalpaidamount) as amount,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and paymentstatus='PARTIAL' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valueSupervisionBillPartialDataFrame = pd.DataFrame(result)
+
+
+    #Count of Supervision Bills Paid
+    cursor.execute("""select count(*) as num, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and lastmodifiedtime<=%s and paymentstatus='SUCCESSFUL' group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countSupervisionBillPaidDataFrame = pd.DataFrame(result)
+
+    #Count of Supervision Bills Paid Partial
+    cursor.execute("""select count(*) as num, tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and lastmodifiedtime<=%s and paymentstatus='PARTIAL' group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countSupervisionBillPartialPaidDataFrame = pd.DataFrame(result)
+
+
+    #Count of Supervision Bills Created
+    cursor.execute("""select count(*) as num,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    countSupervisionBillCreatedDataFrame = pd.DataFrame(result)
+
+    #Value of Supervision Bills Created
+    cursor.execute("""select sum(totalamount) as amount,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    result = cursor.fetchall()
+    valueSupervisionBillCreatedDataFrame = pd.DataFrame(result)
+
+
+    #Prepare column
+    valueWageBillDataFrame.columns = ['ulb', 'Value of Wage Bill Paid']
+    countWageBillPaidDataFrame.columns = ['Count of Wage Bills Paid', 'ulb']
+    countWageBillCreatedDataFrame.columns = ['Count of Wage Bills Created','ulb']
+    valueWageBillCreatedDataFrame.columns = ['Value of Wage Bills Created', 'ulb']
+    valueWageBillPartialDataFrame.columns=['Value of Wage Bill Paid Partial','ulb']
+    countWageBillPartialPaidDataFrame.columns= ['Count of Wage Bills Paid Partial','ulb']
+
+    valuePurchaseBillDataFrame.columns = ['Value of Purchase Bill Paid','ulb']
+    countPurchaseBillPaidDataFrame.columns = ['Count of Purchase Bills Paid','ulb']
+    countPurchaseBillCreatedDataFrame.columns = ['Count of Purchase Bills Created','ulb']
+    valuePurchaseBillCreatedDataFrame.columns = ['Value of Purchase Bills Created','ulb']
+    valuePurchaseBillPartialDataFrame.columns=['Value of Purchase Bill Paid Partial','ulb']
+    countPurchaseBillPartialPaidDataFrame.columns= ['Count of Purchase Bills Paid Partial','ulb']
+
+    valueSupervisionBillDataFrame.columns = ['Value of Supervision Bill Paid','ulb']
+    countSupervisionBillPaidDataFrame.columns = ['Count of Supervision Bills Paid','ulb']
+    countSupervisionBillCreatedDataFrame.columns = ['Count of Supervision Bills Created','ulb']
+    valueSupervisionBillCreatedDataFrame.columns = ['Value of Supervision Bills Created','ulb']
+    valueSupervisionBillPartialDataFrame.columns=['Value of Supervision Bill Paid Partial','ulb']
+    countSupervisionBillPartialPaidDataFrame.columns= ['Count of Supervision Bills Paid Partial','ulb']
+
+    #####################################
+
+    data = pd.DataFrame()
+    data=pd.merge(countWageBillCreatedDataFrame,valueWageBillCreatedDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valueWageBillDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countWageBillPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valueWageBillPartialDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countWageBillPartialPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
+
+    data=pd.merge(data,valuePurchaseBillDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countPurchaseBillPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countPurchaseBillCreatedDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valuePurchaseBillCreatedDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valuePurchaseBillPartialDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countPurchaseBillPartialPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
+    
+
+    data=pd.merge(data,valueSupervisionBillDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countSupervisionBillPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countSupervisionBillCreatedDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valueSupervisionBillCreatedDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valueSupervisionBillPartialDataFrame,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,countSupervisionBillPartialPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
+
+    
+    print(data)
+    return data
+
+
 def writeDataToCSV(data, filename):
     if data.empty:
         print("No data to write.")
@@ -329,6 +482,7 @@ if __name__ == '__main__':
         # Generate filenames with the current date
         mukta_datamart_filename = f"{directory}/mukta_datamart_report_{current_date}.csv"
         project_type_filename = f"{directory}/project_type_report_{current_date}.csv"
+        amount_paid_bill_count_data_filename = f"{directory}/amount_paid_bill_count_report_{current_date}.csv"
 
         connection = connect_to_database()
         print("Connected to PostgreSQL")
@@ -342,6 +496,11 @@ if __name__ == '__main__':
         mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch)
         project_type_data_file_path = os.path.join(directory, project_type_filename)
         writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
+
+        # Generate Total amount paid and Count of bills
+        amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch)
+        amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
+        writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
