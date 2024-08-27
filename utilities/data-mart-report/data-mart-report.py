@@ -40,12 +40,9 @@ def get_last_thursday_epoch():
     last_thursday_epoch = int(last_thursday_time.timestamp() * 1000)
     return last_thursday_epoch
 
-def generateBasicInformations(connection):
+def generateBasicInformations(connection, epoch):
 
     cursor = connection.cursor()
-
-    # Get the epoch time of the latest Thursday 3:30 PM
-    epoch = get_last_thursday_epoch()
 
     #No. of ULB users/employee
     cursor.execute("""
@@ -268,13 +265,52 @@ def getValueOfProjectInitiated(connection, epoch):
     df = pd.DataFrame(data, columns=['ulb', 'totalestimateamount'])
     return df
 
+def generateTotalCountByProjectType(connection, epoch):
+    cursor = connection.cursor()
+    data = []
+    counter = 0
+
+    for tenant in tenants:
+        counter += 1
+        cursor.execute("""
+            SELECT temptable.projectType, 
+                   COUNT(*) as project_count 
+            FROM (
+                SELECT DISTINCT 
+                       eg_wms_attendance_register.additionaldetails->>'projectType' as projectType, 
+                       eg_wms_attendance_register.id 
+                FROM eg_wms_attendance_register 
+                INNER JOIN eg_wms_attendance_attendee 
+                ON eg_wms_attendance_register.id = eg_wms_attendance_attendee.register_id  
+                WHERE eg_wms_attendance_register.tenantid = %s 
+                AND eg_wms_attendance_register.tenantid != 'od.testing' 
+                AND eg_wms_attendance_register.lastmodifiedtime <= %s 
+            ) as temptable 
+            GROUP BY temptable.projectType;
+        """, (tenant, epoch))
+        
+        result = cursor.fetchall()
+        print(result)
+
+        if not result:
+            dataSet = pd.DataFrame([['NA', 0]], columns=['Project Type', tenant.replace("od.", "")])
+        else:
+            dataSet = pd.DataFrame(result, columns=['Project Type', tenant.replace("od.", "")])
+
+        if counter == 1:
+            data = dataSet
+        else:
+            data = pd.merge(data, dataSet, on='Project Type', how='outer')
+
+    print(data)
+    return data
+
+
 def writeDataToCSV(data, filename):
     if data.empty:
         print("No data to write.")
         return
     data.to_csv(filename, index=False)
-
-
 
 if __name__ == '__main__':
     try:
@@ -284,6 +320,9 @@ if __name__ == '__main__':
         if not os.path.exists(directory):
             os.makedirs(directory)
         
+        # Get the epoch time of the latest Thursday 3:30 PM
+        epoch = get_last_thursday_epoch()
+
         # Get current date in ddmmyyyy format
         current_date = dt.datetime.now().strftime('%d%m%Y')
 
@@ -293,10 +332,13 @@ if __name__ == '__main__':
         connection = connect_to_database()
         print("Connected to PostgreSQL")
 
-        # # Generate Mukta Datamart Basic Report
-        # mukta_datamart_basic_data = generateBasicInformations(connection)
-        # mukta_datamart_basic_data_file_path = os.path.join(directory, mukta_datamart_filename)
-        # writeDataToCSV(mukta_datamart_basic_data, mukta_datamart_basic_data_file_path)
+        # Generate Mukta Datamart Basic Report
+        mukta_datamart_basic_data = generateBasicInformations(connection, epoch)
+        mukta_datamart_basic_data_file_path = os.path.join(directory, mukta_datamart_filename)
+        writeDataToCSV(mukta_datamart_basic_data, mukta_datamart_basic_data_file_path)
+
+        # Generate Mukta Datamart Project Type Report
+        mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
