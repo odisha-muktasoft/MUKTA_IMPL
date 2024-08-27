@@ -3,10 +3,13 @@ import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/DropdownModels.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
+import 'package:digit_ui_components/widgets/helper_widget/digit_profile.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_header.dart';
+import 'package:digit_ui_components/widgets/molecules/hamburder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:works_shg_app/blocs/app_initilization/app_initilization.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/models/employee/homeconfig/home_config_model.dart';
@@ -18,6 +21,8 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/button_link.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../blocs/app_initilization/home_screen_bloc.dart';
 import '../blocs/localization/app_localization.dart';
@@ -27,7 +32,7 @@ import '../models/organisation/organisation_model.dart';
 import '../models/screen_config/home_screen_config.dart';
 import '../utils/constants.dart';
 import '../utils/global_variables.dart';
-import '../widgets/side_bar.dart';
+// import '../widgets/side_bar.dart';
 import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
@@ -67,20 +72,8 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-      // appBar: PreferredSize(
-      //     preferredSize:  const Size.fromHeight(64), // here the desired height
-      //     child: Builder(
-      //       builder: (context) => CustomHeaderMolecule(
-      //         //title: 'City Municipal Corporation',
-      //         type: HeaderType.dark,
-      //         leadingDigitLogo: false,
-      //         trailingDigitLogo: true,
-      //         onMenuTap: () {
-      //           Scaffold.of(context).openDrawer();
-      //         },
-              
       //         actions: [
-                
+
       //          HeaderAction(
       //             widget: Row(
       //               children: [
@@ -104,88 +97,196 @@ class _HomePage extends State<HomePage> {
       //           ),
       //         ],
       //       ),
-            
+
       //     ),
       //   ),
-        // drawer: SideBar(
-        //   sidebarItems: [
-        //     SidebarItem(
-        //       title: 'Home',
-        //       icon: Icons.home,
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //         // Navigate to Home
-        //       },
-        //     ),
-        //     SidebarItem(
-        //       title: 'Language',
-        //       icon: Icons.language,
-        //       onPressed: () {
-        //         // Implement language change
-        //       },
-        //     ),
-        //     SidebarItem(
-        //       title: 'Profile',
-        //       icon: Icons.person,
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //         // Navigate to Profile
-        //       },
-        //     ),
-        //     SidebarItem(
-        //       title: 'View Downloaded Data',
-        //       icon: Icons.download,
-        //       onPressed: () {
-        //         Navigator.of(context).pop();
-        //         // Navigate to Downloaded Data
-        //       },
-        //     ),
-        //   ],
-        // ),
-      appBar: AppBar(
-        backgroundColor: const Color(0xff0B4B66),
-        iconTheme: Theme.of(context)
-            .iconTheme
-            .copyWith(color: Theme.of(context).colorTheme.paper.primary),
-        titleSpacing: 0,
-        title: GlobalVariables.roleType == RoleType.cbo
-            ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                builder: (context, state) {
-                  return state.maybeWhen(
-                      orElse: () => Container(),
-                      loaded: (OrganisationListModel? organisationListModel) {
-                        return const AppBarLogo();
-                      });
-                },
-              )
-            : const AppBarLogo(),
-      ),
-      drawer: DrawerWrapper(
-        Drawer(
-            child: GlobalVariables.roleType == RoleType.cbo
-                ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-                    builder: (context, state) {
-                      return state.maybeMap(
-                        orElse: () {
-                          return const SideBar();
-                        },
-                        loaded: (value) {
-                          return SideBar(
-                            module: CommonMethods.getLocaleModules(),
-                          );
-                        },
-                        error: (value) {
-                          return const SideBar();
-                        },
-                      );
-                    },
-                  )
-                : SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  )),
-      ),
+      // drawer: SideBar(
+      //   sidebarItems: [
+      //     SidebarItem(
+      //       title: 'Home',
+      //       icon: Icons.home,
+      //       onPressed: () {
+      //         Navigator.of(context).pop();
+      //         // Navigate to Home
+      //       },
+      //     ),
+      //     SidebarItem(
+      //       title: 'Language',
+      //       icon: Icons.language,
+      //       onPressed: () {
+      //         // Implement language change
+      //       },
+      //     ),
+      //     SidebarItem(
+      //       title: 'Profile',
+      //       icon: Icons.person,
+      //       onPressed: () {
+      //         Navigator.of(context).pop();
+      //         // Navigate to Profile
+      //       },
+      //     ),
+      //     SidebarItem(
+      //       title: 'View Downloaded Data',
+      //       icon: Icons.download,
+      //       onPressed: () {
+      //         Navigator.of(context).pop();
+      //         // Navigate to Downloaded Data
+      //       },
+      //     ),
+      //   ],
+      // ),
 
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xff0B4B66),
+      //   iconTheme: Theme.of(context)
+      //       .iconTheme
+      //       .copyWith(color: Theme.of(context).colorTheme.paper.primary),
+      //   titleSpacing: 0,
+      //   title: GlobalVariables.roleType == RoleType.cbo
+      //       ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
+      //           builder: (context, state) {
+      //             return state.maybeWhen(
+      //                 orElse: () => Container(),
+      //                 loaded: (OrganisationListModel? organisationListModel) {
+      //                   return const AppBarLogo();
+      //                 });
+      //           },
+      //         )
+      //   : const AppBarLogo(),
+      // ),
 
+      appBar: customAppBar(),
+
+      // drawer: DrawerWrapper(
+      //   Drawer(
+      //       child: GlobalVariables.roleType == RoleType.cbo
+      //           ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
+      //               builder: (context, state) {
+      //                 return state.maybeMap(
+      //                   orElse: () {
+      //                     return const SideBar();
+      //                   },
+      //                   loaded: (value) {
+      //                     return SideBar(
+      //                       module: CommonMethods.getLocaleModules(),
+      //                     );
+      //                   },
+      //                   error: (value) {
+      //                     return const SideBar();
+      //                   },
+      //                 );
+      //               },
+      //             )
+      //           : SideBar(
+      //               module: CommonMethods.getLocaleModules(),
+      //             )),
+      // ),
+
+      // drawer: BlocBuilder<LocalizationBloc, LocalizationState>(
+      //   builder: (context, state) {
+      //     return state.maybeMap(
+      //       orElse: () => const SizedBox.shrink(),
+      //       loaded: (value) {
+      //         return BlocBuilder<AppInitializationBloc, AppInitializationState>(
+      //           builder: (context, stateInit) {
+      //             return BlocBuilder<AuthBloc, AuthState>(
+      //               builder: (context, stateAuth) {
+      //                 return stateAuth.maybeMap(
+      //                   orElse: () => const SizedBox.shrink(),
+      //                   loaded: (authValue) {
+      //                     return SideBar(
+      //                       profile: ProfileWidget(
+      //                         title: authValue
+      //                                 .userDetailsModel?.userRequestModel?.name
+      //                                 .toString() ??
+      //                             '',
+      //                         description: authValue.userDetailsModel
+      //                                 ?.userRequestModel?.mobileNumber
+      //                                 .toString() ??
+      //                             '',
+      //                         leading: const SizedBox.shrink(),
+      //                       ),
+      //                       sidebarItems: [
+      //                         SidebarItem(
+      //                           title: AppLocalizations.of(context)
+      //                               .translate(i18.common.home),
+      //                           icon: Icons.home,
+      //                           onPressed: () {
+      //                             Navigator.of(context).pop();
+      //                             // Navigate to Home
+      //                           },
+      //                         ),
+      //                         SidebarItem(
+      //                           children: stateInit.digitRowCardItems != null &&
+      //                                   stateInit.isInitializationCompleted
+      //                               ? List.generate(
+      //                                   value.languages != null
+      //                                       ? value.languages!.length
+      //                                       : 0,
+      //                                   (index) => SidebarItem(
+      //                                       title:
+      //                                           value.languages![index].label,
+      //                                       icon: Icons.language,
+      //                                       onPressed: () {
+      //                                         print("hello welcome");
+      //                                         context
+      //                                             .read<LocalizationBloc>()
+      //                                             .add(
+      //                                               LocalizationEvent
+      //                                                   .onSpecificLoadLocalization(
+      //                                                 locale: value
+      //                                                     .languages![index]
+      //                                                     .value,
+      //                                                 module: CommonMethods
+      //                                                     .getLocaleModules(),
+      //                                                 tenantId: stateInit
+      //                                                     .initMdmsModel!
+      //                                                     .commonMastersModel!
+      //                                                     .stateInfoListModel!
+      //                                                     .first
+      //                                                     .code
+      //                                                     .toString(),
+      //                                               ),
+      //                                             );
+      //                                       }),
+      //                                 ).toList()
+      //                               : [],
+      //                           title: 'Language',
+      //                           icon: Icons.language,
+      //                           onPressed: () {
+      //                             print("object");
+      //                             // Implement language change
+      //                           },
+      //                         ),
+      //                         SidebarItem(
+      //                           title: 'Profile',
+      //                           icon: Icons.person,
+      //                           onPressed: () {
+      //                             Navigator.of(context).pop();
+      //                             // Navigate to Profile
+      //                           },
+      //                         ),
+      //                         SidebarItem(
+      //                           title: 'View Downloaded Data',
+      //                           icon: Icons.download,
+      //                           onPressed: () {
+      //                             Navigator.of(context).pop();
+      //                             // Navigate to Downloaded Data
+      //                           },
+      //                         ),
+      //                       ],
+      //                     );
+      //                   },
+      //                 );
+      //               },
+      //             );
+      //           },
+      //         );
+      //       },
+      //     );
+      //   },
+      // ),
+drawer: const MySideBar(),
       body: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
           return localState.maybeMap(
@@ -308,6 +409,8 @@ class _HomePage extends State<HomePage> {
       ),
     );
   }
+
+  
 
   Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,
       AppLocalizations t) {

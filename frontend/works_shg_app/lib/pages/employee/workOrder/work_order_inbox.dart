@@ -26,6 +26,7 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../../blocs/employee/work_order/workorder_book.dart';
 import '../../../blocs/localization/app_localization.dart';
@@ -204,14 +205,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
-          appBar: AppBar(
-            backgroundColor: const Color(0xff0B4B66),
-            iconTheme: Theme.of(context)
-                .iconTheme
-                .copyWith(color: Theme.of(context).colorTheme.paper.primary),
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
+          appBar: customAppBar(),
           drawer: DrawerWrapper(
             Drawer(
               child: SideBar(

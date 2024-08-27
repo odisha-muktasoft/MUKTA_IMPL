@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/back.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/custom_info_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -150,21 +152,16 @@ class _SHGInboxPage extends State<SHGInboxPage> {
         ? 150.0
         : (MediaQuery.of(context).size.width / 7.5);
     var t = AppLocalizations.of(context);
-    return PopScope(canPop: true,
+    return PopScope(
+      canPop: true,
       onPopInvoked: (value) async {
         context.router.popUntilRouteWithPath('home');
         context.router.push(const ViewMusterRollsRoute());
-       
       },
       child: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, localState) {
         return Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color(0xff0B4B66),
-              iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
-              titleSpacing: 0,
-              title: const AppBarLogo(),
-            ),
+            appBar:customAppBar(),
             drawer: DrawerWrapper(Drawer(
                 child: SideBar(
               module: CommonMethods.getLocaleModules(),
@@ -272,7 +269,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                               .tenantId
                                                               .toString()),
                                                     );
-                                                   
+
                                                 projectDetails =
                                                     individualMusterRollModel
                                                         .musterRoll!
@@ -419,11 +416,26 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                       MainAxisAlignment
                                                                           .spaceBetween,
                                                                   children: [
-                                                                    Back(
-                                                                      backLabel: AppLocalizations.of(context).translate(i18
-                                                                          .common
-                                                                          .back),
-                                                                      callback:
+                                                                    // Back(
+                                                                    //   backLabel: AppLocalizations.of(context).translate(i18
+                                                                    //       .common
+                                                                    //       .back),
+                                                                    //   callback:
+                                                                    //       () {
+                                                                    // context
+                                                                    //     .router
+                                                                    //     .popUntilRouteWithPath('home');
+                                                                    // context
+                                                                    //     .router
+                                                                    //     .push(const ViewMusterRollsRoute());
+                                                                    //   },
+                                                                    // ),
+                                                                    BackNavigationButton(
+                                                                      backButtonText: AppLocalizations.of(context).translate(i18
+                                                                              .common
+                                                                              .back) ??
+                                                                          'Back',
+                                                                      handleBack:
                                                                           () {
                                                                         context
                                                                             .router
@@ -663,9 +675,10 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                           : const SizedBox.shrink());
                                                                 }),
                                                                 Container(
-                                                                    margin: const EdgeInsets
+                                                                    margin:
+                                                                        const EdgeInsets
                                                                             .all(
-                                                                        8.0),
+                                                                            8.0),
                                                                     child:
                                                                         TextFormField(
                                                                       controller:
@@ -866,8 +879,10 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                           .bottomCenter,
                                                                   child:
                                                                       PoweredByDigit(
-                                                                        version: Constants.appVersion,
-                                                                        ),
+                                                                    version:
+                                                                        Constants
+                                                                            .appVersion,
+                                                                  ),
                                                                 )
                                                               ]))
                                                         ]),
@@ -1560,7 +1575,6 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                 widget.tenantId));
           }
         }
-        
       });
     }
   }
@@ -1686,7 +1700,6 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                 widget.tenantId));
           }
         }
-        
       });
     }
   }

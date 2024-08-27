@@ -1,11 +1,13 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
@@ -69,17 +71,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xff0B4B66),
-         iconTheme: Theme.of(context).iconTheme.copyWith(
-                              color: Theme.of(context)
-                                  .colorTheme
-                                  .paper.primary
-                                   
-                            ),
-        titleSpacing: 0,
-        title: const AppBarLogo(),
-      ),
+      appBar: customAppBar(),
       drawer: DrawerWrapper(
           Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
       bottomNavigationBar: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -96,7 +88,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: PoweredByDigit(
-                             version: Constants.appVersion,
+                            version: Constants.appVersion,
                           ),
                         ),
                       )
@@ -198,10 +190,28 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                 shg_loader.Loaders.circularLoader(context),
                             loaded: (ContractsModel? contractsModel) => Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Back(
-                                  backLabel: AppLocalizations.of(context)
-                                      .translate(i18.common.back),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0,
+                                      top: 16,
+                                      bottom: 0.0,
+                                      right: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      BackNavigationButton(
+                                        backButtonText: AppLocalizations.of(
+                                                    context)
+                                                .translate(i18.common.back) ??
+                                            'Back',
+                                        handleBack: () {
+                                          context.router.maybePop();
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -359,8 +369,8 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                           ? const Align(
                                               alignment: Alignment.bottomCenter,
                                               child: PoweredByDigit(
-                                                 version: Constants.appVersion,
-                                                ),
+                                                version: Constants.appVersion,
+                                              ),
                                             )
                                           : const SizedBox.shrink()
                                     ]),

@@ -2,6 +2,12 @@ import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_action_card.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
+import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -97,19 +103,218 @@ class WorkDetailsCard extends StatelessWidget {
       case 2:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(
-                context,
-                e['cardDetails'],
-                payload: e['payload'],
-                isAccept: acceptWorkOrderCode != null &&
-                        e['cardDetails'][Constants.activeInboxStatus] ==
-                            'true'
-                    ? false
-                    : true,
-                contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
-              ),
+            return ui_card.DigitCard(
+              spacing: 0.0,
+              margin: const EdgeInsets.all(8),
+              cardType: CardType.primary,
+              // padding: const EdgeInsets.all(8.0),
+              // child: getCardDetails(
+              //   context,
+              //   e['cardDetails'],
+              //   payload: e['payload'],
+              //   isAccept: acceptWorkOrderCode != null &&
+              //           e['cardDetails'][Constants.activeInboxStatus] == 'true'
+              //       ? false
+              //       : true,
+              //   contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
+              // ),
+              children: [
+                isWorkOrderInbox &&
+                        acceptWorkOrderCode != null &&
+                        e['cardDetails'][Constants.activeInboxStatus] == 'true'
+                    ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                      )
+                    : const SizedBox.shrink(),
+                LabelValueList(
+                  heading: ((viewWorkOrder || orgProfile) && cardTitle != null)
+                      ? cardTitle
+                      : null,
+                  maxLines: 3,
+                  labelFlex: 5,
+                  valueFlex: 5,
+                  items: getCardDetails(
+                    context,
+                    e['cardDetails'],
+                    payload: e['payload'],
+                    isAccept: acceptWorkOrderCode != null &&
+                            e['cardDetails'][Constants.activeInboxStatus] ==
+                                'true'
+                        ? false
+                        : true,
+                    contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
+                  ),
+                ),
+                isWorkOrderInbox ||
+                        acceptWorkOrderCode != null &&
+                            e['cardDetails'][Constants.activeInboxStatus] ==
+                                'true'
+                    ? Button(
+                        label: AppLocalizations.of(context)
+                            .translate(i18.common.viewDetails),
+                        onPressed: () {
+                          context.router.push(
+                            ViewWorkDetailsRoute(
+                              contractNumber: e['cardDetails']
+                                      [i18.workOrder.workOrderNo]
+                                  .toString(),
+                              wfStatus: e['payload']!['wfStatus'].toString(),
+                            ),
+                          );
+                        },
+                        type: ButtonType.tertiary,
+                        size: ButtonSize.large,
+                      )
+                    : const SizedBox.shrink(),
+                acceptWorkOrderCode != null &&
+                        e['cardDetails'][Constants.activeInboxStatus] == 'true'
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex: 10,
+                            child: Button(
+                                mainAxisSize: MainAxisSize.min,
+                                label: outlinedButtonLabel,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Popup(
+                                        onCrossTap: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                        },
+                                        type: PopUpType.simple,
+                                        title: AppLocalizations.of(context)
+                                            .translate(i18.common.warning),
+                                        description:
+                                            AppLocalizations.of(context)
+                                                .translate(
+                                                    i18.workOrder.warningMsg),
+                                        actions: [
+                                          Button(
+                                              label:
+                                                  AppLocalizations.of(context)
+                                                      .translate(
+                                                          i18.common.confirm),
+                                              onPressed: () {
+                                                context
+                                                    .read<
+                                                        DeclineWorkOrderBloc>()
+                                                    .add(
+                                                      WorkOrderDeclineEvent(
+                                                          contractsModel:
+                                                              e['payload'],
+                                                          action: 'DECLINE',
+                                                          comments:
+                                                              'Work Order has been declined by CBO'),
+                                                    );
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop();
+                                              },
+                                              type: ButtonType.primary,
+                                              size: ButtonSize.large)
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                type: ButtonType.secondary,
+                                size: ButtonSize.large),
+                          ),
+                          const Expanded(
+                              flex: 1,
+                              child: SizedBox(
+                                width: 5,
+                              )),
+                          Expanded(
+                            flex: 10,
+                            child: Button(
+                                mainAxisSize: MainAxisSize.min,
+                                label: elevatedButtonLabel,
+                                onPressed: () {
+                                  context.read<AcceptWorkOrderBloc>().add(
+                                        WorkOrderAcceptEvent(
+                                            contractsModel: e['payload'],
+                                            action: 'ACCEPT',
+                                            comments:
+                                                'Work Order has been accepted by CBO'),
+                                      );
+                                },
+                                type: ButtonType.primary,
+                                size: ButtonSize.large),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.shrink(),
+                (isWorkOrderInbox && acceptWorkOrderCode != null) &&
+                        !(e['cardDetails'][Constants.activeInboxStatus] ==
+                            'true')
+                    ? Button(
+                        mainAxisSize: MainAxisSize.max,
+                        label: AppLocalizations.of(context)
+                            .translate(i18.common.takeAction),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ActionCard(actions: [
+                                Button(
+                                  label: AppLocalizations.of(context)
+                                      .translate(i18.home.manageWageSeekers),
+                                  onPressed: () {
+                                    context.router.push(
+                                        AttendanceRegisterTableRoute(
+                                            registerId: e['payload']![
+                                                        'additionalDetails']
+                                                    ['attendanceRegisterNumber']
+                                                .toString(),
+                                            tenantId: e['payload']['tenantId']
+                                                .toString()));
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                  },
+                                  type: ButtonType.secondary,
+                                  size: ButtonSize.large,
+                                  mainAxisSize: MainAxisSize.max,
+                                  prefixIcon: Icons.fingerprint,
+                                ),
+                                Button(
+                                  label: AppLocalizations.of(context).translate(
+                                      i18.workOrder.requestTimeExtension),
+                                  onPressed: () {
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                    context
+                                        .read<ValidTimeExtCreationsSearchBloc>()
+                                        .add(SearchValidTimeExtCreationsEvent(
+                                            contract: ContractsMapper.fromMap(
+                                                e['payload'] ?? {}),
+                                            contractNo: e['cardDetails']
+                                                    [i18.workOrder.workOrderNo]
+                                                .toString(),
+                                            tenantId: e['payload']!['tenantId']
+                                                .toString(),
+                                            status: 'APPROVED'));
+                                  },
+                                  type: ButtonType.secondary,
+                                  size: ButtonSize.large,
+                                  mainAxisSize: MainAxisSize.max,
+                                  prefixIcon: Icons.calendar_today_rounded,
+                                )
+                              ]);
+                            },
+                          );
+                        },
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                      )
+                    : const SizedBox.shrink(),
+              ],
             );
           }).toList(),
         );
@@ -127,16 +332,25 @@ class WorkDetailsCard extends StatelessWidget {
       default:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(context, e),
+            return ui_card.DigitCard(
+              margin: const EdgeInsets.all(8.0),
+              //padding: const EdgeInsets.all(8.0),
+              cardType: CardType.primary,
+
+              children: [
+                LabelValueList(
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(context, e)),
+              ],
             );
           }).toList(),
         );
     }
   }
 
-  Widget getCardDetails(BuildContext context, Map<String, dynamic> cardDetails,
+  dynamic getCardDetails(BuildContext context, Map<String, dynamic> cardDetails,
       {List<String>? userList,
       AttendanceRegister? attendanceRegister,
       String? attendanceRegisterId,
@@ -145,31 +359,31 @@ class WorkDetailsCard extends StatelessWidget {
       MusterRoll? musterRoll,
       String? contractNumber,
       String? registerNumber}) {
-    var labelList = <Widget>[];
-    if (isWorkOrderInbox && !isAccept!) {
-      labelList.add(Padding(
-        padding: const EdgeInsets.only(left: 4.0, bottom: 16.0, top: 8.0),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: SvgPicture.asset('assets/svg/new_tag.svg'),
-        ),
-      ));
-    }
-    if ((viewWorkOrder || orgProfile) && cardTitle != null) {
-      labelList.add(Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 4.0, bottom: 16.0, top: 8.0),
-          child: Text(
-            cardTitle ?? '',
-            style: DigitTheme.instance.mobileTheme.textTheme.headlineLarge
-                ?.apply(color: const DigitColors().black),
-            textAlign: TextAlign.left,
-          ),
-        ),
-      ));
-    }
-    for (int j = 0; j < cardDetails.length; j++) {
+    var labelList = <LabelValuePair>[];
+    // if (isWorkOrderInbox && !isAccept!) {
+    // labelList.add(Padding(
+    //   padding: const EdgeInsets.only(left: 4.0, bottom: 16.0, top: 8.0),
+    //   child: Align(
+    //     alignment: Alignment.centerLeft,
+    //     child: SvgPicture.asset('assets/svg/new_tag.svg'),
+    //   ),
+    // ));
+    // }
+    // if ((viewWorkOrder || orgProfile) && cardTitle != null) {
+    //   labelList.add(Align(
+    //     alignment: Alignment.centerLeft,
+    //     child: Padding(
+    //       padding: const EdgeInsets.only(left: 4.0, bottom: 16.0, top: 8.0),
+    //       child: Text(
+    //         cardTitle ?? '',
+    //         style: DigitTheme.instance.mobileTheme.textTheme.headlineLarge
+    //             ?.apply(color: const DigitColors().black),
+    //         textAlign: TextAlign.left,
+    //       ),
+    //     ),
+    //   ));
+    // }
+    for (int j = 0; j < cardDetails.length - 1; j++) {
       labelList.add(getItemWidget(
         context,
         title: AppLocalizations.of(context)
@@ -194,242 +408,275 @@ class WorkDetailsCard extends StatelessWidget {
                 (cardDetails.values.elementAt(j + 1) == 'false'),
       ));
     }
-    if (isWorkOrderInbox && !isAccept!) {
-      labelList.add(Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: ButtonLink(
-              AppLocalizations.of(context).translate(i18.common.viewDetails),
-              () => context.router.push(
-                ViewWorkDetailsRoute(
-                  contractNumber: contractNumber.toString(),
-                  wfStatus: payload!['wfStatus'].toString(),
-                ),
-              ),
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: DigitTheme.instance.colorScheme.primary),
-            ),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(4.0),
-            child: ButtonGroup(
-              outlinedButtonLabel,
-              elevatedButtonLabel,
-              outLinedCallBack: () => DigitDialog.show(context,
-                  options: DigitDialogOptions(
-                      titleIcon: const Icon(
-                        Icons.warning,
-                        color: Colors.red,
-                      ),
-                      titleText: AppLocalizations.of(context)
-                          .translate(i18.common.warning),
-                      contentText: AppLocalizations.of(context)
-                          .translate(i18.workOrder.warningMsg),
-                      primaryAction: DigitDialogActions(
-                        label: AppLocalizations.of(context)
-                            .translate(i18.common.confirm),
-                        action: (BuildContext context) {
-                          context.read<DeclineWorkOrderBloc>().add(
-                                WorkOrderDeclineEvent(
-                                    contractsModel: payload,
-                                    action: 'DECLINE',
-                                    comments:
-                                        'Work Order has been declined by CBO'),
-                              );
-                          Navigator.of(context, rootNavigator: true).pop();
-                        },
-                      ),
-                      secondaryAction: DigitDialogActions(
-                        label: AppLocalizations.of(context)
-                            .translate(i18.common.back),
-                        action: (BuildContext context) =>
-                            Navigator.of(context, rootNavigator: true).pop(),
-                      ))),
-              elevatedCallBack: () {
-                context.read<AcceptWorkOrderBloc>().add(
-                      WorkOrderAcceptEvent(
-                          contractsModel: payload,
-                          action: 'ACCEPT',
-                          comments: 'Work Order has been accepted by CBO'),
-                    );
-              },
-            ),
-          ),
-        ],
-      ));
-    } else if (isWorkOrderInbox && isAccept!) {
-      labelList.add(Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: ButtonLink(
-              AppLocalizations.of(context).translate(i18.common.viewDetails),
-              () => context.router.push(
-                ViewWorkDetailsRoute(
-                    contractNumber: contractNumber.toString(),
-                    wfStatus: payload!['wfStatus'].toString()),
-              ),
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: DigitTheme.instance.colorScheme.primary),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: ui_component.Button(type:ButtonType.primary ,
-            size: ButtonSize.large,
-              onPressed: () => DigitActionDialog.show(context,
-                  widget: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: DigitOutlineIconButton(
-                            buttonStyle: OutlinedButton.styleFrom(
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width / 2.8,
-                                    50),
-                                shape: const RoundedRectangleBorder(),
-                                side: BorderSide(
-                                    color: const DigitColors().burningOrange,
-                                    width: 1)),
-                            onPressed: () {
-                              context.router.push(AttendanceRegisterTableRoute(
-                                  registerId: payload!['additionalDetails']
-                                          ['attendanceRegisterNumber']
-                                      .toString(),
-                                  tenantId: payload['tenantId'].toString()));
-                              Navigator.of(context, rootNavigator: true).pop();
-                            },
-                            label: AppLocalizations.of(context)
-                                .translate(i18.home.manageWageSeekers),
-                            icon: Icons.fingerprint,
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                        ),
-                        /*Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: DigitOutlineIconButton(
-                            label: AppLocalizations.of(context)
-                                .translate(i18.workOrder.projectClosure),
-                            icon: Icons.cancel_outlined,
-                            buttonStyle: OutlinedButton.styleFrom(
-                                minimumSize: Size(
-                                    MediaQuery.of(context).size.width / 2.8,
-                                    50),
-                                shape: const RoundedRectangleBorder(),
-                                side: BorderSide(
-                                    color: const DigitColors().burningOrange,
-                                    width: 1)),
-                            onPressed: () =>
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop(),
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                        )*/
-                        DigitOutlineIconButton(
-                          label: AppLocalizations.of(context)
-                              .translate(i18.workOrder.requestTimeExtension),
-                          icon: Icons.calendar_today_rounded,
-                          buttonStyle: OutlinedButton.styleFrom(
-                              minimumSize: Size(
-                                  MediaQuery.of(context).size.width / 2.8, 50),
-                              shape: const RoundedRectangleBorder(),
-                              side: BorderSide(
-                                  color: const DigitColors().burningOrange,
-                                  width: 1)),
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true).pop();
-                            context.read<ValidTimeExtCreationsSearchBloc>().add(
-                                SearchValidTimeExtCreationsEvent(
-                                    contract:
-                                        ContractsMapper.fromMap(payload ?? {}),
-                                    contractNo: contractNumber.toString(),
-                                    tenantId: payload!['tenantId'].toString(),
-                                    status: 'APPROVED'));
-                          },
-                          textStyle: const TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 18),
-                        )
-                      ],
-                    ),
-                  )),
-              label: AppLocalizations.of(context)
-                      .translate(i18.common.takeAction),
-                      mainAxisSize: MainAxisSize.max,
-            ),
-          ),
-        ],
-      ));
-    } else if (isManageAttendance || isTrackAttendance) {
-      labelList.add(Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: DigitElevatedButton(
-          onPressed: () {
-            if (isManageAttendance) {
-              context.router.push(AttendanceRegisterTableRoute(
-                  registerId: attendanceRegisterId.toString(),
-                  tenantId: attendanceRegister!.tenantId.toString()));
-            } else {
-              context.router.push(TrackAttendanceRoute(
-                id: attendanceRegisterId.toString(),
-                tenantId: attendanceRegister!.tenantId.toString(),
-              ));
-            }
-          },
-          child: Center(
-            child: Text(elevatedButtonLabel,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .apply(color: Colors.white)),
-          ),
-        ),
-      ));
-    } else if (isSHGInbox) {
-      labelList.add(
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: DigitElevatedButton(
-            onPressed: () {
-              context.router.push(SHGInboxRoute(
-                  tenantId: musterRoll.tenantId.toString(),
-                  musterRollNo: musterRoll.musterRollNumber.toString(),
-                  sentBackCode: musterBackToCBOCode ?? Constants.sentBack));
-            },
-            child: Center(
-              child: Text(
-                  musterRoll!.musterRollStatus == musterBackToCBOCode
-                      ? AppLocalizations.of(context)
-                          .translate(i18.attendanceMgmt.editMusterRoll)
-                      : elevatedButtonLabel,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .apply(color: Colors.white)),
-            ),
-          ),
-        ),
-      );
-    }
-    if (showButtonLink! && linkLabel!.isNotEmpty) {
-      labelList.add(Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: ButtonLink(linkLabel ?? '', onLinkPressed),
-      ));
-    }
-    return Column(
-      children: labelList,
-    );
+    // if (isWorkOrderInbox && !isAccept!) {
+    //   labelList.add(Column(
+    //     children: [
+    //       Padding(
+    //         padding: const EdgeInsets.all(4.0),
+    //         child: ButtonLink(
+    //           AppLocalizations.of(context).translate(i18.common.viewDetails),
+    // () => context.router.push(
+    //   ViewWorkDetailsRoute(
+    //     contractNumber: contractNumber.toString(),
+    //     wfStatus: payload!['wfStatus'].toString(),
+    //   ),
+    // ),
+    //           style: TextStyle(
+    //               fontWeight: FontWeight.w700,
+    //               fontSize: 16,
+    //               color: DigitTheme.instance.colorScheme.primary),
+    //         ),
+    //       ),
+    //       Container(
+    //         alignment: Alignment.centerLeft,
+    //         padding: const EdgeInsets.all(4.0),
+    //         child: ButtonGroup(
+    //           outlinedButtonLabel,
+    //           elevatedButtonLabel,
+    // outLinedCallBack: () => DigitDialog.show(context,
+    //     options: DigitDialogOptions(
+    //         titleIcon: const Icon(
+    //           Icons.warning,
+    //           color: Colors.red,
+    //         ),
+    //         titleText: AppLocalizations.of(context)
+    //             .translate(i18.common.warning),
+    //         contentText: AppLocalizations.of(context)
+    //             .translate(i18.workOrder.warningMsg),
+    //         primaryAction: DigitDialogActions(
+    //           label: AppLocalizations.of(context)
+    //               .translate(i18.common.confirm),
+    //           action: (BuildContext context) {
+    //             context.read<DeclineWorkOrderBloc>().add(
+    //                   WorkOrderDeclineEvent(
+    //                       contractsModel: payload,
+    //                       action: 'DECLINE',
+    //                       comments:
+    //                           'Work Order has been declined by CBO'),
+    //                 );
+    //             Navigator.of(context, rootNavigator: true).pop();
+    //           },
+    //         ),
+    //                   secondaryAction: DigitDialogActions(
+    //                     label: AppLocalizations.of(context)
+    //                         .translate(i18.common.back),
+    //                     action: (BuildContext context) =>
+    //                         Navigator.of(context, rootNavigator: true).pop(),
+    //                   ))),
+    //           elevatedCallBack: () {
+    // context.read<AcceptWorkOrderBloc>().add(
+    //       WorkOrderAcceptEvent(
+    //           contractsModel: payload,
+    //           action: 'ACCEPT',
+    //           comments: 'Work Order has been accepted by CBO'),
+    //     );
+    //           },
+    //         ),
+    //       ),
+    //     ],
+    //   ));
+    // } else if (isWorkOrderInbox && isAccept!) {
+    //   labelList.add(Column(
+    //     children: [
+    //       Padding(
+    //         padding: const EdgeInsets.all(2.0),
+    //         child: ButtonLink(
+    //           AppLocalizations.of(context).translate(i18.common.viewDetails),
+    //           () => context.router.push(
+    //             ViewWorkDetailsRoute(
+    //                 contractNumber: contractNumber.toString(),
+    //                 wfStatus: payload!['wfStatus'].toString()),
+    //           ),
+    //           style: TextStyle(
+    //               fontWeight: FontWeight.w700,
+    //               fontSize: 16,
+    //               color: DigitTheme.instance.colorScheme.primary),
+    //         ),
+    //       ),
+    //       Padding(
+    //         padding: const EdgeInsets.only(bottom: 8.0),
+    //         child: ui_component.Button(type:ButtonType.primary ,
+    //         size: ButtonSize.large,
+    //           onPressed: () => DigitActionDialog.show(context,
+    //               widget: Center(
+    //                 child: Column(
+    //                   mainAxisSize: MainAxisSize.min,
+    //                   children: [
+    //                     Padding(
+    //                       padding: const EdgeInsets.only(bottom: 8.0),
+    //                       child: DigitOutlineIconButton(
+    //                         buttonStyle: OutlinedButton.styleFrom(
+    //                             minimumSize: Size(
+    //                                 MediaQuery.of(context).size.width / 2.8,
+    //                                 50),
+    //                             shape: const RoundedRectangleBorder(),
+    //                             side: BorderSide(
+    //                                 color: const DigitColors().burningOrange,
+    //                                 width: 1)),
+    //                         onPressed: () {
+    //                           context.router.push(AttendanceRegisterTableRoute(
+    //                               registerId: payload!['additionalDetails']
+    //                                       ['attendanceRegisterNumber']
+    //                                   .toString(),
+    //                               tenantId: payload['tenantId'].toString()));
+    //                           Navigator.of(context, rootNavigator: true).pop();
+    //                         },
+    //                         label: AppLocalizations.of(context)
+    //                             .translate(i18.home.manageWageSeekers),
+    //                         icon: Icons.fingerprint,
+    //                         textStyle: const TextStyle(
+    //                             fontWeight: FontWeight.w700, fontSize: 18),
+    //                       ),
+    //                     ),
+    //
+    //                     DigitOutlineIconButton(
+    //                       label: AppLocalizations.of(context)
+    //                           .translate(i18.workOrder.requestTimeExtension),
+    //                       icon: Icons.calendar_today_rounded,
+    //                       buttonStyle: OutlinedButton.styleFrom(
+    //                           minimumSize: Size(
+    //                               MediaQuery.of(context).size.width / 2.8, 50),
+    //                           shape: const RoundedRectangleBorder(),
+    //                           side: BorderSide(
+    //                               color: const DigitColors().burningOrange,
+    //                               width: 1)),
+    //                       onPressed: () {
+    //                         Navigator.of(context, rootNavigator: true).pop();
+    //                         context.read<ValidTimeExtCreationsSearchBloc>().add(
+    //                             SearchValidTimeExtCreationsEvent(
+    //                                 contract:
+    //                                     ContractsMapper.fromMap(payload ?? {}),
+    //                                 contractNo: contractNumber.toString(),
+    //                                 tenantId: payload!['tenantId'].toString(),
+    //                                 status: 'APPROVED'));
+    //                       },
+    //                       textStyle: const TextStyle(
+    //                           fontWeight: FontWeight.w700, fontSize: 18),
+    //                     )
+    //                   ],
+    //                 ),
+    //               )),
+    //           label: AppLocalizations.of(context)
+    //                   .translate(i18.common.takeAction),
+    //                   mainAxisSize: MainAxisSize.max,
+    //         ),
+    //       ),
+    //     ],
+    //   ));
+    // } else if (isManageAttendance || isTrackAttendance) {
+    //   labelList.add(Padding(
+    //     padding: const EdgeInsets.all(4.0),
+    //     child: DigitElevatedButton(
+    //       onPressed: () {
+    //         if (isManageAttendance) {
+    //           context.router.push(AttendanceRegisterTableRoute(
+    //               registerId: attendanceRegisterId.toString(),
+    //               tenantId: attendanceRegister!.tenantId.toString()));
+    //         } else {
+    //           context.router.push(TrackAttendanceRoute(
+    //             id: attendanceRegisterId.toString(),
+    //             tenantId: attendanceRegister!.tenantId.toString(),
+    //           ));
+    //         }
+    //       },
+    //       child: Center(
+    //         child: Text(elevatedButtonLabel,
+    //             style: Theme.of(context)
+    //                 .textTheme
+    //                 .titleMedium!
+    //                 .apply(color: Colors.white)),
+    //       ),
+    //     ),
+    //   ));
+    // } else if (isSHGInbox) {
+    //   labelList.add(
+    //     Padding(
+    //       padding: const EdgeInsets.all(4.0),
+    //       child: DigitElevatedButton(
+    //         onPressed: () {
+    //           context.router.push(SHGInboxRoute(
+    //               tenantId: musterRoll.tenantId.toString(),
+    //               musterRollNo: musterRoll.musterRollNumber.toString(),
+    //               sentBackCode: musterBackToCBOCode ?? Constants.sentBack));
+    //         },
+    //         child: Center(
+    //           child: Text(
+    //               musterRoll!.musterRollStatus == musterBackToCBOCode
+    //                   ? AppLocalizations.of(context)
+    //                       .translate(i18.attendanceMgmt.editMusterRoll)
+    //                   : elevatedButtonLabel,
+    //               style: Theme.of(context)
+    //                   .textTheme
+    //                   .titleMedium!
+    //                   .apply(color: Colors.white)),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // }
+    // if (showButtonLink! && linkLabel!.isNotEmpty) {
+    //   labelList.add(Padding(
+    //     padding: const EdgeInsets.all(4.0),
+    //     child: ButtonLink(linkLabel ?? '', onLinkPressed),
+    //   ));
+    // }
+    return labelList;
   }
+
+  // static getItemWidget(BuildContext context,
+  //     {String title = '',
+  //     String description = '',
+  //     String subtitle = '',
+  //     bool isActiveStatus = false,
+  //     bool isRejectStatus = false}) {
+  //   return title != Constants.activeInboxStatus
+  //       ? Container(
+  //           padding: const EdgeInsets.all(4.0),
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               SizedBox(
+  //                   width: MediaQuery.of(context).size.width / 3,
+  //                   child: Column(
+  //                       mainAxisAlignment: MainAxisAlignment.start,
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       children: [
+  //                         Text(
+  //                           title.trim(),
+  //                           style: const TextStyle(
+  //                               fontSize: 16, fontWeight: FontWeight.w700),
+  //                           textAlign: TextAlign.start,
+  //                         ),
+  //                         subtitle.trim.toString() != ''
+  //                             ? Text(
+  //                                 subtitle.trim(),
+  //                                 style: TextStyle(
+  //                                     fontSize: 14,
+  //                                     fontWeight: FontWeight.w400,
+  //                                     color:
+  //                                         Theme.of(context).primaryColorLight),
+  //                               )
+  //                             : const Text('')
+  //                       ])),
+  //               SizedBox(
+  //                   width: MediaQuery.of(context).size.width / 2,
+  //                   child: Text(
+  //                     description.trim(),
+  //                     style: TextStyle(
+  //                         fontSize: 16,
+  //                         fontWeight: FontWeight.w400,
+  //                         color: isActiveStatus && !isRejectStatus
+  //                             ? DigitTheme.instance.colorScheme.onSurfaceVariant
+  //                             : isRejectStatus && !isActiveStatus
+  //                                 ? DigitTheme.instance.colorScheme.error
+  //                                 : DigitTheme.instance.colorScheme.onSurface),
+  //                     textAlign: TextAlign.left,
+  //                   ))
+  //             ],
+  //           ))
+  //       : const SizedBox.shrink();
+  // }
 
   static getItemWidget(BuildContext context,
       {String title = '',
@@ -437,52 +684,59 @@ class WorkDetailsCard extends StatelessWidget {
       String subtitle = '',
       bool isActiveStatus = false,
       bool isRejectStatus = false}) {
-    return title != Constants.activeInboxStatus
-        ? Container(
-            padding: const EdgeInsets.all(4.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title.trim(),
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.start,
-                          ),
-                          subtitle.trim.toString() != ''
-                              ? Text(
-                                  subtitle.trim(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color:
-                                          Theme.of(context).primaryColorLight),
-                                )
-                              : const Text('')
-                        ])),
-                SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Text(
-                      description.trim(),
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: isActiveStatus && !isRejectStatus
-                              ? DigitTheme.instance.colorScheme.onSurfaceVariant
-                              : isRejectStatus && !isActiveStatus
-                                  ? DigitTheme.instance.colorScheme.error
-                                  : DigitTheme.instance.colorScheme.onSurface),
-                      textAlign: TextAlign.left,
-                    ))
-              ],
-            ))
-        : const SizedBox.shrink();
+    // return title != Constants.activeInboxStatus
+    //     ?
+    return LabelValuePair(label: title.trim(), value: description.trim());
+
+    // Row(
+    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     SizedBox(
+    //         width: MediaQuery.of(context).size.width / 3,
+    //         child: Column(
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: [
+    //               Text(
+    //                 title.trim(),
+    //                 style: const TextStyle(
+    //                     fontSize: 16, fontWeight: FontWeight.w700),
+    //                 textAlign: TextAlign.start,
+    //               ),
+    //               subtitle.trim.toString() != ''
+    //                   ? Text(
+    //                       subtitle.trim(),
+    //                       style: TextStyle(
+    //                           fontSize: 14,
+    //                           fontWeight: FontWeight.w400,
+    //                           color:
+    //                               Theme.of(context).primaryColorLight),
+    //                     )
+    //                   : const Text('')
+    //             ])),
+    //     SizedBox(
+    //         width: MediaQuery.of(context).size.width / 2,
+    //         child: Text(
+    //           description.trim(),
+    //           style: TextStyle(
+    //               fontSize: 16,
+    //               fontWeight: FontWeight.w400,
+    //               color: isActiveStatus && !isRejectStatus
+    //                   ? DigitTheme.instance.colorScheme.onSurfaceVariant
+    //                   : isRejectStatus && !isActiveStatus
+    //                       ? DigitTheme.instance.colorScheme.error
+    //                       : DigitTheme.instance.colorScheme.onSurface),
+    //           textAlign: TextAlign.left,
+    //         ))
+    //   ],
+    // )
+    //: const SizedBox.shrink();
+
+    // : LabelValuePair(label: '', value: '');
   }
+
+// new compo for isWorkOrderInbox
+
+//
 }

@@ -406,9 +406,11 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                           ? ui_card.DigitCard(
                                               margin:
                                                   const EdgeInsets.symmetric(
-                                                      horizontal: 8),
+                                                horizontal: 8,
+                                                vertical: 8,
+                                              ),
                                               cardType: ui_component
-                                                  .CardType.secondary,
+                                                  .CardType.primary,
                                               children: [
                                                 LabelValueList(
                                                   heading: t.translate(i18

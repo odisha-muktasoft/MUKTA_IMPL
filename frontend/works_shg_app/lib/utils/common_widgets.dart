@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
 import 'package:flutter/material.dart';
 
 class CommonWidgets {
@@ -45,7 +46,7 @@ class CommonWidgets {
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
                       color: descColor ??
-                          DigitTheme.instance.colorScheme.onBackground),
+                          Theme.of(context).colorScheme.onBackground),
                   textAlign: TextAlign.left,
                 ))
           ],
@@ -55,16 +56,25 @@ class CommonWidgets {
   static Widget downloadButton(String label, void Function()? onPressed) {
     return Padding(
       padding: const EdgeInsets.only(top: 12.0, right: 8.0),
-      child: TextButton.icon(
-          onPressed: onPressed,
-          icon: Icon(
-            Icons.download_sharp,
-            color: const DigitColors().burningOrange,
-          ),
-          label: Text(
-            label,
-            style: TextStyle(color: const DigitColors().burningOrange,),
-          )),
+      // child: TextButton.icon(
+      //     onPressed: onPressed,
+      //     icon: Icon(
+      //       Icons.download_sharp,
+      //       color: const DigitColors().burningOrange,
+      //     ),
+      //     label: Text(
+      //       label,
+      //       style: TextStyle(color: const DigitColors().burningOrange,),
+      //     )),
+
+      child: Button(
+        prefixIcon: Icons.download_sharp,
+        mainAxisSize: MainAxisSize.min,
+        type: ButtonType.tertiary,
+        size: ButtonSize.large,
+        label: label,
+        onPressed: onPressed!,
+      ),
     );
   }
 }

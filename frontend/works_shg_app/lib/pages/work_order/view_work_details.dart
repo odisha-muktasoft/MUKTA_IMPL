@@ -3,9 +3,11 @@ import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_action_card.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -21,6 +23,7 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/button_link.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 
@@ -126,14 +129,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xff0B4B66),
-          iconTheme: Theme.of(context)
-              .iconTheme
-              .copyWith(color: Theme.of(context).colorTheme.paper.primary),
-          titleSpacing: 0,
-          title: const AppBarLogo(),
-        ),
+        appBar: customAppBar(),
         drawer: DrawerWrapper(
             Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
         bottomNavigationBar:
@@ -425,38 +421,45 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                BackNavigationButton(
-                                  backNavigationButtonThemeData:
-                                      const BackNavigationButtonThemeData()
-                                          .copyWith(
-                                    textColor: Theme.of(context)
-                                        .colorTheme
-                                        .primary
-                                        .primary2,
-                                    contentPadding: EdgeInsets.zero,
-                                    context: context,
-                                    backButtonIcon: Icon(
-                                      Icons.arrow_left,
-                                      color: Theme.of(context)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8.0,
+                                      left: 8.0,
+                                      right: 8.0,
+                                      bottom: 0.0),
+                                  child: BackNavigationButton(
+                                    backNavigationButtonThemeData:
+                                        const BackNavigationButtonThemeData()
+                                            .copyWith(
+                                      textColor: Theme.of(context)
                                           .colorTheme
                                           .primary
                                           .primary2,
+                                      contentPadding: EdgeInsets.zero,
+                                      context: context,
+                                      // backButtonIcon: Icon(
+                                      //   Icons.arrow_left,
+                                      //   color: Theme.of(context)
+                                      //       .colorTheme
+                                      //       .primary
+                                      //       .primary2,
+                                      // ),
                                     ),
+                                    backButtonText: AppLocalizations.of(context)
+                                        .translate(i18.common.back),
+                                    handleBack: () {
+                                      if (GlobalVariables.roleType ==
+                                          RoleType.cbo) {
+                                        context.router
+                                            .popUntilRouteWithPath('home');
+                                        context.router
+                                            .push(const WorkOrderRoute());
+                                      } else {
+                                        Navigator.of(context).pop();
+                                        // context.router.pop();
+                                      }
+                                    },
                                   ),
-                                  backButtonText: AppLocalizations.of(context)
-                                      .translate(i18.common.back),
-                                  handleBack: () {
-                                    if (GlobalVariables.roleType ==
-                                        RoleType.cbo) {
-                                      context.router
-                                          .popUntilRouteWithPath('home');
-                                      context.router
-                                          .push(const WorkOrderRoute());
-                                    } else {
-                                      Navigator.of(context).pop();
-                                      // context.router.pop();
-                                    }
-                                  },
                                 ),
                                 // Back(
                                 // backLabel: AppLocalizations.of(context)
@@ -497,11 +500,9 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                         right: 16.0,
                                         top: 16.0,
                                         bottom: 16.0),
-                                    child: Text(
-                                      '${AppLocalizations.of(context).translate(i18.workOrder.workOrderDetails)}',
-                                      style: DigitTheme.instance.mobileTheme
-                                          .textTheme.displayMedium,
-                                      textAlign: TextAlign.left,
+                                    child: TextChunk(
+                                      heading:
+                                          '${AppLocalizations.of(context).translate(i18.workOrder.workOrderDetails)}',
                                     ),
                                   ),
                                   Padding(
@@ -537,6 +538,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
 
                                   workOrderList.isNotEmpty
                                       ? Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             WorkDetailsCard(
                                               workOrderList,
@@ -579,10 +584,12 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                             Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: ButtonLink(
-                                                t.translate(i18.common
+                                              child: Button(
+                                                type: ButtonType.tertiary,
+                                                size: ButtonSize.large,
+                                                label: t.translate(i18.common
                                                     .viewTermsAndConditions),
-                                                () => showDialog(
+                                                onPressed: () => showDialog(
                                                   context: context,
                                                   builder: (context) {
                                                     return Popup(
@@ -651,7 +658,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                     );
                                                   },
                                                 ),
-                                                align: Alignment.centerLeft,
+                                                // align: Alignment.centerLeft,
                                               ),
                                             ),
                                             BlocListener<
@@ -718,15 +725,15 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 loading: () => hasLoaded = false,
                 error: (String? error) {
                   // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
-              ui_component.Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error);
+                  ui_component.Toast.showToast(context,
+                      message: t.translate(error.toString()),
+                      type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
                   Notifiers.getToastMessage(
                       context,
                       '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
                       'SUCCESS');
-
-                      
 
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(const WorkOrderRoute());
@@ -870,46 +877,54 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                     mainAxisSize: MainAxisSize.max,
                                     label: t.translate(i18.common.decline),
                                     onPressed: () {
-                                      DigitDialog.show(
-                                        context,
-                                        options: DigitDialogOptions(
-                                          titleText: AppLocalizations.of(
-                                                  context)
-                                              .translate(i18.common.warning),
-                                          contentText:
-                                              AppLocalizations.of(context)
-                                                  .translate(
-                                                      i18.workOrder.warningMsg),
-                                          primaryAction: DigitDialogActions(
-                                            label: AppLocalizations.of(context)
-                                                .translate(i18.common.confirm),
-                                            action: (BuildContext context) {
-                                              context
-                                                  .read<DeclineWorkOrderBloc>()
-                                                  .add(
-                                                    WorkOrderDeclineEvent(
-                                                        contractsModel:
-                                                            workOrderList.first[
-                                                                'payload'],
-                                                        action: 'DECLINE',
-                                                        comments:
-                                                            'Work Order has been declined by CBO'),
-                                                  );
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Popup(
+                                            onCrossTap: () {
                                               Navigator.of(context,
                                                       rootNavigator: true)
                                                   .pop();
                                             },
-                                          ),
-                                          secondaryAction: DigitDialogActions(
-                                            label: AppLocalizations.of(context)
-                                                .translate(i18.common.back),
-                                            action: (BuildContext context) =>
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(),
-                                          ),
-                                        ),
+                                            title: AppLocalizations.of(context)
+                                                .translate(i18.common.warning),
+                                            description: AppLocalizations.of(
+                                                    context)
+                                                .translate(
+                                                    i18.workOrder.warningMsg),
+                                            actions: [
+                                              Button(
+                                                label:
+                                                    AppLocalizations.of(context)
+                                                        .translate(
+                                                            i18.common.confirm),
+                                                onPressed: () {
+                                                  context
+                                                      .read<
+                                                          DeclineWorkOrderBloc>()
+                                                      .add(
+                                                        WorkOrderDeclineEvent(
+                                                            contractsModel:
+                                                                workOrderList
+                                                                        .first[
+                                                                    'payload'],
+                                                            action: 'DECLINE',
+                                                            comments:
+                                                                'Work Order has been declined by CBO'),
+                                                      );
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop();
+                                                },
+                                                type: ButtonType.primary,
+                                                size: ButtonSize.large,
+                                                mainAxisSize: MainAxisSize.max,
+                                              )
+                                            ],
+                                          );
+                                        },
                                       );
+                                      
                                     },
                                     type: ButtonType.tertiary,
                                     size: ButtonSize.large,
@@ -1090,13 +1105,18 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 const SizedBox.shrink();
               },
               error: (value) {
-                Notifiers.getToastMessage(
-                    context,
-                    AppLocalizations.of(context)
-                        .translate(i18.common.statementnotfound),
+                // Notifiers.getToastMessage(
+                //     context,
+                //     AppLocalizations.of(context)
+                //         .translate(i18.common.statementnotfound),
 
-                    // value.error!,
-                    'ERROR');
+                //     // value.error!,
+                //     'ERROR');
+
+                Toast.showToast(context,
+                    message: AppLocalizations.of(context)
+                        .translate(i18.common.statementnotfound),
+                    type: ToastType.error);
               },
             );
           },
@@ -1347,63 +1367,50 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            BackNavigationButton(
-                                              backNavigationButtonThemeData:
-                                                  const BackNavigationButtonThemeData()
-                                                      .copyWith(
-                                                textColor: Theme.of(context)
-                                                    .colorTheme
-                                                    .primary
-                                                    .primary2,
-                                                contentPadding: EdgeInsets.zero,
-                                                context: context,
-                                                backButtonIcon: Icon(
-                                                  Icons.arrow_left,
-                                                  color: Theme.of(context)
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 8.0,
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  bottom: 0.0),
+                                              child: BackNavigationButton(
+                                                backNavigationButtonThemeData:
+                                                    const BackNavigationButtonThemeData()
+                                                        .copyWith(
+                                                  textColor: Theme.of(context)
                                                       .colorTheme
                                                       .primary
                                                       .primary2,
+                                                  contentPadding:
+                                                      EdgeInsets.zero,
+                                                  context: context,
+                                                  // backButtonIcon: Icon(
+                                                  //   Icons.arrow_left,
+                                                  //   color: Theme.of(context)
+                                                  //       .colorTheme
+                                                  //       .primary
+                                                  //       .primary2,
+                                                  // ),
                                                 ),
+                                                backButtonText:
+                                                    AppLocalizations.of(context)
+                                                        .translate(
+                                                            i18.common.back),
+                                                handleBack: () {
+                                                  if (GlobalVariables
+                                                          .roleType ==
+                                                      RoleType.cbo) {
+                                                    context.router
+                                                        .popUntilRouteWithPath(
+                                                            'home');
+                                                    context.router.push(
+                                                        const WorkOrderRoute());
+                                                  } else {
+                                                    Navigator.of(context).pop();
+                                                  }
+                                                },
                                               ),
-                                              backButtonText:
-                                                  AppLocalizations.of(context)
-                                                      .translate(
-                                                          i18.common.back),
-                                              handleBack: () {
-                                                if (GlobalVariables.roleType ==
-                                                    RoleType.cbo) {
-                                                  context.router
-                                                      .popUntilRouteWithPath(
-                                                          'home');
-                                                  context.router.push(
-                                                      const WorkOrderRoute());
-                                                } else {
-                                                  Navigator.of(context).pop();
-                                                }
-                                              },
                                             ),
-
-                                            // Back(
-
-                                            //   backLabel: AppLocalizations.of(
-                                            //           context)
-                                            //       .translate(i18.common.back),
-                                            //   callback: () {
-                                            //     // context.router.popUntilRouteWithPath('home') ;
-                                            //     // context.router.push(const WorkOrderRoute());
-
-                                            //     if (GlobalVariables.roleType ==
-                                            //         RoleType.cbo) {
-                                            //       context.router
-                                            //           .popUntilRouteWithPath(
-                                            //               'home');
-                                            //       context.router.push(
-                                            //           const WorkOrderRoute());
-                                            //     } else {
-                                            //       Navigator.of(context).pop();
-                                            //     }
-                                            //   },
-                                            // ),
 
                                             //TODO:[CBO download]
                                             CommonWidgets.downloadButton(
@@ -1411,119 +1418,201 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                     .translate(
                                                         i18.common.download),
                                                 () async {
-                                              await DigitActionDialog.show(
-                                                context,
-                                                widget: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    DigitOutlineIconButton(
-                                                      buttonStyle: OutlinedButton.styleFrom(
-                                                          minimumSize: Size(
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                              50),
-                                                          shape:
-                                                              const RoundedRectangleBorder(),
-                                                          side: BorderSide(
-                                                              color: const DigitColors()
-                                                                  .burningOrange,
-                                                              width: 1)),
-                                                      onPressed: () {
-                                                        // Navigator.of(context).pop();
-                                                        context
-                                                            .read<
-                                                                WorkOrderPDFBloc>()
-                                                            .add(PDFEventWorkOrder(
-                                                                contractId: widget
-                                                                    .contractNumber,
-                                                                tenantId: contracts
-                                                                    .first
-                                                                    .tenantId));
+                                              // await DigitActionDialog.show(
+                                              //   context,
+                                              //   widget: Column(
+                                              //     crossAxisAlignment:
+                                              //         CrossAxisAlignment.center,
+                                              //     mainAxisAlignment:
+                                              //         MainAxisAlignment.center,
+                                              //     children: [
+                                              //       DigitOutlineIconButton(
+                                              //         buttonStyle: OutlinedButton.styleFrom(
+                                              //             minimumSize: Size(
+                                              //                 MediaQuery.of(
+                                              //                         context)
+                                              //                     .size
+                                              //                     .width,
+                                              //                 50),
+                                              //             shape:
+                                              //                 const RoundedRectangleBorder(),
+                                              //             side: BorderSide(
+                                              //                 color: const DigitColors()
+                                              //                     .burningOrange,
+                                              //                 width: 1)),
+                                              //         onPressed: () {
+                                              //           // Navigator.of(context).pop();
+                                              // context
+                                              //     .read<
+                                              //         WorkOrderPDFBloc>()
+                                              //     .add(PDFEventWorkOrder(
+                                              //         contractId: widget
+                                              //             .contractNumber,
+                                              //         tenantId: contracts
+                                              //             .first
+                                              //             .tenantId));
 
-                                                        Navigator.of(
-                                                          context,
-                                                          rootNavigator: true,
-                                                        ).popUntil(
-                                                          (route) => route
-                                                              is! PopupRoute,
-                                                        );
-                                                      },
-                                                      label: AppLocalizations
-                                                              .of(context)
-                                                          .translate(i18.common
-                                                              .workOrderdownload),
-                                                      icon:
-                                                          Icons.download_sharp,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              fontSize: 18),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    DigitOutlineIconButton(
-                                                      buttonStyle: OutlinedButton.styleFrom(
-                                                          minimumSize: Size(
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                              50),
-                                                          shape:
-                                                              const RoundedRectangleBorder(),
-                                                          side: BorderSide(
-                                                              color: const DigitColors()
-                                                                  .burningOrange,
-                                                              width: 1)),
-                                                      onPressed: () {
-                                                        context
-                                                            .read<
-                                                                WorkOrderPDFBloc>()
-                                                            .add(
-                                                              PDFEventAnalysis(
-                                                                  estimateId: contracts
-                                                                      .first
-                                                                      .lineItems!
-                                                                      .first
-                                                                      .estimateId,
-                                                                  tenantId:
-                                                                      contracts
+                                              // Navigator.of(
+                                              //   context,
+                                              //   rootNavigator: true,
+                                              // ).popUntil(
+                                              //   (route) => route
+                                              //       is! PopupRoute,
+                                              // );
+                                              //         },
+                                              // label: AppLocalizations
+                                              //         .of(context)
+                                              //     .translate(i18.common
+                                              //         .workOrderdownload),
+                                              //         icon:
+                                              //             Icons.download_sharp,
+                                              //         textStyle:
+                                              //             const TextStyle(
+                                              //                 fontWeight:
+                                              //                     FontWeight
+                                              //                         .w700,
+                                              //                 fontSize: 18),
+                                              //       ),
+                                              //       const SizedBox(
+                                              //         height: 10,
+                                              //       ),
+                                              //       DigitOutlineIconButton(
+                                              //         buttonStyle: OutlinedButton.styleFrom(
+                                              //             minimumSize: Size(
+                                              //                 MediaQuery.of(
+                                              //                         context)
+                                              //                     .size
+                                              //                     .width,
+                                              //                 50),
+                                              //             shape:
+                                              //                 const RoundedRectangleBorder(),
+                                              //             side: BorderSide(
+                                              //                 color: const DigitColors()
+                                              //                     .burningOrange,
+                                              //                 width: 1)),
+                                              //         onPressed: () {
+                                              //           context
+                                              //               .read<
+                                              //                   WorkOrderPDFBloc>()
+                                              //               .add(
+                                              //                 PDFEventAnalysis(
+                                              //                     estimateId: contracts
+                                              //                         .first
+                                              //                         .lineItems!
+                                              //                         .first
+                                              //                         .estimateId,
+                                              //                     tenantId:
+                                              //                         contracts
+                                              //                             .first
+                                              //                             .tenantId,
+                                              //                     workorder: widget
+                                              //                         .contractNumber),
+                                              //               );
+                                              //           Navigator.of(
+                                              //             context,
+                                              //             rootNavigator: true,
+                                              //           ).popUntil(
+                                              //             (route) => route
+                                              //                 is! PopupRoute,
+                                              //           );
+                                              //         },
+                                              // label: AppLocalizations
+                                              //         .of(context)
+                                              //     .translate(i18.common
+                                              //         .analysisdownload),
+                                              //         icon:
+                                              //             Icons.download_sharp,
+                                              //         textStyle:
+                                              //             const TextStyle(
+                                              //                 fontWeight:
+                                              //                     FontWeight
+                                              //                         .w700,
+                                              //                 fontSize: 18),
+                                              //       ),
+                                              //     ],
+                                              //   ),
+                                              // );
+
+                                              await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return ActionCard(
+                                                    actions: [
+                                                      Button(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          label: AppLocalizations
+                                                                  .of(context)
+                                                              .translate(i18
+                                                                  .common
+                                                                  .workOrderdownload),
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    WorkOrderPDFBloc>()
+                                                                .add(PDFEventWorkOrder(
+                                                                    contractId:
+                                                                        widget
+                                                                            .contractNumber,
+                                                                    tenantId: contracts
+                                                                        .first
+                                                                        .tenantId));
+
+                                                            Navigator.of(
+                                                              context,
+                                                              rootNavigator:
+                                                                  true,
+                                                            ).popUntil(
+                                                              (route) => route
+                                                                  is! PopupRoute,
+                                                            );
+                                                          },
+                                                          type: ButtonType
+                                                              .secondary,
+                                                          size:
+                                                              ButtonSize.large),
+                                                      Button(
+                                                          mainAxisSize:
+                                                              MainAxisSize.max,
+                                                          label: AppLocalizations
+                                                                  .of(context)
+                                                              .translate(i18
+                                                                  .common
+                                                                  .analysisdownload),
+                                                          onPressed: () {
+                                                            context
+                                                                .read<
+                                                                    WorkOrderPDFBloc>()
+                                                                .add(
+                                                                  PDFEventAnalysis(
+                                                                      estimateId: contracts
+                                                                          .first
+                                                                          .lineItems!
+                                                                          .first
+                                                                          .estimateId,
+                                                                      tenantId: contracts
                                                                           .first
                                                                           .tenantId,
-                                                                  workorder: widget
-                                                                      .contractNumber),
+                                                                      workorder:
+                                                                          widget
+                                                                              .contractNumber),
+                                                                );
+                                                            Navigator.of(
+                                                              context,
+                                                              rootNavigator:
+                                                                  true,
+                                                            ).popUntil(
+                                                              (route) => route
+                                                                  is! PopupRoute,
                                                             );
-                                                        Navigator.of(
-                                                          context,
-                                                          rootNavigator: true,
-                                                        ).popUntil(
-                                                          (route) => route
-                                                              is! PopupRoute,
-                                                        );
-                                                      },
-                                                      label: AppLocalizations
-                                                              .of(context)
-                                                          .translate(i18.common
-                                                              .analysisdownload),
-                                                      icon:
-                                                          Icons.download_sharp,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              fontSize: 18),
-                                                    ),
-                                                  ],
-                                                ),
+                                                          },
+                                                          type: ButtonType
+                                                              .secondary,
+                                                          size:
+                                                              ButtonSize.large),
+                                                    ],
+                                                  );
+                                                },
                                               );
                                             }),
                                           ],
@@ -1540,66 +1629,35 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                     right: 16.0,
                                                     top: 16.0,
                                                     bottom: 16.0),
-                                                child: Text(
-                                                  '${AppLocalizations.of(context).translate(i18.workOrder.workOrderDetails)}',
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .displayMedium,
-                                                  textAlign: TextAlign.left,
+                                                child: TextChunk(
+                                                  heading:
+                                                      '${AppLocalizations.of(context).translate(i18.workOrder.workOrderDetails)}',
                                                 ),
                                               ),
-
-                                              ui_component.InfoCard(
-                                                title: AppLocalizations.of(
-                                                        context)
-                                                    .translate(i18.common.info),
-                                                type: InfoType.info,
-                                                description:
-                                                    AppLocalizations.of(context)
-                                                        .translate(i18.common
-                                                            .workOrderInfo),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: ui_component.InfoCard(
+                                                  title: AppLocalizations.of(
+                                                          context)
+                                                      .translate(
+                                                          i18.common.info),
+                                                  type: InfoType.info,
+                                                  description:
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate(i18.common
+                                                              .workOrderInfo),
+                                                ),
                                               ),
-// TODO:[old info card]
-
-                                              // DigitInfoCard(
-                                              //     title: AppLocalizations.of(
-                                              //             context)
-                                              //         .translate(i18.common.info),
-                                              //     titleStyle: DigitTheme
-                                              //         .instance
-                                              //         .mobileTheme
-                                              //         .textTheme
-                                              //         .headlineMedium
-                                              //         ?.apply(
-                                              //             color:
-                                              //                 const DigitColors()
-                                              //                     .black),
-                                              //     description:
-                                              // AppLocalizations.of(context)
-                                              //     .translate(i18.common
-                                              //         .workOrderInfo),
-                                              //     descStyle: DigitTheme
-                                              //         .instance
-                                              //         .mobileTheme
-                                              //         .textTheme
-                                              //         .bodyLarge
-                                              //         ?.apply(
-                                              //             color: const Color
-                                              //                 .fromRGBO(
-                                              //                 80, 90, 95, 1)),
-                                              //     icon: Icons.info,
-                                              //     iconColor: const Color.fromRGBO(
-                                              //         52, 152, 219, 1),
-                                              //     backgroundColor: DigitTheme
-                                              //         .instance
-                                              //         .colorScheme
-                                              //         .tertiaryContainer,
-                                              //   ),
-
                                               workOrderList.isNotEmpty
                                                   ? Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
                                                         WorkDetailsCard(
                                                           workOrderList,
@@ -1635,22 +1693,31 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                   .workOrder
                                                                   .timeLineDetails),
                                                         ),
-                                                        DigitCard(
-                                                            child: Attachments(
-                                                          t.translate(i18
-                                                              .workOrder
-                                                              .relevantDocuments),
-                                                          attachedFiles,
-                                                        )),
+                                                        ui_card.DigitCard(
+                                                            cardType: CardType
+                                                                .primary,
+                                                            children: [
+                                                              Attachments(
+                                                                t.translate(i18
+                                                                    .workOrder
+                                                                    .relevantDocuments),
+                                                                attachedFiles,
+                                                              ),
+                                                            ]),
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(8.0),
-                                                          child: ButtonLink(
-                                                            t.translate(i18
+                                                          child: Button(
+                                                            type: ButtonType
+                                                                .tertiary,
+                                                            size: ButtonSize
+                                                                .large,
+                                                            label: t.translate(i18
                                                                 .common
                                                                 .viewTermsAndConditions),
-                                                            () => showDialog(
+                                                            onPressed: () =>
+                                                                showDialog(
                                                               context: context,
                                                               builder:
                                                                   (context) {
@@ -1716,8 +1783,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                 );
                                                               },
                                                             ),
-                                                            align: Alignment
-                                                                .centerLeft,
+                                                            // align: Alignment
+                                                            //     .centerLeft,
                                                           ),
                                                         ),
                                                         BlocListener<
@@ -1793,7 +1860,9 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 loading: () => hasLoaded = false,
                 error: (String? error) {
                   // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
-                ui_component.Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error);
+                  ui_component.Toast.showToast(context,
+                      message: t.translate(error.toString()),
+                      type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
                   // Notifiers.getToastMessage(
@@ -1801,7 +1870,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   //     '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
                   //     'SUCCESS');
 
-                ui_component.Toast.showToast(context, message: t.translate('${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}'), type: ToastType.success);
+                  ui_component.Toast.showToast(context,
+                      message: t.translate(
+                          '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}'),
+                      type: ToastType.success);
 
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(const WorkOrderRoute());
@@ -1817,7 +1889,9 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 loading: () => shg_loader.Loaders.circularLoader(context),
                 error: (String? error) {
                   // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
-                ui_component.Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error);
+                  ui_component.Toast.showToast(context,
+                      message: t.translate(error.toString()),
+                      type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
                   // Notifiers.getToastMessage(
@@ -1825,7 +1899,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   //     '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
                   //     'SUCCESS');
 
-                  ui_component.Toast.showToast(context, message: t.translate('${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}'), type: ToastType.success);
+                  ui_component.Toast.showToast(context,
+                      message: t.translate(
+                          '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}'),
+                      type: ToastType.success);
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(ViewWorkDetailsRoute(
                       contractNumber: workOrderList.first['payload']

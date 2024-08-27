@@ -722,7 +722,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                             ),
 
                             // tab
-
+/////////////////////////
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: 16.0,
@@ -778,6 +778,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 ),
                               ),
                             ),
+
+                            ///////////////////////// 
                             AnimatedBuilder(
                               animation: _tabController.animation!,
                               builder: (context, child) => SizedBox(
@@ -1338,6 +1340,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 ),
                               ),
                             ),
+                         
+                         
+                         
+
+
+                         // ////////////////
                             widget.type == MBScreen.update
                                 ?
                                 //workflow
