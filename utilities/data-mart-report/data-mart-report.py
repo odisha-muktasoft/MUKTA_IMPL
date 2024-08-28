@@ -34,8 +34,9 @@ def connect_to_database():
 tenants = ['od.athagarh','od.berhampur','od.kesinga','od.jatni','od.chatrapur','od.puri','od.hinjilicut','od.sambalpur','od.balasore','od.padampur','od.jharsuguda','od.dhenkanal','od.jeypore','od.bhadrak','od.balangir','od.baripada','od.bhubaneswar','od.rourkela','od.jajpur','od.cuttack','od.phulbani','od.kotpad','od.paradeep','od.boudhgarh','od.keonjhargarh']
 
 def get_last_thursday_epoch():
-    now = dt.datetime.now()
-    last_thursday = now - dt.timedelta(days=(now.weekday() - 3) % 7 + 1)
+    today = dt.datetime.now()
+    days_since_last_thursday = (today.weekday() - 3) % 7
+    last_thursday = today - dt.timedelta(days=days_since_last_thursday)
     last_thursday_time = last_thursday.replace(hour=15, minute=30, second=0, microsecond=0)
     last_thursday_epoch = int(last_thursday_time.timestamp() * 1000)
     return last_thursday_epoch
@@ -734,6 +735,155 @@ def generateCountBasedOnPIStatusCummulative(connection, epoch_to):
     print(data)
     return data
 
+def generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to):
+    cursor = connection.cursor()
+
+    ################## INDIVIDUAL ##################
+    # Successful Individual Count
+    cursor.execute("""select jit_payment_inst_details.tenantid, count(distinct beneficiaryid) from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  jit_beneficiary_details.beneficiarytype='IND'  and jit_payment_inst_details.lastmodifiedtime > %s and jit_payment_inst_details.lastmodifiedtime<=%s and pistatus = 'SUCCESSFUL' group by pistatus ,jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to))
+    result = cursor.fetchall()
+    successful_individual = pd.DataFrame(result, columns=['ULB', 'Successful Individual'])
+
+    # Partial Individual Count
+    cursor.execute("""select jit_payment_inst_details.tenantid, count(distinct beneficiaryid) from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  jit_beneficiary_details.beneficiarytype='IND' and jit_payment_inst_details.lastmodifiedtime > %s and jit_payment_inst_details.lastmodifiedtime<=%s and pistatus = 'PARTIAL' group by pistatus ,jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    partial_individual = pd.DataFrame(result, columns=['ULB', 'Partial Individual'])
+
+    # Failure Individual Count
+    cursor.execute("""select jit_payment_inst_details.tenantid, count(distinct beneficiaryid) from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  jit_beneficiary_details.beneficiarytype='IND' and jit_payment_inst_details.lastmodifiedtime > %s and jit_payment_inst_details.lastmodifiedtime<=%s and pistatus = 'FAILED' group by pistatus ,jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    failed_individual = pd.DataFrame(result, columns=['ULB', 'Failed Individual'])
+
+    ################## CBO ##################
+    # Successful CBO Count
+    cursor.execute("""
+        SELECT jit_payment_inst_details.tenantid,
+            COUNT(DISTINCT jit_beneficiary_details.beneficiaryid) AS distinct_beneficiary_count
+        FROM jit_beneficiary_details
+        INNER JOIN jit_payment_inst_details ON jit_payment_inst_details.muktareferenceid = jit_beneficiary_details.muktareferenceid
+        INNER JOIN eg_org_function ON jit_beneficiary_details.beneficiaryid = eg_org_function.org_id
+        WHERE jit_beneficiary_details.beneficiarytype = 'ORG'
+        AND jit_payment_inst_details.lastmodifiedtime > %s            
+        AND jit_payment_inst_details.lastmodifiedtime <= %s
+        AND jit_payment_inst_details.pistatus IN ('SUCCESSFUL')
+        AND eg_org_function.category like '%%CBO%%'
+        GROUP BY jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    successful_cbo = pd.DataFrame(result, columns=['ULB', 'Successful CBO'])
+
+    # Partial CBO Count
+    cursor.execute("""
+        SELECT jit_payment_inst_details.tenantid,
+            COUNT(DISTINCT jit_beneficiary_details.beneficiaryid) AS distinct_beneficiary_count
+        FROM jit_beneficiary_details
+        INNER JOIN jit_payment_inst_details ON jit_payment_inst_details.muktareferenceid = jit_beneficiary_details.muktareferenceid
+        INNER JOIN eg_org_function ON jit_beneficiary_details.beneficiaryid = eg_org_function.org_id
+        WHERE jit_beneficiary_details.beneficiarytype = 'ORG' 
+        AND jit_payment_inst_details.lastmodifiedtime > %s
+        AND jit_payment_inst_details.lastmodifiedtime <= %s
+        AND jit_payment_inst_details.pistatus IN ('PARTIAL')
+        AND eg_org_function.category like '%%CBO%%'
+        GROUP BY jit_payment_inst_details.tenantid;""", (epoch_from,epoch_to,))
+    result = cursor.fetchall()
+    partial_cbo = pd.DataFrame(result, columns=['ULB', 'Partial CBO'])
+
+    # Failure CBO Count
+    cursor.execute("""
+        SELECT jit_payment_inst_details.tenantid,
+            COUNT(DISTINCT jit_beneficiary_details.beneficiaryid) AS distinct_beneficiary_count
+        FROM jit_beneficiary_details
+        INNER JOIN jit_payment_inst_details ON jit_payment_inst_details.muktareferenceid = jit_beneficiary_details.muktareferenceid
+        INNER JOIN eg_org_function ON jit_beneficiary_details.beneficiaryid = eg_org_function.org_id
+        WHERE jit_beneficiary_details.beneficiarytype = 'ORG'
+        AND jit_payment_inst_details.lastmodifiedtime > %s 
+        AND jit_payment_inst_details.lastmodifiedtime <= %s
+        AND jit_payment_inst_details.pistatus IN ('FAILED')
+        AND eg_org_function.category like '%%CBO%%'
+        GROUP BY jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    failed_cbo = pd.DataFrame(result, columns=['ULB', 'Failed CBO'])
+
+    ######################### VENDOR ##########################
+    # Successful Vendor Count
+    cursor.execute("""
+        SELECT jit_payment_inst_details.tenantid,
+            COUNT(DISTINCT jit_beneficiary_details.beneficiaryid) AS distinct_beneficiary_count
+        FROM jit_beneficiary_details
+        INNER JOIN jit_payment_inst_details ON jit_payment_inst_details.muktareferenceid = jit_beneficiary_details.muktareferenceid
+        INNER JOIN eg_org_function ON jit_beneficiary_details.beneficiaryid = eg_org_function.org_id
+        WHERE jit_beneficiary_details.beneficiarytype = 'ORG' 
+        AND jit_payment_inst_details.lastmodifiedtime > %s
+        AND jit_payment_inst_details.lastmodifiedtime <= %s
+        AND jit_payment_inst_details.pistatus IN ('SUCCESSFUL')
+        AND eg_org_function.category like '%%VEN%%'
+        GROUP BY jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    successful_vendor = pd.DataFrame(result, columns=['ULB', 'Successful Vendor'])
+
+    # Partial Vendor Count
+    cursor.execute("""
+        SELECT jit_payment_inst_details.tenantid,
+            COUNT(DISTINCT jit_beneficiary_details.beneficiaryid) AS distinct_beneficiary_count
+        FROM jit_beneficiary_details
+        INNER JOIN jit_payment_inst_details ON jit_payment_inst_details.muktareferenceid = jit_beneficiary_details.muktareferenceid
+        INNER JOIN eg_org_function ON jit_beneficiary_details.beneficiaryid = eg_org_function.org_id
+        WHERE jit_beneficiary_details.beneficiarytype = 'ORG' 
+        AND jit_payment_inst_details.lastmodifiedtime > %s
+        AND jit_payment_inst_details.lastmodifiedtime <= %s
+        AND jit_payment_inst_details.pistatus IN ('PARTIAL')
+        AND eg_org_function.category like '%%VEN%%'
+        GROUP BY jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    partial_vendor = pd.DataFrame(result, columns=['ULB', 'Partial Vendor'])
+
+    # Failure Vendor Count
+    cursor.execute("""
+        SELECT jit_payment_inst_details.tenantid,
+            COUNT(DISTINCT jit_beneficiary_details.beneficiaryid) AS distinct_beneficiary_count
+        FROM jit_beneficiary_details
+        INNER JOIN jit_payment_inst_details ON jit_payment_inst_details.muktareferenceid = jit_beneficiary_details.muktareferenceid
+        INNER JOIN eg_org_function ON jit_beneficiary_details.beneficiaryid = eg_org_function.org_id
+        WHERE jit_beneficiary_details.beneficiarytype = 'ORG' 
+        AND jit_payment_inst_details.lastmodifiedtime > %s
+        AND jit_payment_inst_details.lastmodifiedtime <= %s
+        AND jit_payment_inst_details.pistatus IN ('FAILED')
+        AND eg_org_function.category like '%%VEN%%'
+        GROUP BY jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    failed_vendor = pd.DataFrame(result, columns=['ULB', 'Failed Vendor'])
+
+    ####################### DEPT ########################
+    # Successful Dept Count
+    cursor.execute("""select jit_payment_inst_details.tenantid, count(distinct beneficiaryid) from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  jit_beneficiary_details.beneficiarytype='DEPT' and jit_payment_inst_details.lastmodifiedtime > %s and jit_payment_inst_details.lastmodifiedtime<=%s and pistatus in ('SUCCESSFUL')group by jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    successful_dept = pd.DataFrame(result, columns=['ULB', 'Successful Dept'])
+
+    # Partial Dept Count
+    cursor.execute("""select jit_payment_inst_details.tenantid, count(distinct beneficiaryid) from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  jit_beneficiary_details.beneficiarytype='DEPT' and jit_payment_inst_details.lastmodifiedtime > %s and jit_payment_inst_details.lastmodifiedtime<=%s and pistatus in ('PARTIAL')group by jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    partial_dept = pd.DataFrame(result, columns=['ULB', 'Partial Dept'])
+
+    # Failed Dept Count
+    cursor.execute("""select jit_payment_inst_details.tenantid, count(distinct beneficiaryid) from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  jit_beneficiary_details.beneficiarytype='DEPT' and jit_payment_inst_details.lastmodifiedtime > %s and jit_payment_inst_details.lastmodifiedtime<=%s and pistatus in ('FAILED')group by jit_payment_inst_details.tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    failed_dept = pd.DataFrame(result, columns=['ULB', 'Failed Dept'])
+
+    ############################################################################################
+
+    data = pd.merge(successful_individual, partial_individual, on='ULB', how='outer')
+    data = pd.merge(data, failed_individual, on='ULB', how='outer')
+    data = pd.merge(data, successful_cbo, on='ULB', how='outer')
+    data = pd.merge(data, partial_cbo, on='ULB', how='outer')
+    data = pd.merge(data, failed_cbo, on='ULB', how='outer')
+    data = pd.merge(data, successful_vendor, on='ULB', how='outer')
+    data = pd.merge(data, partial_vendor, on='ULB', how='outer')
+    data = pd.merge(data, failed_vendor, on='ULB', how='outer')
+    data = pd.merge(data, successful_dept, on='ULB', how='outer')
+    data = pd.merge(data, partial_dept, on='ULB', how='outer')
+    data = pd.merge(data, failed_dept, on='ULB', how='outer')
+
+    print(data)
+    return data
 
 
 def writeDataToCSV(data, filename):
@@ -753,7 +903,7 @@ if __name__ == '__main__':
         # Get the epoch time of the latest Thursday 3:30 PM
         epoch_to = get_last_thursday_epoch()
         # Get the epoch time exactly 7 days before the epoch
-        epoch_start = epoch_to - 7 * 24 * 3600 * 1000   # Subtract 7 days in milliseconds
+        epoch_from = epoch_to - 7 * 24 * 3600 * 1000   # Subtract 7 days in milliseconds
 
         # Get current date in ddmmyyyy format
         current_date = dt.datetime.now().strftime('%d%m%Y')
@@ -764,6 +914,7 @@ if __name__ == '__main__':
         amount_paid_bill_count_data_filename = f"{directory}/amount_paid_bill_count_report_{current_date}.csv"
         pi_level_count_data_filename = f"{directory}/pi_level_count_report_{current_date}.csv"
         pi_status_count_data_cumulative_filename = f"{directory}/pi_status_count_cumulative_report_{current_date}.csv"
+        pi_status_count_data_weekly_filename = f"{directory}/pi_status_count_weekly_report_{current_date}.csv"
 
         connection = connect_to_database()
         print("Connected to PostgreSQL")
@@ -784,14 +935,19 @@ if __name__ == '__main__':
         # writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
 
         # # Generate PI level count report
-        # pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_start, epoch_to)
+        # pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
         # pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
         # writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
 
-        # Generate Count Based On PI Status
-        pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
-        pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
-        writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
+        # # Generate Count Based On PI Status
+        # pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
+        # pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
+        # writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
+
+        # Generate Count Based On PI Status Weekly
+        pi_status_count_data_weekly = generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to)
+        pi_status_count_data_weekly_file_path = os.path.join(directory, pi_status_count_data_weekly_filename)
+        writeDataToCSV(pi_status_count_data_weekly, pi_status_count_data_weekly_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
