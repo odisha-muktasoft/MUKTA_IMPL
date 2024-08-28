@@ -2,7 +2,7 @@ package org.egov.hrms.web.contract;
 
 import java.util.List;
 
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;

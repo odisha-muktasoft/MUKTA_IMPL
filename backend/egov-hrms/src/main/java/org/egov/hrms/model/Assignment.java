@@ -42,7 +42,7 @@ package org.egov.hrms.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.validation.annotation.Validated;
