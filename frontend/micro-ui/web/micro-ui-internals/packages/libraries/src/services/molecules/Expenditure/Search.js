@@ -50,7 +50,7 @@ export const BillsSearch = {
         // "businessService":bsPurchaseBill
       },
        "pagination": {
-        "limit": 10,
+        "limit": 50,
         "offSet": 0,
         "sortBy": "ASC",
         "order": "ASC"
