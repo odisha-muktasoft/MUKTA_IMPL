@@ -458,6 +458,137 @@ def generateTotalAmountPaidAndCountOfBills(connection, epoch):
     print(data)
     return data
 
+def generateTotalCountOnPILevel(connection, epoch_from, epoch_to):
+    cursor = connection.cursor()
+    
+    ############## Impact On Ground Level ##############
+    # Weekly Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            SELECT COUNT(DISTINCT beneficiaryid) AS beneficiarycount, tenantid
+            FROM jit_beneficiary_details
+            WHERE paymentstatus = 'Payment Successful' and lastmodifiedtime>%s and lastmodifiedtime<=%s group by tenantid) AS tempTable;""", (epoch_from, epoch_to))
+
+    result_weekly = cursor.fetchall()
+    ground_level_weekly_beneficiary_count = result_weekly[0][0]
+
+    # Cummulative Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            SELECT COUNT(DISTINCT beneficiaryid) AS beneficiarycount, tenantid
+            FROM jit_beneficiary_details
+            WHERE paymentstatus = 'Payment Successful' and lastmodifiedtime<=%s group by tenantid) AS tempTable;""", (epoch_to,))
+
+    result_cummulative = cursor.fetchall()
+    ground_level_cummulative_beneficiary_count = result_cummulative[0][0]
+
+
+    ############### Failure in JIT by PI: Count of failure PI's which hit the JIT system(Show number of PI failed) ##############
+    # Weekly Count
+    cursor.execute("""select sum(tempTable.count) from (select count(*), tenantid from jit_payment_inst_details where pistatus='FAILED'  and  lastmodifiedtime>%s and lastmodifiedtime<=%s  group by tenantid) as tempTable;""", (epoch_from, epoch_to))
+    result_weekly = cursor.fetchall()
+    failure_by_pi_weekly_beneficiary_count = result_weekly[0][0]
+
+    # Cummulative Count
+    cursor.execute("""select sum(tempTable.count) from (select count(*), tenantid from jit_payment_inst_details where pistatus='FAILED'  and lastmodifiedtime<=%s  group by tenantid) as tempTable;""", (epoch_to,))
+    result_weekly = cursor.fetchall()
+    failure_by_pi_cummulative_beneficiary_count = result_weekly[0][0]
+
+
+    ############### Partial in JIT by PI: Count of Partial PI's which hit the JIT system ##############
+    # Weekly Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(*) AS beneficiarycount, tenantid from jit_payment_inst_details where pistatus='PARTIAL' and   lastmodifiedtime>%s and lastmodifiedtime<=%s group by tenantid
+        ) AS tempTable;""", (epoch_from, epoch_to))
+
+    result_weekly = cursor.fetchall()
+    partial_by_pi_weekly_beneficiary_count = result_weekly[0][0]
+
+    # Cummulative Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(*) AS beneficiarycount, tenantid from jit_payment_inst_details where pistatus='PARTIAL' and lastmodifiedtime<=%s group by tenantid
+        ) AS tempTable;""", (epoch_to,))
+
+    result_weekly = cursor.fetchall()
+    partial_by_pi_cummulative_beneficiary_count = result_weekly[0][0]
+
+
+    ############### Successful in JIT by PI: Count of Successful PI's which hit the JIT system(Show number of PI Successful) ##############
+    # Weekly Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(*) AS beneficiarycount, tenantid from jit_payment_inst_details where pistatus not in ('FAILED', 'PARTIAL', 'COMPLETED', 'APPROVED', 'INITIATED') and     lastmodifiedtime>%s and lastmodifiedtime<=%s  group by tenantid 
+        ) AS tempTable;""", (epoch_from, epoch_to))
+
+    result_weekly = cursor.fetchall()
+    successful_by_pi_weekly_beneficiary_count = result_weekly[0][0]
+
+    # Cummulative Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(*) AS beneficiarycount, tenantid from jit_payment_inst_details where pistatus not in ('FAILED', 'PARTIAL', 'COMPLETED', 'APPROVED', 'INITIATED') and lastmodifiedtime<=%s  group by tenantid 
+        ) AS tempTable;""", (epoch_to,))
+
+    result_weekly = cursor.fetchall()
+    successful_by_pi_cummulative_beneficiary_count = result_weekly[0][0]
+
+
+    ############### Failure in JIT by transaction: Count of failed transactions which hit the JIT system(Failed+Partial that are failed) ##############
+    # Weekly Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(beneficiarynumber) as beneficiarycount, jit_payment_inst_details.tenantid from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  pistatus in  ('FAILED','PARTIAL') and  jit_payment_inst_details.lastmodifiedtime>%s and jit_payment_inst_details.lastmodifiedtime<= %s and jit_beneficiary_details.paymentstatus='Payment Failed' Group by jit_payment_inst_details.tenantid
+        ) AS tempTable;""", (epoch_from, epoch_to))
+
+    result_weekly = cursor.fetchall()
+    failure_by_transaction_weekly_beneficiary_count = result_weekly[0][0]
+
+    # Cummulative Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(beneficiarynumber) as beneficiarycount, jit_payment_inst_details.tenantid from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  pistatus in  ('FAILED','PARTIAL') and jit_payment_inst_details.lastmodifiedtime<= %s and jit_beneficiary_details.paymentstatus='Payment Failed' Group by jit_payment_inst_details.tenantid
+        ) AS tempTable;""", (epoch_to,))
+
+    result_weekly = cursor.fetchall()
+    failure_by_transaction_cummulative_beneficiary_count = result_weekly[0][0]
+
+
+    ############### Success in JIT by transaction: Count of successful transactions which hit the JIT system(Successful + Partial that is success) ##############
+    # Weekly Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(beneficiarynumber) as beneficiarycount, jit_payment_inst_details.tenantid from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  pistatus  in ('SUCCESSFUL', 'PARTIAL')  and jit_payment_inst_details.lastmodifiedtime>%s and jit_payment_inst_details.lastmodifiedtime<= %s and jit_beneficiary_details.paymentstatus='Payment Successful' Group by jit_payment_inst_details.tenantid
+        ) AS tempTable;""", (epoch_from, epoch_to))
+
+    result_weekly = cursor.fetchall()
+    success_by_transaction_weekly_beneficiary_count = result_weekly[0][0]
+
+    # Cummulative Count
+    cursor.execute("""SELECT SUM(beneficiarycount) AS total_beneficiary_count
+        FROM (
+            select count(beneficiarynumber) as beneficiarycount, jit_payment_inst_details.tenantid from jit_beneficiary_details inner join jit_payment_inst_details on jit_payment_inst_details.id=jit_beneficiary_details.piid where  pistatus  in ('SUCCESSFUL', 'PARTIAL')  and jit_payment_inst_details.lastmodifiedtime<= %s and jit_beneficiary_details.paymentstatus='Payment Successful' Group by jit_payment_inst_details.tenantid
+        ) AS tempTable;""", (epoch_to,))
+
+    result_weekly = cursor.fetchall()
+    success_by_transaction_cummulative_beneficiary_count = result_weekly[0][0]
+
+    ####################################################################################3
+
+    # Prepare the data with hardcoded names
+    data = pd.DataFrame([
+        {" ": "Impact On Ground", "weekly": ground_level_weekly_beneficiary_count, "cumulative": ground_level_cummulative_beneficiary_count},
+        {" ": "Failure in JIT by PI: Count of failure PI's which hit the JIT system(Show number of PI failed) ", "weekly": failure_by_pi_weekly_beneficiary_count, "cumulative": failure_by_pi_cummulative_beneficiary_count},
+        {" ": "Partial in JIT by PI: Count of Partial PI's which hit the JIT system", "weekly": partial_by_pi_weekly_beneficiary_count, "cumulative": partial_by_pi_cummulative_beneficiary_count},
+        {" ": "Successful in JIT by PI: Count of Successful PI's which hit the JIT system(Show number of PI Successful)", "weekly": successful_by_pi_weekly_beneficiary_count, "cumulative": successful_by_pi_cummulative_beneficiary_count},
+        {" ": "Failure in JIT by transaction: Count of failed transactions which hit the JIT system(Failed+Partial that are failed)", "weekly": failure_by_transaction_weekly_beneficiary_count, "cumulative": failure_by_transaction_cummulative_beneficiary_count},
+        {" ": "Success in JIT by transaction: Count of successful transactions which hit the JIT system(Successful + Partial that is success)", "weekly": success_by_transaction_weekly_beneficiary_count, "cumulative": success_by_transaction_cummulative_beneficiary_count}
+    ])
+
+    print(data)
+    return data
+
 
 def writeDataToCSV(data, filename):
     if data.empty:
@@ -475,6 +606,8 @@ if __name__ == '__main__':
         
         # Get the epoch time of the latest Thursday 3:30 PM
         epoch = get_last_thursday_epoch()
+        # Get the epoch time exactly 7 days before the epoch
+        epoch_start = epoch - 7 * 24 * 3600 * 1000   # Subtract 7 days in milliseconds
 
         # Get current date in ddmmyyyy format
         current_date = dt.datetime.now().strftime('%d%m%Y')
@@ -483,6 +616,7 @@ if __name__ == '__main__':
         mukta_datamart_filename = f"{directory}/mukta_datamart_report_{current_date}.csv"
         project_type_filename = f"{directory}/project_type_report_{current_date}.csv"
         amount_paid_bill_count_data_filename = f"{directory}/amount_paid_bill_count_report_{current_date}.csv"
+        pi_level_count_data_filename = f"{directory}/pi_level_count_report_{current_date}.csv"
 
         connection = connect_to_database()
         print("Connected to PostgreSQL")
@@ -501,6 +635,11 @@ if __name__ == '__main__':
         amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch)
         amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
         writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
+
+        # Generate PI level count report
+        pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_start, epoch)
+        pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
+        writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
