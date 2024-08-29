@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+import 'package:digit_components/digit_components.dart' as ui_old;
+import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                         height: 30,
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: PoweredByDigit(
+                          child: ui_old.PoweredByDigit(
                             version: Constants.appVersion,
                           ),
                         ),
@@ -172,6 +173,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                               '₹ ${NumberFormat('##,##,##,##,###').format(e.totalContractedAmount ?? 0)}',
                                           i18.common.status:
                                               'WF_WORK_ORDER_STATE_${e.wfStatus.toString()}',
+                                              //TODO:temo workorder
                                           Constants.activeInboxStatus:
                                               e.wfStatus != acceptCode
                                                   ? 'false'
@@ -228,15 +230,134 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                           textAlign: TextAlign.left,
                                         ),
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TabButton(
-                                            t.translate(i18.common.inProgress),
-                                            isMainTab: true,
-                                            isSelected: inProgress,
-                                            onPressed: () {
+
+                                      // Row(
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.center,
+                                      //   children: [
+                                      //     TabButton(
+                                      //       t.translate(i18.common.inProgress),
+                                      //       isMainTab: true,
+                                      //       isSelected: inProgress,
+                                      //       onPressed: () {
+                                      //         setState(() {
+                                      //           inProgress = true;
+                                      //           workOrderList = contractsModel!
+                                      //               .contracts!
+                                      //               .map((e) => {
+                                      //                     'cardDetails': {
+                                      //                       i18.workOrder
+                                      //                           .workOrderNo: e
+                                      //                               .contractNumber ??
+                                      //                           t.translate(i18
+                                      //                               .common
+                                      //                               .noValue),
+                                      //                       i18.attendanceMgmt
+                                      //                           .projectName: e
+                                      //                               .additionalDetails
+                                      //                               ?.projectName ??
+                                      //                           t.translate(i18
+                                      //                               .common
+                                      //                               .noValue),
+                                      //                       i18.attendanceMgmt
+                                      //                           .projectDesc: e
+                                      //                               .additionalDetails
+                                      //                               ?.projectDesc ??
+                                      //                           t.translate(i18
+                                      //                               .common
+                                      //                               .noValue),
+                                      //                       i18.workOrder
+                                      //                               .roleOfCBO:
+                                      //                           t.translate(
+                                      //                               'COMMON_MASTERS_${e.executingAuthority ?? 'NA'}'),
+                                      //                       i18.attendanceMgmt
+                                      //                           .engineerInCharge: e
+                                      //                               .additionalDetails
+                                      //                               ?.officerInChargeName
+                                      //                               ?.name ??
+                                      //                           t.translate(i18
+                                      //                               .common
+                                      //                               .noValue),
+                                      //                       i18.workOrder
+                                      //                           .contractIssueDate: e.issueDate !=
+                                      //                               null
+                                      //                           ? DateFormats.timeStampToDate(
+                                      //                               e.issueDate,
+                                      //                               format:
+                                      //                                   "dd/MM/yyyy")
+                                      //                           : t.translate(i18
+                                      //                               .common
+                                      //                               .noValue),
+                                      //                       i18.workOrder
+                                      //                           .dueDate: e
+                                      //                                   .issueDate !=
+                                      //                               null
+                                      //                           ? DateFormats.getFilteredDate(DateTime.fromMillisecondsSinceEpoch(
+                                      //                                   e.issueDate ??
+                                      //                                       0)
+                                      //                               .add(const Duration(
+                                      //                                   days:
+                                      //                                       7))
+                                      //                               .toLocal()
+                                      //                               .toString())
+                                      //                           : t.translate(i18
+                                      //                               .common
+                                      //                               .noValue),
+                                      //                       i18.workOrder
+                                      //                               .workOrderAmount:
+                                      //                           '₹ ${NumberFormat('##,##,##,##,###').format(e.totalContractedAmount ?? 0)}',
+                                      //                       i18.common.status:
+                                      //                           t.translate(
+                                      //                               'WF_WORK_ORDER_STATE_${e.wfStatus.toString()}'),
+                                      //                       Constants
+                                      //                               .activeInboxStatus:
+                                      //                           e.wfStatus ==
+                                      //                                   acceptCode
+                                      //                               ? 'true'
+                                      //                               : 'false'
+                                      //                     },
+                                      //                     'payload': e.toMap()
+                                      //                   })
+                                      //               .toList();
+                                      //         });
+                                      //       },
+                                      //     ),
+                                      //     TabButton(
+                                      //       t.translate(i18.common.completed),
+                                      //       isMainTab: true,
+                                      //       isSelected: !inProgress,
+                                      //       onPressed: () {
+                                      //         setState(() {
+                                      //           inProgress = false;
+                                      //           workOrderList = [];
+                                      //         });
+                                      //       },
+                                      //     )
+                                      //   ],
+                                      // ),
+
+                                      // TODO: new toogle
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 16.0, bottom: 8.0),
+                                        child: ToggleList(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          toggleButtons: [
+                                            ToggleButtonModel(
+                                                name: t.translate(
+                                                    i18.common.inProgress),
+                                                code: "0"),
+                                            ToggleButtonModel(
+                                                name: t.translate(
+                                                    i18.common.completed),
+                                                code: "1"),
+                                          ],
+                                          onChanged: (ToggleButtonModel
+                                              toggleButtonModel) {
+                                            if (toggleButtonModel.code == "0") {
                                               setState(() {
                                                 inProgress = true;
                                                 workOrderList = contractsModel!
@@ -317,21 +438,17 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                                         })
                                                     .toList();
                                               });
-                                            },
-                                          ),
-                                          TabButton(
-                                            t.translate(i18.common.completed),
-                                            isMainTab: true,
-                                            isSelected: !inProgress,
-                                            onPressed: () {
+                                            } else {
                                               setState(() {
                                                 inProgress = false;
                                                 workOrderList = [];
                                               });
-                                            },
-                                          )
-                                        ],
+                                            }
+                                          },
+                                          selectedIndex: 0,
+                                        ),
                                       ),
+
                                       workOrderList.isNotEmpty
                                           ? WorkDetailsCard(
                                               workOrderList,
@@ -366,9 +483,11 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                       ),
                                       workOrderList.isNotEmpty &&
                                               workOrderList.length > 1
-                                          ? const Align(
+                                          ?
+                                          // TODO:
+                                          const Align(
                                               alignment: Alignment.bottomCenter,
-                                              child: PoweredByDigit(
+                                              child: ui_old.PoweredByDigit(
                                                 version: Constants.appVersion,
                                               ),
                                             )

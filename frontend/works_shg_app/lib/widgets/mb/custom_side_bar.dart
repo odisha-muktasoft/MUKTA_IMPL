@@ -1,5 +1,5 @@
 import 'package:digit_ui_components/widgets/helper_widget/digit_profile.dart';
-import 'package:digit_ui_components/widgets/molecules/hamburder.dart';
+import 'package:digit_ui_components/widgets/molecules/hamburger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/app_initilization/app_initilization.dart';
@@ -112,7 +112,7 @@ class _MySideBarState extends State<MySideBar> {
                                   // Navigate to Downloaded Data
                                 },
                               ),
-                            ],
+                            ], logOutButtonLabel: 'LogOut',
                           );
                         },
                       );

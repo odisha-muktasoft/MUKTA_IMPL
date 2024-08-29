@@ -1,4 +1,6 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/wage_seeker_registration/wage_seeker_locality_bloc.dart';
@@ -13,7 +15,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/back.dart';
-import 'package:works_shg_app/widgets/molecules/digit_stepper.dart';
+//import 'package:works_shg_app/widgets/molecules/digit_stepper.dart';
 
 import '../../blocs/app_initilization/app_initilization.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -54,7 +56,9 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
     context.read<WageSeekerBloc>().add(
           const WageSeekerClearEvent(),
         );
-        context.read<WageSeekerCreateBloc>().add(const CreateWageSeekerDisposeEvent());
+    context
+        .read<WageSeekerCreateBloc>()
+        .add(const CreateWageSeekerDisposeEvent());
     FilePickerData.imageFile = null;
     FilePickerData.bytes = null;
     context.read<WageSeekerMDMSBloc>().add(
@@ -67,11 +71,11 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                   .toString()),
         );
     context.read<WageSeekerLocalityBloc>().add(
-      LocalityEventWageSeeker(
-          tenantId: GlobalVariables
-              .organisationListModel!.organisations!.first.tenantId
-              .toString()),
-    );
+          LocalityEventWageSeeker(
+              tenantId: GlobalVariables
+                  .organisationListModel!.organisations!.first.tenantId
+                  .toString()),
+        );
   }
 
   int currentStep = 0;
@@ -107,7 +111,8 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
       return Scaffold(
           appBar: AppBar(
             backgroundColor: const Color(0xff0B4B66),
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                .copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -120,34 +125,79 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Back(),
+                  // const Back(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, top: 16, right: 16, bottom: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        BackNavigationButton(
+                          backButtonText: AppLocalizations.of(context)
+                                  .translate(i18.common.back) ??
+                              'Back',
+                          handleBack: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
                   const SizedBox(
                     height: 8.0,
                   ),
                   BlocBuilder<AppInitializationBloc, AppInitializationState>(
                       builder: (context, initState) {
-                    return DigitStepper(
-                      stepColor: const DigitColors().cloudGray,
-                      activeStepColor: const DigitColors().burningOrange,
-                      numberStyle: TextStyle(color: const DigitColors().white),
-                      lineDotRadius: 2.0,
-                      lineLength: MediaQuery.of(context).size.width / 10,
-                      activeStepBorderPadding: 0.0,
-                      lineColor: const DigitColors().regalBlue,
-                      activeStepBorderColor: const DigitColors().burningOrange,
-                      stepReachedAnimationEffect: Curves.ease,
-                      stepRadius: 12.0,
-                      numbers: stepNumbers,
-                      headers: stepHeaders
-                          .map((e) => t.translate(e).toString())
-                          .toList(),
-                      activeStep: currentStep,
-                      // enableNextPreviousButtons: false,
-                      onStepReached: (index) {
-                        setState(() {
-                          currentStep = index;
-                        });
-                      },
+                    // return DigitStepper(
+                    //   stepColor: const DigitColors().cloudGray,
+                    //   activeStepColor: const DigitColors().burningOrange,
+                    //   numberStyle: TextStyle(color: const DigitColors().white),
+                    //   lineDotRadius: 2.0,
+                    //   lineLength: MediaQuery.of(context).size.width / 10,
+                    //   activeStepBorderPadding: 0.0,
+                    //   lineColor: const DigitColors().regalBlue,
+                    //   activeStepBorderColor: const DigitColors().burningOrange,
+                    //   stepReachedAnimationEffect: Curves.ease,
+                    //   stepRadius: 12.0,
+                    //   numbers: stepNumbers,
+                    // headers: stepHeaders
+                    //     .map((e) => t.translate(e).toString())
+                    //     .toList(),
+                    //   activeStep: currentStep,
+                    //   // enableNextPreviousButtons: false,
+                    //   onStepReached: (index) {
+                    // setState(() {
+                    //   currentStep = index;
+                    // });
+                    //   },
+                    // );
+
+                    return SizedBox(
+                      height: 90,
+                      child: DigitStepper(
+                        inverted: true,
+                        activeIndex: currentStep,
+                        stepperList: stepHeaders
+                            .asMap()
+                            .map(
+                              (index, e) => MapEntry(
+                                index,
+                                StepperData(
+                                  title: t.translate(e).toString(),
+                                  onStepTap: currentStep > index
+                                      ? () {
+                                          setState(() {
+                                            currentStep = index;
+                                          });
+                                        }
+                                      : null,
+                                ),
+                              ),
+                            )
+                            .values
+                            .toList(),
+                      ),
                     );
                   }),
                   const SizedBox(
@@ -166,17 +216,15 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                                 orElse: () => Container(),
                                 loaded: (Location? ward) {
                                   return BlocBuilder<WageSeekerLocalityBloc,
-                                      WageSeekerLocalityState>(
+                                          WageSeekerLocalityState>(
                                       builder: (context, localityState) {
-                                        return localityState.maybeWhen(orElse:  () => Container(),
-                                          loaded: (Location? locality) {
-                                            return getFormConfig(
-                                                wageSeekerMDMS, ward,locality);
-                                          }
-                                        );
-
-                                    }
-                                  );
+                                    return localityState.maybeWhen(
+                                        orElse: () => Container(),
+                                        loaded: (Location? locality) {
+                                          return getFormConfig(
+                                              wageSeekerMDMS, ward, locality);
+                                        });
+                                  });
                                 });
                           });
                         },
@@ -189,15 +237,16 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                   const Align(
                     alignment: Alignment.bottomCenter,
                     child: PoweredByDigit(
-                       version: Constants.appVersion,
-                      ),
+                      version: Constants.appVersion,
+                    ),
                   )
                 ]),
           ));
     });
   }
 
-  Widget getFormConfig(WageSeekerMDMS? wageSeekerMDMS, Location? ward,Location? locality) {
+  Widget getFormConfig(
+      WageSeekerMDMS? wageSeekerMDMS, Location? ward, Location? locality) {
     switch (currentStep) {
       case 0:
         return IndividualDetailsPage(

@@ -1,8 +1,10 @@
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/digit_tab_bar_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_tab.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
     as ui_label;
@@ -731,51 +733,60 @@ class _MBDetailPageState extends State<MBDetailPage>
                                   bottom: 0.0),
                               child: AnimatedBuilder(
                                 animation: _tabController.animation!,
-                                builder: (context, child) => Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  // padding: EdgeInsets.zero,
-                                  // controller: _tabController,
-                                  children: [
-                                    Expanded(
-                                      child: CustomTab(
-                                        text: t.translate(
-                                            i18.measurementBook.mbSor),
-                                        isSelected: _tabController.index == 0,
-                                        onTap: () {
-                                          _tabController.animateTo(0);
+                                builder: (context, child) =>
+                                    //Expanded(
+                                      //child: 
+                                      DigitTabBar(
+                                        tabBarThemeData: const DigitTabBarThemeData().copyWith(
+                                          tabWidth: 130,
+                                          padding: const EdgeInsets.all(0)
+                                        ),
+                                        tabs: [t.translate(
+                                            i18.measurementBook.mbSor), t.translate(
+                                            i18.measurementBook.mbNonSor), t.translate(i18
+                                             .measurementBook.mbWorksitePhotos)],
+                                        onTabSelected: (index){
+                                          _tabController.animateTo(index);
                                         },
-                                        firstTab: true,
-                                        lastTap: false,
+                                        initialIndex: 0,
                                       ),
-                                    ),
-                                    Expanded(
-                                      child: CustomTab(
-                                        text: t.translate(
-                                            i18.measurementBook.mbNonSor),
-                                        isSelected: _tabController.index == 1,
-                                        onTap: () {
-                                          _tabController.animateTo(1);
-                                        },
-                                        firstTab: false,
-                                        lastTap: false,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: CustomTab(
-                                        text: t.translate(i18
-                                            .measurementBook.mbWorksitePhotos),
-                                        isSelected: _tabController.index == 2,
-                                        onTap: () {
-                                          _tabController.animateTo(2);
-                                        },
-                                        firstTab: false,
-                                        lastTap: true,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+
+                                      // CustomTab(
+                                      //   text: t.translate(
+                                      //       i18.measurementBook.mbSor),
+                                      //   isSelected: _tabController.index == 0,
+                                      //   onTap: () {
+                                      //     _tabController.animateTo(0);
+                                      //   },
+                                      //   firstTab: true,
+                                      //   lastTap: false,
+                                      // ),
+                                    //),
+                                    // Expanded(
+                                    //   child: CustomTab(
+                                    //     text: t.translate(
+                                    //         i18.measurementBook.mbNonSor),
+                                    //     isSelected: _tabController.index == 1,
+                                    //     onTap: () {
+                                    //       _tabController.animateTo(1);
+                                    //     },
+                                    //     firstTab: false,
+                                    //     lastTap: false,
+                                    //   ),
+                                    // ),
+                                    // Expanded(
+                                    //   child: CustomTab(
+                                    //     text: t.translate(i18
+                                    //         .measurementBook.mbWorksitePhotos),
+                                    //     isSelected: _tabController.index == 2,
+                                    //     onTap: () {
+                                    //       _tabController.animateTo(2);
+                                    //     },
+                                    //     firstTab: false,
+                                    //     lastTap: true,
+                                    //   ),
+                                    // ),
+                                
                               ),
                             ),
 

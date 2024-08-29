@@ -88,15 +88,54 @@ class WorkDetailsCard extends StatelessWidget {
       case 1:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(
-                context,
-                e,
-                attendanceRegisterId: attendanceRegistersModel![index].id,
-                attendanceRegister: attendanceRegistersModel![index],
-              ),
+            return ui_card.DigitCard(
+              margin: const EdgeInsets.all(8),
+              cardType: CardType.primary,
+              children: [
+                LabelValueList(
+                  labelFlex: 5,
+                  valueFlex: 5,
+                  items: getCardDetails(
+                    context,
+                    e,
+                    attendanceRegisterId: attendanceRegistersModel![index].id,
+                    attendanceRegister: attendanceRegistersModel![index],
+                  ),
+                ),
+                Button(
+                  label: elevatedButtonLabel,
+                  onPressed: () {
+                    if (isManageAttendance) {
+                      context.router.push(AttendanceRegisterTableRoute(
+                          registerId:
+                              attendanceRegistersModel![index].id.toString(),
+                          tenantId: attendanceRegistersModel![index]!
+                              .tenantId
+                              .toString()));
+                    } else {
+                      context.router.push(TrackAttendanceRoute(
+                        id: attendanceRegistersModel![index].id.toString(),
+                        tenantId: attendanceRegistersModel![index]!
+                            .tenantId
+                            .toString(),
+                      ));
+                    }
+                  },
+                  type: ButtonType.primary,
+                  size: ButtonSize.large,
+                  mainAxisSize: MainAxisSize.max,
+                )
+              ],
             );
+            // return DigitCard(
+            //   padding: const EdgeInsets.all(8.0),
+            // child: getCardDetails(
+            //   context,
+            //   e,
+            //   attendanceRegisterId: attendanceRegistersModel![index].id,
+            //   attendanceRegister: attendanceRegistersModel![index],
+            // ),
+            // );
           }).toList(),
         );
 
@@ -383,31 +422,41 @@ class WorkDetailsCard extends StatelessWidget {
     //     ),
     //   ));
     // }
-    for (int j = 0; j < cardDetails.length - 1; j++) {
-      labelList.add(getItemWidget(
-        context,
-        title: AppLocalizations.of(context)
-            .translate(cardDetails.keys.elementAt(j).toString()),
-        description: AppLocalizations.of(context)
-            .translate(cardDetails.values.elementAt(j).toString()),
-        isActiveStatus: (isWorkOrderInbox || viewWorkOrder) &&
-                cardDetails.keys.elementAt(j).toString() == i18.common.status &&
-                cardDetails.length == j + 2
-            ? true
-            : !(isWorkOrderInbox || viewWorkOrder) &&
-                cardDetails.keys.elementAt(j).toString() == i18.common.status &&
-                cardDetails.length == j + 2 &&
-                ((cardDetails.values.elementAt(j + 1) == 'true') ||
-                    (cardDetails.values.elementAt(j) == Constants.active)),
-        isRejectStatus: (isWorkOrderInbox || viewWorkOrder) &&
-                cardDetails.keys.elementAt(j).toString() == i18.common.status
-            ? false
-            : !(isWorkOrderInbox || viewWorkOrder) &&
-                cardDetails.keys.elementAt(j).toString() == i18.common.status &&
-                cardDetails.length == j + 2 &&
-                (cardDetails.values.elementAt(j + 1) == 'false'),
-      ));
+    for (int j = 0; j < cardDetails.length; j++) {
+      if (AppLocalizations.of(context)
+              .translate(cardDetails.keys.elementAt(j).toString()) ==
+          Constants.activeInboxStatus) {
+        continue;
+      } else {
+        labelList.add(getItemWidget(
+          context,
+          title: AppLocalizations.of(context)
+              .translate(cardDetails.keys.elementAt(j).toString()),
+          description: AppLocalizations.of(context)
+              .translate(cardDetails.values.elementAt(j).toString()),
+          isActiveStatus: (isWorkOrderInbox || viewWorkOrder) &&
+                  cardDetails.keys.elementAt(j).toString() ==
+                      i18.common.status &&
+                  cardDetails.length == j + 2
+              ? true
+              : !(isWorkOrderInbox || viewWorkOrder) &&
+                  cardDetails.keys.elementAt(j).toString() ==
+                      i18.common.status &&
+                  cardDetails.length == j + 2 &&
+                  ((cardDetails.values.elementAt(j + 1) == 'true') ||
+                      (cardDetails.values.elementAt(j) == Constants.active)),
+          isRejectStatus: (isWorkOrderInbox || viewWorkOrder) &&
+                  cardDetails.keys.elementAt(j).toString() == i18.common.status
+              ? false
+              : !(isWorkOrderInbox || viewWorkOrder) &&
+                  cardDetails.keys.elementAt(j).toString() ==
+                      i18.common.status &&
+                  cardDetails.length == j + 2 &&
+                  (cardDetails.values.elementAt(j + 1) == 'false'),
+        ));
+      }
     }
+
     // if (isWorkOrderInbox && !isAccept!) {
     //   labelList.add(Column(
     //     children: [
@@ -563,21 +612,24 @@ class WorkDetailsCard extends StatelessWidget {
     //       ),
     //     ],
     //   ));
-    // } else if (isManageAttendance || isTrackAttendance) {
+    // }
+    //
+    //// TODO: attendance
+    // else if (isManageAttendance || isTrackAttendance) {
     //   labelList.add(Padding(
     //     padding: const EdgeInsets.all(4.0),
     //     child: DigitElevatedButton(
     //       onPressed: () {
-    //         if (isManageAttendance) {
-    //           context.router.push(AttendanceRegisterTableRoute(
-    //               registerId: attendanceRegisterId.toString(),
-    //               tenantId: attendanceRegister!.tenantId.toString()));
-    //         } else {
-    //           context.router.push(TrackAttendanceRoute(
-    //             id: attendanceRegisterId.toString(),
-    //             tenantId: attendanceRegister!.tenantId.toString(),
-    //           ));
-    //         }
+    // if (isManageAttendance) {
+    //   context.router.push(AttendanceRegisterTableRoute(
+    //       registerId: attendanceRegisterId.toString(),
+    //       tenantId: attendanceRegister!.tenantId.toString()));
+    // } else {
+    //   context.router.push(TrackAttendanceRoute(
+    //     id: attendanceRegisterId.toString(),
+    //     tenantId: attendanceRegister!.tenantId.toString(),
+    //   ));
+    // }
     //       },
     //       child: Center(
     //         child: Text(elevatedButtonLabel,
@@ -588,7 +640,11 @@ class WorkDetailsCard extends StatelessWidget {
     //       ),
     //     ),
     //   ));
-    // } else if (isSHGInbox) {
+    // }
+    //
+    //
+    //
+    // else if (isSHGInbox) {
     //   labelList.add(
     //     Padding(
     //       padding: const EdgeInsets.all(4.0),
@@ -733,7 +789,8 @@ class WorkDetailsCard extends StatelessWidget {
     // )
     //: const SizedBox.shrink();
 
-    // : LabelValuePair(label: '', value: '');
+    //  : LabelValuePair(
+    //   label: '', value: '');
   }
 
 // new compo for isWorkOrderInbox

@@ -1,4 +1,6 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
@@ -54,9 +56,9 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
         builder: (context, localState) {
       return Scaffold(
           appBar: AppBar(
-            
             backgroundColor: const Color(0xff0B4B66),
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
+            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
+                .copyWith(color: const DigitColors().white),
             titleSpacing: 0,
             title: const AppBarLogo(),
           ),
@@ -76,8 +78,8 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: PoweredByDigit(
-                               version: Constants.appVersion,
-                              ),
+                              version: Constants.appVersion,
+                            ),
                           ),
                         )
                       : const SizedBox.shrink();
@@ -149,18 +151,40 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Back(
-                              backLabel: AppLocalizations.of(context)
-                                  .translate(i18.common.back),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 8.0,
+                                  top: 16.0,
+                                  right: 8.0,
+                                  bottom: 0.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  BackNavigationButton(
+                                    backButtonText: AppLocalizations.of(context)
+                                        .translate(i18.common.back),
+                                    handleBack: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
+                            // Back(
+                            //   backLabel: AppLocalizations.of(context)
+                            //       .translate(i18.common.back),
+                            // ),
+
                             Padding(
                               padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                '${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceRegisters)}(${projectList.length})',
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .displayMedium
-                                    ?.apply(color: const DigitColors().black),
-                                textAlign: TextAlign.left,
+                              child: TextChunk(
+                                heading:
+                                    '${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceRegisters)}(${projectList.length})',
+                                // style: DigitTheme.instance.mobileTheme.textTheme
+                                //     .displayMedium
+                                //     ?.apply(color: const DigitColors().black),
+                                // textAlign: TextAlign.left,
                               ),
                             ),
                             projectList.isEmpty
@@ -187,8 +211,8 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                 ? const Align(
                                     alignment: Alignment.bottomCenter,
                                     child: PoweredByDigit(
-                                       version: Constants.appVersion,
-                                      ),
+                                      version: Constants.appVersion,
+                                    ),
                                   )
                                 : const SizedBox.shrink()
                           ]);

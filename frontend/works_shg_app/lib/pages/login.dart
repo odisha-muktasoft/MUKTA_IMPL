@@ -470,8 +470,9 @@ class _LoginPageState extends State<LoginPage>
           // ),
 
           child: ui_label.LabeledField(
+            isRequired: true,
             label:
-                '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
+                '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}',
             child: DigitTextFormInput(
               keyboardType: TextInputType.number,
               // focusNode: _numberFocus,
@@ -589,7 +590,8 @@ class _LoginPageState extends State<LoginPage>
               return Column(
                 children: [
                   ui_label.LabeledField(
-                    label: '${t.translate(i18.login.loginUserName)}*',
+                    isRequired: true,
+                    label: '${t.translate(i18.login.loginUserName)}',
                     child: DigitTextFormInput(
                       controller: userNameController,
                       isRequired: true,
@@ -599,8 +601,9 @@ class _LoginPageState extends State<LoginPage>
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: ui_label.LabeledField(
+                      isRequired: true,
                       wrapLabelText: true,
-                      label: '${t.translate(i18.login.loginPassword)}*',
+                      label: '${t.translate(i18.login.loginPassword)}',
                       child: DigitPasswordFormInput(
                         toggleSuffixIcon: iconVisibility
                             ? Icons.visibility_rounded
@@ -619,7 +622,8 @@ class _LoginPageState extends State<LoginPage>
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0, bottom: 16),
                     child: ui_label.LabeledField(
-                      label: "${t.translate(i18.common.city)} *",
+                      isRequired: true,
+                      label: "${t.translate(i18.common.city)}",
                       child: ui_component.DigitDropdown(
                         // initialValue: null,
                         // formControlName: cityDropDownKey,

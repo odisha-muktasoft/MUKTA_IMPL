@@ -1,4 +1,8 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -70,57 +74,67 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
       },
       child: SingleChildScrollView(
         child: SizedBox(
-          height: MediaQuery.sizeOf(context).height*0.70,
+          height: MediaQuery.sizeOf(context).height * 0.70,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              DigitCard(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      //  "Individual's Skill Details",
-                      t.translate(i18.wageSeeker.individualSkillHeader),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.displayMedium
-                          ?.apply(color: const DigitColors().black),
+              ui_card.DigitCard(
+                margin: const EdgeInsets.all(8),
+                cardType: CardType.primary,
+                children: [
+                  TextChunk(
+                    //  "Individual's Skill Details",
+                    heading: t.translate(i18.wageSeeker.individualSkillHeader),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        MultiSelectSearchCheckBox(
+                          label: t.translate(i18.attendanceMgmt.skill) + ' *',
+                          onChange: _onSelectedOptionsChanged,
+                          options: widget.skills,
+                          hintText: t.translate(i18.attendanceMgmt.skill),
+                          selectedOptions: selectedOptions,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        // MultiSelectDropDown(options: widget.skills.map((e) => DropdownItem(name: t.translate("COMMON_MASTERS_SKILLS_${e.toString()}"), code: e.toString())).toList(), onOptionSelected: (List<DropdownItem> selectedOptions) {
+
+                        //  },),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          MultiSelectSearchCheckBox(
-                            label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                            onChange: _onSelectedOptionsChanged,
-                            options: widget.skills,
-                            hintText: t.translate(i18.attendanceMgmt.skill),
-                            selectedOptions: selectedOptions,
-                          ),
-                           const SizedBox(
-                        height: 10,
-                      ),
-                        ],
-                      ),
-                    ),
-                   
-                  ],
-                ),
+                  ),
+                ],
               ),
               Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 12),
-                  color: const DigitColors().white,
-                  child: DigitElevatedButton(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  color: Colors.white,
+                  child: Button(
+                      type: ButtonType.primary,
+                      size: ButtonSize.large,
+                      mainAxisSize: MainAxisSize.max,
                       onPressed: () {
                         if (!getSkillsValid()) {
-                          Notifiers.getToastMessage(context,
-                              i18.wageSeeker.selectSkillValidation, 'ERROR');
+                          // Notifiers.getToastMessage(context,
+                          //     i18.wageSeeker.selectSkillValidation, 'ERROR');
+                          Toast.showToast(context,
+                              message: t.translate(
+                                  i18.wageSeeker.selectSkillValidation),
+                              type: ToastType.error);
                         } else if (selectedOptions.isEmpty) {
-                          Notifiers.getToastMessage(
-                              context, i18.wageSeeker.skillsRequired, 'ERROR');
+                          // Notifiers.getToastMessage(
+                          //     context, i18.wageSeeker.skillsRequired, 'ERROR');
+                          Toast.showToast(context,
+                              message:
+                                  t.translate(i18.wageSeeker.skillsRequired),
+                              type: ToastType.error);
                         } else {
                           final skillList = SkillDetails(
                               individualSkills: selectedOptions
@@ -128,17 +142,16 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                                       type: e.toString().split('.').last,
                                       level: e.toString().split('.').first))
                                   .toList());
-                        
+
                           context.read<WageSeekerBloc>().add(
-                                WageSeekerSkillCreateEvent(skillDetails: skillList),
+                                WageSeekerSkillCreateEvent(
+                                    skillDetails: skillList),
                               );
-                        
+
                           widget.onPageChanged(3);
                         }
                       },
-                      child: Center(
-                        child: Text(t.translate(i18.common.next)),
-                      )),
+                      label: t.translate(i18.common.next)),
                 ),
               )
             ],
