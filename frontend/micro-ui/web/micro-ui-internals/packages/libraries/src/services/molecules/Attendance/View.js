@@ -169,7 +169,9 @@ const getWageSeekerSkills = async (data) => {
     // Create a mapping for Rates based on sorId
     const ratesMapping = {};
     ratesData.forEach(rate => {
+      if(parseInt(rate?.validFrom) < data?.musterRolls?.[0]?.auditDetails?.createdTime && ( rate?.validTo == null || parseInt(rate?.validTo) > data?.musterRolls?.[0]?.auditDetails?.createdTime)){
       ratesMapping[rate.sorId] = rate;
+      }
     });
 
     // Iterate over the SOR data and add corresponding Rates data to each skill
