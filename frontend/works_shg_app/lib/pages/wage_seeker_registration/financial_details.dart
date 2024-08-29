@@ -340,7 +340,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                 builder: (field) {
                   return RadioList(
                     errorMessage: field.errorText,
-                    groupValue: form.control(accountTypeKey).value,
+                    groupValue: form.control(accountTypeKey).value ?? '',
                     radioButtons: accountTypeList
                         .map((e) => RadioButtonModel(
                             code: e.toString(),

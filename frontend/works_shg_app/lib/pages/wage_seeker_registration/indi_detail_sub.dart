@@ -120,8 +120,10 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                   builder: (field) {
                     return DigitDateFormInput(
                       controller: TextEditingController()
-                        ..text = DateFormat('dd/MM/yyyy')
-                            .format(form1.control(dobKey).value),
+                        ..text = form1.control(dobKey).value != null
+                            ? DateFormat('dd/MM/yyyy')
+                                .format(form1.control(dobKey).value)
+                            : '',
                       errorMessage: field.errorText,
                       onChange: (p0) {
                         DateTime selectedDate =

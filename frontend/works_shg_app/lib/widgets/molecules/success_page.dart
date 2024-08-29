@@ -1,14 +1,24 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
+import 'package:digit_ui_components/widgets/molecules/panel_cards.dart';
+import 'package:digit_ui_components/widgets/molecules/panel_cards.dart';
 import 'package:flutter/material.dart';
+
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 import '../../utils/common_methods.dart';
-import '../back.dart';
-import '../side_bar.dart';
 import '../atoms/app_bar_logo.dart';
 import '../atoms/success_message.dart';
 import '../drawer_wrapper.dart';
+import '../side_bar.dart';
 
 @RoutePage()
 class SuccessResponsePage extends StatelessWidget {
@@ -52,145 +62,80 @@ class SuccessResponsePage extends StatelessWidget {
       canPop: true,
       onPopInvoked: (value) async {
         context.router.push(const HomeRoute());
-        
       },
       child: Scaffold(
-          bottomNavigationBar: Container(
-            height: 60,
-            padding: const EdgeInsets.all(8.0),
-            child: const Align(
-              alignment: Alignment.bottomCenter,
-              child: PoweredByDigit(
-                version: Constants.appVersion,
-              ),
+        bottomNavigationBar: Container(
+          height: 60,
+          padding: const EdgeInsets.all(8.0),
+          child: const Align(
+            alignment: Alignment.bottomCenter,
+            child: PoweredByDigit(
+              version: Constants.appVersion,
             ),
           ),
-          appBar: isWithoutLogin
-              ? AppBar(
+        ),
+        appBar: isWithoutLogin
+            ? AppBar(
                 backgroundColor: const Color(0xff0B4B66),
-                  title: const Text('MuktaSoft'),
-                  automaticallyImplyLeading: false,
-                )
-              : AppBar(
+                title: const Text('MuktaSoft'),
+                automaticallyImplyLeading: false,
+              )
+            : AppBar(
                 backgroundColor: const Color(0xff0B4B66),
-                  titleSpacing: 0,
-                  title: const AppBarLogo(),
+                titleSpacing: 0,
+                title: const AppBarLogo(),
+              ),
+        drawer: isWithoutLogin
+            ? null
+            : DrawerWrapper(Drawer(
+                child: SideBar(
+                module: CommonMethods.getLocaleModules(),
+              ))),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              backButton == true
+                  ? Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8.0, top: 16, bottom: 16, right: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          BackNavigationButton(
+                              backButtonText: AppLocalizations.of(context)
+                                      .translate(i18.common.back) ??
+                                  'Back',
+                              handleBack: () =>
+                                  context.router.push(const HomeRoute())),
+                        ],
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PanelCard(
+                  title: header,
+                  type: PanelType.success,
+                  description: subTitle,
+                  actions: [
+                    ui_component.Button(
+                      type: ButtonType.primary,
+                      size: ButtonSize.large,
+                      mainAxisSize: MainAxisSize.max,
+                      onPressed: () {
+                        context.router.push(const HomeRoute());
+                      },
+                      label: buttonLabel ?? '',
+                    )
+                  ],
                 ),
-          drawer: isWithoutLogin
-              ? null
-              : DrawerWrapper(Drawer(
-                  child: SideBar(
-                  module: CommonMethods.getLocaleModules(),
-                ))),
-          body: SingleChildScrollView(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                backButton == true
-                    ? Back(
-                        callback: () => context.router.push(const HomeRoute()))
-                    : const Text(''),
-                DigitCard(
-                    margin: const EdgeInsets.only(left: 10, right: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SuccessMessage(header,
-                            subTextHeader: subHeader, subText: subText),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                  left: 10, bottom: 20, top: 20, right: 10),
-                              child: Text(
-                                subTitle ?? '',
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.w400),
-                                textAlign: TextAlign.start,
-                              ),
-                            )),
-                        Visibility(
-                          visible:
-                              downloadLabel != null && callBackDownload != null,
-                          child: const SizedBox(
-                            height: 20,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Expanded(
-                                child: Visibility(
-                              visible: downloadLabel != null &&
-                                  callBackDownload != null,
-                              child: TextButton.icon(
-                                onPressed: callBackDownload,
-                                icon: const Icon(Icons.download_sharp),
-                                label: Text(downloadLabel ?? '',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: DigitTheme
-                                            .instance.colorScheme.primary)),
-                              ),
-                            )),
-                            Expanded(
-                                child: Visibility(
-                              visible:
-                                  printLabel != null && callBackPrint != null,
-                              child: TextButton.icon(
-                                onPressed: callBackPrint,
-                                icon: Icon(
-                                  Icons.print,
-                                  color:
-                                      DigitTheme.instance.colorScheme.primary,
-                                ),
-                                label: Text(printLabel ?? '',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: DigitTheme
-                                            .instance.colorScheme.primary)),
-                              ),
-                            )),
-                            Expanded(
-                                child: Visibility(
-                              visible: whatsAppLabel != null &&
-                                  callBackWhatsapp != null,
-                              child: TextButton.icon(
-                                onPressed: callBackWhatsapp,
-                                icon: (Image.asset('assets/png/whats_app.png')),
-                                label: Text(
-                                  whatsAppLabel ?? '',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: DigitTheme
-                                          .instance.colorScheme.primary),
-                                ),
-                              ),
-                            ))
-                          ],
-                        ),
-                        Visibility(
-                          visible: !isWithoutLogin,
-                          child: DigitElevatedButton(
-                            onPressed: () {
-                              context.router.push(const HomeRoute());
-                            },
-                            child: Center(
-                              child: Text(buttonLabel ?? '',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .apply(color: Colors.white)),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ))
-              ]))),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

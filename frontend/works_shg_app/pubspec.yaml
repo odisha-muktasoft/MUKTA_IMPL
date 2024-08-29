@@ -136,6 +136,7 @@ flutter:
     - .env
     - assets/png/
     - assets/svg/
+    - assets/animated_json/
   fonts:
     - family: Roboto
       fonts:

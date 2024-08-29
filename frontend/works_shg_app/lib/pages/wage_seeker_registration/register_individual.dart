@@ -31,6 +31,7 @@ import '../../utils/models/file_picker_data.dart';
 import '../../widgets/side_bar.dart';
 import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/drawer_wrapper.dart';
+import '../../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
 class RegisterIndividualPage extends StatefulWidget {
@@ -207,7 +208,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                       builder: (context, mdmsState) {
                     return mdmsState.maybeWhen(
                         orElse: () => Container(),
-                        loading: () => Loaders.circularLoader(context),
+                        loading: () => shg_loader.Loaders.circularLoader(context),
                         loaded: (WageSeekerMDMS? wageSeekerMDMS) {
                           return BlocBuilder<WageSeekerLocationBloc,
                                   WageSeekerLocationState>(

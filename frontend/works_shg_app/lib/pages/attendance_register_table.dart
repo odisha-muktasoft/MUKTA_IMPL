@@ -418,7 +418,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                 "skill": AppLocalizations.of(
                                                         context)
                                                     .translate(
-                                                        'COMMON_MASTERS_SKILLS_${e.businessObject?.skills!.first.level?.toUpperCase()}'),
+                                                        'COMMON_MASTERS_SKILLS_${e.businessObject?.skills?.first.level?.toUpperCase()}'),
                                                 "individualId":
                                                     e.businessObject?.id,
                                                 "uuid": e.businessObject?.id,

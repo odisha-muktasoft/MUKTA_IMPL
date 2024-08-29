@@ -1,4 +1,10 @@
-import 'package:digit_components/digit_components.dart';
+//import 'package:digit_components/digit_components.dart';
+//import 'package:digit_components/widgets/atoms/details_card.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,114 +69,149 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          margin: const EdgeInsets.all(8.0),
-          child: Text(
-            t.translate(i18.wageSeeker.summaryDetails),
-            style: DigitTheme.instance.mobileTheme.textTheme.displayMedium
-                ?.apply(color: const DigitColors().black),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextChunk(
+            heading: t.translate(i18.wageSeeker.summaryDetails),
           ),
         ),
-        DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ui_card.DigitCard(
+          margin: const EdgeInsets.all(8),
+          cardType: CardType.primary,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Expanded(
+                  flex: 10,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 4.0, bottom: 8.0, top: 8.0),
+                    child: TextChunk(
+                      subHeading:
+                          t.translate(i18.attendanceMgmt.individualDetails),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Button(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    label: '',
+                    suffixIcon: Icons.edit,
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      widget.onPressed(0);
+                    },
+                    //  Icons.edit,
+                    // color: Theme.of(context).colorScheme.primary,
+                  ),
+                )
+              ],
+            ),
+
+            LabelValueList(maxLines: 3, labelFlex: 5, valueFlex: 5, items: [
+              getItemWidget(context,
+                  title: t.translate(i18.common.aadhaarNumber),
+                  description: individualDetails != null &&
+                          individualDetails?.aadhaarNo != null
+                      ? individualDetails!.aadhaarNo.toString()
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.wageSeeker.nameOfWageSeeker),
+                  description: individualDetails != null &&
+                          individualDetails?.name != null
+                      ? individualDetails!.name.toString()
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.guardianName),
+                  description: individualDetails != null &&
+                          individualDetails?.fatherName != null
+                      ? individualDetails!.fatherName.toString()
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.relationship),
+                  description: individualDetails != null &&
+                          individualDetails?.relationship != null
+                      ? t.translate(individualDetails!.relationship.toString())
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.dateOfBirth),
+                  description: individualDetails != null &&
+                          individualDetails?.dateOfBirth != null
+                      ? DateFormats.getFilteredDate(
+                          individualDetails!.dateOfBirth.toString())
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.gender),
+                  description: individualDetails != null &&
+                          individualDetails?.gender != null
+                      ? t.translate(individualDetails!.gender.toString())
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.socialCategory),
+                  description: individualDetails != null &&
+                          individualDetails?.socialCategory != null
+                      ? t.translate(
+                          individualDetails!.socialCategory.toString())
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.mobileNumber),
+                  description: individualDetails != null &&
+                          individualDetails?.mobileNumber != null
+                      ? '+91 - ${individualDetails!.mobileNumber.toString()}'
+                      : 'NA'),
+            ]),
+            if (skillDetails != null &&
+                skillDetails?.individualSkills != null &&
+                skillDetails!.individualSkills!.isNotEmpty)
+              for (var item in skillDetails!.individualSkills!)
+                CustomDetailsCard(Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4.0, bottom: 16.0, top: 8.0),
-                      child: Text(
-                        t.translate(i18.attendanceMgmt.individualDetails),
-                        style: DigitTheme
-                            .instance.mobileTheme.textTheme.headlineLarge
-                            ?.apply(color: const DigitColors().black),
+                    // getItemWidget(context,
+                    //     title: t.translate(i18.wageSeeker.skillCategory),
+                    //     description: t.translate("COMMON_MASTERS_SKILLS_${item.level.toString()}"),
+                    //     isCustomCard: true),
+                    getItemWidget(context,
+                        title: t.translate(i18.wageSeeker.skill),
+                        description: t.translate(
+                            "COMMON_MASTERS_SKILLS_${item.type.toString()}"),
+                        isCustomCard: true),
+                  ],
+                )),
+
+            // profile image upload
+            kIsWeb && FilePickerData.bytes != null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        t.translate(i18.common.photoGraph),
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w700),
                         textAlign: TextAlign.left,
                       ),
-                    ),
-                    GestureDetector(
-                      child: Icon(
-                        Icons.edit,
-                        color: const DigitColors().burningOrange,
+                      const SizedBox(
+                        height: 10,
                       ),
-                      onTap: () {
-                        widget.onPressed(0);
-                      },
-                    )
-                  ],
-                ),
-                getItemWidget(context,
-                    title: t.translate(i18.common.aadhaarNumber),
-                    description: individualDetails != null &&
-                            individualDetails?.aadhaarNo != null
-                        ? individualDetails!.aadhaarNo.toString()
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.wageSeeker.nameOfWageSeeker),
-                    description: individualDetails != null &&
-                            individualDetails?.name != null
-                        ? individualDetails!.name.toString()
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.guardianName),
-                    description: individualDetails != null &&
-                            individualDetails?.fatherName != null
-                        ? individualDetails!.fatherName.toString()
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.relationship),
-                    description: individualDetails != null &&
-                            individualDetails?.relationship != null
-                        ? t.translate(
-                            individualDetails!.relationship.toString())
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.dateOfBirth),
-                    description: individualDetails != null &&
-                            individualDetails?.dateOfBirth != null
-                        ? DateFormats.getFilteredDate(
-                            individualDetails!.dateOfBirth.toString())
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.gender),
-                    description: individualDetails != null &&
-                            individualDetails?.gender != null
-                        ? t.translate(individualDetails!.gender.toString())
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.socialCategory),
-                    description: individualDetails != null &&
-                            individualDetails?.socialCategory != null
-                        ? t.translate(
-                            individualDetails!.socialCategory.toString())
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.mobileNumber),
-                    description: individualDetails != null &&
-                            individualDetails?.mobileNumber != null
-                        ? '+91 - ${individualDetails!.mobileNumber.toString()}'
-                        : 'NA'),
-                if (skillDetails != null &&
-                    skillDetails?.individualSkills != null &&
-                    skillDetails!.individualSkills!.isNotEmpty)
-                  for (var item in skillDetails!.individualSkills!)
-                    CustomDetailsCard(Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        // getItemWidget(context,
-                        //     title: t.translate(i18.wageSeeker.skillCategory),
-                        //     description: t.translate("COMMON_MASTERS_SKILLS_${item.level.toString()}"),
-                        //     isCustomCard: true),
-                        getItemWidget(context,
-                            title: t.translate(i18.wageSeeker.skill),
-                            description: t.translate("COMMON_MASTERS_SKILLS_${item.type.toString()}"),
-                            isCustomCard: true),
-                      ],
-                    )),
-                kIsWeb && FilePickerData.bytes != null
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.memory(
+                          FilePickerData.bytes!,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width / 2,
+                          height: MediaQuery.of(context).size.width / 2,
+                        ),
+                      ),
+                    ],
+                  )
+                : !kIsWeb && FilePickerData.imageFile != null
                     ? Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,8 +227,8 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           ),
                           Align(
                             alignment: Alignment.center,
-                            child: Image.memory(
-                              FilePickerData.bytes!,
+                            child: Image.file(
+                              FilePickerData.imageFile!,
                               fit: BoxFit.cover,
                               width: MediaQuery.of(context).size.width / 2,
                               height: MediaQuery.of(context).size.width / 2,
@@ -195,240 +236,228 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           ),
                         ],
                       )
-                    : !kIsWeb && FilePickerData.imageFile != null
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                t.translate(i18.common.photoGraph),
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w700),
-                                textAlign: TextAlign.left,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Image.file(
-                                  FilePickerData.imageFile!,
-                                  fit: BoxFit.cover,
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  height: MediaQuery.of(context).size.width / 2,
-                                ),
-                              ),
-                            ],
-                          )
-                        : Container()
-              ],
-            )),
-        DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+                    : const SizedBox.shrink()
+          ],
+        ),
+
+        // location details card
+        ui_card.DigitCard(
+          cardType: CardType.primary,
+          margin: const EdgeInsets.all(8),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4.0, bottom: 16.0, top: 8.0),
-                      child: Text(
-                        t.translate(i18.common.locationDetails),
-                        style: DigitTheme
-                            .instance.mobileTheme.textTheme.headlineLarge
-                            ?.apply(color: const DigitColors().black),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    GestureDetector(
-                      child: Icon(
-                        Icons.edit,
-                        color: const DigitColors().burningOrange,
-                      ),
-                      onTap: () {
-                        widget.onPressed(1);
-                      },
-                    )
-                  ],
-                ),
-                getItemWidget(context,
-                    title: t.translate(i18.common.pinCode),
-                    description: locationDetails != null &&
-                            locationDetails?.pinCode != null &&
-                            locationDetails!.pinCode.toString().isNotEmpty
-                        ? locationDetails!.pinCode.toString()
-                        : t.translate('NA')),
-                getItemWidget(context,
-                    title: t.translate(i18.common.city),
-                    description: locationDetails != null &&
-                            locationDetails?.city != null
-                        ? t.translate(
-                            'TENANT_TENANTS_${locationDetails!.city.toString().replaceAll('.', '_').toUpperCase()}')
-                        : t.translate('NA')),
-                getItemWidget(context,
-                    title: t.translate(i18.common.ward),
-                    description: locationDetails != null &&
-                            locationDetails?.ward != null
-                        ? t.translate(
-                            '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.ward.toString()}')
-                        : t.translate('NA')),
-                getItemWidget(context,
-                    title: t.translate(i18.common.locality),
-                    description: locationDetails != null &&
-                            locationDetails?.locality != null
-                        ? t.translate(
-                            '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.locality.toString()}')
-                        : t.translate('NA')),
-                getItemWidget(context,
-                    title: t.translate(i18.common.streetName),
-                    description: locationDetails != null &&
-                            locationDetails?.streetName != null &&
-                            locationDetails!.streetName.toString().isNotEmpty
-                        ? locationDetails!.streetName.toString()
-                        : t.translate('NA')),
-                getItemWidget(context,
-                    title: t.translate(i18.common.doorNo),
-                    description: locationDetails != null &&
-                            locationDetails?.doorNo != null &&
-                            locationDetails!.doorNo.toString().isNotEmpty
-                        ? t.translate(locationDetails!.doorNo.toString())
-                        : t.translate('NA')),
-              ],
-            )),
-        DigitCard(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 4.0, bottom: 16.0, top: 8.0),
-                      child: Text(
-                        t.translate(i18.common.financialDetails),
-                        style: DigitTheme
-                            .instance.mobileTheme.textTheme.headlineLarge
-                            ?.apply(color: const DigitColors().black),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    GestureDetector(
-                      child: Icon(
-                        Icons.edit,
-                        color: const DigitColors().burningOrange,
-                      ),
-                      onTap: () {
-                        widget.onPressed(2);
-                      },
-                    )
-                  ],
-                ),
-                getItemWidget(context,
-                    title: t.translate(i18.common.accountHolderName),
-                    description: financialDetails != null &&
-                            financialDetails?.accountHolderName != null
-                        ? financialDetails!.accountHolderName.toString()
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.accountNo),
-                    description: financialDetails != null &&
-                            financialDetails?.accountNumber != null
-                        ? financialDetails!.accountNumber.toString()
-                        : 'NA'),
-                getItemWidget(context,
-                    title: t.translate(i18.common.ifscCode),
-                    description: financialDetails != null &&
-                            financialDetails?.ifscCode != null
-                        ? financialDetails!.ifscCode.toString()
-                        : 'NA',
-                    subDescription: financialDetails != null &&
-                            financialDetails?.bankName != null
-                        ? '( ${financialDetails?.bankName} )'
-                        : ''),
-                const SizedBox(
-                  height: 10,
-                  width: 0,
-                ),
-                BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
-                  listener: (context, individualState) {
-                    individualState.maybeWhen(
-                        orElse: () => false,
-                        loading: () =>
-                            shg_loader.Loaders.circularLoader(context),
-                        loaded: (SingleIndividualModel? individualListModel) {
-                          context.read<WageSeekerBankCreateBloc>().add(
-                                CreateBankWageSeekerEvent(
-                                    tenantId: individualListModel
-                                        ?.Individual?.tenantId,
-                                    accountHolderName:
-                                        financialDetails?.accountHolderName,
-                                    accountNo: financialDetails?.accountNumber,
-                                    accountType: financialDetails?.accountType,
-                                    ifscCode: financialDetails?.ifscCode,
-                                    referenceId:
-                                        individualListModel?.Individual?.id,
-                                    indId: individualListModel
-                                        ?.Individual?.individualId,
-                                    bankName: '${financialDetails?.bankName}'),
-                              );
-                        },
-                        error: (String? error) => Notifiers.getToastMessage(
-                            context, error.toString(), 'ERROR'));
-                  },
-                  child: BlocListener<WageSeekerBankCreateBloc,
-                      WageSeekerBankCreateState>(
-                    listener: (context, individualState) {
-                      individualState.maybeWhen(
-                          orElse: () => false,
-                          loading: () =>
-                              shg_loader.Loaders.circularLoader(context),
-                          loaded: (BankingDetailsModel? bankingDetails,
-                              BankAccounts? bankAccountDetails) {
-                            var localizationText =
-                                '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
-                            localizationText = localizationText.replaceFirst(
-                                '{individualID}',
-                                bankAccountDetails?.indID ?? '');
-                            context.router.popAndPush(SuccessResponseRoute(
-                                header: t
-                                    .translate(i18.wageSeeker.createIndSuccess),
-                                subTitle: localizationText,
-                                backButton: true,
-                                callBack: () =>
-                                    context.router.push(const HomeRoute()),
-                                buttonLabel: t.translate(
-                                  i18.common.backToHome,
-                                )));
-                          },
-                          error: (String? error) => Notifiers.getToastMessage(
-                              context, error.toString(), 'ERROR'));
-                    },
-                    child: Center(
-                      child: DigitElevatedButton(
-                        onPressed: () {
-                            if (debouncer != null && debouncer!.isActive) {
-                              debouncer!.cancel(); // Cancel the previous timer if it's active.
-                            }
-                            debouncer = Timer(const Duration(milliseconds: 1000), () {
-                          context.read<WageSeekerCreateBloc>().add(
-                                CreateWageSeekerEvent(
-                                    individualDetails: individualDetails,
-                                    skillDetails: skillDetails,
-                                    locationDetails: locationDetails,
-                                    financialDetails: financialDetails),
-                              );
-                            });
-                        },
-                        child:
-                            Center(child: Text(t.translate(i18.common.submit))),
-                      ),
+                Expanded(
+                  flex: 10,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 4.0, bottom: 8.0, top: 8.0),
+                    child: TextChunk(
+                      subHeading: t.translate(i18.common.locationDetails),
                     ),
                   ),
                 ),
+                Expanded(
+                  flex: 10,
+                  child: Button(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    label: '',
+                    suffixIcon: Icons.edit,
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      widget.onPressed(1);
+                    },
+                  ),
+                )
               ],
-            )),
+            ),
+            LabelValueList(maxLines: 3, labelFlex: 5, valueFlex: 5, items: [
+              getItemWidget(context,
+                  title: t.translate(i18.common.pinCode),
+                  description: locationDetails != null &&
+                          locationDetails?.pinCode != null &&
+                          locationDetails!.pinCode.toString().isNotEmpty
+                      ? locationDetails!.pinCode.toString()
+                      : t.translate('NA')),
+              getItemWidget(context,
+                  title: t.translate(i18.common.city),
+                  description: locationDetails != null &&
+                          locationDetails?.city != null
+                      ? t.translate(
+                          'TENANT_TENANTS_${locationDetails!.city.toString().replaceAll('.', '_').toUpperCase()}')
+                      : t.translate('NA')),
+              getItemWidget(context,
+                  title: t.translate(i18.common.ward),
+                  description: locationDetails != null &&
+                          locationDetails?.ward != null
+                      ? t.translate(
+                          '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.ward.toString()}')
+                      : t.translate('NA')),
+              getItemWidget(context,
+                  title: t.translate(i18.common.locality),
+                  description: locationDetails != null &&
+                          locationDetails?.locality != null
+                      ? t.translate(
+                          '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_${locationDetails!.locality.toString()}')
+                      : t.translate('NA')),
+              getItemWidget(context,
+                  title: t.translate(i18.common.streetName),
+                  description: locationDetails != null &&
+                          locationDetails?.streetName != null &&
+                          locationDetails!.streetName.toString().isNotEmpty
+                      ? locationDetails!.streetName.toString()
+                      : t.translate('NA')),
+              getItemWidget(context,
+                  title: t.translate(i18.common.doorNo),
+                  description: locationDetails != null &&
+                          locationDetails?.doorNo != null &&
+                          locationDetails!.doorNo.toString().isNotEmpty
+                      ? t.translate(locationDetails!.doorNo.toString())
+                      : t.translate('NA')),
+            ]),
+          ],
+        ),
+
+        ui_card.DigitCard(
+          cardType: CardType.primary,
+          margin: const EdgeInsets.all(8.0),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  flex: 10,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 4.0, bottom: 8.0, top: 8.0),
+                    child: TextChunk(
+                      subHeading: t.translate(i18.common.financialDetails),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Button(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    label: '',
+                    suffixIcon: Icons.edit,
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      widget.onPressed(2);
+                    },
+                  ),
+                )
+              ],
+            ),
+            LabelValueList(labelFlex: 5, valueFlex: 5, maxLines: 3, items: [
+              getItemWidget(context,
+                  title: t.translate(i18.common.accountHolderName),
+                  description: financialDetails != null &&
+                          financialDetails?.accountHolderName != null
+                      ? financialDetails!.accountHolderName.toString()
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.accountNo),
+                  description: financialDetails != null &&
+                          financialDetails?.accountNumber != null
+                      ? financialDetails!.accountNumber.toString()
+                      : 'NA'),
+              getItemWidget(context,
+                  title: t.translate(i18.common.ifscCode),
+                  description: financialDetails != null &&
+                          financialDetails?.ifscCode != null
+                      ? financialDetails!.ifscCode.toString()
+                      : 'NA',
+                  subDescription: financialDetails != null &&
+                          financialDetails?.bankName != null
+                      ? '( ${financialDetails?.bankName} )'
+                      : ''),
+            ]),
+            BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
+              listener: (context, individualState) {
+                individualState.maybeWhen(
+                    orElse: () => false,
+                    loading: () => shg_loader.Loaders.circularLoader(context),
+                    loaded: (SingleIndividualModel? individualListModel) {
+                      context.read<WageSeekerBankCreateBloc>().add(
+                            CreateBankWageSeekerEvent(
+                                tenantId:
+                                    individualListModel?.Individual?.tenantId,
+                                accountHolderName:
+                                    financialDetails?.accountHolderName,
+                                accountNo: financialDetails?.accountNumber,
+                                accountType: financialDetails?.accountType,
+                                ifscCode: financialDetails?.ifscCode,
+                                referenceId:
+                                    individualListModel?.Individual?.id,
+                                indId: individualListModel
+                                    ?.Individual?.individualId,
+                                bankName: '${financialDetails?.bankName}'),
+                          );
+                    },
+                    error: (String? error) => Notifiers.getToastMessage(
+                        context, error.toString(), 'ERROR'));
+              },
+              child: BlocListener<WageSeekerBankCreateBloc,
+                  WageSeekerBankCreateState>(
+                listener: (context, individualState) {
+                  individualState.maybeWhen(
+                      orElse: () => false,
+                      loading: () => shg_loader.Loaders.circularLoader(context),
+                      loaded: (BankingDetailsModel? bankingDetails,
+                          BankAccounts? bankAccountDetails) {
+                        var localizationText =
+                            '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
+                        localizationText = localizationText.replaceFirst(
+                            '{individualID}', bankAccountDetails?.indID ?? '');
+                        context.router.popAndPush(SuccessResponseRoute(
+                            header:
+                                t.translate(i18.wageSeeker.createIndSuccess),
+                            subTitle: localizationText,
+                            backButton: true,
+                            callBack: () =>
+                                context.router.push(const HomeRoute()),
+                            buttonLabel: t.translate(
+                              i18.common.backToHome,
+                            )));
+                      },
+                      error: (String? error) => Notifiers.getToastMessage(
+                          context, error.toString(), 'ERROR'));
+                },
+                child: Center(
+                  child: Button(
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      if (debouncer != null && debouncer!.isActive) {
+                        debouncer!
+                            .cancel(); // Cancel the previous timer if it's active.
+                      }
+                      debouncer = Timer(const Duration(milliseconds: 1000), () {
+                        context.read<WageSeekerCreateBloc>().add(
+                              CreateWageSeekerEvent(
+                                  individualDetails: individualDetails,
+                                  skillDetails: skillDetails,
+                                  locationDetails: locationDetails,
+                                  financialDetails: financialDetails),
+                            );
+                      });
+                    },
+                    label: t.translate(i18.common.submit),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -439,67 +468,71 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
       String subtitle = '',
       String subDescription = '',
       bool isCustomCard = false}) {
-    return Container(
-        padding: const EdgeInsets.all(4.0),
-        child: (Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-                width: isCustomCard
-                    ? MediaQuery.of(context).size.width / 3
-                    : MediaQuery.of(context).size.width / 3,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title.trim(),
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700),
-                        textAlign: TextAlign.start,
-                      ),
-                      subtitle.trim.toString() != ''
-                          ? Text(
-                              subtitle.trim(),
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).primaryColorLight),
-                            )
-                          : const Text('')
-                    ])),
-            Column(
+    return isCustomCard
+        ? Container(
+            padding: const EdgeInsets.all(4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                     width: isCustomCard
-                        ? MediaQuery.of(context).size.width / 2.25
-                        : MediaQuery.of(context).size.width / 2,
-                    child: Text(
-                      description.trim(),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      textAlign: TextAlign.left,
-                    )),
-                subDescription.isNotEmpty
-                    ? SizedBox(
+                        ? MediaQuery.of(context).size.width / 3
+                        : MediaQuery.of(context).size.width / 3,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title.trim(),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.start,
+                          ),
+                          subtitle.trim.toString() != ''
+                              ? Text(
+                                  subtitle.trim(),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color:
+                                          Theme.of(context).primaryColorLight),
+                                )
+                              : const Text('')
+                        ])),
+                Column(
+                  children: [
+                    SizedBox(
                         width: isCustomCard
                             ? MediaQuery.of(context).size.width / 2.25
                             : MediaQuery.of(context).size.width / 2,
                         child: Text(
-                          subDescription.trim(),
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: const DigitColors().cloudGray),
+                          description.trim(),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          ),
                           textAlign: TextAlign.left,
-                        ))
-                    : Container()
+                        )),
+                    subDescription.isNotEmpty
+                        ? SizedBox(
+                            width: isCustomCard
+                                ? MediaQuery.of(context).size.width / 2.25
+                                : MediaQuery.of(context).size.width / 2,
+                            child: Text(
+                              subDescription.trim(),
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey,
+                              ),
+                              textAlign: TextAlign.left,
+                            ))
+                        : Container()
+                  ],
+                )
               ],
-            )
-          ],
-        )));
+            ))
+        : LabelValuePair(label: title.trim(), value: description.trim());
   }
 }
