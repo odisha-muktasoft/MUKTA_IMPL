@@ -51,18 +51,19 @@ const SORDetailsTemplate = (props) => {
   }, [SORDetails]);
 
   const buttonClick = async () => {
-    if(formData?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
-    {
-      setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
-      setSelectedSOR(null);
-      return;
-    }
-    if(window.location.href.includes("update") && SORDetails?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
-    {
-      setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
-      setSelectedSOR(null);
-      return;
-    }
+    //UCEM-782 : Duplicate validation for sor not required as of now, hence commenting
+    // if(formData?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
+    // {
+    //   setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
+    //   setSelectedSOR(null);
+    //   return;
+    // }
+    // if(window.location.href.includes("update") && SORDetails?.find((ob) => ob?.sorCode === stateData?.selectedSor?.id))
+    // {
+    //   setShowToast({ show: true, label: "RA_SOR_ALREADY_PRESENT_ERROR", error: true });
+    //   setSelectedSOR(null);
+    //   return;
+    // }
     if (window.location.href.includes("update")) {
       const sor = transformSOR(stateData?.selectedSor, isUpdate);
       sor?.sorId && SORDetails?.push({ ...sor, sorType: props?.config?.sorType });
