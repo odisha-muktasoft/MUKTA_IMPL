@@ -33,15 +33,261 @@ def connect_to_database():
 
 tenants = ['od.athagarh','od.berhampur','od.kesinga','od.jatni','od.chatrapur','od.puri','od.hinjilicut','od.sambalpur','od.balasore','od.padampur','od.jharsuguda','od.dhenkanal','od.jeypore','od.bhadrak','od.balangir','od.baripada','od.bhubaneswar','od.rourkela','od.jajpur','od.cuttack','od.phulbani','od.kotpad','od.paradeep','od.boudhgarh','od.keonjhargarh']
 
-def get_last_thursday_epoch():
+def get_recent_thursday_epoch():
     today = dt.datetime.now()
     days_since_last_thursday = (today.weekday() - 3) % 7
     last_thursday = today - dt.timedelta(days=days_since_last_thursday)
-    last_thursday_time = last_thursday.replace(hour=15, minute=30, second=0, microsecond=0)
+    last_thursday_time = last_thursday.replace(hour=20, minute=30, second=0, microsecond=0)
     last_thursday_epoch = int(last_thursday_time.timestamp() * 1000)
     return last_thursday_epoch
 
-def generateBasicInformations(connection, epoch):
+
+def getResponseFromExpenseCalculator(ids, tenant):
+    totalValueOfMusterRoll = 0
+    for i in range(0, len(ids), 50):
+                id_batch = ids[i:i+50]
+                host = os.getenv('EXPENSE_CALC_HOST') + os.getenv('EXPENSE_CALC_ESTIMATE')
+                request_payload = {
+                    "apiId": "Rainmaker",
+                    "authToken": "56acd84a-9c67-4df8-87a6-12e8dfe283f0",
+                    "userInfo": {
+                        "id": 271,
+                        "uuid": "81b1ce2d-262d-4632-b2a3-3e8227769a11",
+                        "userName": "MUKTAUAT",
+                        "name": "MUKTAUAT",
+                        "mobileNumber": "9036146615",
+                        "type": "EMPLOYEE",
+                        "roles": [
+                            {
+                                "name": "MB_VERIFIER",
+                                "code": "MB_VERIFIER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "Organization viewer",
+                                "code": "ORG_VIEWER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MDMS Admin",
+                                "code": "MDMS_ADMIN",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MB_VIEWER",
+                                "code": "MB_VIEWER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MUKTA Admin",
+                                "code": "MUKTA_ADMIN",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "State Dashboard Admin",
+                                "code": "STADMIN",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "WORK_ORDER_VIEWER",
+                                "code": "WORK_ORDER_VIEWER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "BILL_ACCOUNTANT",
+                                "code": "BILL_ACCOUNTANT",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "ESTIMATE VERIFIER",
+                                "code": "ESTIMATE_VERIFIER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "WORK ORDER APPROVER",
+                                "code": "WORK_ORDER_APPROVER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "ESTIMATE VIEWER",
+                                "code": "ESTIMATE_VIEWER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "OFFICER IN CHARGE",
+                                "code": "OFFICER_IN_CHARGE",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "BILL_VIEWER",
+                                "code": "BILL_VIEWER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "PROJECT VIEWER",
+                                "code": "PROJECT_VIEWER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MB_CREATOR",
+                                "code": "MB_CREATOR",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "BILL_APPROVER",
+                                "code": "BILL_APPROVER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MUSTER ROLL VERIFIER",
+                                "code": "MUSTER_ROLL_VERIFIER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "WORK ORDER CREATOR",
+                                "code": "WORK_ORDER_CREATOR",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "ESTIMATE APPROVER",
+                                "code": "ESTIMATE_APPROVER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "ESTIMATE CREATOR",
+                                "code": "ESTIMATE_CREATOR",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MDMS STATE VIEW ADMIN",
+                                "code": "MDMS_STATE_VIEW_ADMIN",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "Employee Common",
+                                "code": "EMPLOYEE_COMMON",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "TECHNICAL SANCTIONER",
+                                "code": "TECHNICAL_SANCTIONER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "BILL_CREATOR",
+                                "code": "BILL_CREATOR",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "BILL_VERIFIER",
+                                "code": "BILL_VERIFIER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MUSTER ROLL APPROVER",
+                                "code": "MUSTER_ROLL_APPROVER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MB_APPROVER",
+                                "code": "MB_APPROVER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "MDMS CITY ADMIN",
+                                "code": "MDMS_CITY_ADMIN",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "PROJECT CREATOR",
+                                "code": "PROJECT_CREATOR",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "Employee Organization Admin",
+                                "code": "EMP_ORG_ADMIN",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "WORK ORDER VERIFIER",
+                                "code": "WORK_ORDER_VERIFIER",
+                                "tenantId": "od.testing"
+                            },
+                            {
+                                "name": "HRMS Admin",
+                                "code": "HRMS_ADMIN",
+                                "tenantId": "od.testing"
+                            }
+                        ]
+                    },
+                    "msgId": "1715595117903|en_IN",
+                    "plainAccessRequest": {}
+                }
+                headers = {"Content-Type": "application/json"}
+                api_payload = {"criteria": {"tenantId": tenant, "musterRollId": id_batch},"RequestInfo": request_payload}
+
+                response = requests.post(host,headers=headers,data=json.dumps(api_payload)).json()
+                if response["calculation"]["totalAmount"] is not None:
+                    totalValueOfMusterRoll += response["calculation"]["totalAmount"]
+
+    return totalValueOfMusterRoll
+    
+
+def getValueOfMusterRollCreated(connection, epoch_to):
+    try:
+
+        data = []
+        for tenant in tenants:
+            print(tenant)
+            ids = []
+            cursor = connection.cursor()
+
+            cursor.execute("""select id from eg_wms_muster_roll where createdtime <= %s and tenant_id = %s order by createdtime;""", (epoch_to,tenant))
+            result = cursor.fetchall()
+
+            # Store the fetched IDs in the list
+            ids.extend([row[0] for row in result])
+
+            totalValueOfMusterRollCreated = getResponseFromExpenseCalculator(ids, tenant)
+
+            # Append the result as a tuple (tenant, totalValueOfMusterRollCreated) to the data list
+            data.append((tenant, totalValueOfMusterRollCreated))
+
+        # Convert the data list to a pandas DataFrame for easier formatting
+        df = pd.DataFrame(data, columns=['ulb', 'Total Value of Muster Roll Created'])
+        return df
+                
+    except Exception as e:
+        print(e)
+
+def getValueOfMrApproved(connection, epoch_to):  
+    try:
+
+        data = []
+        for tenant in tenants:
+            print(tenant)
+            ids = []
+            cursor = connection.cursor()
+
+            cursor.execute("""select id from eg_wms_muster_roll where musterroll_status='APPROVED' and createdtime <= %s and tenant_id = %s order by createdtime;""", (epoch_to,tenant))
+            result = cursor.fetchall()
+
+            # Store the fetched IDs in the list
+            ids.extend([row[0] for row in result])
+
+            totalValueOfMusterRollApproved = getResponseFromExpenseCalculator(ids, tenant)
+
+            # Append the result as a tuple (tenant, totalValueOfMusterRollCreated) to the data list
+            data.append((tenant, totalValueOfMusterRollApproved))
+
+        # Convert the data list to a pandas DataFrame for easier formatting
+        df = pd.DataFrame(data, columns=['ulb', 'Total Value of Muster Roll Approved(Rs)'])
+        return df
+                
+    except Exception as e:
+        print(e)  
+
+def generateBasicInformations(connection, epoch_to):
 
     cursor = connection.cursor()
 
@@ -51,102 +297,104 @@ def generateBasicInformations(connection, epoch):
         from eg_hrms_employee 
         where active=true and lastmodifieddate <= %s 
         group by tenantid order by tenantid;
-    """, (epoch,))
+    """, (epoch_to,))
     result = cursor.fetchall()
     employeeData = pd.DataFrame(result)
 
     #Fetch the Number of CBO users(No. of CBO's)
-    cursor.execute("""select eg_org.tenant_id as ulb, count(eg_org.id) as cbo from eg_org inner join eg_org_function on eg_org.id=eg_org_function.org_id where eg_org_function.type='CBO.MSG' and eg_org.last_modified_time <= %s group by eg_org.tenant_id order by eg_org.tenant_id;""", (epoch,))
+    cursor.execute("""select eg_org.tenant_id as ulb, count(eg_org.id) as cbo from eg_org inner join eg_org_function on eg_org.id=eg_org_function.org_id where eg_org_function.type='CBO.MSG' and eg_org.last_modified_time <= %s group by eg_org.tenant_id order by eg_org.tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     cboData = pd.DataFrame(result)
 
     #No. of vendors(Contractors)
-    cursor.execute("""select eg_org.tenant_id as ulb, count(eg_org.id) as vendors from eg_org inner join eg_org_function on eg_org.id=eg_org_function.org_id where eg_org_function.type='VEN.CMS' and eg_org.last_modified_time <= %s group by eg_org.tenant_id order by eg_org.tenant_id;""", (epoch,))
+    cursor.execute("""select eg_org.tenant_id as ulb, count(eg_org.id) as vendors from eg_org inner join eg_org_function on eg_org.id=eg_org_function.org_id where eg_org_function.type='VEN.CMS' and eg_org.last_modified_time <= %s group by eg_org.tenant_id order by eg_org.tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     vendorsData = pd.DataFrame(result)
 
     #No. of Wageseekers
-    cursor.execute("""select tenantid as ulb, count(*) as wageseekers from INDIVIDUAL where issystemuser=False and lastmodifiedtime <= %s group by tenantid;""", (epoch,))
+    cursor.execute("""select tenantid as ulb, count(*) as wageseekers from INDIVIDUAL where issystemuser=False and lastmodifiedtime <= %s group by tenantid;""", (epoch_to,))
 
     result = cursor.fetchall()
     wageseekersData = pd.DataFrame(result)
 
     #No. of projects created
-    cursor.execute("""select tenantid as ulb, count(id) as projects from project where lastmodifiedtime <= %s group by tenantid;""", (epoch,))
+    cursor.execute("""select tenantid as ulb, count(id) as projects from project where lastmodifiedtime <= %s group by tenantid;""", (epoch_to,))
     result = cursor.fetchall()
     projectsData = pd.DataFrame(result)
 
     #No. of estimate created
-    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as estimate from eg_wms_estimate where last_modified_time <= %s group by tenant_id;""", (epoch,))
+    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as estimate from eg_wms_estimate where last_modified_time <= %s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     estimateData = pd.DataFrame(result)
 
     #Value of estimate created
-    estimateValueData = getEstimatedValue(connection, epoch)
+    estimateValueData = getEstimatedValue(connection, epoch_to)
 
     #No Of Estimates Approved
-    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as numberofestimateapproved from eg_wms_estimate where wf_status='APPROVED' and  last_modified_time<= %s group by tenant_id;""", (epoch,))
+    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as numberofestimateapproved from eg_wms_estimate where wf_status='APPROVED' and  last_modified_time<= %s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     estimateApprovedData = pd.DataFrame(result)
 
     #Total value of estimate approved(Rs)
-    approvedEstimateValueData = getApprovedEstimateValue(connection, epoch)
+    approvedEstimateValueData = getApprovedEstimateValue(connection, epoch_to)
 
     #No. of work order created
-    cursor.execute("""select tenant_id as ulb, count(distinct contract_number) as numberofwocreated from eg_wms_contract where last_modified_time<= %s group by tenant_id;""", (epoch,))
+    cursor.execute("""select tenant_id as ulb, count(distinct contract_number) as numberofwocreated from eg_wms_contract where last_modified_time<= %s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfWoCreatedData = pd.DataFrame(result)
 
     #Total value of work order accepted by CBO's(Rs)
-    cursor.execute("""select SUM(total_contracted_amount) as valueofwoaccepted, tenant_id as ulb from eg_wms_contract where wf_status='ACCEPTED' and last_modified_time<=%s group by tenant_id order by tenant_id;""", (epoch,))
+    cursor.execute("""select SUM(total_contracted_amount) as valueofwoaccepted, tenant_id as ulb from eg_wms_contract where wf_status='ACCEPTED' and last_modified_time<=%s group by tenant_id order by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     valueOfWoAcceptedData = pd.DataFrame(result)
 
     #No. Of work Orders Accepted By CBO
-    cursor.execute("""select tenant_id as ulb, count(*) as noofwoaccepted  from eg_wms_contract where wf_status='ACCEPTED' and last_modified_time<=%s group by tenant_id;""", (epoch,))
+    cursor.execute("""select tenant_id as ulb, count(*) as noofwoaccepted  from eg_wms_contract where wf_status='ACCEPTED' and last_modified_time<=%s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfWoAcceptedData = pd.DataFrame(result)
 
     #Value of the project(s) initiated(work started)
-    valueOfProjectInitiatedData = getValueOfProjectInitiated(connection, epoch)
+    valueOfProjectInitiatedData = getValueOfProjectInitiated(connection, epoch_to)
 
     #No Of Wage Seekers Engaged in Initiated Projects
-    cursor.execute("""select eg_wms_muster_roll.tenant_id as ulb, count(distinct individual_id) as wageseekersEngagedInInitiatedProjects from eg_wms_muster_roll inner join eg_wms_attendance_summary on eg_wms_muster_roll.id=eg_wms_attendance_summary.muster_roll_id where eg_wms_muster_roll.lastmodifiedtime<=%s group by eg_wms_muster_roll.tenant_id;""", (epoch,))
+    cursor.execute("""select eg_wms_muster_roll.tenant_id as ulb, count(distinct individual_id) as wageseekersEngagedInInitiatedProjects from eg_wms_muster_roll inner join eg_wms_attendance_summary on eg_wms_muster_roll.id=eg_wms_attendance_summary.muster_roll_id where eg_wms_muster_roll.lastmodifiedtime<=%s group by eg_wms_muster_roll.tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     wageseekersEngagedInInitiatedProjectsData = pd.DataFrame(result)
 
     #Total Number of Muster Rolls Generated
-    cursor.execute("""select tenant_id as ulb, count(*) as totalNumberOfMusterRollGenerated from eg_wms_muster_roll where createdtime<=%s group by tenant_id;""", (epoch,))
+    cursor.execute("""select tenant_id as ulb, count(*) as totalNumberOfMusterRollGenerated from eg_wms_muster_roll where createdtime<=%s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     totalNumberOfMusterRollGeneratedData = pd.DataFrame(result)
 
-    #Total No Of Wage Seekers Engaged
-    cursor.execute("""select tenantid as ulb, count(distinct individual_id) as totalNumberOfWageseekerEngaged from eg_wms_attendance_attendee where lastmodifiedtime<=%s group by tenantid;""", (epoch,))
+    # Total Value of Muster Rolls Created
+    valueOfMusterRollCreatedData = getValueOfMusterRollCreated(connection, epoch_to)
+
+    # No Of Wage Seekers Engaged in Initiated Projects
+    cursor.execute("""select tenantid as ulb, count(distinct individual_id) as totalNumberOfWageseekerEngaged from eg_wms_attendance_attendee where lastmodifiedtime<=%s group by tenantid;""", (epoch_to,))
     result = cursor.fetchall()
     totalNumberOfWageseekerEngagedData = pd.DataFrame(result)
 
-    #Total Number of Muster Rolls Approved
-    cursor.execute("""select tenant_id as ulb, count(*) as numberofmrapproved from eg_wms_muster_roll where musterroll_status='APPROVED' and lastmodifiedtime<=%s group by tenant_id;""", (epoch,))
+    # Total Number of Muster Rolls Approved
+    cursor.execute("""select tenant_id as ulb, count(*) as numberofmrapproved from eg_wms_muster_roll where musterroll_status='APPROVED' and lastmodifiedtime<=%s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfMrApprovedData = pd.DataFrame(result)
 
-    #Total Value of Muster Rolls Approved
-    cursor.execute("""select tenantid as ulb, SUM(totalamount) as totalvalueofmrapproved from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s group by tenantid;""", (epoch,))
-    result = cursor.fetchall()
-    totalValueOfMrApprovedData = pd.DataFrame(result)
+    # Total Value of Muster Rolls Approved
+    valueOfMrApprovedData = getValueOfMrApproved(connection, epoch_to)
+
 
     #Number of Wage Seekers in Non Approved Muster Roll
-    cursor.execute("""select tenant_id as ulb, count(distinct individual_id) as numberofwsinnonapprovedmr from eg_wms_attendance_summary inner join eg_wms_muster_roll on eg_wms_attendance_summary.muster_roll_id=eg_wms_muster_roll.id  where musterroll_status  != 'APPROVED' and eg_wms_muster_roll.lastmodifiedtime<=%s group by tenant_id;""", (epoch,))
+    cursor.execute("""select tenant_id as ulb, count(distinct individual_id) as numberofwsinnonapprovedmr from eg_wms_attendance_summary inner join eg_wms_muster_roll on eg_wms_attendance_summary.muster_roll_id=eg_wms_muster_roll.id  where musterroll_status  != 'APPROVED' and eg_wms_muster_roll.lastmodifiedtime<=%s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfWsInNonApprovedMrData = pd.DataFrame(result)
 
     #Value of Work order Approved
-    cursor.execute("""select SUM(total_contracted_amount) as totalAmount, tenant_id as ulb from eg_wms_contract where wf_status='APPROVED' and last_modified_time<=%s group by tenant_id;""", (epoch,))
+    cursor.execute("""select SUM(total_contracted_amount) as totalAmount, tenant_id as ulb from eg_wms_contract where wf_status='APPROVED' and last_modified_time<=%s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     valueOfWoApprovedData = pd.DataFrame(result)
 
     #No of Work order Approved
-    cursor.execute("""select count(*) as woapproved, tenant_id as ulb from eg_wms_contract where wf_status='APPROVED' and last_modified_time<=%s group by tenant_id;""", (epoch,))
+    cursor.execute("""select count(*) as woapproved, tenant_id as ulb from eg_wms_contract where wf_status='APPROVED' and last_modified_time<=%s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfWoApprovedData = pd.DataFrame(result)
 
@@ -166,9 +414,10 @@ def generateBasicInformations(connection, epoch):
     valueOfProjectInitiatedData.columns = ['ulb', 'Value of the project(s) initiated(work started)']
     wageseekersEngagedInInitiatedProjectsData.columns = ['ulb', 'No Of Wage Seekers Engaged in Initiated Projects']
     totalNumberOfMusterRollGeneratedData.columns = ['ulb', 'Total Number of Muster Rolls Generated']
+    valueOfMusterRollCreatedData.columns = ['ulb', 'Total Value of Muster Rolls Created(Rs)']
     totalNumberOfWageseekerEngagedData.columns = ['ulb', 'Total No Of Wage Seekers Engaged']
     numberOfMrApprovedData.columns = ['ulb', 'Total Number of Muster Rolls Approved']
-    totalValueOfMrApprovedData.columns = ['ulb', 'Total Value of Muster Rolls Approved(Rs)']
+    valueOfMrApprovedData.columns = ['ulb', 'Total Value of Muster Rolls Approved(Rs)']
     numberOfWsInNonApprovedMrData.columns = ['ulb', 'Number of Wage Seekers in Non Approved Muster Roll']
     valueOfWoApprovedData.columns = ['Value of Work order Approved(Rs)', 'ulb']
     numberOfWoApprovedData.columns = ['No of Work order Approved', 'ulb']
@@ -191,9 +440,10 @@ def generateBasicInformations(connection, epoch):
     data=pd.merge(data,valueOfProjectInitiatedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,wageseekersEngagedInInitiatedProjectsData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,totalNumberOfMusterRollGeneratedData,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valueOfMusterRollCreatedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,totalNumberOfWageseekerEngagedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,numberOfMrApprovedData,left_on='ulb',right_on='ulb',how='left')
-    data=pd.merge(data,totalValueOfMrApprovedData,left_on='ulb',right_on='ulb',how='left')
+    data=pd.merge(data,valueOfMrApprovedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,numberOfWsInNonApprovedMrData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,valueOfWoApprovedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,numberOfWoApprovedData,left_on='ulb',right_on='ulb',how='left')
@@ -885,6 +1135,145 @@ def generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to):
     print(data)
     return data
 
+def getValueOfMRSubmittedButNotApproved(connection, epoch_from, epoch_to):
+    try:
+
+        data = []
+        for tenant in tenants:
+            print(tenant)
+            ids = []
+            cursor = connection.cursor()
+
+            cursor.execute("""select id from eg_wms_muster_roll where musterroll_status !='APPROVED' and lastmodifiedtime > %s and lastmodifiedtime <= %s and tenant_id = %s order by createdtime;""", (epoch_from,epoch_to,tenant))
+            result = cursor.fetchall()
+
+            # Store the fetched IDs in the list
+            ids.extend([row[0] for row in result])
+
+            totalValueOfMRSubmittedButNotApproved = getResponseFromExpenseCalculator(ids, tenant)
+
+            # Append the result as a tuple (tenant, totalValueOfMusterRollCreated) to the data list
+            data.append((tenant, totalValueOfMRSubmittedButNotApproved))
+
+        # Convert the data list to a pandas DataFrame for easier formatting
+        df = pd.DataFrame(data, columns=['ULB', 'Total Value of Muster Rolls Submitted but Not Approved(Rs)'])
+        return df
+                
+    except Exception as e:
+        print(e)
+
+def generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch_to):
+    cursor = connection.cursor()
+
+    # Count of  Muster Rolls Submitted but Not Approved 
+    cursor.execute("""select tenant_id, count(id) from eg_wms_muster_roll where musterroll_status !='APPROVED' and lastmodifiedtime > %s and lastmodifiedtime <= %s group by eg_wms_muster_roll.tenant_id;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    muster_roll_submitted_but_not_approved = pd.DataFrame(result, columns=['ULB', 'Muster Rolls Submitted but Not Approved'])
+
+    # No. of Wage Seekers Impacted in Muster Rolls Submitted but Not Approved
+    cursor.execute("""select tenant_id, count( distinct individual_id) from eg_wms_attendance_summary inner join eg_wms_muster_roll on eg_wms_attendance_summary.muster_roll_id=eg_wms_muster_roll.id where musterroll_status != 'APPROVED' and eg_wms_muster_roll.lastmodifiedtime> %s and eg_wms_muster_roll.lastmodifiedtime<= %s group by tenant_id;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    no_of_wage_seekers_impacted_in_muster_roll_submitted_but_not_approved = pd.DataFrame(result, columns=['ULB', 'No. of Wage Seekers Impacted in Muster Rolls Submitted but Not Approved'])
+
+    # Total Value of Muster Rolls Submitted but Not Approved
+    valueOfMRSubmittedButNotApproved = getValueOfMRSubmittedButNotApproved(connection, epoch_from, epoch_to)
+
+
+    # Number of Wage Bill Successfully paid
+    cursor.execute("""select count(*), tenantid from eg_expense_bill where businessservice='EXPENSE.WAGES' and  paymentstatus='SUCCESSFUL' and lastmodifiedtime>%s and lastmodifiedtime<=%s group by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_wage_bill_successfully_paid = pd.DataFrame(result, columns=['Number of Wage Bill Successfully paid', 'ULB'])
+
+    # Value of wage bill successfully paid
+    cursor.execute("""select sum(totalpaidamount),tenantid from eg_expense_bill where businessservice='EXPENSE.WAGES' and  lastmodifiedtime>%s and lastmodifiedtime<=%s and paymentstatus='SUCCESSFUL' Group by tenantid order by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_wage_bill_successfully_paid = pd.DataFrame(result, columns=['Value of wage bill successfully paid', 'ULB'])
+
+    # Number of Purchase Bill Successfully paid
+    cursor.execute("""select count(*), tenantid from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and  paymentstatus='SUCCESSFUL' and lastmodifiedtime>%s and lastmodifiedtime <= %s group by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_purchase_bill_successfully_paid = pd.DataFrame(result, columns=['Number of Purchase Bill Successfully paid', 'ULB'])
+
+    # Value of Purchase bill successfully paid
+    cursor.execute("""select sum(totalpaidamount),tenantid from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and  lastmodifiedtime>%s and lastmodifiedtime<=%s and paymentstatus='SUCCESSFUL' Group by tenantid order by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_purchase_bill_successfully_paid = pd.DataFrame(result, columns=['Value of Purchase bill successfully paid', 'ULB'])
+
+    # Number of Supervision Bill Successfully paid
+    cursor.execute("""select count(*), tenantid from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and  paymentstatus='SUCCESSFUL' and  lastmodifiedtime>%s and lastmodifiedtime<=%s group by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_supervision_bill_successfully_paid = pd.DataFrame(result, columns=['Number of Supervision Bill Successfully paid', 'ULB'])
+
+    # Value of Supervision bill successfully paid
+    cursor.execute("""select sum(totalpaidamount),tenantid from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and  lastmodifiedtime>%s and lastmodifiedtime<=%s and paymentstatus='SUCCESSFUL' Group by tenantid order by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_supervision_bill_successfully_paid = pd.DataFrame(result, columns=['Value of Supervision bill successfully paid', 'ULB'])
+
+    # Number of Work Order Approved
+    cursor.execute("""select count(*), tenant_id from eg_wms_contract where wf_status='APPROVED' and business_service='CONTRACT' and last_modified_time>%s and last_modified_time<=%s group by tenant_id;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_work_order_approved = pd.DataFrame(result, columns=['Number of Work Order Approved', 'ULB'])
+
+    # Value of Work Order Approved
+    cursor.execute("""select SUM(total_contracted_amount),tenant_id as totalAmount from eg_wms_contract where wf_status='APPROVED' and business_service='CONTRACT'  and last_modified_time>%s and last_modified_time<=%s group by tenant_id;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_work_order_approved = pd.DataFrame(result, columns=['Value of Work Order Approved', 'ULB'])
+
+    # Number of Wage Bill Partial paid
+    cursor.execute("""select count(*), tenantid from eg_expense_bill where businessservice='EXPENSE.WAGES' and  paymentstatus='PARTIAL' and lastmodifiedtime>%s and lastmodifiedtime<=%s group by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_wage_bill_partially_paid = pd.DataFrame(result, columns=['Number of Wage Bill Partial paid', 'ULB'])
+
+    # Value of Wage Bill Partial paid
+    cursor.execute("""select sum(totalpaidamount),tenantid from eg_expense_bill where businessservice='EXPENSE.WAGES' and  lastmodifiedtime>%s and lastmodifiedtime<=%s and paymentstatus='PARTIAL' Group by tenantid order by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_wage_bill_partially_paid = pd.DataFrame(result, columns=['Value of Wage Bill Partial paid', 'ULB'])
+
+    # Number of Purchase Bill Partially paid
+    cursor.execute("""select count(*), tenantid from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and  paymentstatus='PARTIAL' and lastmodifiedtime>%s and lastmodifiedtime <= %s group by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_purchase_bill_partially_paid = pd.DataFrame(result, columns=['Number of Purchase Bill Partially paid', 'ULB'])
+
+    # Value of Purchase bill Partially paid
+    cursor.execute("""select sum(totalpaidamount),tenantid from eg_expense_bill where businessservice='EXPENSE.PURCHASE' and  lastmodifiedtime>%s and lastmodifiedtime<=%s and paymentstatus='PARTIAL' Group by tenantid order by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_purchase_bill_partially_paid = pd.DataFrame(result, columns=['Value of Purchase bill Partially paid', 'ULB'])
+
+    # Number of Supervision Bill Partially paid
+    cursor.execute("""select count(*), tenantid from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and  paymentstatus='PARTIAL' and  lastmodifiedtime>%s and lastmodifiedtime<=%s group by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    number_of_supervision_bill_partially_paid = pd.DataFrame(result, columns=['Number of Supervision Bill Partially paid', 'ULB'])
+
+    # Value of Supervision bill successfully paid
+    cursor.execute("""select sum(totalpaidamount),tenantid from eg_expense_bill where businessservice='EXPENSE.SUPERVISION' and  lastmodifiedtime>%s and lastmodifiedtime<=%s and paymentstatus='PARTIAL' Group by tenantid order by tenantid;""", (epoch_from, epoch_to,))
+    result = cursor.fetchall()
+    value_of_supervision_bill_partially_paid = pd.DataFrame(result, columns=['Value of Supervision bill successfully paid', 'ULB'])
+
+
+
+    ###############################################################################################################
+
+    data = pd.DataFrame()
+    data = pd.merge(muster_roll_submitted_but_not_approved, no_of_wage_seekers_impacted_in_muster_roll_submitted_but_not_approved, on='ULB', how='outer')
+    data = pd.merge(data, valueOfMRSubmittedButNotApproved, on='ULB', how='outer')
+    data = pd.merge(data, number_of_wage_bill_successfully_paid, on='ULB', how='outer')
+    data = pd.merge(data, value_of_wage_bill_successfully_paid, on='ULB', how='outer')
+    data = pd.merge(data, number_of_purchase_bill_successfully_paid, on='ULB', how='outer')
+    data = pd.merge(data, value_of_purchase_bill_successfully_paid, on='ULB', how='outer')
+    data = pd.merge(data, number_of_supervision_bill_successfully_paid, on='ULB', how='outer')
+    data = pd.merge(data, value_of_supervision_bill_successfully_paid, on='ULB', how='outer')
+    data = pd.merge(data, number_of_work_order_approved, on='ULB', how='outer')
+    data = pd.merge(data, value_of_work_order_approved, on='ULB', how='outer')
+    data = pd.merge(data, number_of_wage_bill_partially_paid, on='ULB', how='outer')
+    data = pd.merge(data, value_of_wage_bill_partially_paid, on='ULB', how='outer')
+    data = pd.merge(data, number_of_purchase_bill_partially_paid, on='ULB', how='outer')
+    data = pd.merge(data, value_of_purchase_bill_partially_paid, on='ULB', how='outer')
+    data = pd.merge(data, number_of_supervision_bill_partially_paid, on='ULB', how='outer')
+    data = pd.merge(data, value_of_supervision_bill_partially_paid, on='ULB', how='outer')
+
+    print(data)
+    return data
+
 
 def writeDataToCSV(data, filename):
     if data.empty:
@@ -901,9 +1290,13 @@ if __name__ == '__main__':
             os.makedirs(directory)
         
         # Get the epoch time of the latest Thursday 3:30 PM
-        epoch_to = get_last_thursday_epoch()
+        epoch_to = get_recent_thursday_epoch()
+        # epoch_to = 1724322600000
+
         # Get the epoch time exactly 7 days before the epoch
         epoch_from = epoch_to - 7 * 24 * 3600 * 1000   # Subtract 7 days in milliseconds
+
+        print(epoch_from, epoch_to)
 
         # Get current date in ddmmyyyy format
         current_date = dt.datetime.now().strftime('%d%m%Y')
@@ -915,39 +1308,45 @@ if __name__ == '__main__':
         pi_level_count_data_filename = f"{directory}/pi_level_count_report_{current_date}.csv"
         pi_status_count_data_cumulative_filename = f"{directory}/pi_status_count_cumulative_report_{current_date}.csv"
         pi_status_count_data_weekly_filename = f"{directory}/pi_status_count_weekly_report_{current_date}.csv"
+        weekly_basis_data_filename = f"{directory}/weekly_basis_report_{current_date}.csv"
 
         connection = connect_to_database()
         print("Connected to PostgreSQL")
 
-        # # Generate Mukta Datamart Basic Report
-        # mukta_datamart_basic_data = generateBasicInformations(connection, epoch_to)
-        # mukta_datamart_basic_data_file_path = os.path.join(directory, mukta_datamart_filename)
-        # writeDataToCSV(mukta_datamart_basic_data, mukta_datamart_basic_data_file_path)
+        # Generate Mukta Datamart Basic Report
+        mukta_datamart_basic_data = generateBasicInformations(connection, epoch_to)
+        mukta_datamart_basic_data_file_path = os.path.join(directory, mukta_datamart_filename)
+        writeDataToCSV(mukta_datamart_basic_data, mukta_datamart_basic_data_file_path)
 
-        # # Generate Mukta Datamart Project Type Report
-        # mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch_to)
-        # project_type_data_file_path = os.path.join(directory, project_type_filename)
-        # writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
+        # Generate Mukta Datamart Project Type Report
+        mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch_to)
+        project_type_data_file_path = os.path.join(directory, project_type_filename)
+        writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
 
-        # # Generate Total amount paid and Count of bills
-        # amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch_to)
-        # amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
-        # writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
+        # Generate Total amount paid and Count of bills
+        amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch_to)
+        amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
+        writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
 
-        # # Generate PI level count report
-        # pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
-        # pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
-        # writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
+        # Generate PI level count report
+        pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
+        pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
+        writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
 
-        # # Generate Count Based On PI Status
-        # pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
-        # pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
-        # writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
+        # Generate Count Based On PI Status
+        pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
+        pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
+        writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
 
         # Generate Count Based On PI Status Weekly
         pi_status_count_data_weekly = generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to)
         pi_status_count_data_weekly_file_path = os.path.join(directory, pi_status_count_data_weekly_filename)
         writeDataToCSV(pi_status_count_data_weekly, pi_status_count_data_weekly_file_path)
+
+        # Weekly Basis Data Based on LastModifiedTime
+        weekly_basis_data = generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch_to)
+        weekly_basis_data_file_path = os.path.join(directory, weekly_basis_data_filename)
+        writeDataToCSV(weekly_basis_data, weekly_basis_data_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
