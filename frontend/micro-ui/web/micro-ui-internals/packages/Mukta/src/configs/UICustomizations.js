@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 import _ from "lodash";
 import React, { useState } from "react";
 import { Amount, LinkLabel, CheckBox} from "@egovernments/digit-ui-react-components";
+import { Tag ,Button} from "@egovernments/digit-ui-components";
+
 
 //create functions here based on module name set in mdms(eg->SearchProjectConfig)
 //how to call these -> Digit?.Customizations?.[masterName]?.[moduleName]
@@ -207,8 +209,7 @@ export const UICustomizations = {
           return <Amount customStyle={{ textAlign: "right" }} value={Math.round(value)} t={t}></Amount>;
 
         case "COMMON_SLA_DAYS":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
-
+          return value > 0 ? <Tag label={value} showIcon={false} type="success" /> : <Tag label={value} showIcon={false} type="error" />;
         default:
           return t("ES_COMMON_NA");
       }
@@ -307,7 +308,15 @@ export const UICustomizations = {
                 window.contextPath
               }/employee/attendencemgmt/view-attendance?tenantId=${Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${value}`}
             >
-              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              <Button
+                className=""
+                iconFill=""
+                label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -328,9 +337,9 @@ export const UICustomizations = {
       }
       if (key === "ATM_SLA") {
         return parseInt(value) > 0 ? (
-          <span className="sla-cell-success">{t(value) || ""}</span>
+          <Tag label={t(value) || ""} showIcon={false} type="success" />
         ) : (
-          <span className="sla-cell-error">{t(value) || ""}</span>
+          <Tag label={t(value) || ""} showIcon={false} type="error" />
         );
       }
       if (key === "COMMON_WORKFLOW_STATES") {
@@ -601,7 +610,15 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -610,7 +627,15 @@ export const UICustomizations = {
           return value ? (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.tenantId}&projectNumber=${value}`}>
-                {String(value ? value : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? value : t("ES_COMMON_NA"))}
+                  size=""
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           ) : (
@@ -743,7 +768,15 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.businessObject?.tenantId}&projectNumber=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -752,7 +785,15 @@ export const UICustomizations = {
           return value ? (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/project/project-details?tenantId=${row?.businessObject?.tenantId}&projectNumber=${value}`}>
-                {String(value ? value : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? value : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           ) : (
@@ -857,7 +898,15 @@ export const UICustomizations = {
                 window.contextPath
               }/employee/attendencemgmt/view-attendance?tenantId=${Digit.ULBService.getCurrentTenantId()}&musterRollNumber=${value}`}
             >
-              {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+              <Button
+                className=""
+                iconFill=""
+                label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -992,7 +1041,15 @@ export const UICustomizations = {
                     : `/${window.contextPath}/employee/contracts/contract-details?tenantId=${row?.ProcessInstance.tenantId}&workOrderNumber=${value}`
                 }
               >
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -1007,7 +1064,7 @@ export const UICustomizations = {
           return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
 
         case "COMMON_SLA_DAYS":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value > 0 ? <Tag label={value} showIcon={false} type="success" /> : <Tag label={value} showIcon={false} type="error" />;
 
         default:
           return t("ES_COMMON_NA");
@@ -1096,7 +1153,15 @@ export const UICustomizations = {
                     : `/${window.contextPath}/employee/contracts/contract-details?tenantId=${row?.ProcessInstance?.tenantId}&workOrderNumber=${value}`
                 }
               >
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -1240,7 +1305,15 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/masters/view-wageseeker?tenantId=${row?.tenantId}&individualId=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -1347,7 +1420,15 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/masters/view-wageseeker?tenantId=${row?.businessObject?.tenantId}&individualId=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -1449,7 +1530,15 @@ export const UICustomizations = {
           return (
             <span className="link">
               <Link to={`/${window.contextPath}/employee/masters/view-organization?tenantId=${row?.tenantId}&orgId=${value}`}>
-                {String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? (column.translate ? t(column.prefix ? `${column.prefix}${value}` : value) : value) : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -1575,7 +1664,15 @@ export const UICustomizations = {
                 row?.businessObject?.referenceId?.split("_")?.[0]
               }`}
             >
-              {String(value ? value : t("ES_COMMON_NA"))}
+              <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -1767,7 +1864,15 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${tenantId}&billNumber=${value}`}>
-              {String(value ? value : t("ES_COMMON_NA"))}
+              <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -1985,7 +2090,15 @@ export const UICustomizations = {
               // }/employee/expenditure/view-payment-instruction?tenantId=${tenantId}&piNumber=${value}`}
               to={`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${row?.businessObject?.muktaReferenceId}`}
             >
-              {String(value ? value : t("ES_COMMON_NA"))}
+               <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -2111,7 +2224,15 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${tenantId}&billNumber=${value}`}>
-              {String(value ? value : t("ES_COMMON_NA"))}
+            <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -2229,7 +2350,15 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${tenantId}&billNumber=${value}`}>
-              {String(value ? value : t("ES_COMMON_NA"))}
+            <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -2344,7 +2473,15 @@ export const UICustomizations = {
         return (
           <span className="link">
             <Link to={`/${window.contextPath}/employee/expenditure/${billType}-bill-details?tenantId=${row?.tenantId}&billNumber=${value}`}>
-              {String(value ? value : t("ES_COMMON_NA"))}
+            <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
             </Link>
           </span>
         );
@@ -2612,7 +2749,7 @@ export const UICustomizations = {
         case "MB_AMOUNT":
           return <Amount customStyle={{ textAlign: "right" }} value={Math.round(value)} t={t}></Amount>;
         case "MB_SLA_DAYS_REMAINING":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value > 0 ? <Tag label={value} showIcon={false} type="success" /> : <Tag label={value} showIcon={false} type="error" /> ;
         default:
           return t("ES_COMMON_NA");
       }
@@ -2708,7 +2845,15 @@ export const UICustomizations = {
                   row.businessObject.tenantId
                 }&billNumber=${value}&workOrderNumber=${row?.businessObject?.referenceId?.split("_")?.[0]}`}
               >
-                {String(value ? value : t("ES_COMMON_NA"))}
+                <Button
+                  className=""
+                  iconFill=""
+                  label={String(value ? value : t("ES_COMMON_NA"))}
+                  size="medium"
+                  style={{ padding: "0px" }}
+                  title=""
+                  variation="link"
+                />
               </Link>
             </span>
           );
@@ -2720,7 +2865,7 @@ export const UICustomizations = {
           return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
 
         case "COMMON_SLA_DAYS":
-          return value > 0 ? <span className="sla-cell-success">{value}</span> : <span className="sla-cell-error">{value}</span>;
+          return value > 0 ? <Tag label={value} showIcon={false} type="success" /> : <Tag label={value} showIcon={false} type="error" />;
 
         default:
           return t("ES_COMMON_NA");
