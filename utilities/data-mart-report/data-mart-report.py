@@ -323,7 +323,7 @@ def generateBasicInformations(connection, epoch_to):
     projectsData = pd.DataFrame(result)
 
     #No. of estimate created
-    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as estimate from eg_wms_estimate where last_modified_time <= %s group by tenant_id;""", (epoch_to,))
+    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as estimate from eg_wms_estimate where created_time <= %s group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     estimateData = pd.DataFrame(result)
 
@@ -458,28 +458,14 @@ def getEstimatedValue(connection, epoch):
     for tenant in tenants:
         datalist = [tenant]
         cursor.execute("""
-            SELECT SUM(eg_wms_estimate_amount_detail.amount) as totalestimateamount 
-            FROM (
-                SELECT est.created_time as creationDate, 
-                       est.wf_status as estimateStatus, 
-                       est.id as estimateId, 
-                       estDetails.id as estimateDetailId 
-                FROM eg_wms_estimate as est 
-                INNER JOIN eg_wms_estimate_detail as estDetails 
-                ON est.id = estDetails.estimate_id 
-                WHERE est.tenant_id = %s 
-                AND est.last_modified_time <= %s 
-                AND (est.business_service = 'ESTIMATE' OR est.business_service IS NULL)
-            ) as tempTable  
-            INNER JOIN eg_wms_estimate_amount_detail 
-            ON tempTable.estimateDetailId = eg_wms_estimate_amount_detail.estimate_detail_id;
-        """, (tenant, epoch))
+            Select SUM(eg_wms_estimate_amount_detail.amount) as totalEstimateAmount from ((select est.id as estimateId, estDetails.id  as estimateDetailId,est.tenant_id  from(WITH LatestEstimates AS (  SELECT  *,  ROW_NUMBER() OVER (PARTITION BY estimate_number ORDER BY created_time DESC) as rn  FROM  eg_wms_estimate where created_time<=%s)SELECT   id,  tenant_id,  estimate_number, project_id, proposal_date, status,wf_status, name,reference_number, description, executing_department, additional_details, created_by, last_modified_by,   created_time,last_modified_time, revision_number,version_number,old_uuid,business_service FROM  LatestEstimates WHERE rn = 1 and created_time<=%s) as est Inner Join eg_wms_estimate_detail as estDetails on est.id= estDetails.estimate_id where est.created_time<=%s  )) as tempTable inner join eg_wms_estimate_amount_detail on tempTable.estimatedetailid = eg_wms_estimate_amount_detail.estimate_detail_id where tempTable.tenant_id = %s;
+        """, (epoch, epoch, epoch, tenant))
         getEstimatedProjectValue = cursor.fetchall()
-        if getEstimatedProjectValue[0][0] is None:
+        print(getEstimatedProjectValue)
+        if not getEstimatedProjectValue or getEstimatedProjectValue[0][0] is None:
             datalist.append(0)
         else:
             datalist.append(getEstimatedProjectValue[0][0])
-
         data.append(datalist)
     df = pd.DataFrame(data, columns=['ulb', 'totalestimateamount'])
     return df
@@ -489,15 +475,18 @@ def getApprovedEstimateValue(connection, epoch):
     data = []
     for tenant in tenants:
         datalist = [tenant]
-        cursor.execute("""select SUM(eg_wms_estimate_amount_detail.amount) as totalapprovedestimatedvalue from (Select est.last_modified_time as creationDate, est.wf_status as estimateStatus, est.id as estimateId, estDetails.id  as estimateDetailId from eg_wms_estimate as est Inner Join eg_wms_estimate_detail as estDetails on est.id= estDetails.estimate_id where est.tenant_id = %s and est.last_modified_time<= %s and (est.business_service='ESTIMATE' or est.business_service is null) ) as tempTable inner join eg_wms_estimate_amount_detail on tempTable.estimatedetailid=eg_wms_estimate_amount_detail.estimate_detail_id where tempTable.estimatestatus='APPROVED';""", (tenant, epoch))
+        cursor.execute("""
+            Select SUM(eg_wms_estimate_amount_detail.amount) as totalEstimateAmount from ((select est.id as estimateId, estDetails.id  as estimateDetailId,est.tenant_id  from(WITH LatestEstimates AS (  SELECT  *,  ROW_NUMBER() OVER (PARTITION BY estimate_number ORDER BY created_time DESC) as rn  FROM  eg_wms_estimate where wf_status='APPROVED' and last_modified_time<=%s)SELECT   id,  tenant_id,  estimate_number, project_id, proposal_date, status,wf_status, name,reference_number, description, executing_department, additional_details, created_by, last_modified_by,   created_time,last_modified_time, revision_number,version_number,old_uuid,business_service FROM  LatestEstimates WHERE rn = 1 and last_modified_time<=%s and wf_status='APPROVED') as est Inner Join eg_wms_estimate_detail as estDetails on est.id= estDetails.estimate_id where est.last_modified_time<=%s  )) as tempTable inner join eg_wms_estimate_amount_detail on tempTable.estimatedetailid = eg_wms_estimate_amount_detail.estimate_detail_id where tempTable.tenant_id = %s;
+        """, (epoch, epoch, epoch, tenant))
         getEstimatedProjectValue = cursor.fetchall()
-        if getEstimatedProjectValue[0][0] is None:
+        if not getEstimatedProjectValue or getEstimatedProjectValue[0][0] is None:
             datalist.append(0)
         else:
             datalist.append(getEstimatedProjectValue[0][0])
 
         data.append(datalist)
     df = pd.DataFrame(data, columns=['ulb', 'totalestimateamount'])
+    print(df)
     return df
 
 def getValueOfProjectInitiated(connection, epoch):
@@ -1318,35 +1307,35 @@ if __name__ == '__main__':
         mukta_datamart_basic_data_file_path = os.path.join(directory, mukta_datamart_filename)
         writeDataToCSV(mukta_datamart_basic_data, mukta_datamart_basic_data_file_path)
 
-        # Generate Mukta Datamart Project Type Report
-        mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch_to)
-        project_type_data_file_path = os.path.join(directory, project_type_filename)
-        writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
+        # # Generate Mukta Datamart Project Type Report
+        # mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch_to)
+        # project_type_data_file_path = os.path.join(directory, project_type_filename)
+        # writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
 
-        # Generate Total amount paid and Count of bills
-        amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch_to)
-        amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
-        writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
+        # # Generate Total amount paid and Count of bills
+        # amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch_to)
+        # amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
+        # writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
 
-        # Generate PI level count report
-        pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
-        pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
-        writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
+        # # Generate PI level count report
+        # pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
+        # pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
+        # writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
 
-        # Generate Count Based On PI Status
-        pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
-        pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
-        writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
+        # # Generate Count Based On PI Status
+        # pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
+        # pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
+        # writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
 
-        # Generate Count Based On PI Status Weekly
-        pi_status_count_data_weekly = generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to)
-        pi_status_count_data_weekly_file_path = os.path.join(directory, pi_status_count_data_weekly_filename)
-        writeDataToCSV(pi_status_count_data_weekly, pi_status_count_data_weekly_file_path)
+        # # Generate Count Based On PI Status Weekly
+        # pi_status_count_data_weekly = generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to)
+        # pi_status_count_data_weekly_file_path = os.path.join(directory, pi_status_count_data_weekly_filename)
+        # writeDataToCSV(pi_status_count_data_weekly, pi_status_count_data_weekly_file_path)
 
-        # Weekly Basis Data Based on LastModifiedTime
-        weekly_basis_data = generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch_to)
-        weekly_basis_data_file_path = os.path.join(directory, weekly_basis_data_filename)
-        writeDataToCSV(weekly_basis_data, weekly_basis_data_file_path)
+        # # Weekly Basis Data Based on LastModifiedTime
+        # weekly_basis_data = generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch_to)
+        # weekly_basis_data_file_path = os.path.join(directory, weekly_basis_data_filename)
+        # writeDataToCSV(weekly_basis_data, weekly_basis_data_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
