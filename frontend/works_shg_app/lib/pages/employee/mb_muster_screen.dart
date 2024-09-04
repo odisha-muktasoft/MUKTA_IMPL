@@ -24,6 +24,8 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/track_attendance_payload.dart';
 import 'package:works_shg_app/widgets/circular_button.dart';
 import 'package:works_shg_app/widgets/mb/back_button.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/side_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
@@ -103,17 +105,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
             }
           },
           child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: const Color(0xff0B4B66),
-              iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                  .copyWith(color: const DigitColors().white),
-              titleSpacing: 0,
-              title: const AppBarLogo(),
-            ),
-            drawer: DrawerWrapper(Drawer(
-                child: SideBar(
-              module: CommonMethods.getLocaleModules(),
-            ))),
+            appBar: customAppBar(),
+            drawer: const MySideBar(),
             body: BlocBuilder<MusterRollSearchBloc, MusterRollSearchState>(
               builder: (context, state) {
                 return state.maybeMap(

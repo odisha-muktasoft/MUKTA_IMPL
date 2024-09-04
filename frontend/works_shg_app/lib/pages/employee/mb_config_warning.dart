@@ -19,7 +19,9 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/mb/multi_image.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/muster_rolls/get_muster_workflow.dart';
@@ -157,21 +159,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: const Color(0xff0B4B66),
-          iconTheme: Theme.of(context)
-              .iconTheme
-              .copyWith(color: Theme.of(context).colorTheme.paper.primary),
-          titleSpacing: 0,
-          title: const AppBarLogo(),
-        ),
-        drawer: DrawerWrapper(
-          Drawer(
-            child: SideBar(
-              module: CommonMethods.getLocaleModules(),
-            ),
-          ),
-        ),
+        appBar: customAppBar(),
+        drawer: const MySideBar(),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, state) {
             return ReactiveFormBuilder(
@@ -212,15 +201,18 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           if (widget.nextActions!.action ==
                                                   "REJECT" &&
                                               comment.text == "") {
-                                            Notifiers.getToastMessage(
-                                              context,
-                                              // AppLocalizations.of(context)
-                                              //     .translate(i18.login.invalidOTP),
+                                            // Notifiers.getToastMessage(
+                                            //   context,
+                                            //   // AppLocalizations.of(context)
+                                            //   //     .translate(i18.login.invalidOTP),
 
-                                              t.translate(i18
-                                                  .common.allFieldsMandatory),
-                                              'ERROR',
-                                            );
+                                            //   t.translate(i18
+                                            //       .common.allFieldsMandatory),
+                                            //   'ERROR',
+                                            // );
+
+                                            Toast.showToast(context, message: t.translate(i18
+                                                  .common.allFieldsMandatory), type: ToastType.error);
                                           } else {
                                             List<List<SorObject>> sorList = [
                                               value.sor!,

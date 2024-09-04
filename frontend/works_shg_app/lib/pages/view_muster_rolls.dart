@@ -1,10 +1,14 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/muster_rolls/search_muster_roll.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 
@@ -56,21 +60,14 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xff0B4B66),
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
-          drawer: DrawerWrapper(Drawer(
-              child: SideBar(
-            module: CommonMethods.getLocaleModules(),
-          ))),
+          appBar: customAppBar(),
+          
+          drawer: const MySideBar(),
           bottomNavigationBar:
               BlocBuilder<MusterRollSearchBloc, MusterRollSearchState>(
                   builder: (context, state) {
             return state.maybeWhen(
-                orElse: () => Container(),
+                orElse: () => const SizedBox.shrink(),
                 loading: () => shg_loader.Loaders.circularLoader(context),
                 loaded: (MusterRollsModel? musterRollsModel) {
                   return musterList.isEmpty || musterList.length == 1
@@ -79,8 +76,8 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: PoweredByDigit(
-                               version: Constants.appVersion,
-                              ),
+                              version: Constants.appVersion,
+                            ),
                           ),
                         )
                       : const SizedBox.shrink();
@@ -119,10 +116,10 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                                   .musterAdditionalDetails
                                                   ?.projectId ??
                                               t.translate(i18.common.noValue),
-                                        i18.attendanceMgmt.projectName: e
-                                            .musterAdditionalDetails
-                                            ?.projectName ??
-                                            i18.common.noValue,
+                                          i18.attendanceMgmt.projectName: e
+                                                  .musterAdditionalDetails
+                                                  ?.projectName ??
+                                              i18.common.noValue,
                                           i18.attendanceMgmt.projectDesc: e
                                                   .musterAdditionalDetails
                                                   ?.projectDesc ??
@@ -140,7 +137,7 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                     .toList();
                               }
                             },
-                            orElse: () => Container());
+                            orElse: () => const SizedBox.shrink());
                       },
                       child: BlocBuilder<MusterRollSearchBloc,
                           MusterRollSearchState>(builder: (context, state) {
@@ -151,20 +148,32 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                               return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Back(
-                                      backLabel: AppLocalizations.of(context)
-                                          .translate(i18.common.back),
+                                    // Back(
+                                    //   backLabel: AppLocalizations.of(context)
+                                    //       .translate(i18.common.back),
+                                    // ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, top: 16, bottom: 0),
+                                      child: Row(
+                                        children: [
+                                          BackNavigationButton(
+                                            handleBack: () {
+                                              Navigator.pop(context);
+                                            },
+                                            backButtonText:
+                                                AppLocalizations.of(context)
+                                                    .translate(i18.common.back),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(16.0),
-                                      child: Text(
-                                        '${t.translate(i18.attendanceMgmt.musterRolls)}(${musterList.length})',
-                                        style: DigitTheme.instance.mobileTheme
-                                            .textTheme.displayMedium
-                                            ?.apply(
-                                                color:
-                                                    const DigitColors().black),
-                                        textAlign: TextAlign.left,
+                                      child: TextChunk(
+                                       heading: '${t.translate(i18.attendanceMgmt.musterRolls)}(${musterList.length})',
+                                        
                                       ),
                                     ),
                                     musterList.isEmpty
@@ -191,8 +200,8 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                         ? const Align(
                                             alignment: Alignment.bottomCenter,
                                             child: PoweredByDigit(
-                                               version: Constants.appVersion,
-                                              ),
+                                              version: Constants.appVersion,
+                                            ),
                                           )
                                         : const SizedBox.shrink()
                                   ]);

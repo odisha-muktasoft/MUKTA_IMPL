@@ -1,4 +1,6 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_button.dart' as ui_button;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -51,9 +53,9 @@ class DateRangePicker extends StatelessWidget {
                     minDate: minDate,
                     maxDate: maxDate,
                     startRangeSelectionColor:
-                        DigitTheme.instance.colorScheme.secondary,
+                        Theme.of(context).colorScheme.secondary,
                     endRangeSelectionColor:
-                        DigitTheme.instance.colorScheme.secondary,
+                        Theme.of(context).colorScheme.secondary,
                     selectionColor: Theme.of(context).hintColor,
                     monthViewSettings: const DateRangePickerMonthViewSettings(
                         enableSwipeSelection: false,
@@ -63,19 +65,25 @@ class DateRangePicker extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                TextButton(
+                ui_button.Button(
+                  type: ButtonType.tertiary,
+                  size: ButtonSize.large,
+                  mainAxisSize: MainAxisSize.min,
                   onPressed: () {
                     onCancel!();
                     Navigator.pop(dialogContext);
                   },
-                  child: Text(cancelLabel ?? ''),
+                  label:cancelLabel ?? '',
                 ),
-                DigitElevatedButton(
+                ui_button.Button(
+                  size: ButtonSize.large,
+                  type: ButtonType.primary,
+                  mainAxisSize: MainAxisSize.min,
                   onPressed: () {
                     onSubmit!();
                     Navigator.pop(dialogContext);
                   },
-                  child: Text(applyLabel ?? 'Apply'),
+                  label:applyLabel ?? 'Apply',
                 ),
               ],
             ),

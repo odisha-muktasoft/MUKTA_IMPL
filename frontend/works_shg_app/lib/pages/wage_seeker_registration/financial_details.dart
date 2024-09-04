@@ -333,7 +333,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
               child: ReactiveWrapperField(
                 validationMessages: {
                   "required": (error) =>
-                      t.translate(i18.wageSeeker.genderRequired),
+                      t.translate(i18.wageSeeker.accountTypeRequired),
                 },
                 showErrors: (control) => control.invalid && control.touched,
                 formControlName: accountTypeKey,
@@ -462,8 +462,9 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                   form.markAllAsTouched(updateParent: false);
                   if (!form.valid) return;
                   if (hintText.isEmpty) {
-                    Notifiers.getToastMessage(
-                        context, i18.wageSeeker.enterValidIFSC, 'ERROR');
+                    // Notifiers.getToastMessage(
+                    //     context, i18.wageSeeker.enterValidIFSC, 'ERROR');
+                        Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
                   } else {
                     final financeDetails = FinancialDetails(
                         accountHolderName:

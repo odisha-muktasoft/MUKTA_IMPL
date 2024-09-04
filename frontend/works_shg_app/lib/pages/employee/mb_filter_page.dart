@@ -22,6 +22,8 @@ import 'package:works_shg_app/utils/Toast/toaster.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
 import '../../utils/common_methods.dart';
@@ -134,21 +136,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       loaded: (location) {
                         return Scaffold(
                           backgroundColor: const DigitColors().white,
-                          appBar: AppBar(
-                            backgroundColor: const Color(0xff0B4B66),
-                            iconTheme: Theme.of(context).iconTheme.copyWith(
-                                color:
-                                    Theme.of(context).colorTheme.paper.primary),
-                            titleSpacing: 0,
-                            title: const AppBarLogo(),
-                          ),
-                          drawer: DrawerWrapper(
-                            Drawer(
-                              child: SideBar(
-                                module: CommonMethods.getLocaleModules(),
-                              ),
-                            ),
-                          ),
+                          appBar: customAppBar(),
+                          drawer: const MySideBar(),
                           body: ReactiveFormBuilder(
                               form: () => detailBuildForm(valueMeasurement),
                               builder: (BuildContext context,

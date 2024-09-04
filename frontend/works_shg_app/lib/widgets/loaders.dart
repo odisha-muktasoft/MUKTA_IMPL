@@ -23,7 +23,7 @@ class Loaders {
                     const Text(
                       'Loading...',
                       style: TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 1),
+                          color: Colors.white,
                           fontFamily: 'Roboto',
                           fontSize: 16,
                           fontWeight: FontWeight.w700),

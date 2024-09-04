@@ -7,6 +7,8 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 
 import '../../blocs/attendance/search_projects/search_projects.dart';
@@ -55,17 +57,9 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xff0B4B66),
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                .copyWith(color: const DigitColors().white),
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
-          drawer: DrawerWrapper(Drawer(
-              child: SideBar(
-            module: CommonMethods.getLocaleModules(),
-          ))),
+        appBar: customAppBar(),
+         
+          drawer: const MySideBar(),
           bottomNavigationBar: BlocBuilder<AttendanceProjectsSearchBloc,
               AttendanceProjectsSearchState>(builder: (context, state) {
             return state.maybeWhen(

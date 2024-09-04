@@ -23,6 +23,7 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/button_link.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -130,8 +131,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
       },
       child: Scaffold(
         appBar: customAppBar(),
-        drawer: DrawerWrapper(
-            Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
+        drawer: const MySideBar(),
         bottomNavigationBar:
             BlocBuilder<SearchIndividualWorkBloc, SearchIndividualWorkState>(
           builder: (context, state) {

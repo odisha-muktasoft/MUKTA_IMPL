@@ -27,7 +27,9 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/mb/custom_tab.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
@@ -576,20 +578,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                 },
               ),
               backgroundColor: const DigitColors().seaShellGray,
-              appBar: AppBar(
-                backgroundColor: const Color(0xff0B4B66),
-                iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                    .copyWith(color: const DigitColors().white),
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
-              drawer: DrawerWrapper(
-                Drawer(
-                  child: SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  ),
-                ),
-              ),
+              appBar: customAppBar(),
+              drawer: const MySideBar(),
               body: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
                 builder: (context, state) {
                   return state.maybeMap(

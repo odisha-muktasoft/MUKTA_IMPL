@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/widgets/back.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../../blocs/localization/app_localization.dart';
 import '../../../blocs/localization/localization.dart';
@@ -49,14 +51,8 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
           ),
         ),
       ),
-      appBar: AppBar(
-        backgroundColor: const Color(0xff0B4B66),
-        iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
-        titleSpacing: 0,
-        title: const AppBarLogo(),
-      ),
-      drawer: DrawerWrapper(
-          Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
+      appBar: customAppBar(),
+      drawer: const MySideBar(),
       body: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, state) {
           return ScrollableContent(

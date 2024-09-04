@@ -13,6 +13,8 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../utils/common_methods.dart';
 import '../atoms/app_bar_logo.dart';
@@ -80,17 +82,10 @@ class SuccessResponsePage extends StatelessWidget {
                 title: const Text('MuktaSoft'),
                 automaticallyImplyLeading: false,
               )
-            : AppBar(
-                backgroundColor: const Color(0xff0B4B66),
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
+            : customAppBar(),
         drawer: isWithoutLogin
             ? null
-            : DrawerWrapper(Drawer(
-                child: SideBar(
-                module: CommonMethods.getLocaleModules(),
-              ))),
+            : const MySideBar(),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

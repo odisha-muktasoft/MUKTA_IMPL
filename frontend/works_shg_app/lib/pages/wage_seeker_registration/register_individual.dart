@@ -15,6 +15,8 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/back.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 //import 'package:works_shg_app/widgets/molecules/digit_stepper.dart';
 
 import '../../blocs/app_initilization/app_initilization.dart';
@@ -110,17 +112,8 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xff0B4B66),
-            iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                .copyWith(color: const DigitColors().white),
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
-          drawer: DrawerWrapper(Drawer(
-              child: SideBar(
-            module: CommonMethods.getLocaleModules(),
-          ))),
+          appBar:customAppBar(),
+          drawer: const MySideBar(),
           body: SingleChildScrollView(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

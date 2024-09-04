@@ -2,12 +2,14 @@ import 'package:digit_components/digit_components.dart' as ui_old;
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -73,8 +75,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
       appBar: customAppBar(),
-      drawer: DrawerWrapper(
-          Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
+      drawer: const MySideBar(),
       bottomNavigationBar: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, localState) {
         return BlocBuilder<SearchMyWorksBloc, SearchMyWorksState>(
@@ -104,15 +105,19 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                 MyWorksSearchCriteriaBlocState>(
               listener: (context, searchCriteriaState) {
                 searchCriteriaState.maybeWhen(
-                    orElse: () => false,
-                    loading: () => shg_loader.Loaders.circularLoader(context),
-                    loaded:
-                        (List<String>? searchCriteria, String? acceptCode) =>
-                            context.read<SearchMyWorksBloc>().add(
-                                  MyWorksSearchEvent(searchCriteria),
-                                ),
-                    error: (String? error) => Notifiers.getToastMessage(
-                        context, error.toString(), 'ERROR'));
+                  orElse: () => false,
+                  loading: () => shg_loader.Loaders.circularLoader(context),
+                  loaded: (List<String>? searchCriteria, String? acceptCode) =>
+                      context.read<SearchMyWorksBloc>().add(
+                            MyWorksSearchEvent(searchCriteria),
+                          ),
+                  error: (String? error) =>
+                      //  Notifiers.getToastMessage(
+                      //     context, error.toString(), 'ERROR'),
+                      Toast.showToast(context,
+                          message: t.translate(error.toString()),
+                          type: ToastType.error),
+                );
               },
               child: BlocBuilder<MyWorksSearchCriteriaBloc,
                   MyWorksSearchCriteriaBlocState>(
@@ -130,8 +135,12 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                             orElse: () => false,
                             loading: () =>
                                 shg_loader.Loaders.circularLoader(context),
-                            error: (String? error) => Notifiers.getToastMessage(
-                                context, error.toString(), 'ERROR'),
+                            error: (String? error) =>
+                                //  Notifiers.getToastMessage(
+                                //     context, error.toString(), 'ERROR'),
+                                Toast.showToast(context,
+                                    message: t.translate(error.toString()),
+                                    type: ToastType.error),
                             loaded: (ContractsModel? contracts) {
                               workOrderList = contracts!.contracts!
                                   .map((e) => {
@@ -173,7 +182,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                               '₹ ${NumberFormat('##,##,##,##,###').format(e.totalContractedAmount ?? 0)}',
                                           i18.common.status:
                                               'WF_WORK_ORDER_STATE_${e.wfStatus.toString()}',
-                                              //TODO:temo workorder
+                                          //TODO:temo workorder
                                           Constants.activeInboxStatus:
                                               e.wfStatus != acceptCode
                                                   ? 'false'
@@ -222,12 +231,9 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(16.0),
-                                        child: Text(
-                                          '${AppLocalizations.of(context).translate(i18.home.myWorks)} (${workOrderList.length})',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium,
-                                          textAlign: TextAlign.left,
+                                        child: TextChunk(
+                                          heading:
+                                              '${AppLocalizations.of(context).translate(i18.home.myWorks)} (${workOrderList.length})',
                                         ),
                                       ),
 
@@ -500,21 +506,29 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                         initial: () => Container(),
                                         loading: () => hasLoaded = false,
                                         error: (String? error) {
-                                          Notifiers.getToastMessage(context,
-                                              error.toString(), 'ERROR');
+                                          // Notifiers.getToastMessage(context,
+                                          //     error.toString(), 'ERROR');
+                                          Toast.showToast(context,
+                                              message:
+                                                  t.translate(error.toString()),
+                                              type: ToastType.error);
                                         },
                                         loaded:
                                             (ContractsModel? declinedContract) {
-                                          Notifiers.getToastMessage(
-                                              context,
-                                              '${declinedContract?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
-                                              'SUCCESS');
+                                          // Notifiers.getToastMessage(
+                                          //     context,
+                                          //     '${declinedContract?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
+                                          //     'SUCCESS');
+                                          Toast.showToast(context,
+                                              message: t.translate(
+                                                  '${declinedContract?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}'),
+                                              type: ToastType.success);
                                           context.router.popAndPush(
                                               const WorkOrderRoute());
                                         },
-                                        orElse: () => Container());
+                                        orElse: () => const SizedBox.shrink());
                                   },
-                                  child: Container(),
+                                  child: const SizedBox.shrink(),
                                 ),
                                 BlocListener<AcceptWorkOrderBloc,
                                     AcceptWorkOrderState>(
@@ -525,15 +539,23 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                             shg_loader.Loaders.circularLoader(
                                                 context),
                                         error: (String? error) {
-                                          Notifiers.getToastMessage(context,
-                                              error.toString(), 'ERROR');
+                                          // Notifiers.getToastMessage(context,
+                                          //     error.toString(), 'ERROR');
+                                          Toast.showToast(context,
+                                              message:
+                                                  t.translate(error.toString()),
+                                              type: ToastType.error);
                                         },
                                         loaded:
                                             (ContractsModel? acceptedContract) {
-                                          Notifiers.getToastMessage(
-                                              context,
-                                              '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${acceptedContract?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
-                                              'SUCCESS');
+                                          // Notifiers.getToastMessage(
+                                          //     context,
+                                          //     '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${acceptedContract?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
+                                          //     'SUCCESS');
+                                          Toast.showToast(context,
+                                              message: t.translate(
+                                                  '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${acceptedContract?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}'),
+                                              type: ToastType.success);
                                           context.router.popAndPush(
                                               const WorkOrderRoute());
                                         },
@@ -545,16 +567,21 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                     ValidTimeExtCreationsSearchState>(
                                   listener: (context, validContractState) {
                                     validContractState.maybeWhen(
-                                        orElse: () => false,
-                                        loaded: (Contracts? contracts) =>
-                                            context.router.push(
-                                                CreateTimeExtensionRequestRoute(
-                                              contractNumber:
-                                                  contracts?.contractNumber,
-                                            )),
-                                        error: (String? error) =>
-                                            Notifiers.getToastMessage(context,
-                                                error ?? 'ERR!', 'ERROR'));
+                                      orElse: () => false,
+                                      loaded: (Contracts? contracts) => context
+                                          .router
+                                          .push(CreateTimeExtensionRequestRoute(
+                                        contractNumber:
+                                            contracts?.contractNumber,
+                                      )),
+                                      error: (String? error) =>
+                                          // Notifiers.getToastMessage(context,
+                                          //     error ?? 'ERR!', 'ERROR'),
+                                          Toast.showToast(context,
+                                              message:
+                                                  t.translate(error ?? 'ERR!'),
+                                              type: ToastType.error),
+                                    );
                                   },
                                   child: const SizedBox.shrink(),
                                 ),

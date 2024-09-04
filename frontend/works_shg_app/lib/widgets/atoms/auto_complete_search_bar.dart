@@ -99,8 +99,10 @@ class AutoCompleteSearchBar extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).primaryColorDark),
-            prefixIcon: const Padding(
-                padding: EdgeInsets.all(8.0), child: Icon(Icons.search_sharp)),
+            prefixIcon:  Padding(
+                padding:const EdgeInsets.all(8.0), child: Icon(Icons.search_sharp,
+                color: Theme.of(context).colorScheme.secondary,
+                )),
           )),
       loadingBuilder: (BuildContext context) {
         return const SizedBox(

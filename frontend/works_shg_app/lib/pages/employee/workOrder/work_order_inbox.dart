@@ -26,6 +26,7 @@ import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../../blocs/employee/work_order/workorder_book.dart';
@@ -206,13 +207,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
               FloatingActionButtonLocation.centerDocked,
           backgroundColor: const DigitColors().seaShellGray,
           appBar: customAppBar(),
-          drawer: DrawerWrapper(
-            Drawer(
-              child: SideBar(
-                module: CommonMethods.getLocaleModules(),
-              ),
-            ),
-          ),
+          drawer: const MySideBar(),
           body: BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
             builder: (context, state) {
               return state.maybeMap(
@@ -430,21 +425,21 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             } else {
                                               if (value.estimateStatus ==
                                                   false) {
-                                                Notifiers.getToastMessage(
-                                                    context,
-                                                    t.translate(i18.workOrder
-                                                        .estimateRevisionError),
-                                                    'ERROR');
-                                                // Toast.showToast(context, message: t.translate(i18.workOrder
-                                                //         .estimateRevisionError), type: ToastType.error);
+                                                // Notifiers.getToastMessage(
+                                                //     context,
+                                                //     t.translate(i18.workOrder
+                                                //         .estimateRevisionError),
+                                                //     'ERROR');
+                                                Toast.showToast(context, message: t.translate(i18.workOrder
+                                                        .estimateRevisionError), type: ToastType.error);
                                               } else {
-                                                Notifiers.getToastMessage(
-                                                    context,
-                                                    t.translate(i18.workOrder
-                                                        .existingMBCreateError),
-                                                    'ERROR');
-                                                //  Toast.showToast(context, message: t.translate(i18.workOrder
-                                                //         .existingMBCreateError), type: ToastType.error);
+                                                // Notifiers.getToastMessage(
+                                                //     context,
+                                                //     t.translate(i18.workOrder
+                                                //         .existingMBCreateError),
+                                                //     'ERROR');
+                                                 Toast.showToast(context, message: t.translate(i18.workOrder
+                                                        .existingMBCreateError), type: ToastType.error);
                                               }
                                             }
                                           },

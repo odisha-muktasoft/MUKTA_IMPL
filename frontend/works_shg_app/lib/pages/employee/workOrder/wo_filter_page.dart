@@ -16,7 +16,9 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/molecules/digit_search_dropdown.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/side_bar.dart';
 import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 
@@ -117,19 +119,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loaded: (organization) {
             return Scaffold(
-              appBar: AppBar(
-                backgroundColor: const Color(0xff0B4B66),
-                iconTheme: Theme.of(context).iconTheme,
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
-              drawer: DrawerWrapper(
-                Drawer(
-                  child: SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  ),
-                ),
-              ),
+              appBar: customAppBar(),
+              drawer: const MySideBar(),
               body: ReactiveFormBuilder(
                   form: detailBuildForm,
                   builder: (BuildContext context, FormGroup formGroup,
@@ -362,19 +353,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loading: () {
             return Scaffold(
-              appBar: AppBar(
-                backgroundColor: const Color(0xff0B4B66),
-                iconTheme: Theme.of(context).iconTheme,
-                titleSpacing: 0,
-                title: const AppBarLogo(),
-              ),
-              drawer: DrawerWrapper(
-                Drawer(
-                  child: SideBar(
-                    module: CommonMethods.getLocaleModules(),
-                  ),
-                ),
-              ),
+              appBar: customAppBar(),
+              drawer: const MySideBar(),
               body: Center(
                 child: shg_loader.Loaders.circularLoader(context),
               ),

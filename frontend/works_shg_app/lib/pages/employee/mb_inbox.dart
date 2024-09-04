@@ -26,6 +26,8 @@ import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/widgets/mb/back_button.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/employee/mb/measurement_book.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -181,22 +183,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
               );
             },
           ),
-          appBar: AppBar(
-            backgroundColor: const Color(0xff0B4B66),
-            iconTheme: Theme.of(context)
-                .iconTheme
-                .copyWith(color: Theme.of(context).colorTheme.paper.primary),
-            titleSpacing: 0,
-            title: const AppBarLogo(),
-          ),
-          drawer: DrawerWrapper(
-            Drawer(
-              backgroundColor: const DigitColors().white,
-              child: SideBar(
-                module: CommonMethods.getLocaleModules(),
-              ),
-            ),
-          ),
+          appBar: customAppBar(),
+          drawer: const MySideBar(),
           body: BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
             builder: (context, state) {
               return state.maybeMap(

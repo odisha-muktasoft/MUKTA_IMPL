@@ -1,4 +1,11 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart' as ui_scrollable;
+import 'package:digit_ui_components/digit_components.dart' as ui_new;
+import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +14,8 @@ import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
@@ -14,14 +23,7 @@ import '../../blocs/time_extension_request/create_time_extension_request.dart';
 import '../../blocs/work_orders/search_individual_work.dart';
 import '../../models/works/contracts_model.dart';
 import '../../router/app_router.dart';
-import '../../utils/common_methods.dart';
-import '../../utils/common_widgets.dart';
 import '../../utils/date_formats.dart';
-import '../../utils/notifiers.dart';
-import '../../widgets/back.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -86,26 +88,19 @@ class _CreateTimeExtensionRequestPage
           context.router.popUntilRouteWithPath('home');
           context.router.push(const WorkOrderRoute());
         }
-       
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xff0B4B66),
-          iconTheme: DigitTheme.instance.mobileTheme.iconTheme.copyWith(color: const DigitColors().white),
-          titleSpacing: 0,
-          title: const AppBarLogo(),
-        ),
-        drawer: DrawerWrapper(
-            Drawer(child: SideBar(module: CommonMethods.getLocaleModules()))),
-        bottomNavigationBar: const SizedBox(
-          height: 50,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: PoweredByDigit(
-                 version: Constants.appVersion,
-                ),
-          ),
-        ),
+        appBar: customAppBar(),
+        drawer: const MySideBar(),
+        // bottomNavigationBar: const SizedBox(
+        //   height: 50,
+        // child: Align(
+        //   alignment: Alignment.bottomCenter,
+        //   child:ui_scrollable. PoweredByDigit(
+        //        version: Constants.appVersion,
+        //       ),
+        // ),
+        // ),
         body: BlocBuilder<SearchIndividualWorkBloc, SearchIndividualWorkState>(
             builder: (context, contractState) {
           return contractState.maybeWhen(
@@ -115,72 +110,76 @@ class _CreateTimeExtensionRequestPage
                 return ReactiveFormBuilder(
                     form: () => buildForm(contractState),
                     builder: (context, form, child) {
-                      return ScrollableContent(
-                        footer: SizedBox(
-                          height: 100,
-                          child: Center(
-                            child: DigitCard(
-                              child: DigitElevatedButton(
-                                onPressed: () {
-                                  form.markAllAsTouched(updateParent: false);
-                                  if (!form.valid) {
-                                    return;
-                                  } else if (int.parse(form
-                                          .value[extensionDaysKey]
-                                          .toString()) >
-                                      365) {
-                                    Notifiers.getToastMessage(
-                                      context,
-                                      t.translate(
-                                        i18.workOrder.extensionReqInDaysMaxVal,
-                                      ),
-                                      'ERROR',
-                                    );
-                                    return;
-                                  } else {
-                                    DateTime endDate =
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            contracts?.contracts?.first
-                                                    .endDate ??
-                                                0);
-                                    int extensionDate = endDate
-                                        .add(Duration(
-                                            days: int.parse(form
-                                                .value[extensionDaysKey]
-                                                .toString())))
-                                        .millisecondsSinceEpoch;
-                                    // sorting contracts list based on last modified time
-                                    // to send the latest conract data for time extention
-                                    contracts?.contracts!.sort((a, b) => b
-                                        .auditDetails!.lastModifiedTime!
-                                        .compareTo(
-                                            a.auditDetails!.lastModifiedTime!));
-                                    
-                                    context
-                                        .read<CreateTimeExtensionRequestBloc>()
-                                        .add(TimeExtensionRequestEvent(
-                                            contractsModel:
-                                                contracts?.contracts?.first,
-                                            action: widget.isEdit == true
-                                                ? 'EDIT'
-                                                : 'CREATE',
-                                            extensionDate: extensionDate,
-                                            isEdit: widget.isEdit ?? false,
-                                            reason: form
-                                                .value[reasonForExtensionKey]
-                                                .toString(),
-                                            extensionDays: form
-                                                .value[extensionDaysKey]
-                                                .toString()));
-                                  }
-                                },
-                                child: Center(
-                                    child:
-                                        Text(t.translate(i18.common.submit))),
-                              ),
-                            ),
+                      return ui_scrollable.ScrollableContent(
+                        footer: ui_card
+                            .DigitCard(cardType: CardType.primary, children: [
+                          Button(
+                            mainAxisSize: MainAxisSize.max,
+                            type: ButtonType.primary,
+                            size: ButtonSize.large,
+                            onPressed: () {
+                              form.markAllAsTouched(updateParent: false);
+                              if (!form.valid) {
+                                return;
+                              } else if (int.parse(
+                                      form.value[extensionDaysKey].toString()) >
+                                  365) {
+                                // Notifiers.getToastMessage(
+                                //   context,
+                                //   t.translate(
+                                //     i18.workOrder.extensionReqInDaysMaxVal,
+                                //   ),
+                                //   'ERROR',
+                                // );
+Toast.showToast(context, message: t.translate(
+                                    i18.workOrder.extensionReqInDaysMaxVal,
+                                  ), type: ToastType.error);
+
+                                return;
+                              } else {
+                                DateTime endDate =
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        contracts?.contracts?.first.endDate ??
+                                            0);
+                                int extensionDate = endDate
+                                    .add(Duration(
+                                        days: int.parse(form
+                                            .value[extensionDaysKey]
+                                            .toString())))
+                                    .millisecondsSinceEpoch;
+                                // sorting contracts list based on last modified time
+                                // to send the latest conract data for time extention
+                                contracts?.contracts!.sort((a, b) =>
+                                    b.auditDetails!.lastModifiedTime!.compareTo(
+                                        a.auditDetails!.lastModifiedTime!));
+
+                                context
+                                    .read<CreateTimeExtensionRequestBloc>()
+                                    .add(TimeExtensionRequestEvent(
+                                        contractsModel:
+                                            contracts?.contracts?.first,
+                                        action: widget.isEdit == true
+                                            ? 'EDIT'
+                                            : 'CREATE',
+                                        extensionDate: extensionDate,
+                                        isEdit: widget.isEdit ?? false,
+                                        reason: form
+                                            .value[reasonForExtensionKey]
+                                            .toString(),
+                                        extensionDays: form
+                                            .value[extensionDaysKey]
+                                            .toString()));
+                              }
+                            },
+                            label: t.translate(i18.common.submit),
                           ),
-                        ),
+                          const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ui_scrollable.PoweredByDigit(
+                              version: Constants.appVersion,
+                            ),
+                          )
+                        ]),
                         children: [
                           BlocBuilder<LocalizationBloc, LocalizationState>(
                               builder: (context, localState) {
@@ -206,196 +205,347 @@ class _CreateTimeExtensionRequestPage
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Back(
-                                                backLabel: AppLocalizations.of(
-                                                        context)
-                                                    .translate(i18.common.back),
-                                                callback: () {
-                                                  if (context.router.currentUrl
-                                                      .contains('isEdit')) {
-                                                    context.router
-                                                        .popUntilRouteWithPath(
-                                                            'home');
-                                                    context.router.push(
-                                                        const MyServiceRequestsRoute());
-                                                  } else {
-                                                    context.router
-                                                        .popUntilRouteWithPath(
-                                                            'home');
-                                                    context.router.push(
-                                                        const WorkOrderRoute());
-                                                  }
-                                                },
+                                              // Back(
+                                              // backLabel: AppLocalizations.of(
+                                              //         context)
+                                              //     .translate(i18.common.back),
+                                              //   callback: () {
+                                              // if (context.router.currentUrl
+                                              //     .contains('isEdit')) {
+                                              //   context.router
+                                              //       .popUntilRouteWithPath(
+                                              //           'home');
+                                              //   context.router.push(
+                                              //       const MyServiceRequestsRoute());
+                                              // } else {
+                                              //   context.router
+                                              //       .popUntilRouteWithPath(
+                                              //           'home');
+                                              //   context.router.push(
+                                              //       const WorkOrderRoute());
+                                              // }
+                                              //   },
+                                              // ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0, top: 16.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    BackNavigationButton(
+                                                      backButtonText:
+                                                          AppLocalizations.of(
+                                                                  context)
+                                                              .translate(i18
+                                                                  .common.back),
+                                                      handleBack: () {
+                                                        if (context
+                                                            .router.currentUrl
+                                                            .contains(
+                                                                'isEdit')) {
+                                                          context.router
+                                                              .popUntilRouteWithPath(
+                                                                  'home');
+                                                          context.router.push(
+                                                              const MyServiceRequestsRoute());
+                                                        } else {
+                                                          context.router
+                                                              .popUntilRouteWithPath(
+                                                                  'home');
+                                                          context.router.push(
+                                                              const WorkOrderRoute());
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              DigitCard(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      contracts.isNotEmpty
-                                                          ? Column(
-                                                              children: [
-                                                                CommonWidgets.getItemWidget(
-                                                                    context,
-                                                                    title: t.translate(i18
-                                                                        .workOrder
-                                                                        .workOrderNo),
-                                                                    description: contracts
-                                                                            .first
-                                                                            .contractNumber ??
-                                                                        t.translate(i18
-                                                                            .common
-                                                                            .noValue)),
-                                                                CommonWidgets.getItemWidget(
-                                                                    context,
-                                                                    title: t.translate(i18
-                                                                        .attendanceMgmt
-                                                                        .projectId),
-                                                                    description: contracts
-                                                                            .first
-                                                                            .additionalDetails
-                                                                            ?.projectId ??
-                                                                        t.translate(i18
-                                                                            .common
-                                                                            .noValue)),
-                                                                CommonWidgets.getItemWidget(
-                                                                    context,
-                                                                    title: t.translate(i18
-                                                                        .attendanceMgmt
-                                                                        .projectDesc),
-                                                                    description: contracts
-                                                                            .first
-                                                                            .additionalDetails
-                                                                            ?.projectDesc ??
-                                                                        t.translate(i18
-                                                                            .common
-                                                                            .noValue)),
-                                                                CommonWidgets.getItemWidget(
-                                                                    context,
-                                                                    title: t.translate(i18
-                                                                        .workOrder
-                                                                        .completionPeriod),
-                                                                    description:
-                                                                        '${contracts.first.completionPeriod} ${t.translate(i18.common.days)}'),
-                                                                CommonWidgets.getItemWidget(
-                                                                    context,
-                                                                    title: t.translate(i18
-                                                                        .workOrder
-                                                                        .workStartDate),
-                                                                    description: contracts.first.startDate !=
-                                                                                null &&
-                                                                            contracts.first.startDate !=
-                                                                                0
-                                                                        ? DateFormats.getFilteredDate(DateTime.fromMillisecondsSinceEpoch(contracts.first.startDate ?? 0)
-                                                                            .toString())
-                                                                        : t.translate(i18
-                                                                            .common
-                                                                            .noValue)),
-                                                                CommonWidgets.getItemWidget(
-                                                                    context,
-                                                                    title: t.translate(i18
-                                                                        .workOrder
-                                                                        .workEndDate),
-                                                                    description: contracts.first.endDate !=
-                                                                                null &&
-                                                                            contracts.first.endDate !=
-                                                                                0
-                                                                        ? DateFormats.getFilteredDate(DateTime.fromMillisecondsSinceEpoch(contracts.first.endDate ?? 0)
-                                                                            .toString())
-                                                                        : t.translate(i18
-                                                                            .common
-                                                                            .noValue)),
-                                                              ],
-                                                            )
-                                                          : EmptyImage(
-                                                              label: t.translate(i18
+
+                                              ui_card.DigitCard(
+                                                margin: const EdgeInsets.all(8),
+                                                cardType: CardType.primary,
+                                                children: [
+                                                  contracts.isNotEmpty
+                                                      ? LabelValueList(
+                                                          maxLines: 3,
+                                                          labelFlex: 5,
+                                                          valueFlex: 5,
+                                                          items: [
+                                                              LabelValuePair(
+                                                                  label: t.translate(i18
+                                                                      .workOrder
+                                                                      .workOrderNo),
+                                                                  value: contracts
+                                                                          .first
+                                                                          .contractNumber ??
+                                                                      t.translate(i18
+                                                                          .common
+                                                                          .noValue)),
+                                                              LabelValuePair(
+                                                                  label: t.translate(i18
+                                                                      .attendanceMgmt
+                                                                      .projectId),
+                                                                  value: contracts
+                                                                          .first
+                                                                          .additionalDetails
+                                                                          ?.projectId ??
+                                                                      t.translate(i18
+                                                                          .common
+                                                                          .noValue)),
+                                                              LabelValuePair(
+                                                                  label: t.translate(i18
+                                                                      .attendanceMgmt
+                                                                      .projectDesc),
+                                                                  value: contracts
+                                                                          .first
+                                                                          .additionalDetails
+                                                                          ?.projectDesc ??
+                                                                      t.translate(i18
+                                                                          .common
+                                                                          .noValue)),
+                                                              LabelValuePair(
+                                                                  label: t.translate(i18
+                                                                      .workOrder
+                                                                      .completionPeriod),
+                                                                  value:
+                                                                      '${contracts.first.completionPeriod} ${t.translate(i18.common.days)}'),
+                                                              LabelValuePair(
+                                                                  label: t.translate(i18
+                                                                      .workOrder
+                                                                      .workStartDate),
+                                                                  value: contracts.first.startDate !=
+                                                                              null &&
+                                                                          contracts.first.startDate !=
+                                                                              0
+                                                                      ? DateFormats.getFilteredDate(DateTime.fromMillisecondsSinceEpoch(contracts.first.startDate ??
+                                                                              0)
+                                                                          .toString())
+                                                                      : t.translate(i18
+                                                                          .common
+                                                                          .noValue)),
+                                                              LabelValuePair(
+                                                                  label: t.translate(i18
+                                                                      .workOrder
+                                                                      .workEndDate),
+                                                                  value: contracts.first.endDate !=
+                                                                              null &&
+                                                                          contracts.first.endDate !=
+                                                                              0
+                                                                      ? DateFormats.getFilteredDate(DateTime.fromMillisecondsSinceEpoch(contracts.first.endDate ??
+                                                                              0)
+                                                                          .toString())
+                                                                      : t.translate(i18
+                                                                          .common
+                                                                          .noValue)),
+                                                            ])
+                                                      : EmptyImage(
+                                                          label: t.translate(i18
+                                                              .workOrder
+                                                              .noWorkOrderAssigned),
+                                                          align:
+                                                              Alignment.center,
+                                                        ),
+// old
+                                                  // DigitTextFormField(
+                                                  //   label: t.translate(i18
+                                                  //       .workOrder
+                                                  //       .extensionReqInDays),
+                                                  //   formControlName:
+                                                  //       extensionDaysKey,
+                                                  //   isRequired: true,
+                                                  //   keyboardType:
+                                                  //       TextInputType.number,
+                                                  //   inputFormatters: [
+                                                  //     FilteringTextInputFormatter
+                                                  //         .allow(
+                                                  //             RegExp("[0-9]"))
+                                                  //   ],
+                                                  //   validationMessages: {
+                                                  //     'required': (_) =>
+                                                  //         t.translate(
+                                                  //           i18.workOrder
+                                                  //               .extensionReqInDaysIsRequired,
+                                                  //         ),
+                                                  //     'min': (_) => t.translate(
+                                                  //           i18.workOrder
+                                                  //               .extensionReqInDaysMinVal,
+                                                  //         ),
+                                                  //     // 'max':(_)=>t.translate(
+                                                  //     //   i18.workOrder
+                                                  //     //       .extensionReqInDaysMaxVal,
+                                                  //     // ),
+                                                  //   },
+                                                  // ),
+// end
+                                                  ui_new.LabeledField(
+                                                    isRequired: true,
+                                                    label: t.translate(i18
+                                                        .workOrder
+                                                        .extensionReqInDays),
+                                                    child: ReactiveWrapperField(
+                                                      validationMessages: {
+                                                        'required': (error) =>
+                                                            t.translate(
+                                                              i18
                                                                   .workOrder
-                                                                  .noWorkOrderAssigned),
-                                                              align: Alignment
-                                                                  .center,
+                                                                  //.extensionReqInDaysIsRequired
+                                                                  .reasonForExtensionIsRequired,
                                                             ),
-                                                      Column(
-                                                        children: [
-                                                          DigitTextFormField(
-                                                            label: t.translate(i18
-                                                                .workOrder
-                                                                .extensionReqInDays),
-                                                            formControlName:
-                                                                extensionDaysKey,
-                                                            isRequired: true,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            inputFormatters: [
-                                                              FilteringTextInputFormatter
-                                                                  .allow(RegExp(
-                                                                      "[0-9]"))
-                                                            ],
-                                                            validationMessages: {
-                                                              'required': (_) =>
-                                                                  t.translate(
-                                                                    i18.workOrder
-                                                                        .extensionReqInDaysIsRequired,
-                                                                  ),
-                                                              'min': (_) =>
-                                                                  t.translate(
-                                                                    i18.workOrder
-                                                                        .extensionReqInDaysMinVal,
-                                                                  ),
-                                                              // 'max':(_)=>t.translate(
-                                                              //   i18.workOrder
-                                                              //       .extensionReqInDaysMaxVal,
-                                                              // ),
-                                                            },
-                                                          ),
-                                                          DigitTextFormField(
-                                                            label: t.translate(i18
-                                                                .workOrder
-                                                                .reasonForExtension),
-                                                            formControlName:
-                                                                reasonForExtensionKey,
-                                                            isRequired: true,
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .text,
-                                                            inputFormatters: [
-                                                              FilteringTextInputFormatter
-                                                                  .allow(RegExp(
-                                                                      "[a-zA-Z0-9 .,\\/\\-_@#\\']"))
-                                                            ],
-                                                            validationMessages: {
-                                                              'required': (_) =>
-                                                                  t.translate(
-                                                                    i18.workOrder
-                                                                        .reasonForExtensionIsRequired,
-                                                                  ),
-                                                              'minLength': (_) =>
-                                                                  t.translate(
-                                                                    i18.workOrder
-                                                                        .reasonForExtensionMinChar,
-                                                                  ),
-                                                              'maxLength': (_) =>
-                                                                  t.translate(
-                                                                    i18.workOrder
-                                                                        .reasonForExtensionMaxChar,
-                                                                  ),
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 16.0,
-                                                      ),
-                                                    ]),
+                                                        'min': (error) =>
+                                                            t.translate(
+                                                              i18.workOrder
+                                                                  .extensionReqInDaysMinVal,
+                                                            ),
+                                                      },
+                                                      formControlName:
+                                                          extensionDaysKey,
+                                                      showErrors: (control) =>
+                                                          control.invalid &&
+                                                          control.touched,
+                                                      builder: (field) {
+                                                        return DigitTextFormInput(
+                                                          isRequired: true,
+                                                          onChange: (value) {
+                                                            field.control
+                                                                .markAsTouched();
+
+                                                            form
+                                                                .control(
+                                                                    extensionDaysKey)
+                                                                .value = value;
+                                                          },
+                                                          errorMessage:
+                                                              field.errorText,
+                                                          controller:
+                                                              TextEditingController()
+                                                                ..text = form
+                                                                    .control(
+                                                                        extensionDaysKey)
+                                                                    .value,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          inputFormatters: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(RegExp(
+                                                                    "[0-9]"))
+                                                          ],
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+
+//old
+                                                  // DigitTextFormField(
+                                                  // label: t.translate(i18
+                                                  //     .workOrder
+                                                  //     .reasonForExtension),
+                                                  //   formControlName:
+                                                  //       reasonForExtensionKey,
+                                                  //   isRequired: true,
+                                                  //   keyboardType:
+                                                  //       TextInputType.text,
+                                                  //   inputFormatters: [
+                                                  // FilteringTextInputFormatter
+                                                  //     .allow(RegExp(
+                                                  //         "[a-zA-Z0-9 .,\\/\\-_@#\\']"))
+                                                  //   ],
+                                                  // validationMessages: {
+                                                  //   'required': (_) =>
+                                                  //       t.translate(
+                                                  //         i18.workOrder
+
+                                                  //             //.reasonForExtensionIsRequired
+                                                  //             .extensionReqInDaysIsRequired
+                                                  //             ,
+                                                  //       ),
+                                                  //   'minLength': (_) =>
+                                                  //       t.translate(
+                                                  //         i18.workOrder
+                                                  //             .reasonForExtensionMinChar,
+                                                  //       ),
+                                                  //   'maxLength': (_) =>
+                                                  //       t.translate(
+                                                  //         i18.workOrder
+                                                  //             .reasonForExtensionMaxChar,
+                                                  //       ),
+                                                  // },
+                                                  // ),
+                                                  //end
+
+                                                  ui_new.LabeledField(
+                                                    isRequired: true,
+                                                    label: t.translate(i18
+                                                        .workOrder
+                                                        .reasonForExtension),
+                                                    child: ReactiveWrapperField(
+                                                      validationMessages: {
+                                                        'required': (_) =>
+                                                            t.translate(
+                                                              i18
+                                                                  .workOrder
+
+                                                                  //.reasonForExtensionIsRequired
+                                                                  .extensionReqInDaysIsRequired,
+                                                            ),
+                                                        'minLength': (_) =>
+                                                            t.translate(
+                                                              i18.workOrder
+                                                                  .reasonForExtensionMinChar,
+                                                            ),
+                                                        'maxLength': (_) =>
+                                                            t.translate(
+                                                              i18.workOrder
+                                                                  .reasonForExtensionMaxChar,
+                                                            ),
+                                                      },
+                                                      formControlName:
+                                                          reasonForExtensionKey,
+                                                      showErrors: (control) =>
+                                                          control.invalid &&
+                                                          control.touched,
+                                                      builder: (field) {
+                                                        return DigitTextFormInput(
+                                                          isRequired: true,
+                                                          onChange: (value) {
+                                                            field.control
+                                                                .markAsTouched();
+
+                                                            form
+                                                                .control(
+                                                                    reasonForExtensionKey)
+                                                                .value = value;
+                                                          },
+                                                          errorMessage:
+                                                              field.errorText,
+                                                          controller:
+                                                              TextEditingController()
+                                                                ..text = form
+                                                                    .control(
+                                                                        reasonForExtensionKey)
+                                                                    .value,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          inputFormatters: [
+                                                            FilteringTextInputFormatter
+                                                                .allow(RegExp(
+                                                                    "[a-zA-Z0-9 .,\\/\\-_@#\\']"))
+                                                          ],
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+
+                                                  // const SizedBox(
+                                                  //   height: 16.0,
+                                                  // ),
+                                                ],
                                               ),
                                             ]);
                                       } else {
-                                        return Container();
+                                        return const SizedBox.shrink();
                                       }
                                     });
                               },
@@ -409,15 +559,21 @@ class _CreateTimeExtensionRequestPage
                                   loading: () =>
                                       Loaders.circularLoader(context),
                                   error: (String? error) =>
-                                      Notifiers.getToastMessage(
-                                          context, error.toString(), 'ERROR'),
+                                      // Notifiers.getToastMessage(
+                                      //     context, error.toString(), 'ERROR'),
+                                          Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error)
+                                          ,
                                   loaded: (ContractsModel? contractsModel) {
                                     if (widget.isEdit == true) {
-                                      Notifiers.getToastMessage(
-                                          context,
-                                          t.translate(i18.workOrder
+                                      // Notifiers.getToastMessage(
+                                      //     context,
+                                      //     t.translate(i18.workOrder
+                                      //         .timeExtensionRequestedUpdatedSuccessfully),
+                                      //     "SUCCESS");
+                                      Toast.showToast(context,
+                                          message: t.translate(i18.workOrder
                                               .timeExtensionRequestedUpdatedSuccessfully),
-                                          "SUCCESS");
+                                          type: ToastType.success);
                                       context.router.maybePopTop();
                                     } else {
                                       context.router.popAndPush(

@@ -93,6 +93,7 @@ class WorkDetailsCard extends StatelessWidget {
               cardType: CardType.primary,
               children: [
                 LabelValueList(
+                  maxLines: 3,
                   labelFlex: 5,
                   valueFlex: 5,
                   items: getCardDetails(
@@ -124,7 +125,16 @@ class WorkDetailsCard extends StatelessWidget {
                   type: ButtonType.primary,
                   size: ButtonSize.large,
                   mainAxisSize: MainAxisSize.max,
-                )
+                ),
+                (showButtonLink! && linkLabel!.isNotEmpty)
+                    ? Button(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        type: ButtonType.tertiary,
+                        size: ButtonSize.large,
+                        mainAxisSize: MainAxisSize.max,
+                        label: linkLabel ?? '',
+                        onPressed: () => onLinkPressed!())
+                    : const SizedBox.shrink(),
               ],
             );
             // return DigitCard(
@@ -353,6 +363,15 @@ class WorkDetailsCard extends StatelessWidget {
                         size: ButtonSize.large,
                       )
                     : const SizedBox.shrink(),
+                (showButtonLink! && linkLabel!.isNotEmpty)
+                    ? Button(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        type: ButtonType.tertiary,
+                        size: ButtonSize.large,
+                        mainAxisSize: MainAxisSize.max,
+                        label: linkLabel ?? '',
+                        onPressed: () => onLinkPressed!())
+                    : const SizedBox.shrink(),
               ],
             );
           }).toList(),
@@ -360,10 +379,57 @@ class WorkDetailsCard extends StatelessWidget {
       case 3:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return DigitCard(
-              padding: const EdgeInsets.all(8.0),
-              child: getCardDetails(context, e,
-                  musterRoll: musterRollsModel![index]),
+            return ui_card.DigitCard(
+              spacing: 0.0,
+              margin: const EdgeInsets.all(8),
+              cardType: CardType.primary,
+
+              // child: getCardDetails(context, e,
+              //     musterRoll: musterRollsModel![index]),
+              children: [
+                LabelValueList(
+                  labelFlex: 5,
+                  valueFlex: 5,
+                  maxLines: 3,
+                  items: getCardDetails(context, e,
+                      musterRoll: musterRollsModel![index]),
+                ),
+                isSHGInbox
+                    ? Button(
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                        mainAxisSize: MainAxisSize.max,
+                        onPressed: () {
+                          context.router.push(SHGInboxRoute(
+                              tenantId:
+                                  musterRollsModel![index].tenantId.toString(),
+                              musterRollNo: musterRollsModel![index]
+                                  .musterRollNumber
+                                  .toString(),
+                              sentBackCode:
+                                  musterBackToCBOCode ?? Constants.sentBack));
+                        },
+                        label: musterRollsModel![index]!.musterRollStatus ==
+                                musterBackToCBOCode
+                            ? AppLocalizations.of(context)
+                                .translate(i18.attendanceMgmt.editMusterRoll)
+                            : elevatedButtonLabel,
+                      )
+                    : const SizedBox.shrink(),
+                //ButtonLink(linkLabel ?? '', onLinkPressed)
+
+                (showButtonLink! && linkLabel!.isNotEmpty)
+                    ? Button(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        type: ButtonType.tertiary,
+                        size: ButtonSize.large,
+                        mainAxisSize: MainAxisSize.max,
+                        label: linkLabel ?? '',
+                        onPressed: () {
+                          onLinkPressed!();
+                        })
+                    : const SizedBox.shrink(),
+              ],
             );
           }).toList(),
         );
@@ -382,6 +448,15 @@ class WorkDetailsCard extends StatelessWidget {
                     labelFlex: 5,
                     valueFlex: 5,
                     items: getCardDetails(context, e)),
+                (showButtonLink! && linkLabel!.isNotEmpty)
+                    ? Button(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        type: ButtonType.tertiary,
+                        size: ButtonSize.large,
+                        mainAxisSize: MainAxisSize.max,
+                        label: linkLabel ?? '',
+                        onPressed: () => onLinkPressed!())
+                    : const SizedBox.shrink(),
               ],
             );
           }).toList(),
@@ -646,28 +721,28 @@ class WorkDetailsCard extends StatelessWidget {
     //
     // else if (isSHGInbox) {
     //   labelList.add(
-    //     Padding(
-    //       padding: const EdgeInsets.all(4.0),
-    //       child: DigitElevatedButton(
-    //         onPressed: () {
-    //           context.router.push(SHGInboxRoute(
-    //               tenantId: musterRoll.tenantId.toString(),
-    //               musterRollNo: musterRoll.musterRollNumber.toString(),
-    //               sentBackCode: musterBackToCBOCode ?? Constants.sentBack));
-    //         },
-    //         child: Center(
-    //           child: Text(
-    //               musterRoll!.musterRollStatus == musterBackToCBOCode
-    //                   ? AppLocalizations.of(context)
-    //                       .translate(i18.attendanceMgmt.editMusterRoll)
-    //                   : elevatedButtonLabel,
-    //               style: Theme.of(context)
-    //                   .textTheme
-    //                   .titleMedium!
-    //                   .apply(color: Colors.white)),
-    //         ),
-    //       ),
+    // Padding(
+    //   padding: const EdgeInsets.all(4.0),
+    //   child: DigitElevatedButton(
+    //     onPressed: () {
+    //       context.router.push(SHGInboxRoute(
+    //           tenantId: musterRoll.tenantId.toString(),
+    //           musterRollNo: musterRoll.musterRollNumber.toString(),
+    //           sentBackCode: musterBackToCBOCode ?? Constants.sentBack));
+    //     },
+    //     child: Center(
+    //       child: Text(
+    //           musterRoll!.musterRollStatus == musterBackToCBOCode
+    //               ? AppLocalizations.of(context)
+    //                   .translate(i18.attendanceMgmt.editMusterRoll)
+    //               : elevatedButtonLabel,
+    //           style: Theme.of(context)
+    //               .textTheme
+    //               .titleMedium!
+    //               .apply(color: Colors.white)),
     //     ),
+    //   ),
+    // ),
     //   );
     // }
     // if (showButtonLink! && linkLabel!.isNotEmpty) {
@@ -793,7 +868,5 @@ class WorkDetailsCard extends StatelessWidget {
     //   label: '', value: '');
   }
 
-// new compo for isWorkOrderInbox
 
-//
 }

@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 import 'package:works_shg_app/blocs/muster_rolls/get_muster_workflow.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
@@ -193,20 +195,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           },
                         ),
                   backgroundColor: const DigitColors().seaShellGray,
-                  appBar: AppBar(
-                    backgroundColor: const Color(0xff0B4B66),
-                    iconTheme: DigitTheme.instance.mobileTheme.iconTheme
-                        .copyWith(color: const DigitColors().white),
-                    titleSpacing: 0,
-                    title: const AppBarLogo(),
-                  ),
-                  drawer: DrawerWrapper(
-                    Drawer(
-                      child: SideBar(
-                        module: CommonMethods.getLocaleModules(),
-                      ),
-                    ),
-                  ),
+                  appBar: customAppBar(),
+                  drawer: const MySideBar(),
                   body: CustomScrollView(
                     controller: _scrollController,
                     slivers: [

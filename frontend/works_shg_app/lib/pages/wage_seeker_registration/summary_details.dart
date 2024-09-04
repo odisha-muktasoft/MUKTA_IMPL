@@ -383,27 +383,31 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
             BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
               listener: (context, individualState) {
                 individualState.maybeWhen(
-                    orElse: () => false,
-                    loading: () => shg_loader.Loaders.circularLoader(context),
-                    loaded: (SingleIndividualModel? individualListModel) {
-                      context.read<WageSeekerBankCreateBloc>().add(
-                            CreateBankWageSeekerEvent(
-                                tenantId:
-                                    individualListModel?.Individual?.tenantId,
-                                accountHolderName:
-                                    financialDetails?.accountHolderName,
-                                accountNo: financialDetails?.accountNumber,
-                                accountType: financialDetails?.accountType,
-                                ifscCode: financialDetails?.ifscCode,
-                                referenceId:
-                                    individualListModel?.Individual?.id,
-                                indId: individualListModel
-                                    ?.Individual?.individualId,
-                                bankName: '${financialDetails?.bankName}'),
-                          );
-                    },
-                    error: (String? error) => Notifiers.getToastMessage(
-                        context, error.toString(), 'ERROR'));
+                  orElse: () => false,
+                  loading: () => shg_loader.Loaders.circularLoader(context),
+                  loaded: (SingleIndividualModel? individualListModel) {
+                    context.read<WageSeekerBankCreateBloc>().add(
+                          CreateBankWageSeekerEvent(
+                              tenantId:
+                                  individualListModel?.Individual?.tenantId,
+                              accountHolderName:
+                                  financialDetails?.accountHolderName,
+                              accountNo: financialDetails?.accountNumber,
+                              accountType: financialDetails?.accountType,
+                              ifscCode: financialDetails?.ifscCode,
+                              referenceId: individualListModel?.Individual?.id,
+                              indId:
+                                  individualListModel?.Individual?.individualId,
+                              bankName: '${financialDetails?.bankName}'),
+                        );
+                  },
+                  error: (String? error) =>
+                      // Notifiers.getToastMessage(
+                      //     context, error.toString(), 'ERROR'),
+                      Toast.showToast(context,
+                          message: t.translate(error.toString()),
+                          type: ToastType.error),
+                );
               },
               child: BlocListener<WageSeekerBankCreateBloc,
                   WageSeekerBankCreateState>(
@@ -428,8 +432,13 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                               i18.common.backToHome,
                             )));
                       },
-                      error: (String? error) => Notifiers.getToastMessage(
-                          context, error.toString(), 'ERROR'));
+                      error: (String? error) => 
+                      // Notifiers.getToastMessage(
+                      //     context, error.toString(), 'ERROR'),
+                       Toast.showToast(context,
+                          message: t.translate(error.toString()),
+                          type: ToastType.error),
+                          );
                 },
                 child: Center(
                   child: Button(
