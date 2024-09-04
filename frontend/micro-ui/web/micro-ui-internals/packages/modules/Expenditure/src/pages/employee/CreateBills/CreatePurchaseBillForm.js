@@ -81,11 +81,27 @@ const CreatePurchaseBillForm = ({
                 setValue("billDetails_billAmt", parseInt(formData.invoiceDetails_materialCost)+parseInt(gstAmount));
             }
 
-            if(difference?.invoiceDetails_organisationType)
-            {
+            if (formData?.invoiceDetails_organisationType?.code === "CBO") {
+                setValue("invoiceDetails_vendor", contract.additionalDetails?.cboName);
+                setValue("invoiceDetails_vendorId", contract.additionalDetails?.cboOrgNumber);
+                // Disabling and converting the field to text input
+                createPurchaseBillConfig.form[2].body[1].disable = true; 
+                createPurchaseBillConfig.form[2].body[1].type = "text";
+                createPurchaseBillConfig.form[2].body[1].populators.customClass = "disabled-text-field";
+            } else {
                 setValue("invoiceDetails_vendor", '');
-                setValue("invoiceDetails_vendorId", undefined);  
+                setValue("invoiceDetails_vendorId", '');
+                // Enabling and converting the field to dropdown
+                createPurchaseBillConfig.form[2].body[1].disable = false; 
+                createPurchaseBillConfig.form[2].body[1].type = "dropdown";
+                createPurchaseBillConfig.form[2].body[1].populators.customClass = undefined;
             }
+
+            // if(difference?.invoiceDetails_organisationType)
+            // {
+            //     setValue("invoiceDetails_vendor", '');
+            //     setValue("invoiceDetails_vendorId", undefined);  
+            // }
 
             if(formData.billDetails_billAmt) {
                 let gstAmount = formData.invoiceDetails_gst ? formData.invoiceDetails_gst : 0;
