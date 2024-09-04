@@ -302,7 +302,7 @@ def generateBasicInformations(connection, epoch_to):
     employeeData = pd.DataFrame(result)
 
     #Fetch the Number of CBO users(No. of CBO's)
-    cursor.execute("""select eg_org.tenant_id as ulb, count(eg_org.id) as cbo from eg_org inner join eg_org_function on eg_org.id=eg_org_function.org_id where eg_org_function.type='CBO.MSG' and eg_org.last_modified_time <= %s group by eg_org.tenant_id order by eg_org.tenant_id;""", (epoch_to,))
+    cursor.execute("""select eg_org.tenant_id as ulb, count(eg_org.id) as cbo from eg_org inner join eg_org_function on eg_org.id=eg_org_function.org_id where eg_org_function.type like '%%CBO%%' and eg_org.last_modified_time <= %s group by eg_org.tenant_id order by eg_org.tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     cboData = pd.DataFrame(result)
 
@@ -323,7 +323,19 @@ def generateBasicInformations(connection, epoch_to):
     projectsData = pd.DataFrame(result)
 
     #No. of estimate created
-    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as estimate from eg_wms_estimate where created_time <= %s group by tenant_id;""", (epoch_to,))
+    cursor.execute("""
+                    SELECT est.tenant_id as ulb, COUNT(DISTINCT est.estimate_number) 
+                    FROM (
+                        SELECT 
+                            tenant_id,
+                            estimate_number, 
+                            wf_status, 
+                            ROW_NUMBER() OVER (PARTITION BY estimate_number ORDER BY created_time DESC) as rn 
+                        FROM eg_wms_estimate
+                        WHERE created_time <= %s 
+                    ) AS est
+                    WHERE est.rn = 1 AND est.wf_status != 'DRAFTED' and est.wf_status != 'REJECTED' and est.estimate_number not like '%%DE_LINK%%' group by est.tenant_id;
+    """, (epoch_to,))
     result = cursor.fetchall()
     estimateData = pd.DataFrame(result)
 
@@ -331,9 +343,22 @@ def generateBasicInformations(connection, epoch_to):
     estimateValueData = getEstimatedValue(connection, epoch_to)
 
     #No Of Estimates Approved
-    cursor.execute("""select tenant_id as ulb, count(distinct estimate_number) as numberofestimateapproved from eg_wms_estimate where wf_status='APPROVED' and  last_modified_time<= %s group by tenant_id;""", (epoch_to,))
+    cursor.execute("""
+                    SELECT est.tenant_id as ulb, COUNT(DISTINCT est.estimate_number) 
+                    FROM (
+                        SELECT 
+                            tenant_id,
+                            estimate_number, 
+                            wf_status, 
+                            ROW_NUMBER() OVER (PARTITION BY estimate_number ORDER BY created_time DESC) as rn 
+                        FROM eg_wms_estimate
+                        WHERE created_time <= %s 
+                    ) AS est
+                    WHERE est.rn = 1 AND est.wf_status = 'APPROVED' and est.estimate_number not like '%%DE_LINK%%' group by est.tenant_id;
+    """, (epoch_to,))
     result = cursor.fetchall()
     estimateApprovedData = pd.DataFrame(result)
+    print(estimateApprovedData)
 
     #Total value of estimate approved(Rs)
     approvedEstimateValueData = getApprovedEstimateValue(connection, epoch_to)
@@ -447,8 +472,6 @@ def generateBasicInformations(connection, epoch_to):
     data=pd.merge(data,numberOfWsInNonApprovedMrData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,valueOfWoApprovedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,numberOfWoApprovedData,left_on='ulb',right_on='ulb',how='left')
-
-    print(data)
 
     return data
 
