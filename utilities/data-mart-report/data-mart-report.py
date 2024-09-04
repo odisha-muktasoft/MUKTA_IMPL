@@ -364,7 +364,7 @@ def generateBasicInformations(connection, epoch_to):
     approvedEstimateValueData = getApprovedEstimateValue(connection, epoch_to)
 
     #No. of work order created
-    cursor.execute("""select tenant_id as ulb, count(distinct contract_number) as numberofwocreated from eg_wms_contract where last_modified_time<= %s group by tenant_id;""", (epoch_to,))
+    cursor.execute("""select tenant_id as ulb, count(distinct contract_number) as numberofwocreated from eg_wms_contract where last_modified_time<= %s and (wf_status = 'APPROVED' or wf_status = 'ACCEPTED') and contract_number not like '%DE%' group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfWoCreatedData = pd.DataFrame(result)
 
