@@ -990,7 +990,7 @@ if __name__ == '__main__':
         current_date = dt.datetime.now().strftime('%d%m%Y')
 
         # directory = '/home/admin1/Music'
-        directory = '/mukta-report/muktareport_' + current_date
+        directory = '/mukta-report/muktareport/muktareport_' + current_date
         # directory = '/demo-report/demoReport'
         if not os.path.exists(directory):
             os.makedirs(directory)

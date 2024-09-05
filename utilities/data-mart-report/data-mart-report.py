@@ -1300,7 +1300,8 @@ if __name__ == '__main__':
         # Get current date in ddmmyyyy format
         current_date = dt.datetime.now().strftime('%d%m%Y')
 
-        directory = '/data-mart-demo/datamart_' + current_date
+        # directory = '/data-mart-demo/datamart_' + current_date
+        directory = '/mukta-report/muktareport/datamart-report/datamart_' + current_date
         if not os.path.exists(directory):
             os.makedirs(directory)
         
