@@ -473,6 +473,8 @@ def generateBasicInformations(connection, epoch_to):
     data=pd.merge(data,valueOfWoApprovedData,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,numberOfWoApprovedData,left_on='ulb',right_on='ulb',how='left')
 
+    data['ulb'] = data['ulb'].str.replace('od.','')
+    print(data)
     return data
 
 def getEstimatedValue(connection, epoch):
@@ -595,7 +597,7 @@ def generateTotalAmountPaidAndCountOfBills(connection, epoch):
     countWageBillPartialPaidDataFrame = pd.DataFrame(result)
 
     #Count of Wage Bills Created
-    cursor.execute("""select count(*) as num,tenantid as ulb from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
+    cursor.execute("""select tenantid as ulb, count(*) as num from eg_expense_bill where businessservice='EXPENSE.WAGES' and lastmodifiedtime<=%s Group by tenantid;""", (epoch,))
     result = cursor.fetchall()
     countWageBillCreatedDataFrame = pd.DataFrame(result)
 
@@ -674,7 +676,7 @@ def generateTotalAmountPaidAndCountOfBills(connection, epoch):
     #Prepare column
     valueWageBillDataFrame.columns = ['ulb', 'Value of Wage Bill Paid']
     countWageBillPaidDataFrame.columns = ['Count of Wage Bills Paid', 'ulb']
-    countWageBillCreatedDataFrame.columns = ['Count of Wage Bills Created','ulb']
+    countWageBillCreatedDataFrame.columns = ['ulb', 'Count of Wage Bills Created']
     valueWageBillCreatedDataFrame.columns = ['Value of Wage Bills Created', 'ulb']
     valueWageBillPartialDataFrame.columns=['Value of Wage Bill Paid Partial','ulb']
     countWageBillPartialPaidDataFrame.columns= ['Count of Wage Bills Paid Partial','ulb']
@@ -717,7 +719,7 @@ def generateTotalAmountPaidAndCountOfBills(connection, epoch):
     data=pd.merge(data,valueSupervisionBillPartialDataFrame,left_on='ulb',right_on='ulb',how='left')
     data=pd.merge(data,countSupervisionBillPartialPaidDataFrame,left_on='ulb',right_on='ulb',how='left')
 
-    
+    data['ulb'] = data['ulb'].str.replace('od.','')
     print(data)
     return data
 
@@ -994,6 +996,7 @@ def generateCountBasedOnPIStatusCummulative(connection, epoch_to):
     data = pd.merge(data, partial_dept, on='ULB', how='outer')
     data = pd.merge(data, failed_dept, on='ULB', how='outer')
 
+    data['ULB'] = data['ULB'].str.replace('od.','')
     print(data)
     return data
 
@@ -1144,6 +1147,7 @@ def generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to):
     data = pd.merge(data, partial_dept, on='ULB', how='outer')
     data = pd.merge(data, failed_dept, on='ULB', how='outer')
 
+    data['ULB'] = data['ULB'].str.replace('od.','')
     print(data)
     return data
 
@@ -1283,6 +1287,8 @@ def generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch
     data = pd.merge(data, number_of_supervision_bill_partially_paid, on='ULB', how='outer')
     data = pd.merge(data, value_of_supervision_bill_partially_paid, on='ULB', how='outer')
 
+    
+    data['ULB'] = data['ULB'].str.replace('od.','')
     print(data)
     return data
 
@@ -1311,6 +1317,8 @@ if __name__ == '__main__':
 
         # Get the epoch time exactly 7 days before the epoch
         epoch_from = epoch_to - 7 * 24 * 3600 * 1000   # Subtract 7 days in milliseconds
+
+        epoch_to = epoch_to + 3 * 3600 * 1000
 
         print(epoch_from, epoch_to)
 
