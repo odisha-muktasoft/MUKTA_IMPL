@@ -986,14 +986,15 @@ if __name__ == '__main__':
     try:
         logging.info('Report Started Generating')
 
+        # Get current date in ddmmyyyy format
+        current_date = dt.datetime.now().strftime('%d%m%Y')
+
         # directory = '/home/admin1/Music'
-        directory = '/mukta-report/muktareport'
+        directory = '/mukta-report/muktareport_' + current_date
         # directory = '/demo-report/demoReport'
         if not os.path.exists(directory):
             os.makedirs(directory)
         
-        # Get current date in ddmmyyyy format
-        current_date = dt.datetime.now().strftime('%d%m%Y')
         
         # Generate filenames with the current date
         workOrder_filename = f'workOrder_{current_date}.csv'

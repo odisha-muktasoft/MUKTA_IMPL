@@ -364,7 +364,7 @@ def generateBasicInformations(connection, epoch_to):
     approvedEstimateValueData = getApprovedEstimateValue(connection, epoch_to)
 
     #No. of work order created
-    cursor.execute("""select tenant_id as ulb, count(distinct contract_number) as numberofwocreated from eg_wms_contract where last_modified_time<= %s and (wf_status = 'APPROVED' or wf_status = 'ACCEPTED') and contract_number not like '%DE%' group by tenant_id;""", (epoch_to,))
+    cursor.execute("""select tenant_id as ulb, count(distinct contract_number) as numberofwocreated from eg_wms_contract where last_modified_time<= %s and (wf_status = 'APPROVED' or wf_status = 'ACCEPTED') and contract_number not like '%%DE%%' group by tenant_id;""", (epoch_to,))
     result = cursor.fetchall()
     numberOfWoCreatedData = pd.DataFrame(result)
 
@@ -1297,7 +1297,10 @@ if __name__ == '__main__':
     try:
         logging.info('Report Started Generating')
 
-        directory = '/data-mart-demo/data-mart-reports'
+        # Get current date in ddmmyyyy format
+        current_date = dt.datetime.now().strftime('%d%m%Y')
+
+        directory = '/data-mart-demo/datamart_' + current_date
         if not os.path.exists(directory):
             os.makedirs(directory)
         
@@ -1330,35 +1333,35 @@ if __name__ == '__main__':
         mukta_datamart_basic_data_file_path = os.path.join(directory, mukta_datamart_filename)
         writeDataToCSV(mukta_datamart_basic_data, mukta_datamart_basic_data_file_path)
 
-        # # Generate Mukta Datamart Project Type Report
-        # mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch_to)
-        # project_type_data_file_path = os.path.join(directory, project_type_filename)
-        # writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
+        # Generate Mukta Datamart Project Type Report
+        mukta_datamart_project_type_data = generateTotalCountByProjectType(connection, epoch_to)
+        project_type_data_file_path = os.path.join(directory, project_type_filename)
+        writeDataToCSV(mukta_datamart_project_type_data, project_type_data_file_path)
 
-        # # Generate Total amount paid and Count of bills
-        # amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch_to)
-        # amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
-        # writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
+        # Generate Total amount paid and Count of bills
+        amount_paid_bill_count_data = generateTotalAmountPaidAndCountOfBills(connection, epoch_to)
+        amount_paid_bill_count_data_file_path = os.path.join(directory, amount_paid_bill_count_data_filename)
+        writeDataToCSV(amount_paid_bill_count_data, amount_paid_bill_count_data_file_path)
 
-        # # Generate PI level count report
-        # pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
-        # pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
-        # writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
+        # Generate PI level count report
+        pi_level_count_data = generateTotalCountOnPILevel(connection, epoch_from, epoch_to)
+        pi_level_count_data_file_path = os.path.join(directory, pi_level_count_data_filename)
+        writeDataToCSV(pi_level_count_data, pi_level_count_data_file_path)
 
-        # # Generate Count Based On PI Status
-        # pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
-        # pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
-        # writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
+        # Generate Count Based On PI Status
+        pi_status_count_data_cumulative = generateCountBasedOnPIStatusCummulative(connection, epoch_to)
+        pi_status_count_data_cumulative_file_path = os.path.join(directory, pi_status_count_data_cumulative_filename)
+        writeDataToCSV(pi_status_count_data_cumulative, pi_status_count_data_cumulative_file_path)
 
-        # # Generate Count Based On PI Status Weekly
-        # pi_status_count_data_weekly = generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to)
-        # pi_status_count_data_weekly_file_path = os.path.join(directory, pi_status_count_data_weekly_filename)
-        # writeDataToCSV(pi_status_count_data_weekly, pi_status_count_data_weekly_file_path)
+        # Generate Count Based On PI Status Weekly
+        pi_status_count_data_weekly = generateCountBasedOnPIStatusWeekly(connection, epoch_from, epoch_to)
+        pi_status_count_data_weekly_file_path = os.path.join(directory, pi_status_count_data_weekly_filename)
+        writeDataToCSV(pi_status_count_data_weekly, pi_status_count_data_weekly_file_path)
 
-        # # Weekly Basis Data Based on LastModifiedTime
-        # weekly_basis_data = generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch_to)
-        # weekly_basis_data_file_path = os.path.join(directory, weekly_basis_data_filename)
-        # writeDataToCSV(weekly_basis_data, weekly_basis_data_file_path)
+        # Weekly Basis Data Based on LastModifiedTime
+        weekly_basis_data = generateWeeklyBasisDataBasedOnLastModifiedTime(connection, epoch_from, epoch_to)
+        weekly_basis_data_file_path = os.path.join(directory, weekly_basis_data_filename)
+        writeDataToCSV(weekly_basis_data, weekly_basis_data_file_path)
 
         logging.info('Report Generated Successfully')
         print(f"Reports saved in directory: {directory}")
