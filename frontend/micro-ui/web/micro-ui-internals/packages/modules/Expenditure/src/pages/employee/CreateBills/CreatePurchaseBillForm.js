@@ -84,18 +84,37 @@ const CreatePurchaseBillForm = ({
             if (formData?.invoiceDetails_organisationType?.code === "CBO") {
                 setValue("invoiceDetails_vendor", contract.additionalDetails?.cboName);
                 setValue("invoiceDetails_vendorId", contract.additionalDetails?.cboOrgNumber);
-                // Disabling and converting the field to text input
-                createPurchaseBillConfig.form[2].body[1].disable = true; 
-                createPurchaseBillConfig.form[2].body[1].type = "text";
-                createPurchaseBillConfig.form[2].body[1].populators.customClass = "disabled-text-field";
+            
+                const organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                
+                if (organizationDetailsSection) {
+                    const vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    
+                    if (vendorField) {
+                        // Disabling and converting the field to text input
+                        vendorField.disable = true;
+                        vendorField.type = "text";
+                        vendorField.populators.customClass = "disabled-text-field";
+                    }
+                }
             } else {
                 setValue("invoiceDetails_vendor", '');
                 setValue("invoiceDetails_vendorId", '');
-                // Enabling and converting the field to dropdown
-                createPurchaseBillConfig.form[2].body[1].disable = false; 
-                createPurchaseBillConfig.form[2].body[1].type = "dropdown";
-                createPurchaseBillConfig.form[2].body[1].populators.customClass = undefined;
+            
+                const organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                
+                if (organizationDetailsSection) {
+                    const vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    
+                    if (vendorField) {
+                        // Enabling and converting back to dropdown
+                        vendorField.disable = false;
+                        vendorField.type = "dropdown";
+                        vendorField.populators.customClass = undefined;
+                    }
+                }
             }
+            
 
             // if(difference?.invoiceDetails_organisationType)
             // {
