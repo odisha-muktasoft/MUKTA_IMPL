@@ -66,7 +66,7 @@ const MeasureTable = (props) => {
     localePrefix: "ES_COMMON_UOM",
   };
   if(mode?.includes("CREATE")){
-    fields = watch?.(tableKey);
+    fields = watch?.(`${tableKey}table`);
     append = (val)=>{
       setFormValue([...fields,val]);
     }

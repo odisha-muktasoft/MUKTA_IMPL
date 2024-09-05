@@ -275,15 +275,31 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
   const nonSorCategoryArray = [];
   sorCategoryArray.push(transformEstimateData("SOR"));
   nonSorCategoryArray.push(transformEstimateData());
-  const sorAndNonSorData = {
+
+  let sorAndNonSorData = {
     SOR: sorCategoryArray,
     NONSOR: nonSorCategoryArray,
+    // SORtable: sorCategoryArray,
+    // NONSORtable: nonSorCategoryArray,
+    ...(JSON.parse(sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE"))?.value) || {},
     projectType: {},
   };
+  if(window.location.href.includes("create-detailed-estimate")) sorAndNonSorData = { ...sorAndNonSorData, SORtable: sorCategoryArray, NONSORtable: nonSorCategoryArray }
   const EstimateSession = Digit.Hooks.useSessionStorage("NEW_ESTIMATE_CREATE", sorAndNonSorData);
   const [sessionFormData, setSessionFormData, clearSessionFormData] = EstimateSession;
 
-  const initialDefaultValues = RatesData ? editEstimateUtil(currentEstimate, uom, overheads, RatesData, allEstimates) : {};
+  useEffect(() => {
+    const savedFormData = sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE");
+    if (savedFormData) {
+      setSessionFormData(JSON.parse(savedFormData));
+    }
+  }, []);
+  
+  useEffect(() => {
+    sessionStorage.setItem("Digit.NEW_ESTIMATE_CREATE", JSON.stringify(sessionFormData));
+  }, [sessionFormData]);
+
+  const initialDefaultValues = RatesData ? editEstimateUtil(currentEstimate, uom, overheads, RatesData, allEstimates, sessionFormData) : {};
 
   // useEffect(() => {
 
