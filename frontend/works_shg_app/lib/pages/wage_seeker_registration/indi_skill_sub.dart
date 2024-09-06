@@ -1,16 +1,14 @@
-import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/widgets/atoms/multiselect_checkbox.dart';
 
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../models/wage_seeker/skill_details_model.dart';
-import '../../utils/notifiers.dart';
-import '../../widgets/atoms/multiselect_checkbox.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -51,6 +49,8 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                   .where((e) => e.type != null)
                   .map((e) => '${e.level}')
                   .toList();
+      print("inside initstate");
+      print(selectedOptions);
     }
 
     super.initState();
@@ -60,6 +60,8 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
     setState(() {
       selectedOptions = options;
     });
+
+    print(selectedOptions);
   }
 
   @override
@@ -89,25 +91,63 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        MultiSelectSearchCheckBox(
-                          label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                          onChange: _onSelectedOptionsChanged,
-                          options: widget.skills,
-                          hintText: t.translate(i18.attendanceMgmt.skill),
-                          selectedOptions: selectedOptions,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                  // SingleChildScrollView(
+                  //   child: Column(
+                  //     children: [
+                  //       MultiSelectSearchCheckBox(
+                  //         label: t.translate(i18.attendanceMgmt.skill) + ' *',
+                  //         onChange: _onSelectedOptionsChanged,
+                  //         options: widget.skills,
+                  //         hintText: t.translate(i18.attendanceMgmt.skill),
+                  //         selectedOptions: selectedOptions,
+                  //       ),
+                  //       const SizedBox(
+                  //         height: 10,
+                  //       ),
 
-                        // MultiSelectDropDown(options: widget.skills.map((e) => DropdownItem(name: t.translate("COMMON_MASTERS_SKILLS_${e.toString()}"), code: e.toString())).toList(), onOptionSelected: (List<DropdownItem> selectedOptions) {
+                  //       // MultiSelectDropDown(
 
-                        //  },),
-                      ],
-                    ),
+                  //       //   showSelectAll: true,
+
+                  //       //   isSearchable: true,
+                  //       //   options: widget.skills
+                  //       //       .map((e) => DropdownItem(
+                  //       //           name: t.translate(
+                  //       //               "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                  //       //           code: e.toString()))
+                  //       //       .toList(),
+                  //       //   onOptionSelected:
+                  //       //       (List<DropdownItem> selectedOptionss) {
+                  //       //         _onSelectedOptionsChanged(selectedOptionss.map((e) => e.code).toList());
+                  //       //       },
+                  //       //       // selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
+                  //       //       //     name: t.translate(
+                  //       //       //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                  //       //       //     code: e.toString()))
+                  //       //       // .toList():[],
+                  //       // ),
+                  //     ],
+                  //   ),
+                  // ),
+
+                  MultiSelectDropDown(
+                    showSelectAll: true,
+                    isSearchable: true,
+                    options: widget.skills
+                        .map((e) => DropdownItem(
+                            name: t.translate(
+                                "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                            code: e.toString()))
+                        .toList(),
+                    onOptionSelected: (List<DropdownItem> selectedOptionss) {
+                      _onSelectedOptionsChanged(
+                          selectedOptionss.map((e) => e.code).toList());
+                    },
+                    // selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
+                    //     name: t.translate(
+                    //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                    //     code: e.toString()))
+                    // .toList():[],
                   ),
                 ],
               ),
@@ -153,7 +193,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                       },
                       label: t.translate(i18.common.next)),
                 ),
-              )
+              ),
             ],
           ),
         ),

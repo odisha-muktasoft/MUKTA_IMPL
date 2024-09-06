@@ -82,6 +82,8 @@ class _MBDetailPageState extends State<MBDetailPage>
   late TextEditingController consumedQty;
   late TextEditingController currentAmt;
 
+  int tabIndex = 0;
+
   // check points for creating new MB
 //  ACTIVE
   String workorderStatus = "";
@@ -648,9 +650,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     i18.measurementBook.measurementBookTitle),
                               ),
                             ),
-                            DigitCard(
+                           ui_component. DigitCard(
+                            margin: const EdgeInsets.all(8),
+                            cardType: CardType.primary,
                               padding: EdgeInsets.zero,
-                              child: ExpansionTile(
+                              children:[ ExpansionTile(
                                 tilePadding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 // childrenPadding: EdgeInsets.zero,
@@ -711,6 +715,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       ]),
                                 ],
                               ),
+                          ],
                             ),
 
                             // tab
@@ -725,62 +730,573 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 animation: _tabController.animation!,
                                 builder: (context, child) =>
                                     //Expanded(
-                                      //child: 
-                                      DigitTabBar(
-                                        tabBarThemeData: const DigitTabBarThemeData().copyWith(
+                                    //child:
+                                    DigitTabBar(
+                                  tabBarThemeData: const DigitTabBarThemeData()
+                                      .copyWith(
                                           tabWidth: 130,
-                                          padding: const EdgeInsets.all(0)
-                                        ),
-                                        tabs: [t.translate(
-                                            i18.measurementBook.mbSor), t.translate(
-                                            i18.measurementBook.mbNonSor), t.translate(i18
-                                             .measurementBook.mbWorksitePhotos)],
-                                        onTabSelected: (index){
-                                          _tabController.animateTo(index);
-                                        },
-                                        initialIndex: 0,
-                                      ),
-
-                                      // CustomTab(
-                                      //   text: t.translate(
-                                      //       i18.measurementBook.mbSor),
-                                      //   isSelected: _tabController.index == 0,
-                                      //   onTap: () {
-                                      //     _tabController.animateTo(0);
-                                      //   },
-                                      //   firstTab: true,
-                                      //   lastTap: false,
-                                      // ),
-                                    //),
-                                    // Expanded(
-                                    //   child: CustomTab(
-                                    //     text: t.translate(
-                                    //         i18.measurementBook.mbNonSor),
-                                    //     isSelected: _tabController.index == 1,
-                                    //     onTap: () {
-                                    //       _tabController.animateTo(1);
-                                    //     },
-                                    //     firstTab: false,
-                                    //     lastTap: false,
-                                    //   ),
-                                    // ),
-                                    // Expanded(
-                                    //   child: CustomTab(
-                                    //     text: t.translate(i18
-                                    //         .measurementBook.mbWorksitePhotos),
-                                    //     isSelected: _tabController.index == 2,
-                                    //     onTap: () {
-                                    //       _tabController.animateTo(2);
-                                    //     },
-                                    //     firstTab: false,
-                                    //     lastTap: true,
-                                    //   ),
-                                    // ),
-                                
+                                          padding: const EdgeInsets.all(0)),
+                                  tabs: [
+                                    t.translate(i18.measurementBook.mbSor),
+                                    t.translate(i18.measurementBook.mbNonSor),
+                                    t.translate(
+                                        i18.measurementBook.mbWorksitePhotos)
+                                  ],
+                                  onTabSelected: (index) {
+                                    //  setState(() {
+                                    //    tabIndex=index;
+                                    //  });
+                                    _tabController.animateTo(index);
+                                  },
+                                  initialIndex: tabIndex,
+                                ),
                               ),
                             ),
 
-                            ///////////////////////// 
+                            /////////////////////////
+                            ///
+
+                            // Visibility(
+                            //   visible: tabIndex==0,
+                            //   child:  value.sor!.isEmpty
+                            //             ? Padding(
+                            //                 padding: const EdgeInsets.only(
+                            //                   left: 8.0,
+                            //                   right: 8.0,
+                            //                   bottom: 8.0,
+                            //                   top: 0.0,
+                            //                 ),
+                            //                 child: ui_component.DigitCard(
+                            //                   cardType: CardType.primary,
+                            //                   children: [
+                            //                     Center(
+                            //                         child: EmptyImage(
+                            //                       align: Alignment.center,
+                            //                       label: t.translate(
+                            //                           i18.common.notFound),
+                            //                     ))
+                            //                   ],
+                            //                 ),
+                            //               )
+                            //             : ListView.builder(
+                            //                 shrinkWrap: true,
+                            //                 padding: EdgeInsets.zero,
+                            //                 physics:
+                            //                     const NeverScrollableScrollPhysics(),
+                            //                 itemBuilder: (BuildContext context,
+                            //                     int index) {
+                            //                   return SorCard(
+                            //                     // consumedQty: consumedQty,
+                            //                     // currentAmt: currentAmt,
+
+                            //                     index: index,
+                            //                     magic: value.sor![index]
+                            //                         .filteredMeasurementsMeasure,
+
+                            //                     preSorNonSor: value.preSor ==
+                            //                             null
+                            //                         ? null
+                            //                         : value.preSor?.firstWhereOrNull(
+                            //                                     (element) =>
+                            //                                         element
+                            //                                             .sorId ==
+                            //                                         value
+                            //                                             .sor![
+                            //                                                 index]
+                            //                                             .sorId) ==
+                            //                                 null
+                            //                             ? null
+                            //                             : value.preSor!
+                            //                                 .firstWhereOrNull(
+                            //                                     (element) =>
+                            //                                         element
+                            //                                             .sorId ==
+                            //                                         value
+                            //                                             .sor![
+                            //                                                 index]
+                            //                                             .sorId)!
+                            //                                 .filteredMeasurementsMeasure,
+                            //                     // value.preSor![index]
+                            //                     //     .filteredMeasurementsMeasure,
+                            //                     type: "sor",
+                            //                     sorNonSorId:
+                            //                         value.sor![index].sorId!,
+                            //                     cardLevel: t.translate(
+                            //                         i18.measurementBook.mbSor),
+                            //                   );
+                            //                 },
+                            //                 itemCount: value.sor!.length,
+                            //               ),
+                            //         ),
+                            //  Visibility(
+                            //   visible: tabIndex==1,
+                            //   child: value.nonSor!.isEmpty
+                            //             ? Padding(
+                            //                 padding: const EdgeInsets.only(
+                            //                   left: 8.0,
+                            //                   right: 8.0,
+                            //                   bottom: 8.0,
+                            //                   top: 0.0,
+                            //                 ),
+                            //                 child: ui_component.DigitCard(
+                            //                   cardType: CardType.primary,
+                            //                   children: [
+                            //                     Center(
+                            //                       child: EmptyImage(
+                            //                         align: Alignment.center,
+                            //                         label: t.translate(
+                            //                             i18.common.notFound),
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               )
+                            //             : ListView.builder(
+                            //                 physics:
+                            //                     const NeverScrollableScrollPhysics(),
+                            //                 itemBuilder: (BuildContext context,
+                            //                     int index) {
+                            //                   return SorCard(
+                            //                     // consumedQty: consumedQty,
+                            //                     // currentAmt: currentAmt,
+
+                            //                     index: index,
+                            //                     magic: value.nonSor![index]
+                            //                         .filteredMeasurementsMeasure,
+                            //                     preSorNonSor: value.preNonSor ==
+                            //                             null
+                            //                         ? null
+                            //                         : value.preNonSor?.firstWhereOrNull(
+                            //                                     (element) =>
+                            //                                         element
+                            //                                             .sorId ==
+                            //                                         value
+                            //                                             .nonSor![
+                            //                                                 index]
+                            //                                             .sorId) !=
+                            //                                 null
+                            //                             ? value.preNonSor!
+                            //                                 .firstWhereOrNull(
+                            //                                     (element) =>
+                            //                                         element
+                            //                                             .sorId ==
+                            //                                         value
+                            //                                             .nonSor![
+                            //                                                 index]
+                            //                                             .sorId)!
+                            //                                 .filteredMeasurementsMeasure
+                            //                             : null,
+                            //                     type: "NonSor",
+                            //                     sorNonSorId:
+                            //                         value.nonSor![index].sorId!,
+                            //                     cardLevel: t.translate(i18
+                            //                         .measurementBook.mbNonSor),
+                            //                   );
+                            //                 },
+                            //                 itemCount: value.nonSor!.length,
+                            //               ),),
+                            //   Visibility(
+                            //     visible: tabIndex==2,
+                            //     child: widget.type == MBScreen.create
+                            //             ? Padding(
+                            //                 padding: const EdgeInsets.only(
+                            //                     left: 8.0,
+                            //                     right: 8.0,
+                            //                     bottom: 8.0,
+                            //                     top: 0.0),
+                            //                 child: ui_component.DigitCard(
+                            //                     cardType: CardType.primary,
+                            //                     children: [
+                            //                       Center(
+                            //                         child: Column(
+                            //                           children: [
+                            //                             Padding(
+                            //                               padding:
+                            //                                   const EdgeInsets
+                            //                                       .symmetric(
+                            //                                       horizontal:
+                            //                                           8.0),
+                            //                               // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                            //                               //    print(filenames);
+                            //                               //  },
+                            //                               //     allowMultiples: true,),
+                            //                               child: FilePickerDemo(
+                            //                                 fromServerFile:
+                            //                                     value.data.first
+                            //                                         .documents,
+                            //                                 callBack: (List<
+                            //                                             FileStoreModel>?
+                            //                                         g,
+                            //                                     List<WorkflowDocument>?
+                            //                                         l) {
+                            //                                   context
+                            //                                       .read<
+                            //                                           MeasurementDetailBloc>()
+                            //                                       .add(
+                            //                                         MeasurementUploadDocumentBlocEvent(
+                            //                                           tenantId:
+                            //                                               '',
+                            //                                           workflowDocument:
+                            //                                               l!,
+                            //                                         ),
+                            //                                       );
+                            //                                 },
+                            //                                 extensions: const [
+                            //                                   'jpg',
+                            //                                   'png',
+                            //                                   'jpeg',
+                            //                                 ],
+                            //                                 moduleName:
+                            //                                     'img_measurement_book',
+                            //                                 headerType:
+                            //                                     MediaType
+                            //                                         .mbDetail,
+                            //                               ),
+                            //                             ),
+                            //                             Container(
+                            //                               padding:
+                            //                                   const EdgeInsets
+                            //                                       .all(4),
+                            //                               //  color: DigitColors().curiousBlue,
+                            //                               child: Text(
+                            //                                   t.translate(i18
+                            //                                       .measurementBook
+                            //                                       .mbPhotoInfo)),
+                            //                             ),
+                            //                           ],
+                            //                         ),
+                            //                       ),
+                            //                     ]),
+                            //               )
+                            //             : value.data.first.documents != null &&
+                            //                     value.data.first.documents!
+                            //                         .isEmpty
+                            //                 ? !value.viewStatus
+                            //                     ? Padding(
+                            //                         padding:
+                            //                             const EdgeInsets.only(
+                            //                                 left: 8.0,
+                            //                                 right: 8.0,
+                            //                                 bottom: 8.0,
+                            //                                 top: 0.0),
+                            //                         child:
+                            //                             ui_component.DigitCard(
+                            //                           cardType:
+                            //                               CardType.primary,
+                            //                           children: [
+                            //                             Center(
+                            //                               child: Column(
+                            //                                 crossAxisAlignment:
+                            //                                     CrossAxisAlignment
+                            //                                         .start,
+                            //                                 mainAxisAlignment:
+                            //                                     MainAxisAlignment
+                            //                                         .center,
+                            //                                 children: [
+                            //                                   Padding(
+                            //                                     padding: const EdgeInsets
+                            //                                         .symmetric(
+                            //                                         horizontal:
+                            //                                             8.0),
+                            //                                     child:
+                            //                                         FilePickerDemo(
+                            //                                       fromServerFile:
+                            //                                           value
+                            //                                               .data
+                            //                                               .first
+                            //                                               .documents,
+                            //                                       callBack: (List<
+                            //                                                   FileStoreModel>?
+                            //                                               g,
+                            //                                           List<WorkflowDocument>?
+                            //                                               l) {
+                            //                                         context
+                            //                                             .read<
+                            //                                                 MeasurementDetailBloc>()
+                            //                                             .add(
+                            //                                               MeasurementUploadDocumentBlocEvent(
+                            //                                                 tenantId:
+                            //                                                     '',
+                            //                                                 workflowDocument:
+                            //                                                     l!,
+                            //                                               ),
+                            //                                             );
+                            //                                       },
+                            //                                       extensions: const [
+                            //                                         'jpg',
+                            //                                         'png',
+                            //                                         'jpeg',
+                            //                                       ],
+                            //                                       moduleName:
+                            //                                           'img_measurement_book',
+                            //                                       headerType:
+                            //                                           MediaType
+                            //                                               .mbDetail,
+                            //                                     ),
+
+                            //                                     // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                            //                                     //    print(filenames);
+                            //                                     //  },
+                            //                                     // allowMultiples: true,),
+                            //                                   ),
+                            //                                   // TODO:[text change]
+                            //                                   Container(
+                            //                                     padding:
+                            //                                         const EdgeInsets
+                            //                                             .all(4),
+                            //                                     child: Text(t
+                            //                                         .translate(i18
+                            //                                             .measurementBook
+                            //                                             .mbPhotoInfo)),
+                            //                                   ),
+                            //                                 ],
+                            //                               ),
+                            //                             ),
+                            //                           ],
+                            //                         ),
+                            //                       )
+                            //                     : Padding(
+                            //                         padding:
+                            //                             const EdgeInsets.only(
+                            //                                 left: 8.0,
+                            //                                 right: 8.0,
+                            //                                 bottom: 8.0,
+                            //                                 top: 0.0),
+                            //                         child:
+                            //                             ui_component.DigitCard(
+                            //                                 cardType: CardType
+                            //                                     .primary,
+                            //                                 children: [
+                            //                               Center(
+                            //                                 child: EmptyImage(
+                            //                                   align: Alignment
+                            //                                       .center,
+                            //                                   label: t.translate(i18
+                            //                                       .measurementBook
+                            //                                       .noDocumentFound),
+                            //                                 ),
+                            //                               )
+                            //                             ]),
+                            //                       )
+                            //                 : !value.viewStatus
+                            //                     ? Padding(
+                            //                         padding:
+                            //                             const EdgeInsets.only(
+                            //                                 left: 8.0,
+                            //                                 right: 8.0,
+                            //                                 bottom: 8.0,
+                            //                                 top: 0.0),
+                            //                         child:
+                            //                             ui_component.DigitCard(
+                            //                                 cardType: CardType
+                            //                                     .primary,
+                            //                                 children: [
+                            //                               Center(
+                            //                                 child: Column(
+                            //                                   crossAxisAlignment:
+                            //                                       CrossAxisAlignment
+                            //                                           .start,
+                            //                                   mainAxisAlignment:
+                            //                                       MainAxisAlignment
+                            //                                           .center,
+                            //                                   children: [
+                            //                                     Padding(
+                            //                                       padding: const EdgeInsets
+                            //                                           .symmetric(
+                            //                                           horizontal:
+                            //                                               8.0),
+                            //                                       //             child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                            //                                       //               print(filenames);
+                            //                                       //              },
+                            //                                       // allowMultiples: true,),
+                            //                                       child:
+                            //                                           FilePickerDemo(
+                            //                                         fromServerFile: value
+                            //                                             .data
+                            //                                             .first
+                            //                                             .documents,
+                            //                                         callBack: (List<FileStoreModel>?
+                            //                                                 g,
+                            //                                             List<WorkflowDocument>?
+                            //                                                 l) {
+                            //                                           context
+                            //                                               .read<
+                            //                                                   MeasurementDetailBloc>()
+                            //                                               .add(
+                            //                                                 MeasurementUploadDocumentBlocEvent(
+                            //                                                   tenantId: '',
+                            //                                                   workflowDocument: l!,
+                            //                                                 ),
+                            //                                               );
+                            //                                         },
+                            //                                         extensions: const [
+                            //                                           'jpg',
+                            //                                           'png',
+                            //                                           'jpeg',
+                            //                                         ],
+                            //                                         moduleName:
+                            //                                             'img_measurement_book',
+                            //                                         headerType:
+                            //                                             MediaType
+                            //                                                 .mbDetail,
+                            //                                       ),
+                            //                                     ),
+                            //                                     Container(
+                            //                                       padding:
+                            //                                           const EdgeInsets
+                            //                                               .all(
+                            //                                               4),
+                            //                                       child: Text(t
+                            //                                           .translate(i18
+                            //                                               .measurementBook
+                            //                                               .mbPhotoInfo)),
+                            //                                     ),
+                            //                                   ],
+                            //                                 ),
+                            //                               ),
+                            //                             ]),
+                            //                       )
+                            //                     : Padding(
+                            //                         padding:
+                            //                             const EdgeInsets.only(
+                            //                                 left: 8.0,
+                            //                                 right: 8.0,
+                            //                                 bottom: 8.0,
+                            //                                 top: 0.0),
+                            //                         child:
+                            //                             ui_component.DigitCard(
+                            //                           cardType:
+                            //                               CardType.primary,
+                            //                           children: List.generate(
+                            //                               value
+                            //                                   .data
+                            //                                   .first
+                            //                                   .documents!
+                            //                                   .length, (index) {
+                            //                             if (index == 0) {
+                            //                               return Padding(
+                            //                                 padding:
+                            //                                     const EdgeInsets
+                            //                                         .only(
+                            //                                         bottom:
+                            //                                             8.0),
+                            //                                 child: Column(
+                            //                                   children: [
+                            //                                     Padding(
+                            //                                       padding: const EdgeInsets
+                            //                                           .only(
+                            //                                           bottom:
+                            //                                               16.0),
+                            //                                       child:
+                            //                                           InfoCard(
+                            //                                         title: t.translate(i18
+                            //                                             .common
+                            //                                             .info),
+                            //                                         type: InfoType
+                            //                                             .info,
+                            //                                         description:
+                            //                                             t.translate(i18
+                            //                                                 .measurementBook
+                            //                                                 .infoImageTip),
+                            //                                       ),
+                            //                                     ),
+                            //                                     InkWell(
+                            //                                       onTap: () =>
+                            //                                           CommonMethods()
+                            //                                               .onTapOfAttachment(
+                            //                                         mm![index],
+                            //                                         mm![index]
+                            //                                             .tenantId!,
+                            //                                         context,
+                            //                                         roleType:
+                            //                                             RoleType
+                            //                                                 .employee,
+                            //                                       ),
+                            //                                       child: Chip(
+                            //                                         labelPadding:
+                            //                                             const EdgeInsets
+                            //                                                 .all(
+                            //                                                 10),
+                            //                                         label:
+                            //                                             SizedBox(
+                            //                                           width: MediaQuery.sizeOf(
+                            //                                                   context)
+                            //                                               .width,
+                            //                                           height:
+                            //                                               25,
+                            //                                           child:
+                            //                                               Text(
+                            //                                             mm![index]
+                            //                                                 .name
+                            //                                                 .toString(),
+                            //                                             maxLines:
+                            //                                                 1,
+                            //                                             overflow:
+                            //                                                 TextOverflow.ellipsis,
+                            //                                             style: Theme.of(context)
+                            //                                                 .textTheme
+                            //                                                 .bodyMedium,
+                            //                                           ),
+                            //                                         ),
+                            //                                       ),
+                            //                                     ),
+                            //                                   ],
+                            //                                 ),
+                            //                               );
+                            //                             } else {
+                            //                               return Padding(
+                            //                                 padding:
+                            //                                     const EdgeInsets
+                            //                                         .only(
+                            //                                         bottom:
+                            //                                             8.0),
+                            //                                 child: InkWell(
+                            //                                   onTap: () =>
+                            //                                       CommonMethods()
+                            //                                           .onTapOfAttachment(
+                            //                                     mm![index],
+                            //                                     mm![index]
+                            //                                         .tenantId!,
+                            //                                     context,
+                            //                                     roleType: RoleType
+                            //                                         .employee,
+                            //                                   ),
+                            //                                   child: Chip(
+                            //                                     labelPadding:
+                            //                                         const EdgeInsets
+                            //                                             .all(
+                            //                                             10),
+                            //                                     // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                            //                                     label: SizedBox(
+                            //                                       width: MediaQuery
+                            //                                               .sizeOf(
+                            //                                                   context)
+                            //                                           .width,
+                            //                                       height: 25,
+                            //                                       child: Text(
+                            //                                         mm![index]
+                            //                                             .name
+                            //                                             .toString(),
+                            //                                         maxLines: 1,
+                            //                                         softWrap:
+                            //                                             true,
+                            //                                         overflow:
+                            //                                             TextOverflow
+                            //                                                 .ellipsis,
+                            //                                         style: Theme.of(
+                            //                                                 context)
+                            //                                             .textTheme
+                            //                                             .bodyMedium,
+                            //                                       ),
+                            //                                     ),
+                            //                                   ),
+                            //                                 ),
+                            //                               );
+                            //                             }
+                            //                           }).toList(),
+                            //                         ),
+                            //                       ),),
+
                             AnimatedBuilder(
                               animation: _tabController.animation!,
                               builder: (context, child) => SizedBox(
@@ -1341,12 +1857,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 ),
                               ),
                             ),
-                         
-                         
-                         
 
-
-                         // ////////////////
+                            // ////////////////
                             widget.type == MBScreen.update
                                 ?
                                 //workflow

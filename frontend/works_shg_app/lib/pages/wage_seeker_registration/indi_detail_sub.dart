@@ -498,7 +498,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                             relationShip:
                                 form1.value[relationshipKey].toString(),
                             socialCategory:
-                                form1.value[socialCategoryKey].toString(),
+                                form1.value[socialCategoryKey].toString()==""?"null":form1.value[socialCategoryKey].toString(),
                           ),
                         );
 

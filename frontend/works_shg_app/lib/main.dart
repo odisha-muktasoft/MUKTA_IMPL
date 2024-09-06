@@ -5,6 +5,7 @@ import 'dart:ui';
 
 // import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -340,8 +341,8 @@ class _MainApplicationState extends State<MainApplication> {
                   GlobalCupertinoLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
                 ],
-               
                 theme: DigitTheme.instance.mobileTheme,
+               // theme: DigitExtendedTheme.instance.getTheme(context),
                 scaffoldMessengerKey: scaffoldMessengerKey,
                 routeInformationParser: appRouter.defaultRouteParser(),
                 routerDelegate: AutoRouterDelegate.declarative(

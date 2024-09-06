@@ -1,6 +1,5 @@
 import 'package:digit_components/digit_components.dart' as ui_old;
 import 'package:digit_ui_components/digit_components.dart';
-import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
@@ -23,15 +22,9 @@ import '../../blocs/work_orders/decline_work_order.dart';
 import '../../blocs/work_orders/my_works_search_criteria.dart';
 import '../../blocs/work_orders/search_my_works.dart';
 import '../../models/works/contracts_model.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/constants.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/back.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/atoms/tabs_button.dart';
-import '../../widgets/drawer_wrapper.dart';
 
 @RoutePage()
 class WorkOrderPage extends StatefulWidget {
@@ -86,7 +79,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
               loaded: (ContractsModel? contractsModel) {
                 return workOrderList.isEmpty || workOrderList.length == 1
                     ? const SizedBox(
-                        height: 30,
+                        height: 50,
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: ui_old.PoweredByDigit(

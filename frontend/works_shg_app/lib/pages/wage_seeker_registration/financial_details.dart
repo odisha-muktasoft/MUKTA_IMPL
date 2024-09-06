@@ -195,7 +195,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
 
             ui_component.LabeledField(
               isRequired: true,
-              label: t.translate(i18.common.accountHolderName),
+              label: t.translate(i18.common.accountNo),
               child: ReactiveWrapperField(
                 validationMessages: {
                   'required': (_) => t.translate(

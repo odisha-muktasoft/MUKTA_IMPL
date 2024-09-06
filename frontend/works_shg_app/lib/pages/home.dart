@@ -1,6 +1,11 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
+import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
+    as ui_card;
+import 'package:digit_ui_components/widgets/scrollable_content.dart'
+    as ui_scroll;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -277,7 +282,7 @@ class _HomePage extends State<HomePage> {
       //     );
       //   },
       // ),
-drawer: const MySideBar(),
+      drawer: const MySideBar(),
       body: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
           return localState.maybeMap(
@@ -401,13 +406,11 @@ drawer: const MySideBar(),
     );
   }
 
-  
-
   Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,
       AppLocalizations t) {
     final List<Widget> cards = _getItems(context, homeConfigModel);
     if (cards.isNotEmpty) {
-      return ScrollableContent(
+      return ui_scroll.ScrollableContent(
         slivers: [
           SliverGrid(
             delegate: SliverChildBuilderDelegate((context, index) {
@@ -480,13 +483,13 @@ drawer: const MySideBar(),
     return widgetList;
   }
 
-  ScrollableContent cboBasedLayout(
+  ui_scroll.ScrollableContent cboBasedLayout(
     List<CBOHomeScreenConfigModel>? cboHomeScreenConfig,
     AppLocalizations t,
     BuildContext context,
     Languages selectedLan,
   ) {
-    return ScrollableContent(
+    return ui_scroll.ScrollableContent(
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
           child: PoweredByDigit(
@@ -494,45 +497,48 @@ drawer: const MySideBar(),
           ),
         ),
         children: [
-          DigitCard(
-            onPressed: null,
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: cboHomeScreenConfig?.map((e) {
-                        if (e.order == 1) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+          ui_card.DigitCard(
+              margin: const EdgeInsets.all(8),
+              cardType: CardType.primary,
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: cboHomeScreenConfig?.map((e) {
+                            if (e.order == 1) {
+                              return Column(
                                 children: [
-                                  Text(
-                                    t.translate(i18.home.mukta),
-                                    style: DigitTheme.instance.mobileTheme
-                                        .textTheme.headlineLarge,
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      TextChunk(
+                                        heading: t.translate(i18.home.mukta),
+                                        // style: DigitTheme.instance.mobileTheme
+                                        //      .textTheme.headlineLarge,
+                                      ),
+                                      SvgPicture.asset(Constants.muktaIcon)
+                                    ],
                                   ),
-                                  SvgPicture.asset(Constants.muktaIcon)
+                                  ButtonLink(
+                                      t.translate(e.label ?? ''),
+                                      getRoute(e.key.toString(), context,
+                                          selectedLan))
                                 ],
-                              ),
-                              ButtonLink(
+                              );
+                            } else {
+                              return ButtonLink(
                                   t.translate(e.label ?? ''),
                                   getRoute(
-                                      e.key.toString(), context, selectedLan))
-                            ],
-                          );
-                        } else {
-                          return ButtonLink(t.translate(e.label ?? ''),
-                              getRoute(e.key.toString(), context, selectedLan));
-                        }
-                      }).toList() ??
-                      []),
-            ),
-          ),
+                                      e.key.toString(), context, selectedLan));
+                            }
+                          }).toList() ??
+                          []),
+                ),
+              ]),
         ]);
   }
 
@@ -601,10 +607,12 @@ class HomeItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return DigitCard(
+    return ui_card. DigitCard(
+      margin: const EdgeInsets.all(8),
+      cardType: CardType.primary,
       onPressed: onPressed,
-      padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
-      child: Align(
+     // padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
+      children:[ Align(
         alignment: Alignment.topCenter,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -622,7 +630,7 @@ class HomeItemCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ),]
     );
   }
 }

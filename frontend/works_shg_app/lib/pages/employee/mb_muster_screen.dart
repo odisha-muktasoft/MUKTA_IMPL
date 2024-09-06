@@ -1,12 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:digit_components/theme/colors.dart';
-import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_components/widgets/widgets.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
-import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,9 +25,7 @@ import 'package:works_shg_app/widgets/circular_button.dart';
 import 'package:works_shg_app/widgets/mb/back_button.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
-import 'package:works_shg_app/widgets/side_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
-import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/atoms/digit_timeline.dart';
@@ -38,9 +35,7 @@ import '../../models/file_store/file_store_model.dart';
 import '../../utils/common_widgets.dart';
 import '../../utils/constants.dart';
 import '../../utils/models.dart';
-import '../../widgets/back.dart';
 import '../../widgets/atoms/table_dropdown.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -237,35 +232,35 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                         SliverList(
                           delegate: SliverChildListDelegate(
                             [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  IconBackButton(
-                                    iconTextColor: const DigitColors().black,
-                                    iconColor: const DigitColors().black,
-                                    icon: Icons.arrow_left,
-                                    action: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  // Back(
-                                  //   backLabel: AppLocalizations.of(context)
-                                  //       .translate(i18.common.back),
-                                  //   callback: () {
-                                  //     Navigator.of(context).pop();
-                                  //   },
-                                  // ),
-                                  CommonWidgets.downloadButton(
-                                      AppLocalizations.of(context)
-                                          .translate(i18.common.download), () {
-                                    context.read<MusterRollPDFBloc>().add(
-                                        PDFEventMusterRoll(
-                                            musterRollNumber:
-                                                widget.musterRollNumber,
-                                            tenantId: widget.tenantId));
-                                  })
-                                ],
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, top: 16),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    BackNavigationButton(
+                                      backButtonText:
+                                          AppLocalizations.of(context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                      handleBack: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    
+                                    CommonWidgets.downloadButton(
+                                        AppLocalizations.of(context)
+                                            .translate(i18.common.download),
+                                        () {
+                                      context.read<MusterRollPDFBloc>().add(
+                                          PDFEventMusterRoll(
+                                              musterRollNumber:
+                                                  widget.musterRollNumber,
+                                              tenantId: widget.tenantId));
+                                    })
+                                  ],
+                                ),
                               ),
                               WorkDetailsCard(
                                 projectDetails,
@@ -402,8 +397,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
                                                 horizontal: 8,
                                                 vertical: 8,
                                               ),
-                                              cardType: ui_component
-                                                  .CardType.primary,
+                                              cardType:
+                                                  ui_component.CardType.primary,
                                               children: [
                                                 LabelValueList(
                                                   heading: t.translate(i18

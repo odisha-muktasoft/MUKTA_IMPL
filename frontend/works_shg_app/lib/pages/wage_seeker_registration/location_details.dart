@@ -130,6 +130,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     formControlName: pinCodeKey,
                     builder: (field) {
                       return DigitTextFormInput(
+                        keyboardType: TextInputType.number,
                         controller: TextEditingController()
                           ..text = form.control(pinCodeKey).value,
                         onChange: (value) {
