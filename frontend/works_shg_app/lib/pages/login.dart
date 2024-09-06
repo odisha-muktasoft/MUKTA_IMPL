@@ -164,7 +164,7 @@ class _LoginPageState extends State<LoginPage>
             : AutovalidateMode.disabled,
         child: Center(
           child: DigitCard(
-            padding: const EdgeInsets.all(16),
+            //padding: const EdgeInsets.all(16),
             margin: const EdgeInsets.all(16),
             cardType: CardType.primary,
             children: [
@@ -173,6 +173,9 @@ class _LoginPageState extends State<LoginPage>
               Center(
                 child: TextChunk(
                   heading: t.translate(i18.login.loginLabel),
+                  headingStyle: Theme.of(context).digitTextTheme(context).headingL.copyWith(
+                    color: Theme.of(context).colorTheme.primary.primary2
+                  ),
                 ),
               ),
 
@@ -186,15 +189,15 @@ class _LoginPageState extends State<LoginPage>
                 indicatorPadding: EdgeInsets.zero,
                 tabs: [
                   Tab(
-                    child: Text(
-                      t.translate(i18.measurementBook.mbCbo),
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    child: TextChunk(
+                     heading: t.translate(i18.measurementBook.mbCbo),
+                      headingStyle: Theme.of(context).digitTextTheme(context).headingM,
                     ),
                   ),
                   Tab(
-                    child: Text(
-                      t.translate(i18.measurementBook.mbEmployee),
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    child: TextChunk(
+                     heading:  t.translate(i18.measurementBook.mbEmployee),
+                       headingStyle: Theme.of(context).digitTextTheme(context).headingM,
                     ),
                   ),
                 ],
@@ -252,43 +255,40 @@ class _LoginPageState extends State<LoginPage>
             },
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: InkWell(
-            onTap: canContinue
-                ? () {
-                    if (formKey.currentState!.validate()) {
-                      loginContext.read<OTPBloc>().add(
-                          OTPSendEvent(mobileNumber: userIdController.text));
-                    } else {
-                      setState(() {
-                        autoValidation = true;
-                      });
-                    }
+        child: InkWell(
+          onTap: canContinue
+              ? () {
+                  if (formKey.currentState!.validate()) {
+                    loginContext.read<OTPBloc>().add(
+                        OTPSendEvent(mobileNumber: userIdController.text));
+                  } else {
+                    setState(() {
+                      autoValidation = true;
+                    });
                   }
-                : null,
-            child: IgnorePointer(
-              child: Button(
-                mainAxisSize: MainAxisSize.max,
-                isDisabled: !canContinue,
-                size: ButtonSize.large,
-                type: ButtonType.primary,
-                onPressed: () {},
-                // onPressed: canContinue
-                //     ? () {
-                //         if (formKey.currentState!.validate()) {
-                //           loginContext
-                //               .read<OTPBloc>()
-                //               .add(OTPSendEvent(mobileNumber: userIdController.text));
-                //         } else {
-                //           setState(() {
-                //             autoValidation = true;
-                //           });
-                //         }
-                //       }
-                //     : null,
-                label: t.translate(i18.common.continueLabel),
-              ),
+                }
+              : null,
+          child: IgnorePointer(
+            child: Button(
+              mainAxisSize: MainAxisSize.max,
+              isDisabled: !canContinue,
+              size: ButtonSize.large,
+              type: ButtonType.primary,
+              onPressed: () {},
+              // onPressed: canContinue
+              //     ? () {
+              //         if (formKey.currentState!.validate()) {
+              //           loginContext
+              //               .read<OTPBloc>()
+              //               .add(OTPSendEvent(mobileNumber: userIdController.text));
+              //         } else {
+              //           setState(() {
+              //             autoValidation = true;
+              //           });
+              //         }
+              //       }
+              //     : null,
+              label: t.translate(i18.common.continueLabel),
             ),
           ),
         ),

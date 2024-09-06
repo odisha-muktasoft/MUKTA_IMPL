@@ -1,5 +1,3 @@
-import 'package:digit_components/digit_components.dart';
-import 'package:digit_components/widgets/molecules/digit_loader.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
@@ -18,7 +16,6 @@ import 'package:works_shg_app/models/muster_rolls/business_service_workflow.dart
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
-import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/mb/multi_image.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
@@ -28,11 +25,7 @@ import '../../blocs/muster_rolls/get_muster_workflow.dart';
 import '../../models/employee/mb/role_based_hrms.dart';
 import '../../models/file_store/file_store_model.dart';
 import '../../models/muster_rolls/muster_workflow_model.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
@@ -158,7 +151,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
         );
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         appBar: customAppBar(),
         drawer: const MySideBar(),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(

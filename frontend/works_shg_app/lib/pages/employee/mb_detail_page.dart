@@ -28,7 +28,6 @@ import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
-import 'package:works_shg_app/widgets/mb/custom_tab.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
@@ -42,10 +41,7 @@ import '../../models/muster_rolls/business_service_workflow.dart';
 import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/digit_timeline.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/multi_image.dart';
 import '../../widgets/mb/work_flow_button_list.dart';
@@ -262,6 +258,7 @@ class _MBDetailPageState extends State<MBDetailPage>
         child: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, state) {
             return Scaffold(
+              backgroundColor: Theme.of(context).colorTheme.generic.background,
               bottomNavigationBar:
                   BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
                 builder: (context, state) {
@@ -579,7 +576,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                   );
                 },
               ),
-              backgroundColor: const DigitColors().seaShellGray,
               appBar: customAppBar(),
               drawer: const MySideBar(),
               body: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
@@ -609,11 +605,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 12.0,
-                                  bottom: 8.0,
-                                  top: 8.0,
-                                  right: 8.0),
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    Theme.of(context).spacerTheme.spacer2,
+                                vertical: Theme.of(context).spacerTheme.spacer4,
+                              ),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -650,72 +646,75 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     i18.measurementBook.measurementBookTitle),
                               ),
                             ),
-                           ui_component. DigitCard(
-                            margin: const EdgeInsets.all(8),
-                            cardType: CardType.primary,
+                            ui_component.DigitCard(
+                              margin: const EdgeInsets.all(8),
+                              cardType: CardType.primary,
                               padding: EdgeInsets.zero,
-                              children:[ ExpansionTile(
-                                tilePadding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                // childrenPadding: EdgeInsets.zero,
-                                expandedCrossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                expandedAlignment: Alignment.topLeft,
-                                title: TextChunk(
-                                  subHeading: t.translate(
-                                      i18.measurementBook.primaryDetails),
-                                  subHeadingStyle: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                ),
-                                children: [
-                                  ui_component.DigitCard(
-                                      padding: const EdgeInsets.only(
-                                          top: 0.0,
-                                          left: 8.0,
-                                          right: 8.0,
-                                          bottom: 0.0),
-                                      cardType: CardType.primary,
-                                      children: [
-                                        LabelValueList(
-                                            maxLines: 3,
-                                            labelFlex: 5,
-                                            valueFlex: 5,
-                                            items: primaryItems(
-                                                    t, value.data, widget.type)
-                                                .entries
-                                                .map(
-                                              (e) {
-                                                return LabelValuePair(
-                                                    label: e.key,
-                                                    value: e.value);
-                                              },
-                                            ).toList()),
-                                        value.data.length > 1
-                                            ? Button(
-                                                suffixIcon: Icons
-                                                    .arrow_forward_outlined,
-                                                label: t.translate(i18
-                                                    .measurementBook
-                                                    .mbShowHistory),
-                                                onPressed: () {
-                                                  context.router.push(
-                                                    MBHistoryBookRoute(
-                                                      contractNumber:
-                                                          widget.contractNumber,
-                                                      mbNumber: widget.mbNumber,
-                                                      tenantId: widget.tenantId,
-                                                      type: widget.type,
-                                                    ),
-                                                  );
+                              children: [
+                                ExpansionTile(
+                                  tilePadding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  // childrenPadding: EdgeInsets.zero,
+                                  expandedCrossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  expandedAlignment: Alignment.topLeft,
+                                  title: TextChunk(
+                                    subHeading: t.translate(
+                                        i18.measurementBook.primaryDetails),
+                                    subHeadingStyle: Theme.of(context)
+                                        .digitTextTheme(context)
+                                        .headingM,
+                                  ),
+                                  children: [
+                                    ui_component.DigitCard(
+                                        padding: const EdgeInsets.only(
+                                            top: 0.0,
+                                            left: 8.0,
+                                            right: 8.0,
+                                            bottom: 0.0),
+                                        cardType: CardType.primary,
+                                        children: [
+                                          LabelValueList(
+                                              maxLines: 3,
+                                              labelFlex: 5,
+                                              valueFlex: 5,
+                                              items: primaryItems(t, value.data,
+                                                      widget.type)
+                                                  .entries
+                                                  .map(
+                                                (e) {
+                                                  return LabelValuePair(
+                                                      label: e.key,
+                                                      value: e.value);
                                                 },
-                                                type: ButtonType.link,
-                                                size: ButtonSize.large)
-                                            : const SizedBox.shrink(),
-                                      ]),
-                                ],
-                              ),
-                          ],
+                                              ).toList()),
+                                          value.data.length > 1
+                                              ? Button(
+                                                  suffixIcon: Icons
+                                                      .arrow_forward_outlined,
+                                                  label: t.translate(i18
+                                                      .measurementBook
+                                                      .mbShowHistory),
+                                                  onPressed: () {
+                                                    context.router.push(
+                                                      MBHistoryBookRoute(
+                                                        contractNumber: widget
+                                                            .contractNumber,
+                                                        mbNumber:
+                                                            widget.mbNumber,
+                                                        tenantId:
+                                                            widget.tenantId,
+                                                        type: widget.type,
+                                                      ),
+                                                    );
+                                                  },
+                                                  type: ButtonType.link,
+                                                  size: ButtonSize.large)
+                                              : const SizedBox.shrink(),
+                                        ]),
+                                  ],
+                                ),
+                              ],
                             ),
 
                             // tab
@@ -2525,7 +2524,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     title: Text(
                       t.translate(i18.measurementBook.totalSorAmount),
                       maxLines: 1,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: Text(
                       t.translate(i18.measurementBook.forCurrentEntry),
@@ -2533,7 +2532,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     ),
                     trailing: Text(
                       totalSorAmount.toDouble().toStringAsFixed(2),
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                 ),
@@ -2552,7 +2551,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                   child: ListTile(
                     title: Text(
                       t.translate(i18.measurementBook.totalNonSorAmount),
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     subtitle: Text(
                       t.translate(i18.measurementBook.forCurrentEntry),
@@ -2560,7 +2559,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     ),
                     trailing: Text(
                       totalNonSorAmount.toDouble().toStringAsFixed(2),
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
                 ),
@@ -2592,7 +2591,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                           title: Text(
                             // "Total MB Amount",
                             t.translate(i18.measurementBook.totalMbAmount),
-                            style: Theme.of(context).textTheme.headlineMedium,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           subtitle: Text(
                             // "(for current entry)",
@@ -2609,7 +2608,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               Text(
                                 mbAmount.roundToDouble().toStringAsFixed(2),
                                 style:
-                                    Theme.of(context).textTheme.headlineMedium,
+                                    Theme.of(context).textTheme.headlineSmall,
                               ),
                             ],
                           )),

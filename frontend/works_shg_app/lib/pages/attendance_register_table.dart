@@ -1,4 +1,5 @@
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart'
     as ui_button;
@@ -122,9 +123,9 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
       child: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
           return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorTheme.generic.background,
             bottomNavigationBar: DigitCard(
-                margin: const EdgeInsets.all(8),
+                margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
                 cardType: CardType.primary,
                 children: [
                   InkWell(
@@ -310,7 +311,6 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                           
                             Container(
                                 alignment: Alignment.centerLeft,
                                 margin: const EdgeInsets.all(4.0),
@@ -436,15 +436,16 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                         children: [
                                           const EmptyImage(
                                               align: Alignment.center),
-                                          ButtonLink(
-                                            AppLocalizations.of(context)
+                                          Button(
+                                            size: ButtonSize.large,
+                                            type: ButtonType.tertiary,
+                                            label: AppLocalizations.of(context)
                                                 .translate(i18.attendanceMgmt
                                                     .addNewWageSeeker),
-                                            () {
+                                            onPressed: () {
                                               context.router.push(
                                                   const RegisterIndividualRoute());
                                             },
-                                            align: Alignment.center,
                                           ),
                                         ],
                                       );
@@ -706,16 +707,18 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                               children: [
                                                 const EmptyImage(
                                                     align: Alignment.center),
-                                                ButtonLink(
-                                                  AppLocalizations.of(context)
+                                                Button(
+                                                  type: ButtonType.tertiary,
+                                                  size: ButtonSize.large,
+                                                  label: AppLocalizations.of(
+                                                          context)
                                                       .translate(i18
                                                           .attendanceMgmt
                                                           .addNewWageSeeker),
-                                                  () {
+                                                  onPressed: () {
                                                     context.router.push(
                                                         const RegisterIndividualRoute());
                                                   },
-                                                  align: Alignment.center,
                                                 ),
                                               ],
                                             );

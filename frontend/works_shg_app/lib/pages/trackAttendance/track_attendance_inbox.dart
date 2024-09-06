@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,9 @@ import '../../blocs/attendance/search_projects/search_projects.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
 import '../../models/attendance/attendance_registry_model.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/back.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/empty_image.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -58,7 +54,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
         builder: (context, localState) {
       return Scaffold(
         appBar: customAppBar(),
-         
+          backgroundColor: Theme.of(context).colorTheme.generic.background,
           drawer: const MySideBar(),
           bottomNavigationBar: BlocBuilder<AttendanceProjectsSearchBloc,
               AttendanceProjectsSearchState>(builder: (context, state) {

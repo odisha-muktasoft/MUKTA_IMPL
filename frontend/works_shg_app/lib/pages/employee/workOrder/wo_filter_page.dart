@@ -1,5 +1,6 @@
 // import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/scrollable_content.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -13,19 +14,14 @@ import 'package:works_shg_app/blocs/wage_seeker_registration/wage_seeker_locatio
 import 'package:works_shg_app/models/organisation/organisation_model.dart';
 
 import 'package:works_shg_app/router/app_router.dart';
-import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
-import 'package:works_shg_app/widgets/molecules/digit_search_dropdown.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
-import 'package:works_shg_app/widgets/side_bar.dart';
-import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
-import '../../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -119,6 +115,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loaded: (organization) {
             return Scaffold(
+              backgroundColor: Theme.of(context).colorTheme.generic.background,
               appBar: customAppBar(),
               drawer: const MySideBar(),
               body: ReactiveFormBuilder(
@@ -126,9 +123,9 @@ class _WOFilterPageState extends State<WOFilterPage> {
                   builder: (BuildContext context, FormGroup formGroup,
                       Widget? child) {
                     return Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                       child: ScrollableContent(
-                        
+                         backgroundColor: Theme.of(context).colorTheme.generic.background,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         footer: Padding(
@@ -245,14 +242,13 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                 child: TextChunk(
                                   heading:
                                       t.translate(i18.measurementBook.filter),
-                                  
                                 ),
                               ),
                             ],
                           ),
-                          
+
                           Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
+                            padding:  EdgeInsets.only(top: Theme.of(context).spacerTheme.spacer4),
                             child: LabeledField(
                               label: t.translate(
                                   i18.measurementBook.workOrderNumber),
@@ -261,11 +257,11 @@ class _WOFilterPageState extends State<WOFilterPage> {
                               ),
                             ),
                           ),
-                          
+
 // new
 
                           Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
+                            padding:  EdgeInsets.only(top: Theme.of(context).spacerTheme.spacer4),
                             child: LabeledField(
                               label: t.translate(i18.measurementBook.cboName),
                               child: DigitDropdown<OrganisationModel>(
@@ -302,7 +298,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                 orElse: () => const SizedBox.shrink(),
                                 loaded: (location) {
                                   return Padding(
-                                    padding: const EdgeInsets.only(top: 16.0),
+                                    padding:  EdgeInsets.only(top: Theme.of(context).spacerTheme.spacer4),
                                     child: LabeledField(
                                       label: t.translate(i18.common.ward),
                                       child: DigitDropdown<String>(

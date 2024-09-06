@@ -1,3 +1,4 @@
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 
 class Loaders {
@@ -15,7 +16,7 @@ class Loaders {
                 Center(
                   child: Column(children: [
                     CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorTheme.primary.primary1,
                     ),
                     const SizedBox(
                       height: 10,
@@ -58,7 +59,7 @@ class Loaders {
 //                            controller: AnimationController(vsync: this, duration: const Duration(milliseconds: 1200)),
                           // ),
                           CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorTheme.primary.primary1,
                           ),
                           const SizedBox(
                             height: 10,

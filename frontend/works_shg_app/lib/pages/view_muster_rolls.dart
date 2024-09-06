@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,8 @@ import '../blocs/localization/app_localization.dart';
 import '../blocs/localization/localization.dart';
 import '../blocs/muster_rolls/muster_inbox_status_bloc.dart';
 import '../models/muster_rolls/muster_roll_model.dart';
-import '../utils/common_methods.dart';
 import '../utils/constants.dart';
 import '../utils/date_formats.dart';
-import '../widgets/back.dart';
-import '../widgets/side_bar.dart';
-import '../widgets/atoms/app_bar_logo.dart';
-import '../widgets/drawer_wrapper.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -60,8 +56,8 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
+          backgroundColor: Theme.of(context).colorTheme.generic.background,
           appBar: customAppBar(),
-          
           drawer: const MySideBar(),
           bottomNavigationBar:
               BlocBuilder<MusterRollSearchBloc, MusterRollSearchState>(
@@ -170,10 +166,12 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.all(16.0),
+                                      padding: EdgeInsets.all(Theme.of(context)
+                                          .spacerTheme
+                                          .spacer4),
                                       child: TextChunk(
-                                       heading: '${t.translate(i18.attendanceMgmt.musterRolls)}(${musterList.length})',
-                                        
+                                        heading:
+                                            '${t.translate(i18.attendanceMgmt.musterRolls)}(${musterList.length})',
                                       ),
                                     ),
                                     musterList.isEmpty
@@ -192,8 +190,10 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                             elevatedButtonLabel: t.translate(
                                                 i18.common.viewDetails),
                                           ),
-                                    const SizedBox(
-                                      height: 16.0,
+                                     SizedBox(
+                                      height: Theme.of(context)
+                                          .spacerTheme
+                                          .spacer4,
                                     ),
                                     musterList.isNotEmpty &&
                                             musterList.length > 1

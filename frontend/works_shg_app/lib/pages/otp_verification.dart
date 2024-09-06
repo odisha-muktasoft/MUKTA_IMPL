@@ -1,5 +1,6 @@
 // import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
@@ -56,6 +57,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
     localizationText = localizationText.replaceFirst(
         '{mobileNumber}', '+91 - ${widget.mobileNumber}');
     return Scaffold(
+      backgroundColor: Theme.of(context).colorTheme.generic.background,
       appBar: AppBar(
         backgroundColor: const Color(0xff0B4B66),
         iconTheme: Theme.of(context).iconTheme,
@@ -73,7 +75,30 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                        error: () {
+                          // Notifiers.getToastMessage(
+                          //     context,
+                          //     AppLocalizations.of(context)
+                          //         .translate(i18.login.invalidOTP),
+                          //     'ERROR');
+
+                          Toast.showToast(context,
+                              message: AppLocalizations.of(context)
+                                  .translate(i18.login.invalidOTP),
+                              type: ToastType.error);
+
+                          context.router.popAndPush(OTPVerificationRoute(
+                              mobileNumber: widget.mobileNumber));
+                        },
+                        orElse: () => const Offstage());
+                  },
+                  child: 
+                
+      
+      SingleChildScrollView(
         child: Column(
           children: [
             Padding(
@@ -92,7 +117,9 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
               ),
             ),
             DigitCard(
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               cardType: CardType.primary,
+             
               //children:
               // mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -102,9 +129,12 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                   heading: AppLocalizations.of(context)
                       .translate(i18.login.otpVerification),
                 ),
-
+                TextChunk(
+                  caption: localizationText,
+                ),
                 // const SizedBox(height: 10),
-                SubLabelText(localizationText),
+
+                // SubLabelText(localizationText),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Align(
@@ -169,56 +199,29 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                   ),
                 ),
                 // const SizedBox(height: 10),
-                InkWell(
-                  onTap: next
-                      ? () {
-                          context.read<AuthBloc>().add(
-                                AuthLoginEvent(
-                                  userId: widget.mobileNumber,
-                                  password: otpController.text,
-                                  roleType: RoleType.cbo,
-                                ),
-                              );
-                        }
-                      : null,
-                  child: IgnorePointer(
-                    child: Button(
-                      mainAxisSize: MainAxisSize.max,
-                      size: ButtonSize.large,
-                      type: ButtonType.primary,
-                      onPressed: () {},
-                      label: AppLocalizations.of(context)
-                          .translate(i18.common.next),
-                    ),
-                  ),
-                ),
-                BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    state.maybeWhen(
-                        error: () {
-                          // Notifiers.getToastMessage(
-                          //     context,
-                          //     AppLocalizations.of(context)
-                          //         .translate(i18.login.invalidOTP),
-                          //     'ERROR');
-
-                          Toast.showToast(context,
-                              message: AppLocalizations.of(context)
-                                  .translate(i18.login.invalidOTP),
-                              type: ToastType.error);
-
-                          context.router.popAndPush(OTPVerificationRoute(
-                              mobileNumber: widget.mobileNumber));
-                        },
-                        orElse: () => const SizedBox.shrink());
+                Button(
+                  mainAxisSize: MainAxisSize.max,
+                  size: ButtonSize.large,
+                  type: ButtonType.primary,
+                  isDisabled: !next,
+                  onPressed: () {
+                    context.read<AuthBloc>().add(
+                          AuthLoginEvent(
+                            userId: widget.mobileNumber,
+                            password: otpController.text,
+                            roleType: RoleType.cbo,
+                          ),
+                        );
                   },
-                  child: const SizedBox.shrink(),
+                  label:
+                      AppLocalizations.of(context).translate(i18.common.next),
                 ),
+                
               ],
             ),
           ],
         ),
       ),
-    );
+    ),);
   }
 }

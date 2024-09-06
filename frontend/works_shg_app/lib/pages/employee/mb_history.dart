@@ -22,11 +22,7 @@ import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/localization/localization.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/employee/mb/mb_logic.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/mb/float_action_card.dart';
 import '../../widgets/mb/work_flow_button_list.dart';
 import 'mb_inbox.dart';
@@ -86,6 +82,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                     .musterWorkFlowModel?.processInstances;
                                 return Draggable(
                                   childWhenDragging: FloatActionCard(
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
                                     actions: () {
                                       showDialog(
                                         context: context,
@@ -147,6 +145,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   },
                                   feedback: const SizedBox.shrink(),
                                   child: FloatActionCard(
+                                    subtext: t.translate(
+                                        i18.measurementBook.forCurrentEntry),
                                     actions: () {
                                       showDialog(
                                         context: context,
@@ -194,7 +194,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             );
                           },
                         ),
-                  backgroundColor: const DigitColors().seaShellGray,
+                  backgroundColor:
+                      Theme.of(context).colorTheme.generic.background,
                   appBar: customAppBar(),
                   drawer: const MySideBar(),
                   body: CustomScrollView(
@@ -325,7 +326,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                           onPressed: () {
                                             context.router
                                                 .push(MBMusterScreenRoute(
-                                                  mbNumber:widget.mbNumber,
+                                              mbNumber: widget.mbNumber,
                                               musterRollNumber: k[adjustedIndex]
                                                   .musterRollNumber
                                                   .toString(),

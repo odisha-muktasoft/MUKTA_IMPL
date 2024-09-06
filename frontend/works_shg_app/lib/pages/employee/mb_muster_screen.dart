@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/widgets/widgets.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
@@ -22,7 +22,6 @@ import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/track_attendance_payload.dart';
 import 'package:works_shg_app/widgets/circular_button.dart';
-import 'package:works_shg_app/widgets/mb/back_button.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
@@ -100,6 +99,7 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
             }
           },
           child: Scaffold(
+             backgroundColor: Theme.of(context).colorTheme.generic.background,
             appBar: customAppBar(),
             drawer: const MySideBar(),
             body: BlocBuilder<MusterRollSearchBloc, MusterRollSearchState>(

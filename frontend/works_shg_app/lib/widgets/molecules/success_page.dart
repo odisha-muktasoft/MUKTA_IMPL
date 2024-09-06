@@ -1,9 +1,8 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
-import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
-    as ui_card;
 import 'package:digit_ui_components/widgets/molecules/panel_cards.dart';
 import 'package:digit_ui_components/widgets/molecules/panel_cards.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +15,6 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
-import '../../utils/common_methods.dart';
-import '../atoms/app_bar_logo.dart';
-import '../atoms/success_message.dart';
-import '../drawer_wrapper.dart';
-import '../side_bar.dart';
 
 @RoutePage()
 class SuccessResponsePage extends StatelessWidget {
@@ -66,6 +60,7 @@ class SuccessResponsePage extends StatelessWidget {
         context.router.push(const HomeRoute());
       },
       child: Scaffold(
+         backgroundColor: Theme.of(context).colorTheme.generic.background,
         bottomNavigationBar: Container(
           height: 60,
           padding: const EdgeInsets.all(8.0),

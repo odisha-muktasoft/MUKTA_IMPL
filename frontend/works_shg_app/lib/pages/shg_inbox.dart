@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
@@ -164,7 +165,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
       child: BlocBuilder<LocalizationBloc, LocalizationState>(
           builder: (context, localState) {
         return Scaffold(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorTheme.generic.background,
             appBar: customAppBar(),
             drawer: const MySideBar(),
             body: BlocBuilder<SkillsBloc, SkillsBlocState>(
@@ -399,12 +400,11 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                   individualMusterRollModel) {
                                                 return Stack(children: [
                                                   Container(
-                                                    color: Colors.white,
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8,
-                                                            right: 8,
-                                                            bottom: 16),
+                                                    // padding:
+                                                    //     const EdgeInsets.only(
+                                                    //         left: 8,
+                                                    //         right: 8,
+                                                    //         bottom: 16),
                                                     height: inWorkFlow
                                                         ? MediaQuery.of(context)
                                                             .size
@@ -419,52 +419,42 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                             delegate:
                                                                 SliverChildListDelegate(
                                                               [
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    // Back(
-                                                                    //   backLabel: AppLocalizations.of(context).translate(i18
-                                                                    //       .common
-                                                                    //       .back),
-                                                                    //   callback:
-                                                                    //       () {
-                                                                    // context
-                                                                    //     .router
-                                                                    //     .popUntilRouteWithPath('home');
-                                                                    // context
-                                                                    //     .router
-                                                                    //     .push(const ViewMusterRollsRoute());
-                                                                    //   },
-                                                                    // ),
-                                                                    BackNavigationButton(
-                                                                      backButtonText: AppLocalizations.of(context).translate(i18
+                                                                Padding(
+                                                                  padding: EdgeInsets.all(Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer4),
+                                                                  child: Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
+                                                                    children: [
+                                                                      BackNavigationButton(
+                                                                        backButtonText:
+                                                                            AppLocalizations.of(context).translate(i18.common.back) ??
+                                                                                'Back',
+                                                                        handleBack:
+                                                                            () {
+                                                                          context
+                                                                              .router
+                                                                              .popUntilRouteWithPath('home');
+                                                                          context
+                                                                              .router
+                                                                              .push(const ViewMusterRollsRoute());
+                                                                        },
+                                                                      ),
+                                                                      CommonWidgets.downloadButton(
+                                                                          AppLocalizations.of(context).translate(i18
                                                                               .common
-                                                                              .back) ??
-                                                                          'Back',
-                                                                      handleBack:
+                                                                              .download),
                                                                           () {
-                                                                        context
-                                                                            .router
-                                                                            .popUntilRouteWithPath('home');
-                                                                        context
-                                                                            .router
-                                                                            .push(const ViewMusterRollsRoute());
-                                                                      },
-                                                                    ),
-                                                                    CommonWidgets.downloadButton(
-                                                                        AppLocalizations.of(context).translate(i18
-                                                                            .common
-                                                                            .download),
-                                                                        () {
-                                                                      context.read<MusterRollPDFBloc>().add(PDFEventMusterRoll(
-                                                                          musterRollNumber: widget
-                                                                              .musterRollNo,
-                                                                          tenantId:
-                                                                              widget.tenantId));
-                                                                    })
-                                                                  ],
+                                                                        context.read<MusterRollPDFBloc>().add(PDFEventMusterRoll(
+                                                                            musterRollNumber:
+                                                                                widget.musterRollNo,
+                                                                            tenantId: widget.tenantId));
+                                                                      })
+                                                                    ],
+                                                                  ),
                                                                 ),
                                                                 WorkDetailsCard(
                                                                   projectDetails,
@@ -555,7 +545,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                             // );
                                                                             return timeLineAttributes.isNotEmpty
                                                                                 ? ui_card.DigitCard(
-                                                                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                                                                    margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
                                                                                     cardType: CardType.primary,
                                                                                     children: [
                                                                                       LabelValueList(
@@ -625,8 +615,11 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                       CrossAxisAlignment
                                                                           .center,
                                                                   children: [
-                                                                const SizedBox(
-                                                                  height: 20,
+                                                                SizedBox(
+                                                                  height: Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer4,
                                                                 ),
                                                                 BlocBuilder<
                                                                         MusterGetWorkflowBloc,
@@ -716,8 +709,8 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                             )
                                                                                           ],
                                                                                         ),
-                                                                                        const SizedBox(
-                                                                                          height: 4,
+                                                                                        SizedBox(
+                                                                                          height: Theme.of(context).spacerTheme.spacer1,
                                                                                         ),
                                                                                         Row(
                                                                                           children: [
@@ -740,53 +733,35 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                             )
                                                                           : const SizedBox.shrink());
                                                                 }),
-                                                                Container(
-                                                                    margin:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            8.0),
-                                                                    child:
-                                                                        TextFormField(
-                                                                      controller:
-                                                                          searchController,
-                                                                      autofocus:
-                                                                          false,
-                                                                      decoration:
-                                                                          InputDecoration(
-                                                                        hintText: AppLocalizations.of(context).translate(i18
+                                                                Padding(
+                                                                  padding: EdgeInsets.all(Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer2),
+                                                                  child:
+                                                                      DigitTextFormInput(
+                                                                    innerLabel: AppLocalizations.of(
+                                                                            context)
+                                                                        .translate(i18
                                                                             .common
                                                                             .searchByName),
-                                                                        border:
-                                                                            const OutlineInputBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.zero,
-                                                                        ),
-                                                                        filled:
-                                                                            true,
-                                                                        fillColor:
-                                                                            Colors.white,
-                                                                        prefixIconConstraints: const BoxConstraints(
-                                                                            minWidth:
-                                                                                0,
-                                                                            minHeight:
-                                                                                0),
-                                                                        prefixStyle: TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontWeight:
-                                                                                FontWeight.w400,
-                                                                            color: Theme.of(context).primaryColorDark),
-                                                                        prefixIcon: const Padding(
-                                                                            padding:
-                                                                                EdgeInsets.all(8.0),
-                                                                            child: Icon(Icons.search_sharp)),
-                                                                      ),
-                                                                      onChanged:
-                                                                          (val) =>
-                                                                              onTextSearch(),
-                                                                    )),
-                                                                const SizedBox(
-                                                                  height: 20,
+                                                                    suffixIcon:
+                                                                        Icons
+                                                                            .search_sharp,
+                                                                    controller:
+                                                                        searchController,
+                                                                    isRequired:
+                                                                        false,
+                                                                    onChange:
+                                                                        (val) =>
+                                                                            onTextSearch(),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer4,
                                                                 ),
                                                                 individualMusterRollModel
                                                                             ?.musterRoll!
@@ -931,11 +906,15 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                             align:
                                                                                 Alignment.center,
                                                                           ),
-                                                                          ButtonLink(
-                                                                            AppLocalizations.of(context).translate(i18.attendanceMgmt.addNewWageSeeker),
-                                                                            () {},
-                                                                            align:
-                                                                                Alignment.center,
+                                                                          Button(
+                                                                            type:
+                                                                                ButtonType.tertiary,
+                                                                            size:
+                                                                                ButtonSize.large,
+                                                                            label:
+                                                                                AppLocalizations.of(context).translate(i18.attendanceMgmt.addNewWageSeeker),
+                                                                            onPressed:
+                                                                                () {},
                                                                           ),
                                                                         ],
                                                                       ),
@@ -1115,8 +1094,8 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                         ),
                                                                                       ),
                                                                                     ),
-                                                                                    const SizedBox(
-                                                                                      height: 10,
+                                                                                     SizedBox(
+                                                                                      height: Theme.of(context).spacerTheme.spacer2,
                                                                                     ),
                                                                                     BlocListener<MusterCreateBloc, MusterCreateState>(
                                                                                       listener: (context, musterUpdateState) {

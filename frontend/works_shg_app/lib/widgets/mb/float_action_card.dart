@@ -71,7 +71,7 @@ class FloatActionCard extends StatelessWidget {
                         child: RichText(
                           text: TextSpan(
                               text: '$totalAmountText \n',
-                              style: Theme.of(context).textTheme.headlineMedium,
+                              style: Theme.of(context).textTheme.headlineSmall,
                               children: <TextSpan>[
                                 TextSpan(
                                   text: subtext ?? "",

@@ -66,6 +66,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).colorTheme.generic.background,
         appBar: customAppBar(),
         drawer: const MySideBar(),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -232,7 +233,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                                         ),
                                       ),
                                       Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
                                           child: TextChunk(
                                             heading:
                                                 '${t.translate(i18.common.orgProfile)}',

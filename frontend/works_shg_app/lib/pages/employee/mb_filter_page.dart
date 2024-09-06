@@ -1,9 +1,7 @@
 import 'package:digit_components/digit_components.dart';
-import 'package:digit_components/widgets/atoms/digit_toaster.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
-import 'package:digit_ui_components/theme/ComponentTheme/button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -18,18 +16,12 @@ import 'package:works_shg_app/models/employee/mb/mb_inbox_response.dart'
     as status_map;
 import 'package:works_shg_app/models/employee/mb/mb_project_type.dart';
 import 'package:works_shg_app/router/app_router.dart';
-import 'package:works_shg_app/utils/Toast/toaster.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
-import 'package:works_shg_app/widgets/atoms/radio_button_list.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/wage_seeker_registration/wage_seeker_location_bloc.dart';
-import '../../utils/common_methods.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -135,7 +127,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       },
                       loaded: (location) {
                         return Scaffold(
-                          backgroundColor: const DigitColors().white,
+                           backgroundColor: Theme.of(context).colorTheme.generic.background,
                           appBar: customAppBar(),
                           drawer: const MySideBar(),
                           body: ReactiveFormBuilder(

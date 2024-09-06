@@ -3,7 +3,6 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
-import 'package:digit_ui_components/theme/ComponentTheme/toast_theme_data.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
@@ -22,20 +21,13 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
-import 'package:works_shg_app/utils/notifiers.dart';
-import 'package:works_shg_app/widgets/atoms/app_bar_logo.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
-import 'package:works_shg_app/widgets/drawer_wrapper.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../../blocs/employee/work_order/workorder_book.dart';
 import '../../../blocs/localization/app_localization.dart';
-import '../../../utils/common_methods.dart';
 import '../../../utils/constants.dart';
-import '../../../widgets/back.dart';
-import '../../../widgets/side_bar.dart';
-import '../../../widgets/mb/text_button_underline.dart';
 import '../../../widgets/work_order/work_order_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -156,6 +148,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
       builder: (context, localizationState) {
         return Scaffold(
+          backgroundColor: Theme.of(context).colorTheme.generic.background,
           floatingActionButton:
               BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
             builder: (context, state) {
@@ -205,7 +198,6 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          backgroundColor: const DigitColors().seaShellGray,
           appBar: customAppBar(),
           drawer: const MySideBar(),
           body: BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
@@ -228,9 +220,9 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 10.0,
-                                      bottom: 8.0,
-                                      top: 8.0,
+                                      left: 8.0,
+                                      bottom: 16.0,
+                                      top: 16.0,
                                       right: 8.0),
                                   child: Row(
                                       mainAxisAlignment:
@@ -349,11 +341,12 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                   (element) => element.isSelected == true);
                               if (ll != null &&
                                   ll.value == LanguageEnum.en_IN.name) {
-                                return 140;
-                              } else {
                                 return 160;
+                              } else {
+                                return 180;
                               }
                             },
+                            loading:(value) =>  160,
                             error: (value) => 160,
                           ),
                         ),
@@ -430,16 +423,22 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                 //     t.translate(i18.workOrder
                                                 //         .estimateRevisionError),
                                                 //     'ERROR');
-                                                Toast.showToast(context, message: t.translate(i18.workOrder
-                                                        .estimateRevisionError), type: ToastType.error);
+                                                Toast.showToast(context,
+                                                    message: t.translate(i18
+                                                        .workOrder
+                                                        .estimateRevisionError),
+                                                    type: ToastType.error);
                                               } else {
                                                 // Notifiers.getToastMessage(
                                                 //     context,
                                                 //     t.translate(i18.workOrder
                                                 //         .existingMBCreateError),
                                                 //     'ERROR');
-                                                 Toast.showToast(context, message: t.translate(i18.workOrder
-                                                        .existingMBCreateError), type: ToastType.error);
+                                                Toast.showToast(context,
+                                                    message: t.translate(i18
+                                                        .workOrder
+                                                        .existingMBCreateError),
+                                                    type: ToastType.error);
                                               }
                                             }
                                           },

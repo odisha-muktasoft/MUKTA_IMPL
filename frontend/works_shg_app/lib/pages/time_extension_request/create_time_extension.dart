@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_scrollable;
 import 'package:digit_ui_components/digit_components.dart' as ui_new;
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
@@ -90,6 +91,7 @@ class _CreateTimeExtensionRequestPage
         }
       },
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         appBar: customAppBar(),
         drawer: const MySideBar(),
         // bottomNavigationBar: const SizedBox(
@@ -111,75 +113,84 @@ class _CreateTimeExtensionRequestPage
                     form: () => buildForm(contractState),
                     builder: (context, form, child) {
                       return ui_scrollable.ScrollableContent(
-                        footer: ui_card
-                            .DigitCard(cardType: CardType.primary, children: [
-                          Button(
-                            mainAxisSize: MainAxisSize.max,
-                            type: ButtonType.primary,
-                            size: ButtonSize.large,
-                            onPressed: () {
-                              form.markAllAsTouched(updateParent: false);
-                              if (!form.valid) {
-                                return;
-                              } else if (int.parse(
-                                      form.value[extensionDaysKey].toString()) >
-                                  365) {
-                                // Notifiers.getToastMessage(
-                                //   context,
-                                //   t.translate(
-                                //     i18.workOrder.extensionReqInDaysMaxVal,
-                                //   ),
-                                //   'ERROR',
-                                // );
-Toast.showToast(context, message: t.translate(
-                                    i18.workOrder.extensionReqInDaysMaxVal,
-                                  ), type: ToastType.error);
+                        footer: ui_card.DigitCard(
+                            margin: EdgeInsets.all(
+                                Theme.of(context).spacerTheme.spacer2),
+                            cardType: CardType.primary,
+                            children: [
+                              Button(
+                                mainAxisSize: MainAxisSize.max,
+                                type: ButtonType.primary,
+                                size: ButtonSize.large,
+                                onPressed: () {
+                                  form.markAllAsTouched(updateParent: false);
+                                  if (!form.valid) {
+                                    return;
+                                  } else if (int.parse(form
+                                          .value[extensionDaysKey]
+                                          .toString()) >
+                                      365) {
+                                    // Notifiers.getToastMessage(
+                                    //   context,
+                                    //   t.translate(
+                                    //     i18.workOrder.extensionReqInDaysMaxVal,
+                                    //   ),
+                                    //   'ERROR',
+                                    // );
+                                    Toast.showToast(context,
+                                        message: t.translate(
+                                          i18.workOrder
+                                              .extensionReqInDaysMaxVal,
+                                        ),
+                                        type: ToastType.error);
 
-                                return;
-                              } else {
-                                DateTime endDate =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        contracts?.contracts?.first.endDate ??
-                                            0);
-                                int extensionDate = endDate
-                                    .add(Duration(
-                                        days: int.parse(form
-                                            .value[extensionDaysKey]
-                                            .toString())))
-                                    .millisecondsSinceEpoch;
-                                // sorting contracts list based on last modified time
-                                // to send the latest conract data for time extention
-                                contracts?.contracts!.sort((a, b) =>
-                                    b.auditDetails!.lastModifiedTime!.compareTo(
-                                        a.auditDetails!.lastModifiedTime!));
+                                    return;
+                                  } else {
+                                    DateTime endDate =
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                            contracts?.contracts?.first
+                                                    .endDate ??
+                                                0);
+                                    int extensionDate = endDate
+                                        .add(Duration(
+                                            days: int.parse(form
+                                                .value[extensionDaysKey]
+                                                .toString())))
+                                        .millisecondsSinceEpoch;
+                                    // sorting contracts list based on last modified time
+                                    // to send the latest conract data for time extention
+                                    contracts?.contracts!.sort((a, b) => b
+                                        .auditDetails!.lastModifiedTime!
+                                        .compareTo(
+                                            a.auditDetails!.lastModifiedTime!));
 
-                                context
-                                    .read<CreateTimeExtensionRequestBloc>()
-                                    .add(TimeExtensionRequestEvent(
-                                        contractsModel:
-                                            contracts?.contracts?.first,
-                                        action: widget.isEdit == true
-                                            ? 'EDIT'
-                                            : 'CREATE',
-                                        extensionDate: extensionDate,
-                                        isEdit: widget.isEdit ?? false,
-                                        reason: form
-                                            .value[reasonForExtensionKey]
-                                            .toString(),
-                                        extensionDays: form
-                                            .value[extensionDaysKey]
-                                            .toString()));
-                              }
-                            },
-                            label: t.translate(i18.common.submit),
-                          ),
-                          const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: ui_scrollable.PoweredByDigit(
-                              version: Constants.appVersion,
-                            ),
-                          )
-                        ]),
+                                    context
+                                        .read<CreateTimeExtensionRequestBloc>()
+                                        .add(TimeExtensionRequestEvent(
+                                            contractsModel:
+                                                contracts?.contracts?.first,
+                                            action: widget.isEdit == true
+                                                ? 'EDIT'
+                                                : 'CREATE',
+                                            extensionDate: extensionDate,
+                                            isEdit: widget.isEdit ?? false,
+                                            reason: form
+                                                .value[reasonForExtensionKey]
+                                                .toString(),
+                                            extensionDays: form
+                                                .value[extensionDaysKey]
+                                                .toString()));
+                                  }
+                                },
+                                label: t.translate(i18.common.submit),
+                              ),
+                              const Align(
+                                alignment: Alignment.bottomCenter,
+                                child: ui_scrollable.PoweredByDigit(
+                                  version: Constants.appVersion,
+                                ),
+                              )
+                            ]),
                         children: [
                           BlocBuilder<LocalizationBloc, LocalizationState>(
                               builder: (context, localState) {
@@ -263,7 +274,10 @@ Toast.showToast(context, message: t.translate(
                                               ),
 
                                               ui_card.DigitCard(
-                                                margin: const EdgeInsets.all(8),
+                                                margin: EdgeInsets.all(
+                                                    Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2),
                                                 cardType: CardType.primary,
                                                 children: [
                                                   contracts.isNotEmpty
@@ -561,8 +575,10 @@ Toast.showToast(context, message: t.translate(
                                   error: (String? error) =>
                                       // Notifiers.getToastMessage(
                                       //     context, error.toString(), 'ERROR'),
-                                          Toast.showToast(context, message: t.translate(error.toString()), type: ToastType.error)
-                                          ,
+                                      Toast.showToast(context,
+                                          message:
+                                              t.translate(error.toString()),
+                                          type: ToastType.error),
                                   loaded: (ContractsModel? contractsModel) {
                                     if (widget.isEdit == true) {
                                       // Notifiers.getToastMessage(

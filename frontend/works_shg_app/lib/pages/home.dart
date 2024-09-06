@@ -1,5 +1,7 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
@@ -16,7 +18,6 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
-import 'package:works_shg_app/widgets/button_link.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
@@ -68,6 +69,7 @@ class _HomePage extends State<HomePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+       backgroundColor: Theme.of(context).colorTheme.generic.background,
       //         actions: [
 
       //          HeaderAction(
@@ -347,7 +349,7 @@ class _HomePage extends State<HomePage> {
                                     HomeScreenBlocState>(
                                   builder: (context, config) {
                                     return config.maybeWhen(
-                                        orElse: () => Container(),
+                                        orElse: () => const SizedBox.shrink(),
                                         loading: () =>
                                             shg_loader.Loaders.circularLoader(
                                                 context),
@@ -369,7 +371,7 @@ class _HomePage extends State<HomePage> {
                         return BlocBuilder<HomeScreenBloc, HomeScreenBlocState>(
                           builder: (context, config) {
                             return config.maybeWhen(
-                              orElse: () => Container(),
+                              orElse: () => const SizedBox.shrink(),
                               loading: () =>
                                   shg_loader.Loaders.circularLoader(context),
                               loaded: (List<CBOHomeScreenConfigModel>?
@@ -411,6 +413,7 @@ class _HomePage extends State<HomePage> {
     final List<Widget> cards = _getItems(context, homeConfigModel);
     if (cards.isNotEmpty) {
       return ui_scroll.ScrollableContent(
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         slivers: [
           SliverGrid(
             delegate: SliverChildBuilderDelegate((context, index) {
@@ -490,6 +493,7 @@ class _HomePage extends State<HomePage> {
     Languages selectedLan,
   ) {
     return ui_scroll.ScrollableContent(
+      backgroundColor: Theme.of(context).colorTheme.generic.background,
         footer: const Padding(
           padding: EdgeInsets.all(16.0),
           child: PoweredByDigit(
@@ -498,18 +502,19 @@ class _HomePage extends State<HomePage> {
         ),
         children: [
           ui_card.DigitCard(
-              margin: const EdgeInsets.all(8),
+              margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               cardType: CardType.primary,
               children: [
                 Align(
                   alignment: Alignment.topCenter,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: cboHomeScreenConfig?.map((e) {
                             if (e.order == 1) {
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     mainAxisAlignment:
@@ -523,16 +528,25 @@ class _HomePage extends State<HomePage> {
                                       SvgPicture.asset(Constants.muktaIcon)
                                     ],
                                   ),
-                                  ButtonLink(
-                                      t.translate(e.label ?? ''),
-                                      getRoute(e.key.toString(), context,
-                                          selectedLan))
+                                  Button(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      type: ButtonType.tertiary,
+                                      size: ButtonSize.large,
+                                      label: t.translate(e.label ?? ''),
+                                      onPressed: () => getRoute(
+                                          e.key.toString(),
+                                          context,
+                                          selectedLan)),
                                 ],
                               );
                             } else {
-                              return ButtonLink(
-                                  t.translate(e.label ?? ''),
-                                  getRoute(
+                              return Button(
+                                  type: ButtonType.tertiary,
+                                  size: ButtonSize.large,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  label: t.translate(e.label ?? ''),
+                                  onPressed: () => getRoute(
                                       e.key.toString(), context, selectedLan));
                             }
                           }).toList() ??
@@ -553,40 +567,34 @@ class _HomePage extends State<HomePage> {
         );
   }
 
-  void Function()? getRoute(String key, BuildContext context, Languages data) {
+  void getRoute(String key, BuildContext context, Languages data) {
     switch (key) {
       case Constants.homeMyWorks:
-        return () {
-          localeLoad(data);
-          context.router.push(const WorkOrderRoute());
-        };
+        localeLoad(data);
+        context.router.push(const WorkOrderRoute());
+
       case Constants.homeTrackAttendance:
-        return () {
-          localeLoad(data);
-          context.router.push(const TrackAttendanceInboxRoute());
-        };
+        localeLoad(data);
+        context.router.push(const TrackAttendanceInboxRoute());
+
       case Constants.homeMusterRolls:
-        return () {
-          localeLoad(data);
-          context.router.push(const ViewMusterRollsRoute());
-        };
+        localeLoad(data);
+        context.router.push(const ViewMusterRollsRoute());
+
       case Constants.homeMyBills:
-        return () {
-          localeLoad(data);
-          context.router.push(const MyBillsRoute());
-        };
+        localeLoad(data);
+        context.router.push(const MyBillsRoute());
+
       case Constants.homeRegisterWageSeeker:
-        return () {
-          localeLoad(data);
-          context.router.push(const RegisterIndividualRoute());
-        };
+        localeLoad(data);
+        context.router.push(const RegisterIndividualRoute());
+
       case Constants.homeMyServiceRequests:
-        return () {
-          localeLoad(data);
-          context.router.push(const MyServiceRequestsRoute());
-        };
+        localeLoad(data);
+        context.router.push(const MyServiceRequestsRoute());
+
       default:
-        return null;
+        null;
     }
   }
 }
@@ -607,30 +615,31 @@ class HomeItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ui_card. DigitCard(
-      margin: const EdgeInsets.all(8),
-      cardType: CardType.primary,
-      onPressed: onPressed,
-     // padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
-      children:[ Align(
-        alignment: Alignment.topCenter,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            icon,
-            const SizedBox(height: 20),
-            Text(
-              AppLocalizations.of(context).translate(
-                label,
-              ),
-              style: theme.textTheme.bodyMedium,
-              textAlign: TextAlign.center,
+    return ui_card.DigitCard(
+        margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+        cardType: CardType.primary,
+        onPressed: onPressed,
+        // padding: const EdgeInsets.all(kPadding).copyWith(top: kPadding * 2),
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                icon,
+                const SizedBox(height: 20),
+                Text(
+                  AppLocalizations.of(context).translate(
+                    label,
+                  ),
+                  style: theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-          ],
-        ),
-      ),]
-    );
+          ),
+        ]);
   }
 }

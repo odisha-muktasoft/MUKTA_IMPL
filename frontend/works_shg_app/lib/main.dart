@@ -341,8 +341,8 @@ class _MainApplicationState extends State<MainApplication> {
                   GlobalCupertinoLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
                 ],
-                theme: DigitTheme.instance.mobileTheme,
-               // theme: DigitExtendedTheme.instance.getTheme(context),
+                //theme: DigitTheme.instance.mobileTheme,
+                theme: DigitExtendedTheme.instance.getTheme(context),
                 scaffoldMessengerKey: scaffoldMessengerKey,
                 routeInformationParser: appRouter.defaultRouteParser(),
                 routerDelegate: AutoRouterDelegate.declarative(

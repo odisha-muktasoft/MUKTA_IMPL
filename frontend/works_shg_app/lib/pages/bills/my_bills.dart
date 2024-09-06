@@ -1,4 +1,5 @@
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ import '../../blocs/localization/localization.dart';
 import '../../blocs/my_bills/search_my_bills.dart';
 import '../../models/my_bills/my_bills_model.dart';
 import '../../utils/constants.dart';
-import '../../widgets/back.dart';
 
 @RoutePage()
 class MyBillsPage extends StatefulWidget {
@@ -56,6 +56,7 @@ class _MyBillsPage extends State<MyBillsPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+       backgroundColor: Theme.of(context).colorTheme.generic.background,
         appBar: customAppBar(),
         drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<SearchMyBillsBloc, SearchMyBillsState>(

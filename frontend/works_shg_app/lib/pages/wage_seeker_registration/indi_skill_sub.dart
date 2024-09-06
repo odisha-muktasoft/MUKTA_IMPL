@@ -143,11 +143,11 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                       _onSelectedOptionsChanged(
                           selectedOptionss.map((e) => e.code).toList());
                     },
-                    // selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
-                    //     name: t.translate(
-                    //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                    //     code: e.toString()))
-                    // .toList():[],
+                    selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
+                        name: t.translate(
+                            "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                        code: e.toString()))
+                    .toList():[],
                   ),
                 ],
               ),

@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/router/app_router.dart';
@@ -9,11 +10,7 @@ import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../../blocs/localization/app_localization.dart';
 import '../../../blocs/localization/localization.dart';
-import '../../../utils/common_methods.dart';
 import '../../../utils/common_widgets.dart';
-import '../../../widgets/side_bar.dart';
-import '../../../widgets/atoms/app_bar_logo.dart';
-import '../../../widgets/drawer_wrapper.dart';
 import '../../../widgets/work_order/work_order_card.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -31,6 +28,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+       backgroundColor: Theme.of(context).colorTheme.generic.background,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Container(

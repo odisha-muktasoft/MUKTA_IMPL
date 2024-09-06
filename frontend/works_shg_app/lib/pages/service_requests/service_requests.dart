@@ -1,5 +1,5 @@
-import 'package:digit_components/digit_components.dart' as ui_old;
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
@@ -7,9 +7,7 @@ import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:works_shg_app/main.dart';
 import 'package:works_shg_app/router/app_router.dart';
-import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
@@ -22,16 +20,10 @@ import '../../blocs/time_extension_request/my_service_requests_bloc.dart';
 import '../../blocs/time_extension_request/service_requests_config.dart';
 import '../../models/works/contracts_model.dart';
 import '../../models/works/my_works_search_criteria.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/constants.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/notifiers.dart';
-import '../../widgets/back.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
 import '../../widgets/atoms/empty_image.dart';
-import '../../widgets/atoms/tabs_button.dart';
-import '../../widgets/drawer_wrapper.dart';
 
 @RoutePage()
 class MyServiceRequestsPage extends StatefulWidget {
@@ -71,6 +63,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
+       backgroundColor: Theme.of(context).colorTheme.generic.background,
         appBar: customAppBar(),
         drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -244,8 +237,8 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                               return ui_card
                                                                   .DigitCard(
                                                                 margin:
-                                                                    const EdgeInsets
-                                                                        .all(8),
+                                                                     EdgeInsets
+                                                                        .all(Theme.of(context).spacerTheme.spacer2),
                                                                 cardType:
                                                                     CardType
                                                                         .primary,

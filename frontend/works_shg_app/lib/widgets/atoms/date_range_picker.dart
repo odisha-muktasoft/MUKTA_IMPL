@@ -1,6 +1,10 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
-import 'package:digit_ui_components/widgets/atoms/digit_button.dart' as ui_button;
+import 'package:digit_ui_components/widgets/atoms/digit_button.dart'
+    as ui_button;
+import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
+    as ui_label;
+import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -20,21 +24,22 @@ class DateRangePicker extends StatelessWidget {
   final DateTime? minDate;
   final DateTime? maxDate;
 
-  const DateRangePicker(
-      {super.key,
-      required this.label,
-      required this.controller,
-      required this.rangePickerController,
-      required this.selectionMode,
-      this.onChangeOfDate,
-      this.onViewChange,
-      this.onSubmit,
-      this.applyLabel,
-      this.cancelLabel,
-      this.onCancel,
-        this.minDate,
-      this.maxDate,
-      this.format,});
+  const DateRangePicker({
+    super.key,
+    required this.label,
+    required this.controller,
+    required this.rangePickerController,
+    required this.selectionMode,
+    this.onChangeOfDate,
+    this.onViewChange,
+    this.onSubmit,
+    this.applyLabel,
+    this.cancelLabel,
+    this.onCancel,
+    this.minDate,
+    this.maxDate,
+    this.format,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +78,7 @@ class DateRangePicker extends StatelessWidget {
                     onCancel!();
                     Navigator.pop(dialogContext);
                   },
-                  label:cancelLabel ?? '',
+                  label: cancelLabel ?? '',
                 ),
                 ui_button.Button(
                   size: ButtonSize.large,
@@ -83,7 +88,7 @@ class DateRangePicker extends StatelessWidget {
                     onSubmit!();
                     Navigator.pop(dialogContext);
                   },
-                  label:applyLabel ?? 'Apply',
+                  label: applyLabel ?? 'Apply',
                 ),
               ],
             ),
@@ -93,39 +98,59 @@ class DateRangePicker extends StatelessWidget {
     }
 
     Widget getDateRangePicker(BuildContext dialogContext) {
-      return SizedBox(
-          height: 250, child: Card(child: datePicker(dialogContext)));
+      return SizedBox(height: 250, child: datePicker(dialogContext));
     }
 
     if (MediaQuery.of(context).size.width < 760) {
       return Container(
           margin: const EdgeInsets.only(top: 5.0, bottom: 5, right: 8, left: 8),
           child: Column(children: [
-            DigitTextField(
-                label: label,
-                readOnly: true,
-                controller: controller,
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext dialogContext) {
-                            return Dialog(
-                                child: SizedBox(
-                              height: 350,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  getDateRangePicker(dialogContext),
-                                ],
-                              ),
-                            ));
-                          });
+            ui_label.LabeledField(
+              label: label,
+              child: InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext dialogContext) {
+                        return Popup(
+                            onCrossTap: () {
+                              onCancel!();
+                              Navigator.pop(dialogContext);
+                            },
+                            title: "",
+                            additionalWidgets: [
+                              getDateRangePicker(dialogContext)
+                            ]);
+                      });
+                },
+                child: IgnorePointer(
+                  child: DigitTextFormInput(
+                    //label: label,
+                    readOnly: false,
+
+                    controller: controller,
+                    suffixIcon: Icons.date_range,
+                    onSuffixTap: (data) {
+                      // print("object");
+                      // showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext dialogContext) {
+                      //       return Dialog(
+                      //           child: SizedBox(
+                      //         height: 350,
+                      //         child: Column(
+                      //           mainAxisSize: MainAxisSize.min,
+                      //           children: <Widget>[
+                      //             getDateRangePicker(dialogContext),
+                      //           ],
+                      //         ),
+                      //       ));
+                      //     });
                     },
-                    icon: const Icon(
-                      Icons.date_range,
-                      size: 24,
-                    ))),
+                  ),
+                ),
+              ),
+            ),
           ]));
     } else {
       return Container(

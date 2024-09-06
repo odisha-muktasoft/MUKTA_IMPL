@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_action_card.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
@@ -89,7 +90,7 @@ class WorkDetailsCard extends StatelessWidget {
         return Column(
           children: detailsList.mapIndexed((index, e) {
             return ui_card.DigitCard(
-              margin: const EdgeInsets.all(8),
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               cardType: CardType.primary,
               children: [
                 LabelValueList(
@@ -153,20 +154,9 @@ class WorkDetailsCard extends StatelessWidget {
         return Column(
           children: detailsList.mapIndexed((index, e) {
             return ui_card.DigitCard(
-              spacing: 0.0,
-              margin: const EdgeInsets.all(8),
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               cardType: CardType.primary,
-              // padding: const EdgeInsets.all(8.0),
-              // child: getCardDetails(
-              //   context,
-              //   e['cardDetails'],
-              //   payload: e['payload'],
-              //   isAccept: acceptWorkOrderCode != null &&
-              //           e['cardDetails'][Constants.activeInboxStatus] == 'true'
-              //       ? false
-              //       : true,
-              //   contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
-              // ),
+              //spacing: 0.0,
               children: [
                 isWorkOrderInbox &&
                         acceptWorkOrderCode != null &&
@@ -372,6 +362,8 @@ class WorkDetailsCard extends StatelessWidget {
                         label: linkLabel ?? '',
                         onPressed: () => onLinkPressed!())
                     : const SizedBox.shrink(),
+
+                    
               ],
             );
           }).toList(),
@@ -380,8 +372,8 @@ class WorkDetailsCard extends StatelessWidget {
         return Column(
           children: detailsList.mapIndexed((index, e) {
             return ui_card.DigitCard(
-              spacing: 0.0,
-              margin: const EdgeInsets.all(8),
+              // spacing: 0.0,
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               cardType: CardType.primary,
 
               // child: getCardDetails(context, e,
@@ -438,7 +430,7 @@ class WorkDetailsCard extends StatelessWidget {
         return Column(
           children: detailsList.mapIndexed((index, e) {
             return ui_card.DigitCard(
-              margin: const EdgeInsets.all(8.0),
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               //padding: const EdgeInsets.all(8.0),
               cardType: CardType.primary,
 
@@ -867,6 +859,4 @@ class WorkDetailsCard extends StatelessWidget {
     //  : LabelValuePair(
     //   label: '', value: '');
   }
-
-
 }

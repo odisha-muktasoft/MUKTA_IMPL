@@ -418,6 +418,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                 // end
 
                 ui_component.LabeledField(
+                  isRequired: true,
                   label: t.translate(i18.wageSeeker.identityNameLabel),
                   child: ReactiveWrapperField(
                     validationMessages: {

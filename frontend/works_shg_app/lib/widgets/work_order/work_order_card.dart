@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,9 @@ class _WorkOrderCardState extends State<WorkOrderCard> {
 
   @override
   Widget build(BuildContext context) {
-    data = widget.items.remove("Status");
+  //  data = widget.items.remove("Status");
     return DigitCard(
-      margin: const EdgeInsets.only(left: 5, bottom: 8, right: 5),
+      margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
       cardType: CardType.primary,
       children: [
         LabelValueList(
@@ -43,31 +44,31 @@ class _WorkOrderCardState extends State<WorkOrderCard> {
                 value: entry.value,
               );
             }).toList()),
-        data != null
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Text(
-                      "Status",
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Text(
-                      data.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : const SizedBox.shrink(),
+        // data != null
+        //     ? Row(
+        //         mainAxisAlignment: MainAxisAlignment.start,
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         children: [
+        //           Expanded(
+        //             flex: 6,
+        //             child: Text(
+        //               "Status",
+        //               style: Theme.of(context).textTheme.headlineSmall,
+        //               textAlign: TextAlign.start,
+        //             ),
+        //           ),
+        //           Expanded(
+        //             flex: 5,
+        //             child: Text(
+        //               data.toString(),
+        //               style: TextStyle(
+        //                 color: Theme.of(context).colorScheme.onSurfaceVariant,
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       )
+        //     : const SizedBox.shrink(),
         widget.widget1 ?? const SizedBox.shrink(),
         widget.widget2 ?? const SizedBox.shrink(),
       ],

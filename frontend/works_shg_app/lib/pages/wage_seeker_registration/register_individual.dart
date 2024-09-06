@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_stepper.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,6 @@ import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
-import 'package:works_shg_app/widgets/back.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 //import 'package:works_shg_app/widgets/molecules/digit_stepper.dart';
@@ -28,11 +28,7 @@ import '../../blocs/wage_seeker_registration/wage_seeker_mdms_bloc.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../models/mdms/location_mdms.dart';
 import '../../models/mdms/wage_seeker_mdms.dart';
-import '../../utils/common_methods.dart';
 import '../../utils/models/file_picker_data.dart';
-import '../../widgets/side_bar.dart';
-import '../../widgets/atoms/app_bar_logo.dart';
-import '../../widgets/drawer_wrapper.dart';
 import '../../widgets/loaders.dart' as shg_loader;
 
 @RoutePage()
@@ -112,6 +108,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
+         backgroundColor: Theme.of(context).colorTheme.generic.background,
           appBar:customAppBar(),
           drawer: const MySideBar(),
           body: SingleChildScrollView(
