@@ -59,6 +59,10 @@ const transformDetailedData = (data) => {
             estimateDetail.name = estimateDetail.name.replace(']', ')');
         }
 
+        if (estimateDetail.name.includes("\"")){
+            estimateDetail.name = estimateDetail.name.replace(/"/g, "'");
+        }
+
         if(estimateDetail.length == null)estimateDetail.length=1;
         if(estimateDetail.width == null)estimateDetail.width=1;
         if(estimateDetail.height == null)estimateDetail.height=1;
