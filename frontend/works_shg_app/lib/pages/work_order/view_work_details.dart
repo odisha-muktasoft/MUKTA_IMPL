@@ -225,6 +225,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
 // Content EMP
   ui_component.ScrollableContent empScrollableContent(AppLocalizations t) {
     return ui_component.ScrollableContent(
+      backgroundColor: Theme.of(context).colorTheme.generic.background,
       children: [
         BlocBuilder<LocalizationBloc, LocalizationState>(
             builder: (context, localState) {
@@ -1094,6 +1095,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
 
   ui_component.ScrollableContent cboScrollableContent(AppLocalizations t) {
     return ui_component.ScrollableContent(
+      backgroundColor: Theme.of(context).colorTheme.generic.background,
       children: [
         BlocListener<WorkOrderPDFBloc, WorkOrderPDFState>(
           listener: (context, state) {

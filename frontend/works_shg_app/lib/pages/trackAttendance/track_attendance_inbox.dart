@@ -64,7 +64,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                 loaded: (AttendanceRegistersModel? attendanceModel) {
                   return projectList.isEmpty || projectList.length == 1
                       ? const SizedBox(
-                          height: 30,
+                          height: 50,
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: PoweredByDigit(
@@ -146,7 +146,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                   left: 8.0,
                                   top: 16.0,
                                   right: 8.0,
-                                  bottom: 0.0),
+                                  bottom: .0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,7 +167,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                             // ),
 
                             Padding(
-                              padding: const EdgeInsets.all(16.0),
+                              padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                               child: TextChunk(
                                 heading:
                                     '${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceRegisters)}(${projectList.length})',
@@ -194,8 +194,8 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                     attendanceRegistersModel:
                                         attendanceRegisters,
                                   ),
-                            const SizedBox(
-                              height: 16.0,
+                             SizedBox(
+                              height: Theme.of(context).spacerTheme.spacer4,
                             ),
                             projectList.isNotEmpty && projectList.length > 1
                                 ? const Align(

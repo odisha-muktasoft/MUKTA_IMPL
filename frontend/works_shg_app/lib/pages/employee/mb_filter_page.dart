@@ -137,7 +137,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: ui_component.ScrollableContent(
-                                    backgroundColor: Colors.transparent,
+                                   backgroundColor: Theme.of(context).colorTheme.generic.background,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,

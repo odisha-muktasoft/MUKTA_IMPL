@@ -54,6 +54,7 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
       body: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, state) {
           return ScrollableContent(
+            backgroundColor: Theme.of(context).colorTheme.generic.background,
             header: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

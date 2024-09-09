@@ -1,4 +1,5 @@
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
@@ -49,8 +50,6 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                   .where((e) => e.type != null)
                   .map((e) => '${e.level}')
                   .toList();
-      print("inside initstate");
-      print(selectedOptions);
     }
 
     super.initState();
@@ -60,8 +59,6 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
     setState(() {
       selectedOptions = options;
     });
-
-    print(selectedOptions);
   }
 
   @override
@@ -80,76 +77,80 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ui_card.DigitCard(
-                margin: const EdgeInsets.all(8),
-                cardType: CardType.primary,
-                children: [
-                  TextChunk(
-                    //  "Individual's Skill Details",
-                    heading: t.translate(i18.wageSeeker.individualSkillHeader),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // SingleChildScrollView(
-                  //   child: Column(
-                  //     children: [
-                  //       MultiSelectSearchCheckBox(
-                  //         label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                  //         onChange: _onSelectedOptionsChanged,
-                  //         options: widget.skills,
-                  //         hintText: t.translate(i18.attendanceMgmt.skill),
-                  //         selectedOptions: selectedOptions,
-                  //       ),
-                  //       const SizedBox(
-                  //         height: 10,
-                  //       ),
+              SizedBox(
+                height: MediaQuery.sizeOf(context).height * 0.50,
+                child: ui_card.DigitCard(
+                  margin: const EdgeInsets.all(8),
+                  cardType: CardType.primary,
+                  children: [
+                    TextChunk(
+                      //  "Individual's Skill Details",
+                      heading:
+                          t.translate(i18.wageSeeker.individualSkillHeader),
+                    ),
+                     SizedBox(
+                      height: Theme.of(context).spacerTheme.spacer4,
+                    ),
+                    // SingleChildScrollView(
+                    //   child: Column(
+                    //     children: [
+                    //       MultiSelectSearchCheckBox(
+                    //         label: t.translate(i18.attendanceMgmt.skill) + ' *',
+                    //         onChange: _onSelectedOptionsChanged,
+                    //         options: widget.skills,
+                    //         hintText: t.translate(i18.attendanceMgmt.skill),
+                    //         selectedOptions: selectedOptions,
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 10,
+                    //       ),
 
-                  //       // MultiSelectDropDown(
+                    //       // MultiSelectDropDown(
 
-                  //       //   showSelectAll: true,
+                    //       //   showSelectAll: true,
 
-                  //       //   isSearchable: true,
-                  //       //   options: widget.skills
-                  //       //       .map((e) => DropdownItem(
-                  //       //           name: t.translate(
-                  //       //               "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                  //       //           code: e.toString()))
-                  //       //       .toList(),
-                  //       //   onOptionSelected:
-                  //       //       (List<DropdownItem> selectedOptionss) {
-                  //       //         _onSelectedOptionsChanged(selectedOptionss.map((e) => e.code).toList());
-                  //       //       },
-                  //       //       // selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
-                  //       //       //     name: t.translate(
-                  //       //       //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                  //       //       //     code: e.toString()))
-                  //       //       // .toList():[],
-                  //       // ),
-                  //     ],
-                  //   ),
-                  // ),
+                    //       //   isSearchable: true,
+                    //       //   options: widget.skills
+                    //       //       .map((e) => DropdownItem(
+                    //       //           name: t.translate(
+                    //       //               "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                    //       //           code: e.toString()))
+                    //       //       .toList(),
+                    //       //   onOptionSelected:
+                    //       //       (List<DropdownItem> selectedOptionss) {
+                    //       //         _onSelectedOptionsChanged(selectedOptionss.map((e) => e.code).toList());
+                    //       //       },
+                    //       //       // selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
+                    //       //       //     name: t.translate(
+                    //       //       //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                    //       //       //     code: e.toString()))
+                    //       //       // .toList():[],
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // ),
 
-                  MultiSelectDropDown(
-                    showSelectAll: true,
-                    isSearchable: true,
-                    options: widget.skills
-                        .map((e) => DropdownItem(
-                            name: t.translate(
-                                "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                            code: e.toString()))
-                        .toList(),
-                    onOptionSelected: (List<DropdownItem> selectedOptionss) {
-                      _onSelectedOptionsChanged(
-                          selectedOptionss.map((e) => e.code).toList());
-                    },
-                    selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
-                        name: t.translate(
-                            "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                        code: e.toString()))
-                    .toList():[],
-                  ),
-                ],
+                    MultiSelectDropDown(
+                      showSelectAll: true,
+                      isSearchable: true,
+                      options: widget.skills
+                          .map((e) => DropdownItem(
+                              name: t.translate(
+                                  "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                              code: e.toString()))
+                          .toList(),
+                      onOptionSelected: (List<DropdownItem> selectedOptionss) {
+                        _onSelectedOptionsChanged(
+                            selectedOptionss.map((e) => e.code).toList());
+                      },
+                      // selectedOptions: selectedOptions.map((e) => DropdownItem(
+                      //     name: t.translate(
+                      //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                      //     code: e.toString()))
+                      // .toList(),
+                    ),
+                  ],
+                ),
               ),
               Center(
                 child: Container(

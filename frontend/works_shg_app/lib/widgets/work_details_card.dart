@@ -89,55 +89,98 @@ class WorkDetailsCard extends StatelessWidget {
       case 1:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return ui_card.DigitCard(
-              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-              cardType: CardType.primary,
-              children: [
-                LabelValueList(
-                  maxLines: 3,
-                  labelFlex: 5,
-                  valueFlex: 5,
-                  items: getCardDetails(
-                    context,
-                    e,
-                    attendanceRegisterId: attendanceRegistersModel![index].id,
-                    attendanceRegister: attendanceRegistersModel![index],
+            if ((showButtonLink! && linkLabel!.isNotEmpty)) {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                children: [
+                  LabelValueList(
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e,
+                      attendanceRegisterId: attendanceRegistersModel![index].id,
+                      attendanceRegister: attendanceRegistersModel![index],
+                    ),
                   ),
-                ),
-                Button(
-                  label: elevatedButtonLabel,
-                  onPressed: () {
-                    if (isManageAttendance) {
-                      context.router.push(AttendanceRegisterTableRoute(
-                          registerId:
-                              attendanceRegistersModel![index].id.toString(),
+                  Button(
+                    label: elevatedButtonLabel,
+                    onPressed: () {
+                      if (isManageAttendance) {
+                        context.router.push(AttendanceRegisterTableRoute(
+                            registerId:
+                                attendanceRegistersModel![index].id.toString(),
+                            tenantId: attendanceRegistersModel![index]!
+                                .tenantId
+                                .toString()));
+                      } else {
+                        context.router.push(TrackAttendanceRoute(
+                          id: attendanceRegistersModel![index].id.toString(),
                           tenantId: attendanceRegistersModel![index]!
                               .tenantId
-                              .toString()));
-                    } else {
-                      context.router.push(TrackAttendanceRoute(
-                        id: attendanceRegistersModel![index].id.toString(),
-                        tenantId: attendanceRegistersModel![index]!
-                            .tenantId
-                            .toString(),
-                      ));
-                    }
-                  },
-                  type: ButtonType.primary,
-                  size: ButtonSize.large,
-                  mainAxisSize: MainAxisSize.max,
-                ),
-                (showButtonLink! && linkLabel!.isNotEmpty)
-                    ? Button(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        type: ButtonType.tertiary,
-                        size: ButtonSize.large,
-                        mainAxisSize: MainAxisSize.max,
-                        label: linkLabel ?? '',
-                        onPressed: () => onLinkPressed!())
-                    : const SizedBox.shrink(),
-              ],
-            );
+                              .toString(),
+                        ));
+                      }
+                    },
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                  ),
+                  (showButtonLink! && linkLabel!.isNotEmpty)
+                      ? Button(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          type: ButtonType.tertiary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                          label: linkLabel ?? '',
+                          onPressed: () => onLinkPressed!())
+                      : const SizedBox.shrink(),
+                ],
+              );
+            } else {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                children: [
+                  LabelValueList(
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e,
+                      attendanceRegisterId: attendanceRegistersModel![index].id,
+                      attendanceRegister: attendanceRegistersModel![index],
+                    ),
+                  ),
+                  Button(
+                    label: elevatedButtonLabel,
+                    onPressed: () {
+                      if (isManageAttendance) {
+                        context.router.push(AttendanceRegisterTableRoute(
+                            registerId:
+                                attendanceRegistersModel![index].id.toString(),
+                            tenantId: attendanceRegistersModel![index]!
+                                .tenantId
+                                .toString()));
+                      } else {
+                        context.router.push(TrackAttendanceRoute(
+                          id: attendanceRegistersModel![index].id.toString(),
+                          tenantId: attendanceRegistersModel![index]!
+                              .tenantId
+                              .toString(),
+                        ));
+                      }
+                    },
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                  ),
+                ],
+              );
+            }
             // return DigitCard(
             //   padding: const EdgeInsets.all(8.0),
             // child: getCardDetails(
@@ -153,304 +196,998 @@ class WorkDetailsCard extends StatelessWidget {
       case 2:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return ui_card.DigitCard(
-              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-              cardType: CardType.primary,
-              //spacing: 0.0,
-              children: [
-                isWorkOrderInbox &&
-                        acceptWorkOrderCode != null &&
-                        e['cardDetails'][Constants.activeInboxStatus] == 'true'
-                    ? Align(
-                        alignment: Alignment.centerLeft,
-                        child: SvgPicture.asset('assets/svg/new_tag.svg'),
-                      )
-                    : const SizedBox.shrink(),
-                LabelValueList(
-                  heading: ((viewWorkOrder || orgProfile) && cardTitle != null)
-                      ? cardTitle
-                      : null,
-                  maxLines: 3,
-                  labelFlex: 5,
-                  valueFlex: 5,
-                  items: getCardDetails(
-                    context,
-                    e['cardDetails'],
-                    payload: e['payload'],
-                    isAccept: acceptWorkOrderCode != null &&
-                            e['cardDetails'][Constants.activeInboxStatus] ==
-                                'true'
-                        ? false
-                        : true,
-                    contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
+            // return ui_card.DigitCard(
+            //   margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+            //   cardType: CardType.primary,
+            //   //spacing: 0.0,
+            //   children: [
+            //     isWorkOrderInbox &&
+            //             acceptWorkOrderCode != null &&
+            //             e['cardDetails'][Constants.activeInboxStatus] == 'true'
+            //         ? Align(
+            //             alignment: Alignment.centerLeft,
+            //             child: SvgPicture.asset('assets/svg/new_tag.svg'),
+            //           )
+            //         : const SizedBox.shrink(),
+            //     LabelValueList(
+            //       heading: ((viewWorkOrder || orgProfile) && cardTitle != null)
+            //           ? cardTitle
+            //           : null,
+            //       maxLines: 3,
+            //       labelFlex: 5,
+            //       valueFlex: 5,
+            //       items: getCardDetails(
+            //         context,
+            //         e['cardDetails'],
+            //         payload: e['payload'],
+            //         isAccept: acceptWorkOrderCode != null &&
+            //                 e['cardDetails'][Constants.activeInboxStatus] ==
+            //                     'true'
+            //             ? false
+            //             : true,
+            //         contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
+            //       ),
+            //     ),
+            //     isWorkOrderInbox ||
+            //             acceptWorkOrderCode != null &&
+            //                 e['cardDetails'][Constants.activeInboxStatus] ==
+            //                     'true'
+            //         ? Button(
+            //             label: AppLocalizations.of(context)
+            //                 .translate(i18.common.viewDetails),
+            //             onPressed: () {
+            //               context.router.push(
+            //                 ViewWorkDetailsRoute(
+            //                   contractNumber: e['cardDetails']
+            //                           [i18.workOrder.workOrderNo]
+            //                       .toString(),
+            //                   wfStatus: e['payload']!['wfStatus'].toString(),
+            //                 ),
+            //               );
+            //             },
+            //             type: ButtonType.tertiary,
+            //             size: ButtonSize.large,
+            //           )
+            //         : const SizedBox.shrink(),
+            //     acceptWorkOrderCode != null &&
+            //             e['cardDetails'][Constants.activeInboxStatus] == 'true'
+            //         ? Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               Expanded(
+            //                 flex: 10,
+            //                 child: Button(
+            //                     mainAxisSize: MainAxisSize.min,
+            //                     label: outlinedButtonLabel,
+            //                     onPressed: () {
+            //                       showDialog(
+            //                         context: context,
+            //                         builder: (context) {
+            //                           return Popup(
+            //                             onCrossTap: () {
+            //                               Navigator.of(context,
+            //                                       rootNavigator: true)
+            //                                   .pop();
+            //                             },
+            //                             type: PopUpType.simple,
+            //                             title: AppLocalizations.of(context)
+            //                                 .translate(i18.common.warning),
+            //                             description:
+            //                                 AppLocalizations.of(context)
+            //                                     .translate(
+            //                                         i18.workOrder.warningMsg),
+            //                             actions: [
+            //                               Button(
+            //                                   label:
+            //                                       AppLocalizations.of(context)
+            //                                           .translate(
+            //                                               i18.common.confirm),
+            //                                   onPressed: () {
+            //                                     context
+            //                                         .read<
+            //                                             DeclineWorkOrderBloc>()
+            //                                         .add(
+            //                                           WorkOrderDeclineEvent(
+            //                                               contractsModel:
+            //                                                   e['payload'],
+            //                                               action: 'DECLINE',
+            //                                               comments:
+            //                                                   'Work Order has been declined by CBO'),
+            //                                         );
+            //                                     Navigator.of(context,
+            //                                             rootNavigator: true)
+            //                                         .pop();
+            //                                   },
+            //                                   type: ButtonType.primary,
+            //                                   size: ButtonSize.large)
+            //                             ],
+            //                           );
+            //                         },
+            //                       );
+            //                     },
+            //                     type: ButtonType.secondary,
+            //                     size: ButtonSize.large),
+            //               ),
+            //               const Expanded(
+            //                   flex: 1,
+            //                   child: SizedBox(
+            //                     width: 5,
+            //                   )),
+            //               Expanded(
+            //                 flex: 10,
+            //                 child: Button(
+            //                     mainAxisSize: MainAxisSize.min,
+            //                     label: elevatedButtonLabel,
+            //                     onPressed: () {
+            //                       context.read<AcceptWorkOrderBloc>().add(
+            //                             WorkOrderAcceptEvent(
+            //                                 contractsModel: e['payload'],
+            //                                 action: 'ACCEPT',
+            //                                 comments:
+            //                                     'Work Order has been accepted by CBO'),
+            //                           );
+            //                     },
+            //                     type: ButtonType.primary,
+            //                     size: ButtonSize.large),
+            //               ),
+            //             ],
+            //           )
+            //         : const SizedBox.shrink(),
+            //     (isWorkOrderInbox && acceptWorkOrderCode != null) &&
+            //             !(e['cardDetails'][Constants.activeInboxStatus] ==
+            //                 'true')
+            //         ? Button(
+            //             mainAxisSize: MainAxisSize.max,
+            //             label: AppLocalizations.of(context)
+            //                 .translate(i18.common.takeAction),
+            //             onPressed: () {
+            //               showDialog(
+            //                 context: context,
+            //                 builder: (context) {
+            //                   return ActionCard(actions: [
+            //                     Button(
+            //                       label: AppLocalizations.of(context)
+            //                           .translate(i18.home.manageWageSeekers),
+            //                       onPressed: () {
+            //                         context.router.push(
+            //                             AttendanceRegisterTableRoute(
+            //                                 registerId: e['payload']![
+            //                                             'additionalDetails']
+            //                                         ['attendanceRegisterNumber']
+            //                                     .toString(),
+            //                                 tenantId: e['payload']['tenantId']
+            //                                     .toString()));
+            //                         Navigator.of(context, rootNavigator: true)
+            //                             .pop();
+            //                       },
+            //                       type: ButtonType.secondary,
+            //                       size: ButtonSize.large,
+            //                       mainAxisSize: MainAxisSize.max,
+            //                       prefixIcon: Icons.fingerprint,
+            //                     ),
+            //                     Button(
+            //                       label: AppLocalizations.of(context).translate(
+            //                           i18.workOrder.requestTimeExtension),
+            //                       onPressed: () {
+            //                         Navigator.of(context, rootNavigator: true)
+            //                             .pop();
+            //                         context
+            //                             .read<ValidTimeExtCreationsSearchBloc>()
+            //                             .add(SearchValidTimeExtCreationsEvent(
+            //                                 contract: ContractsMapper.fromMap(
+            //                                     e['payload'] ?? {}),
+            //                                 contractNo: e['cardDetails']
+            //                                         [i18.workOrder.workOrderNo]
+            //                                     .toString(),
+            //                                 tenantId: e['payload']!['tenantId']
+            //                                     .toString(),
+            //                                 status: 'APPROVED'));
+            //                       },
+            //                       type: ButtonType.secondary,
+            //                       size: ButtonSize.large,
+            //                       mainAxisSize: MainAxisSize.max,
+            //                       prefixIcon: Icons.calendar_today_rounded,
+            //                     )
+            //                   ]);
+            //                 },
+            //               );
+            //             },
+            //             type: ButtonType.primary,
+            //             size: ButtonSize.large,
+            //           )
+            //         : const SizedBox.shrink(),
+            //     (showButtonLink! && linkLabel!.isNotEmpty)
+            //         ? Button(
+            //             mainAxisAlignment: MainAxisAlignment.start,
+            //             type: ButtonType.tertiary,
+            //             size: ButtonSize.large,
+            //             mainAxisSize: MainAxisSize.max,
+            //             label: linkLabel ?? '',
+            //             onPressed: () => onLinkPressed!())
+            //         : const SizedBox.shrink(),
+            //   ],
+            // );
+            if ((acceptWorkOrderCode != null &&
+                    e['cardDetails'][Constants.activeInboxStatus] == 'true') &&
+                (isWorkOrderInbox ||
+                    acceptWorkOrderCode != null &&
+                        e['cardDetails'][Constants.activeInboxStatus] ==
+                            'true')) {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                //spacing: 0.0,
+                children: [
+                  isWorkOrderInbox &&
+                          acceptWorkOrderCode != null &&
+                          e['cardDetails'][Constants.activeInboxStatus] ==
+                              'true'
+                      ? Align(
+                          alignment: Alignment.centerLeft,
+                          child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                        )
+                      : const SizedBox.shrink(),
+                  LabelValueList(
+                    heading:
+                        ((viewWorkOrder || orgProfile) && cardTitle != null)
+                            ? cardTitle
+                            : null,
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e['cardDetails'],
+                      payload: e['payload'],
+                      isAccept: acceptWorkOrderCode != null &&
+                              e['cardDetails'][Constants.activeInboxStatus] ==
+                                  'true'
+                          ? false
+                          : true,
+                      contractNumber: e['cardDetails']
+                          [i18.workOrder.workOrderNo],
+                    ),
                   ),
-                ),
-                isWorkOrderInbox ||
-                        acceptWorkOrderCode != null &&
-                            e['cardDetails'][Constants.activeInboxStatus] ==
-                                'true'
-                    ? Button(
-                        label: AppLocalizations.of(context)
-                            .translate(i18.common.viewDetails),
-                        onPressed: () {
-                          context.router.push(
-                            ViewWorkDetailsRoute(
-                              contractNumber: e['cardDetails']
-                                      [i18.workOrder.workOrderNo]
-                                  .toString(),
-                              wfStatus: e['payload']!['wfStatus'].toString(),
-                            ),
-                          );
-                        },
-                        type: ButtonType.tertiary,
-                        size: ButtonSize.large,
-                      )
-                    : const SizedBox.shrink(),
-                acceptWorkOrderCode != null &&
-                        e['cardDetails'][Constants.activeInboxStatus] == 'true'
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 10,
-                            child: Button(
-                                mainAxisSize: MainAxisSize.min,
-                                label: outlinedButtonLabel,
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Popup(
-                                        onCrossTap: () {
-                                          Navigator.of(context,
-                                                  rootNavigator: true)
-                                              .pop();
-                                        },
-                                        type: PopUpType.simple,
-                                        title: AppLocalizations.of(context)
-                                            .translate(i18.common.warning),
-                                        description:
-                                            AppLocalizations.of(context)
-                                                .translate(
-                                                    i18.workOrder.warningMsg),
-                                        actions: [
-                                          Button(
-                                              label:
-                                                  AppLocalizations.of(context)
-                                                      .translate(
-                                                          i18.common.confirm),
-                                              onPressed: () {
-                                                context
-                                                    .read<
-                                                        DeclineWorkOrderBloc>()
-                                                    .add(
-                                                      WorkOrderDeclineEvent(
-                                                          contractsModel:
-                                                              e['payload'],
-                                                          action: 'DECLINE',
-                                                          comments:
-                                                              'Work Order has been declined by CBO'),
-                                                    );
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop();
-                                              },
-                                              type: ButtonType.primary,
-                                              size: ButtonSize.large)
-                                        ],
-                                      );
+                  Button(
+                    label: AppLocalizations.of(context)
+                        .translate(i18.common.viewDetails),
+                    onPressed: () {
+                      context.router.push(
+                        ViewWorkDetailsRoute(
+                          contractNumber: e['cardDetails']
+                                  [i18.workOrder.workOrderNo]
+                              .toString(),
+                          wfStatus: e['payload']!['wfStatus'].toString(),
+                        ),
+                      );
+                    },
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 10,
+                        child: Button(
+                            mainAxisSize: MainAxisSize.min,
+                            label: outlinedButtonLabel,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Popup(
+                                    onCrossTap: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
                                     },
+                                    type: PopUpType.simple,
+                                    title: AppLocalizations.of(context)
+                                        .translate(i18.common.warning),
+                                    description: AppLocalizations.of(context)
+                                        .translate(i18.workOrder.warningMsg),
+                                    actions: [
+                                      Button(
+                                          label: AppLocalizations.of(context)
+                                              .translate(i18.common.confirm),
+                                          onPressed: () {
+                                            context
+                                                .read<DeclineWorkOrderBloc>()
+                                                .add(
+                                                  WorkOrderDeclineEvent(
+                                                      contractsModel:
+                                                          e['payload'],
+                                                      action: 'DECLINE',
+                                                      comments:
+                                                          'Work Order has been declined by CBO'),
+                                                );
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop();
+                                          },
+                                          type: ButtonType.primary,
+                                          size: ButtonSize.large)
+                                    ],
                                   );
                                 },
-                                type: ButtonType.secondary,
-                                size: ButtonSize.large),
-                          ),
-                          const Expanded(
-                              flex: 1,
-                              child: SizedBox(
-                                width: 5,
-                              )),
-                          Expanded(
-                            flex: 10,
-                            child: Button(
-                                mainAxisSize: MainAxisSize.min,
-                                label: elevatedButtonLabel,
-                                onPressed: () {
-                                  context.read<AcceptWorkOrderBloc>().add(
-                                        WorkOrderAcceptEvent(
-                                            contractsModel: e['payload'],
-                                            action: 'ACCEPT',
-                                            comments:
-                                                'Work Order has been accepted by CBO'),
-                                      );
-                                },
-                                type: ButtonType.primary,
-                                size: ButtonSize.large),
-                          ),
-                        ],
-                      )
-                    : const SizedBox.shrink(),
-                (isWorkOrderInbox && acceptWorkOrderCode != null) &&
-                        !(e['cardDetails'][Constants.activeInboxStatus] ==
-                            'true')
-                    ? Button(
-                        mainAxisSize: MainAxisSize.max,
-                        label: AppLocalizations.of(context)
-                            .translate(i18.common.takeAction),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return ActionCard(actions: [
-                                Button(
-                                  label: AppLocalizations.of(context)
-                                      .translate(i18.home.manageWageSeekers),
-                                  onPressed: () {
-                                    context.router.push(
-                                        AttendanceRegisterTableRoute(
-                                            registerId: e['payload']![
-                                                        'additionalDetails']
+                              );
+                            },
+                            type: ButtonType.secondary,
+                            size: ButtonSize.large),
+                      ),
+                      const Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            width: 5,
+                          )),
+                      Expanded(
+                        flex: 10,
+                        child: Button(
+                            mainAxisSize: MainAxisSize.min,
+                            label: elevatedButtonLabel,
+                            onPressed: () {
+                              context.read<AcceptWorkOrderBloc>().add(
+                                    WorkOrderAcceptEvent(
+                                        contractsModel: e['payload'],
+                                        action: 'ACCEPT',
+                                        comments:
+                                            'Work Order has been accepted by CBO'),
+                                  );
+                            },
+                            type: ButtonType.primary,
+                            size: ButtonSize.large),
+                      ),
+                    ],
+                  ),
+
+                  // (showButtonLink! && linkLabel!.isNotEmpty)
+                  //     ? Button(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         type: ButtonType.tertiary,
+                  //         size: ButtonSize.large,
+                  //         mainAxisSize: MainAxisSize.max,
+                  //         label: linkLabel ?? '',
+                  //         onPressed: () => onLinkPressed!())
+                  //     : const SizedBox.shrink(),
+                ],
+              );
+            } else if ((isWorkOrderInbox ||
+                acceptWorkOrderCode != null &&
+                    e['cardDetails'][Constants.activeInboxStatus] == 'true')) {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                //spacing: 0.0,
+                children: [
+                  isWorkOrderInbox &&
+                          acceptWorkOrderCode != null &&
+                          e['cardDetails'][Constants.activeInboxStatus] ==
+                              'true'
+                      ? Align(
+                          alignment: Alignment.centerLeft,
+                          child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                        )
+                      : const SizedBox.shrink(),
+                  LabelValueList(
+                    heading:
+                        ((viewWorkOrder || orgProfile) && cardTitle != null)
+                            ? cardTitle
+                            : null,
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e['cardDetails'],
+                      payload: e['payload'],
+                      isAccept: acceptWorkOrderCode != null &&
+                              e['cardDetails'][Constants.activeInboxStatus] ==
+                                  'true'
+                          ? false
+                          : true,
+                      contractNumber: e['cardDetails']
+                          [i18.workOrder.workOrderNo],
+                    ),
+                  ),
+                  Button(
+                    label: AppLocalizations.of(context)
+                        .translate(i18.common.viewDetails),
+                    onPressed: () {
+                      context.router.push(
+                        ViewWorkDetailsRoute(
+                          contractNumber: e['cardDetails']
+                                  [i18.workOrder.workOrderNo]
+                              .toString(),
+                          wfStatus: e['payload']!['wfStatus'].toString(),
+                        ),
+                      );
+                    },
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                  ),
+                  (isWorkOrderInbox && acceptWorkOrderCode != null) &&
+                          !(e['cardDetails'][Constants.activeInboxStatus] ==
+                              'true')
+                      ? Button(
+                          mainAxisSize: MainAxisSize.max,
+                          label: AppLocalizations.of(context)
+                              .translate(i18.common.takeAction),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ActionCard(actions: [
+                                  Button(
+                                    label: AppLocalizations.of(context)
+                                        .translate(i18.home.manageWageSeekers),
+                                    onPressed: () {
+                                      context.router.push(
+                                          AttendanceRegisterTableRoute(
+                                              registerId: e['payload']![
+                                                          'additionalDetails'][
+                                                      'attendanceRegisterNumber']
+                                                  .toString(),
+                                              tenantId: e['payload']['tenantId']
+                                                  .toString()));
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+                                    },
+                                    type: ButtonType.secondary,
+                                    size: ButtonSize.large,
+                                    mainAxisSize: MainAxisSize.max,
+                                    prefixIcon: Icons.fingerprint,
+                                  ),
+                                  Button(
+                                    label: AppLocalizations.of(context)
+                                        .translate(
+                                            i18.workOrder.requestTimeExtension),
+                                    onPressed: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+                                      context
+                                          .read<
+                                              ValidTimeExtCreationsSearchBloc>()
+                                          .add(SearchValidTimeExtCreationsEvent(
+                                              contract: ContractsMapper.fromMap(
+                                                  e['payload'] ?? {}),
+                                              contractNo: e['cardDetails'][
+                                                      i18.workOrder.workOrderNo]
+                                                  .toString(),
+                                              tenantId:
+                                                  e['payload']!['tenantId']
+                                                      .toString(),
+                                              status: 'APPROVED'));
+                                    },
+                                    type: ButtonType.secondary,
+                                    size: ButtonSize.large,
+                                    mainAxisSize: MainAxisSize.max,
+                                    prefixIcon: Icons.calendar_today_rounded,
+                                  )
+                                ]);
+                              },
+                            );
+                          },
+                          type: ButtonType.primary,
+                          size: ButtonSize.large,
+                        )
+                      : const SizedBox.shrink(),
+                  // (showButtonLink! && linkLabel!.isNotEmpty)
+                  //     ? Button(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         type: ButtonType.tertiary,
+                  //         size: ButtonSize.large,
+                  //         mainAxisSize: MainAxisSize.max,
+                  //         label: linkLabel ?? '',
+                  //         onPressed: () => onLinkPressed!())
+                  //     : const SizedBox.shrink(),
+                ],
+              );
+            } else if ((isWorkOrderInbox && acceptWorkOrderCode != null) &&
+                !(e['cardDetails'][Constants.activeInboxStatus] == 'true')) {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                //spacing: 0.0,
+                children: [
+                  isWorkOrderInbox &&
+                          acceptWorkOrderCode != null &&
+                          e['cardDetails'][Constants.activeInboxStatus] ==
+                              'true'
+                      ? Align(
+                          alignment: Alignment.centerLeft,
+                          child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                        )
+                      : const SizedBox.shrink(),
+                  LabelValueList(
+                    heading:
+                        ((viewWorkOrder || orgProfile) && cardTitle != null)
+                            ? cardTitle
+                            : null,
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e['cardDetails'],
+                      payload: e['payload'],
+                      isAccept: acceptWorkOrderCode != null &&
+                              e['cardDetails'][Constants.activeInboxStatus] ==
+                                  'true'
+                          ? false
+                          : true,
+                      contractNumber: e['cardDetails']
+                          [i18.workOrder.workOrderNo],
+                    ),
+                  ),
+
+                  Button(
+                    mainAxisSize: MainAxisSize.max,
+                    label: AppLocalizations.of(context)
+                        .translate(i18.common.takeAction),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ActionCard(actions: [
+                            Button(
+                              label: AppLocalizations.of(context)
+                                  .translate(i18.home.manageWageSeekers),
+                              onPressed: () {
+                                context.router.push(
+                                    AttendanceRegisterTableRoute(
+                                        registerId:
+                                            e['payload']!['additionalDetails']
                                                     ['attendanceRegisterNumber']
                                                 .toString(),
-                                            tenantId: e['payload']['tenantId']
-                                                .toString()));
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
-                                  },
-                                  type: ButtonType.secondary,
-                                  size: ButtonSize.large,
-                                  mainAxisSize: MainAxisSize.max,
-                                  prefixIcon: Icons.fingerprint,
-                                ),
-                                Button(
-                                  label: AppLocalizations.of(context).translate(
-                                      i18.workOrder.requestTimeExtension),
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
-                                    context
-                                        .read<ValidTimeExtCreationsSearchBloc>()
-                                        .add(SearchValidTimeExtCreationsEvent(
-                                            contract: ContractsMapper.fromMap(
-                                                e['payload'] ?? {}),
-                                            contractNo: e['cardDetails']
-                                                    [i18.workOrder.workOrderNo]
-                                                .toString(),
-                                            tenantId: e['payload']!['tenantId']
-                                                .toString(),
-                                            status: 'APPROVED'));
-                                  },
-                                  type: ButtonType.secondary,
-                                  size: ButtonSize.large,
-                                  mainAxisSize: MainAxisSize.max,
-                                  prefixIcon: Icons.calendar_today_rounded,
-                                )
-                              ]);
-                            },
-                          );
+                                        tenantId: e['payload']['tenantId']
+                                            .toString()));
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                              },
+                              type: ButtonType.secondary,
+                              size: ButtonSize.large,
+                              mainAxisSize: MainAxisSize.max,
+                              prefixIcon: Icons.fingerprint,
+                            ),
+                            Button(
+                              label: AppLocalizations.of(context).translate(
+                                  i18.workOrder.requestTimeExtension),
+                              onPressed: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
+                                context
+                                    .read<ValidTimeExtCreationsSearchBloc>()
+                                    .add(SearchValidTimeExtCreationsEvent(
+                                        contract: ContractsMapper.fromMap(
+                                            e['payload'] ?? {}),
+                                        contractNo: e['cardDetails']
+                                                [i18.workOrder.workOrderNo]
+                                            .toString(),
+                                        tenantId: e['payload']!['tenantId']
+                                            .toString(),
+                                        status: 'APPROVED'));
+                              },
+                              type: ButtonType.secondary,
+                              size: ButtonSize.large,
+                              mainAxisSize: MainAxisSize.max,
+                              prefixIcon: Icons.calendar_today_rounded,
+                            )
+                          ]);
                         },
-                        type: ButtonType.primary,
-                        size: ButtonSize.large,
-                      )
-                    : const SizedBox.shrink(),
-                (showButtonLink! && linkLabel!.isNotEmpty)
-                    ? Button(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        type: ButtonType.tertiary,
-                        size: ButtonSize.large,
-                        mainAxisSize: MainAxisSize.max,
-                        label: linkLabel ?? '',
-                        onPressed: () => onLinkPressed!())
-                    : const SizedBox.shrink(),
+                      );
+                    },
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                  ),
+                  // (showButtonLink! && linkLabel!.isNotEmpty)
+                  //     ? Button(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         type: ButtonType.tertiary,
+                  //         size: ButtonSize.large,
+                  //         mainAxisSize: MainAxisSize.max,
+                  //         label: linkLabel ?? '',
+                  //         onPressed: () => onLinkPressed!())
+                  //     : const SizedBox.shrink(),
+                ],
+              );
+            } else if (acceptWorkOrderCode != null &&
+                e['cardDetails'][Constants.activeInboxStatus] == 'true') {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                //spacing: 0.0,
+                children: [
+                  isWorkOrderInbox &&
+                          acceptWorkOrderCode != null &&
+                          e['cardDetails'][Constants.activeInboxStatus] ==
+                              'true'
+                      ? Align(
+                          alignment: Alignment.centerLeft,
+                          child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                        )
+                      : const SizedBox.shrink(),
+                  LabelValueList(
+                    heading:
+                        ((viewWorkOrder || orgProfile) && cardTitle != null)
+                            ? cardTitle
+                            : null,
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e['cardDetails'],
+                      payload: e['payload'],
+                      isAccept: acceptWorkOrderCode != null &&
+                              e['cardDetails'][Constants.activeInboxStatus] ==
+                                  'true'
+                          ? false
+                          : true,
+                      contractNumber: e['cardDetails']
+                          [i18.workOrder.workOrderNo],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 10,
+                        child: Button(
+                            mainAxisSize: MainAxisSize.min,
+                            label: outlinedButtonLabel,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Popup(
+                                    onCrossTap: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop();
+                                    },
+                                    type: PopUpType.simple,
+                                    title: AppLocalizations.of(context)
+                                        .translate(i18.common.warning),
+                                    description: AppLocalizations.of(context)
+                                        .translate(i18.workOrder.warningMsg),
+                                    actions: [
+                                      Button(
+                                          label: AppLocalizations.of(context)
+                                              .translate(i18.common.confirm),
+                                          onPressed: () {
+                                            context
+                                                .read<DeclineWorkOrderBloc>()
+                                                .add(
+                                                  WorkOrderDeclineEvent(
+                                                      contractsModel:
+                                                          e['payload'],
+                                                      action: 'DECLINE',
+                                                      comments:
+                                                          'Work Order has been declined by CBO'),
+                                                );
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop();
+                                          },
+                                          type: ButtonType.primary,
+                                          size: ButtonSize.large)
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            type: ButtonType.secondary,
+                            size: ButtonSize.large),
+                      ),
+                      const Expanded(
+                          flex: 1,
+                          child: SizedBox(
+                            width: 5,
+                          )),
+                      Expanded(
+                        flex: 10,
+                        child: Button(
+                            mainAxisSize: MainAxisSize.min,
+                            label: elevatedButtonLabel,
+                            onPressed: () {
+                              context.read<AcceptWorkOrderBloc>().add(
+                                    WorkOrderAcceptEvent(
+                                        contractsModel: e['payload'],
+                                        action: 'ACCEPT',
+                                        comments:
+                                            'Work Order has been accepted by CBO'),
+                                  );
+                            },
+                            type: ButtonType.primary,
+                            size: ButtonSize.large),
+                      ),
+                    ],
+                  ),
 
-                    
-              ],
-            );
+                  // (showButtonLink! && linkLabel!.isNotEmpty)
+                  //     ? Button(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         type: ButtonType.tertiary,
+                  //         size: ButtonSize.large,
+                  //         mainAxisSize: MainAxisSize.max,
+                  //         label: linkLabel ?? '',
+                  //         onPressed: () => onLinkPressed!())
+                  //     : const SizedBox.shrink(),
+                ],
+              );
+            } else {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                //spacing: 0.0,
+                children: [
+                  // isWorkOrderInbox &&
+                  //         acceptWorkOrderCode != null &&
+                  //         e['cardDetails'][Constants.activeInboxStatus] ==
+                  //             'true'
+                  //     ? Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                  //       )
+                  //     : const SizedBox.shrink(),
+                  LabelValueList(
+                    heading:
+                        ((viewWorkOrder || orgProfile) && cardTitle != null)
+                            ? cardTitle
+                            : null,
+                    maxLines: 3,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: getCardDetails(
+                      context,
+                      e['cardDetails'],
+                      payload: e['payload'],
+                      isAccept: acceptWorkOrderCode != null &&
+                              e['cardDetails'][Constants.activeInboxStatus] ==
+                                  'true'
+                          ? false
+                          : true,
+                      contractNumber: e['cardDetails']
+                          [i18.workOrder.workOrderNo],
+                    ),
+                  ),
+                ],
+              );
+            }
           }).toList(),
         );
       case 3:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return ui_card.DigitCard(
-              // spacing: 0.0,
-              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-              cardType: CardType.primary,
+            if ((isSHGInbox && (showButtonLink! && linkLabel!.isNotEmpty))) {
+              return ui_card.DigitCard(
+                // spacing: 0.0,
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
 
-              // child: getCardDetails(context, e,
-              //     musterRoll: musterRollsModel![index]),
-              children: [
-                LabelValueList(
-                  labelFlex: 5,
-                  valueFlex: 5,
-                  maxLines: 3,
-                  items: getCardDetails(context, e,
-                      musterRoll: musterRollsModel![index]),
-                ),
-                isSHGInbox
-                    ? Button(
-                        type: ButtonType.primary,
-                        size: ButtonSize.large,
-                        mainAxisSize: MainAxisSize.max,
-                        onPressed: () {
-                          context.router.push(SHGInboxRoute(
-                              tenantId:
-                                  musterRollsModel![index].tenantId.toString(),
-                              musterRollNo: musterRollsModel![index]
-                                  .musterRollNumber
-                                  .toString(),
-                              sentBackCode:
-                                  musterBackToCBOCode ?? Constants.sentBack));
-                        },
-                        label: musterRollsModel![index]!.musterRollStatus ==
-                                musterBackToCBOCode
-                            ? AppLocalizations.of(context)
-                                .translate(i18.attendanceMgmt.editMusterRoll)
-                            : elevatedButtonLabel,
-                      )
-                    : const SizedBox.shrink(),
-                //ButtonLink(linkLabel ?? '', onLinkPressed)
+                // child: getCardDetails(context, e,
+                //     musterRoll: musterRollsModel![index]),
+                children: [
+                  LabelValueList(
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    maxLines: 3,
+                    items: getCardDetails(context, e,
+                        musterRoll: musterRollsModel![index]),
+                  ),
+                  isSHGInbox
+                      ? Button(
+                          type: ButtonType.primary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                          onPressed: () {
+                            context.router.push(SHGInboxRoute(
+                                tenantId: musterRollsModel![index]
+                                    .tenantId
+                                    .toString(),
+                                musterRollNo: musterRollsModel![index]
+                                    .musterRollNumber
+                                    .toString(),
+                                sentBackCode:
+                                    musterBackToCBOCode ?? Constants.sentBack));
+                          },
+                          label: musterRollsModel![index]!.musterRollStatus ==
+                                  musterBackToCBOCode
+                              ? AppLocalizations.of(context)
+                                  .translate(i18.attendanceMgmt.editMusterRoll)
+                              : elevatedButtonLabel,
+                        )
+                      : const SizedBox.shrink(),
+                  //ButtonLink(linkLabel ?? '', onLinkPressed)
 
-                (showButtonLink! && linkLabel!.isNotEmpty)
-                    ? Button(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        type: ButtonType.tertiary,
-                        size: ButtonSize.large,
-                        mainAxisSize: MainAxisSize.max,
-                        label: linkLabel ?? '',
-                        onPressed: () {
-                          onLinkPressed!();
-                        })
-                    : const SizedBox.shrink(),
-              ],
-            );
+                  (showButtonLink! && linkLabel!.isNotEmpty)
+                      ? Button(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          type: ButtonType.tertiary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                          label: linkLabel ?? '',
+                          onPressed: () {
+                            onLinkPressed!();
+                          })
+                      : const SizedBox.shrink(),
+                ],
+              );
+            } else if (isSHGInbox) {
+              return ui_card.DigitCard(
+                // spacing: 0.0,
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+
+                // child: getCardDetails(context, e,
+                //     musterRoll: musterRollsModel![index]),
+                children: [
+                  LabelValueList(
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    maxLines: 3,
+                    items: getCardDetails(context, e,
+                        musterRoll: musterRollsModel![index]),
+                  ),
+                  Button(
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      context.router.push(SHGInboxRoute(
+                          tenantId:
+                              musterRollsModel![index].tenantId.toString(),
+                          musterRollNo: musterRollsModel![index]
+                              .musterRollNumber
+                              .toString(),
+                          sentBackCode:
+                              musterBackToCBOCode ?? Constants.sentBack));
+                    },
+                    label: musterRollsModel![index]!.musterRollStatus ==
+                            musterBackToCBOCode
+                        ? AppLocalizations.of(context)
+                            .translate(i18.attendanceMgmt.editMusterRoll)
+                        : elevatedButtonLabel,
+                  )
+
+                  //ButtonLink(linkLabel ?? '', onLinkPressed)
+                ],
+              );
+            } else if ((showButtonLink! && linkLabel!.isNotEmpty)) {
+              return ui_card.DigitCard(
+                // spacing: 0.0,
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+
+                // child: getCardDetails(context, e,
+                //     musterRoll: musterRollsModel![index]),
+                children: [
+                  LabelValueList(
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    maxLines: 3,
+                    items: getCardDetails(context, e,
+                        musterRoll: musterRollsModel![index]),
+                  ),
+
+                  //ButtonLink(linkLabel ?? '', onLinkPressed)
+
+                  Button(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      type: ButtonType.tertiary,
+                      size: ButtonSize.large,
+                      mainAxisSize: MainAxisSize.max,
+                      label: linkLabel ?? '',
+                      onPressed: () {
+                        onLinkPressed!();
+                      })
+                ],
+              );
+            } else {
+              return ui_card.DigitCard(
+                // spacing: 0.0,
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+
+                // child: getCardDetails(context, e,
+                //     musterRoll: musterRollsModel![index]),
+                children: [
+                  LabelValueList(
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    maxLines: 3,
+                    items: getCardDetails(context, e,
+                        musterRoll: musterRollsModel![index]),
+                  ),
+                  isSHGInbox
+                      ? Button(
+                          type: ButtonType.primary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                          onPressed: () {
+                            context.router.push(SHGInboxRoute(
+                                tenantId: musterRollsModel![index]
+                                    .tenantId
+                                    .toString(),
+                                musterRollNo: musterRollsModel![index]
+                                    .musterRollNumber
+                                    .toString(),
+                                sentBackCode:
+                                    musterBackToCBOCode ?? Constants.sentBack));
+                          },
+                          label: musterRollsModel![index]!.musterRollStatus ==
+                                  musterBackToCBOCode
+                              ? AppLocalizations.of(context)
+                                  .translate(i18.attendanceMgmt.editMusterRoll)
+                              : elevatedButtonLabel,
+                        )
+                      : const SizedBox.shrink(),
+                  //ButtonLink(linkLabel ?? '', onLinkPressed)
+
+                  (showButtonLink! && linkLabel!.isNotEmpty)
+                      ? Button(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          type: ButtonType.tertiary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                          label: linkLabel ?? '',
+                          onPressed: () {
+                            onLinkPressed!();
+                          })
+                      : const SizedBox.shrink(),
+                ],
+              );
+            }
           }).toList(),
         );
 
       default:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            return ui_card.DigitCard(
-              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-              //padding: const EdgeInsets.all(8.0),
-              cardType: CardType.primary,
+            if ((showButtonLink! && linkLabel!.isNotEmpty)) {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                //padding: const EdgeInsets.all(8.0),
+                cardType: CardType.primary,
 
-              children: [
-                LabelValueList(
-                    maxLines: 3,
-                    labelFlex: 5,
-                    valueFlex: 5,
-                    items: getCardDetails(context, e)),
-                (showButtonLink! && linkLabel!.isNotEmpty)
-                    ? Button(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        type: ButtonType.tertiary,
-                        size: ButtonSize.large,
-                        mainAxisSize: MainAxisSize.max,
-                        label: linkLabel ?? '',
-                        onPressed: () => onLinkPressed!())
-                    : const SizedBox.shrink(),
-              ],
-            );
+                children: [
+                  LabelValueList(
+                      maxLines: 3,
+                      labelFlex: 5,
+                      valueFlex: 5,
+                      items: getCardDetails(context, e)),
+                  (showButtonLink! && linkLabel!.isNotEmpty)
+                      ? Button(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          type: ButtonType.tertiary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                          label: linkLabel ?? '',
+                          onPressed: () => onLinkPressed!())
+                      : const SizedBox.shrink(),
+                ],
+              );
+            } else {
+              return ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                children: [
+                  LabelValueList(
+                      maxLines: 3,
+                      labelFlex: 5,
+                      valueFlex: 5,
+                      items: getCardDetails(context, e)),
+                  // (showButtonLink! && linkLabel!.isNotEmpty)
+                  //     ? Button(
+                  //         mainAxisAlignment: MainAxisAlignment.start,
+                  //         type: ButtonType.tertiary,
+                  //         size: ButtonSize.large,
+                  //         mainAxisSize: MainAxisSize.max,
+                  //         label: linkLabel ?? '',
+                  //         onPressed: () => onLinkPressed!())
+                  //     : const SizedBox.shrink(),
+                ],
+              );
+            }
           }).toList(),
         );
     }

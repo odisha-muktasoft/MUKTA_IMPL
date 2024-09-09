@@ -171,7 +171,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                               // padding: const EdgeInsets.only(
                               //     left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
                               child: ui_component.ScrollableContent(
-                                backgroundColor: Colors.transparent,
+                               backgroundColor: Theme.of(context).colorTheme.generic.background,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 footer: Padding(
@@ -505,7 +505,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             return Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: ui_component.ScrollableContent(
-                                backgroundColor: Colors.transparent,
+                               backgroundColor: Theme.of(context).colorTheme.generic.background,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 footer: Padding(

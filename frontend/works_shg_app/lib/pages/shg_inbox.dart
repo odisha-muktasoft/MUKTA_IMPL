@@ -610,326 +610,446 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                             ),
                                                           ),
                                                           SliverToBoxAdapter(
-                                                              child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                SizedBox(
-                                                                  height: Theme.of(
-                                                                          context)
-                                                                      .spacerTheme
-                                                                      .spacer4,
-                                                                ),
-                                                                BlocBuilder<
-                                                                        MusterGetWorkflowBloc,
-                                                                        MusterGetWorkflowState>(
-                                                                    builder:
-                                                                        (context,
-                                                                            workflowState) {
-                                                                  return workflowState.maybeWhen(
-                                                                      orElse: () => Container(),
-                                                                      loading: () => shg_loader.Loaders.circularLoader(context),
-                                                                      loaded: (MusterWorkFlowModel? musterWorkFlowModel, bool isInWorkFlow) => musterWorkFlowModel?.processInstances?.first.workflowState?.state == widget.sentBackCode
-                                                                          ? CustomInfoCard(
-                                                                              title: AppLocalizations.of(context).translate(i18.common.info),
-                                                                              description: AppLocalizations.of(context).translate(i18.attendanceMgmt.toMarkAttendance),
-                                                                              child: Column(
-                                                                                children: entryExitList!.length > 2
-                                                                                    ? [
-                                                                                        Row(
-                                                                                          children: [
-                                                                                            CircularButton(
-                                                                                              icon: Icons.circle_rounded,
-                                                                                              size: 15,
-                                                                                              color: const Color.fromRGBO(0, 100, 0, 1),
-                                                                                              index: 1,
-                                                                                              isNotGreyed: false,
-                                                                                              onTap: () {},
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: const EdgeInsets.only(left: 4.0),
-                                                                                              child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
-                                                                                            )
-                                                                                          ],
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 4,
-                                                                                        ),
-                                                                                        Row(
-                                                                                          children: [
-                                                                                            CircularButton(
-                                                                                              icon: Icons.circle_rounded,
-                                                                                              size: 15,
-                                                                                              color: const Color.fromRGBO(0, 100, 0, 1),
-                                                                                              index: 0.5,
-                                                                                              isNotGreyed: false,
-                                                                                              onTap: () {},
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: const EdgeInsets.only(left: 4.0),
-                                                                                              child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.halfDay)}'),
-                                                                                            )
-                                                                                          ],
-                                                                                        ),
-                                                                                        const SizedBox(
-                                                                                          height: 4,
-                                                                                        ),
-                                                                                        Row(
-                                                                                          children: [
-                                                                                            CircularButton(
-                                                                                              icon: Icons.circle_rounded,
-                                                                                              size: 15,
-                                                                                              color: const Color.fromRGBO(0, 100, 0, 1),
-                                                                                              index: 0,
-                                                                                              isNotGreyed: false,
-                                                                                              onTap: () {},
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: const EdgeInsets.only(left: 4.0),
-                                                                                              child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.tripleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
-                                                                                            )
-                                                                                          ],
-                                                                                        )
-                                                                                      ]
-                                                                                    : [
-                                                                                        Row(
-                                                                                          children: [
-                                                                                            CircularButton(
-                                                                                              icon: Icons.circle_rounded,
-                                                                                              size: 15,
-                                                                                              color: const Color.fromRGBO(0, 100, 0, 1),
-                                                                                              index: 1,
-                                                                                              isNotGreyed: false,
-                                                                                              onTap: () {},
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: const EdgeInsets.only(left: 4.0),
-                                                                                              child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
-                                                                                            )
-                                                                                          ],
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          height: Theme.of(context).spacerTheme.spacer1,
-                                                                                        ),
-                                                                                        Row(
-                                                                                          children: [
-                                                                                            CircularButton(
-                                                                                              icon: Icons.circle_rounded,
-                                                                                              size: 15,
-                                                                                              color: const Color.fromRGBO(0, 100, 0, 1),
-                                                                                              index: 0,
-                                                                                              isNotGreyed: false,
-                                                                                              onTap: () {},
-                                                                                            ),
-                                                                                            Padding(
-                                                                                              padding: const EdgeInsets.only(left: 4.0),
-                                                                                              child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
-                                                                                            )
-                                                                                          ],
-                                                                                        )
-                                                                                      ],
-                                                                              ),
-                                                                            )
-                                                                          : const SizedBox.shrink());
-                                                                }),
-                                                                Padding(
-                                                                  padding: EdgeInsets.all(Theme.of(
-                                                                          context)
-                                                                      .spacerTheme
-                                                                      .spacer2),
-                                                                  child:
-                                                                      DigitTextFormInput(
-                                                                    innerLabel: AppLocalizations.of(
+                                                            child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  SizedBox(
+                                                                    height: Theme.of(
                                                                             context)
-                                                                        .translate(i18
-                                                                            .common
-                                                                            .searchByName),
-                                                                    suffixIcon:
-                                                                        Icons
-                                                                            .search_sharp,
-                                                                    controller:
-                                                                        searchController,
-                                                                    isRequired:
-                                                                        false,
-                                                                    onChange:
-                                                                        (val) =>
-                                                                            onTextSearch(),
+                                                                        .spacerTheme
+                                                                        .spacer4,
                                                                   ),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: Theme.of(
-                                                                          context)
-                                                                      .spacerTheme
-                                                                      .spacer4,
-                                                                ),
-                                                                individualMusterRollModel
-                                                                            ?.musterRoll!
-                                                                            .first
-                                                                            .individualEntries !=
-                                                                        null
-                                                                    ? BlocBuilder<
-                                                                            MusterRollEstimateBloc,
-                                                                            MusterRollEstimateState>(
-                                                                        builder:
-                                                                            (context,
-                                                                                musterState) {
-                                                                        return musterState.maybeWhen(
-                                                                            orElse: () => Container(),
-                                                                            loading: () => shg_loader.Loaders.circularLoader(context),
-                                                                            error: (String? error) => Notifiers.getToastMessage(context, t.translate(error.toString()), 'ERROR'),
-                                                                            loaded: (EstimateMusterRollsModel? viewMusterRollsModel) {
-                                                                              List<AttendeesTrackList> attendeeList = [];
+                                                                  BlocBuilder<
+                                                                          MusterGetWorkflowBloc,
+                                                                          MusterGetWorkflowState>(
+                                                                      builder:
+                                                                          (context,
+                                                                              workflowState) {
+                                                                    return workflowState.maybeWhen(
+                                                                        orElse: () => Container(),
+                                                                        loading: () => shg_loader.Loaders.circularLoader(context),
+                                                                        loaded: (MusterWorkFlowModel? musterWorkFlowModel, bool isInWorkFlow) => musterWorkFlowModel?.processInstances?.first.workflowState?.state == widget.sentBackCode
+                                                                            // ? CustomInfoCard(
+                                                                            //     title: AppLocalizations.of(context).translate(i18.common.info),
+                                                                            //     description: AppLocalizations.of(context).translate(i18.attendanceMgmt.toMarkAttendance),
+                                                                            //     child: Column(
+                                                                            //       children: entryExitList!.length > 2
+                                                                            //           ? [
+                                                                            //               Row(
+                                                                            //                 children: [
+                                                                            //                   CircularButton(
+                                                                            //                     icon: Icons.circle_rounded,
+                                                                            //                     size: 15,
+                                                                            //                     color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                            //                     index: 1,
+                                                                            //                     isNotGreyed: false,
+                                                                            //                     onTap: () {},
+                                                                            //                   ),
+                                                                            //                   Padding(
+                                                                            //                     padding: const EdgeInsets.only(left: 4.0),
+                                                                            //                     child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
+                                                                            //                   )
+                                                                            //                 ],
+                                                                            //               ),
+                                                                            //               const SizedBox(
+                                                                            //                 height: 4,
+                                                                            //               ),
+                                                                            //               Row(
+                                                                            //                 children: [
+                                                                            //                   CircularButton(
+                                                                            //                     icon: Icons.circle_rounded,
+                                                                            //                     size: 15,
+                                                                            //                     color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                            //                     index: 0.5,
+                                                                            //                     isNotGreyed: false,
+                                                                            //                     onTap: () {},
+                                                                            //                   ),
+                                                                            //                   Padding(
+                                                                            //                     padding: const EdgeInsets.only(left: 4.0),
+                                                                            //                     child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.halfDay)}'),
+                                                                            //                   )
+                                                                            //                 ],
+                                                                            //               ),
+                                                                            //               const SizedBox(
+                                                                            //                 height: 4,
+                                                                            //               ),
+                                                                            //               Row(
+                                                                            //                 children: [
+                                                                            //                   CircularButton(
+                                                                            //                     icon: Icons.circle_rounded,
+                                                                            //                     size: 15,
+                                                                            //                     color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                            //                     index: 0,
+                                                                            //                     isNotGreyed: false,
+                                                                            //                     onTap: () {},
+                                                                            //                   ),
+                                                                            //                   Padding(
+                                                                            //                     padding: const EdgeInsets.only(left: 4.0),
+                                                                            //                     child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.tripleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
+                                                                            //                   )
+                                                                            //                 ],
+                                                                            //               )
+                                                                            //             ]
+                                                                            //           : [
+                                                                            //               Row(
+                                                                            //                 children: [
+                                                                            //                   CircularButton(
+                                                                            //                     icon: Icons.circle_rounded,
+                                                                            //                     size: 15,
+                                                                            //                     color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                            //                     index: 1,
+                                                                            //                     isNotGreyed: false,
+                                                                            //                     onTap: () {},
+                                                                            //                   ),
+                                                                            //                   Padding(
+                                                                            //                     padding: const EdgeInsets.only(left: 4.0),
+                                                                            //                     child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
+                                                                            //                   )
+                                                                            //                 ],
+                                                                            //               ),
+                                                                            //               SizedBox(
+                                                                            //                 height: Theme.of(context).spacerTheme.spacer1,
+                                                                            //               ),
+                                                                            //               Row(
+                                                                            //                 children: [
+                                                                            //                   CircularButton(
+                                                                            //                     icon: Icons.circle_rounded,
+                                                                            //                     size: 15,
+                                                                            //                     color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                            //                     index: 0,
+                                                                            //                     isNotGreyed: false,
+                                                                            //                     onTap: () {},
+                                                                            //                   ),
+                                                                            //                   Padding(
+                                                                            //                     padding: const EdgeInsets.only(left: 4.0),
+                                                                            //                     child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
+                                                                            //                   )
+                                                                            //                 ],
+                                                                            //               )
+                                                                            //             ],
+                                                                            //     ),
+                                                                            //   )
+                                                                            // : const SizedBox.shrink()
 
-                                                                              if (viewMusterRollsModel!.musterRoll!.first.individualEntries!.isNotEmpty) {
-                                                                                attendeeList = viewMusterRollsModel.musterRoll!.first.individualEntries!
-                                                                                    .where((est) => est.attendanceEntries != null)
-                                                                                    .map((e) => AttendeesTrackList(
-                                                                                        name: e.musterIndividualAdditionalDetails?.userName ?? '',
-                                                                                        aadhaar: e.musterIndividualAdditionalDetails?.aadharNumber ?? '',
-                                                                                        gender: e.musterIndividualAdditionalDetails?.gender ?? '',
-                                                                                        individualId: e.individualId,
-                                                                                        skillCodeList: e.musterIndividualAdditionalDetails?.skillCode ?? [],
-                                                                                        individualGaurdianName: e.musterIndividualAdditionalDetails?.fatherName ?? e.musterIndividualAdditionalDetails?.fatherName ?? '',
-                                                                                        id: e.id != null
-                                                                                            ? e.id
-                                                                                            : individualMusterRollModel!.musterRoll!.first.individualEntries!.any((i) => i.individualId == e.individualId)
-                                                                                                ? individualMusterRollModel?.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).id ?? ''
-                                                                                                : '',
-                                                                                        skill: individualMusterRollModel!.musterRoll!.first.individualEntries!.any((i) => i.individualId == e.individualId) ? individualMusterRollModel?.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).musterIndividualAdditionalDetails?.skillCode ?? '' : '',
-                                                                                        monEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        monExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        monIndex: e.attendanceEntries != null ? e.attendanceEntries!.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendance ?? -1 : -1,
-                                                                                        tueEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Tue').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        tueExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Tue').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        tueIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Tue').attendance ?? -1 : -1,
-                                                                                        wedEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Wed').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        wedExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Wed').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        wedIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Wed').attendance ?? -1 : -1,
-                                                                                        thuEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Thu').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        thuExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Thu').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        thursIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Thu').attendance ?? -1 : -1,
-                                                                                        friEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Fri').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        friExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Fri').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        friIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Fri').attendance ?? -1 : -1,
-                                                                                        satEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sat').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        satExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sat').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        satIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sat').attendance ?? -1 : -1,
-                                                                                        sunEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sun').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
-                                                                                        sunExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sun').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
-                                                                                        sunIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sun').attendance ?? -1 : -1,
-                                                                                        auditDetails: e.attendanceEntries != null ? e.attendanceEntries?.first.auditDetails : null))
-                                                                                    .toList();
-
-                                                                                if (newList.isEmpty) {
-                                                                                  for (var i = 0; i < attendeeList.length; i++) {
-                                                                                    var item1 = attendeeList[i];
-                                                                                    TrackAttendanceTableData data = TrackAttendanceTableData();
-                                                                                    data.name = item1.name;
-                                                                                    data.individualGaurdianName = item1.individualGaurdianName ?? '';
-                                                                                    data.aadhaar = item1.aadhaar;
-                                                                                    data.gender = item1.gender;
-                                                                                    data.individualId = item1.individualId ?? '';
-                                                                                    data.id = item1.id ?? '';
-                                                                                    data.skill = item1.skill;
-                                                                                    data.skillCodeList = item1.skillCodeList ?? [];
-                                                                                    data.monIndex = item1.monIndex;
-                                                                                    data.monEntryId = item1.monEntryId;
-                                                                                    data.monExitId = item1.monExitId;
-                                                                                    data.tueIndex = item1.tueIndex;
-                                                                                    data.tueEntryId = item1.tueEntryId;
-                                                                                    data.tueExitId = item1.tueExitId;
-                                                                                    data.wedIndex = item1.wedIndex;
-                                                                                    data.wedEntryId = item1.wedEntryId;
-                                                                                    data.wedExitId = item1.wedExitId;
-                                                                                    data.thuIndex = item1.thursIndex;
-                                                                                    data.thuEntryId = item1.thuEntryId;
-                                                                                    data.thuExitId = item1.thuExitId;
-                                                                                    data.friIndex = item1.friIndex;
-                                                                                    data.friEntryId = item1.friEntryId;
-                                                                                    data.friExitId = item1.friExitId;
-                                                                                    data.satIndex = item1.satIndex;
-                                                                                    data.satEntryId = item1.satEntryId;
-                                                                                    data.satExitId = item1.satExitId;
-                                                                                    data.sunIndex = item1.sunIndex;
-                                                                                    data.sunEntryId = item1.sunEntryId;
-                                                                                    data.sunExitId = item1.sunExitId;
-                                                                                    data.auditDetails = item1.auditDetails;
-                                                                                    newList.add(data);
-                                                                                  }
-                                                                                }
-                                                                              } else {
-                                                                                if (newList.isEmpty) {
-                                                                                  for (var i = 0; i < attendeeList.length; i++) {
-                                                                                    var item1 = attendeeList[i];
-                                                                                    TrackAttendanceTableData data = TrackAttendanceTableData();
-                                                                                    data.name = item1.name;
-                                                                                    data.aadhaar = item1.aadhaar;
-                                                                                    data.gender = item1.gender;
-                                                                                    data.individualId = item1.individualId ?? '';
-                                                                                    data.individualGaurdianName = item1.individualGaurdianName ?? '';
-                                                                                    data.id = item1.id ?? '';
-                                                                                    data.skill = item1.skill;
-                                                                                    data.skillCodeList = item1.skillCodeList;
-                                                                                    data.monIndex = item1.monIndex;
-                                                                                    data.tueIndex = item1.tueIndex;
-                                                                                    data.wedIndex = item1.wedIndex;
-                                                                                    data.thuIndex = item1.thursIndex;
-                                                                                    data.friIndex = item1.friIndex;
-                                                                                    data.satIndex = item1.satIndex;
-                                                                                    data.sunIndex = item1.sunIndex;
-                                                                                    data.auditDetails = item1.auditDetails;
-                                                                                    newList.add(data);
-                                                                                  }
-                                                                                }
-                                                                              }
-                                                                              tableData = getAttendanceData(newList);
-
-                                                                              return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: shg_app.DigitTable(
-                                                                                    headerList: headerList,
-                                                                                    tableData: tableData,
-                                                                                    leftColumnWidth: width,
-                                                                                    rightColumnWidth: width * 10,
-                                                                                    height: 58 + (52.0 * (tableData.length + 0.2)),
-                                                                                    scrollPhysics: const NeverScrollableScrollPhysics(),
-                                                                                  ),
+                                                                           ? Padding(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer2,
+                                                                vertical: Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer4,
+                                                              ),
+                                                              child: InfoCard(
+                                                                title: AppLocalizations.of(
+                                                                        context)
+                                                                    .translate(i18
+                                                                        .common
+                                                                        .info),
+                                                                type: InfoType
+                                                                    .info,
+                                                                description: AppLocalizations.of(
+                                                                        context)
+                                                                    .translate(i18
+                                                                        .attendanceMgmt
+                                                                        .toMarkAttendance),
+                                                                additionalWidgets:
+                                                                    entryExitList!.length > 2
+                                                                                      ? [
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              CircularButton(
+                                                                                                icon: Icons.circle_rounded,
+                                                                                                size: 15,
+                                                                                                color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                                                index: 1,
+                                                                                                isNotGreyed: false,
+                                                                                                onTap: () {},
+                                                                                              ),
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left: 4.0),
+                                                                                                child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
+                                                                                              )
+                                                                                            ],
+                                                                                          ),
+                                                                                          const SizedBox(
+                                                                                            height: 4,
+                                                                                          ),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              CircularButton(
+                                                                                                icon: Icons.circle_rounded,
+                                                                                                size: 15,
+                                                                                                color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                                                index: 0.5,
+                                                                                                isNotGreyed: false,
+                                                                                                onTap: () {},
+                                                                                              ),
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left: 4.0),
+                                                                                                child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.halfDay)}'),
+                                                                                              )
+                                                                                            ],
+                                                                                          ),
+                                                                                          const SizedBox(
+                                                                                            height: 4,
+                                                                                          ),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              CircularButton(
+                                                                                                icon: Icons.circle_rounded,
+                                                                                                size: 15,
+                                                                                                color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                                                index: 0,
+                                                                                                isNotGreyed: false,
+                                                                                                onTap: () {},
+                                                                                              ),
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left: 4.0),
+                                                                                                child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.tripleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
+                                                                                              )
+                                                                                            ],
+                                                                                          )
+                                                                                        ]
+                                                                                      : [
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              CircularButton(
+                                                                                                icon: Icons.circle_rounded,
+                                                                                                size: 15,
+                                                                                                color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                                                index: 1,
+                                                                                                isNotGreyed: false,
+                                                                                                onTap: () {},
+                                                                                              ),
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left: 4.0),
+                                                                                                child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
+                                                                                              )
+                                                                                            ],
+                                                                                          ),
+                                                                                          SizedBox(
+                                                                                            height: Theme.of(context).spacerTheme.spacer1,
+                                                                                          ),
+                                                                                          Row(
+                                                                                            children: [
+                                                                                              CircularButton(
+                                                                                                icon: Icons.circle_rounded,
+                                                                                                size: 15,
+                                                                                                color: const Color.fromRGBO(0, 100, 0, 1),
+                                                                                                index: 0,
+                                                                                                isNotGreyed: false,
+                                                                                                onTap: () {},
+                                                                                              ),
+                                                                                              Padding(
+                                                                                                padding: const EdgeInsets.only(left: 4.0),
+                                                                                                child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
+                                                                                              )
+                                                                                            ],
+                                                                                          )
+                                                                                        ],
                                                                                 ),
-                                                                              ]);
-                                                                            });
-                                                                      })
-                                                                    : Column(
-                                                                        children: [
-                                                                          const EmptyImage(
-                                                                            align:
-                                                                                Alignment.center,
-                                                                          ),
-                                                                          Button(
-                                                                            type:
-                                                                                ButtonType.tertiary,
-                                                                            size:
-                                                                                ButtonSize.large,
-                                                                            label:
-                                                                                AppLocalizations.of(context).translate(i18.attendanceMgmt.addNewWageSeeker),
-                                                                            onPressed:
-                                                                                () {},
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                const Align(
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .bottomCenter,
-                                                                  child:
-                                                                      PoweredByDigit(
-                                                                    version:
-                                                                        Constants
-                                                                            .appVersion,
+                                                                              )
+                                                                            : const SizedBox.shrink()
+                                                                            );
+
+
+                                                                  }),
+                                                                  Padding(
+                                                                    padding: EdgeInsets.all(Theme.of(
+                                                                            context)
+                                                                        .spacerTheme
+                                                                        .spacer2),
+                                                                    child:
+                                                                        DigitTextFormInput(
+                                                                      innerLabel: AppLocalizations.of(context).translate(i18
+                                                                          .common
+                                                                          .searchByName),
+                                                                      suffixIcon:
+                                                                          Icons
+                                                                              .search_sharp,
+                                                                      controller:
+                                                                          searchController,
+                                                                      isRequired:
+                                                                          false,
+                                                                      onChange:
+                                                                          (val) =>
+                                                                              onTextSearch(),
+                                                                    ),
                                                                   ),
-                                                                )
-                                                              ]))
+                                                                  SizedBox(
+                                                                    height: Theme.of(
+                                                                            context)
+                                                                        .spacerTheme
+                                                                        .spacer4,
+                                                                  ),
+                                                                  individualMusterRollModel
+                                                                              ?.musterRoll!
+                                                                              .first
+                                                                              .individualEntries !=
+                                                                          null
+                                                                      ? BlocBuilder<
+                                                                              MusterRollEstimateBloc,
+                                                                              MusterRollEstimateState>(
+                                                                          builder:
+                                                                              (context, musterState) {
+                                                                          return musterState.maybeWhen(
+                                                                              orElse: () => Container(),
+                                                                              loading: () => shg_loader.Loaders.circularLoader(context),
+                                                                              error: (String? error) => Notifiers.getToastMessage(context, t.translate(error.toString()), 'ERROR'),
+                                                                              loaded: (EstimateMusterRollsModel? viewMusterRollsModel) {
+                                                                                List<AttendeesTrackList> attendeeList = [];
+
+                                                                                if (viewMusterRollsModel!.musterRoll!.first.individualEntries!.isNotEmpty) {
+                                                                                  attendeeList = viewMusterRollsModel.musterRoll!.first.individualEntries!
+                                                                                      .where((est) => est.attendanceEntries != null)
+                                                                                      .map((e) => AttendeesTrackList(
+                                                                                          name: e.musterIndividualAdditionalDetails?.userName ?? '',
+                                                                                          aadhaar: e.musterIndividualAdditionalDetails?.aadharNumber ?? '',
+                                                                                          gender: e.musterIndividualAdditionalDetails?.gender ?? '',
+                                                                                          individualId: e.individualId,
+                                                                                          skillCodeList: e.musterIndividualAdditionalDetails?.skillCode ?? [],
+                                                                                          individualGaurdianName: e.musterIndividualAdditionalDetails?.fatherName ?? e.musterIndividualAdditionalDetails?.fatherName ?? '',
+                                                                                          id: e.id != null
+                                                                                              ? e.id
+                                                                                              : individualMusterRollModel!.musterRoll!.first.individualEntries!.any((i) => i.individualId == e.individualId)
+                                                                                                  ? individualMusterRollModel?.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).id ?? ''
+                                                                                                  : '',
+                                                                                          skill: individualMusterRollModel!.musterRoll!.first.individualEntries!.any((i) => i.individualId == e.individualId) ? individualMusterRollModel?.musterRoll!.first.individualEntries?.firstWhere((s) => s.individualId == e.individualId).musterIndividualAdditionalDetails?.skillCode ?? '' : '',
+                                                                                          monEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          monExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          monIndex: e.attendanceEntries != null ? e.attendanceEntries!.lastWhere((att) => DateFormats.getDay(att.time!) == 'Mon').attendance ?? -1 : -1,
+                                                                                          tueEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Tue').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          tueExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Tue').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          tueIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Tue').attendance ?? -1 : -1,
+                                                                                          wedEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Wed').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          wedExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Wed').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          wedIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Wed').attendance ?? -1 : -1,
+                                                                                          thuEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Thu').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          thuExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Thu').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          thursIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Thu').attendance ?? -1 : -1,
+                                                                                          friEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Fri').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          friExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Fri').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          friIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Fri').attendance ?? -1 : -1,
+                                                                                          satEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sat').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          satExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sat').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          satIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sat').attendance ?? -1 : -1,
+                                                                                          sunEntryId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sun').attendanceEntriesAdditionalDetails?.entryAttendanceLogId : null,
+                                                                                          sunExitId: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sun').attendanceEntriesAdditionalDetails?.exitAttendanceLogId : null,
+                                                                                          sunIndex: e.attendanceEntries != null ? e.attendanceEntries?.lastWhere((att) => DateFormats.getDay(att.time!) == 'Sun').attendance ?? -1 : -1,
+                                                                                          auditDetails: e.attendanceEntries != null ? e.attendanceEntries?.first.auditDetails : null))
+                                                                                      .toList();
+
+                                                                                  if (newList.isEmpty) {
+                                                                                    for (var i = 0; i < attendeeList.length; i++) {
+                                                                                      var item1 = attendeeList[i];
+                                                                                      TrackAttendanceTableData data = TrackAttendanceTableData();
+                                                                                      data.name = item1.name;
+                                                                                      data.individualGaurdianName = item1.individualGaurdianName ?? '';
+                                                                                      data.aadhaar = item1.aadhaar;
+                                                                                      data.gender = item1.gender;
+                                                                                      data.individualId = item1.individualId ?? '';
+                                                                                      data.id = item1.id ?? '';
+                                                                                      data.skill = item1.skill;
+                                                                                      data.skillCodeList = item1.skillCodeList ?? [];
+                                                                                      data.monIndex = item1.monIndex;
+                                                                                      data.monEntryId = item1.monEntryId;
+                                                                                      data.monExitId = item1.monExitId;
+                                                                                      data.tueIndex = item1.tueIndex;
+                                                                                      data.tueEntryId = item1.tueEntryId;
+                                                                                      data.tueExitId = item1.tueExitId;
+                                                                                      data.wedIndex = item1.wedIndex;
+                                                                                      data.wedEntryId = item1.wedEntryId;
+                                                                                      data.wedExitId = item1.wedExitId;
+                                                                                      data.thuIndex = item1.thursIndex;
+                                                                                      data.thuEntryId = item1.thuEntryId;
+                                                                                      data.thuExitId = item1.thuExitId;
+                                                                                      data.friIndex = item1.friIndex;
+                                                                                      data.friEntryId = item1.friEntryId;
+                                                                                      data.friExitId = item1.friExitId;
+                                                                                      data.satIndex = item1.satIndex;
+                                                                                      data.satEntryId = item1.satEntryId;
+                                                                                      data.satExitId = item1.satExitId;
+                                                                                      data.sunIndex = item1.sunIndex;
+                                                                                      data.sunEntryId = item1.sunEntryId;
+                                                                                      data.sunExitId = item1.sunExitId;
+                                                                                      data.auditDetails = item1.auditDetails;
+                                                                                      newList.add(data);
+                                                                                    }
+                                                                                  }
+                                                                                } else {
+                                                                                  if (newList.isEmpty) {
+                                                                                    for (var i = 0; i < attendeeList.length; i++) {
+                                                                                      var item1 = attendeeList[i];
+                                                                                      TrackAttendanceTableData data = TrackAttendanceTableData();
+                                                                                      data.name = item1.name;
+                                                                                      data.aadhaar = item1.aadhaar;
+                                                                                      data.gender = item1.gender;
+                                                                                      data.individualId = item1.individualId ?? '';
+                                                                                      data.individualGaurdianName = item1.individualGaurdianName ?? '';
+                                                                                      data.id = item1.id ?? '';
+                                                                                      data.skill = item1.skill;
+                                                                                      data.skillCodeList = item1.skillCodeList;
+                                                                                      data.monIndex = item1.monIndex;
+                                                                                      data.tueIndex = item1.tueIndex;
+                                                                                      data.wedIndex = item1.wedIndex;
+                                                                                      data.thuIndex = item1.thursIndex;
+                                                                                      data.friIndex = item1.friIndex;
+                                                                                      data.satIndex = item1.satIndex;
+                                                                                      data.sunIndex = item1.sunIndex;
+                                                                                      data.auditDetails = item1.auditDetails;
+                                                                                      newList.add(data);
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                                tableData = getAttendanceData(newList);
+
+                                                                                return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: shg_app.DigitTable(
+                                                                                      headerList: headerList,
+                                                                                      tableData: tableData,
+                                                                                      leftColumnWidth: width,
+                                                                                      rightColumnWidth: width * 10,
+                                                                                      height: 58 + (52.0 * (tableData.length + 0.2)),
+                                                                                      scrollPhysics: const NeverScrollableScrollPhysics(),
+                                                                                    ),
+                                                                                  ),
+                                                                                ]);
+                                                                              });
+                                                                        })
+                                                                      : Column(
+                                                                          children: [
+                                                                            const EmptyImage(
+                                                                              align: Alignment.center,
+                                                                            ),
+                                                                            Button(
+                                                                              type: ButtonType.tertiary,
+                                                                              size: ButtonSize.large,
+                                                                              label: AppLocalizations.of(context).translate(i18.attendanceMgmt.addNewWageSeeker),
+                                                                              onPressed: () {},
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                  const Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .bottomCenter,
+                                                                    child:
+                                                                        PoweredByDigit(
+                                                                      version:
+                                                                          Constants
+                                                                              .appVersion,
+                                                                    ),
+                                                                  ),
+                                                                ]),
+                                                          ),
                                                         ]),
                                                   ),
                                                   individualMusterRollModel
@@ -1094,8 +1214,8 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                         ),
                                                                                       ),
                                                                                     ),
-                                                                                     SizedBox(
-                                                                                      height: Theme.of(context).spacerTheme.spacer2,
+                                                                                    SizedBox(
+                                                                                      height: Theme.of(context).spacerTheme.spacer4,
                                                                                     ),
                                                                                     BlocListener<MusterCreateBloc, MusterCreateState>(
                                                                                       listener: (context, musterUpdateState) {
@@ -1133,7 +1253,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                             : null,
                                                                                         child: IgnorePointer(
                                                                                           child: Button(
-                                                                                            isDisabled: !inWorkFlow,
+                                                                                            isDisabled: inWorkFlow,
                                                                                             type: ButtonType.primary,
                                                                                             size: ButtonSize.large,
                                                                                             mainAxisSize: MainAxisSize.max,

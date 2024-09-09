@@ -113,6 +113,7 @@ class _CreateTimeExtensionRequestPage
                     form: () => buildForm(contractState),
                     builder: (context, form, child) {
                       return ui_scrollable.ScrollableContent(
+                        backgroundColor: Theme.of(context).colorTheme.generic.background,
                         footer: ui_card.DigitCard(
                             margin: EdgeInsets.all(
                                 Theme.of(context).spacerTheme.spacer2),

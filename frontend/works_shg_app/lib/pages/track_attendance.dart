@@ -748,6 +748,13 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                 musterRollsModel.musterRoll!.first.individualEntries!.isNotEmpty) {
                                                                               List<EstimateIndividualEntries>? estimateMusterRoll = musterRollsModel.musterRoll!.first.individualEntries;
                                                                               attendeeList = individualAttendanceRegisterModel.attendanceRegister!.first.attendeesEntries!
+                                                                                  .fold<Map<String, AttendeesEntries>>({}, (map, attende) {
+                                                                                    map[attende.individualId!] = attende; // Ensure unique individualId
+                                                                                    return map;
+                                                                                  })
+                                                                                  .values
+                                                                                  .toList()
+                                                                                  // attendeeList = individualAttendanceRegisterModel.attendanceRegister!.first.attendeesEntries!
                                                                                   // .where((e) => (e.denrollmentDate == null || !(e.denrollmentDate! <= DateTime.now().millisecondsSinceEpoch)))
                                                                                   // TODO:under developemnt and research
                                                                                   .where((attendee) {
@@ -778,6 +785,12 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                             return show = false;
                                                                                           }
                                                                                         }
+                                                                                        // if(matchingMusterRoll.totalAttendance!=null ||matchingMusterRoll.totalAttendance!=0){
+                                                                                        //   return show=true;
+                                                                                        // }
+                                                                                        // else{
+                                                                                        //   return show=false;
+                                                                                        // }
                                                                                       } else {
                                                                                         return false;
                                                                                       }
@@ -1071,7 +1084,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               },
                                                                                                                         child: IgnorePointer(
                                                                                                                           child: Button(
-                                                                                                                            isDisabled: (musterRollsSearch != null && musterRollsSearch.musterRoll!.isNotEmpty && isInWorkFlow),
+                                                                                                                            isDisabled: (createAttendeePayload.isEmpty && updateAttendeePayload.isEmpty )|| (musterRollsSearch != null && musterRollsSearch.musterRoll!.isNotEmpty && isInWorkFlow) ,
                                                                                                                             type: ButtonType.secondary,
                                                                                                                             size: ButtonSize.large,
                                                                                                                             mainAxisSize: MainAxisSize.max,
@@ -1161,6 +1174,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                             orElse: () => Container());
                                                                                                                       },
                                                                                                                       child: Button(
+                                                                                                                       // isDisabled: (isEndOfWeek && selectedDateRange!.endDate > DateTime.now().millisecondsSinceEpoch),
                                                                                                                         type: ButtonType.primary,
                                                                                                                         size: ButtonSize.large,
                                                                                                                         mainAxisSize: MainAxisSize.max,
