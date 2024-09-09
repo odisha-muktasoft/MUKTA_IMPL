@@ -265,20 +265,17 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                 //   },
                 // ),
 
-                ui_component.LabeledField(
-                  // label: t.translate(i18.wageSeeker.identificationHeader),
-                  child: ui_component.DigitDropdown(
-                    selectedOption: DropdownItem(
-                        name: t.translate('CBO_CORE_COMMON_AADHAAR'),
-                        code: "AADHAAR".toString()),
-                    items: [
-                      "AADHAAR",
-                    ]
-                        .map((e) => DropdownItem(
-                            name: t.translate('CBO_CORE_COMMON_$e'),
-                            code: e.toString()))
-                        .toList(),
-                  ),
+                ui_component.DigitDropdown(
+                  selectedOption: DropdownItem(
+                      name: t.translate('CBO_CORE_COMMON_AADHAAR'),
+                      code: "AADHAAR".toString()),
+                  items: [
+                    "AADHAAR",
+                  ]
+                      .map((e) => DropdownItem(
+                          name: t.translate('CBO_CORE_COMMON_$e'),
+                          code: e.toString()))
+                      .toList(),
                 ),
 
                 // old

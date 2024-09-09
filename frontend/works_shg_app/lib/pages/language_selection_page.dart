@@ -1,9 +1,11 @@
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
-import 'package:digit_components/widgets/molecules/digit_language_card.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/widgets/molecules/digit_language_card.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/models/app_config/app_config_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -88,11 +90,12 @@ class _LanguageSelectionPage extends State<LanguageSelectionPage> {
                               return statek.maybeMap(
                                 orElse: () => const SizedBox.shrink(),
                                 loaded: (value) {
+                                
                                   return DigitLanguageCard(
                                     appLogo: const AppLogo(),
-                                    digitRowCardItems: value.languages
-                                        ?.map((e) => DigitRowCardModel.fromJson(
-                                            e.toJson()))
+                                   // rowItemWidth: MediaQuery.of(context).size.width*.395,
+                                    digitRowCardItems:  value.languages
+                                        ?.map((e) => DigitRowCardModel(label: e.label, value: e.value, isSelected: e.isSelected))
                                         .toList() as List<DigitRowCardModel>,
                                     onLanguageSubmit: () async {
                                       context.router.push(const LoginRoute());

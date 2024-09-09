@@ -47,7 +47,7 @@ class MobileView extends StatelessWidget {
                                       margin: const EdgeInsets.only(bottom: 24),
                                       width: MediaQuery.of(context).size.width,
                                       // height: MediaQuery.of(context).size.height + 20,
-                                      padding: const EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(0),
                                       child: widget,
                                     ),
                                   )),
