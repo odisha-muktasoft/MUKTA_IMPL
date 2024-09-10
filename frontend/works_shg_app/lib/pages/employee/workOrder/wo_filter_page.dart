@@ -174,6 +174,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                     }
 
                                     payload = {
+                                      "status":"ACTIVE",
                                       "tenantId": GlobalVariables.tenantId ??
                                           GlobalVariables.organisationListModel!
                                               .organisations!.first.tenantId,

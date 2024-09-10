@@ -9,12 +9,15 @@ import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
     as ui_label;
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
+import 'package:digit_ui_components/widgets/molecules/bottom_sheet.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_component;
 import 'package:collection/collection.dart';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -259,323 +262,324 @@ class _MBDetailPageState extends State<MBDetailPage>
           builder: (context, state) {
             return Scaffold(
               backgroundColor: Theme.of(context).colorTheme.generic.background,
-              bottomNavigationBar:
-                  BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
-                builder: (context, state) {
-                  return state.maybeMap(
-                    orElse: () {
-                      return const SizedBox.shrink();
-                    },
-                    loaded: (value) {
-                      if (widget.type == MBScreen.update) {
-                        return BlocBuilder<MusterGetWorkflowBloc,
-                            MusterGetWorkflowState>(
-                          builder: (context, state) {
-                            return state.maybeMap(
-                              orElse: () => const SizedBox.shrink(),
-                              loaded: (mbWorkFlow) {
-                                final g = mbWorkFlow
-                                    .musterWorkFlowModel?.processInstances;
+              // bottomNavigationBar:
+              //     BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
+              //   builder: (context, state) {
+              //     return state.maybeMap(
+              //       orElse: () {
+              //         return const SizedBox.shrink();
+              //       },
+              //       loaded: (value) {
+              //         if (widget.type == MBScreen.update) {
+              //           return BlocBuilder<MusterGetWorkflowBloc,
+              //               MusterGetWorkflowState>(
+              //             builder: (context, state) {
+              //               return state.maybeMap(
+              //                 orElse: () => const SizedBox.shrink(),
+              //                 loaded: (mbWorkFlow) {
+              //                   final g = mbWorkFlow
+              //                       .musterWorkFlowModel?.processInstances;
 
-                                return Draggable(
-                                  childWhenDragging: FloatActionCard(
-                                    actions: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                        ),
-                                      );
-                                    },
-                                    // amount: sorprice.toString(),
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          null,
-                                          (g != null &&
-                                                  (g.first.nextActions !=
-                                                          null &&
-                                                      g.first.nextActions!
-                                                          .isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : false));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: (g != null &&
-                                            (g.first.nextActions != null &&
-                                                g.first.nextActions!.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                  onDragEnd: (details) {
-                                    _openBottomSheet(
-                                        t,
-                                        context,
-                                        value.data.first.totalSorAmount!,
-                                        value.data.first.totalNorSorAmount!,
-                                        value.data.first.totalAmount!,
-                                        g,
-                                        widget.contractNumber,
-                                        widget.mbNumber,
-                                        widget.type,
-                                        null,
-                                        (g != null &&
-                                                (g.first.nextActions != null &&
-                                                    g.first.nextActions!
-                                                        .isEmpty))
-                                            ? false
-                                            : true,
-                                        workorderStatus,
-                                        estimateStatus,
-                                        (value.data.length >= 2
-                                            ? (value.data[1].wfStatus ==
-                                                    "APPROVED" ||
-                                                value.data[1].wfStatus ==
-                                                    "REJECTED")
-                                            : false));
-                                  },
-                                  feedback: const SizedBox.shrink(),
-                                  child: FloatActionCard(
-                                    actions: () {
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (context) =>
-                                              CommonButtonCard(
-                                                g: g,
-                                                contractNumber:
-                                                    widget.contractNumber,
-                                                mbNumber: widget.mbNumber,
-                                                type: widget.type,
-                                              ));
-                                    },
-                                    // amount: sorprice.toString(),
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          null,
-                                          (g != null &&
-                                                  (g.first.nextActions !=
-                                                          null &&
-                                                      g.first.nextActions!
-                                                          .isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : false));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: (g != null &&
-                                            (g.first.nextActions != null &&
-                                                g.first.nextActions!.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      } else {
-                        return BlocBuilder<BusinessWorkflowBloc,
-                            BusinessGetWorkflowState>(
-                          builder: (context, state) {
-                            return state.maybeMap(
-                              orElse: () => const SizedBox.shrink(),
-                              loaded: (business) {
-                                const g = null;
-                                final bk = business.businessWorkFlowModel!
-                                        .businessServices ??
-                                    [];
+              //                   return Draggable(
+              //                     childWhenDragging: FloatActionCard(
+              //                       actions: () {
+              //                         showDialog(
+              //                           context: context,
+              //                           builder: (context) => CommonButtonCard(
+              //                             g: g,
+              //                             contractNumber: widget.contractNumber,
+              //                             mbNumber: widget.mbNumber,
+              //                             type: widget.type,
+              //                           ),
+              //                         );
+              //                       },
+              //                       // amount: sorprice.toString(),
+              //                       amount: value.data.first.totalAmount != null
+              //                           ? value.data.first.totalAmount!
+              //                               .roundToDouble()
+              //                               .toStringAsFixed(2)
+              //                           : "0.00",
+              //                       openButtonSheet: () {
+              //                         _openBottomSheet(
+              //                             t,
+              //                             context,
+              //                             value.data.first.totalSorAmount!,
+              //                             value.data.first.totalNorSorAmount!,
+              //                             value.data.first.totalAmount!,
+              //                             g,
+              //                             widget.contractNumber,
+              //                             widget.mbNumber,
+              //                             widget.type,
+              //                             null,
+              //                             (g != null &&
+              //                                     (g.first.nextActions !=
+              //                                             null &&
+              //                                         g.first.nextActions!
+              //                                             .isEmpty))
+              //                                 ? false
+              //                                 : true,
+              //                             workorderStatus,
+              //                             estimateStatus,
+              //                             (value.data.length >= 2
+              //                                 ? (value.data[1].wfStatus ==
+              //                                         "APPROVED" ||
+              //                                     value.data[1].wfStatus ==
+              //                                         "REJECTED")
+              //                                 : false));
+              //                       },
+              //                       totalAmountText: t.translate(
+              //                           i18.measurementBook.totalMbAmount),
+              //                       subtext: t.translate(
+              //                           i18.measurementBook.forCurrentEntry),
+              //                       showAction: (g != null &&
+              //                               (g.first.nextActions != null &&
+              //                                   g.first.nextActions!.isEmpty))
+              //                           ? false
+              //                           : true,
+              //                     ),
+              //                     onDragEnd: (details) {
+              //                       _openBottomSheet(
+              //                           t,
+              //                           context,
+              //                           value.data.first.totalSorAmount!,
+              //                           value.data.first.totalNorSorAmount!,
+              //                           value.data.first.totalAmount!,
+              //                           g,
+              //                           widget.contractNumber,
+              //                           widget.mbNumber,
+              //                           widget.type,
+              //                           null,
+              //                           (g != null &&
+              //                                   (g.first.nextActions != null &&
+              //                                       g.first.nextActions!
+              //                                           .isEmpty))
+              //                               ? false
+              //                               : true,
+              //                           workorderStatus,
+              //                           estimateStatus,
+              //                           (value.data.length >= 2
+              //                               ? (value.data[1].wfStatus ==
+              //                                       "APPROVED" ||
+              //                                   value.data[1].wfStatus ==
+              //                                       "REJECTED")
+              //                               : false));
+              //                     },
+              //                     feedback: const SizedBox.shrink(),
+              //                     child: FloatActionCard(
+              //                       actions: () {
+              //                         showDialog(
+              //                             barrierDismissible: false,
+              //                             context: context,
+              //                             builder: (context) =>
+              //                                 CommonButtonCard(
+              //                                   g: g,
+              //                                   contractNumber:
+              //                                       widget.contractNumber,
+              //                                   mbNumber: widget.mbNumber,
+              //                                   type: widget.type,
+              //                                 ));
+              //                       },
+              //                       // amount: sorprice.toString(),
+              //                       amount: value.data.first.totalAmount != null
+              //                           ? value.data.first.totalAmount!
+              //                               .roundToDouble()
+              //                               .toStringAsFixed(2)
+              //                           : "0.00",
+              //                       openButtonSheet: () {
+              //                         _openBottomSheet(
+              //                             t,
+              //                             context,
+              //                             value.data.first.totalSorAmount!,
+              //                             value.data.first.totalNorSorAmount!,
+              //                             value.data.first.totalAmount!,
+              //                             g,
+              //                             widget.contractNumber,
+              //                             widget.mbNumber,
+              //                             widget.type,
+              //                             null,
+              //                             (g != null &&
+              //                                     (g.first.nextActions !=
+              //                                             null &&
+              //                                         g.first.nextActions!
+              //                                             .isEmpty))
+              //                                 ? false
+              //                                 : true,
+              //                             workorderStatus,
+              //                             estimateStatus,
+              //                             (value.data.length >= 2
+              //                                 ? (value.data[1].wfStatus ==
+              //                                         "APPROVED" ||
+              //                                     value.data[1].wfStatus ==
+              //                                         "REJECTED")
+              //                                 : false));
+              //                       },
+              //                       totalAmountText: t.translate(
+              //                           i18.measurementBook.totalMbAmount),
+              //                       subtext: t.translate(
+              //                           i18.measurementBook.forCurrentEntry),
+              //                       showAction: (g != null &&
+              //                               (g.first.nextActions != null &&
+              //                                   g.first.nextActions!.isEmpty))
+              //                           ? false
+              //                           : true,
+              //                     ),
+              //                   );
+              //                 },
+              //               );
+              //             },
+              //           );
+              //         } else {
+              //           return BlocBuilder<BusinessWorkflowBloc,
+              //               BusinessGetWorkflowState>(
+              //             builder: (context, state) {
+              //               return state.maybeMap(
+              //                 orElse: () => const SizedBox.shrink(),
+              //                 loaded: (business) {
+              //                   const g = null;
+              //                   final bk = business.businessWorkFlowModel!
+              //                           .businessServices ??
+              //                       [];
 
-                                return Draggable(
-                                  childWhenDragging: FloatActionCard(
-                                    actions: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                          bs: bk,
-                                        ),
-                                      );
-                                    },
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          bk,
-                                          ((bk != null && bk.isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : true));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: ((bk != null && bk.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                  onDragEnd: (details) {
-                                    _openBottomSheet(
-                                        t,
-                                        context,
-                                        value.data.first.totalSorAmount!,
-                                        value.data.first.totalNorSorAmount!,
-                                        value.data.first.totalAmount!,
-                                        g,
-                                        widget.contractNumber,
-                                        widget.mbNumber,
-                                        widget.type,
-                                        bk,
-                                        ((bk != null && bk.isEmpty))
-                                            ? false
-                                            : true,
-                                        workorderStatus,
-                                        estimateStatus,
-                                        (value.data.length >= 2
-                                            ? (value.data[1].wfStatus ==
-                                                    "APPROVED" ||
-                                                value.data[1].wfStatus ==
-                                                    "REJECTED")
-                                            : true));
-                                  },
-                                  feedback: const SizedBox.shrink(),
-                                  child: FloatActionCard(
-                                    actions: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => CommonButtonCard(
-                                          g: g,
-                                          contractNumber: widget.contractNumber,
-                                          mbNumber: widget.mbNumber,
-                                          type: widget.type,
-                                          bs: bk,
-                                        ),
-                                      );
-                                    },
-                                    amount: value.data.first.totalAmount != null
-                                        ? value.data.first.totalAmount!
-                                            .roundToDouble()
-                                            .toStringAsFixed(2)
-                                        : "0.00",
-                                    openButtonSheet: () {
-                                      _openBottomSheet(
-                                          t,
-                                          context,
-                                          value.data.first.totalSorAmount!,
-                                          value.data.first.totalNorSorAmount!,
-                                          value.data.first.totalAmount!,
-                                          g,
-                                          widget.contractNumber,
-                                          widget.mbNumber,
-                                          widget.type,
-                                          bk,
-                                          ((bk != null && bk.isEmpty))
-                                              ? false
-                                              : true,
-                                          workorderStatus,
-                                          estimateStatus,
-                                          (value.data.length >= 2
-                                              ? (value.data[1].wfStatus ==
-                                                      "APPROVED" ||
-                                                  value.data[1].wfStatus ==
-                                                      "REJECTED")
-                                              : true));
-                                    },
-                                    totalAmountText: t.translate(
-                                        i18.measurementBook.totalMbAmount),
-                                    subtext: t.translate(
-                                        i18.measurementBook.forCurrentEntry),
-                                    showAction: ((bk != null && bk.isEmpty))
-                                        ? false
-                                        : true,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        );
-                      }
-                    },
-                    loading: (value) {
-                      return const SizedBox.shrink();
-                    },
-                  );
-                },
-              ),
+              //                   return Draggable(
+              //                     childWhenDragging: FloatActionCard(
+              //                       actions: () {
+              //                         showDialog(
+              //                           context: context,
+              //                           builder: (context) => CommonButtonCard(
+              //                             g: g,
+              //                             contractNumber: widget.contractNumber,
+              //                             mbNumber: widget.mbNumber,
+              //                             type: widget.type,
+              //                             bs: bk,
+              //                           ),
+              //                         );
+              //                       },
+              //                       amount: value.data.first.totalAmount != null
+              //                           ? value.data.first.totalAmount!
+              //                               .roundToDouble()
+              //                               .toStringAsFixed(2)
+              //                           : "0.00",
+              //                       openButtonSheet: () {
+              //                         _openBottomSheet(
+              //                             t,
+              //                             context,
+              //                             value.data.first.totalSorAmount!,
+              //                             value.data.first.totalNorSorAmount!,
+              //                             value.data.first.totalAmount!,
+              //                             g,
+              //                             widget.contractNumber,
+              //                             widget.mbNumber,
+              //                             widget.type,
+              //                             bk,
+              //                             ((bk != null && bk.isEmpty))
+              //                                 ? false
+              //                                 : true,
+              //                             workorderStatus,
+              //                             estimateStatus,
+              //                             (value.data.length >= 2
+              //                                 ? (value.data[1].wfStatus ==
+              //                                         "APPROVED" ||
+              //                                     value.data[1].wfStatus ==
+              //                                         "REJECTED")
+              //                                 : true));
+              //                       },
+              //                       totalAmountText: t.translate(
+              //                           i18.measurementBook.totalMbAmount),
+              //                       subtext: t.translate(
+              //                           i18.measurementBook.forCurrentEntry),
+              //                       showAction: ((bk != null && bk.isEmpty))
+              //                           ? false
+              //                           : true,
+              //                     ),
+              //                     onDragEnd: (details) {
+              //                       _openBottomSheet(
+              //                           t,
+              //                           context,
+              //                           value.data.first.totalSorAmount!,
+              //                           value.data.first.totalNorSorAmount!,
+              //                           value.data.first.totalAmount!,
+              //                           g,
+              //                           widget.contractNumber,
+              //                           widget.mbNumber,
+              //                           widget.type,
+              //                           bk,
+              //                           ((bk != null && bk.isEmpty))
+              //                               ? false
+              //                               : true,
+              //                           workorderStatus,
+              //                           estimateStatus,
+              //                           (value.data.length >= 2
+              //                               ? (value.data[1].wfStatus ==
+              //                                       "APPROVED" ||
+              //                                   value.data[1].wfStatus ==
+              //                                       "REJECTED")
+              //                               : true));
+              //                     },
+              //                     feedback: const SizedBox.shrink(),
+              //                     child: FloatActionCard(
+              //                       actions: () {
+              //                         showDialog(
+              //                           context: context,
+              //                           builder: (context) => CommonButtonCard(
+              //                             g: g,
+              //                             contractNumber: widget.contractNumber,
+              //                             mbNumber: widget.mbNumber,
+              //                             type: widget.type,
+              //                             bs: bk,
+              //                           ),
+              //                         );
+              //                       },
+              //                       amount: value.data.first.totalAmount != null
+              //                           ? value.data.first.totalAmount!
+              //                               .roundToDouble()
+              //                               .toStringAsFixed(2)
+              //                           : "0.00",
+              //                       openButtonSheet: () {
+              //                         _openBottomSheet(
+              //                             t,
+              //                             context,
+              //                             value.data.first.totalSorAmount!,
+              //                             value.data.first.totalNorSorAmount!,
+              //                             value.data.first.totalAmount!,
+              //                             g,
+              //                             widget.contractNumber,
+              //                             widget.mbNumber,
+              //                             widget.type,
+              //                             bk,
+              //                             ((bk != null && bk.isEmpty))
+              //                                 ? false
+              //                                 : true,
+              //                             workorderStatus,
+              //                             estimateStatus,
+              //                             (value.data.length >= 2
+              //                                 ? (value.data[1].wfStatus ==
+              //                                         "APPROVED" ||
+              //                                     value.data[1].wfStatus ==
+              //                                         "REJECTED")
+              //                                 : true));
+              //                       },
+              //                       totalAmountText: t.translate(
+              //                           i18.measurementBook.totalMbAmount),
+              //                       subtext: t.translate(
+              //                           i18.measurementBook.forCurrentEntry),
+              //                       showAction: ((bk != null && bk.isEmpty))
+              //                           ? false
+              //                           : true,
+              //                     ),
+              //                   );
+              //                 },
+              //               );
+              //             },
+              //           );
+              //         }
+              //       },
+              //       loading: (value) {
+              //         return const SizedBox.shrink();
+              //       },
+              //     );
+              //   },
+              // ),
+
               appBar: customAppBar(),
               drawer: const MySideBar(),
               body: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
@@ -599,1054 +603,419 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 ))
                             .toList();
                       }
-                      return SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    Theme.of(context).spacerTheme.spacer2,
-                                vertical: Theme.of(context).spacerTheme.spacer4,
-                              ),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    BackNavigationButton(
-                                      backNavigationButtonThemeData:
-                                          const BackNavigationButtonThemeData()
-                                              .copyWith(
-                                        textColor: Theme.of(context)
-                                            .colorTheme
-                                            .primary
-                                            .primary2,
-                                        contentPadding: EdgeInsets.zero,
-                                        context: context,
+                      return Stack(children: [
+                        SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      Theme.of(context).spacerTheme.spacer2,
+                                  vertical:
+                                      Theme.of(context).spacerTheme.spacer4,
+                                ),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      BackNavigationButton(
+                                        backNavigationButtonThemeData:
+                                            const BackNavigationButtonThemeData()
+                                                .copyWith(
+                                          textColor: Theme.of(context)
+                                              .colorTheme
+                                              .primary
+                                              .primary2,
+                                          contentPadding: EdgeInsets.zero,
+                                          context: context,
+                                           backButtonIcon: Icon(
+                    Icons.arrow_circle_left_outlined,
+                    size: MediaQuery.of(context).size.width < 500
+                        ? Theme.of(context).spacerTheme.spacer5
+                        : Theme.of(context).spacerTheme.spacer6,
+                    color: Theme.of(context).colorTheme.primary.primary2,
+                  )
+                                        ),
+                                        backButtonText: AppLocalizations.of(
+                                                    context)
+                                                .translate(i18.common.back) ??
+                                            'Back',
+                                        handleBack: () {
+                                          context.router.popUntilRouteWithPath(
+                                            widget.type == MBScreen.update
+                                                ? 'measurement-inbox'
+                                                : 'workOrder-inbox',
+                                          );
+                                        },
                                       ),
-                                      backButtonText:
-                                          AppLocalizations.of(context)
-                                                  .translate(i18.common.back) ??
-                                              'Back',
-                                      handleBack: () {
-                                        context.router.popUntilRouteWithPath(
-                                          widget.type == MBScreen.update
-                                              ? 'measurement-inbox'
-                                              : 'workOrder-inbox',
-                                        );
-                                      },
+                                    ]),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.only(left: 16.0),
+                                child: TextChunk(
+                                  heading: t.translate(
+                                      i18.measurementBook.measurementBookTitle),
+                                ),
+                              ),
+                              ui_component.DigitCard(
+                                margin: const EdgeInsets.all(8),
+                                cardType: CardType.primary,
+                                padding: EdgeInsets.zero,
+                                children: [
+                                  ExpansionTile(
+                                    tilePadding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    // childrenPadding: EdgeInsets.zero,
+                                    expandedCrossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    expandedAlignment: Alignment.topLeft,
+                                    title: TextChunk(
+                                      subHeading: t.translate(
+                                          i18.measurementBook.primaryDetails),
+                                      subHeadingStyle: Theme.of(context)
+                                          .digitTextTheme(context)
+                                          .headingM,
                                     ),
-                                  ]),
-                            ),
-
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: TextChunk(
-                                heading: t.translate(
-                                    i18.measurementBook.measurementBookTitle),
-                              ),
-                            ),
-                            ui_component.DigitCard(
-                              margin: const EdgeInsets.all(8),
-                              cardType: CardType.primary,
-                              padding: EdgeInsets.zero,
-                              children: [
-                                ExpansionTile(
-                                  tilePadding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  // childrenPadding: EdgeInsets.zero,
-                                  expandedCrossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  expandedAlignment: Alignment.topLeft,
-                                  title: TextChunk(
-                                    subHeading: t.translate(
-                                        i18.measurementBook.primaryDetails),
-                                    subHeadingStyle: Theme.of(context)
-                                        .digitTextTheme(context)
-                                        .headingM,
-                                  ),
-                                  children: [
-                                    ui_component.DigitCard(
-                                        padding: const EdgeInsets.only(
-                                            top: 0.0,
-                                            left: 8.0,
-                                            right: 8.0,
-                                            bottom: 0.0),
-                                        cardType: CardType.primary,
-                                        children: [
-                                          LabelValueList(
-                                              maxLines: 3,
-                                              labelFlex: 5,
-                                              valueFlex: 5,
-                                              items: primaryItems(t, value.data,
-                                                      widget.type)
-                                                  .entries
-                                                  .map(
-                                                (e) {
-                                                  return LabelValuePair(
-                                                      label: e.key,
-                                                      value: e.value);
-                                                },
-                                              ).toList()),
-                                          value.data.length > 1
-                                              ? Button(
-                                                  suffixIcon: Icons
-                                                      .arrow_forward_outlined,
-                                                  label: t.translate(i18
-                                                      .measurementBook
-                                                      .mbShowHistory),
-                                                  onPressed: () {
-                                                    context.router.push(
-                                                      MBHistoryBookRoute(
-                                                        contractNumber: widget
-                                                            .contractNumber,
-                                                        mbNumber:
-                                                            widget.mbNumber,
-                                                        tenantId:
-                                                            widget.tenantId,
-                                                        type: widget.type,
-                                                      ),
-                                                    );
+                                    children: [
+                                      ui_component.DigitCard(
+                                          padding: const EdgeInsets.only(
+                                              top: 0.0,
+                                              left: 8.0,
+                                              right: 8.0,
+                                              bottom: 0.0),
+                                          cardType: CardType.primary,
+                                          children: [
+                                            LabelValueList(
+                                                maxLines: 3,
+                                                labelFlex: 5,
+                                                valueFlex: 5,
+                                                items: primaryItems(t,
+                                                        value.data, widget.type)
+                                                    .entries
+                                                    .map(
+                                                  (e) {
+                                                    return LabelValuePair(
+                                                        label: e.key,
+                                                        value: e.value);
                                                   },
-                                                  type: ButtonType.link,
-                                                  size: ButtonSize.large)
-                                              : const SizedBox.shrink(),
-                                        ]),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                                ).toList()),
+                                            value.data.length > 1
+                                                ? Button(
+                                                    suffixIcon: Icons
+                                                        .arrow_forward_outlined,
+                                                    label: t.translate(i18
+                                                        .measurementBook
+                                                        .mbShowHistory),
+                                                    onPressed: () {
+                                                      context.router.push(
+                                                        MBHistoryBookRoute(
+                                                          contractNumber: widget
+                                                              .contractNumber,
+                                                          mbNumber:
+                                                              widget.mbNumber,
+                                                          tenantId:
+                                                              widget.tenantId,
+                                                          type: widget.type,
+                                                        ),
+                                                      );
+                                                    },
+                                                    type: ButtonType.link,
+                                                    size: ButtonSize.large)
+                                                : const SizedBox.shrink(),
+                                          ]),
+                                    ],
+                                  ),
+                                ],
+                              ),
 
-                            // tab
-/////////////////////////
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 16.0,
-                                  left: 8.0,
-                                  right: 8.0,
-                                  bottom: 0.0),
-                              child: AnimatedBuilder(
-                                animation: _tabController.animation!,
-                                builder: (context, child) =>
-                                    //Expanded(
-                                    //child:
-                                    DigitTabBar(
-                                  tabBarThemeData: const DigitTabBarThemeData()
-                                      .copyWith(
-                                          tabWidth: 130,
-                                          padding: const EdgeInsets.all(0)),
-                                  tabs: [
-                                    t.translate(i18.measurementBook.mbSor),
-                                    t.translate(i18.measurementBook.mbNonSor),
-                                    t.translate(
-                                        i18.measurementBook.mbWorksitePhotos)
-                                  ],
-                                  onTabSelected: (index) {
-                                    //  setState(() {
-                                    //    tabIndex=index;
-                                    //  });
-                                    _tabController.animateTo(index);
-                                  },
-                                  initialIndex: tabIndex,
+                              // tab
+                              /////////////////////////
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 16.0,
+                                    left: 8.0,
+                                    right: 8.0,
+                                    bottom: 0.0),
+                                child: AnimatedBuilder(
+                                  animation: _tabController.animation!,
+                                  builder: (context, child) =>
+                                      //Expanded(
+                                      //child:
+                                      DigitTabBar(
+                                    tabBarThemeData:
+                                        const DigitTabBarThemeData().copyWith(
+                                            tabWidth: 130,
+                                            padding: const EdgeInsets.all(0)),
+                                    tabs: [
+                                      t.translate(i18.measurementBook.mbSor),
+                                      t.translate(i18.measurementBook.mbNonSor),
+                                      t.translate(
+                                          i18.measurementBook.mbWorksitePhotos)
+                                    ],
+                                    onTabSelected: (index) {
+                                      //  setState(() {
+                                      //    tabIndex=index;
+                                      //  });
+                                      _tabController.animateTo(index);
+                                    },
+                                    initialIndex: tabIndex,
+                                  ),
                                 ),
                               ),
-                            ),
 
-                            /////////////////////////
-                            ///
-
-                            // Visibility(
-                            //   visible: tabIndex==0,
-                            //   child:  value.sor!.isEmpty
-                            //             ? Padding(
-                            //                 padding: const EdgeInsets.only(
-                            //                   left: 8.0,
-                            //                   right: 8.0,
-                            //                   bottom: 8.0,
-                            //                   top: 0.0,
-                            //                 ),
-                            //                 child: ui_component.DigitCard(
-                            //                   cardType: CardType.primary,
-                            //                   children: [
-                            //                     Center(
-                            //                         child: EmptyImage(
-                            //                       align: Alignment.center,
-                            //                       label: t.translate(
-                            //                           i18.common.notFound),
-                            //                     ))
-                            //                   ],
-                            //                 ),
-                            //               )
-                            //             : ListView.builder(
-                            //                 shrinkWrap: true,
-                            //                 padding: EdgeInsets.zero,
-                            //                 physics:
-                            //                     const NeverScrollableScrollPhysics(),
-                            //                 itemBuilder: (BuildContext context,
-                            //                     int index) {
-                            //                   return SorCard(
-                            //                     // consumedQty: consumedQty,
-                            //                     // currentAmt: currentAmt,
-
-                            //                     index: index,
-                            //                     magic: value.sor![index]
-                            //                         .filteredMeasurementsMeasure,
-
-                            //                     preSorNonSor: value.preSor ==
-                            //                             null
-                            //                         ? null
-                            //                         : value.preSor?.firstWhereOrNull(
-                            //                                     (element) =>
-                            //                                         element
-                            //                                             .sorId ==
-                            //                                         value
-                            //                                             .sor![
-                            //                                                 index]
-                            //                                             .sorId) ==
-                            //                                 null
-                            //                             ? null
-                            //                             : value.preSor!
-                            //                                 .firstWhereOrNull(
-                            //                                     (element) =>
-                            //                                         element
-                            //                                             .sorId ==
-                            //                                         value
-                            //                                             .sor![
-                            //                                                 index]
-                            //                                             .sorId)!
-                            //                                 .filteredMeasurementsMeasure,
-                            //                     // value.preSor![index]
-                            //                     //     .filteredMeasurementsMeasure,
-                            //                     type: "sor",
-                            //                     sorNonSorId:
-                            //                         value.sor![index].sorId!,
-                            //                     cardLevel: t.translate(
-                            //                         i18.measurementBook.mbSor),
-                            //                   );
-                            //                 },
-                            //                 itemCount: value.sor!.length,
-                            //               ),
-                            //         ),
-                            //  Visibility(
-                            //   visible: tabIndex==1,
-                            //   child: value.nonSor!.isEmpty
-                            //             ? Padding(
-                            //                 padding: const EdgeInsets.only(
-                            //                   left: 8.0,
-                            //                   right: 8.0,
-                            //                   bottom: 8.0,
-                            //                   top: 0.0,
-                            //                 ),
-                            //                 child: ui_component.DigitCard(
-                            //                   cardType: CardType.primary,
-                            //                   children: [
-                            //                     Center(
-                            //                       child: EmptyImage(
-                            //                         align: Alignment.center,
-                            //                         label: t.translate(
-                            //                             i18.common.notFound),
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               )
-                            //             : ListView.builder(
-                            //                 physics:
-                            //                     const NeverScrollableScrollPhysics(),
-                            //                 itemBuilder: (BuildContext context,
-                            //                     int index) {
-                            //                   return SorCard(
-                            //                     // consumedQty: consumedQty,
-                            //                     // currentAmt: currentAmt,
-
-                            //                     index: index,
-                            //                     magic: value.nonSor![index]
-                            //                         .filteredMeasurementsMeasure,
-                            //                     preSorNonSor: value.preNonSor ==
-                            //                             null
-                            //                         ? null
-                            //                         : value.preNonSor?.firstWhereOrNull(
-                            //                                     (element) =>
-                            //                                         element
-                            //                                             .sorId ==
-                            //                                         value
-                            //                                             .nonSor![
-                            //                                                 index]
-                            //                                             .sorId) !=
-                            //                                 null
-                            //                             ? value.preNonSor!
-                            //                                 .firstWhereOrNull(
-                            //                                     (element) =>
-                            //                                         element
-                            //                                             .sorId ==
-                            //                                         value
-                            //                                             .nonSor![
-                            //                                                 index]
-                            //                                             .sorId)!
-                            //                                 .filteredMeasurementsMeasure
-                            //                             : null,
-                            //                     type: "NonSor",
-                            //                     sorNonSorId:
-                            //                         value.nonSor![index].sorId!,
-                            //                     cardLevel: t.translate(i18
-                            //                         .measurementBook.mbNonSor),
-                            //                   );
-                            //                 },
-                            //                 itemCount: value.nonSor!.length,
-                            //               ),),
-                            //   Visibility(
-                            //     visible: tabIndex==2,
-                            //     child: widget.type == MBScreen.create
-                            //             ? Padding(
-                            //                 padding: const EdgeInsets.only(
-                            //                     left: 8.0,
-                            //                     right: 8.0,
-                            //                     bottom: 8.0,
-                            //                     top: 0.0),
-                            //                 child: ui_component.DigitCard(
-                            //                     cardType: CardType.primary,
-                            //                     children: [
-                            //                       Center(
-                            //                         child: Column(
-                            //                           children: [
-                            //                             Padding(
-                            //                               padding:
-                            //                                   const EdgeInsets
-                            //                                       .symmetric(
-                            //                                       horizontal:
-                            //                                           8.0),
-                            //                               // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                            //                               //    print(filenames);
-                            //                               //  },
-                            //                               //     allowMultiples: true,),
-                            //                               child: FilePickerDemo(
-                            //                                 fromServerFile:
-                            //                                     value.data.first
-                            //                                         .documents,
-                            //                                 callBack: (List<
-                            //                                             FileStoreModel>?
-                            //                                         g,
-                            //                                     List<WorkflowDocument>?
-                            //                                         l) {
-                            //                                   context
-                            //                                       .read<
-                            //                                           MeasurementDetailBloc>()
-                            //                                       .add(
-                            //                                         MeasurementUploadDocumentBlocEvent(
-                            //                                           tenantId:
-                            //                                               '',
-                            //                                           workflowDocument:
-                            //                                               l!,
-                            //                                         ),
-                            //                                       );
-                            //                                 },
-                            //                                 extensions: const [
-                            //                                   'jpg',
-                            //                                   'png',
-                            //                                   'jpeg',
-                            //                                 ],
-                            //                                 moduleName:
-                            //                                     'img_measurement_book',
-                            //                                 headerType:
-                            //                                     MediaType
-                            //                                         .mbDetail,
-                            //                               ),
-                            //                             ),
-                            //                             Container(
-                            //                               padding:
-                            //                                   const EdgeInsets
-                            //                                       .all(4),
-                            //                               //  color: DigitColors().curiousBlue,
-                            //                               child: Text(
-                            //                                   t.translate(i18
-                            //                                       .measurementBook
-                            //                                       .mbPhotoInfo)),
-                            //                             ),
-                            //                           ],
-                            //                         ),
-                            //                       ),
-                            //                     ]),
-                            //               )
-                            //             : value.data.first.documents != null &&
-                            //                     value.data.first.documents!
-                            //                         .isEmpty
-                            //                 ? !value.viewStatus
-                            //                     ? Padding(
-                            //                         padding:
-                            //                             const EdgeInsets.only(
-                            //                                 left: 8.0,
-                            //                                 right: 8.0,
-                            //                                 bottom: 8.0,
-                            //                                 top: 0.0),
-                            //                         child:
-                            //                             ui_component.DigitCard(
-                            //                           cardType:
-                            //                               CardType.primary,
-                            //                           children: [
-                            //                             Center(
-                            //                               child: Column(
-                            //                                 crossAxisAlignment:
-                            //                                     CrossAxisAlignment
-                            //                                         .start,
-                            //                                 mainAxisAlignment:
-                            //                                     MainAxisAlignment
-                            //                                         .center,
-                            //                                 children: [
-                            //                                   Padding(
-                            //                                     padding: const EdgeInsets
-                            //                                         .symmetric(
-                            //                                         horizontal:
-                            //                                             8.0),
-                            //                                     child:
-                            //                                         FilePickerDemo(
-                            //                                       fromServerFile:
-                            //                                           value
-                            //                                               .data
-                            //                                               .first
-                            //                                               .documents,
-                            //                                       callBack: (List<
-                            //                                                   FileStoreModel>?
-                            //                                               g,
-                            //                                           List<WorkflowDocument>?
-                            //                                               l) {
-                            //                                         context
-                            //                                             .read<
-                            //                                                 MeasurementDetailBloc>()
-                            //                                             .add(
-                            //                                               MeasurementUploadDocumentBlocEvent(
-                            //                                                 tenantId:
-                            //                                                     '',
-                            //                                                 workflowDocument:
-                            //                                                     l!,
-                            //                                               ),
-                            //                                             );
-                            //                                       },
-                            //                                       extensions: const [
-                            //                                         'jpg',
-                            //                                         'png',
-                            //                                         'jpeg',
-                            //                                       ],
-                            //                                       moduleName:
-                            //                                           'img_measurement_book',
-                            //                                       headerType:
-                            //                                           MediaType
-                            //                                               .mbDetail,
-                            //                                     ),
-
-                            //                                     // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                            //                                     //    print(filenames);
-                            //                                     //  },
-                            //                                     // allowMultiples: true,),
-                            //                                   ),
-                            //                                   // TODO:[text change]
-                            //                                   Container(
-                            //                                     padding:
-                            //                                         const EdgeInsets
-                            //                                             .all(4),
-                            //                                     child: Text(t
-                            //                                         .translate(i18
-                            //                                             .measurementBook
-                            //                                             .mbPhotoInfo)),
-                            //                                   ),
-                            //                                 ],
-                            //                               ),
-                            //                             ),
-                            //                           ],
-                            //                         ),
-                            //                       )
-                            //                     : Padding(
-                            //                         padding:
-                            //                             const EdgeInsets.only(
-                            //                                 left: 8.0,
-                            //                                 right: 8.0,
-                            //                                 bottom: 8.0,
-                            //                                 top: 0.0),
-                            //                         child:
-                            //                             ui_component.DigitCard(
-                            //                                 cardType: CardType
-                            //                                     .primary,
-                            //                                 children: [
-                            //                               Center(
-                            //                                 child: EmptyImage(
-                            //                                   align: Alignment
-                            //                                       .center,
-                            //                                   label: t.translate(i18
-                            //                                       .measurementBook
-                            //                                       .noDocumentFound),
-                            //                                 ),
-                            //                               )
-                            //                             ]),
-                            //                       )
-                            //                 : !value.viewStatus
-                            //                     ? Padding(
-                            //                         padding:
-                            //                             const EdgeInsets.only(
-                            //                                 left: 8.0,
-                            //                                 right: 8.0,
-                            //                                 bottom: 8.0,
-                            //                                 top: 0.0),
-                            //                         child:
-                            //                             ui_component.DigitCard(
-                            //                                 cardType: CardType
-                            //                                     .primary,
-                            //                                 children: [
-                            //                               Center(
-                            //                                 child: Column(
-                            //                                   crossAxisAlignment:
-                            //                                       CrossAxisAlignment
-                            //                                           .start,
-                            //                                   mainAxisAlignment:
-                            //                                       MainAxisAlignment
-                            //                                           .center,
-                            //                                   children: [
-                            //                                     Padding(
-                            //                                       padding: const EdgeInsets
-                            //                                           .symmetric(
-                            //                                           horizontal:
-                            //                                               8.0),
-                            //                                       //             child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                            //                                       //               print(filenames);
-                            //                                       //              },
-                            //                                       // allowMultiples: true,),
-                            //                                       child:
-                            //                                           FilePickerDemo(
-                            //                                         fromServerFile: value
-                            //                                             .data
-                            //                                             .first
-                            //                                             .documents,
-                            //                                         callBack: (List<FileStoreModel>?
-                            //                                                 g,
-                            //                                             List<WorkflowDocument>?
-                            //                                                 l) {
-                            //                                           context
-                            //                                               .read<
-                            //                                                   MeasurementDetailBloc>()
-                            //                                               .add(
-                            //                                                 MeasurementUploadDocumentBlocEvent(
-                            //                                                   tenantId: '',
-                            //                                                   workflowDocument: l!,
-                            //                                                 ),
-                            //                                               );
-                            //                                         },
-                            //                                         extensions: const [
-                            //                                           'jpg',
-                            //                                           'png',
-                            //                                           'jpeg',
-                            //                                         ],
-                            //                                         moduleName:
-                            //                                             'img_measurement_book',
-                            //                                         headerType:
-                            //                                             MediaType
-                            //                                                 .mbDetail,
-                            //                                       ),
-                            //                                     ),
-                            //                                     Container(
-                            //                                       padding:
-                            //                                           const EdgeInsets
-                            //                                               .all(
-                            //                                               4),
-                            //                                       child: Text(t
-                            //                                           .translate(i18
-                            //                                               .measurementBook
-                            //                                               .mbPhotoInfo)),
-                            //                                     ),
-                            //                                   ],
-                            //                                 ),
-                            //                               ),
-                            //                             ]),
-                            //                       )
-                            //                     : Padding(
-                            //                         padding:
-                            //                             const EdgeInsets.only(
-                            //                                 left: 8.0,
-                            //                                 right: 8.0,
-                            //                                 bottom: 8.0,
-                            //                                 top: 0.0),
-                            //                         child:
-                            //                             ui_component.DigitCard(
-                            //                           cardType:
-                            //                               CardType.primary,
-                            //                           children: List.generate(
-                            //                               value
-                            //                                   .data
-                            //                                   .first
-                            //                                   .documents!
-                            //                                   .length, (index) {
-                            //                             if (index == 0) {
-                            //                               return Padding(
-                            //                                 padding:
-                            //                                     const EdgeInsets
-                            //                                         .only(
-                            //                                         bottom:
-                            //                                             8.0),
-                            //                                 child: Column(
-                            //                                   children: [
-                            //                                     Padding(
-                            //                                       padding: const EdgeInsets
-                            //                                           .only(
-                            //                                           bottom:
-                            //                                               16.0),
-                            //                                       child:
-                            //                                           InfoCard(
-                            //                                         title: t.translate(i18
-                            //                                             .common
-                            //                                             .info),
-                            //                                         type: InfoType
-                            //                                             .info,
-                            //                                         description:
-                            //                                             t.translate(i18
-                            //                                                 .measurementBook
-                            //                                                 .infoImageTip),
-                            //                                       ),
-                            //                                     ),
-                            //                                     InkWell(
-                            //                                       onTap: () =>
-                            //                                           CommonMethods()
-                            //                                               .onTapOfAttachment(
-                            //                                         mm![index],
-                            //                                         mm![index]
-                            //                                             .tenantId!,
-                            //                                         context,
-                            //                                         roleType:
-                            //                                             RoleType
-                            //                                                 .employee,
-                            //                                       ),
-                            //                                       child: Chip(
-                            //                                         labelPadding:
-                            //                                             const EdgeInsets
-                            //                                                 .all(
-                            //                                                 10),
-                            //                                         label:
-                            //                                             SizedBox(
-                            //                                           width: MediaQuery.sizeOf(
-                            //                                                   context)
-                            //                                               .width,
-                            //                                           height:
-                            //                                               25,
-                            //                                           child:
-                            //                                               Text(
-                            //                                             mm![index]
-                            //                                                 .name
-                            //                                                 .toString(),
-                            //                                             maxLines:
-                            //                                                 1,
-                            //                                             overflow:
-                            //                                                 TextOverflow.ellipsis,
-                            //                                             style: Theme.of(context)
-                            //                                                 .textTheme
-                            //                                                 .bodyMedium,
-                            //                                           ),
-                            //                                         ),
-                            //                                       ),
-                            //                                     ),
-                            //                                   ],
-                            //                                 ),
-                            //                               );
-                            //                             } else {
-                            //                               return Padding(
-                            //                                 padding:
-                            //                                     const EdgeInsets
-                            //                                         .only(
-                            //                                         bottom:
-                            //                                             8.0),
-                            //                                 child: InkWell(
-                            //                                   onTap: () =>
-                            //                                       CommonMethods()
-                            //                                           .onTapOfAttachment(
-                            //                                     mm![index],
-                            //                                     mm![index]
-                            //                                         .tenantId!,
-                            //                                     context,
-                            //                                     roleType: RoleType
-                            //                                         .employee,
-                            //                                   ),
-                            //                                   child: Chip(
-                            //                                     labelPadding:
-                            //                                         const EdgeInsets
-                            //                                             .all(
-                            //                                             10),
-                            //                                     // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                            //                                     label: SizedBox(
-                            //                                       width: MediaQuery
-                            //                                               .sizeOf(
-                            //                                                   context)
-                            //                                           .width,
-                            //                                       height: 25,
-                            //                                       child: Text(
-                            //                                         mm![index]
-                            //                                             .name
-                            //                                             .toString(),
-                            //                                         maxLines: 1,
-                            //                                         softWrap:
-                            //                                             true,
-                            //                                         overflow:
-                            //                                             TextOverflow
-                            //                                                 .ellipsis,
-                            //                                         style: Theme.of(
-                            //                                                 context)
-                            //                                             .textTheme
-                            //                                             .bodyMedium,
-                            //                                       ),
-                            //                                     ),
-                            //                                   ),
-                            //                                 ),
-                            //                               );
-                            //                             }
-                            //                           }).toList(),
-                            //                         ),
-                            //                       ),),
-
-                            AnimatedBuilder(
-                              animation: _tabController.animation!,
-                              builder: (context, child) => SizedBox(
-                                height: tabViewHeight(
-                                  value.sor!.length,
-                                  value.nonSor!.length,
-                                  widget.type == MBScreen.create ||
-                                          value.data.first.wfStatus == "DRAFTED"
-                                      ? 0
-                                      : value.data.first.documents != null &&
-                                              value
-                                                  .data.first.documents!.isEmpty
-                                          ? 0
-                                          : !value.viewStatus
-                                              ? 0
-                                              : value
-                                                  .data.first.documents!.length,
-                                ),
-                                child: TabBarView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  controller: _tabController,
-                                  children: [
-                                    value.sor!.isEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              bottom: 8.0,
-                                              top: 0.0,
-                                            ),
-                                            child: ui_component.DigitCard(
-                                              cardType: CardType.primary,
-                                              children: [
-                                                Center(
-                                                    child: EmptyImage(
-                                                  align: Alignment.center,
-                                                  label: t.translate(
-                                                      i18.common.notFound),
-                                                ))
-                                              ],
-                                            ),
-                                          )
-                                        : ListView.builder(
-                                            shrinkWrap: true,
-                                            padding: EdgeInsets.zero,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return SorCard(
-                                                // consumedQty: consumedQty,
-                                                // currentAmt: currentAmt,
-
-                                                index: index,
-                                                magic: value.sor![index]
-                                                    .filteredMeasurementsMeasure,
-
-                                                preSorNonSor: value.preSor ==
-                                                        null
-                                                    ? null
-                                                    : value.preSor?.firstWhereOrNull(
-                                                                (element) =>
-                                                                    element
-                                                                        .sorId ==
-                                                                    value
-                                                                        .sor![
-                                                                            index]
-                                                                        .sorId) ==
-                                                            null
-                                                        ? null
-                                                        : value.preSor!
-                                                            .firstWhereOrNull(
-                                                                (element) =>
-                                                                    element
-                                                                        .sorId ==
-                                                                    value
-                                                                        .sor![
-                                                                            index]
-                                                                        .sorId)!
-                                                            .filteredMeasurementsMeasure,
-                                                // value.preSor![index]
-                                                //     .filteredMeasurementsMeasure,
-                                                type: "sor",
-                                                sorNonSorId:
-                                                    value.sor![index].sorId!,
-                                                cardLevel: t.translate(
-                                                    i18.measurementBook.mbSor),
-                                              );
-                                            },
-                                            itemCount: value.sor!.length,
-                                          ),
-                                    value.nonSor!.isEmpty
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              bottom: 8.0,
-                                              top: 0.0,
-                                            ),
-                                            child: ui_component.DigitCard(
-                                              cardType: CardType.primary,
-                                              children: [
-                                                Center(
-                                                  child: EmptyImage(
-                                                    align: Alignment.center,
-                                                    label: t.translate(
-                                                        i18.common.notFound),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : ListView.builder(
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return SorCard(
-                                                // consumedQty: consumedQty,
-                                                // currentAmt: currentAmt,
-
-                                                index: index,
-                                                magic: value.nonSor![index]
-                                                    .filteredMeasurementsMeasure,
-                                                preSorNonSor: value.preNonSor ==
-                                                        null
-                                                    ? null
-                                                    : value.preNonSor?.firstWhereOrNull(
-                                                                (element) =>
-                                                                    element
-                                                                        .sorId ==
-                                                                    value
-                                                                        .nonSor![
-                                                                            index]
-                                                                        .sorId) !=
-                                                            null
-                                                        ? value.preNonSor!
-                                                            .firstWhereOrNull(
-                                                                (element) =>
-                                                                    element
-                                                                        .sorId ==
-                                                                    value
-                                                                        .nonSor![
-                                                                            index]
-                                                                        .sorId)!
-                                                            .filteredMeasurementsMeasure
-                                                        : null,
-                                                type: "NonSor",
-                                                sorNonSorId:
-                                                    value.nonSor![index].sorId!,
-                                                cardLevel: t.translate(i18
-                                                    .measurementBook.mbNonSor),
-                                              );
-                                            },
-                                            itemCount: value.nonSor!.length,
-                                          ),
-                                    widget.type == MBScreen.create
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8.0,
-                                                right: 8.0,
-                                                bottom: 8.0,
-                                                top: 0.0),
-                                            child: ui_component.DigitCard(
-                                                cardType: CardType.primary,
-                                                children: [
-                                                  Center(
-                                                    child: Column(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      8.0),
-                                                          // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                                                          //    print(filenames);
-                                                          //  },
-                                                          //     allowMultiples: true,),
-                                                          child: FilePickerDemo(
-                                                            fromServerFile:
-                                                                value.data.first
-                                                                    .documents,
-                                                            callBack: (List<
-                                                                        FileStoreModel>?
-                                                                    g,
-                                                                List<WorkflowDocument>?
-                                                                    l) {
-                                                              context
-                                                                  .read<
-                                                                      MeasurementDetailBloc>()
-                                                                  .add(
-                                                                    MeasurementUploadDocumentBlocEvent(
-                                                                      tenantId:
-                                                                          '',
-                                                                      workflowDocument:
-                                                                          l!,
-                                                                    ),
-                                                                  );
-                                                            },
-                                                            extensions: const [
-                                                              'jpg',
-                                                              'png',
-                                                              'jpeg',
-                                                            ],
-                                                            moduleName:
-                                                                'img_measurement_book',
-                                                            headerType:
-                                                                MediaType
-                                                                    .mbDetail,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4),
-                                                          //  color: DigitColors().curiousBlue,
-                                                          child: Text(
-                                                              t.translate(i18
-                                                                  .measurementBook
-                                                                  .mbPhotoInfo)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ]),
-                                          )
+                              AnimatedBuilder(
+                                animation: _tabController.animation!,
+                                builder: (context, child) => SizedBox(
+                                  height: tabViewHeight(
+                                    value.sor!.length,
+                                    value.nonSor!.length,
+                                    widget.type == MBScreen.create ||
+                                            value.data.first.wfStatus ==
+                                                "DRAFTED"
+                                        ? 0
                                         : value.data.first.documents != null &&
                                                 value.data.first.documents!
                                                     .isEmpty
-                                            ? !value.viewStatus
-                                                ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8.0,
-                                                            right: 8.0,
-                                                            bottom: 8.0,
-                                                            top: 0.0),
-                                                    child:
-                                                        ui_component.DigitCard(
-                                                      cardType:
-                                                          CardType.primary,
-                                                      children: [
-                                                        Center(
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Padding(
-                                                                padding: const EdgeInsets
+                                            ? 0
+                                            : !value.viewStatus
+                                                ? 0
+                                                : value.data.first.documents!
+                                                    .length,
+                                  ),
+                                  child: TabBarView(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    controller: _tabController,
+                                    children: [
+                                      value.sor!.isEmpty
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 8.0,
+                                                top: 0.0,
+                                              ),
+                                              child: ui_component.DigitCard(
+                                                cardType: CardType.primary,
+                                                children: [
+                                                  Center(
+                                                      child: EmptyImage(
+                                                    align: Alignment.center,
+                                                    label: t.translate(
+                                                        i18.common.notFound),
+                                                  ))
+                                                ],
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              shrinkWrap: true,
+                                              padding: EdgeInsets.zero,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return SorCard(
+                                                  // consumedQty: consumedQty,
+                                                  // currentAmt: currentAmt,
+
+                                                  index: index,
+                                                  magic: value.sor![index]
+                                                      .filteredMeasurementsMeasure,
+
+                                                  preSorNonSor: value.preSor ==
+                                                          null
+                                                      ? null
+                                                      : value.preSor?.firstWhereOrNull(
+                                                                  (element) =>
+                                                                      element
+                                                                          .sorId ==
+                                                                      value
+                                                                          .sor![
+                                                                              index]
+                                                                          .sorId) ==
+                                                              null
+                                                          ? null
+                                                          : value.preSor!
+                                                              .firstWhereOrNull(
+                                                                  (element) =>
+                                                                      element
+                                                                          .sorId ==
+                                                                      value
+                                                                          .sor![
+                                                                              index]
+                                                                          .sorId)!
+                                                              .filteredMeasurementsMeasure,
+                                                  // value.preSor![index]
+                                                  //     .filteredMeasurementsMeasure,
+                                                  type: "sor",
+                                                  sorNonSorId:
+                                                      value.sor![index].sorId!,
+                                                  cardLevel: t.translate(i18
+                                                      .measurementBook.mbSor),
+                                                );
+                                              },
+                                              itemCount: value.sor!.length,
+                                            ),
+                                      value.nonSor!.isEmpty
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                                right: 8.0,
+                                                bottom: 8.0,
+                                                top: 0.0,
+                                              ),
+                                              child: ui_component.DigitCard(
+                                                cardType: CardType.primary,
+                                                children: [
+                                                  Center(
+                                                    child: EmptyImage(
+                                                      align: Alignment.center,
+                                                      label: t.translate(
+                                                          i18.common.notFound),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return SorCard(
+                                                  // consumedQty: consumedQty,
+                                                  // currentAmt: currentAmt,
+
+                                                  index: index,
+                                                  magic: value.nonSor![index]
+                                                      .filteredMeasurementsMeasure,
+                                                  preSorNonSor: value
+                                                              .preNonSor ==
+                                                          null
+                                                      ? null
+                                                      : value.preNonSor?.firstWhereOrNull((element) =>
+                                                                  element
+                                                                      .sorId ==
+                                                                  value
+                                                                      .nonSor![
+                                                                          index]
+                                                                      .sorId) !=
+                                                              null
+                                                          ? value.preNonSor!
+                                                              .firstWhereOrNull((element) =>
+                                                                  element
+                                                                      .sorId ==
+                                                                  value
+                                                                      .nonSor![
+                                                                          index]
+                                                                      .sorId)!
+                                                              .filteredMeasurementsMeasure
+                                                          : null,
+                                                  type: "NonSor",
+                                                  sorNonSorId: value
+                                                      .nonSor![index].sorId!,
+                                                  cardLevel: t.translate(i18
+                                                      .measurementBook
+                                                      .mbNonSor),
+                                                );
+                                              },
+                                              itemCount: value.nonSor!.length,
+                                            ),
+                                      widget.type == MBScreen.create
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  bottom: 8.0,
+                                                  top: 0.0),
+                                              child: ui_component.DigitCard(
+                                                  cardType: CardType.primary,
+                                                  children: [
+                                                    Center(
+                                                      child: Column(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
                                                                         8.0),
-                                                                child:
-                                                                    FilePickerDemo(
-                                                                  fromServerFile:
-                                                                      value
-                                                                          .data
-                                                                          .first
-                                                                          .documents,
-                                                                  callBack: (List<
-                                                                              FileStoreModel>?
-                                                                          g,
-                                                                      List<WorkflowDocument>?
-                                                                          l) {
-                                                                    context
-                                                                        .read<
-                                                                            MeasurementDetailBloc>()
-                                                                        .add(
-                                                                          MeasurementUploadDocumentBlocEvent(
-                                                                            tenantId:
-                                                                                '',
-                                                                            workflowDocument:
-                                                                                l!,
-                                                                          ),
-                                                                        );
-                                                                  },
-                                                                  extensions: const [
-                                                                    'jpg',
-                                                                    'png',
-                                                                    'jpeg',
-                                                                  ],
-                                                                  moduleName:
-                                                                      'img_measurement_book',
-                                                                  headerType:
-                                                                      MediaType
-                                                                          .mbDetail,
-                                                                ),
-
-                                                                // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                                                                //    print(filenames);
-                                                                //  },
-                                                                // allowMultiples: true,),
-                                                              ),
-                                                              // TODO:[text change]
-                                                              Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(4),
-                                                                child: Text(t
-                                                                    .translate(i18
-                                                                        .measurementBook
-                                                                        .mbPhotoInfo)),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                : Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8.0,
-                                                            right: 8.0,
-                                                            bottom: 8.0,
-                                                            top: 0.0),
-                                                    child:
-                                                        ui_component.DigitCard(
-                                                            cardType: CardType
-                                                                .primary,
-                                                            children: [
-                                                          Center(
-                                                            child: EmptyImage(
-                                                              align: Alignment
-                                                                  .center,
-                                                              label: t.translate(i18
-                                                                  .measurementBook
-                                                                  .noDocumentFound),
+                                                            // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                                                            //    print(filenames);
+                                                            //  },
+                                                            //     allowMultiples: true,),
+                                                            child:
+                                                                FilePickerDemo(
+                                                              fromServerFile:
+                                                                  value
+                                                                      .data
+                                                                      .first
+                                                                      .documents,
+                                                              callBack: (List<
+                                                                          FileStoreModel>?
+                                                                      g,
+                                                                  List<WorkflowDocument>?
+                                                                      l) {
+                                                                context
+                                                                    .read<
+                                                                        MeasurementDetailBloc>()
+                                                                    .add(
+                                                                      MeasurementUploadDocumentBlocEvent(
+                                                                        tenantId:
+                                                                            '',
+                                                                        workflowDocument:
+                                                                            l!,
+                                                                      ),
+                                                                    );
+                                                              },
+                                                              extensions: const [
+                                                                'jpg',
+                                                                'png',
+                                                                'jpeg',
+                                                              ],
+                                                              moduleName:
+                                                                  'img_measurement_book',
+                                                              headerType:
+                                                                  MediaType
+                                                                      .mbDetail,
                                                             ),
-                                                          )
-                                                        ]),
-                                                  )
-                                            : !value.viewStatus
-                                                ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8.0,
-                                                            right: 8.0,
-                                                            bottom: 8.0,
-                                                            top: 0.0),
-                                                    child:
-                                                        ui_component.DigitCard(
-                                                            cardType: CardType
-                                                                .primary,
-                                                            children: [
+                                                          ),
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(4),
+                                                            //  color: DigitColors().curiousBlue,
+                                                            child: Text(t.translate(i18
+                                                                .measurementBook
+                                                                .mbPhotoInfo)),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ]),
+                                            )
+                                          : value.data.first.documents !=
+                                                      null &&
+                                                  value.data.first.documents!
+                                                      .isEmpty
+                                              ? !value.viewStatus
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0,
+                                                              right: 8.0,
+                                                              bottom: 8.0,
+                                                              top: 0.0),
+                                                      child: ui_component
+                                                          .DigitCard(
+                                                        cardType:
+                                                            CardType.primary,
+                                                        children: [
                                                           Center(
                                                             child: Column(
                                                               crossAxisAlignment:
@@ -1660,43 +1029,73 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   padding: const EdgeInsets
                                                                       .symmetric(
                                                                       horizontal:
-                                                                          8.0),
-                                                                  //             child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                                                                  //               print(filenames);
-                                                                  //              },
-                                                                  // allowMultiples: true,),
+                                                                          0.0),
+
+                                                                  //old
+                                                                  // child:
+                                                                  //     FilePickerDemo(
+                                                                  //   fromServerFile:
+                                                                  //       value
+                                                                  //           .data
+                                                                  //           .first
+                                                                  //           .documents,
+                                                                  //   callBack: (List<
+                                                                  //               FileStoreModel>?
+                                                                  //           g,
+                                                                  //       List<WorkflowDocument>?
+                                                                  //           l) {
+                                                                  //     context
+                                                                  //         .read<
+                                                                  //             MeasurementDetailBloc>()
+                                                                  //         .add(
+                                                                  //           MeasurementUploadDocumentBlocEvent(
+                                                                  //             tenantId:
+                                                                  //                 '',
+                                                                  //             workflowDocument:
+                                                                  //                 l!,
+                                                                  //           ),
+                                                                  //         );
+                                                                  //   },
+                                                                  //   extensions: const [
+                                                                  //     'jpg',
+                                                                  //     'png',
+                                                                  //     'jpeg',
+                                                                  //   ],
+                                                                  //   moduleName:
+                                                                  //       'img_measurement_book',
+                                                                  //   headerType:
+                                                                  //       MediaType
+                                                                  //           .mbDetail,
+                                                                  // ),
+
                                                                   child:
-                                                                      FilePickerDemo(
-                                                                    fromServerFile: value
-                                                                        .data
-                                                                        .first
-                                                                        .documents,
-                                                                    callBack: (List<FileStoreModel>?
-                                                                            g,
-                                                                        List<WorkflowDocument>?
-                                                                            l) {
-                                                                      context
-                                                                          .read<
-                                                                              MeasurementDetailBloc>()
-                                                                          .add(
-                                                                            MeasurementUploadDocumentBlocEvent(
-                                                                              tenantId: '',
-                                                                              workflowDocument: l!,
-                                                                            ),
-                                                                          );
-                                                                    },
-                                                                    extensions: const [
-                                                                      'jpg',
-                                                                      'png',
-                                                                      'jpeg',
+                                                                      FileUploadWidget(
+                                                                    initialFiles: [
+                                                                      PlatformFile(
+                                                                          name:
+                                                                              "jyhr.png",
+                                                                          size:
+                                                                              0)
                                                                     ],
-                                                                    moduleName:
-                                                                        'img_measurement_book',
-                                                                    headerType:
-                                                                        MediaType
-                                                                            .mbDetail,
+                                                                    noFileSelectedText:
+                                                                        "No file selected",
+                                                                    allowMultiples:
+                                                                        true,
+                                                                    label:
+                                                                        'Upload',
+                                                                    onFilesSelected:
+                                                                        (List<PlatformFile>
+                                                                            files) {
+                                                                      Map<PlatformFile,
+                                                                              String?>
+                                                                          fileErrors =
+                                                                          {};
+
+                                                                      return fileErrors;
+                                                                    },
                                                                   ),
                                                                 ),
+                                                                // TODO:[text change]
                                                                 Container(
                                                                   padding:
                                                                       const EdgeInsets
@@ -1710,382 +1109,967 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               ],
                                                             ),
                                                           ),
-                                                        ]),
-                                                  )
-                                                : Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8.0,
-                                                            right: 8.0,
-                                                            bottom: 8.0,
-                                                            top: 0.0),
-                                                    child:
-                                                        ui_component.DigitCard(
-                                                      cardType:
-                                                          CardType.primary,
-                                                      children: List.generate(
-                                                          value
-                                                              .data
-                                                              .first
-                                                              .documents!
-                                                              .length, (index) {
-                                                        if (index == 0) {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom:
-                                                                        8.0),
-                                                            child: Column(
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0,
+                                                              right: 8.0,
+                                                              bottom: 8.0,
+                                                              top: 0.0),
+                                                      child: ui_component
+                                                          .DigitCard(
+                                                              cardType: CardType
+                                                                  .primary,
                                                               children: [
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .only(
-                                                                      bottom:
-                                                                          16.0),
-                                                                  child:
-                                                                      InfoCard(
-                                                                    title: t.translate(i18
-                                                                        .common
-                                                                        .info),
-                                                                    type: InfoType
-                                                                        .info,
-                                                                    description:
-                                                                        t.translate(i18
-                                                                            .measurementBook
-                                                                            .infoImageTip),
+                                                            Center(
+                                                              child: EmptyImage(
+                                                                align: Alignment
+                                                                    .center,
+                                                                label: t.translate(i18
+                                                                    .measurementBook
+                                                                    .noDocumentFound),
+                                                              ),
+                                                            )
+                                                          ]),
+                                                    )
+                                              : !value.viewStatus
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0,
+                                                              right: 8.0,
+                                                              bottom: 8.0,
+                                                              top: 0.0),
+                                                      child: ui_component
+                                                          .DigitCard(
+                                                              cardType: CardType
+                                                                  .primary,
+                                                              children: [
+                                                            Center(
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            8.0),
+                                                                    //             child: ImageUploader(onImagesSelected: (List<File> filenames ) {
+                                                                    //               print(filenames);
+                                                                    //              },
+                                                                    // allowMultiples: true,),
+                                                                    child:
+                                                                        FilePickerDemo(
+                                                                      fromServerFile: value
+                                                                          .data
+                                                                          .first
+                                                                          .documents,
+                                                                      callBack: (List<FileStoreModel>?
+                                                                              g,
+                                                                          List<WorkflowDocument>?
+                                                                              l) {
+                                                                        context
+                                                                            .read<MeasurementDetailBloc>()
+                                                                            .add(
+                                                                              MeasurementUploadDocumentBlocEvent(
+                                                                                tenantId: '',
+                                                                                workflowDocument: l!,
+                                                                              ),
+                                                                            );
+                                                                      },
+                                                                      extensions: const [
+                                                                        'jpg',
+                                                                        'png',
+                                                                        'jpeg',
+                                                                      ],
+                                                                      moduleName:
+                                                                          'img_measurement_book',
+                                                                      headerType:
+                                                                          MediaType
+                                                                              .mbDetail,
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () =>
-                                                                      CommonMethods()
-                                                                          .onTapOfAttachment(
-                                                                    mm![index],
-                                                                    mm![index]
-                                                                        .tenantId!,
-                                                                    context,
-                                                                    roleType:
-                                                                        RoleType
-                                                                            .employee,
-                                                                  ),
-                                                                  child: Chip(
-                                                                    labelPadding:
+                                                                  Container(
+                                                                    padding:
                                                                         const EdgeInsets
                                                                             .all(
-                                                                            10),
-                                                                    label:
-                                                                        SizedBox(
-                                                                      width: MediaQuery.sizeOf(
-                                                                              context)
-                                                                          .width,
-                                                                      height:
-                                                                          25,
-                                                                      child:
-                                                                          Text(
-                                                                        mm![index]
-                                                                            .name
-                                                                            .toString(),
-                                                                        maxLines:
-                                                                            1,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium,
+                                                                            4),
+                                                                    child: Text(t.translate(i18
+                                                                        .measurementBook
+                                                                        .mbPhotoInfo)),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                    )
+                                                  : Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8.0,
+                                                              right: 8.0,
+                                                              bottom: 8.0,
+                                                              top: 0.0),
+                                                      child: ui_component
+                                                          .DigitCard(
+                                                        cardType:
+                                                            CardType.primary,
+                                                        children: List.generate(
+                                                            value
+                                                                .data
+                                                                .first
+                                                                .documents!
+                                                                .length,
+                                                            (index) {
+                                                          if (index == 0) {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: Column(
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        bottom:
+                                                                            16.0),
+                                                                    child:
+                                                                        InfoCard(
+                                                                      title: t.translate(i18
+                                                                          .common
+                                                                          .info),
+                                                                      type: InfoType
+                                                                          .info,
+                                                                      description: t.translate(i18
+                                                                          .measurementBook
+                                                                          .infoImageTip),
+                                                                    ),
+                                                                  ),
+                                                                  InkWell(
+                                                                    onTap: () =>
+                                                                        CommonMethods()
+                                                                            .onTapOfAttachment(
+                                                                      mm![index],
+                                                                      mm![index]
+                                                                          .tenantId!,
+                                                                      context,
+                                                                      roleType:
+                                                                          RoleType
+                                                                              .employee,
+                                                                    ),
+                                                                    child: Chip(
+                                                                      labelPadding:
+                                                                          const EdgeInsets
+                                                                              .all(
+                                                                              10),
+                                                                      label:
+                                                                          SizedBox(
+                                                                        width: MediaQuery.sizeOf(context)
+                                                                            .width,
+                                                                        height:
+                                                                            25,
+                                                                        child:
+                                                                            Text(
+                                                                          mm![index]
+                                                                              .name
+                                                                              .toString(),
+                                                                          maxLines:
+                                                                              1,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          style: Theme.of(context)
+                                                                              .textTheme
+                                                                              .bodyMedium,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          );
-                                                        } else {
-                                                          return Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom:
-                                                                        8.0),
-                                                            child: InkWell(
-                                                              onTap: () =>
-                                                                  CommonMethods()
-                                                                      .onTapOfAttachment(
-                                                                mm![index],
-                                                                mm![index]
-                                                                    .tenantId!,
-                                                                context,
-                                                                roleType: RoleType
-                                                                    .employee,
+                                                                ],
                                                               ),
-                                                              child: Chip(
-                                                                labelPadding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        10),
-                                                                // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                                                                label: SizedBox(
-                                                                  width: MediaQuery
-                                                                          .sizeOf(
-                                                                              context)
-                                                                      .width,
-                                                                  height: 25,
-                                                                  child: Text(
-                                                                    mm![index]
-                                                                        .name
-                                                                        .toString(),
-                                                                    maxLines: 1,
-                                                                    softWrap:
-                                                                        true,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    style: Theme.of(
+                                                            );
+                                                          } else {
+                                                            return Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      bottom:
+                                                                          8.0),
+                                                              child: InkWell(
+                                                                onTap: () =>
+                                                                    CommonMethods()
+                                                                        .onTapOfAttachment(
+                                                                  mm![index],
+                                                                  mm![index]
+                                                                      .tenantId!,
+                                                                  context,
+                                                                  roleType: RoleType
+                                                                      .employee,
+                                                                ),
+                                                                child: Chip(
+                                                                  labelPadding:
+                                                                      const EdgeInsets
+                                                                          .all(
+                                                                          10),
+                                                                  // padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                                                                  label:
+                                                                      SizedBox(
+                                                                    width: MediaQuery.sizeOf(
                                                                             context)
-                                                                        .textTheme
-                                                                        .bodyMedium,
+                                                                        .width,
+                                                                    height: 25,
+                                                                    child: Text(
+                                                                      mm![index]
+                                                                          .name
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          1,
+                                                                      softWrap:
+                                                                          true,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      style: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .bodyMedium,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        }
-                                                      }).toList(),
+                                                            );
+                                                          }
+                                                        }).toList(),
+                                                      ),
                                                     ),
-                                                  ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
 
-                            // ////////////////
-                            widget.type == MBScreen.update
-                                ?
-                                //workflow
-                                BlocBuilder<MusterGetWorkflowBloc,
-                                    MusterGetWorkflowState>(
+                              // ////////////////
+                              widget.type == MBScreen.update
+                                  ?
+                                  //workflow
+                                  BlocBuilder<MusterGetWorkflowBloc,
+                                      MusterGetWorkflowState>(
+                                      builder: (context, state) {
+                                        return state.maybeMap(
+                                          orElse: SizedBox.shrink,
+                                          loaded: (value) {
+                                            List<ProcessInstances>
+                                                modifiedData = value
+                                                    .musterWorkFlowModel!
+                                                    .processInstances!
+                                                    .where((element) =>
+                                                        element.action !=
+                                                        Constants.saveAsDraft)
+                                                    .toList();
+                                            // ..insert(0, value
+                                            // .musterWorkFlowModel!
+                                            // .processInstances!.first);
+                                            if (modifiedData.isNotEmpty &&
+                                                (modifiedData.first
+                                                            .nextActions !=
+                                                        null &&
+                                                    modifiedData
+                                                        .first
+                                                        .nextActions!
+                                                        .isNotEmpty)) {
+                                              modifiedData = [
+                                                ...[modifiedData.first],
+                                                ...modifiedData
+                                              ];
+                                            } else if (modifiedData
+                                                .isNotEmpty) {
+                                              modifiedData = [
+                                                ...[modifiedData.first],
+                                                ...modifiedData
+                                              ];
+                                            }
+                                            timeLineAttributes.clear();
+
+                                            timeLineAttributes = modifiedData
+                                                .mapIndexed((i, e) =>
+                                                    DigitTimelineOptions(
+                                                      title: t.translate((i ==
+                                                                  0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.workflowState
+                                                                      ?.state ==
+                                                                  "EDIT_RE_SUBMIT"
+                                                              ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                              : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                          : i == 0
+                                                              ? e.workflowState
+                                                                          ?.state ==
+                                                                      "EDIT_RE_SUBMIT"
+                                                                  ? 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                                  : 'WF_MB_STATUS_${e.workflowState?.state}'
+                                                              : 'WF_MB_STATUS_${e.action}'),
+                                                      subTitle: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? DateFormats
+                                                              .getTimeLineDate(e
+                                                                      .auditDetails
+                                                                      ?.lastModifiedTime ??
+                                                                  0)
+                                                          : i != 0
+                                                              ? DateFormats
+                                                                  .getTimeLineDate(e
+                                                                          .auditDetails
+                                                                          ?.lastModifiedTime ??
+                                                                      0)
+                                                              : null,
+                                                      isCurrentState:
+                                                          e.action == "APPROVE"
+                                                              ? false
+                                                              : i == 0,
+                                                      comments: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.comment
+                                                          : i != 0
+                                                              ? e.comment
+                                                              : null,
+                                                      documents: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.documents != null &&
+                                                                  e.documents!
+                                                                      .isNotEmpty
+                                                              ? e.documents
+                                                                  ?.map((d) => FileStoreModel(
+                                                                      name: '',
+                                                                      fileStoreId: d
+                                                                          .documentUid))
+                                                                  .toList()
+                                                              : null
+                                                          : i != 0
+                                                              ? e.documents !=
+                                                                          null &&
+                                                                      e.documents!
+                                                                          .isNotEmpty
+                                                                  ? e.documents
+                                                                      ?.map((d) => FileStoreModel(
+                                                                          name: '',
+                                                                          fileStoreId: d.documentUid))
+                                                                      .toList()
+                                                                  : null
+                                                              : null,
+                                                      assignee: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.assigner?.name
+                                                          : i != 0
+                                                              ? e.assigner?.name
+                                                              : null,
+                                                      mobileNumber: (i == 0 &&
+                                                              e.action ==
+                                                                  "APPROVE")
+                                                          ? e.assigner != null
+                                                              ? '+91-${e.assigner?.mobileNumber}'
+                                                              : null
+                                                          : i != 0
+                                                              ? e.assigner !=
+                                                                      null
+                                                                  ? '+91-${e.assigner?.mobileNumber}'
+                                                                  : null
+                                                              : null,
+                                                    ))
+                                                .toList();
+                                            timeLineAttributes =
+                                                timeLineAttributes.reversed
+                                                    .toList();
+
+                                            return timeLineAttributes.isNotEmpty
+                                                ? ui_component.DigitCard(
+                                                    margin: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8),
+                                                    cardType:
+                                                        CardType.secondary,
+                                                    children: [
+                                                      LabelValueList(
+                                                        heading: t.translate(i18
+                                                            .common
+                                                            .workflowTimeline),
+                                                        items: const [],
+                                                      ),
+                                                      Builder(
+                                                        builder: (context) {
+                                                          return TimelineMolecule(
+                                                            steps:
+                                                                List.generate(
+                                                              timeLineAttributes
+                                                                  .length,
+                                                              (i) =>
+                                                                  TimelineStep(
+                                                                additionalWidgets: timeLineAttributes[i].documents !=
+                                                                            null &&
+                                                                        timeLineAttributes[i]
+                                                                            .documents!
+                                                                            .isNotEmpty
+                                                                    ? List.generate(
+                                                                        timeLineAttributes[i].documents!.length,
+                                                                        (index) => InkWell(
+                                                                              onTap: () => CommonMethods().onTapOfAttachment(
+                                                                                  timeLineAttributes[i].documents![index],
+                                                                                  timeLineAttributes[i].documents![index].tenantId == null
+                                                                                      ? GlobalVariables.roleType == RoleType.employee
+                                                                                          ? GlobalVariables.tenantId!
+                                                                                          : GlobalVariables.stateInfoListModel!.code.toString()
+                                                                                      : timeLineAttributes[i].documents![index].tenantId!,
+                                                                                  // "od.testing",
+                                                                                  context,
+                                                                                  roleType: GlobalVariables.roleType == RoleType.employee ? RoleType.employee : RoleType.cbo),
+                                                                              child: Container(
+                                                                                  width: 50,
+                                                                                  margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                                                                  child: Wrap(runSpacing: 5, spacing: 8, children: [
+                                                                                    Image.asset('assets/png/attachment.png'),
+                                                                                    Text(
+                                                                                      AppLocalizations.of(context).translate(timeLineAttributes[i].documents![index].name.toString()),
+                                                                                      maxLines: 2,
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                    )
+                                                                                  ])),
+                                                                            )).toList()
+                                                                    : [],
+                                                                description: [
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .subTitle ??
+                                                                      '',
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .assignee ??
+                                                                      '',
+                                                                  timeLineAttributes[
+                                                                              i]
+                                                                          .mobileNumber ??
+                                                                      '',
+                                                                ],
+                                                                label:
+                                                                    timeLineAttributes[
+                                                                            i]
+                                                                        .title,
+                                                                state: timeLineAttributes[
+                                                                            i]
+                                                                        .isCurrentState
+                                                                    ? TimelineStepState
+                                                                        .present
+                                                                    : TimelineStepState
+                                                                        .completed,
+                                                              ),
+                                                            ).toList(),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  )
+                                                : const SizedBox.shrink();
+
+                                            //
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : const SizedBox.shrink(),
+                              const SizedBox(
+                                height: 200,
+                              ),
+                            ],
+                          ),
+                        ),
+                        BlocBuilder<MeasurementDetailBloc,
+                            MeasurementDetailState>(
+                          builder: (context, state) {
+                            return state.maybeMap(
+                              orElse: () {
+                                return const SizedBox.shrink();
+                              },
+                              loaded: (value) {
+                                if (widget.type == MBScreen.update) {
+                                  return BlocBuilder<MusterGetWorkflowBloc,
+                                      MusterGetWorkflowState>(
                                     builder: (context, state) {
                                       return state.maybeMap(
-                                        orElse: SizedBox.shrink,
-                                        loaded: (value) {
-                                          List<ProcessInstances> modifiedData =
-                                              value.musterWorkFlowModel!
-                                                  .processInstances!
-                                                  .where((element) =>
-                                                      element.action !=
-                                                      Constants.saveAsDraft)
-                                                  .toList();
-                                          // ..insert(0, value
-                                          // .musterWorkFlowModel!
-                                          // .processInstances!.first);
-                                          if (modifiedData.isNotEmpty &&
-                                              (modifiedData.first.nextActions !=
-                                                      null &&
-                                                  modifiedData
-                                                      .first
-                                                      .nextActions!
-                                                      .isNotEmpty)) {
-                                            modifiedData = [
-                                              ...[modifiedData.first],
-                                              ...modifiedData
-                                            ];
-                                          } else if (modifiedData.isNotEmpty) {
-                                            modifiedData = [
-                                              ...[modifiedData.first],
-                                              ...modifiedData
-                                            ];
-                                          }
-                                          timeLineAttributes.clear();
+                                        orElse: () => const SizedBox.shrink(),
+                                        loaded: (mbWorkFlow) {
+                                          final g = mbWorkFlow
+                                              .musterWorkFlowModel
+                                              ?.processInstances;
 
-                                          timeLineAttributes = modifiedData
-                                              .mapIndexed((i, e) =>
-                                                  DigitTimelineOptions(
-                                                    title: t.translate((i ==
-                                                                0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.workflowState
-                                                                    ?.state ==
-                                                                "EDIT_RE_SUBMIT"
-                                                            ? 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                            : 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                        : i == 0
-                                                            ? e.workflowState
-                                                                        ?.state ==
-                                                                    "EDIT_RE_SUBMIT"
-                                                                ? 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                                : 'WF_MB_STATUS_${e.workflowState?.state}'
-                                                            : 'WF_MB_STATUS_${e.action}'),
-                                                    subTitle: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? DateFormats
-                                                            .getTimeLineDate(e
-                                                                    .auditDetails
-                                                                    ?.lastModifiedTime ??
-                                                                0)
-                                                        : i != 0
-                                                            ? DateFormats
-                                                                .getTimeLineDate(e
-                                                                        .auditDetails
-                                                                        ?.lastModifiedTime ??
-                                                                    0)
-                                                            : null,
-                                                    isCurrentState:
-                                                        e.action == "APPROVE"
-                                                            ? false
-                                                            : i == 0,
-                                                    comments: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.comment
-                                                        : i != 0
-                                                            ? e.comment
-                                                            : null,
-                                                    documents: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.documents != null &&
-                                                                e.documents!
-                                                                    .isNotEmpty
-                                                            ? e.documents
-                                                                ?.map((d) => FileStoreModel(
-                                                                    name: '',
-                                                                    fileStoreId: d
-                                                                        .documentUid))
-                                                                .toList()
-                                                            : null
-                                                        : i != 0
-                                                            ? e.documents != null &&
-                                                                    e.documents!
-                                                                        .isNotEmpty
-                                                                ? e.documents
-                                                                    ?.map((d) => FileStoreModel(
-                                                                        name:
-                                                                            '',
-                                                                        fileStoreId:
-                                                                            d.documentUid))
-                                                                    .toList()
-                                                                : null
-                                                            : null,
-                                                    assignee: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.assigner?.name
-                                                        : i != 0
-                                                            ? e.assigner?.name
-                                                            : null,
-                                                    mobileNumber: (i == 0 &&
-                                                            e.action ==
-                                                                "APPROVE")
-                                                        ? e.assigner != null
-                                                            ? '+91-${e.assigner?.mobileNumber}'
-                                                            : null
-                                                        : i != 0
-                                                            ? e.assigner != null
-                                                                ? '+91-${e.assigner?.mobileNumber}'
-                                                                : null
-                                                            : null,
-                                                  ))
-                                              .toList();
-                                          timeLineAttributes =
-                                              timeLineAttributes.reversed
-                                                  .toList();
-
-                                          return timeLineAttributes.isNotEmpty
-                                              ? ui_component.DigitCard(
-                                                  margin: const EdgeInsets
-                                                      .symmetric(horizontal: 8),
-                                                  cardType: CardType.secondary,
-                                                  children: [
-                                                    LabelValueList(
-                                                      heading: t.translate(i18
-                                                          .common
-                                                          .workflowTimeline),
-                                                      items: const [],
+                                          return DigitBottomSheet(
+                                            primaryActionLabel: t.translate(
+                                                i18.measurementBook.mbAction),
+                                            onPrimaryAction:(g != null &&
+                                            (g.first.nextActions != null &&
+                                                g.first.nextActions!.isEmpty))
+                                        ? null:
+                                         (ctx) {
+                                              // Navigator.of(context).pop();
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CommonButtonCard(
+                                                  g: mbWorkFlow
+                                                      .musterWorkFlowModel
+                                                      ?.processInstances,
+                                                  contractNumber:
+                                                      widget.contractNumber,
+                                                  mbNumber: widget.mbNumber,
+                                                  type: widget.type,
+                                                ),
+                                              );
+                                            },
+                                            fixedHeight: 200,
+                                            initialHeightPercentage: 30,
+                                            content: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
                                                     ),
-                                                    Builder(
-                                                      builder: (context) {
-                                                        return TimelineMolecule(
-                                                          steps: List.generate(
-                                                            timeLineAttributes
-                                                                .length,
-                                                            (i) => TimelineStep(
-                                                              additionalWidgets: timeLineAttributes[i]
-                                                                              .documents !=
-                                                                          null &&
-                                                                      timeLineAttributes[
-                                                                              i]
-                                                                          .documents!
-                                                                          .isNotEmpty
-                                                                  ? List.generate(
-                                                                      timeLineAttributes[i].documents!.length,
-                                                                      (index) => InkWell(
-                                                                            onTap: () => CommonMethods().onTapOfAttachment(
-                                                                                timeLineAttributes[i].documents![index],
-                                                                                timeLineAttributes[i].documents![index].tenantId == null
-                                                                                    ? GlobalVariables.roleType == RoleType.employee
-                                                                                        ? GlobalVariables.tenantId!
-                                                                                        : GlobalVariables.stateInfoListModel!.code.toString()
-                                                                                    : timeLineAttributes[i].documents![index].tenantId!,
-                                                                                // "od.testing",
-                                                                                context,
-                                                                                roleType: GlobalVariables.roleType == RoleType.employee ? RoleType.employee : RoleType.cbo),
-                                                                            child: Container(
-                                                                                width: 50,
-                                                                                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                                                                                child: Wrap(runSpacing: 5, spacing: 8, children: [
-                                                                                  Image.asset('assets/png/attachment.png'),
-                                                                                  Text(
-                                                                                    AppLocalizations.of(context).translate(timeLineAttributes[i].documents![index].name.toString()),
-                                                                                    maxLines: 2,
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                  )
-                                                                                ])),
-                                                                          )).toList()
-                                                                  : [],
-                                                              description: [
-                                                                timeLineAttributes[
-                                                                            i]
-                                                                        .subTitle ??
-                                                                    '',
-                                                                timeLineAttributes[
-                                                                            i]
-                                                                        .assignee ??
-                                                                    '',
-                                                                timeLineAttributes[
-                                                                            i]
-                                                                        .mobileNumber ??
-                                                                    '',
-                                                              ],
-                                                              label:
-                                                                  timeLineAttributes[
-                                                                          i]
-                                                                      .title,
-                                                              state: timeLineAttributes[
-                                                                          i]
-                                                                      .isCurrentState
-                                                                  ? TimelineStepState
-                                                                      .present
-                                                                  : TimelineStepState
-                                                                      .completed,
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalSorAmount),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .bodySmall,
+                                                      ),
+                                                      trailing: Text(
+                                                        value.data.first
+                                                            .totalSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total Non SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalNonSorAmount),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .bodySmall,
+                                                      ),
+                                                      trailing: Text(
+                                                        value.data.first
+                                                            .totalNorSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalNonSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Container(
+                                                  //  height: 80,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width,
+                                                  decoration: BoxDecoration(
+                                                    //color: Colors.red,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: ListTile(
+                                                            title: Text(
+                                                              // "Total MB Amount",
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .totalMbAmount),
+                                                              style: DigitTheme
+                                                                  .instance
+                                                                  .mobileTheme
+                                                                  .textTheme
+                                                                  .headlineMedium,
                                                             ),
-                                                          ).toList(),
-                                                        );
-                                                      },
+                                                            subtitle: Text(
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .forCurrentEntry),
+                                                              style: DigitTheme
+                                                                  .instance
+                                                                  .mobileTheme
+                                                                  .textTheme
+                                                                  .bodySmall,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 4,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  // '3456',
+                                                                  value
+                                                                      .data
+                                                                      .first
+                                                                      .totalAmount!
+                                                                      .roundToDouble()
+                                                                      .toStringAsFixed(
+                                                                          2),
+                                                                  // mbAmount.roundToDouble().toStringAsFixed(2),
+                                                                  style: DigitTheme
+                                                                      .instance
+                                                                      .mobileTheme
+                                                                      .textTheme
+                                                                      .headlineMedium,
+                                                                ),
+                                                              ],
+                                                            )),
+                                                      ],
                                                     ),
-                                                  ],
-                                                )
-                                              : const SizedBox.shrink();
-
-                                          //
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
                                         },
                                       );
                                     },
-                                  )
-                                : const SizedBox.shrink(),
-                          ],
+                                  );
+                                } else {
+                                  return BlocBuilder<BusinessWorkflowBloc,
+                                      BusinessGetWorkflowState>(
+                                    builder: (context, state) {
+                                      return state.maybeMap(
+                                        orElse: () => const SizedBox.shrink(),
+                                        loaded: (business) {
+                                          const g = null;
+                                          final bk = business
+                                                  .businessWorkFlowModel!
+                                                  .businessServices ??
+                                              [];
+
+                                          return DigitBottomSheet(
+                                            primaryActionLabel: t.translate(
+                                                i18.measurementBook.mbAction),
+                                            onPrimaryAction: (ctx) {
+                                              // Navigator.of(context).pop();
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CommonButtonCard(
+                                                  g: g,
+                                                  bs: bk,
+                                                  contractNumber:
+                                                      widget.contractNumber,
+                                                  mbNumber: widget.mbNumber,
+                                                  type: widget.type,
+                                                ),
+                                              );
+                                            },
+                                            fixedHeight: 200,
+                                            initialHeightPercentage: 30,
+                                            content: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalSorAmount),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .bodySmall,
+                                                      ),
+                                                      trailing: Text(
+                                                        value.data.first
+                                                            .totalSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    border: Border(
+                                                      bottom: BorderSide(),
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8.0),
+                                                    child: ListTile(
+                                                      title: Text(
+                                                        // "Total Non SOR Amount",
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .totalNonSorAmount),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                      subtitle: Text(
+                                                        t.translate(i18
+                                                            .measurementBook
+                                                            .forCurrentEntry),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .bodySmall,
+                                                      ),
+                                                      trailing: Text(
+                                                        // "23.98",
+                                                        value.data.first
+                                                            .totalNorSorAmount!
+                                                            .toDouble()
+                                                            .toStringAsFixed(2),
+                                                        // totalNonSorAmount.toDouble().toStringAsFixed(2),
+                                                        style: DigitTheme
+                                                            .instance
+                                                            .mobileTheme
+                                                            .textTheme
+                                                            .headlineMedium,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Container(
+                                                  //  height: 80,
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width,
+                                                  decoration: BoxDecoration(
+                                                    //color: Colors.red,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                      width: 2,
+                                                    ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 4,
+                                                          child: ListTile(
+                                                            title: Text(
+                                                              // "Total MB Amount",
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .totalMbAmount),
+                                                              style: DigitTheme
+                                                                  .instance
+                                                                  .mobileTheme
+                                                                  .textTheme
+                                                                  .headlineMedium,
+                                                            ),
+                                                            subtitle: Text(
+                                                              t.translate(i18
+                                                                  .measurementBook
+                                                                  .forCurrentEntry),
+                                                              style: DigitTheme
+                                                                  .instance
+                                                                  .mobileTheme
+                                                                  .textTheme
+                                                                  .bodySmall,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                            flex: 4,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Text(
+                                                                  // '3456',
+                                                                  value
+                                                                      .data
+                                                                      .first
+                                                                      .totalAmount!
+                                                                      .roundToDouble()
+                                                                      .toStringAsFixed(
+                                                                          2),
+                                                                  // mbAmount.roundToDouble().toStringAsFixed(2),
+                                                                  style: DigitTheme
+                                                                      .instance
+                                                                      .mobileTheme
+                                                                      .textTheme
+                                                                      .headlineMedium,
+                                                                ),
+                                                              ],
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              loading: (value) {
+                                return const SizedBox.shrink();
+                              },
+                            );
+                          },
                         ),
-                      );
+                      ]);
                     },
                     loading: (value) {
                       return Center(

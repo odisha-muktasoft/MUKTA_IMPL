@@ -56,9 +56,11 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
   }
 
   void _onSelectedOptionsChanged(List<String> options) {
-    setState(() {
-      selectedOptions = options;
-    });
+    // setState(() {
+    //   selectedOptions = options;
+    // });
+
+    selectedOptions=options;
   }
 
   @override
@@ -133,6 +135,12 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                     MultiSelectDropDown(
                       showSelectAll: true,
                       isSearchable: true,
+                      initialOptions: selectedOptions.isNotEmpty?  selectedOptions.map((e) => DropdownItem(
+                          name: t.translate(
+                              "COMMON_MASTERS_SKILLS_${e.toString()}"),
+                          code: e.toString()))
+                      .toList():[],
+                    //  selectAllText: 'Select All',
                       options: widget.skills
                           .map((e) => DropdownItem(
                               name: t.translate(

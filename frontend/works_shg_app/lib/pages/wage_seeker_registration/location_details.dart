@@ -101,7 +101,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
           children: [
             ui_card.DigitCard(
               cardType: CardType.primary,
-              margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               children: [
                 TextChunk(
                   heading: t.translate(i18.common.locationDetails),
@@ -429,19 +429,18 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                       //     context,
                       //     t.translate(i18.wageSeeker.pinCodeValidation),
                       //     'ERROR');
-                
+
                       Toast.showToast(context,
                           message:
                               t.translate(i18.wageSeeker.pinCodeValidation),
                           type: ToastType.error);
                     } else if (form.value[pinCodeKey].toString().isNotEmpty &&
-                        int.parse(form.value[pinCodeKey].toString()) <
-                            100000) {
+                        int.parse(form.value[pinCodeKey].toString()) < 100000) {
                       // Notifiers.getToastMessage(
                       //     context,
                       //     t.translate(i18.wageSeeker.pinCodeValidation),
                       //     'ERROR');
-                
+
                       Toast.showToast(context,
                           message:
                               t.translate(i18.wageSeeker.pinCodeValidation),
@@ -480,7 +479,12 @@ class LocationDetailsState extends State<LocationDetailsPage> {
             value: locationDetails.pinCode ?? '',
             validators: [Validators.maxLength(6)]),
         cityKey: FormControl<String>(
-            value: locationDetails.city ?? widget.city,
+            //value: locationDetails.city ?? widget.city,
+            value: locationDetails.city != null
+                ? AppLocalizations.of(context).translate(
+                    'TENANT_TENANTS_${locationDetails.city!.replaceAll('.', '_').toUpperCase()}')
+                :AppLocalizations.of(context).translate(
+                    'TENANT_TENANTS_${widget.city!.replaceAll('.', '_').toUpperCase()}'),
             validators: [Validators.required]),
         wardKey: FormControl<String>(
             value: locationDetails.ward, validators: [Validators.required]),

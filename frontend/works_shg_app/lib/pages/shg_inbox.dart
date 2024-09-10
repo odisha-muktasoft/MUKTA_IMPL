@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
@@ -430,6 +431,15 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                             .spaceBetween,
                                                                     children: [
                                                                       BackNavigationButton(
+                                                                        backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
+                  context: context,
+                  backButtonIcon: Icon(
+                    Icons.arrow_circle_left_outlined,
+                    size: MediaQuery.of(context).size.width < 500
+                        ? Theme.of(context).spacerTheme.spacer5
+                        : Theme.of(context).spacerTheme.spacer6,
+                    color: Theme.of(context).colorTheme.primary.primary2,
+                  )),
                                                                         backButtonText:
                                                                             AppLocalizations.of(context).translate(i18.common.back) ??
                                                                                 'Back',

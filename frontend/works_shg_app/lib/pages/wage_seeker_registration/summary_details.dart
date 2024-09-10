@@ -217,7 +217,8 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           TextChunk(
-                           subHeading: t.translate(i18.common.photoGraph),),
+                            subHeading: t.translate(i18.common.photoGraph),
+                          ),
                           //   style: const TextStyle(
                           //       fontSize: 16, fontWeight: FontWeight.w700),
                           //   textAlign: TextAlign.left,
@@ -228,10 +229,10 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           Align(
                             alignment: Alignment.center,
                             child: Image.file(
+                            
                               FilePickerData.imageFile!,
                               fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width / 2,
-                              height: MediaQuery.of(context).size.width / 2,
+                            
                             ),
                           ),
                         ],
@@ -386,6 +387,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   orElse: () => false,
                   loading: () => shg_loader.Loaders.circularLoader(context),
                   loaded: (SingleIndividualModel? individualListModel) {
+                   
                     context.read<WageSeekerBankCreateBloc>().add(
                           CreateBankWageSeekerEvent(
                               tenantId:
@@ -413,32 +415,33 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   WageSeekerBankCreateState>(
                 listener: (context, individualState) {
                   individualState.maybeWhen(
-                      orElse: () => false,
-                      loading: () => shg_loader.Loaders.circularLoader(context),
-                      loaded: (BankingDetailsModel? bankingDetails,
-                          BankAccounts? bankAccountDetails) {
-                        var localizationText =
-                            '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
-                        localizationText = localizationText.replaceFirst(
-                            '{individualID}', bankAccountDetails?.indID ?? '');
-                        context.router.popAndPush(SuccessResponseRoute(
-                            header:
-                                t.translate(i18.wageSeeker.createIndSuccess),
-                            subTitle: localizationText,
-                            backButton: true,
-                            callBack: () =>
-                                context.router.push(const HomeRoute()),
-                            buttonLabel: t.translate(
-                              i18.common.backToHome,
-                            )));
-                      },
-                      error: (String? error) => 
-                      // Notifiers.getToastMessage(
-                      //     context, error.toString(), 'ERROR'),
-                       Toast.showToast(context,
-                          message: t.translate(error.toString()),
-                          type: ToastType.error),
-                          );
+                    orElse: () => false,
+                    loading: () => shg_loader.Loaders.circularLoader(context),
+                    loaded: (BankingDetailsModel? bankingDetails,
+                        BankAccounts? bankAccountDetails) {
+                           FilePickerData.imageFile = null;
+                    FilePickerData.bytes = null;
+                      var localizationText =
+                          '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
+                      localizationText = localizationText.replaceFirst(
+                          '{individualID}', bankAccountDetails?.indID ?? '');
+                      context.router.popAndPush(SuccessResponseRoute(
+                          header: t.translate(i18.wageSeeker.createIndSuccess),
+                          subTitle: localizationText,
+                          backButton: true,
+                          callBack: () =>
+                              context.router.push(const HomeRoute()),
+                          buttonLabel: t.translate(
+                            i18.common.backToHome,
+                          )));
+                    },
+                    error: (String? error) =>
+                        // Notifiers.getToastMessage(
+                        //     context, error.toString(), 'ERROR'),
+                        Toast.showToast(context,
+                            message: t.translate(error.toString()),
+                            type: ToastType.error),
+                  );
                 },
                 child: Center(
                   child: Button(

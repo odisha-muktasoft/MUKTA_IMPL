@@ -85,7 +85,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
           IndividualWorkSearchEvent(
               contractNumber: widget.contractNumber,
               body: {
-                "wfStatus": [widget.wfStatus]
+                "wfStatus": [widget.wfStatus],
+                "status":"ACTIVE",
               }),
         );
     context.read<AcceptWorkOrderBloc>().add(
@@ -435,6 +436,13 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                           .primary2,
                                       contentPadding: EdgeInsets.zero,
                                       context: context,
+                                      backButtonIcon: Icon(
+                    Icons.arrow_circle_left_outlined,
+                    size: MediaQuery.of(context).size.width < 500
+                        ? Theme.of(context).spacerTheme.spacer5
+                        : Theme.of(context).spacerTheme.spacer6,
+                    color: Theme.of(context).colorTheme.primary.primary2,
+                  )
                                       // backButtonIcon: Icon(
                                       //   Icons.arrow_left,
                                       //   color: Theme.of(context)

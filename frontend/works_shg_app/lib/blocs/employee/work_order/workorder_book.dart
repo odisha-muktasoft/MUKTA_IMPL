@@ -52,11 +52,12 @@ class WorkOrderInboxBloc
           await MyWorksRepository(client.init()).searchMyWorks(
               url: Urls.workServices.myWorks,
               body: {
+                "status": "ACTIVE",
                 "tenantId": GlobalVariables.tenantId ??
                     GlobalVariables
                         .organisationListModel!.organisations!.first.tenantId,
                 "orgIds": [],
-                "wfStatus": ["ACCEPTED","APPROVED"],
+                "wfStatus": ["ACCEPTED", "APPROVED"],
                 "pagination": {
                   "limit": "10",
                   "offSet": event.offset.toString(),
@@ -136,7 +137,7 @@ class WorkOrderInboxBloc
               itemList.sort((a, b) => a.additionalDetails!.cboName!
                   .compareTo(b.additionalDetails!.cboName!));
               break;
-               case 5:
+            case 5:
               itemList.sort((a, b) =>
                   a.totalContractedAmount!.compareTo(b.totalContractedAmount!));
               break;
@@ -232,30 +233,28 @@ class WorkOrderInboxBloc
           return null;
         },
         loaded: (value) async {
-         
           value.searchData['pagination']!['offset'] = event.offset;
           ContractsModel contractsModel =
-          await MyWorksRepository(client.init()).searchMyWorks(
-              url: Urls.workServices.myWorks,
-              body: value.searchData,
-              options: Options(extra: {
-                "userInfo": GlobalVariables.userRequestModel,
-                "accessToken": GlobalVariables.authToken,
-                "apiId": "asset-services",
-                "msgId": "search with from and to values"
-              }));
+              await MyWorksRepository(client.init()).searchMyWorks(
+                  url: Urls.workServices.myWorks,
+                  body: value.searchData,
+                  options: Options(extra: {
+                    "userInfo": GlobalVariables.userRequestModel,
+                    "accessToken": GlobalVariables.authToken,
+                    "apiId": "asset-services",
+                    "msgId": "search with from and to values"
+                  }));
           List<Contracts> data = [];
           data.addAll(value.contracts ?? []);
           data.addAll(contractsModel.contracts!);
 
           emit(
             WorkOrderInboxState.loaded(
-             null,
-             contractsModel.contracts!.length<10?false:true,
-             data,
-             true,
-             value.searchData,
-
+              null,
+              contractsModel.contracts!.length < 10 ? false : true,
+              data,
+              true,
+              value.searchData,
             ),
           );
         },
@@ -264,7 +263,6 @@ class WorkOrderInboxBloc
       emit(WorkOrderInboxState.error(e.response?.data['Errors'][0]['code']));
     }
   }
-
 }
 
 @freezed
@@ -293,7 +291,7 @@ class WorkOrderInboxBlocEvent with _$WorkOrderInboxBlocEvent {
       required int offset,
       required Map<String, dynamic> data}) = WorkOrderInboxSearchBlocEvent;
 
-      const factory WorkOrderInboxBlocEvent.searchRepeat({
+  const factory WorkOrderInboxBlocEvent.searchRepeat({
     required String tenantId,
     required String businessService,
     required String moduleName,

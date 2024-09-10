@@ -531,7 +531,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
           ],
         ),
         socialCategoryKey: FormControl<String>(
-            value: widget.individualDetails?.socialCategory ?? ''),
+            value: widget.individualDetails?.socialCategory??''),
         mobileKey: FormControl<String>(
             value: widget.individualDetails?.mobileNumber,
             validators: [

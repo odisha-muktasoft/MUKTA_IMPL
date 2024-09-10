@@ -1,4 +1,5 @@
 import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
@@ -66,7 +67,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).colorTheme.generic.background,
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         appBar: customAppBar(),
         drawer: const MySideBar(),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -223,6 +224,32 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                                               MainAxisAlignment.start,
                                           children: [
                                             BackNavigationButton(
+                                              backNavigationButtonThemeData:
+                                                  const BackNavigationButtonThemeData()
+                                                      .copyWith(
+                                                          context: context,
+                                                          backButtonIcon: Icon(
+                                                            Icons
+                                                                .arrow_circle_left_outlined,
+                                                            size: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width <
+                                                                    500
+                                                                ? Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer5
+                                                                : Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer6,
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorTheme
+                                                                .primary
+                                                                .primary2,
+                                                          )),
                                               backButtonText:
                                                   t.translate(i18.common.back),
                                               handleBack: () {
@@ -233,7 +260,10 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                                         ),
                                       ),
                                       Padding(
-                                          padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                                          padding: EdgeInsets.all(
+                                              Theme.of(context)
+                                                  .spacerTheme
+                                                  .spacer2),
                                           child: TextChunk(
                                             heading:
                                                 '${t.translate(i18.common.orgProfile)}',

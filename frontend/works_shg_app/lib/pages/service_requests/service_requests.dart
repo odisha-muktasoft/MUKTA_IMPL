@@ -192,6 +192,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                       ),
                                                     ),
                                                     ToggleList(
+                                                      toggleWidth: MediaQuery.of(context).size.width*.48,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,

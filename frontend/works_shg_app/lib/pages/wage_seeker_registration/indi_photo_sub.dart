@@ -36,8 +36,8 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
 
   @override
   void initState() {
-    FilePickerData.imageFile = null;
-    FilePickerData.bytes = null;
+    // FilePickerData.imageFile = null;
+    // FilePickerData.bytes = null;
     photo = widget.photo;
     super.initState();
   }
@@ -88,10 +88,12 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                 // ),
 
                 ImageUploader(
+                  label:t.translate(i18.common.photoGraph) ,
                   validators: [
                     FileValidator(FileValidatorType.maxSize, 5242880,
                         errorMessage: 'max file size exceeded'),
                   ],
+                  initialImages:FilePickerData.imageFile!=null ?[FilePickerData.imageFile!] : [] ,
                   onImagesSelected: (List<File> imageFile) async {
                     // Handle the selected image file here
                     print('Image selected: ${imageFile[0].path}');
@@ -101,7 +103,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                     ).popUntil(
                       (route) => route is! PopupRoute,
                     );
-                    Loaders.showLoadingDialog(context);
+                    Loaders.showLoadingDialog(context,label: "Uploading...");
 
                     final List<FileStoreModel> ss =
                         await uploadProfile(imageFile, 'works');

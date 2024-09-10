@@ -1,5 +1,6 @@
 import 'package:digit_components/digit_components.dart' as ui_old;
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
@@ -208,6 +209,15 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       BackNavigationButton(
+                                         backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
+                  context: context,
+                  backButtonIcon: Icon(
+                    Icons.arrow_circle_left_outlined,
+                    size: MediaQuery.of(context).size.width < 500
+                        ? Theme.of(context).spacerTheme.spacer5
+                        : Theme.of(context).spacerTheme.spacer6,
+                    color: Theme.of(context).colorTheme.primary.primary2,
+                  )),
                                         backButtonText: AppLocalizations.of(
                                                     context)
                                                 .translate(i18.common.back) ??
@@ -239,7 +249,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                         padding: const EdgeInsets.only(
                                             top: 16.0, bottom: 8.0),
                                         child: ToggleList(
-                                         
+                                         toggleWidth: MediaQuery.of(context).size.width*.48,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           mainAxisAlignment:

@@ -30,6 +30,7 @@ class SearchMyWorksBloc extends Bloc<SearchMyWorksEvent, SearchMyWorksState> {
           await MyWorksRepository(client.init()).searchMyWorks(
               url: Urls.workServices.myWorks,
               body: {
+                "status":"ACTIVE",
                 "tenantId": GlobalVariables
                     .organisationListModel?.organisations?.first.tenantId,
                 "orgIds": [
