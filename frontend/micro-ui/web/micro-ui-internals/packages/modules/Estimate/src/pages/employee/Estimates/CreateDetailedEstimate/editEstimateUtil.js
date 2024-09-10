@@ -91,7 +91,7 @@ export const editEstimateUtil = (estimate,uom,overheads,RatesData, allEstimates,
         let parsedData = JSON.parse(savedFormData);
         if(parsedData?.value) parsedData = parsedData?.value;
         if(parsedData?.SORtable && parsedData?.SORtable?.length > 0) formData.SORtable = parsedData?.SORtable;
-        if(parsedData?.NONSORtable && parsedData?.NONSORtable?.length > 0) formData.SORtable = parsedData?.NONSORtable;
+        if(parsedData?.NONSORtable && parsedData?.NONSORtable?.length > 0) formData.NONSORtable = parsedData?.NONSORtable;
     }
     return formData
 }
