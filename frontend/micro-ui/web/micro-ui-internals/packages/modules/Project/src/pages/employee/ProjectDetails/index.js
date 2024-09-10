@@ -68,6 +68,7 @@ const ProjectDetails = () => {
 
     const handleActionBar = (option) => {
         if(option?.name === "CREATE_ESTIMATE"){
+            sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE") ? sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE") : "";
             history.push(`/${window.contextPath}/employee/estimate/create-detailed-estimate?tenantId=${searchParams?.Projects?.[0]?.tenantId}&projectNumber=${searchParams?.Projects?.[0]?.projectNumber}`);
         }
         if(option?.name === "VIEW_ESTIMATE"){

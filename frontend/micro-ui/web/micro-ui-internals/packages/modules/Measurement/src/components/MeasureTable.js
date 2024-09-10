@@ -332,7 +332,10 @@ const MeasureTable = (props) => {
                 {row.description?.length > 128 ? `${row.description.substring(0,128)}...` : row?.description}
                                 {row.description?.length > 128 &&<span className="tooltiptext" style={{
                                     whiteSpace: "nowrap",
-                                    fontSize: "medium"
+                                    fontSize: "medium",
+                                    bottom : "100%",
+                                    overflow : "auto",
+
                                 }}>
                                     {row.description}
                                 </span>}
