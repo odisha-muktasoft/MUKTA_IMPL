@@ -1,11 +1,6 @@
-import 'package:digit_components/theme/colors.dart';
-import 'package:digit_components/theme/digit_theme.dart';
-import 'package:digit_components/widgets/atoms/digit_date_form_picker.dart';
-import 'package:digit_components/widgets/atoms/digit_reactive_dropdown.dart';
-import 'package:digit_components/widgets/atoms/digit_text_form_field.dart';
 // import 'package:digit_components/widgets/digit_card.dart';
-import 'package:digit_components/widgets/digit_elevated_button.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
@@ -18,8 +13,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
 import '../../models/wage_seeker/individual_details_model.dart';
-import '../../utils/notifiers.dart';
-import '../../widgets/atoms/radio_button_list.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:digit_ui_components/utils/validators/validator.dart'
@@ -78,7 +71,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
             }
           },
           child: ui_card.DigitCard(
-            margin: const EdgeInsets.all(8),
+            margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
             cardType: CardType.primary,
             children: [
               TextChunk(
@@ -471,42 +464,40 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
               ),
 
               const SizedBox(
-                height: 12,
+                height: 16,
               ),
-              Center(
-                child: Button(
-                  type: ButtonType.primary,
-                  size: ButtonSize.large,
-                  mainAxisSize: MainAxisSize.max,
-                  onPressed: () {
-                    form1.markAllAsTouched(updateParent: false);
-                    if (!form1.valid) return;
-                    // if (form1.value[genderKey] == null ||
-                    //     form1.value[genderKey].toString().isEmpty) {
-                    //   // Notifiers.getToastMessage(context,
-                    //   //     t.translate(i18.wageSeeker.genderRequired), 'ERROR');
-                    //   Toast.showToast(context,
-                    //       message: t.translate(i18.wageSeeker.genderRequired),
-                    //       type: ToastType.error);
-                    // } else {
-                    context.read<WageSeekerBloc>().add(
-                          WageSeekerDetailsCreateEvent(
-                            dob: form1.value[dobKey] as DateTime,
-                            fatherName: form1.value[fatherNameKey].toString(),
-                            gender: form1.value[genderKey].toString(),
-                            mobileNumber: form1.value[mobileKey].toString(),
-                            relationShip:
-                                form1.value[relationshipKey].toString(),
-                            socialCategory:
-                                form1.value[socialCategoryKey].toString()==""?"null":form1.value[socialCategoryKey].toString(),
-                          ),
-                        );
-
-                    widget.onPageChanged(2);
-                    // }
-                  },
-                  label: t.translate(i18.common.next),
-                ),
+              Button(
+                type: ButtonType.primary,
+                size: ButtonSize.large,
+                mainAxisSize: MainAxisSize.max,
+                onPressed: () {
+                  form1.markAllAsTouched(updateParent: false);
+                  if (!form1.valid) return;
+                  // if (form1.value[genderKey] == null ||
+                  //     form1.value[genderKey].toString().isEmpty) {
+                  //   // Notifiers.getToastMessage(context,
+                  //   //     t.translate(i18.wageSeeker.genderRequired), 'ERROR');
+                  //   Toast.showToast(context,
+                  //       message: t.translate(i18.wageSeeker.genderRequired),
+                  //       type: ToastType.error);
+                  // } else {
+                  context.read<WageSeekerBloc>().add(
+                        WageSeekerDetailsCreateEvent(
+                          dob: form1.value[dobKey] as DateTime,
+                          fatherName: form1.value[fatherNameKey].toString(),
+                          gender: form1.value[genderKey].toString(),
+                          mobileNumber: form1.value[mobileKey].toString(),
+                          relationShip:
+                              form1.value[relationshipKey].toString(),
+                          socialCategory:
+                              form1.value[socialCategoryKey].toString()==""?"null":form1.value[socialCategoryKey].toString(),
+                        ),
+                      );
+              
+                  widget.onPageChanged(2);
+                  // }
+                },
+                label: t.translate(i18.common.next),
               )
             ],
           ),

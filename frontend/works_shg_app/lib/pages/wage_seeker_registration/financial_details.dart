@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
@@ -92,7 +93,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
         }
         return ui_card.DigitCard(
           cardType: CardType.primary,
-          margin: const EdgeInsets.all(8.0),
+          margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
           children: [
             TextChunk(
               heading: t.translate(i18.common.financialDetails),
@@ -453,40 +454,38 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
               ),
             ),
 
-            Center(
-              child: Button(
-                type: ButtonType.primary,
-                size: ButtonSize.large,
-                mainAxisSize: MainAxisSize.max,
-                onPressed: () {
-                  form.markAllAsTouched(updateParent: false);
-                  if (!form.valid) return;
-                  if (hintText.isEmpty) {
-                    // Notifiers.getToastMessage(
-                    //     context, i18.wageSeeker.enterValidIFSC, 'ERROR');
-                        Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
-                  } else {
-                    final financeDetails = FinancialDetails(
-                        accountHolderName:
-                            form.value[accountHolderKey].toString(),
-                        accountNumber: form.value[accountNoKey].toString(),
-                        reAccountNumber: form.value[reAccountNoKey].toString(),
-                        ifscCode:
-                            form.value[ifscCodeKey].toString().toUpperCase(),
-                        accountType: form.value[accountTypeKey].toString(),
-                        bankName: hintText);
-                    BlocProvider.of<WageSeekerBloc>(context).add(
-                      WageSeekerCreateEvent(
-                          individualDetails: individualDetails,
-                          skillDetails: skillDetails,
-                          locationDetails: locationDetails,
-                          financialDetails: financeDetails),
-                    );
-                    widget.onPressed();
-                  }
-                },
-                label: t.translate(i18.common.next),
-              ),
+            Button(
+              type: ButtonType.primary,
+              size: ButtonSize.large,
+              mainAxisSize: MainAxisSize.max,
+              onPressed: () {
+                form.markAllAsTouched(updateParent: false);
+                if (!form.valid) return;
+                if (hintText.isEmpty) {
+                  // Notifiers.getToastMessage(
+                  //     context, i18.wageSeeker.enterValidIFSC, 'ERROR');
+                      Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
+                } else {
+                  final financeDetails = FinancialDetails(
+                      accountHolderName:
+                          form.value[accountHolderKey].toString(),
+                      accountNumber: form.value[accountNoKey].toString(),
+                      reAccountNumber: form.value[reAccountNoKey].toString(),
+                      ifscCode:
+                          form.value[ifscCodeKey].toString().toUpperCase(),
+                      accountType: form.value[accountTypeKey].toString(),
+                      bankName: hintText);
+                  BlocProvider.of<WageSeekerBloc>(context).add(
+                    WageSeekerCreateEvent(
+                        individualDetails: individualDetails,
+                        skillDetails: skillDetails,
+                        locationDetails: locationDetails,
+                        financialDetails: financeDetails),
+                  );
+                  widget.onPressed();
+                }
+              },
+              label: t.translate(i18.common.next),
             )
           ],
         );

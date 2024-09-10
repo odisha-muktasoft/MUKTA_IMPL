@@ -136,7 +136,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
 
                 // SubLabelText(localizationText),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Align(
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
@@ -179,7 +179,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                       )),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: ResendOTP(

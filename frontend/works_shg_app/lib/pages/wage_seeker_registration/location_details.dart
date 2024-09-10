@@ -2,6 +2,7 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_text_form_input.dart';
 import 'package:digit_ui_components/widgets/atoms/reactive_fields.dart';
@@ -100,7 +101,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
           children: [
             ui_card.DigitCard(
               cardType: CardType.primary,
-              margin: const EdgeInsets.all(8.0),
+              margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               children: [
                 TextChunk(
                   heading: t.translate(i18.common.locationDetails),
@@ -415,57 +416,55 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
-                Center(
-                  child: Button(
-                    size: ButtonSize.large,
-                    type: ButtonType.primary,
-                    mainAxisSize: MainAxisSize.max,
-                    onPressed: () {
-                      form.markAllAsTouched(updateParent: false);
-                      if (!form.valid) return;
-                      if (form.value[pinCodeKey].toString().isNotEmpty &&
-                          form.value[pinCodeKey].toString().length < 6) {
-                        // Notifiers.getToastMessage(
-                        //     context,
-                        //     t.translate(i18.wageSeeker.pinCodeValidation),
-                        //     'ERROR');
-
-                        Toast.showToast(context,
-                            message:
-                                t.translate(i18.wageSeeker.pinCodeValidation),
-                            type: ToastType.error);
-                      } else if (form.value[pinCodeKey].toString().isNotEmpty &&
-                          int.parse(form.value[pinCodeKey].toString()) <
-                              100000) {
-                        // Notifiers.getToastMessage(
-                        //     context,
-                        //     t.translate(i18.wageSeeker.pinCodeValidation),
-                        //     'ERROR');
-
-                        Toast.showToast(context,
-                            message:
-                                t.translate(i18.wageSeeker.pinCodeValidation),
-                            type: ToastType.error);
-                      } else {
-                        final locationDetails = LocationDetails(
-                            pinCode: form.value[pinCodeKey].toString(),
-                            city: form.value[cityKey].toString(),
-                            locality: form.value[localityKey].toString(),
-                            ward: form.value[wardKey].toString(),
-                            streetName: form.value[streetNameKey].toString(),
-                            doorNo: form.value[doorNoKey].toString());
-                        BlocProvider.of<WageSeekerBloc>(context).add(
-                          WageSeekerCreateEvent(
-                              individualDetails: individualDetails,
-                              skillDetails: skillDetails,
-                              locationDetails: locationDetails,
-                              financialDetails: financialDetails),
-                        );
-                        widget.onPressed();
-                      }
-                    },
-                    label: t.translate(i18.common.next),
-                  ),
+                Button(
+                  size: ButtonSize.large,
+                  type: ButtonType.primary,
+                  mainAxisSize: MainAxisSize.max,
+                  onPressed: () {
+                    form.markAllAsTouched(updateParent: false);
+                    if (!form.valid) return;
+                    if (form.value[pinCodeKey].toString().isNotEmpty &&
+                        form.value[pinCodeKey].toString().length < 6) {
+                      // Notifiers.getToastMessage(
+                      //     context,
+                      //     t.translate(i18.wageSeeker.pinCodeValidation),
+                      //     'ERROR');
+                
+                      Toast.showToast(context,
+                          message:
+                              t.translate(i18.wageSeeker.pinCodeValidation),
+                          type: ToastType.error);
+                    } else if (form.value[pinCodeKey].toString().isNotEmpty &&
+                        int.parse(form.value[pinCodeKey].toString()) <
+                            100000) {
+                      // Notifiers.getToastMessage(
+                      //     context,
+                      //     t.translate(i18.wageSeeker.pinCodeValidation),
+                      //     'ERROR');
+                
+                      Toast.showToast(context,
+                          message:
+                              t.translate(i18.wageSeeker.pinCodeValidation),
+                          type: ToastType.error);
+                    } else {
+                      final locationDetails = LocationDetails(
+                          pinCode: form.value[pinCodeKey].toString(),
+                          city: form.value[cityKey].toString(),
+                          locality: form.value[localityKey].toString(),
+                          ward: form.value[wardKey].toString(),
+                          streetName: form.value[streetNameKey].toString(),
+                          doorNo: form.value[doorNoKey].toString());
+                      BlocProvider.of<WageSeekerBloc>(context).add(
+                        WageSeekerCreateEvent(
+                            individualDetails: individualDetails,
+                            skillDetails: skillDetails,
+                            locationDetails: locationDetails,
+                            financialDetails: financialDetails),
+                      );
+                      widget.onPressed();
+                    }
+                  },
+                  label: t.translate(i18.common.next),
                 )
               ],
             ),

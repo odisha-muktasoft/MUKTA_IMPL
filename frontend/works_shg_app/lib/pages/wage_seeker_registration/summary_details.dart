@@ -216,12 +216,12 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            t.translate(i18.common.photoGraph),
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w700),
-                            textAlign: TextAlign.left,
-                          ),
+                          TextChunk(
+                           subHeading: t.translate(i18.common.photoGraph),),
+                          //   style: const TextStyle(
+                          //       fontSize: 16, fontWeight: FontWeight.w700),
+                          //   textAlign: TextAlign.left,
+                          // ),
                           const SizedBox(
                             height: 10,
                           ),
