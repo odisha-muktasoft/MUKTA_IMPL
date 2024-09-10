@@ -146,7 +146,8 @@ const measurement= {
   // update the additional details
   measurement.additionalDetails={
     ...measurement.additionalDetails,
-    ...{sorAmount : sumSor, nonSorAmount : sumNonSor,totalAmount : sumSor + sumNonSor}
+    ...{sorAmount : sumSor, nonSorAmount : sumNonSor,totalAmount : sumSor + sumNonSor},
+    source: "Web"
   }
 
   /* added as a temporary fix that sends entrydate */
