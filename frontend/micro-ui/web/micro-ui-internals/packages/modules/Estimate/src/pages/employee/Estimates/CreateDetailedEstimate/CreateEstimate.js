@@ -484,6 +484,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     if ((isEdit || isEditRevisionEstimate) && (estimateNumber  || revisionNumber)) {
       await EstimateUpdateMutation(payload, {
         onError: async (error, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
           setIsButtonDisabled(false);
           setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
           setTimeout(() => {
@@ -498,6 +499,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           }
         },
         onSuccess: async (responseData, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
           clearSessionFormData();
           const state = {
             header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_UPDATED_HEADER") : t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
@@ -530,6 +532,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
     } else {
       await EstimateMutation(payload, {
         onError: async (error, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
           setIsButtonDisabled(false);
           setShowToast({ warning: true, label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
           setTimeout(() => {
@@ -537,6 +540,7 @@ const { isRatesLoading, data : RatesData} = Digit.Hooks.useCustomAPIHook(request
           }, 5000);
         },
         onSuccess: async (responseData, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
           clearSessionFormData();
           const state = {
             header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),

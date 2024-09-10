@@ -14,6 +14,7 @@ const ViewDetailedEstimate = () => {
   const [isStateChanged, setStateChanged] = useState(``);
   const [toast, setToast] = useState({ show: false, label: "", error: false });
   const menuRef = useRef();
+  sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE") ? sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE") : "";
 
   const loggedInUserRoles = Digit.Utils.getLoggedInUserDetails("roles");
 
