@@ -214,27 +214,27 @@ public class ContractQueryBuilder {
         preparedStmtList.addAll(ids);
     }
 
-    private String addPaginationWrapper(String query, List<Object> preparedStmtList,
+   private String addPaginationWrapper(String query, List<Object> preparedStmtList,
                                         ContractCriteria criteria) {
-        log.info("ContractQuerBuilder::addPaginationWrapper");
-        Pagination pagination=criteria.getPagination();
+        log.info("ContractQueryBuilder::addPaginationWrapper");
         int limit = config.getContractDefaultLimit();
         int offset = config.getContractDefaultOffset();
+        Pagination pagination= criteria.getPagination();
         String wrapperQuery;
-        if (pagination.getOrder() == Pagination.OrderEnum.ASC)
+        if (pagination!=null && pagination.getOrder() == Pagination.OrderEnum.ASC)
             wrapperQuery = PAGINATION_WRAPPER.replace("[]", "ASC");
         else
             wrapperQuery = PAGINATION_WRAPPER.replace("[]", "DESC");
         String finalQuery = wrapperQuery.replace("{}", query);
 
-        if (pagination.getLimit() != null) {
+        if (pagination!=null && pagination.getLimit() != null) {
             if (pagination.getLimit() <= config.getContractMaxLimit())
                 limit = pagination.getLimit();
             else
                 limit = config.getContractMaxLimit();
         }
 
-        if (pagination.getOffSet() != null)
+        if (pagination!=null && pagination.getOffSet() != null)
             offset = pagination.getOffSet();
 
         preparedStmtList.add(offset);
