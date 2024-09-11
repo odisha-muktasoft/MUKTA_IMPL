@@ -8,6 +8,7 @@ import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -230,22 +231,27 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                       children: [
                                         BackNavigationButton(
                                           backNavigationButtonThemeData:
-                                              const BackNavigationButtonThemeData()
-                                                  .copyWith(
-                                            textColor: Theme.of(context)
-                                                .colorTheme
-                                                .primary
-                                                .primary2,
-                                            contentPadding: EdgeInsets.zero,
-                                            context: context,
-                                            // backButtonIcon: Icon(
-                                            //   Icons.arrow_left,
-                                            //   color: Theme.of(context)
-                                            //       .colorTheme
-                                            //       .primary
-                                            //       .primary2,
-                                            // ),
-                                          ),
+                                        const BackNavigationButtonThemeData()
+                                            .copyWith(
+                                                context: context,
+                                                backButtonIcon: Icon(
+                                                  Icons
+                                                      .arrow_circle_left_outlined,
+                                                  size: MediaQuery.of(context)
+                                                              .size
+                                                              .width <
+                                                          500
+                                                      ? Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer5
+                                                      : Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer6,
+                                                  color: Theme.of(context)
+                                                      .colorTheme
+                                                      .primary
+                                                      .primary2,
+                                                )),
                                           backButtonText: AppLocalizations.of(
                                                       context)
                                                   .translate(i18.common.back) ??
@@ -335,19 +341,19 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                             ),
                           ),
                           height: localizationState.maybeMap(
-                            orElse: () => 160,
+                            orElse: () => kIsWeb?180:160,
                             loaded: (value) {
                               Languages? ll = value.languages?.firstWhereOrNull(
                                   (element) => element.isSelected == true);
                               if (ll != null &&
                                   ll.value == LanguageEnum.en_IN.name) {
-                                return 160;
+                                return kIsWeb?180:160;
                               } else {
-                                return 180;
+                                return kIsWeb?200:180;
                               }
                             },
-                            loading:(value) =>  160,
-                            error: (value) => 160,
+                            loading:(value) =>  kIsWeb?180:160,
+                            error: (value) => kIsWeb?180:160,
                           ),
                         ),
                       ),

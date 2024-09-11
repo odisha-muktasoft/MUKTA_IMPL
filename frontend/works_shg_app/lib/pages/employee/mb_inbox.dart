@@ -9,6 +9,7 @@ import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_component;
 import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -211,13 +212,36 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                             backNavigationButtonThemeData:
                                                 const BackNavigationButtonThemeData()
                                                     .copyWith(
-                                              textColor: Theme.of(context)
-                                                  .colorTheme
-                                                  .primary
-                                                  .primary2,
-                                              contentPadding: EdgeInsets.zero,
-                                              context: context,
-                                            ),
+                                                        textColor:
+                                                            Theme.of(context)
+                                                                .colorTheme
+                                                                .primary
+                                                                .primary2,
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        context: context,
+                                                        backButtonIcon: Icon(
+                                                          Icons
+                                                              .arrow_circle_left_outlined,
+                                                          size: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width <
+                                                                  500
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .spacerTheme
+                                                                  .spacer5
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .spacerTheme
+                                                                  .spacer6,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorTheme
+                                                                  .primary
+                                                                  .primary2,
+                                                        )),
                                             backButtonText:
                                                 AppLocalizations.of(context)
                                                         .translate(
@@ -279,19 +303,19 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                             ),
                           ),
                           height: localizationState.maybeMap(
-                            orElse: () => 160,
+                            orElse: () => kIsWeb?180:160,
                             loaded: (value) {
                               Languages? ll = value.languages?.firstWhereOrNull(
                                   (element) => element.isSelected == true);
                               if (ll != null &&
                                   ll.value == LanguageEnum.en_IN.name) {
-                                return 160;
+                                return kIsWeb?180: 160;
                               } else {
-                                return 200;
+                                return kIsWeb?210:200;
                               }
                             },
-                            loading: (value) => 160,
-                            error: (value) => 140,
+                            loading: (value) => kIsWeb?180: 160,
+                            error: (value) => kIsWeb?160:140,
                           ),
                         ),
                       ),
@@ -339,7 +363,9 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
 
                                   return ui_component.DigitCard(
                                       cardType: CardType.primary,
-                                      margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                                      margin: EdgeInsets.all(Theme.of(context)
+                                          .spacerTheme
+                                          .spacer2),
                                       children: [
                                         LabelValueList(
                                             maxLines: 3,

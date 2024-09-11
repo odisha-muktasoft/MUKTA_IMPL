@@ -86,7 +86,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
               contractNumber: widget.contractNumber,
               body: {
                 "wfStatus": [widget.wfStatus],
-                "status":"ACTIVE",
+                
               }),
         );
     context.read<AcceptWorkOrderBloc>().add(
@@ -1382,23 +1382,27 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                   bottom: 0.0),
                                               child: BackNavigationButton(
                                                 backNavigationButtonThemeData:
-                                                    const BackNavigationButtonThemeData()
-                                                        .copyWith(
-                                                  textColor: Theme.of(context)
+                                        const BackNavigationButtonThemeData()
+                                            .copyWith(
+                                                context: context,
+                                                backButtonIcon: Icon(
+                                                  Icons
+                                                      .arrow_circle_left_outlined,
+                                                  size: MediaQuery.of(context)
+                                                              .size
+                                                              .width <
+                                                          500
+                                                      ? Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer5
+                                                      : Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer6,
+                                                  color: Theme.of(context)
                                                       .colorTheme
                                                       .primary
                                                       .primary2,
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                  context: context,
-                                                  // backButtonIcon: Icon(
-                                                  //   Icons.arrow_left,
-                                                  //   color: Theme.of(context)
-                                                  //       .colorTheme
-                                                  //       .primary
-                                                  //       .primary2,
-                                                  // ),
-                                                ),
+                                                )),
                                                 backButtonText:
                                                     AppLocalizations.of(context)
                                                         .translate(

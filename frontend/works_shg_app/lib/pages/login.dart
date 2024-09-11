@@ -210,7 +210,7 @@ class _LoginPageState extends State<LoginPage>
                   AnimatedContainer(
                     height: _tabController.index == 0
                         ? 120
-                        : MediaQuery.of(context).size.height * 0.38,
+                        : MediaQuery.of(context).size.height * 0.36,
                     duration: const Duration(milliseconds: 000),
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
@@ -541,7 +541,7 @@ class _LoginPageState extends State<LoginPage>
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.sizeOf(context).height * 0.08),
+                          top: MediaQuery.sizeOf(context).height * 0.06),
                       child: IntrinsicHeight(
                         child: getLoginCard(t, context, state),
                       ),

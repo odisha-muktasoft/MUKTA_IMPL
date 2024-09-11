@@ -77,6 +77,14 @@ class CommonButtonCard extends StatelessWidget {
             loaded: (value) {
               return type == MBScreen.update
                   ? ActionCard(
+                    onOutsideTap: (){
+                      Navigator.of(
+              context,
+              rootNavigator: true,
+            ).popUntil(
+              (route) => route is! PopupRoute,
+            );
+                    },
                       actions: List.generate(
                       g!.first.nextActions!.length,
                       (index) => Button(

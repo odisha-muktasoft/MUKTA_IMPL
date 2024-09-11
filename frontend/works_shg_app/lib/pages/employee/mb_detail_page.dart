@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/digit_tab_bar_theme.dart';
@@ -25,6 +27,7 @@ import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/data/repositories/core_repo/core_repository.dart';
 import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
@@ -52,6 +55,7 @@ import '../../widgets/mb/sor_item_add_mb.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
+import 'package:path/path.dart' as path;
 
 @RoutePage()
 class MBDetailPage extends StatefulWidget {
@@ -143,6 +147,180 @@ class _MBDetailPageState extends State<MBDetailPage>
     _tabController.dispose();
     // _tabController.removeListener(_handleTabSelection);
     super.dispose();
+  }
+
+  void uploadDocument(List<PlatformFile> files, BuildContext context,
+      List<WorkflowDocument> serverData) async {
+    List<WorkflowDocument> dataDocument = [];
+    List<PlatformFile> payload = files.where((er) => er.path != null).toList();
+
+    try {
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).popUntil(
+        (route) => route is! PopupRoute,
+      );
+      if (payload.isNotEmpty) {
+        // Loaders.showLoadingDialog(context, label: "Uploading...");
+        shg_loader.Loaders.showLoadingDialog(context, label: "Uploading...");
+        var response = await CoreRepository().uploadFiles(
+            payload.map((e) => File(e.path ?? e.name!)).toList(),
+            "img_measurement_book");
+
+        for (int i = 0; i < response.length; i++) {
+          dataDocument.add(WorkflowDocument(
+              indexing:
+                  dataDocument.isEmpty ? 0 : (dataDocument.last.indexing! + 1),
+              isActive: true,
+              tenantId: response[i].tenantId,
+              fileStore: response[i].fileStoreId,
+              documentType: path.extension(payload[i].name ?? ''),
+              documentUid: path.basename(payload[i].name ?? ''),
+              documentAdditionalDetails: DocumentAdditionalDetails(
+                fileName: path.basename(payload[i].name ?? ''),
+                fileType: "img_measurement_book",
+                tenantId: response[i].tenantId,
+              )));
+        }
+        List<PlatformFile> noPath =
+            files.where((element) => element.path == null).toList();
+
+        // serverData = serverData.where((file) {
+        //   return noPath.any(
+        //       (ref) => ref.name == file.documentAdditionalDetails!.fileName);
+        // }).toList();
+
+        serverData = serverData.map((file) {
+          if (noPath.any(
+              (ref) => ref.name == file.documentAdditionalDetails!.fileName)) {
+            // Return the WorkflowDocument with isActive: true
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: true, // Set isActive to true
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          } else {
+            // Return the WorkflowDocument with isActive: false
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: false, // Set isActive to false
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          }
+        }).toList();
+
+        dataDocument.addAll(serverData);
+
+        context.read<MeasurementDetailBloc>().add(
+              MeasurementUploadDocumentBlocEvent(
+                tenantId: '',
+                workflowDocument: dataDocument,
+              ),
+            );
+        Navigator.of(
+          context,
+          rootNavigator: true,
+        ).popUntil(
+          (route) => route is! PopupRoute,
+        );
+      } else {
+        // serverData = serverData.where((file) {
+        //   return files.any(
+        //       (ref) => ref.name == file.documentAdditionalDetails!.fileName);
+        // }).toList();
+        serverData = serverData.map((file) {
+          if (files.any(
+              (ref) => ref.name == file.documentAdditionalDetails!.fileName)) {
+            // Return the WorkflowDocument with isActive: true
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: true, // Set isActive to true
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          } else {
+            // Return the WorkflowDocument with isActive: false
+            return WorkflowDocument(
+              documentUid: file.documentUid,
+              documentType: file.documentType,
+              fileStore: file.fileStore,
+              fileStoreId: file.fileStoreId,
+              id: file.id,
+              tenantId: file.tenantId,
+              indexing: file.indexing,
+              isActive: false, // Set isActive to false
+              documentAdditionalDetails: file.documentAdditionalDetails,
+            );
+          }
+        }).toList();
+
+        dataDocument.addAll(serverData);
+        context.read<MeasurementDetailBloc>().add(
+              MeasurementUploadDocumentBlocEvent(
+                tenantId: '',
+                workflowDocument: dataDocument,
+              ),
+            );
+      }
+    } catch (ex) {
+      Navigator.of(
+        context,
+        rootNavigator: true,
+      ).popUntil(
+        (route) => route is! PopupRoute,
+      );
+    }
+    // serverData = serverData.where((item  ) => noPath.contains(item.documentAdditionalDetails!.fileName!)).toList();
+
+// for (var element in serverData) {
+
+//   dataDocument.add(WorkflowDocument(
+//     indexing:
+//               dataDocument.isEmpty ? 0 : (dataDocument.last.indexing! + 1),
+//           isActive: true,
+//           tenantId: response[i].tenantId,
+//           fileStore: response[i].fileStoreId,
+//           documentType: path.extension(element.name ?? ''),
+//           documentUid: path.basename(files[i].path ?? ''),
+//           documentAdditionalDetails: DocumentAdditionalDetails(
+//             fileName: path.basename(files[i].path ?? ''),
+//             fileType: "img_measurement_book",
+//             tenantId: response[i].tenantId,
+//           )
+//   ));
+// }
+    // dataDocument.add(WorkflowDocument(
+    //     indexing: dataDocument.isEmpty
+    //         ? 0
+    //         : (_selectedFiles.last.indexing! + 1),
+    //     isActive: true,
+    //     tenantId: _fileStoreList[i].tenantId,
+    //     fileStore: _fileStoreList[i].fileStoreId,
+    //     documentType: path.extension(files[i].path),
+    //     documentUid: path.basename(files[i].path),
+    //     documentAdditionalDetails: DocumentAdditionalDetails(
+    //       fileName: path.basename(files[i].path),
+    //       fileType: "img_measurement_book",
+    //       tenantId: _fileStoreList[i].tenantId,
+    //     )));
   }
 
   @override
@@ -623,20 +801,32 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         backNavigationButtonThemeData:
                                             const BackNavigationButtonThemeData()
                                                 .copyWith(
-                                          textColor: Theme.of(context)
-                                              .colorTheme
-                                              .primary
-                                              .primary2,
-                                          contentPadding: EdgeInsets.zero,
-                                          context: context,
-                                           backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )
-                                        ),
+                                                    textColor: Theme.of(context)
+                                                        .colorTheme
+                                                        .primary
+                                                        .primary2,
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
+                                                    context: context,
+                                                    backButtonIcon: Icon(
+                                                      Icons
+                                                          .arrow_circle_left_outlined,
+                                                      size: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width <
+                                                              500
+                                                          ? Theme.of(context)
+                                                              .spacerTheme
+                                                              .spacer5
+                                                          : Theme.of(context)
+                                                              .spacerTheme
+                                                              .spacer6,
+                                                      color: Theme.of(context)
+                                                          .colorTheme
+                                                          .primary
+                                                          .primary2,
+                                                    )),
                                         backButtonText: AppLocalizations.of(
                                                     context)
                                                 .translate(i18.common.back) ??
@@ -944,56 +1134,122 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 const EdgeInsets
                                                                     .symmetric(
                                                                     horizontal:
-                                                                        8.0),
-                                                            // child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                                                            //    print(filenames);
-                                                            //  },
-                                                            //     allowMultiples: true,),
-                                                            child:
-                                                                FilePickerDemo(
-                                                              fromServerFile:
-                                                                  value
-                                                                      .data
-                                                                      .first
-                                                                      .documents,
-                                                              callBack: (List<
-                                                                          FileStoreModel>?
-                                                                      g,
-                                                                  List<WorkflowDocument>?
-                                                                      l) {
-                                                                context
-                                                                    .read<
-                                                                        MeasurementDetailBloc>()
-                                                                    .add(
-                                                                      MeasurementUploadDocumentBlocEvent(
-                                                                        tenantId:
-                                                                            '',
-                                                                        workflowDocument:
-                                                                            l!,
-                                                                      ),
-                                                                    );
-                                                              },
-                                                              extensions: const [
-                                                                'jpg',
-                                                                'png',
-                                                                'jpeg',
-                                                              ],
-                                                              moduleName:
-                                                                  'img_measurement_book',
-                                                              headerType:
-                                                                  MediaType
-                                                                      .mbDetail,
+                                                                        0.0),
+                                                            //old
+                                                            // child:
+                                                            //     FilePickerDemo(
+                                                            //   fromServerFile:
+                                                            //       value
+                                                            //           .data
+                                                            //           .first
+                                                            //           .documents,
+                                                            //   callBack: (List<
+                                                            //               FileStoreModel>?
+                                                            //           g,
+                                                            //       List<WorkflowDocument>?
+                                                            //           l) {
+                                                            //     context
+                                                            //         .read<
+                                                            //             MeasurementDetailBloc>()
+                                                            //         .add(
+                                                            //           MeasurementUploadDocumentBlocEvent(
+                                                            //             tenantId:
+                                                            //                 '',
+                                                            //             workflowDocument:
+                                                            //                 l!,
+                                                            //           ),
+                                                            //         );
+                                                            //   },
+                                                            //   extensions: const [
+                                                            //     'jpg',
+                                                            //     'png',
+                                                            //     'jpeg',
+                                                            //   ],
+                                                            //   moduleName:
+                                                            //       'img_measurement_book',
+                                                            //   headerType:
+                                                            //       MediaType
+                                                            //           .mbDetail,
+                                                            // ),
+                                                            child: ui_label
+                                                                .LabeledField(
+                                                              label:
+                                                                  "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                                                              child:
+                                                                  FileUploadWidget(
+                                                                // onFileTap: (p0) {
+                                                                //   print("hello");
+                                                                // },
+                                                                initialFiles: value
+                                                                            .data
+                                                                            .first
+                                                                            .documents !=
+                                                                        null
+                                                                    ? value
+                                                                        .data
+                                                                        .first
+                                                                        .documents!
+                                                                        .map((e) => PlatformFile(
+                                                                            name:
+                                                                                e.documentAdditionalDetails!.fileName!,
+                                                                            size: 0))
+                                                                        .toList()
+                                                                    : [],
+                                                                noFileSelectedText:
+                                                                    "No file selected",
+                                                                allowMultiples:
+                                                                    true,
+                                                                label: 'Upload',
+                                                                onFilesSelected:
+                                                                    (List<PlatformFile>
+                                                                        files) {
+                                                                  Map<PlatformFile,
+                                                                          String?>
+                                                                      fileErrors =
+                                                                      {};
+
+                                                                  try {
+                                                                    const int
+                                                                        fileSizeLimit =
+                                                                        5 *
+                                                                            1024 *
+                                                                            1024; // 5 MB in bytes
+
+                                                                    // Iterate over each file and check the size
+                                                                    for (var file
+                                                                        in files) {
+                                                                      if (file.size >
+                                                                          fileSizeLimit) {
+                                                                        fileErrors[file] = t.translate(i18
+                                                                            .measurementBook
+                                                                            .imageSize);
+                                                                      }
+                                                                    }
+
+                                                                    if (fileErrors
+                                                                        .isEmpty) {
+                                                                      uploadDocument(
+                                                                        files,
+                                                                        context,
+                                                                        value.data.first.documents !=
+                                                                                null
+                                                                            ? value.data.first.documents!
+                                                                            : [],
+                                                                      );
+                                                                    }
+
+                                                                    return fileErrors;
+                                                                  } catch (e) {
+                                                                    return fileErrors;
+                                                                  }
+                                                                },
+                                                              ),
                                                             ),
                                                           ),
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(4),
-                                                            //  color: DigitColors().curiousBlue,
-                                                            child: Text(t.translate(i18
-                                                                .measurementBook
-                                                                .mbPhotoInfo)),
-                                                          ),
+                                                          TextChunk(
+                                                              body: t.translate(i18
+                                                                  .measurementBook
+                                                                  .mbPhotoInfo)),
                                                         ],
                                                       ),
                                                     ),
@@ -1044,17 +1300,17 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   //           g,
                                                                   //       List<WorkflowDocument>?
                                                                   //           l) {
-                                                                  //     context
-                                                                  //         .read<
-                                                                  //             MeasurementDetailBloc>()
-                                                                  //         .add(
-                                                                  //           MeasurementUploadDocumentBlocEvent(
-                                                                  //             tenantId:
-                                                                  //                 '',
-                                                                  //             workflowDocument:
-                                                                  //                 l!,
-                                                                  //           ),
-                                                                  //         );
+                                                                  // context
+                                                                  //     .read<
+                                                                  //         MeasurementDetailBloc>()
+                                                                  //     .add(
+                                                                  //       MeasurementUploadDocumentBlocEvent(
+                                                                  //         tenantId:
+                                                                  //             '',
+                                                                  //         workflowDocument:
+                                                                  //             l!,
+                                                                  //       ),
+                                                                  //     );
                                                                   //   },
                                                                   //   extensions: const [
                                                                   //     'jpg',
@@ -1068,44 +1324,74 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   //           .mbDetail,
                                                                   // ),
 
-                                                                  child:
-                                                                      FileUploadWidget(
-                                                                    initialFiles: [
-                                                                      PlatformFile(
-                                                                          name:
-                                                                              "jyhr.png",
-                                                                          size:
-                                                                              0)
-                                                                    ],
-                                                                    noFileSelectedText:
-                                                                        "No file selected",
-                                                                    allowMultiples:
-                                                                        true,
+                                                                  child: ui_label
+                                                                      .LabeledField(
                                                                     label:
-                                                                        'Upload',
-                                                                    onFilesSelected:
-                                                                        (List<PlatformFile>
-                                                                            files) {
-                                                                      Map<PlatformFile,
-                                                                              String?>
-                                                                          fileErrors =
-                                                                          {};
+                                                                        "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                                                                    child:
+                                                                        FileUploadWidget(
+                                                                      // onFileTap: (p0) {
+                                                                      //   print("hooo");
+                                                                      // },
+                                                                      initialFiles: value.data.first.documents !=
+                                                                              null
+                                                                          ? value
+                                                                              .data
+                                                                              .first
+                                                                              .documents!
+                                                                              .map((e) => PlatformFile(name: e.documentAdditionalDetails!.fileName!, size: 0))
+                                                                              .toList()
+                                                                          : [],
+                                                                      noFileSelectedText:
+                                                                          "No file selected",
+                                                                      allowMultiples:
+                                                                          true,
+                                                                      label:
+                                                                          'Upload',
+                                                                      onFilesSelected:
+                                                                          (List<PlatformFile>
+                                                                              files) {
+                                                                        Map<PlatformFile,
+                                                                                String?>
+                                                                            fileErrors =
+                                                                            {};
 
-                                                                      return fileErrors;
-                                                                    },
+                                                                        try {
+                                                                          const int fileSizeLimit = 5 *
+                                                                              1024 *
+                                                                              1024; // 5 MB in bytes
+
+                                                                          // Iterate over each file and check the size
+                                                                          for (var file
+                                                                              in files) {
+                                                                            if (file.size >
+                                                                                fileSizeLimit) {
+                                                                              fileErrors[file] = t.translate(i18.measurementBook.imageSize);
+                                                                            }
+                                                                          }
+
+                                                                          if (fileErrors
+                                                                              .isEmpty) {
+                                                                            uploadDocument(
+                                                                              files,
+                                                                              context,
+                                                                              value.data.first.documents != null ? value.data.first.documents! : [],
+                                                                            );
+                                                                          }
+
+                                                                          return fileErrors;
+                                                                        } catch (e) {
+                                                                          return fileErrors;
+                                                                        }
+                                                                      },
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 // TODO:[text change]
-                                                                Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          4),
-                                                                  child: Text(t
-                                                                      .translate(i18
-                                                                          .measurementBook
-                                                                          .mbPhotoInfo)),
-                                                                ),
+                                                                TextChunk(
+                                                                    body: t.translate(i18
+                                                                        .measurementBook
+                                                                        .mbPhotoInfo)),
                                                               ],
                                                             ),
                                                           ),
@@ -1161,51 +1447,98 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     padding: const EdgeInsets
                                                                         .symmetric(
                                                                         horizontal:
-                                                                            8.0),
-                                                                    //             child: ImageUploader(onImagesSelected: (List<File> filenames ) {
-                                                                    //               print(filenames);
-                                                                    //              },
-                                                                    // allowMultiples: true,),
-                                                                    child:
-                                                                        FilePickerDemo(
-                                                                      fromServerFile: value
-                                                                          .data
-                                                                          .first
-                                                                          .documents,
-                                                                      callBack: (List<FileStoreModel>?
-                                                                              g,
-                                                                          List<WorkflowDocument>?
-                                                                              l) {
-                                                                        context
-                                                                            .read<MeasurementDetailBloc>()
-                                                                            .add(
-                                                                              MeasurementUploadDocumentBlocEvent(
-                                                                                tenantId: '',
-                                                                                workflowDocument: l!,
-                                                                              ),
-                                                                            );
-                                                                      },
-                                                                      extensions: const [
-                                                                        'jpg',
-                                                                        'png',
-                                                                        'jpeg',
-                                                                      ],
-                                                                      moduleName:
-                                                                          'img_measurement_book',
-                                                                      headerType:
-                                                                          MediaType
-                                                                              .mbDetail,
+                                                                            0.0),
+                                                                    //old
+                                                                    // child:
+                                                                    //     FilePickerDemo(
+                                                                    //   fromServerFile: value
+                                                                    //       .data
+                                                                    //       .first
+                                                                    //       .documents,
+                                                                    //   callBack: (List<FileStoreModel>?
+                                                                    //           g,
+                                                                    //       List<WorkflowDocument>?
+                                                                    //           l) {
+                                                                    //     context
+                                                                    //         .read<MeasurementDetailBloc>()
+                                                                    //         .add(
+                                                                    //           MeasurementUploadDocumentBlocEvent(
+                                                                    //             tenantId: '',
+                                                                    //             workflowDocument: l!,
+                                                                    //           ),
+                                                                    //         );
+                                                                    //   },
+                                                                    //   extensions: const [
+                                                                    //     'jpg',
+                                                                    //     'png',
+                                                                    //     'jpeg',
+                                                                    //   ],
+                                                                    //   moduleName:
+                                                                    //       'img_measurement_book',
+                                                                    //   headerType:
+                                                                    //       MediaType
+                                                                    //           .mbDetail,
+                                                                    // ),
+
+                                                                    child: ui_label
+                                                                        .LabeledField(
+                                                                      label:
+                                                                          "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}",
+                                                                      child:
+                                                                          FileUploadWidget(
+                                                                        // onFileTap: (p0) {
+                                                                        //   print("object");
+                                                                        // },
+                                                                        initialFiles: value.data.first.documents !=
+                                                                                null
+                                                                            ? value.data.first.documents!.map((e) => PlatformFile(name: e.documentAdditionalDetails!.fileName!, size: 0)).toList()
+                                                                            : [],
+                                                                        noFileSelectedText:
+                                                                            "No file selected",
+                                                                        allowMultiples:
+                                                                            true,
+                                                                        label:
+                                                                            'Upload',
+                                                                        onFilesSelected:
+                                                                            (List<PlatformFile>
+                                                                                files) {
+                                                                          Map<PlatformFile, String?>
+                                                                              fileErrors =
+                                                                              {};
+
+                                                                          try {
+                                                                            const int fileSizeLimit = 5 *
+                                                                                1024 *
+                                                                                1024; // 5 MB in bytes
+
+                                                                            // Iterate over each file and check the size
+                                                                            for (var file
+                                                                                in files) {
+                                                                              if (file.size > fileSizeLimit) {
+                                                                                fileErrors[file] = t.translate(i18.measurementBook.imageSize);
+                                                                              }
+                                                                            }
+
+                                                                            if (fileErrors.isEmpty) {
+                                                                              uploadDocument(
+                                                                                files,
+                                                                                context,
+                                                                                value.data.first.documents != null ? value.data.first.documents! : [],
+                                                                              );
+                                                                            }
+
+                                                                            return fileErrors;
+                                                                          } catch (e) {
+                                                                            return fileErrors;
+                                                                          }
+                                                                        },
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                  Container(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            4),
-                                                                    child: Text(t.translate(i18
-                                                                        .measurementBook
-                                                                        .mbPhotoInfo)),
-                                                                  ),
+                                                                  TextChunk(
+                                                                      body: t.translate(i18
+                                                                          .measurementBook
+                                                                          .mbPhotoInfo)),
                                                                 ],
                                                               ),
                                                             ),
@@ -1615,26 +1948,29 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           return DigitBottomSheet(
                                             primaryActionLabel: t.translate(
                                                 i18.measurementBook.mbAction),
-                                            onPrimaryAction:(g != null &&
-                                            (g.first.nextActions != null &&
-                                                g.first.nextActions!.isEmpty))
-                                        ? null:
-                                         (ctx) {
-                                              // Navigator.of(context).pop();
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    CommonButtonCard(
-                                                  g: mbWorkFlow
-                                                      .musterWorkFlowModel
-                                                      ?.processInstances,
-                                                  contractNumber:
-                                                      widget.contractNumber,
-                                                  mbNumber: widget.mbNumber,
-                                                  type: widget.type,
-                                                ),
-                                              );
-                                            },
+                                            onPrimaryAction: (g != null &&
+                                                    (g.first.nextActions !=
+                                                            null &&
+                                                        g.first.nextActions!
+                                                            .isEmpty))
+                                                ? null
+                                                : (ctx) {
+                                                    // Navigator.of(context).pop();
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          CommonButtonCard(
+                                                        g: mbWorkFlow
+                                                            .musterWorkFlowModel
+                                                            ?.processInstances,
+                                                        contractNumber: widget
+                                                            .contractNumber,
+                                                        mbNumber:
+                                                            widget.mbNumber,
+                                                        type: widget.type,
+                                                      ),
+                                                    );
+                                                  },
                                             fixedHeight: 200,
                                             initialHeightPercentage: 30,
                                             content: Column(

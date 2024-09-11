@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/router/app_router.dart';
+import 'package:works_shg_app/theme.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -55,6 +56,8 @@ class SuccessResponsePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.digitTextTheme(context);
     return PopScope(
       canPop: true,
       onPopInvoked: (value) async {
@@ -118,8 +121,13 @@ class SuccessResponsePage extends StatelessWidget {
                   type: PanelType.success,
                   description: subTitle,
                   additionalDetails: subHeader!=null && subText!=null? [
-                    Text(subHeader ?? ''),
-                    Text(subText ?? '')
+                    Text(subHeader ?? '',textAlign:TextAlign.center, style: textTheme.headingS.copyWith(
+                      color: theme.colorTheme.paper.primary
+
+                    )),
+                    Text(subText ?? '',textAlign:TextAlign.center,style: textTheme.headingL.copyWith(
+                      color: theme.colorTheme.paper.primary
+                    ))
                   ]:[],
                   actions: [
                     ui_component.Button(

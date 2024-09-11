@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -11,11 +15,13 @@ import 'package:works_shg_app/blocs/employee/emp_hrms/emp_hrms.dart';
 import 'package:works_shg_app/blocs/employee/mb/mb_crud.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
+import 'package:works_shg_app/data/repositories/core_repo/core_repository.dart';
 import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/models/muster_rolls/business_service_workflow.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
+import 'package:works_shg_app/widgets/loaders.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/mb/multi_image.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
@@ -29,6 +35,7 @@ import '../../utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
+import 'package:path/path.dart' as path;
 
 @RoutePage()
 class MBTypeConfirmationPage extends StatefulWidget {
@@ -167,11 +174,14 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         loaded: (value) {
                           if (widget.type == MBScreen.update) {
                             return Padding(
-                               padding: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(16.0),
                               // padding: const EdgeInsets.only(
                               //     left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
                               child: ui_component.ScrollableContent(
-                               backgroundColor: Theme.of(context).colorTheme.generic.background,
+                                backgroundColor: Theme.of(context)
+                                    .colorTheme
+                                    .generic
+                                    .background,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 footer: Padding(
@@ -204,8 +214,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                             //   'ERROR',
                                             // );
 
-                                            Toast.showToast(context, message: t.translate(i18
-                                                  .common.allFieldsMandatory), type: ToastType.error);
+                                            Toast.showToast(context,
+                                                message: t.translate(i18
+                                                    .common.allFieldsMandatory),
+                                                type: ToastType.error);
                                           } else {
                                             List<List<SorObject>> sorList = [
                                               value.sor!,
@@ -286,11 +298,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         label: '',
                                         size: ButtonSize.large,
                                         type: ButtonType.tertiary,
-                                          onPressed: () {
-                                            context.router.maybePopTop();
-                                          },
-                                          suffixIcon: Icons.close,
-                                          ),
+                                        onPressed: () {
+                                          context.router.maybePopTop();
+                                        },
+                                        suffixIcon: Icons.close,
+                                      ),
                                     ],
                                   ),
                                   Row(
@@ -336,7 +348,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                     value.hrmsEmployee!
                                                         .isNotEmpty) {
                                                   return Padding(
-                                                    padding: const EdgeInsets.only(top:16.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 16.0),
                                                     child: ui_component
                                                         .LabeledField(
                                                       label: t.translate(
@@ -440,62 +454,75 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   widget.nextActions!.action !=
                                               "EDIT/RE-SUBMIT" &&
                                           widget.nextActions!.action != "SUBMIT"
-                                      ? SizedBox(
-                                          width:
-                                              MediaQuery.sizeOf(context).width,
-                                          height: 306,
-                                          child: Column(
-                                            children: [
-                                              FilePickerDemo(
-                                                callBack: (List<FileStoreModel>?
-                                                        g,
-                                                    List<WorkflowDocument>? l) {
-                                                  final supportDocumentData = l!
-                                                      .where((element) =>
-                                                          element.isActive ==
-                                                          true)
-                                                      .toList()
-                                                      .map(
-                                                    (e) {
-                                                      return WorkFlowSupportDocument(
-                                                        documentType:
-                                                            e.documentType,
-                                                        documentUid:
-                                                            e.fileStore,
-                                                        fileName: e
-                                                            .documentAdditionalDetails
-                                                            ?.fileName,
-                                                        fileStoreId:
-                                                            e.fileStore,
-                                                        tenantId: e.tenantId,
-                                                      );
-                                                    },
-                                                  ).toList();
-                                                  supportDocument.clear();
-                                                  supportDocument.addAll(
-                                                      supportDocumentData);
-                                                  setState(() {});
+                                      ? Column(
+                                          children: [
+                                            SizedBox(
+                                              height: Theme.of(context)
+                                                  .spacerTheme
+                                                  .spacer4,
+                                            ),
+                                            //old
+                                            // FilePickerDemo(
+                                            //   callBack: (List<FileStoreModel>?
+                                            //           g,
+                                            //       List<WorkflowDocument>? l) {
+                                            //     final supportDocumentData = l!
+                                            //         .where((element) =>
+                                            //             element.isActive ==
+                                            //             true)
+                                            //         .toList()
+                                            //         .map(
+                                            //       (e) {
+                                            //         return WorkFlowSupportDocument(
+                                            //           documentType:
+                                            //               e.documentType,
+                                            //           documentUid:
+                                            //               e.fileStore,
+                                            //           fileName: e
+                                            //               .documentAdditionalDetails
+                                            //               ?.fileName,
+                                            //           fileStoreId:
+                                            //               e.fileStore,
+                                            //           tenantId: e.tenantId,
+                                            //         );
+                                            //       },
+                                            //     ).toList();
+                                            //     supportDocument.clear();
+                                            //     supportDocument.addAll(
+                                            //         supportDocumentData);
+                                            //     setState(() {});
+                                            //   },
+                                            //   extensions: const [
+                                            //     'jpg',
+                                            //     'png',
+                                            //     'jpeg',
+                                            //     'pdf',
+                                            //     'xls',
+                                            //     'doc'
+                                            //   ],
+                                            //   moduleName: 'works',
+                                            //   headerType: MediaType.mbConfim,
+                                            // ),
+                                            LabeledField(
+                                              label:
+                                                  "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
+                                              child: FileUploadWidget(
+                                                onFilesSelected: (files) {
+                                                  uploadFileToServer(files,
+                                                      context, supportDocument);
+                                                  Map<PlatformFile, String?>
+                                                      fileErrors = {};
+
+                                                  return fileErrors;
                                                 },
-                                                extensions: const [
-                                                  'jpg',
-                                                  'png',
-                                                  'jpeg',
-                                                  'pdf',
-                                                  'xls',
-                                                  'doc'
-                                                ],
-                                                moduleName: 'works',
-                                                headerType: MediaType.mbConfim,
+                                                label: "upload",
                                               ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                //  color: DigitColors().curiousBlue,
-                                                child: Text(t.translate(
+                                            ),
+
+                                            TextChunk(
+                                                body: t.translate(
                                                     i18.common.photoInfo)),
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         )
                                       : const SizedBox.shrink(),
                                 ],
@@ -505,7 +532,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                             return Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: ui_component.ScrollableContent(
-                               backgroundColor: Theme.of(context).colorTheme.generic.background,
+                                backgroundColor: Theme.of(context)
+                                    .colorTheme
+                                    .generic
+                                    .background,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 footer: Padding(
@@ -585,7 +615,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           // context.router.push(const HomeRoute());
                                         },
                                       ),
-                                     const SizedBox(height: 16.0,),
+                                      const SizedBox(
+                                        height: 16.0,
+                                      ),
                                       Button(
                                         mainAxisSize: MainAxisSize.max,
                                         type: ButtonType.secondary,
@@ -604,10 +636,10 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Button(
-                                        mainAxisSize: MainAxisSize.min,
-                                        label: '',
-                                        size: ButtonSize.large,
-                                        type: ButtonType.tertiary,
+                                          mainAxisSize: MainAxisSize.min,
+                                          label: '',
+                                          size: ButtonSize.large,
+                                          type: ButtonType.tertiary,
                                           onPressed: () {
                                             context.router.maybePopTop();
                                           },
@@ -624,7 +656,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                             MediaQuery.sizeOf(context).width *
                                                 0.9,
                                         child: TextChunk(
-                                         heading: widget.stateActions!.action ==
+                                          heading: widget
+                                                      .stateActions!.action ==
                                                   "SUBMIT"
                                               ? t.translate(i18.measurementBook
                                                   .mbcreateLabel)
@@ -650,7 +683,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                     value.hrmsEmployee!
                                                         .isNotEmpty) {
                                                   return Padding(
-                                                    padding: const EdgeInsets.only(top:16.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 16.0),
                                                     child: ui_component
                                                         .LabeledField(
                                                       label: t.translate(
@@ -740,62 +775,76 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                     ),
                                   ),
                                   widget.stateActions!.action != null
-                                      ? SizedBox(
-                                          width:
-                                              MediaQuery.sizeOf(context).width,
-                                          height: 306,
-                                          child: Column(
-                                            children: [
-                                              FilePickerDemo(
-                                                callBack: (List<FileStoreModel>?
-                                                        g,
-                                                    List<WorkflowDocument>? l) {
-                                                  final supportDocumentData = l!
-                                                      .where((element) =>
-                                                          element.isActive ==
-                                                          true)
-                                                      .toList()
-                                                      .map(
-                                                    (e) {
-                                                      return WorkFlowSupportDocument(
-                                                        documentType:
-                                                            e.documentType,
-                                                        documentUid:
-                                                            e.fileStore,
-                                                        fileName: e
-                                                            .documentAdditionalDetails
-                                                            ?.fileName,
-                                                        fileStoreId:
-                                                            e.fileStore,
-                                                        tenantId: e.tenantId,
-                                                      );
-                                                    },
-                                                  ).toList();
-                                                  supportDocument.clear();
-                                                  supportDocument.addAll(
-                                                      supportDocumentData);
-                                                  setState(() {});
+                                      ? Column(
+                                          children: [
+                                            SizedBox(
+                                              height: Theme.of(context)
+                                                  .spacerTheme
+                                                  .spacer4,
+                                            ),
+                                            //old
+                                            // FilePickerDemo(
+                                            //   callBack: (List<FileStoreModel>?
+                                            //           g,
+                                            //       List<WorkflowDocument>? l) {
+                                            //     final supportDocumentData = l!
+                                            //         .where((element) =>
+                                            //             element.isActive ==
+                                            //             true)
+                                            //         .toList()
+                                            //         .map(
+                                            //       (e) {
+                                            //         return WorkFlowSupportDocument(
+                                            //           documentType:
+                                            //               e.documentType,
+                                            //           documentUid:
+                                            //               e.fileStore,
+                                            //           fileName: e
+                                            //               .documentAdditionalDetails
+                                            //               ?.fileName,
+                                            //           fileStoreId:
+                                            //               e.fileStore,
+                                            //           tenantId: e.tenantId,
+                                            //         );
+                                            //       },
+                                            //     ).toList();
+                                            //     supportDocument.clear();
+                                            //     supportDocument.addAll(
+                                            //         supportDocumentData);
+                                            //     setState(() {});
+                                            //   },
+                                            //   extensions: const [
+                                            //     'jpg',
+                                            //     'png',
+                                            //     'jpeg',
+                                            //     'pdf',
+                                            //     'xls',
+                                            //     'doc'
+                                            //   ],
+                                            //   moduleName: 'works',
+                                            //   headerType: MediaType.mbConfim,
+                                            // ),
+                                            LabeledField(
+                                              label:
+                                                  "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
+                                              child: FileUploadWidget(
+                                                onFilesSelected: (files) {
+                                                  uploadFileToServer(files,
+                                                      context, supportDocument);
+
+                                                  Map<PlatformFile, String?>
+                                                      fileErrors = {};
+
+                                                  return fileErrors;
                                                 },
-                                                extensions: const [
-                                                  'jpg',
-                                                  'png',
-                                                  'jpeg',
-                                                  'pdf',
-                                                  'xls',
-                                                  'doc'
-                                                ],
-                                                moduleName: 'works',
-                                                headerType: MediaType.mbConfim,
+                                                label: "upload",
                                               ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                //  color: DigitColors().curiousBlue,
-                                                child: Text(t.translate(
+                                            ),
+
+                                            TextChunk(
+                                                body: t.translate(
                                                     i18.common.photoInfo)),
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         )
                                       : const SizedBox.shrink(),
                                 ],
@@ -819,4 +868,60 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
   FormGroup detailBuildForm() => fb.group(<String, Object>{
         //hrmsKey: FormControl<HRMSEmployee>(value: selectedAssignee),
       });
+}
+
+void uploadFileToServer(List<PlatformFile> files, BuildContext context,
+    List<WorkFlowSupportDocument> sendToServer) async {
+  List<WorkFlowSupportDocument> workFlow = [];
+  try {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).popUntil(
+      (route) => route is! PopupRoute,
+    );
+    shg_loader.Loaders.showLoadingDialog(context, label: "Uploading...");
+    var response = await CoreRepository().uploadFiles(
+        files.map((e) => File(e.path ?? e.name!)).toList(),
+        "img_measurement_book");
+
+    for (int i = 0; i < response.length; i++) {
+      workFlow.add(
+          // WorkflowSupportDocument(
+          //   indexing:
+          //       dataDocument.isEmpty ? 0 : (dataDocument.last.indexing! + 1),
+          //   isActive: true,
+          //   tenantId: response[i].tenantId,
+          //   fileStore: response[i].fileStoreId,
+          //   documentType: path.extension(payload[i].name ?? ''),
+          //   documentUid: path.basename(payload[i].name ?? ''),
+          //   documentAdditionalDetails: DocumentAdditionalDetails(
+          //     fileName: path.basename(payload[i].name ?? ''),
+          //     fileType: "img_measurement_book",
+          //     tenantId: response[i].tenantId,
+          //   )
+          //   )
+          WorkFlowSupportDocument(
+              documentType: path.extension(files[i].name ?? ''),
+              documentUid: response[i].fileStoreId ?? '',
+              fileName: path.extension(files[i].name ?? ''),
+              fileStoreId: response[i].fileStoreId ?? '',
+              tenantId: response[i].tenantId ?? ''));
+    }
+
+    sendToServer.addAll(workFlow);
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).popUntil(
+      (route) => route is! PopupRoute,
+    );
+  } catch (ex) {
+    Navigator.of(
+      context,
+      rootNavigator: true,
+    ).popUntil(
+      (route) => route is! PopupRoute,
+    );
+  }
 }
