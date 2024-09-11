@@ -82,11 +82,46 @@ const CreatePurchaseBillForm = ({
                 setValue("billDetails_billAmt", parseInt(formData.invoiceDetails_materialCost)+parseInt(gstAmount));
             }
 
-            if(difference?.invoiceDetails_organisationType)
-            {
+            if (formData?.invoiceDetails_organisationType?.code === "CBO") {
+                setValue("invoiceDetails_vendor", contract.additionalDetails?.cboName);
+                setValue("invoiceDetails_vendorId", contract.additionalDetails?.cboOrgNumber);
+            
+                const organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                
+                if (organizationDetailsSection) {
+                    const vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    
+                    if (vendorField) {
+                        // Disabling and converting the field to text input
+                        vendorField.disable = true;
+                        vendorField.type = "text";
+                        vendorField.populators.customClass = "disabled-text-field";
+                    }
+                }
+            } else {
                 setValue("invoiceDetails_vendor", '');
-                setValue("invoiceDetails_vendorId", undefined);  
+                setValue("invoiceDetails_vendorId", '');
+            
+                const organizationDetailsSection = createPurchaseBillConfig.form.find(item => item.head === "EXP_ORGANIZATION_DETAILS");
+                
+                if (organizationDetailsSection) {
+                    const vendorField = organizationDetailsSection.body.find(item => item.key === "invoiceDetails_vendor");
+                    
+                    if (vendorField) {
+                        // Enabling and converting back to dropdown
+                        vendorField.disable = false;
+                        vendorField.type = "dropdown";
+                        vendorField.populators.customClass = undefined;
+                    }
+                }
             }
+            
+
+            // if(difference?.invoiceDetails_organisationType)
+            // {
+            //     setValue("invoiceDetails_vendor", '');
+            //     setValue("invoiceDetails_vendorId", undefined);  
+            // }
 
             if(formData.billDetails_billAmt) {
                 let gstAmount = formData.invoiceDetails_gst ? formData.invoiceDetails_gst : 0;

@@ -50,7 +50,7 @@ export const BillsSearch = {
         // "businessService":bsPurchaseBill
       },
        "pagination": {
-        "limit": 10,
+        "limit": 50,
         "offSet": 0,
         "sortBy": "ASC",
         "order": "ASC"
@@ -239,7 +239,7 @@ export const BillsSearch = {
         asSectionHeader: true,
         values: [
             { title: "WORKS_BILL_NUMBER", value: billData?.billNumber || "NA"},
-            { title: "WORKS_BILL_DATE", value: Digit.Utils.pt.convertEpochToDate(billData?.billDate) || "NA"},
+            { title: "WORKS_BILL_DATE", value: Digit.Utils.pt.convertEpochToDate(billData?.auditDetails?.createdTime) || "NA"},
             { title: "WORKS_ORDER_NO", value: WOData?.contractNumber || "NA"},
             { title: "WORKS_PROJECT_ID", value: WOData?.additionalDetails?.projectId || "NA"},
             { title: "PROJECTS_DESCRIPTION", value: WOData?.additionalDetails?.projectDesc || "NA"}, 

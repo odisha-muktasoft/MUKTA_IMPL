@@ -284,15 +284,31 @@ const CreateEstimate = ({ props }) => {
   const nonSorCategoryArray = [];
   sorCategoryArray.push(transformEstimateData("SOR"));
   nonSorCategoryArray.push(transformEstimateData());
-  const sorAndNonSorData = {
+
+  let sorAndNonSorData = {
     SOR: sorCategoryArray,
     NONSOR: nonSorCategoryArray,
+    // SORtable: sorCategoryArray,
+    // NONSORtable: nonSorCategoryArray,
+    ...(JSON.parse(sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE"))?.value) || {},
     projectType: {},
   };
+  if(window.location.href.includes("create-detailed-estimate")) sorAndNonSorData = { ...sorAndNonSorData, SORtable: sorCategoryArray, NONSORtable: nonSorCategoryArray }
   const EstimateSession = Digit.Hooks.useSessionStorage("NEW_ESTIMATE_CREATE", sorAndNonSorData);
   const [sessionFormData, setSessionFormData, clearSessionFormData] = EstimateSession;
 
-  const initialDefaultValues = RatesData ? editEstimateUtil(currentEstimate, uom, overheads, RatesData, allEstimates) : {};
+  useEffect(() => {
+    const savedFormData = sessionStorage.getItem("Digit.NEW_ESTIMATE_CREATE");
+    if (savedFormData) {
+      setSessionFormData(JSON.parse(savedFormData));
+    }
+  }, []);
+  
+  useEffect(() => {
+    sessionStorage.setItem("Digit.NEW_ESTIMATE_CREATE", JSON.stringify(sessionFormData));
+  }, [sessionFormData]);
+
+  const initialDefaultValues = RatesData ? editEstimateUtil(currentEstimate, uom, overheads, RatesData, allEstimates, sessionFormData) : {};
 
   // useEffect(() => {
 
@@ -484,134 +500,101 @@ const CreateEstimate = ({ props }) => {
 
     removeNonsortableObjectWithoutRequiredParams(completeFormData);
     let validated = action !== "DRAFT" ? validateData(completeFormData) : true;
-    if (validated) {
-      const payload = createEstimatePayload(completeFormData, projectData, isEdit, currentEstimate, isCreateRevisionEstimate, isEditRevisionEstimate);
-      setShowModal(false);
+    if(validated){
+    const payload = createEstimatePayload(completeFormData, projectData, isEdit,  currentEstimate, isCreateRevisionEstimate, isEditRevisionEstimate);
+    setShowModal(false);
 
-      //make a util for updateEstimatePayload since there are some deviations
+    //make a util for updateEstimatePayload since there are some deviations
 
-      if ((isEdit || isEditRevisionEstimate) && (estimateNumber || revisionNumber)) {
-        await EstimateUpdateMutation(payload, {
-          onError: async (error, variables) => {
-            setIsButtonDisabled(false);
-            setShowToast({ type: "warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
-            setTimeout(() => {
-              setShowToast(false);
-            }, 3000);
-            if (error?.toString().includes("not found in config for the businessId")) {
-              if (isCreateRevisionEstimate || isEditRevisionEstimate)
-                setTimeout(() => {
-                  history.push(
-                    `/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${revisionNumber}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`
-                  );
-                }, 3500);
-              else
-                setTimeout(() => {
-                  history.push(
-                    `/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`
-                  );
-                }, 3500);
-            }
-          },
-          onSuccess: async (responseData, variables) => {
-            clearSessionFormData();
-            const state = {
-              header:
-                isCreateRevisionEstimate || isEditRevisionEstimate
-                  ? t("WORKS_REVISION_ESTIMATE_RESPONSE_UPDATED_HEADER")
-                  : t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
-              id:
-                isCreateRevisionEstimate || isEditRevisionEstimate
-                  ? responseData?.estimates[0]?.revisionNumber
-                  : responseData?.estimates[0]?.estimateNumber,
-              info: isCreateRevisionEstimate || isEditRevisionEstimate ? t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
-              // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-              links: [
-                {
-                  name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-                  redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-                  code: "",
-                  svg: "GotoInboxIcon",
-                  isVisible: true,
-                  type: "inbox",
-                },
-              ],
-            };
-            if (action === "DRAFT") {
-              setShowToast({ type: "", label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
-              if (isCreateRevisionEstimate || isEditRevisionEstimate)
-                setTimeout(() => {
-                  history.push(
-                    `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`,
-                    state
-                  );
-                }, 3000);
-              else
-                setTimeout(() => {
-                  history.push(
-                    `/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`,
-                    state
-                  );
-                }, 3000);
-            } else history.push(`/${window?.contextPath}/employee/estimate/response`, state);
-          },
-        });
-      } else {
-        await EstimateMutation(payload, {
-          onError: async (error, variables) => {
-            setIsButtonDisabled(false);
-            setShowToast({ type: "warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
-            setTimeout(() => {
-              setShowToast(false);
-            }, 5000);
-          },
-          onSuccess: async (responseData, variables) => {
-            clearSessionFormData();
-            const state = {
-              header:
-                isCreateRevisionEstimate || isEditRevisionEstimate
-                  ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER")
-                  : t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
-              id:
-                isCreateRevisionEstimate || isEditRevisionEstimate
-                  ? responseData?.estimates[0]?.revisionNumber
-                  : responseData?.estimates[0]?.estimateNumber,
-              info: isCreateRevisionEstimate || isEditRevisionEstimate ? t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
-              // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
-              links: [
-                {
-                  name: t("WORKS_GOTO_ESTIMATE_INBOX"),
-                  redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
-                  code: "",
-                  svg: "GotoInboxIcon",
-                  isVisible: true,
-                  type: "inbox",
-                },
-              ],
-            };
-            if (action === "DRAFT") {
-              setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
-              if (isCreateRevisionEstimate || isEditRevisionEstimate)
-                setTimeout(() => {
-                  history.push(
-                    `/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`,
-                    state
-                  );
-                }, 3000);
-              else
-                setTimeout(() => {
-                  history.push(
-                    `/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`,
-                    state
-                  );
-                }, 3000);
-            } else
-              setTimeout(() => {
-                history.push(`/${window?.contextPath}/employee/estimate/response`, state);
-              }, 5000);
-          },
-        });
-      }
+    if ((isEdit || isEditRevisionEstimate) && (estimateNumber  || revisionNumber)) {
+      await EstimateUpdateMutation(payload, {
+        onError: async (error, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
+          setIsButtonDisabled(false);
+          setShowToast({ type: "warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+          setTimeout(() => {
+            setShowToast(false);
+          }, 3000);
+          if(error?.toString().includes("not found in config for the businessId"))
+          {
+            if(isCreateRevisionEstimate || isEditRevisionEstimate)
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&revisionNumber=${revisionNumber}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+            else 
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/estimate-details?tenantId=${tenantId}&estimateNumber=${estimateNumber}&projectNumber=${projectNumber}`)}, 3500);
+          }
+        },
+        onSuccess: async (responseData, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
+          clearSessionFormData();
+          const state = {
+            header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_UPDATED_HEADER") : t("WORKS_ESTIMATE_RESPONSE_UPDATED_HEADER"),
+            id: isCreateRevisionEstimate || isEditRevisionEstimate ? responseData?.estimates[0]?.revisionNumber : responseData?.estimates[0]?.estimateNumber,
+            info: isCreateRevisionEstimate || isEditRevisionEstimate ?  t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
+            // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
+            links: [
+              {
+                name: t("WORKS_GOTO_ESTIMATE_INBOX"),
+                redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
+                code: "",
+                svg: "GotoInboxIcon",
+                isVisible: true,
+                type: "inbox",
+              },
+            ],
+          };
+          if(action === "DRAFT")
+          {
+            setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
+            if(isCreateRevisionEstimate || isEditRevisionEstimate)
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
+            else
+            setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
+          }
+          else
+          history.push(`/${window?.contextPath}/employee/estimate/response`, state);
+        },
+      });
+    } else {
+      await EstimateMutation(payload, {
+        onError: async (error, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
+          setIsButtonDisabled(false);
+          setShowToast({ type:"warning", label: error?.response?.data?.Errors?.[0].message ? error?.response?.data?.Errors?.[0].message : error });
+          setTimeout(() => {
+            setShowToast(false);
+          }, 5000);
+        },
+        onSuccess: async (responseData, variables) => {
+          sessionStorage.removeItem("Digit.NEW_ESTIMATE_CREATE");
+          clearSessionFormData();
+          const state = {
+            header: isCreateRevisionEstimate || isEditRevisionEstimate ? t("WORKS_REVISION_ESTIMATE_RESPONSE_CREATED_HEADER") :t("WORKS_ESTIMATE_RESPONSE_CREATED_HEADER"),
+            id: isCreateRevisionEstimate || isEditRevisionEstimate ? responseData?.estimates[0]?.revisionNumber : responseData?.estimates[0]?.estimateNumber,
+            info:isCreateRevisionEstimate || isEditRevisionEstimate ?  t("ESTIMATE_REVISION_ESTIMATE_NO") : t("ESTIMATE_ESTIMATE_NO"),
+            // message: t("WORKS_ESTIMATE_RESPONSE_MESSAGE_CREATE", { department: t(`ES_COMMON_${responseData?.estimates[0]?.executingDepartment}`) }),
+            links: [
+              {
+                name: t("WORKS_GOTO_ESTIMATE_INBOX"),
+                redirectUrl: `/${window.contextPath}/employee/estimate/inbox`,
+                code: "",
+                svg: "GotoInboxIcon",
+                isVisible: true,
+                type: "inbox",
+              },
+            ],
+          };
+          if(action === "DRAFT")
+          {
+            setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
+            if(isCreateRevisionEstimate || isEditRevisionEstimate)
+              setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-revision-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&revisionNumber=${responseData?.estimates[0]?.revisionNumber}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEditRevisionEstimate=true`, state)}, 3000);
+            else
+            setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/update-detailed-estimate?tenantId=${responseData?.estimates[0]?.tenantId}&estimateNumber=${responseData?.estimates[0]?.estimateNumber}&projectNumber=${projectNumber}&isEdit=true`, state)}, 3000);
+          }
+          else
+          setTimeout(() => {history.push(`/${window?.contextPath}/employee/estimate/response`, state)}, 5000);
+        },
+      });
     }
   };
 

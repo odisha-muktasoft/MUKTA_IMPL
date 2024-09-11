@@ -36,14 +36,14 @@ class ORGServices {
 class BillServices {
   const BillServices();
 
-  String get searchMyBills => '/expense-calculator/v1/_search';
+  String get searchMyBills => '/mukta-expense-calculator/v1/_search';
 }
 
 class WageSeekerServices {
   const WageSeekerServices();
 // unified-qa
   // String get individualCreate => 'mukta-individual/v1/_create';
-  String get individualCreate => 'individual/v1/_create';
+  String get individualCreate => 'mukta-individual/v1/_create';
   String get bankCreate => '/bankaccount-service/bankaccount/v1/_create';
 
   String get adharVerifyUrl=>'http://164.100.141.79/authekycv4/api/authenticate';
@@ -71,14 +71,14 @@ class UserServices {
 
 class WorkServices {
   const WorkServices();
-  String get myWorks => 'contract/v1/_search';
-  String get updateWorkOrder => 'contract/v1/_update';
-  String get createWorkOrder => 'contract/v1/_create';
+  String get myWorks => 'mukta-contract/v1/_search';
+  String get updateWorkOrder => 'mukta-contract/v1/_update';
+  String get createWorkOrder => 'mukta-contract/v1/_create';
 }
 
 class EmpHrms {
   const EmpHrms();
-  String get leadHrmsEmployee => 'egov-hrms/employees/_search';
+  String get leadHrmsEmployee => 'mukta-egov-hrms/employees/_search';
   
 }
 
@@ -120,6 +120,6 @@ class MeasurementService{
 class EstimateService{
    const EstimateService();
 
-   String get estimateSearch=>'estimate/v1/_search';
+   String get estimateSearch=>'mukta-estimate/v1/_search';
    
 }

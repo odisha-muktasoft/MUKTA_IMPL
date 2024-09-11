@@ -70,7 +70,7 @@ const fetchData = async (sorid, state, setState, setShowToast) => {
 
 const searchSor = (props) => {
   const { t } = useTranslation();
-  const [stateData, setStateData] = useState({});
+  const [stateData, setStateData] = useState({SORType:"W"});
   const [selectedSOR, setSelectedSOR] = useState(null);
   const [showToast, setShowToast] = useState({show : false, label : "", type:""});
   const { register, setValue, watch } = props;

@@ -66,7 +66,7 @@ const MeasureTable = (props) => {
     localePrefix: "ES_COMMON_UOM",
   };
   if(mode?.includes("CREATE")){
-    fields = watch?.(tableKey);
+    fields = watch?.(`${tableKey}table`);
     append = (val)=>{
       setFormValue([...fields,val]);
     }
@@ -327,7 +327,20 @@ const MeasureTable = (props) => {
                 {/*((mode === "VIEWES") && tableKey === "SOR") &&<td>{`${t(`${"Works_D"}`)}/ ${t(`${"SC_D"}`)}`}</td>*/}
                 {tableKey === "SOR" && (mode === "CREATEALL" || mode === "VIEWES" || mode === "CREATERE" || mode === "VIEWRE") && (((row?.sorType || row?.sorSubType)) ?<td>{`${t(`WORKS_SOR_TYPE_${row?.sorType}`)}/ ${t(`WORKS_SOR_SUBTYPE_${row?.sorSubType}`)}`}</td> : <td>{t(" ")}</td>)}
                 {((mode === "CREATEALL" || mode === "VIEWES" || mode === "VIEWES" || mode === "CREATERE" || mode === "VIEWRE") && tableKey === "SOR") && <td>{row?.sorCode}</td>}
-                <td>{row.description}</td>
+                <td>
+                <div className="tooltip" >
+                {row.description?.length > 128 ? `${row.description.substring(0,128)}...` : row?.description}
+                                {row.description?.length > 128 &&<span className="tooltiptext" style={{
+                                    whiteSpace: "nowrap",
+                                    fontSize: "medium",
+                                    bottom : "100%",
+                                    overflow : "auto",
+
+                                }}>
+                                    {row.description}
+                                </span>}
+                            </div>
+                </td>
                 <td>{row.uom}</td>
                 <td>
                   <Amount customStyle={{ textAlign: "right" }} value={Digit.Utils.dss.formatterWithoutRound(parseFloat(row?.unitRate).toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} sameDisplay={true}></Amount>
