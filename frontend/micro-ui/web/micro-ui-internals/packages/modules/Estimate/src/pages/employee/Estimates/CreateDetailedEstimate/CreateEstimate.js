@@ -744,5 +744,6 @@ const CreateEstimate = ({ props }) => {
     </Fragment>
   );
 };
+};
 
 export default CreateEstimate;
