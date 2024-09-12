@@ -96,66 +96,6 @@ class _LoginPageState extends State<LoginPage>
 
   Widget getLoginCard(AppLocalizations t, BuildContext loginContext,
       AppInitializationState data) {
-    // return Center(
-    //   child: Form(
-    //     key: formKey,
-    //     autovalidateMode: autoValidation
-    //         ? AutovalidateMode.always
-    //         : AutovalidateMode.disabled,
-    //     child: DigitCard(
-    //       child: Column(
-    //         mainAxisSize: MainAxisSize.min,
-    //         children: [
-    //           const AppLogo(),
-    //           Padding(
-    //             padding: const EdgeInsets.all(8.0),
-    //             child: TextChunk(
-    //               heading: t.translate(i18.login.loginLabel),
-    //               // style: const TextStyle(
-    //               //     fontSize: 18, fontWeight: FontWeight.w700),
-    //             ),
-    //           ),
-    //           TabBar(
-    //             controller: _tabController,
-    //             labelColor: Theme.of(context).colorScheme.primary,
-    //             unselectedLabelColor: Colors.black,
-    //             dividerHeight: 0,
-    //             indicatorColor: Theme.of(context).colorScheme.primary,
-    //             indicatorPadding: EdgeInsets.zero,
-    //             tabs: [
-    //               Tab(
-    //                 child: Text(t.translate(i18.measurementBook.mbCbo)),
-    //               ),
-    //               Tab(
-    //                 child: Text(t.translate(i18.measurementBook.mbEmployee)),
-    //               ),
-    //             ],
-    //           ),
-    //           AnimatedContainer(
-    //             height:_tabController.index == 0
-    //                 ? 120
-    //                 : MediaQuery.of(context).size.height * 0.38,
-    //             duration: const Duration(milliseconds: 0),
-    //             child: TabBarView(
-    //               physics: const NeverScrollableScrollPhysics(),
-    //               controller: _tabController,
-    //               children: [
-    //                 cboLogin(loginContext),
-    //                 employeeLogin(
-    //                   t,
-    //                   loginContext,
-    //                   data,
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //           _buildLoginButton(t, loginContext),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-    //}
     return Center(
       child: Form(
         key: formKey,
@@ -173,36 +113,53 @@ class _LoginPageState extends State<LoginPage>
               Center(
                 child: TextChunk(
                   heading: t.translate(i18.login.loginLabel),
-                  headingStyle: Theme.of(context).digitTextTheme(context).headingL.copyWith(
-                    color: Theme.of(context).colorTheme.primary.primary2
-                  ),
+                  headingStyle: Theme.of(context)
+                      .digitTextTheme(context)
+                      .headingL
+                      .copyWith(
+                          color: Theme.of(context).colorTheme.primary.primary2),
                 ),
               ),
-
+//old
               // TabBar - constant height
-              TabBar(
-                controller: _tabController,
-                labelColor: Theme.of(context).colorScheme.primary,
-                unselectedLabelColor: Colors.black,
-                dividerHeight: 0,
-                indicatorColor: Theme.of(context).colorScheme.primary,
-                indicatorPadding: EdgeInsets.zero,
-                tabs: [
-                  Tab(
-                    child: TextChunk(
-                     heading: t.translate(i18.measurementBook.mbCbo),
-                      headingStyle: Theme.of(context).digitTextTheme(context).headingM,
-                    ),
-                  ),
-                  Tab(
-                    child: TextChunk(
-                     heading:  t.translate(i18.measurementBook.mbEmployee),
-                       headingStyle: Theme.of(context).digitTextTheme(context).headingM,
-                    ),
-                  ),
-                ],
-              ),
+              // TabBar(
+              //   controller: _tabController,
+              //   labelColor: Theme.of(context).colorScheme.primary,
+              //   unselectedLabelColor: Colors.black,
+              //   dividerHeight: 0,
+              //   indicatorColor: Theme.of(context).colorScheme.primary,
+              //   indicatorPadding: EdgeInsets.zero,
+              //   tabs: [
+              //     Tab(
+              //       child: TextChunk(
+              //        heading: t.translate(i18.measurementBook.mbCbo),
+              //         headingStyle: Theme.of(context).digitTextTheme(context).headingM,
+              //       ),
+              //     ),
+              //     Tab(
+              //       child: TextChunk(
+              //        heading:  t.translate(i18.measurementBook.mbEmployee),
+              //          headingStyle: Theme.of(context).digitTextTheme(context).headingM,
+              //       ),
+              //     ),
+              //   ],
+              // ),
 
+              ToggleList(
+                contentPadding: const EdgeInsets.all(0),
+                toggleWidth: MediaQuery.sizeOf(context).width * 0.422,
+                toggleButtons: [
+                  ToggleButtonModel(
+                      code: "0", name: t.translate(i18.measurementBook.mbCbo)),
+                  ToggleButtonModel(
+                      name: t.translate(i18.measurementBook.mbEmployee),
+                      code: "1")
+                ],
+                onChanged: (p0) {
+                  _tabController.index = int.parse(p0.code);
+                },
+                selectedIndex: 0,
+              ),
               // Dynamic part - TabBarView and Button
               Column(
                 mainAxisSize: MainAxisSize.min,
@@ -259,8 +216,9 @@ class _LoginPageState extends State<LoginPage>
           onTap: canContinue
               ? () {
                   if (formKey.currentState!.validate()) {
-                    loginContext.read<OTPBloc>().add(
-                        OTPSendEvent(mobileNumber: userIdController.text));
+                    loginContext
+                        .read<OTPBloc>()
+                        .add(OTPSendEvent(mobileNumber: userIdController.text));
                   } else {
                     setState(() {
                       autoValidation = true;
@@ -412,9 +370,9 @@ class _LoginPageState extends State<LoginPage>
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
-                      child: Text(
-                        t.translate(i18.login.forgotPasswordMsg),
-                        style: Theme.of(context).textTheme.titleSmall,
+                      child: TextChunk(
+                       subHeading: t.translate(i18.login.forgotPasswordMsg),
+                       
                       ),
                     ),
                     Button(

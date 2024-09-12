@@ -449,7 +449,7 @@ class MBLogic {
 
 // to map
 
-  static Map<String, dynamic> measurementToMap(Measurement measurement) {
+  static Map<String, dynamic> measurementToMap(Measurement measurement, MBScreen mbScreen) {
     Map<String, dynamic> data = {
       "documents": measurement.documents != null
           ? measurement.documents!.map((e) {
@@ -496,6 +496,7 @@ class MBLogic {
         }).toList()
       },
       'additionalDetails': {
+        'source':mbScreen==MBScreen.update?measurement.additionalDetail?.source:"Mobile",
         'endDate': measurement.additionalDetail?.endDate,
         'sorAmount': measurement.additionalDetail?.sorAmount,
         'startDate': measurement.additionalDetail?.startDate,

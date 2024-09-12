@@ -46,7 +46,7 @@ class MeasurementCrudBloc
         :
          event.type== MBScreen.update? Urls.measurementService.updateMeasurement:Urls.measurementService.createMeasurement,
         body: {
-          "measurements": [MBLogic.measurementToMap(event.measurement)]
+          "measurements": [MBLogic.measurementToMap(event.measurement,event.type)]
           
         },
       );

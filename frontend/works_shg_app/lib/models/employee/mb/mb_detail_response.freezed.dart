@@ -2363,6 +2363,8 @@ mixin _$MeasurementAdditionalDetail {
   double? get nonSorAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'musterRollNumber')
   dynamic get musterRollNumber => throw _privateConstructorUsedError;
+  @JsonKey(name: 'source')
+  dynamic get source => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2384,7 +2386,8 @@ abstract class $MeasurementAdditionalDetailCopyWith<$Res> {
       @JsonKey(name: 'startDate') int? startDate,
       @JsonKey(name: 'totalAmount') double? totalAmount,
       @JsonKey(name: 'nonSorAmount') double? nonSorAmount,
-      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber});
+      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber,
+      @JsonKey(name: 'source') dynamic source});
 }
 
 /// @nodoc
@@ -2407,6 +2410,7 @@ class _$MeasurementAdditionalDetailCopyWithImpl<$Res,
     Object? totalAmount = freezed,
     Object? nonSorAmount = freezed,
     Object? musterRollNumber = freezed,
+    Object? source = freezed,
   }) {
     return _then(_value.copyWith(
       endDate: freezed == endDate
@@ -2433,6 +2437,10 @@ class _$MeasurementAdditionalDetailCopyWithImpl<$Res,
           ? _value.musterRollNumber
           : musterRollNumber // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      source: freezed == source
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 }
@@ -2452,7 +2460,8 @@ abstract class _$$MeasurementAdditionalDetailImplCopyWith<$Res>
       @JsonKey(name: 'startDate') int? startDate,
       @JsonKey(name: 'totalAmount') double? totalAmount,
       @JsonKey(name: 'nonSorAmount') double? nonSorAmount,
-      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber});
+      @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber,
+      @JsonKey(name: 'source') dynamic source});
 }
 
 /// @nodoc
@@ -2474,6 +2483,7 @@ class __$$MeasurementAdditionalDetailImplCopyWithImpl<$Res>
     Object? totalAmount = freezed,
     Object? nonSorAmount = freezed,
     Object? musterRollNumber = freezed,
+    Object? source = freezed,
   }) {
     return _then(_$MeasurementAdditionalDetailImpl(
       endDate: freezed == endDate
@@ -2500,6 +2510,10 @@ class __$$MeasurementAdditionalDetailImplCopyWithImpl<$Res>
           ? _value.musterRollNumber
           : musterRollNumber // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      source: freezed == source
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -2514,7 +2528,8 @@ class _$MeasurementAdditionalDetailImpl
       @JsonKey(name: 'startDate') this.startDate,
       @JsonKey(name: 'totalAmount') this.totalAmount,
       @JsonKey(name: 'nonSorAmount') this.nonSorAmount,
-      @JsonKey(name: 'musterRollNumber') this.musterRollNumber});
+      @JsonKey(name: 'musterRollNumber') this.musterRollNumber,
+      @JsonKey(name: 'source') this.source});
 
   factory _$MeasurementAdditionalDetailImpl.fromJson(
           Map<String, dynamic> json) =>
@@ -2538,10 +2553,13 @@ class _$MeasurementAdditionalDetailImpl
   @override
   @JsonKey(name: 'musterRollNumber')
   final dynamic musterRollNumber;
+  @override
+  @JsonKey(name: 'source')
+  final dynamic source;
 
   @override
   String toString() {
-    return 'MeasurementAdditionalDetail(endDate: $endDate, sorAmount: $sorAmount, startDate: $startDate, totalAmount: $totalAmount, nonSorAmount: $nonSorAmount, musterRollNumber: $musterRollNumber)';
+    return 'MeasurementAdditionalDetail(endDate: $endDate, sorAmount: $sorAmount, startDate: $startDate, totalAmount: $totalAmount, nonSorAmount: $nonSorAmount, musterRollNumber: $musterRollNumber, source: $source)';
   }
 
   @override
@@ -2559,7 +2577,8 @@ class _$MeasurementAdditionalDetailImpl
             (identical(other.nonSorAmount, nonSorAmount) ||
                 other.nonSorAmount == nonSorAmount) &&
             const DeepCollectionEquality()
-                .equals(other.musterRollNumber, musterRollNumber));
+                .equals(other.musterRollNumber, musterRollNumber) &&
+            const DeepCollectionEquality().equals(other.source, source));
   }
 
   @JsonKey(ignore: true)
@@ -2571,7 +2590,8 @@ class _$MeasurementAdditionalDetailImpl
       startDate,
       totalAmount,
       nonSorAmount,
-      const DeepCollectionEquality().hash(musterRollNumber));
+      const DeepCollectionEquality().hash(musterRollNumber),
+      const DeepCollectionEquality().hash(source));
 
   @JsonKey(ignore: true)
   @override
@@ -2596,7 +2616,8 @@ abstract class _MeasurementAdditionalDetail
           @JsonKey(name: 'startDate') final int? startDate,
           @JsonKey(name: 'totalAmount') final double? totalAmount,
           @JsonKey(name: 'nonSorAmount') final double? nonSorAmount,
-          @JsonKey(name: 'musterRollNumber') final dynamic musterRollNumber}) =
+          @JsonKey(name: 'musterRollNumber') final dynamic musterRollNumber,
+          @JsonKey(name: 'source') final dynamic source}) =
       _$MeasurementAdditionalDetailImpl;
 
   factory _MeasurementAdditionalDetail.fromJson(Map<String, dynamic> json) =
@@ -2620,6 +2641,9 @@ abstract class _MeasurementAdditionalDetail
   @override
   @JsonKey(name: 'musterRollNumber')
   dynamic get musterRollNumber;
+  @override
+  @JsonKey(name: 'source')
+  dynamic get source;
   @override
   @JsonKey(ignore: true)
   _$$MeasurementAdditionalDetailImplCopyWith<_$MeasurementAdditionalDetailImpl>

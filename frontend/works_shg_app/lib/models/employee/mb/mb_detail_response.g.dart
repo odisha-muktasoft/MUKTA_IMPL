@@ -204,6 +204,7 @@ _$MeasurementAdditionalDetailImpl _$$MeasurementAdditionalDetailImplFromJson(
       totalAmount: (json['totalAmount'] as num?)?.toDouble(),
       nonSorAmount: (json['nonSorAmount'] as num?)?.toDouble(),
       musterRollNumber: json['musterRollNumber'],
+      source: json['source'],
     );
 
 Map<String, dynamic> _$$MeasurementAdditionalDetailImplToJson(
@@ -215,6 +216,7 @@ Map<String, dynamic> _$$MeasurementAdditionalDetailImplToJson(
       'totalAmount': instance.totalAmount,
       'nonSorAmount': instance.nonSorAmount,
       'musterRollNumber': instance.musterRollNumber,
+      'source': instance.source,
     };
 
 _$PeriodImpl _$$PeriodImplFromJson(Map<String, dynamic> json) => _$PeriodImpl(

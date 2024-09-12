@@ -168,6 +168,7 @@ class MeasurementAdditionalDetail with _$MeasurementAdditionalDetail {
     @JsonKey(name: 'totalAmount') double? totalAmount,
     @JsonKey(name: 'nonSorAmount') double? nonSorAmount,
     @JsonKey(name: 'musterRollNumber') dynamic musterRollNumber,
+    @JsonKey(name:'source')dynamic source,
   }) = _MeasurementAdditionalDetail;
 
   factory MeasurementAdditionalDetail.fromJson(
