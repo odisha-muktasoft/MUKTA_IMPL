@@ -86,18 +86,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
       orElse: () => {},
       loaded: (value) {
         if (value.search && value.searchData['contractNumber'] == "") {
-          // context.read<WorkOrderInboxBloc>().add(
-          //       WorkOrderInboxSearchRepeatBlocEvent(
-          //         businessService: "Contract",
-          //         limit: 10,
-          //         moduleName: 'contract-module',
-          //         offset: s,
-          //         tenantId: GlobalVariables.tenantId!,
-          //       ),
-          //     );
-          return;
-        } else if(value.search && value.searchData['contractNumber'] != ""){
- context.read<WorkOrderInboxBloc>().add(
+          context.read<WorkOrderInboxBloc>().add(
                 WorkOrderInboxSearchRepeatBlocEvent(
                   businessService: "Contract",
                   limit: 10,
@@ -106,8 +95,19 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   tenantId: GlobalVariables.tenantId!,
                 ),
               );
-        }
-        else {
+          //  return;
+        } else if (value.search && value.searchData['contractNumber'] != "") {
+//  context.read<WorkOrderInboxBloc>().add(
+//                 WorkOrderInboxSearchRepeatBlocEvent(
+//                   businessService: "Contract",
+//                   limit: 10,
+//                   moduleName: 'contract-module',
+//                   offset: s,
+//                   tenantId: GlobalVariables.tenantId!,
+//                 ),
+//               );
+          return;
+        } else {
           context.read<WorkOrderInboxBloc>().add(
                 WorkOrderInboxBlocCreateEvent(
                   businessService: "MB",
@@ -354,7 +354,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
 
                                   return WorkOrderCard(
                                     widget1: CommonTextButtonUnderline(
-                                      label: t.translate(i18.common.viewDetails),
+                                      label:
+                                          t.translate(i18.common.viewDetails),
                                       onPressed: () {
                                         // context
                                         //     .read<MeasurementDetailBloc>()
@@ -401,8 +402,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                                 context.router
                                                     .push(MBDetailRoute(
                                                   contractNumber:
-                                                      value.workOrderNumber!
-                                                          ,
+                                                      value.workOrderNumber!,
                                                   mbNumber: "",
                                                   tenantId:
                                                       GlobalVariables.tenantId,

@@ -53,6 +53,7 @@ class WorkOrderInboxBloc
           await MyWorksRepository(client.init()).searchMyWorks(
               url: Urls.workServices.myWorks,
               body: {
+                "status": "ACTIVE",
                 "tenantId": GlobalVariables.tenantId ??
                     GlobalVariables
                         .organisationListModel!.organisations!.first.tenantId,
