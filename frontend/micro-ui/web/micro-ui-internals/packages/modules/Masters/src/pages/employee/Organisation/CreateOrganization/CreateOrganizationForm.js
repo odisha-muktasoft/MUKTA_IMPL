@@ -1,9 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { FormComposer, Loader, Toast } from '@egovernments/digit-ui-react-components';
+import { FormComposer, Loader } from '@egovernments/digit-ui-react-components';
 import { getTomorrowsDate, getBankAccountUpdatePayload, getOrgPayload } from '../../../../utils';
 import debounce from 'lodash/debounce';
+import { Toast } from '@egovernments/digit-ui-components';
 
 const navConfig =  [
     {
@@ -366,7 +367,7 @@ const CreateOrganizationForm = ({ createOrganizationConfig, sessionFormData, set
           submitInForm={false}
           fieldStyle={{ marginRight: 0 }}
           inline={false}
-          className="form-no-margin"
+        //   className={`form-no-margin ${"wageseeker-update-form"}`}
           defaultValues={sessionFormData}
           showWrapperContainers={false}
           isDescriptionBold={false}
@@ -382,16 +383,16 @@ const CreateOrganizationForm = ({ createOrganizationConfig, sessionFormData, set
           isDisabled={isButtonDisabled}
         />
         {showDuplicateUserError && (
-          <Toast error={true} label={t("ES_COMMON_MOBILE_EXISTS_ERROR")} isDleteBtn={true} onClose={() => setShowDuplicateUserError(false)} />
+          <Toast type={"error"} label={t("ES_COMMON_MOBILE_EXISTS_ERROR")} isDleteBtn={true} onClose={() => setShowDuplicateUserError(false)} />
         )}
         {showValidToError && (
-          <Toast error={true} label={t("DATE_VALIDATION_VALID_TO_VALID_FROM_MSG")} isDleteBtn={true} onClose={() => setShowValidToError(false)} />
+          <Toast type={"error"} label={t("DATE_VALIDATION_VALID_TO_VALID_FROM_MSG")} isDleteBtn={true} onClose={() => setShowValidToError(false)} />
         )}
         {showDuplicateContactToast && (
-          <Toast warning={true} label={t("ES_COMMON_ORG_EXISTS_WITH_MOBILE_NUMBER")} isDleteBtn={true} onClose={() => setShowDuplicateContactToast(false)} />
+          <Toast type={"warning"} label={t("ES_COMMON_ORG_EXISTS_WITH_MOBILE_NUMBER")} isDleteBtn={true} onClose={() => setShowDuplicateContactToast(false)} />
         )}
         {showCBOToVendorError && (
-          <Toast warning={true} label={t("ORG_CBO_CANNOT_BE_CHANGE_TO_VENDOR")} isDleteBtn={true} onClose={() => setShowCBOToVendorError(false)} />
+          <Toast type={"warning"} label={t("ORG_CBO_CANNOT_BE_CHANGE_TO_VENDOR")} isDleteBtn={true} onClose={() => setShowCBOToVendorError(false)} />
         )}
       </React.Fragment>
     );

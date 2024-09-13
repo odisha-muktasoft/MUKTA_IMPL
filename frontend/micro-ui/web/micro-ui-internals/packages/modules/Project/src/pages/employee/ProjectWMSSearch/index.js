@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, InboxSearchComposer, Loader, Button, AddFilled } from "@egovernments/digit-ui-react-components";
+import { Header, InboxSearchComposer, Loader } from "@egovernments/digit-ui-react-components";
 import { useHistory, useLocation } from "react-router-dom";
 import searchWMSProjectConfig from "../../../configs/searchWMSProjectConfig";
+import { Button } from "@egovernments/digit-ui-components";
+
 const ProjectWMSSearch = () => {
   const { t } = useTranslation();
   const history = useHistory();
@@ -56,8 +58,8 @@ const ProjectWMSSearch = () => {
           <Button
             label={t(configs?.actionLabel)}
             variation="secondary"
-            icon={<AddFilled style={{height : "20px", width : "20px"}}/>}
-            onButtonClick={() => {
+            icon={"Add"}
+            onClick={() => {
               history.push(`/${window?.contextPath}/employee/${configs?.actionLink}`);
             }}
             type="button"

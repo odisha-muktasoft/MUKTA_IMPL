@@ -9,13 +9,14 @@ import {
   Dropdown,
   InputTextAmount,
   Amount,
+  CardSectionHeader,
 } from "@egovernments/digit-ui-react-components";
 import { Controller } from "react-hook-form";
 import _ from "lodash";
+import { TextBlock } from "@egovernments/digit-ui-components";
 
 const OverheadsTable = ({ control, watch, ...props }) => {
   const [totalAmount, setTotalAmount] = useState(0);
-
   const [sorTotal, setSorTotal] = useState(0);
   const formFieldName = "overheadDetails"; // this will be the key under which the data for this table will be present on onFormSubmit
 
@@ -72,9 +73,9 @@ const OverheadsTable = ({ control, watch, ...props }) => {
 
   //calculating total sor and non sor amount in order to calculate amount in overheads
   function getSorNonSorTotalAmount() {
-    let totalSor = formData?.SORtable?.reduce((acc, row) => (row?.amount ? parseFloat(row?.amount)  + acc : acc), 0);
+    let totalSor = formData?.SORtable?.reduce((acc, row) => (row?.amount ? parseFloat(row?.amount) + acc : acc), 0);
     totalSor = totalSor ? totalSor : 0;
-    let totalNONSor = formData?.NONSORtable?.reduce((acc, row) => (row?.amount ? parseFloat(row?.amount)  + acc : acc), 0);
+    let totalNONSor = formData?.NONSORtable?.reduce((acc, row) => (row?.amount ? parseFloat(row?.amount) + acc : acc), 0);
     totalNONSor = totalNONSor ? totalNONSor : 0;
     return totalSor + totalNONSor;
   }
@@ -376,7 +377,7 @@ const OverheadsTable = ({ control, watch, ...props }) => {
               <div style={cellContainerStyle}>
                 {
                   <span onClick={() => removeRow(row)} className="icon-wrapper">
-                    <DeleteIcon fill={"#FF9100"} />
+                    <DeleteIcon fill={"#C84C0E"} />
                   </span>
                 }
               </div>
@@ -390,36 +391,89 @@ const OverheadsTable = ({ control, watch, ...props }) => {
 
   return (
     <React.Fragment>
-    <table className="table reports-table sub-work-table">
-      <thead>
-        <tr>{renderHeader()}</tr>
-      </thead>
-      <tbody>
-        {renderBody}
-        <tr>
-          {/* <td style={getStyles(1)}></td> */}
-          <td colSpan={5} style={{ textAlign: "center" }} onClick={addRow}>
-            <span>
-              <AddIcon fill={"#F47738"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
-              <label style={{ marginLeft: "10px", fontWeight: "600", color: " #F47738" }}>{t("WORKS_ADD_OVERHEAD")}</label>
-            </span>
-          </td>
-          {/* <td style={getStyles(3)}></td>
+      <table className="table reports-table sub-work-table">
+        <thead>
+          <tr>{renderHeader()}</tr>
+        </thead>
+        <tbody>
+          {renderBody}
+          <tr>
+            {/* <td style={getStyles(1)}></td> */}
+            <td colSpan={5} style={{ textAlign: "center" }} onClick={addRow}>
+              <span>
+                <AddIcon fill={"#C84C0E"} styles={{ margin: "auto", display: "inline", marginTop: "-2px" }} />
+                <label style={{ marginLeft: "10px", fontWeight: "600", color: " #C84C0E" }}>{t("WORKS_ADD_OVERHEAD")}</label>
+              </span>
+            </td>
+            {/* <td style={getStyles(3)}></td>
                     <td style={getStyles(6)}></td> */}
-        </tr>
-      </tbody>
-    </table>
-    <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
-    <div style={{ display: "flex", flexDirection: "row", fontSize: "16px" }}>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end"}}>
+        {/* <div style={{ display: "flex", flexDirection: "row", fontSize: "16px" }}>
       <span style={{ fontWeight: "bold", marginTop:"6px" }}>
       {t("WORKS_TABLE_TOTAL_AMOUNT")} :
       </span>
       <span style={{ marginLeft: "8px" }}>
         <Amount customStyle={{ textAlign: "right", fontSize:"24px", fontWeight:"700" }} value={Digit.Utils.dss.formatterWithoutRound(isNaN(totalAmount) ? 0 : parseFloat(totalAmount)?.toFixed(2), "number", undefined, true, undefined, 2) || 0} t={t} roundOff={false} rupeeSymbol={true} sameDisplay={true}></Amount>
       </span>
-    </div>
-  </div>
-  </React.Fragment>
+    </div> */}
+
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem" ,width:"100%"}}>
+          <div className={"total_amount_wrapper"}>
+            {/* <CardSectionHeader
+              style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",fontSize:"18px",width:"fit-content" }}
+            >{`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`}</CardSectionHeader>
+            <CardSectionHeader style={{width:"fit-content",marginBottom: "0px"}}>
+              {
+                <Amount
+                  customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                  value={
+                    Digit.Utils.dss.formatterWithoutRound(
+                      isNaN(totalAmount) ? 0 : parseFloat(totalAmount)?.toFixed(2),
+                      "number",
+                      undefined,
+                      true,
+                      undefined,
+                      2
+                    ) || 0
+                  }
+                  t={t}
+                  roundOff={false}
+                  rupeeSymbol={true}
+                  sameDisplay={true}
+                ></Amount>
+              }
+            </CardSectionHeader> */}
+
+            <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+            <TextBlock
+              subHeader={
+                <Amount
+                  customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                  value={
+                    Digit.Utils.dss.formatterWithoutRound(
+                      isNaN(totalAmount) ? 0 : parseFloat(totalAmount)?.toFixed(2),
+                      "number",
+                      undefined,
+                      true,
+                      undefined,
+                      2
+                    ) || 0
+                  }
+                  t={t}
+                  roundOff={false}
+                  rupeeSymbol={true}
+                  sameDisplay={true}
+                ></Amount>
+              }
+              subHeaderClasName={"table_total_amount_value"}
+            ></TextBlock>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 

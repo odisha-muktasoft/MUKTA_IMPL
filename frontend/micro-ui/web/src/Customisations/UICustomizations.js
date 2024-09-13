@@ -786,7 +786,7 @@ export const UICustomizations = {
       //checking both to and from date are present
       const { createdFrom, createdTo } = data;
       if ((createdFrom === "" && createdTo !== "") || ( createdFrom!== "" && createdTo === ""))
-        return { warning: true, label: "ES_COMMON_ENTER_DATE_RANGE" };
+        return { type:"warning", label: "ES_COMMON_ENTER_DATE_RANGE" };
 
       return false;
     },

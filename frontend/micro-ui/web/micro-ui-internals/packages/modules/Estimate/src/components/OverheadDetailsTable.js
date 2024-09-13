@@ -1,7 +1,8 @@
-import { EditIcon, DownloadImgIcon, InfoBannerIcon, Modal, Row, StatusTable, Amount } from "@egovernments/digit-ui-react-components";
+import { EditIcon, DownloadImgIcon, InfoBannerIcon, Modal, Row, StatusTable, Amount,CardSectionHeader } from "@egovernments/digit-ui-react-components";
 import React, { useState, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, Link } from "react-router-dom";
+import { TextBlock } from "@egovernments/digit-ui-components";
 
 const OverheadDetailsTable = ({ data }) => {
   const tableStyles = data?.tableStyles;
@@ -96,42 +97,42 @@ const OverheadDetailsTable = ({ data }) => {
   let formattedTotalAmount = isNaN(totalAmount) ? 0 : parseFloat(totalAmount)?.toFixed(2);
   return (
     <React.Fragment>
-    <table className="table reports-table sub-work-table" style={tableStyle}>
-      <thead>
-        <tr>{renderHeader(data?.headers)}</tr>
-      </thead>
-      <tbody>{renderBody(data?.tableRows)}</tbody>
-      {showModal && (
-        <Modal
-          headerBarMain={<Heading label={showModal?.infoCardDetails?.header} />}
-          headerBarEnd={
-            <CloseBtn
-              onClick={() => {
-                setShowModal(null);
-              }}
-            />
-          }
-          hideSubmit={true}
-          popupStyles={{ overflowY: "auto" }} //maxHeight: "calc(100% - 90px)"
-          headerBarMainStyle={{ marginBottom: "0px" }}
-          popupModuleMianStyles={{ paddingTop: "0px" }}
-        >
-          <StatusTable style={{ padding: "10px", paddingTop: "0px" }}>
-            {showModal?.infoCardDetails?.values?.map((row, idx) => (
-              <Row
-                className="border-none"
-                rowContainerStyle={{ margin: "0px" }}
-                labelStyle={{ width: "50%" }}
-                key={idx}
-                label={row?.title}
-                text={row?.value}
-              ></Row>
-            ))}
-          </StatusTable>
-        </Modal>
-      )}
-    </table>
-     <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
+      <table className="table reports-table sub-work-table" style={tableStyle}>
+        <thead>
+          <tr>{renderHeader(data?.headers)}</tr>
+        </thead>
+        <tbody>{renderBody(data?.tableRows)}</tbody>
+        {showModal && (
+          <Modal
+            headerBarMain={<Heading label={showModal?.infoCardDetails?.header} />}
+            headerBarEnd={
+              <CloseBtn
+                onClick={() => {
+                  setShowModal(null);
+                }}
+              />
+            }
+            hideSubmit={true}
+            popupStyles={{ overflowY: "auto" }} //maxHeight: "calc(100% - 90px)"
+            headerBarMainStyle={{ marginBottom: "0px" }}
+            popupModuleMianStyles={{ paddingTop: "0px" }}
+          >
+            <StatusTable style={{ padding: "10px", paddingTop: "0px" }}>
+              {showModal?.infoCardDetails?.values?.map((row, idx) => (
+                <Row
+                  className="border-none"
+                  rowContainerStyle={{ margin: "0px" }}
+                  labelStyle={{ width: "50%" }}
+                  key={idx}
+                  label={row?.title}
+                  text={row?.value}
+                ></Row>
+              ))}
+            </StatusTable>
+          </Modal>
+        )}
+      </table>
+      {/* <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", margin: "20px" }}>
      <div style={{ display: "flex", flexDirection: "row", fontSize: "16px" }}>
        <span style={{ fontWeight: "bold", marginTop:"6px" }}>
        {t("WORKS_TABLE_TOTAL_AMOUNT")} :
@@ -140,8 +141,44 @@ const OverheadDetailsTable = ({ data }) => {
          <Amount customStyle={{ textAlign: "right", fontSize:"24px", fontWeight:"700" }} value={Digit.Utils.dss.formatterWithoutRound(formattedTotalAmount, "number", undefined, true, undefined, 2) || 0} sameDisplay={true} t={t} roundOff={false} rupeeSymbol={true}></Amount>
        </span>
      </div>
-     </div>
-     </React.Fragment>
+     </div> */}
+
+      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem", width: "100%" }}>
+        <div
+          className={"total_amount_wrapper"}
+        >
+          {/* <CardSectionHeader
+            style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F",width:"fit-content" }}
+          >{`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`}</CardSectionHeader> */}
+          {/* <CardSectionHeader style={{ marginBottom: "0px",width:"fit-content" }}>
+            {
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedTotalAmount, "number", undefined, true, undefined, 2) || 0}
+                sameDisplay={true}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+              ></Amount>
+            }
+          </CardSectionHeader> */}
+          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+          <TextBlock
+            subHeader={
+              <Amount
+                customStyle={{ textAlign: "right", fontSize: "24px", fontWeight: "700" }}
+                value={Digit.Utils.dss.formatterWithoutRound(formattedTotalAmount, "number", undefined, true, undefined, 2) || 0}
+                sameDisplay={true}
+                t={t}
+                roundOff={false}
+                rupeeSymbol={true}
+              ></Amount>
+            }
+            subHeaderClasName={"table_total_amount_value"}
+          ></TextBlock>
+        </div>
+      </div>
+    </React.Fragment>
   );
 };
 

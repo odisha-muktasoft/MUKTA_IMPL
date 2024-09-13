@@ -90,9 +90,9 @@ const SearchMeasurementConfig = () => {
                 populators: {
                   name: "status",
                   optionsKey: "code",
-                  optionsCustomStyle: {
-                    top: "2.3rem",
-                  },
+                  // optionsCustomStyle: {
+                  //   top: "2.3rem",
+                  // },
                   mdmsConfig: {
                     masterName: "SocialCategory",
                     moduleName: "common-masters",

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from 'react-router-dom';
-import { Header, ActionBar, SubmitBar, Toast } from '@egovernments/digit-ui-react-components';
+import { Header, SubmitBar } from '@egovernments/digit-ui-react-components';
 import ApplicationDetails from '../../../../../templates/ApplicationDetails';
+import { Toast,ActionBar } from '@egovernments/digit-ui-components';
 
 const ViewWageSeeker = () => {
   const { t } = useTranslation()
@@ -59,13 +60,15 @@ const ViewWageSeeker = () => {
             mutate={()=>{}}
             tenantId={tenantId}
           />
-          <ActionBar>
-              <SubmitBar label={t("ES_COMMON_MODIFY")} onSubmit={handleModify} />
-          </ActionBar>
+           <ActionBar
+            actionFields={[<Button type={"submit"} label={t("ES_COMMON_MODIFY")} variation={"primary"} onClick={handleModify}></Button>]}
+            setactionFieldsToRight={true}
+            className={"new-actionbar"}
+          />
           </React.Fragment>
       }
       {
-        showDataError && <Toast error={true} label={t("COMMON_ERROR_FETCHING_WAGE_SEEKER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
+        showDataError && <Toast type={"error"} label={t("COMMON_ERROR_FETCHING_WAGE_SEEKER_DETAILS")} isDleteBtn={true} onClose={() => setShowDataError(false)} />
       }
     </React.Fragment>
   )

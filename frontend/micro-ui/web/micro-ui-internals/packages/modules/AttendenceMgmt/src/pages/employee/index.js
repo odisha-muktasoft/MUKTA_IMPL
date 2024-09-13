@@ -51,17 +51,12 @@ const App = ({ path }) => {
 
   return (
     <Switch>
-      <AppContainer className="ground-container">
+      <AppContainer>
         <React.Fragment>
           <AttendanceBreadCrumbs location={location} />
         </React.Fragment>
         <PrivateRoute path={`${path}/view-attendance`} component={ViewAttendanceApp} />
-        <PrivateRoute
-          path={`${path}/inbox`}
-          component={() => (
-            <Inbox parentRoute={path} initialStates={{}}/>
-          )}
-        />
+        <PrivateRoute path={`${path}/inbox`} component={() => <Inbox parentRoute={path} initialStates={{}} />} />
         <PrivateRoute path={`${path}/response`} component={Response} />
         <PrivateRoute path={`${path}/search-attendance`} component={SearchAttendance} />
         <PrivateRoute path={`${path}/search-attendance-plain`} component={SearchAttendancePlainSearch} />

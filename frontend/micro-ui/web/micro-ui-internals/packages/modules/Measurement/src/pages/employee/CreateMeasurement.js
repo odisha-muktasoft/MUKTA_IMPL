@@ -1,4 +1,4 @@
-import { Loader, FormComposerV2, Header, Toast, ActionBar, Menu, SubmitBar, WorkflowModal } from "@egovernments/digit-ui-react-components";
+import { Loader, FormComposerV2, Header, Menu, SubmitBar, WorkflowModal } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
@@ -6,6 +6,7 @@ import { CreateConfig } from "../../configs/MeasurementCreateConfig";
 import { getDefaultValues } from "../../utils/transformEstimateData";
 import { transformData } from "../../utils/transformData";
 import getModalConfig from "./config";
+import { Toast,ActionBar,Button } from '@egovernments/digit-ui-components';
 import _ from "lodash";
 
 const updateData = (data, formState, tenantId) => {
@@ -23,7 +24,7 @@ const CreateMeasurement = ({ props }) => {
   // const [sessionFormData, setSessionFormData, clearSessionFormData] = MeasurementSession;
   const [createState, setState] = useState({ SOR: [], NONSOR: [], accessors: undefined, period: {} });
   const [defaultState, setDefaultState] = useState({ SOR: [], NONSOR: [] });
-  const [showToast, setShowToast] = useState({display: false, error: false});
+  const [showToast, setShowToast] = useState({display: false, type: ""});
   const [errorMessage, setErrorMessage] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [displayMenu, setDisplayMenu] = useState(false);
@@ -134,25 +135,25 @@ const CreateMeasurement = ({ props }) => {
   // action to be performed....
   let actionMB = [
     {
-      name: "SUBMIT",
+      name: "WF_SUBMIT",
     },
     {
-      name: "SAVE_AS_DRAFT",
+      name: "WF_SAVE_AS_DRAFT",
     },
   ];
 
-  function onActionSelect(action = "SUBMIT") {
+  function onActionSelect(action = "WF_SUBMIT") {
     if (createState?.period?.type == "error") {
       setErrorMessage(t(createState?.period?.message));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
       return null;
     }
-    if (action?.name === "SUBMIT") {
+    if (action?.name === "WF_SUBMIT") {
       createState.workflowAction = "SUBMIT";
       setShowModal(true);
       //handleCreateMeasurement(createState, action);
     }
-    if (action?.name === "SAVE_AS_DRAFT") {
+    if (action?.name === "WF_SAVE_AS_DRAFT") {
       createState.workflowAction = "SAVE_AS_DRAFT";
       handleCreateMeasurement(createState, action);
     }
@@ -176,13 +177,13 @@ const CreateMeasurement = ({ props }) => {
     const onError = (resp) => {
       setIsButtonDisabled(false);
       setErrorMessage(t(resp?.response?.data?.Errors?.[0]?.message));
-      setShowToast({display:true, error:true});
+      setShowToast({display:true, type:"error"});
     };
     const onSuccess = (resp) => {
       if(action?.name === "SAVE_AS_DRAFT")
       {
         setErrorMessage(t("MB_APPLICATION_IS_SUCCESSFULLY_DRAFTED"));
-        setShowToast({display:true, error:false});
+        setShowToast({display:true, type:""});
         setTimeout(() => {history.push(`/${window.contextPath}/employee/measurement/update?tenantId=${resp.measurements[0].tenantId}&workOrderNumber=${contractNumber}&mbNumber=${resp.measurements[0].measurementNumber}`)}, 3000);;
       }
       else
@@ -204,7 +205,7 @@ const CreateMeasurement = ({ props }) => {
   };
 
   const closeToast = () => {
-    setShowToast({display:false, error:false});;
+    setShowToast({display:false, type:""});;
   };
   //remove Toast after 3s
   useEffect(() => {
@@ -238,16 +239,25 @@ const CreateMeasurement = ({ props }) => {
   // else render form and data
   return (
     <div>
-      {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={(_data) => handleCreateMeasurement({..._data,...createState},"SUBMIT")} config={config} isDisabled={isButtonDisabled} />}
+      {showModal && (
+        <WorkflowModal
+          closeModal={() => setShowModal(false)}
+          onSubmit={(_data) => handleCreateMeasurement({ ..._data, ...createState }, "SUBMIT")}
+          config={config}
+          isDisabled={isButtonDisabled}
+        />
+      )}
       <Header className="works-header-view modify-header">{t("MB_MEASUREMENT_BOOK")}</Header>
       <FormComposerV2
         label={t("MB_SUBMIT_BAR")}
-        config={CreateConfig({ defaultValue: defaultState?.contract, measurement : props?.data[0], mbnumber : mbNumber }).CreateConfig[0]?.form?.filter((a) => (!a.hasOwnProperty('forOnlyUpdate') || props?.isUpdate)).map((config) => {
-          return {
-            ...config,
-            body: config.body.filter((a) => !a.hideInEmployee),
-          };
-        })}
+        config={CreateConfig({ defaultValue: defaultState?.contract, measurement: props?.data[0], mbnumber: mbNumber })
+          .CreateConfig[0]?.form?.filter((a) => !a.hasOwnProperty("forOnlyUpdate") || props?.isUpdate)
+          .map((config) => {
+            return {
+              ...config,
+              body: config.body.filter((a) => !a.hideInEmployee),
+            };
+          })}
         getFormAccessors={getFormAccessors}
         defaultValues={{ ...createState }}
         onSubmit={onActionSelect}
@@ -256,11 +266,25 @@ const CreateMeasurement = ({ props }) => {
         onFormValueChange={onFormValueChange}
         noBreakLine={true}
       />
-      {showToast?.display && <Toast error={showToast?.error} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
-      <ActionBar>
-        {displayMenu && !isButtonDisabled ? <Menu localeKeyPrefix={"WF"} options={actionMB} optionKey={"name"} t={t} onSelect={onActionSelect} /> : null}
-        <SubmitBar label={t("ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} disabled={isButtonDisabled} />
-      </ActionBar>
+      {showToast?.display && <Toast type={showToast?.type} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
+      <ActionBar
+        actionFields={[
+          <Button
+            isDisabled={isButtonDisabled}
+            type={"actionButton"}
+            options={actionMB}
+            label={t("ACTIONS")}
+            variation={"primary"}
+            optionsKey={"name"}
+            isSearchable={false}
+            onOptionSelect={(option) => {
+              onActionSelect(option);
+            }}
+          ></Button>
+        ]}
+        setactionFieldsToRight={true}
+        className={"new-actionbar"}
+      />
     </div>
   );
 };

@@ -64,23 +64,23 @@ const PurchaseBill = () => {
     }
 
 
-    const { isLoading : isConfigLoading, data : configs} = Digit.Hooks.useCustomMDMS( 
-    stateTenant,
-    Digit.Utils.getConfigModuleName(),
-    [
-        {
-            "name": "CreatePurchaseBillConfig"
-        }
-    ],
-    {
-      select: (data) => {
-          return data?.[Digit.Utils.getConfigModuleName()]?.CreatePurchaseBillConfig[0];
-      },
-    }
-    );
+    // const { isLoading : isConfigLoading, data : configs} = Digit.Hooks.useCustomMDMS( 
+    // stateTenant,
+    // Digit.Utils.getConfigModuleName(),
+    // [
+    //     {
+    //         "name": "CreatePurchaseBillConfig"
+    //     }
+    // ],
+    // {
+    //   select: (data) => {
+    //       return data?.[Digit.Utils.getConfigModuleName()]?.CreatePurchaseBillConfig[0];
+    //   },
+    // }
+    // );
 
     //local config
-    //let configs = createPurchaseBillConfigMUKTA?.CreatePurchaseBillConfig[0];
+    let configs = createPurchaseBillConfigMUKTA?.CreatePurchaseBillConfig[0];
 
     const tenant = Digit.ULBService.getStateId();
 
@@ -176,11 +176,11 @@ const PurchaseBill = () => {
     
     // if(isConfigLoading) return <Loader></Loader>
 
-    if(isContractLoading || isOrgSearchLoading || isCBOOrgSearchLoading || isDocConfigLoading || isBillSearchLoading || isChargesLoading) return <Loader />
+    // if(isContractLoading || isOrgSearchLoading || isCBOOrgSearchLoading || isDocConfigLoading || isBillSearchLoading || isChargesLoading) return <Loader />
 
     return (
         <React.Fragment>
-            <Header styles={{fontSize: "32px", marginBottom:"-2rem"}}>{isModify ? t("EXP_MODIFY_PB") : t("ACTION_TEST_CREATE_PB")}</Header>
+            <Header >{isModify ? t("EXP_MODIFY_PB") : t("ACTION_TEST_CREATE_PB")}</Header>
             {
                 isFormReady && <CreatePurchaseBillForm 
                 createPurchaseBillConfig={configs} 

@@ -8,14 +8,17 @@ import WorkflowTimeline from "../../atoms/WorkflowTimeline";
 import WorkflowActions from "../../atoms/WorkflowActions";
 import { Link } from "react-router-dom";
 import Photos from "../../atoms/Photos";
+import {Card,Divider,TextBlock} from "@egovernments/digit-ui-components";
 
 export const RenderDataSection = ({ section }) => {
   const { t } = useTranslation();
   return (
     <>
-      {section.cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSubHeader>}
+      {/* {section.cardHeader && <CardSubHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSubHeader>} */}
+      {section.cardHeader && <TextBlock style={section?.cardHeader?.inlineStyles} headerClasName={`view-composer-header ${section?.cardHeader?.cardHeaderClassName}`} subHeader={t(section.cardHeader.value)}></TextBlock>}
       <StatusTable style={section?.inlineStyles}>
-        {section.sectionHeader && <CardSectionHeader style={section?.sectionHeader?.inlineStyles}>{t(section.sectionHeader.value)}</CardSectionHeader>}
+        {/* {section.sectionHeader && <CardSectionHeader style={section?.sectionHeader?.inlineStyles}>{t(section.sectionHeader.value)}</CardSectionHeader>} */}
+        {section.sectionHeader && <TextBlock style={section?.sectionHeader?.inlineStyles} subHeaderClasName={`view-composer-subheader ${section?.sectionHeader?.sectionheaderClassName}`} subHeader={t(section.sectionHeader.value)}></TextBlock>}
         {section?.values?.filter((ob) => ob !== null && Object?.keys(ob)?.length > 0).map((row, rowIdx) => {
           const displayValue = row?.value !== undefined && row?.value !== null ? row.value : 'NA';
           
@@ -35,7 +38,7 @@ export const RenderDataSection = ({ section }) => {
               row?.isTranslate ===false ?
                       (displayValue):
               t(displayValue)}
-              last={rowIdx === section.values?.length - 1}
+              last={rowIdx === section.values?.length - 1 && !section?.isDividerBelow}
               caption={row.caption}
               className="border-none"
               /* privacy object set to the Row Component */
@@ -83,7 +86,10 @@ export const RenderDocumentsSection = ({ section }) => {
     <div style={section?.inlineStyles}>
       {documents?.map((document, index) => (
         <React.Fragment key={index}>
-          {document?.title ? <CardSectionHeader style={section?.headerStyle}>{t(document?.title)}</CardSectionHeader> : null}
+          {document?.title ? 
+          // <CardSectionHeader style={section?.headerStyle}>{t(document?.title)}</CardSectionHeader> 
+          <TextBlock style={{...section?.headerStyle}} subHeaderClasName={`view-composer-subheader ${section?.headerClassName}`} subHeader={t(document?.title)}></TextBlock>
+          : null}
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
             {document?.values && document?.values.length > 0
               ? document?.values?.map((value, index) => (
@@ -163,7 +169,8 @@ export const RenderPhotos = ({section}) => {
   return (
     <>
     {section?.cardHeader && section?.cardHeader?.value && (
-      <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
+      // <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
+      <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClasName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section?.cardHeader?.value)}></TextBlock>
     )}
     <Photos data = {section?.photo} OpenImage={OpenImage} fullImage={section?.fullImage} />
     </>

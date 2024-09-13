@@ -1,8 +1,11 @@
 import React,{Fragment,useState,useEffect} from 'react'
-import MultiSelectDropdown from '../atoms/MultiSelectDropdown'
+// import MultiSelectDropdown from '../atoms/MultiSelectDropdown'
 import Dropdown from '../atoms/Dropdown'
 import { Loader } from '../atoms/Loader'
 import { useTranslation } from 'react-i18next'
+
+import {MultiSelectDropdown } from "@egovernments/digit-ui-components";
+
 const LocationDropdownWrapper = ({populators,formData,props,inputRef,errors,setValue}) => {
     //based on type (ward/locality) we will render dropdowns respectively
     //here we will render two types of dropdown based on allowMultiSelect boolean 
@@ -49,7 +52,6 @@ const LocationDropdownWrapper = ({populators,formData,props,inputRef,errors,setV
     }
     }, [wardsAndLocalities,formData?.ward])
     
-        
     if(isLoading) return <Loader/>
 
   return (
@@ -68,9 +70,15 @@ const LocationDropdownWrapper = ({populators,formData,props,inputRef,errors,setV
                   }}
                   selected={props?.value}
                   defaultLabel={t(populators?.defaultText)}
-                  defaultUnit={t(populators?.selectedText)}
+                //   defaultUnit={t(populators?.selectedText)}
                   config={populators}
-              />
+                  variant={populators?.variant}
+                  addSelectAllCheck={populators?.addSelectAllCheck}
+                  addCategorySelectAllCheck={populators?.addCategorySelectAllCheck}
+                  selectAllLabel={populators?.selectAllLabel}
+                  categorySelectAllLabel={populators?.categorySelectAllLabel}
+                  restrictSelection={populators?.restrictSelection}
+              />    
           </div>}
           {!populators.allowMultiSelect  &&
               <Dropdown

@@ -1,8 +1,9 @@
-import { Header, Toast, WorkflowActions,Loader,ActionBar,SubmitBar } from "@egovernments/digit-ui-react-components";
+import { Header, WorkflowActions,Loader,ActionBar,SubmitBar } from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ApplicationDetails from "../../../../templates/ApplicationDetails";
 import { useHistory } from "react-router-dom";
+import { Toast} from "@egovernments/digit-ui-components";
 
 const ViewPurchaseBill = ({props}) => {
     const history = useHistory()
@@ -14,7 +15,7 @@ const ViewPurchaseBill = ({props}) => {
     const {t} = useTranslation();
     const businessService = Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("works.purchase");
 
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const headerLocale = Digit.Utils.locale.getTransformedLocale(tenantId);    
     const billCriteria = {
         "tenantId": tenantId,
@@ -110,7 +111,7 @@ const ViewPurchaseBill = ({props}) => {
                   </ActionBar>
                   : null
               } */}
-            {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+            {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
         </>
       )
 }

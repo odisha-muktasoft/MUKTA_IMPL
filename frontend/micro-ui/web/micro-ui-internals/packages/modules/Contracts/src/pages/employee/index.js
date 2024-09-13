@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { PrivateRoute, BreadCrumb } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, BreadCrumb, AppContainer } from "@egovernments/digit-ui-react-components";
 import { Switch, useLocation } from "react-router-dom";
 import CreateContract from "./CreateContract";
-import Inbox from "./ContractsInbox/Inbox.js"
+import Inbox from "./ContractsInbox/Inbox.js";
 import SearchContractDetails from "./SearchContractDetails";
 import ViewContractDetails from "./ViewContractDetails";
-
 
 const ContractsBreadCrumbs = ({ location }) => {
   const { t } = useTranslation();
@@ -48,7 +47,6 @@ const ContractsBreadCrumbs = ({ location }) => {
       show: location.pathname.includes("/contracts/create-time-extension-response") ? true : false,
       isBack: fromScreen && true,
     },
-    
   ];
   return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
 };
@@ -83,33 +81,29 @@ const App = ({ path }) => {
   };
 
   useEffect(() => {
-      if (!window.location.href.includes("create-contract") && sessionFormData && Object.keys(sessionFormData) != 0) {
-        clearSessionFormData();
-      }
+    if (!window.location.href.includes("create-contract") && sessionFormData && Object.keys(sessionFormData) != 0) {
+      clearSessionFormData();
+    }
   }, [location]);
 
   return (
     <Switch>
-      <React.Fragment>
-        <div className="ground-container">
-          <div style={getBreadCrumbStyles(window.location.href)}>
-            <ContractsBreadCrumbs location={location} />
-          </div>
-
-
-          <PrivateRoute path={`${path}/search-contract`} component={() => <SearchContractDetails />} />
-          <PrivateRoute path={`${path}/contract-details`} component={() => <ViewContractDetails />} />
-          <PrivateRoute path={`${path}/create-contract`} component={() => <CreateWorkOrderComponent parentRoute={path}/>} />
-          <PrivateRoute path={`${path}/create-contract-response`} component={() => <CreateWOResponseComponent />} />
-          <PrivateRoute path={`${path}/create-time-extension-response`} component={() => <TimeExtensionResponse />} />
-          <PrivateRoute
-            path={`${path}/inbox`}
-            component={() => (
-              <Inbox parentRoute={path} businessService="WORKS" filterComponent="contractInboxFilter" initialStates={{}} isInbox={true} />
-            )}
-          />
-        </div>
-      </React.Fragment>
+      <AppContainer>
+        <React.Fragment>
+          <ContractsBreadCrumbs location={location} />
+        </React.Fragment>
+        <PrivateRoute path={`${path}/search-contract`} component={() => <SearchContractDetails />} />
+        <PrivateRoute path={`${path}/contract-details`} component={() => <ViewContractDetails />} />
+        <PrivateRoute path={`${path}/create-contract`} component={() => <CreateWorkOrderComponent parentRoute={path} />} />
+        <PrivateRoute path={`${path}/create-contract-response`} component={() => <CreateWOResponseComponent />} />
+        <PrivateRoute path={`${path}/create-time-extension-response`} component={() => <TimeExtensionResponse />} />
+        <PrivateRoute
+          path={`${path}/inbox`}
+          component={() => (
+            <Inbox parentRoute={path} businessService="WORKS" filterComponent="contractInboxFilter" initialStates={{}} isInbox={true} />
+          )}
+        />
+      </AppContainer>
     </Switch>
   );
 };

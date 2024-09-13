@@ -1,10 +1,11 @@
 import React, { Fragment,useState } from "react";
-import Card from "../../atoms/Card";
+// import Card from "../../atoms/Card";
 import { Loader } from "../../atoms/Loader";
 import { RenderDataSection, RenderDocumentsSection, RenderPhotos, RenderWfActions, RenderWfHistorySection } from "./renderUtils";
 import HorizontalNav from "../../atoms/HorizontalNav";
 import CardSectionHeader from "../../atoms/CardSectionHeader";
 import { useTranslation } from "react-i18next";
+import {Card,Divider,TextBlock} from "@egovernments/digit-ui-components";
 
 // format of data expected by this component
 
@@ -126,11 +127,14 @@ const renderCardSectionJSX = (section) => {
       return (
         <>
           {section?.cardHeader && section?.cardHeader?.value && (
-            <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
+            // <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
+            <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClasName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section.cardHeader.value)}></TextBlock>
           )}
           <Component {...section.props} />
         </>
       );
+    case "DIVIDER":
+      return <Divider variant={section?.variant || "small"}></Divider>
     default:
       return <div>Section Not Found</div>;
   }
@@ -163,7 +167,7 @@ const ViewComposer = ({ isLoading = false,data, ...props }) => {
         {cards?.filter(card => card?.navigationKey)?.map((card, cardIdx) => {
           const { sections } = card;
           return (
-            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={"employeeCard-override"}>
+            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={`employeeCard-override ${card?.className}`}>
               {sections?.map((section, sectionIdx) => {
                 return renderCardSectionJSX(section);
               })}

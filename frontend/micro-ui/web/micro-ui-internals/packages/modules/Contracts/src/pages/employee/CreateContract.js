@@ -1,9 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Toast,WorkflowModal } from "@egovernments/digit-ui-react-components";
+import { WorkflowModal } from "@egovernments/digit-ui-react-components";
 import { useTranslation } from "react-i18next";
 import CreateContractForm from "../../components/CreateContract/CreateContractForm";
 import getModalConfig from "../../../utils/getModalConfig";
-
+import {Toast} from '@egovernments/digit-ui-components'
 
 
 const CreateContract = (props) => {
@@ -164,9 +164,8 @@ const CreateContract = (props) => {
       {showToast && (
         <Toast
           style={{ zIndex: "9999999" }}
-          error={showToast.error}
-          warning={showToast.warning}
-          label={t(showToast.label)}
+          type={showToast?.type}
+          label={t(showToast?.label)}
           onClose={() => {
             setShowToast(null);
           }}

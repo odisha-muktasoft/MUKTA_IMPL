@@ -9,7 +9,7 @@
   border-radius: 50%;
   width: 25px;
   height: 25px;
-  background-color: #ff9100;
+  background-color: #C84C0E;
   color: #ffffff;
   font-size: 20px;
   text-align: center;
@@ -61,6 +61,11 @@
   border-radius: 8px;
 }
 
+.done-button,
+.clear-button{
+  border-radius: 0px;
+}
+
 .view-utilization-card {
   display: flex;
   flex-direction: row;
@@ -68,7 +73,7 @@
   border: #cc7b2f;
 }
 
-$fill-color: #f47738;
+$fill-color: #C84C0E;
 
 .addIcon {
   fill: $fill-color;
@@ -133,8 +138,4 @@ $fill-color: #f47738;
 
 .modified-bread-crumb {
   margin-left: 10px;
-}
-
-.modify-header{
-  margin-left : 20px
 }

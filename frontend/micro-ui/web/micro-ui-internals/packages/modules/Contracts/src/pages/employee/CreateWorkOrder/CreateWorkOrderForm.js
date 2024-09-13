@@ -1,4 +1,4 @@
-import { FormComposer, Header, Toast, WorkflowModal } from "@egovernments/digit-ui-react-components";
+import { FormComposer, Header, WorkflowModal } from "@egovernments/digit-ui-react-components";
 import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import _ from "lodash";
@@ -6,6 +6,7 @@ import { createWorkOrderUtils } from "../../../../utils/createWorkOrderUtils";
 import { useHistory } from "react-router-dom";
 import getWOModalConfig from "../../../configs/getWOModalConfig";
 import debounce from 'lodash/debounce';
+import {Toast} from '@egovernments/digit-ui-components'
 
 const navConfig =  [
     {
@@ -20,7 +21,7 @@ const navConfig =  [
 
 const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSessionFormData, clearSessionFormData, tenantId, estimate, project, preProcessData, isModify, contractID, lineItems, contractAuditDetails, contractNumber, roleOfCBOOptions, docConfigData}) => {
     const {t} = useTranslation();
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const history = useHistory();
     const [showModal, setShowModal] = useState(false);
     const [createWOModalConfig, setCreateWOModalConfig] = useState({});
@@ -104,7 +105,7 @@ const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSession
     }
 
     const handleToastClose = () => {
-        setToast({show : false, label : "", error : false});
+        setToast({show : false, label : "", type : ""});
     }
 
     const { mutate: CreateWOMutation } = Digit.Hooks.contracts.useCreateWO();
@@ -145,12 +146,12 @@ const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSession
             },
             onSuccess: async (responseData, variables) => {
                 if(responseData?.ResponseInfo?.Errors) {
-                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), error : true}));
+                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), type : "error"}));
                     }else if(responseData?.ResponseInfo?.status){
                         sendDataToResponsePage(contractNumber, true, "CONTRACTS_MODIFIED", true);
                         clearSessionFormData();
                     }else{
-                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), error : true}));
+                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), type : "error"}));
                     }
             },
         });
@@ -166,14 +167,14 @@ const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSession
             onSuccess: async (responseData, variables) => {
                 if(responseData?.ResponseInfo?.Errors) {
                         setIsButtonDisabled(false)
-                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), error : true}));
+                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), type : "error"}));
                     }else if(responseData?.ResponseInfo?.status){
                         setIsButtonDisabled(false);
                         sendDataToResponsePage(responseData?.contracts?.[0]?.contractNumber, true, "CONTRACTS_WO_CREATED_FORWARDED", true);
                         clearSessionFormData();
                     }else{
                         setIsButtonDisabled(false);
-                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), error : true}));
+                        setToast(()=>({show : true, label : t("WORKS_ERROR_CREATING_CONTRACT"), type : "error"}));
                     }
             },
         });
@@ -241,7 +242,7 @@ const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSession
                         submitInForm={false}
                         fieldStyle={{ marginRight: 0 }}
                         inline={false}
-                        className="form-no-margin"
+                        // className="form-no-margin"
                         defaultValues={sessionFormData}
                         showWrapperContainers={false}
                         isDescriptionBold={false}
@@ -257,7 +258,7 @@ const CreateWorkOrderForm = ({createWorkOrderConfig, sessionFormData, setSession
                     />
                     )
                 }
-               {toast?.show && <Toast error={toast?.error} label={toast?.label} isDleteBtn={true} onClose={handleToastClose} />}
+               {toast?.show && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={handleToastClose} />}
         </React.Fragment>
     )
 }

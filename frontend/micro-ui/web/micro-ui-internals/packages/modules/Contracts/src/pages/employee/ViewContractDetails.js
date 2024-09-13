@@ -1,9 +1,9 @@
 import React, { useState, useEffect, Fragment, useRef }from 'react';
 import { useTranslation } from "react-i18next";
 import { useHistory } from 'react-router-dom';
-import { Menu, Header, ActionBar, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, Toast, MultiLink } from '@egovernments/digit-ui-react-components';
+import { Menu, Header, SubmitBar,ViewDetailsCard , HorizontalNav, Loader, WorkflowActions, MultiLink } from '@egovernments/digit-ui-react-components';
 import { isWorkEndInPreviousWeek } from '../../../utils';
-
+import {Toast,Button,ActionBar} from '@egovernments/digit-ui-components'
 
 const ViewContractDetails = () => {
     const { t } = useTranslation();
@@ -20,7 +20,7 @@ const ViewContractDetails = () => {
     const contractId = queryStrings?.workOrderNumber;
     const tenantId = Digit.ULBService.getCurrentTenantId();
     const businessService = revisedWONumber ? Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("revisedWO") : Digit?.Customizations?.["commonUiConfig"]?.getBusinessService("contract")
-    const [toast, setToast] = useState({show : false, label : "", error : false});
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
     const ContractSession = Digit.Hooks.useSessionStorage("CONTRACT_CREATE", {});
     const [sessionFormData, setSessionFormData, clearSessionFormData] = ContractSession;
 
@@ -116,31 +116,31 @@ const ViewContractDetails = () => {
 
     useEffect(()=>{
         if(isContractError || (!isContractLoading && data?.isNoDataFound)) {
-            setToast({show : true, label : t("COMMON_WO_NOT_FOUND"), error : true});
+            setToast({show : true, label : t("COMMON_WO_NOT_FOUND"), type:"error"});
         }
     },[isContractError, data, isContractLoading]);
 
     useEffect(()=>{
         if(isProjectError) {
-            setToast({show : true, label : t("COMMON_PROJECT_NOT_FOUND"), error : true});
+            setToast({show : true, label : t("COMMON_PROJECT_NOT_FOUND"), type:"error"});
         }
     },[isProjectError]);
 
       useEffect(() => {
         let isCreeateTEUser = verifiedRolesForAction?.["CREATE_TE"].some(role => loggedInUserRoles.includes(role));
-        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "CREATE_TIME_EXTENSION_REQUEST") && isCreeateTEUser) {
+        if(!(data?.additionalDetails?.isTimeExtAlreadyInWorkflow) && data && !actionsMenu?.find((ob) => ob?.name === "WF_CONTRACT_ACTION_CREATE_TIME_EXTENSION_REQUEST") && isCreeateTEUser) {
             
             setActionsMenu((prevState => [...prevState,{
-                name:"CREATE_TIME_EXTENSION_REQUEST",
+                name:"WF_CONTRACT_ACTION_CREATE_TIME_EXTENSION_REQUEST",
                 action:"TIME_EXTENSTION"
             }]))
         }
 
         let isCreeateMBUser = verifiedRolesForAction?.["CREATE_MB"].some(role => loggedInUserRoles.includes(role));
         console.log(isInWorkflowMeasurementPresent,measurementData,actionsMenu,isCreeateMBUser);
-        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
+        if(!isInWorkflowMeasurementPresent && measurementData && !actionsMenu?.find((ob) => ob?.name === "WF_CONTRACT_ACTION_CREATE_MEASUREMENT_REQUEST") && isCreeateMBUser)
         setActionsMenu((prevState => [...prevState,{
-            name:"CREATE_MEASUREMENT_REQUEST",
+            name:"WF_CONTRACT_ACTION_CREATE_MEASUREMENT_REQUEST",
             action:"CREATE_MEASUREMENT"
         }]))
 
@@ -151,7 +151,7 @@ const ViewContractDetails = () => {
         let isUserBillCreator = loggedInUserRoles?.includes("BILL_CREATOR");
         if (data?.applicationData?.wfStatus === "ACCEPTED" && isUserBillCreator){
             setActionsMenu((prevState => [...prevState,{
-                name:"CREATE_PURCHASE_BILL"
+                name:"WF_CONTRACT_ACTION_CREATE_PURCHASE_BILL"
             }]))
         }
 
@@ -163,15 +163,15 @@ const ViewContractDetails = () => {
     const handleActionBar = (option) => {
         if(validationData && Object?.keys(validationData)?.length > 0 && validationData?.type?.includes(option?.action))
         {
-            setToast({show : true, label : t(`${validationData?.label}_${option?.action}`), error : validationData?.error});
+            setToast({show : true, label : t(`${validationData?.label}_${option?.action}`), type : validationData?.error ? "error" : ""});
             return;
         }
         if(option?.action === "CREATE_MEASUREMENT" && isWorkEndInPreviousWeek(data?.applicationData?.endDate, mdmsData?.works?.MeasurementCriteria?.[0]?.measurementBookStartDate))
         {
-            setToast({show : true, label : t(`MB_CREATION_NOT_POSSIBLE_WORK_END_DATE_PASSED`), error : true});
+            setToast({show : true, label : t(`MB_CREATION_NOT_POSSIBLE_WORK_END_DATE_PASSED`), type:"error"});
             return;
         }
-        if (option?.name === "CREATE_PURCHASE_BILL") {
+        if (option?.name === "WF_CONTRACT_ACTION_CREATE_PURCHASE_BILL") {
             history.push(`/${window.contextPath}/employee/expenditure/create-purchase-bill?tenantId=${tenantId}&workOrderNumber=${contractId}`);
         }
         if (option?.action === "CREATE_MEASUREMENT") {
@@ -187,7 +187,7 @@ const ViewContractDetails = () => {
     }
 
     const handleToastClose = () => {
-        setToast({show : false, label : "", error : false});
+        setToast({show : false, label : "", type:""});
     }
 
     useEffect(() => {
@@ -229,53 +229,108 @@ const ViewContractDetails = () => {
          return <Loader/>;
     return (
       <React.Fragment>
-        <div className={"employee-main-application-details"}>
-          <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
-            <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px"}}>{showTimeExtension || queryStrings?.isTimeExtension === "true" ? ( revisedWONumber ? t("UPDATE_TE") : t("CREATE_TE")) : revisedWONumber ? t("VIEW_TE") : t("WORKS_VIEW_WORK_ORDER")}</Header>
-            {(data?.applicationData?.wfStatus === "APPROVED" || data?.applicationData?.wfStatus === "PENDING_FOR_ACCEPTANCE" || data?.applicationData?.wfStatus === "ACCEPTED") && !(queryStrings?.isTimeExtension === "true") && !(revisedWONumber) && 
-               <MultiLink
-                 onHeadClick={() => HandleDownloadPdf()}
-                 downloadBtnClassName={"employee-download-btn-className"}
-                 label={t("CS_COMMON_DOWNLOAD")}
-               />
-            }
+        <div className={`"employee-main-application-details ${"contract-details"}`}>
+          <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
+            <Header className="works-header-view" styles={{ margin: "0px" }}>
+              {showTimeExtension || queryStrings?.isTimeExtension === "true"
+                ? revisedWONumber
+                  ? t("UPDATE_TE")
+                  : t("CREATE_TE")
+                : revisedWONumber
+                ? t("VIEW_TE")
+                : t("WORKS_VIEW_WORK_ORDER")}
+            </Header>
+            {(data?.applicationData?.wfStatus === "APPROVED" ||
+              data?.applicationData?.wfStatus === "PENDING_FOR_ACCEPTANCE" ||
+              data?.applicationData?.wfStatus === "ACCEPTED") &&
+              !(queryStrings?.isTimeExtension === "true") &&
+              !revisedWONumber && (
+                //    <MultiLink
+                //      onHeadClick={() => HandleDownloadPdf()}
+                //      downloadBtnClassName={"employee-download-btn-className"}
+                //      label={t("CS_COMMON_DOWNLOAD")}
+                //    />
+                <Button
+                  label={t("CS_COMMON_DOWNLOAD")}
+                  onClick={() => HandleDownloadPdf()}
+                  className={"employee-download-btn-className"}
+                  variation={"teritiary"}
+                  type="button"
+                  icon={"FileDownload"}
+                />
+              )}
           </div>
           {project && <ViewDetailsCard cardState={cardState} t={t} />}
-          {
-            !data?.isNoDataFound && 
-                <>
-                    <HorizontalNav showNav={true} configNavItems={configNavItems} activeLink={activeLink} setActiveLink={setActiveLink} inFormComposer={false}>
-                        {activeLink === "Work_Order" && !showTimeExtension && !(queryStrings?.isTimeExtension === "true") && <ContractDetails fromUrl={false} tenantId={tenantId} contractNumber={payload?.contractNumber} data={data} isLoading={isContractLoading} revisedWONumber={revisedWONumber}/>}
-                        {activeLink === "Work_Order" && (showTimeExtension || queryStrings?.isTimeExtension === "true") && <CreateTimeExtension fromUrl={false} tenantId={tenantId} contractNumber={payload?.contractNumber} data={data} isLoading={isContractLoading} revisedWONumber={revisedWONumber} isEdit={revisedWONumber ? true : false}/> }
-                        {activeLink === "Terms_and_Conditions" && <TermsAndConditions data={data?.applicationData?.additionalDetails?.termsAndConditions}/>}
-                    </HorizontalNav>
-                    {!editTimeExtension && !(queryStrings?.isEditTimeExtension === "true") && <WorkflowActions
-                        forcedActionPrefix={`WF_${businessService}_ACTION`}
-                        businessService={businessService}
-                        applicationNo={revisedWONumber ? revisedWONumber :queryStrings?.workOrderNumber}
-                        tenantId={tenantId}
-                        applicationDetails={data?.applicationData}
-                        url={Digit.Utils.Urls.contracts.update}
-                        moduleCode="Contract"
-                        editCallback = {handleEditTimeExtension}
-                    />}
-                    {data?.applicationData?.wfStatus === "ACCEPTED" && actionsMenu?.length>0 && !showTimeExtension && !(queryStrings?.isTimeExtension === "true") ?
-                        <ActionBar>
-                            {showActions ? <Menu
-                                localeKeyPrefix={`WF_CONTRACT_ACTION`}
-                                options={actionsMenu}
-                                optionKey={"name"}
-                                t={t}
-                                onSelect={handleActionBar}
-                            />:null} 
-                            <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setShowActions(!showActions)} />
-                        </ActionBar>
-                        : null
-                    }
-                </>
-          }
+          {!data?.isNoDataFound && (
+            <>
+              <HorizontalNav
+                showNav={true}
+                configNavItems={configNavItems}
+                activeLink={activeLink}
+                setActiveLink={setActiveLink}
+                inFormComposer={false}
+              >
+                {activeLink === "Work_Order" && !showTimeExtension && !(queryStrings?.isTimeExtension === "true") && (
+                  <ContractDetails
+                    fromUrl={false}
+                    tenantId={tenantId}
+                    contractNumber={payload?.contractNumber}
+                    data={data}
+                    isLoading={isContractLoading}
+                    revisedWONumber={revisedWONumber}
+                  />
+                )}
+                {activeLink === "Work_Order" && (showTimeExtension || queryStrings?.isTimeExtension === "true") && (
+                  <CreateTimeExtension
+                    fromUrl={false}
+                    tenantId={tenantId}
+                    contractNumber={payload?.contractNumber}
+                    data={data}
+                    isLoading={isContractLoading}
+                    revisedWONumber={revisedWONumber}
+                    isEdit={revisedWONumber ? true : false}
+                  />
+                )}
+                {activeLink === "Terms_and_Conditions" && <TermsAndConditions data={data?.applicationData?.additionalDetails?.termsAndConditions} />}
+              </HorizontalNav>
+              {!editTimeExtension && !(queryStrings?.isEditTimeExtension === "true") && (
+                <WorkflowActions
+                  forcedActionPrefix={`WF_${businessService}_ACTION`}
+                  businessService={businessService}
+                  applicationNo={revisedWONumber ? revisedWONumber : queryStrings?.workOrderNumber}
+                  tenantId={tenantId}
+                  applicationDetails={data?.applicationData}
+                  url={Digit.Utils.Urls.contracts.update}
+                  moduleCode="Contract"
+                  editCallback={handleEditTimeExtension}
+                />
+              )}
+              {data?.applicationData?.wfStatus === "ACCEPTED" &&
+              actionsMenu?.length > 0 &&
+              !showTimeExtension &&
+              !(queryStrings?.isTimeExtension === "true") ? (
+                <ActionBar
+                actionFields={[
+                  <Button
+                    type={"actionButton"}
+                    options={actionsMenu}
+                    label={t("WORKS_ACTIONS")}
+                    variation={"primary"}
+                    optionsKey={"name"}
+                    isSearchable={false}
+                    onOptionSelect={(option) => {
+                      handleActionBar(option)
+                    }}
+                  ></Button>
+                ]}
+                setactionFieldsToRight={true}
+                className={"new-actionbar"}
+              />
+              ) : null}
+            </>
+          )}
         </div>
-        {toast?.show && <Toast label={toast?.label} error={toast?.error} isDleteBtn={true} onClose={handleToastClose}></Toast>}
+        {toast?.show && <Toast label={toast?.label} type={toast?.type} isDleteBtn={true} onClose={handleToastClose}></Toast>}
       </React.Fragment>
     );
 }

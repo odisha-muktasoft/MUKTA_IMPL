@@ -1,10 +1,12 @@
-import { Card, Header, Button, Loader } from "@egovernments/digit-ui-react-components";
-import React from "react";
+import { Card, Header, Loader } from "@egovernments/digit-ui-react-components";
+import React,{Fragment} from "react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Link } from "react-router-dom";
 import { findMusterRollNumber } from "../utils/transformEstimateData";
+import {  Button,TextBlock } from "@egovernments/digit-ui-components";
+
 
 const CustomCollapsibleTable = ({ children, isTableCollapsed }) => {
   return <div className={`custom-collapsible-table ${isTableCollapsed ? "collapsed" : ""}`}>{children}</div>;
@@ -14,7 +16,7 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
   const { t } = useTranslation();
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const history = useHistory();
-  const [isTableCollapsed, setIsTableCollapsed] = useState(false);
+  const [isTableCollapsed, setIsTableCollapsed] = useState(true);
   const searchparams = new URLSearchParams(location.search);
   contractNumber = contractNumber ? contractNumber : searchparams.get("workOrderNumber");
 
@@ -68,7 +70,7 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
     { label: t("MB_STATUS"), key: "status" },
     { label: t("MB_ONLY_AMOUNT"), key: "amount" },
   ];
-  let relevantMbs = window?.location.href.includes("/measurement/view") ? data?.allMeasurements.filter(obj => obj.auditDetails.lastModifiedTime < data?.allMeasurements.find(o => o.measurementNumber === measurementNumber).auditDetails.lastModifiedTime) : data?.allMeasurements;
+  let relevantMbs = window?.location.href.includes("/measurement/view") ? data?.allMeasurements?.filter(obj => obj.auditDetails.lastModifiedTime < data?.allMeasurements.find(o => o.measurementNumber === measurementNumber).auditDetails.lastModifiedTime) : data?.allMeasurements;
   const filteredArray =  relevantMbs && relevantMbs?.length > 0 && relevantMbs?.code !== "NO_MEASUREMENT_ROLL_FOUND"? relevantMbs?.filter((item) => item.measurementNumber !== measurementNumber && item?.wfStatus === "APPROVED") : [];
 
   const sortedRows = (filteredArray || [])
@@ -93,10 +95,13 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
   }
 
   return (
-    <Card className="override-card">
-      <Header className="works-header-view">{t("MB_HISTORY")}</Header>
-      <CustomCollapsibleTable isTableCollapsed={isTableCollapsed}>
-        <table className="table reports-table sub-work-table">
+    // <Card className="override-card">
+    <>
+      {/* <Header className="works-header-view">{t("MB_HISTORY")}</Header> */}
+      <TextBlock subHeader={t("MB_HISTORY")} subHeaderClasName={"mb-history-header"}></TextBlock>
+      {
+        !isTableCollapsed &&        <CustomCollapsibleTable isTableCollapsed={isTableCollapsed}>
+        <table className="table reports-table sub-work-table mb-history-table">
           <thead>
             <tr>
               {columns.map((column, index) => (
@@ -133,14 +138,19 @@ const MeasurementHistory = ({ contractNumber, measurementNumber }) => {
           </tbody>
         </table>
       </CustomCollapsibleTable>
-
+      }
       <Button 
-      className={"collapse-button"}
-      onButtonClick={toggleTableCollapse}
+      style={{padding:"0px"}}
+      variation={"teritiary"}
+      onClick={toggleTableCollapse}
+      icon={isTableCollapsed ? "ExpandMore" : "ExpandLess"}
+      isSuffix={true}
       label={isTableCollapsed ? t('MB_SHOW_HISTORY') : t('MB_HIDE_HISTORY')}>
       </Button>
 
-    </Card>
+    </>
+    
+    // </Card>
   );
 };
 

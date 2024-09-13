@@ -2,6 +2,7 @@ import { Header, Card, Loader, ViewComposer, MultiLink } from "@egovernments/dig
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { data } from "../../configs/ViewMeasurementConfig";
+import { Button } from "@egovernments/digit-ui-components";
 
 const ViewMeasurement = () => {
   const { t } = useTranslation();
@@ -69,11 +70,21 @@ const ViewMeasurement = () => {
   }
   return (
     <React.Fragment>
-      <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
+      <div className={"employee-application-details"} style={{ marginBottom: "24px",alignItems:"center" }}>
         <Header className="works-header-view" styles={{ marginLeft: "0px", paddingTop: "10px" }}>
           {t("MB_VIEW_MEASUREMENT_BOOK")}
         </Header>
-        <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} />
+        {/* <MultiLink onHeadClick={() => HandleDownloadPdf()} downloadBtnClassName={"employee-download-btn-className"} label={t("CS_COMMON_DOWNLOAD")} /> */}
+        {
+                      <Button
+                      label={t("CS_COMMON_DOWNLOAD")}
+                      onClick={() => HandleDownloadPdf()}
+                      className={"employee-download-btn-className"}
+                      variation={"teritiary"}
+                      type="button"
+                      icon={"FileDownload"}
+                    />
+        }
       </div>
       <ViewComposer data={config} isLoading={false} />
     </React.Fragment>

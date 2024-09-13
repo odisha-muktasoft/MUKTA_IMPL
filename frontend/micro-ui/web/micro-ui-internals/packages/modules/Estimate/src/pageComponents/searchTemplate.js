@@ -1,7 +1,7 @@
-import { Button, TextInput, Toast } from "@egovernments/digit-ui-react-components";
+import { TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
-
+import {Toast,Button } from "@egovernments/digit-ui-components";
 
 const fetchSorDetails = async (inputDATA) => {
  //method to fetch the data for estimate template
@@ -82,13 +82,13 @@ const fetchTemplateData = async (searchText, setShowToast) => {
  try {
    const data = await Digit.CustomService.getResponse(requestCriteria);
    if (data?.MdmsRes?.WORKS?.EstimateTemplate?.length > 0) {
-     setShowToast({ show: false, label: "", error: false });
+     setShowToast({ show: false, label: "", type:"" });
      return data?.MdmsRes?.WORKS?.EstimateTemplate;
    }
    
  } catch (error) {
    
-   setShowToast({ show: true, error: true, label: "TMP_API_ERROR" });
+   setShowToast({ show: true, type: "error", label: "TMP_API_ERROR" });
    return [];
  }
 };
@@ -98,7 +98,7 @@ const fetchData = async (sorid, state, setState, setShowToast, t) => {
  //fetch the data of SOR recieved from estimate template
  const tenantId = Digit.ULBService.getCurrentTenantId();
  if (sorid == null) {
-   setShowToast({ show: true, error: true, label: "WORKS_CANNOT_ADD_EMPTY_DATA" });
+   setShowToast({ show: true, type: "error", label: "WORKS_CANNOT_ADD_EMPTY_DATA" });
    return true;
  }
  let currentDateInMillis = new Date().getTime();
@@ -150,12 +150,12 @@ const fetchData = async (sorid, state, setState, setShowToast, t) => {
      });
      
      if (Rates.length <= 0) {
-       //setShowToast({show: true, error: true, label:`${t(`TMP_RATE_NO_ACTIVE_RATE_ERROR`)} ${sorid}`});
+       //setShowToast({show: true, type: "error", label:`${t(`TMP_RATE_NO_ACTIVE_RATE_ERROR`)} ${sorid}`});
        return undefined;
      }
      return Rates;
    } else {
-     //setShowToast({show: true, error: true, label:`${t(`TMP_RATE_NOT_FOUND_ERROR`)} ${sorid}`});
+     //setShowToast({show: true, type: "error", label:`${t(`TMP_RATE_NOT_FOUND_ERROR`)} ${sorid}`});
      return undefined;
    }
  } catch (error) {
@@ -172,7 +172,7 @@ const searchTemplate = (props) => {
  const [inputValue, setInputValue] = useState("");
  const [suggestions, setSuggestions] = useState([]);
  const menuRef = useRef();
- const [showToast, setShowToast] = useState({ show: false, label: "", error: false });
+ const [showToast, setShowToast] = useState({ show: false, label: "", type: "" });
  const { register, setValue, watch } = props;
  let formData = watch("SOR");
  let formNonSORdata = watch("NONSOR");
@@ -235,7 +235,7 @@ const searchTemplate = (props) => {
    //   formData?.length > 0 &&
    //   formData?.find((ob) => ob?.sorCode && ob?.sorCode === stateData?.selectedTemplate?.data?.lineItems[0]?.sorCode)
    // ) {
-   //   setShowToast({ show: true, error: true, label: "WORKS_CANNOT_ADD_DUPLICATE_SOR" });
+   //   setShowToast({ show: true, type: "error", label: "WORKS_CANNOT_ADD_DUPLICATE_SOR" });
    //   return;
    // }
 
@@ -260,7 +260,7 @@ const searchTemplate = (props) => {
 
 
    let newnonsorIndex = formNonSORdata[formNonSORdata?.length - 1]?.sNo+1;
-   let nosSorData = stateData?.selectedTemplate.nonSorLineItems? stateData?.selectedTemplate.nonSorLineItems?.map((item, index) => ({
+   let nosSorData = stateData?.selectedTemplate?.nonSorLineItems? stateData?.selectedTemplate.nonSorLineItems?.map((item, index) => ({
      sNo: newnonsorIndex++,
      description: item?.description,
      uom: item?.uom,
@@ -307,7 +307,7 @@ const searchTemplate = (props) => {
 
      if (ratesErrorSorIds?.length > 0) {
        
-       setShowToast({ show: true, error: true, label: `${t(`TMP_RATE_NOT_FOUND_OR_ACTIVE_ERROR`)} ${ratesErrorSorIds.join(", ")} ` });
+       setShowToast({ show: true, type: "error", label: `${t(`TMP_RATE_NOT_FOUND_OR_ACTIVE_ERROR`)} ${ratesErrorSorIds.join(", ")} ` });
      }
 
 
@@ -382,16 +382,16 @@ const searchTemplate = (props) => {
              </ul>
            )}
          </div>
-         <Button label={t("ESTIMATE_ADD_LABEL")} onButtonClick={buttonClick} className={"add-sor-button"} />
+         <Button label={t("ESTIMATE_ADD_LABEL")} onClick={buttonClick} className={"add-sor-button"} />
        </div>
      </div>
      {showToast?.show && (
        <Toast
          labelstyle={{ width: "100%" }}
-         error={showToast?.error}
+         type={showToast?.type}
          label={t(showToast?.label)}
          isDleteBtn={true}
-         onClose={() => setShowToast({ show: false, label: "", error: false })}
+         onClose={() => setShowToast({ show: false, label: "", type: "" })}
        />
      )}
    </div>

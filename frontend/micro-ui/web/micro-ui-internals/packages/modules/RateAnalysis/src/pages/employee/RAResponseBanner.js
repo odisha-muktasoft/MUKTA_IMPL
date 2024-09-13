@@ -57,7 +57,7 @@ const RAResponseBanner = () => {
                 <div style={{ display: 'flex', gap: '25px' }}>
 
                     <div className="link reponse-link" >
-                        <ArrowLeftWhite fill="#F47738" style={{ display:"inline",marginRight:"0.5rem",marginTop:"3px"}} /> 
+                        <ArrowLeftWhite fill="#C84C0E" style={{ display:"inline",marginRight:"0.5rem",marginTop:"3px"}} /> 
                         <Link to={`/${window.contextPath}/workbench-ui/employee/workbench/mdms-search-v2?moduleName=WORKS-SOR&masterName=SOR`}>
                             {t("RA_GO_TO_SEARCH_SOR")}
                         </Link>
