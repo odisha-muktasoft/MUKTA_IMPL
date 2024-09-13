@@ -7,7 +7,8 @@ import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
     as ui_label;
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,7 +112,7 @@ class _LoginPageState extends State<LoginPage>
               // Top part (AppLogo and Text) - constant height
               const AppLogo(),
               Center(
-                child: TextChunk(
+                child: DigitTextBlock(
                   heading: t.translate(i18.login.loginLabel),
                   headingStyle: Theme.of(context)
                       .digitTextTheme(context)
@@ -147,7 +148,7 @@ class _LoginPageState extends State<LoginPage>
 
               ToggleList(
                 contentPadding: const EdgeInsets.all(0),
-                toggleWidth: MediaQuery.sizeOf(context).width * 0.422,
+                toggleWidth: MediaQuery.sizeOf(context).width * 0.4,
                 toggleButtons: [
                   ToggleButtonModel(
                       code: "0", name: t.translate(i18.measurementBook.mbCbo)),
@@ -161,12 +162,12 @@ class _LoginPageState extends State<LoginPage>
                 selectedIndex: 0,
               ),
               // Dynamic part - TabBarView and Button
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
+              // Column(
+              //   mainAxisSize: MainAxisSize.min,
+              //   children: [
                   AnimatedContainer(
                     height: _tabController.index == 0
-                        ? 120
+                        ? MediaQuery.of(context).size.height * 0.12
                         : MediaQuery.of(context).size.height * 0.36,
                     duration: const Duration(milliseconds: 000),
                     child: TabBarView(
@@ -181,8 +182,8 @@ class _LoginPageState extends State<LoginPage>
                   _buildLoginButton(t, loginContext),
                 ],
               ),
-            ],
-          ),
+          //   ],
+          // ),
         ),
       ),
     );
@@ -270,79 +271,48 @@ class _LoginPageState extends State<LoginPage>
             orElse: () {},
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: InkWell(
-            onTap: (userNameController.text.isNotEmpty &&
-                    userPasswordController.text.isNotEmpty &&
-                    selectTenantId.isNotEmpty)
-                ? () {
-                    if (userNameController.text.isNotEmpty &&
-                        userPasswordController.text.isNotEmpty &&
-                        selectTenantId.isNotEmpty) {
-                      context.read<AuthBloc>().add(
-                            AuthLoginEvent(
-                              userId: userNameController.text,
-                              password: userPasswordController.text,
-                              roleType: RoleType.employee,
-                              tenantId: selectTenantId,
-                            ),
-                          );
-                    } else {
-                      // Notifiers.getToastMessage(
-                      //   context,
-                      //   t.translate(i18.common.allFieldsMandatory),
-                      //   'ERROR',
-                      // );
-                      Toast.showToast(
-                        context,
-                        message: t.translate(i18.common.allFieldsMandatory),
-                        type: ToastType.error,
-                      );
-                    }
+        child: InkWell(
+          onTap: (userNameController.text.isNotEmpty &&
+                  userPasswordController.text.isNotEmpty &&
+                  selectTenantId.isNotEmpty)
+              ? () {
+                  if (userNameController.text.isNotEmpty &&
+                      userPasswordController.text.isNotEmpty &&
+                      selectTenantId.isNotEmpty) {
+                    context.read<AuthBloc>().add(
+                          AuthLoginEvent(
+                            userId: userNameController.text,
+                            password: userPasswordController.text,
+                            roleType: RoleType.employee,
+                            tenantId: selectTenantId,
+                          ),
+                        );
+                  } else {
+                    // Notifiers.getToastMessage(
+                    //   context,
+                    //   t.translate(i18.common.allFieldsMandatory),
+                    //   'ERROR',
+                    // );
+                    Toast.showToast(
+                      context,
+                      message: t.translate(i18.common.allFieldsMandatory),
+                      type: ToastType.error,
+                    );
                   }
-                : null,
-            child: IgnorePointer(
-              child: Button(
-                mainAxisSize: MainAxisSize.max,
-                isDisabled: !(userNameController.text.isNotEmpty &&
-                    userPasswordController.text.isNotEmpty &&
-                    selectTenantId.isNotEmpty),
-                size: ButtonSize.large,
-                type: ButtonType.primary,
-                onPressed: () {},
-
-                // onPressed: (userNameController.text.isNotEmpty &&
-                //         userPasswordController.text.isNotEmpty &&
-                //         selectTenantId.isNotEmpty)
-                //     ? () {
-                //         if (userNameController.text.isNotEmpty &&
-                //             userPasswordController.text.isNotEmpty &&
-                //             selectTenantId.isNotEmpty) {
-                //           context.read<AuthBloc>().add(
-                //                 AuthLoginEvent(
-                //                   userId: userNameController.text,
-                //                   password: userPasswordController.text,
-                //                   roleType: RoleType.employee,
-                //                   tenantId: selectTenantId,
-                //                 ),
-                //               );
-                //         } else {
-                //           // Notifiers.getToastMessage(
-                //           //   context,
-                //           //   t.translate(i18.common.allFieldsMandatory),
-                //           //   'ERROR',
-                //           // );
-                //           Toast.showToast(
-                //             context,
-                //             message: t.translate(i18.common.allFieldsMandatory),
-                //             type: ToastType.error,
-                //           );
-                //         }
-                //       }
-                //     : null,
-                label: t.translate(i18.common.continueLabel),
-              ),
+                }
+              : null,
+          child: IgnorePointer(
+            child: Button(
+              mainAxisSize: MainAxisSize.max,
+              isDisabled: !(userNameController.text.isNotEmpty &&
+                  userPasswordController.text.isNotEmpty &&
+                  selectTenantId.isNotEmpty),
+              size: ButtonSize.large,
+              type: ButtonType.primary,
+              onPressed: () {},
+        
+             
+              label: t.translate(i18.common.continueLabel),
             ),
           ),
         ),
@@ -356,9 +326,7 @@ class _LoginPageState extends State<LoginPage>
       context: context,
       builder: (context) {
         return Popup(
-            // contentPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            // titlePadding:
-            //     const EdgeInsets.only(top: 16.0, left: 5.0, bottom: 2.0),
+            
             title: t.translate(i18.login.forgotPassword),
             additionalWidgets: [
               SizedBox(
@@ -370,7 +338,7 @@ class _LoginPageState extends State<LoginPage>
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
-                      child: TextChunk(
+                      child: DigitTextBlock(
                        subHeading: t.translate(i18.login.forgotPasswordMsg),
                        
                       ),
@@ -394,38 +362,11 @@ class _LoginPageState extends State<LoginPage>
 
   Padding cboLogin(BuildContext loginContext) {
     return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
+      padding: const EdgeInsets.only(top: 0.0),
       child: SizedBox(
         height: MediaQuery.of(loginContext).size.height * 0.7,
         child: SingleChildScrollView(
-          // child: DigitTextField(
-          //   label:
-          // '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}*',
-          //   controller: userIdController,
-          //   isRequired: true,
-          //   prefixText: '+91 - ',
-          //   focusNode: _numberFocus,
-          //   autoValidation: phoneNumberAutoValidation
-          //       ? AutovalidateMode.always
-          //       : AutovalidateMode.disabled,
-          //   textInputType: TextInputType.number,
-          //   inputFormatter: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-          //   validator: (val) {
-          //     if (val!.trim().isEmpty || val.trim().length != 10) {
-          //       return '${AppLocalizations.of(context).translate(i18.login.pleaseEnterMobile)}';
-          //     }
-          //     return null;
-          //   },
-          // onChange: (value) {
-          //   setState(() {
-          //     canContinue = value.length == 10;
-          //   });
-          //   if (value.length == 10) {
-          //     _numberFocus.unfocus();
-          //   }
-          // },
-          //   maxLength: 10,
-          // ),
+          
 
           child: ui_label.LabeledField(
             isRequired: true,
@@ -454,13 +395,19 @@ class _LoginPageState extends State<LoginPage>
       ),
     );
   }
+  
 
   @override
   Widget build(BuildContext context) {
+     double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+    // Check if the keyboard is open
+    bool isKeyboardOpen = keyboardHeight > 0;
     var t = AppLocalizations.of(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+      //  resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: const Color(0xff0B4B66),
           iconTheme: Theme.of(context)
@@ -472,15 +419,7 @@ class _LoginPageState extends State<LoginPage>
           builder: (context, state) {
             return LayoutBuilder(builder: (context, constraints) {
               if (constraints.maxWidth < 720) {
-                // return Center(
-                //   child: MobileView(
-                //     getLoginCard(t, context, state),
-                //     GlobalVariables.stateInfoListModel!.bannerUrl.toString(),
-                //     logoBottomPosition: 10,
-                //     cardBottomPosition: (constraints.maxHeight / 4.5),
-
-                //   ),
-                // );
+               
 
                 return Stack(
                   children: [
@@ -495,16 +434,17 @@ class _LoginPageState extends State<LoginPage>
                               .toString()),
                           fit: BoxFit.cover,
                         ),
+                        
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.sizeOf(context).height * 0.06),
+                          top: MediaQuery.sizeOf(context).height * 0.04),
                       child: IntrinsicHeight(
                         child: getLoginCard(t, context, state),
                       ),
                     ),
-                    (Positioned(
+                  ( isKeyboardOpen)? (Positioned(
                       bottom: 10,
                       left: MediaQuery.of(context).size.width / 4,
                       right: MediaQuery.of(context).size.width / 4,
@@ -515,7 +455,9 @@ class _LoginPageState extends State<LoginPage>
                           //isWhiteLogo: true,
                         ),
                       ),
-                    )),
+                    )):const Positioned(child:SizedBox.shrink()
+                    )
+                    ,
                   ],
                 );
               } else {
@@ -536,89 +478,86 @@ class _LoginPageState extends State<LoginPage>
     BuildContext context,
     AppInitializationState data,
   ) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16.0),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        width: MediaQuery.of(context).size.width,
-        child: ReactiveFormBuilder(
-            form: detailBuildForm,
-            builder:
-                (BuildContext context, FormGroup formGroup, Widget? child) {
-              return Column(
-                children: [
-                  ui_label.LabeledField(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.5,
+      width: MediaQuery.of(context).size.width,
+      child: ReactiveFormBuilder(
+          form: detailBuildForm,
+          builder:
+              (BuildContext context, FormGroup formGroup, Widget? child) {
+            return Column(
+              children: [
+                ui_label.LabeledField(
+                  isRequired: true,
+                  label: '${t.translate(i18.login.loginUserName)}',
+                  child: DigitTextFormInput(
+                    controller: userNameController,
                     isRequired: true,
-                    label: '${t.translate(i18.login.loginUserName)}',
-                    child: DigitTextFormInput(
-                      controller: userNameController,
+                    onChange: (value) {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: ui_label.LabeledField(
+                    isRequired: true,
+                    wrapLabelText: true,
+                    label: '${t.translate(i18.login.loginPassword)}',
+                    child: DigitPasswordFormInput(
+                      toggleSuffixIcon: iconVisibility
+                          ? Icons.visibility_rounded
+                          : Icons.visibility_off_rounded,
+                      controller: userPasswordController,
                       isRequired: true,
+                      onSuffixTap: (p0) {
+                        setState(() {
+                          iconVisibility = !iconVisibility;
+                        });
+                      },
                       onChange: (value) {},
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: ui_label.LabeledField(
-                      isRequired: true,
-                      wrapLabelText: true,
-                      label: '${t.translate(i18.login.loginPassword)}',
-                      child: DigitPasswordFormInput(
-                        toggleSuffixIcon: iconVisibility
-                            ? Icons.visibility_rounded
-                            : Icons.visibility_off_rounded,
-                        controller: userPasswordController,
-                        isRequired: true,
-                        onSuffixTap: (p0) {
-                          setState(() {
-                            iconVisibility = !iconVisibility;
-                          });
-                        },
-                        onChange: (value) {},
-                      ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0, bottom: 0.0),
+                  child: ui_label.LabeledField(
+                    isRequired: true,
+                    label: "${t.translate(i18.common.city)}",
+                    child: ui_component.DigitDropdown(
+                      // initialValue: null,
+                      // formControlName: cityDropDownKey,
+                      // onChanged: (value) {
+                      // setState(() {
+                      //   selectTenantId = value?.code ?? "";
+                      // });
+                      // },
+                      onSelect: (value) {
+                        setState(() {
+                          selectTenantId = value?.code ?? "";
+                        });
+                      },
+                      // label: "${t.translate(i18.common.city)} *",
+                      items: data.initMdmsModel!.tenant!.tenantListModel!
+                          .map((e) => DropdownItem(
+                              name: t.translate(
+                                  Conversion.convertToTenant(e!.code!)),
+                              code: e!.code!))
+                          .toList(),
+                      // valueMapper: (value) =>
+                      //     t.translate(Conversion.convertToTenant(value!.code!)),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 16),
-                    child: ui_label.LabeledField(
-                      isRequired: true,
-                      label: "${t.translate(i18.common.city)}",
-                      child: ui_component.DigitDropdown(
-                        // initialValue: null,
-                        // formControlName: cityDropDownKey,
-                        // onChanged: (value) {
-                        // setState(() {
-                        //   selectTenantId = value?.code ?? "";
-                        // });
-                        // },
-                        onSelect: (value) {
-                          setState(() {
-                            selectTenantId = value?.code ?? "";
-                          });
-                        },
-                        // label: "${t.translate(i18.common.city)} *",
-                        items: data.initMdmsModel!.tenant!.tenantListModel!
-                            .map((e) => DropdownItem(
-                                name: t.translate(
-                                    Conversion.convertToTenant(e!.code!)),
-                                code: e!.code!))
-                            .toList(),
-                        // valueMapper: (value) =>
-                        //     t.translate(Conversion.convertToTenant(value!.code!)),
-                      ),
-                    ),
-                  ),
-                  Button(
-                    type: ButtonType.tertiary,
-                    size: ButtonSize.large,
-                    label: t.translate(i18.login.forgotPassword),
-                    onPressed: () {
-                      forgotPassword(t);
-                    },
-                  ),
-                ],
-              );
-            }),
-      ),
+                ),
+                Button(
+                  type: ButtonType.tertiary,
+                  size: ButtonSize.large,
+                  label: t.translate(i18.login.forgotPassword),
+                  onPressed: () {
+                    forgotPassword(t);
+                  },
+                ),
+              ],
+            );
+          }),
     );
   }
 

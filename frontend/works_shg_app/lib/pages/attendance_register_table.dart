@@ -107,6 +107,15 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
     super.deactivate();
   }
 
+@override
+  void dispose() {
+    // TODO: implement dispose
+    searchController.clear();
+    searchController.dispose();
+    suggestionsBoxController.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
@@ -141,11 +150,11 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                         attendeeList:
                                             createAttendeePayLoadList),
                                   );
-                              context.read<AttendeeDeEnrollBloc>().add(
-                                    DeEnrollAttendeeEvent(
-                                        attendeeList:
-                                            deleteAttendeePayLoadList),
-                                  );
+                              // context.read<AttendeeDeEnrollBloc>().add(
+                              //       DeEnrollAttendeeEvent(
+                              //           attendeeList:
+                              //               deleteAttendeePayLoadList),
+                              //     );
                             } else if (createAttendeePayLoadList.isNotEmpty &&
                                 deleteAttendeePayLoadList.isEmpty) {
                               context.read<AttendeeCreateBloc>().add(
@@ -155,11 +164,11 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                   );
                             } else if (deleteAttendeePayLoadList.isNotEmpty &&
                                 createAttendeePayLoadList.isEmpty) {
-                              context.read<AttendeeDeEnrollBloc>().add(
-                                    DeEnrollAttendeeEvent(
-                                        attendeeList:
-                                            deleteAttendeePayLoadList),
-                                  );
+                              // context.read<AttendeeDeEnrollBloc>().add(
+                              //       DeEnrollAttendeeEvent(
+                              //           attendeeList:
+                              //               deleteAttendeePayLoadList),
+                              //     );
                             } else {}
                           },
                     child: IgnorePointer(
@@ -658,7 +667,31 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                       listener: (context,
                                                           deEnrollState) {
                                                         deEnrollState.maybeWhen(
+                                                            loading: () {
+                                                              Navigator.of(
+                                                                context,
+                                                                rootNavigator:
+                                                                    true,
+                                                              ).popUntil(
+                                                                (route) => route
+                                                                    is! PopupRoute,
+                                                              );
+                                                              return shg_loader
+                                                                      .Loaders
+                                                                  .showLoadingDialog(
+                                                                      context,
+                                                                      label:
+                                                                          "Deleting...");
+                                                            },
                                                             loaded: () {
+                                                              Navigator.of(
+                                                                context,
+                                                                rootNavigator:
+                                                                    true,
+                                                              ).popUntil(
+                                                                (route) => route
+                                                                    is! PopupRoute,
+                                                              );
                                                               // Notifiers.getToastMessage(
                                                               //     context,
                                                               // AppLocalizations.of(
@@ -700,7 +733,14 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               //         error
                                                               //             .toString()),
                                                               //     'ERROR');
-
+                                                              Navigator.of(
+                                                                context,
+                                                                rootNavigator:
+                                                                    true,
+                                                              ).popUntil(
+                                                                (route) => route
+                                                                    is! PopupRoute,
+                                                              );
                                                               Toast.showToast(
                                                                   context,
                                                                   message: AppLocalizations.of(
@@ -913,6 +953,18 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
     switch (createAttendeePayLoadList.length > 1 &&
         existingAttendeeList.where((e) => e["uuid"] == uuid).isNotEmpty) {
       case true:
+        deleteAttendeePayLoadList.add({
+          "registerId": registerId.toString(),
+          "individualId": uuid.toString(),
+          "enrollmentDate": null,
+          "denrollmentDate": DateTime.now()
+              .subtract(const Duration(minutes: 1, seconds: 30))
+              .millisecondsSinceEpoch,
+          "tenantId": widget.tenantId.toString()
+        });
+        context.read<AttendeeDeEnrollBloc>().add(
+              DeEnrollAttendeeEvent(attendeeList: deleteAttendeePayLoadList),
+            );
         setState(() {
           searchUser = true;
           createAttendeePayLoadList
@@ -921,6 +973,10 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           userList.removeWhere((e) => e['uuid'] == uuid);
           addToTableList.removeWhere((e) => e['uuid'] == uuid);
           userTableList.removeWhere((e) => e.uuid == uuid);
+        });
+        break;
+      case false:
+        if (existingAttendeeList.where((e) => e["uuid"] == uuid).isNotEmpty) {
           deleteAttendeePayLoadList.add({
             "registerId": registerId.toString(),
             "individualId": uuid.toString(),
@@ -930,9 +986,10 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                 .millisecondsSinceEpoch,
             "tenantId": widget.tenantId.toString()
           });
-        });
-        break;
-      case false:
+        }
+        context.read<AttendeeDeEnrollBloc>().add(
+              DeEnrollAttendeeEvent(attendeeList: deleteAttendeePayLoadList),
+            );
         setState(() {
           searchUser = true;
           createAttendeePayLoadList
@@ -941,17 +998,6 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           userList.removeWhere((e) => e['uuid'] == uuid);
           addToTableList.removeWhere((e) => e['uuid'] == uuid);
           userTableList.removeWhere((e) => e.uuid == uuid);
-          if (existingAttendeeList.where((e) => e["uuid"] == uuid).isNotEmpty) {
-            deleteAttendeePayLoadList.add({
-              "registerId": registerId.toString(),
-              "individualId": uuid.toString(),
-              "enrollmentDate": null,
-              "denrollmentDate": DateTime.now()
-                  .subtract(const Duration(minutes: 1, seconds: 30))
-                  .millisecondsSinceEpoch,
-              "tenantId": widget.tenantId.toString()
-            });
-          }
         });
         break;
       default:

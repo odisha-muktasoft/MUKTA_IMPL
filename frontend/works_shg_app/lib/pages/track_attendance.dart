@@ -315,15 +315,16 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                         .start,
                                                                 children: [
                                                                   BackNavigationButton(
-                                                                    backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                                                    backNavigationButtonThemeData: const BackNavigationButtonThemeData()
+                                                                        .copyWith(
+                                                                            context:
+                                                                                context,
+                                                                            backButtonIcon:
+                                                                                Icon(
+                                                                              Icons.arrow_circle_left_outlined,
+                                                                              size: MediaQuery.of(context).size.width < 500 ? Theme.of(context).spacerTheme.spacer5 : Theme.of(context).spacerTheme.spacer6,
+                                                                              color: Theme.of(context).colorTheme.primary.primary2,
+                                                                            )),
                                                                     backButtonText: AppLocalizations.of(
                                                                             context)
                                                                         .translate(i18

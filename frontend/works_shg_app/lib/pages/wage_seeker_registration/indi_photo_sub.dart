@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/utils/validators/file_validator.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
@@ -53,48 +54,28 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
           FocusScope.of(context).unfocus();
         }
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ui_card.DigitCard(
-            cardType: CardType.primary,
-            margin: const EdgeInsets.all(8),
-            children: [
-              DigitTextBlock(
-                heading: t.translate(i18.wageSeeker.individualPhotoHeader),
-              ),
-              // const SizedBox(
-              //   height: 16,
-              // ),
-              Column(children: [
-                //old
-                // SHGFilePicker(
-                //   callBack: (List<FileStoreModel>? fileStore) {
-                //     if (fileStore != null && fileStore.isNotEmpty) {
-                //       // setState(() {
-                //       photo = fileStore.first.fileStoreId;
-                //       // });
-                //     } else {
-                //       // setState(() {
-                //       photo = '';
-                //       // });
-                //     }
-                //   },
-                //   extensions: const ['jpg', 'png', 'jpeg'],
-                //   moduleName: 'works',
-                //   label: t.translate(i18.common.photoGraph),
-                // ),
-                // const SizedBox(
-                //   height: 12,
-                // ),
-
+      child: SizedBox(
+        height: MediaQuery.sizeOf(context).height*0.7,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            ui_card.DigitCard(
+              cardType: CardType.primary,
+              margin: const EdgeInsets.all(8),
+              children: [
+                DigitTextBlock(
+                  heading: t.translate(i18.wageSeeker.individualPhotoHeader),
+                ),
+        
                 ImageUploader(
-                  label:t.translate(i18.common.photoGraph) ,
+                  label: t.translate(i18.common.photoGraph),
                   validators: [
                     FileValidator(FileValidatorType.maxSize, 5242880,
                         errorMessage: 'max file size exceeded'),
                   ],
-                  initialImages:FilePickerData.imageFile!=null ?[FilePickerData.imageFile!] : [] ,
+                  initialImages: FilePickerData.imageFile != null
+                      ? [FilePickerData.imageFile!]
+                      : [],
                   onImagesSelected: (List<File> imageFile) async {
                     // Handle the selected image file here
                     print('Image selected: ${imageFile[0].path}');
@@ -104,11 +85,11 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                     ).popUntil(
                       (route) => route is! PopupRoute,
                     );
-                    Loaders.showLoadingDialog(context,label: "Uploading...");
-
+                    Loaders.showLoadingDialog(context, label: "Uploading...");
+        
                     final List<FileStoreModel> ss =
                         await uploadProfile(imageFile, 'works');
-
+        
                     if (ss.isNotEmpty) {
                       Navigator.of(
                         context,
@@ -126,31 +107,53 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                       ).popUntil(
                         (route) => route is! PopupRoute,
                       );
-                       FilePickerData.imageFile = null;
+                      FilePickerData.imageFile = null;
                       photo = '';
                     }
                   },
-                )
-              ]),
-              Button(
-                  type: ButtonType.primary,
-                  size: ButtonSize.large,
-                  mainAxisSize: MainAxisSize.max,
-                  onPressed: () {
-                    context.read<WageSeekerBloc>().add(
-                          WageSeekerPhotoCreateEvent(
-                            imageFile: FilePickerData.imageFile,
-                            bytes: FilePickerData.bytes,
-                            photo: photo,
-                          ),
-                        );
-
-                    widget.onPageChanged(4);
-                  },
-                  label: t.translate(i18.common.next))
-            ],
-          ),
-        ],
+                ),
+                // Button(
+                //     type: ButtonType.primary,
+                //     size: ButtonSize.large,
+                //     mainAxisSize: MainAxisSize.max,
+                //     onPressed: () {
+                //       context.read<WageSeekerBloc>().add(
+                //             WageSeekerPhotoCreateEvent(
+                //               imageFile: FilePickerData.imageFile,
+                //               bytes: FilePickerData.bytes,
+                //               photo: photo,
+                //             ),
+                //           );
+        
+                //       widget.onPageChanged(4);
+                //     },
+                //     label: t.translate(i18.common.next))
+              ],
+            ),
+            ui_card.DigitCard(
+                // margin: EdgeInsets.only(
+                //     left: Theme.of(context).spacerTheme.spacer2,
+                //     right: Theme.of(context).spacerTheme.spacer2),
+                children: [
+                  Button(
+                      type: ButtonType.primary,
+                      size: ButtonSize.large,
+                      mainAxisSize: MainAxisSize.max,
+                      onPressed: () {
+                        context.read<WageSeekerBloc>().add(
+                              WageSeekerPhotoCreateEvent(
+                                imageFile: FilePickerData.imageFile,
+                                bytes: FilePickerData.bytes,
+                                photo: photo,
+                              ),
+                            );
+        
+                        widget.onPageChanged(4);
+                      },
+                      label: t.translate(i18.common.next)),
+                ])
+          ],
+        ),
       ),
     );
   }

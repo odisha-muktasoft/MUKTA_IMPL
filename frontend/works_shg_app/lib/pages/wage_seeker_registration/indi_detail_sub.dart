@@ -71,433 +71,493 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
               FocusScope.of(context).unfocus();
             }
           },
-          child: ui_card.DigitCard(
-            margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-            cardType: CardType.primary,
+          child: Column(
             children: [
-              DigitTextBlock(
-                heading: t.translate(i18.wageSeeker.personalDetailHeader),
-              ),
-
-// old
-              // DigitDateFormPicker(
-              //   label: t.translate(i18.common.dateOfBirth),
-              //   isRequired: true,
-              //   cancelText: t.translate(i18.common.cancel),
-              //   fieldHintText: 'dd/mm/yyyy',
-              //   confirmText: t.translate(i18.common.oK),
-              //   icon: Icons.info_outline_rounded,
-              //   tooltipMessage: t.translate(i18.wageSeeker.ageValidation),
-              //   formControlName: dobKey,
-              //   autoValidation: AutovalidateMode.always,
-              //   requiredMessage: t.translate(i18.wageSeeker.dobRequired),
-              //   validationMessages: {
-              //     'required': (_) => t.translate(
-              //           i18.wageSeeker.dobRequired,
-              //         ),
-              //     'max': (_) => t.translate(i18.wageSeeker.ageValidation)
-              //   },
-              // ),
-//end
-              LabeledField(
-                isRequired: true,
-                label: t.translate(i18.common.dateOfBirth),
-                child: ReactiveWrapperField(
-                  showErrors: (control) => control.invalid && control.touched,
-                  validationMessages: {
-                    'required': (error) => t.translate(
-                          i18.wageSeeker.dobRequired,
-                        ),
-                    'max': (error) => t.translate(i18.wageSeeker.ageValidation)
-                  },
-                  formControlName: dobKey,
-                  builder: (field) {
-                    return DigitDateFormInput(
-                      controller: TextEditingController()
-                        ..text = form1.control(dobKey).value != null
-                            ? DateFormat('dd/MM/yyyy')
-                                .format(form1.control(dobKey).value)
-                            : '',
-                      errorMessage: field.errorText,
-                      onChange: (p0) {
-                        DateTime selectedDate =
-                            DateFormat("dd/MM/yyyy").parse(p0);
-
-                        field.control.markAsTouched();
-
-                        // Calculate the current date minus 18 years
-                        DateTime minDate = DateTime.now()
-                            .subtract(const Duration(days: 365 * 18));
-
-                        if (selectedDate.isAfter(minDate)) {
-                          field.control.setErrors({
-                            'max': t.translate(i18.wageSeeker.ageValidation)
-                          });
-                        }
-
-                        form1.control(dobKey).value = selectedDate;
-                      },
-
-                      helpText: t.translate(i18.wageSeeker.ageValidation),
-                      firstDate: DateTime(1900),
-                      // lastDate: DateTime(DateTime.now().year),
-                      isRequired: true,
-                      cancelText: t.translate(i18.common.cancel),
-                      confirmText: t.translate(i18.common.oK),
-                      validations: [
-                        // ui_validation.Validator(
-                        //     ui_validation.ValidatorType.minValue, 18,
-                        //     errorMessage:
-                        //         t.translate(i18.wageSeeker.ageValidation)),
-                        ui_validation.Validator(
-                            ui_validation.ValidatorType.required, null,
-                            errorMessage:
-                                t.translate(i18.wageSeeker.dobRequired)),
-                      ],
-                    );
-                  },
-                ),
-              ),
-
-// old
-              // StatefulBuilder(
-              //     builder: (BuildContext context, StateSetter setState) {
-              //   return DigitRadioButtonList<String>(
-              //     labelText: t.translate(i18.common.gender),
-              //     formControlName: genderKey,
-              //     options: widget.gender.map((e) => e.toString()).toList(),
-              //     isRequired: true,
-              //     valueMapper: (value) => t.translate(value),
-              //     onValueChange: (value) {
-              //       genderController = value;
-              //     },
-              //   );
-              // }),
-// end
-
-              LabeledField(
-                label: t.translate(i18.common.gender),
-                isRequired: true,
-                child: ReactiveWrapperField(
-                  validationMessages: {
-                    "required": (error) =>
-                        t.translate(i18.wageSeeker.genderRequired),
-                  },
-                  showErrors: (control) => control.invalid && control.touched,
-                  formControlName: genderKey,
-                  builder: (field) {
-                    return RadioList(
-                      errorMessage: field.errorText,
-                      groupValue: form1.control(genderKey).value,
-                      radioButtons: widget.gender
-                          .map((e) => RadioButtonModel(
-                              code: e.toString(),
-                              name: t.translate(e.toString())))
-                          .toList(),
-                      onChanged: (value) {
-                        // genderController = value.code;
-                        field.control.markAsTouched();
-
-                        form1.control(genderKey).value = value.code;
-                      },
-                    );
-                  },
-                ),
-              ),
-
-              // old
-              // DigitTextFormField(
-              //   padding: EdgeInsets.zero,
-              //   formControlName: fatherNameKey,
-              //   isRequired: true,
-              // label: t.translate(i18.common.guardianName),
-              //   inputFormatters: [
-              //     FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
-              //   ],
-              //   validationMessages: {
-              //     'required': (_) => t.translate(
-              //           i18.wageSeeker.fatherNameRequired,
-              //         ),
-              //     'minLength': (_) => t.translate(
-              //           i18.wageSeeker.minFatherNameCharacters,
-              //         ),
-              //     'maxLength': (_) => t.translate(
-              //           i18.wageSeeker.maxFatherNameCharacters,
-              //         ),
-              //   },
-              // ),
-
-// end
-
-              LabeledField(
-                label: t.translate(i18.common.guardianName),
-                isRequired: true,
-                child: ReactiveWrapperField(
-                  validationMessages: {
-                    'required': (error) =>
-                        t.translate(i18.wageSeeker.fatherNameRequired),
-                    'minLength': (error) =>
-                        t.translate(i18.wageSeeker.minFatherNameCharacters),
-                    'maxLength': (error) =>
-                        t.translate(i18.wageSeeker.maxFatherNameCharacters),
-                  },
-                  formControlName: fatherNameKey,
-                  showErrors: (control) => control.invalid && control.touched,
-                  builder: (field) {
-                    return DigitTextFormInput(
-                      controller: TextEditingController()
-                        ..text = form1.control(fatherNameKey).value,
-                      isRequired: true,
-                      onChange: (value) {
-                        field.control.markAsTouched();
-
-                        form1.control(fatherNameKey).value = value;
-                      },
-                      errorMessage: field.errorText,
-                      keyboardType: TextInputType.text,
-                      validations: [
-                        ui_validation.Validator(
-                            ui_validation.ValidatorType.minLength, 2,
-                            errorMessage: t.translate(
-                                i18.wageSeeker.minFatherNameCharacters)),
-                        ui_validation.Validator(
-                          ui_validation.ValidatorType.required,
-                          "",
-                          errorMessage:
-                              t.translate(i18.wageSeeker.fatherNameRequired),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-
-// old
-              // DigitReactiveDropdown<String>(
-              //   padding: EdgeInsets.zero,
-              //   label: t.translate(i18.common.relationship),
-              //   menuItems:
-              //       widget.relationship.map((e) => e.toString()).toList(),
-              //   isRequired: true,
-              //   formControlName: relationshipKey,
-              //   valueMapper: (value) => t.translate('CORE_COMMON_$value'),
-              //   onChanged: (value) {},
-              //   validationMessages: {
-              //     'required': (_) => t.translate(
-              //           i18.wageSeeker.relationshipRequired,
-              //         ),
-              //   },
-              // ),
-// end
-
-              LabeledField(
-                isRequired: true,
-                label: t.translate(i18.common.relationship),
-                child: ReactiveWrapperField(
-                  formControlName: relationshipKey,
-                  showErrors: (control) => control.invalid && control.touched,
-                  builder: (field) {
-                    return DigitDropdown(
-                      dropdownController: TextEditingController()
-                        ..text = form1.control(relationshipKey).value ?? '',
-                      onSelect: (value) {
-                        field.control.markAsTouched();
-
-                        // form1.control(relationshipKey).value = value;
-                        setState(() {
-                          form1.control(relationshipKey).value = value.code;
-                        });
-
-                        // form1.setErrors();
-                      },
-                      errorMessage: field.errorText,
-                      items: widget.relationship
-                          .map((e) => DropdownItem(
-                              name: t.translate('CORE_COMMON_${e.toString()}'),
-                              code: e.toString()))
-                          .toList(),
-                    );
-                  },
-                ),
-              ),
-
-              // old
-              // DigitTextFormField(
-              //   padding: const EdgeInsets.only(top: 10),
-              //   label: t.translate(i18.common.mobileNumber),
-              //   formControlName: mobileKey,
-              //   isRequired: true,
-              //   minLength: 10,
-              //   maxLength: 10,
-              //   keyboardType: TextInputType.phone,
-              //   inputFormatters: [
-              //     FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-              //   ],
-              //   validationMessages: {
-              //     'required': (_) => t.translate(
-              //           i18.wageSeeker.mobileRequired,
-              //         ),
-              //     'minLength': (_) => t.translate(
-              //           i18.wageSeeker.minMobileCharacters,
-              //         ),
-              //     'maxLength': (_) => t.translate(
-              //           i18.wageSeeker.maxMobileCharacters,
-              //         ),
-              //     'min': (_) => t.translate(
-              //           i18.wageSeeker.validMobileCharacters,
-              //         ),
-              //     'max': (_) => t.translate(
-              //           i18.wageSeeker.validMobileCharacters,
-              //         ),
-              //   },
-              // ),
-
-              // end
-
-              LabeledField(
-                label: t.translate(i18.common.mobileNumber),
-                isRequired: true,
-                child: ReactiveWrapperField(
-                  validationMessages: {
-                    'required': (error) => t.translate(
-                          i18.wageSeeker.mobileRequired,
-                        ),
-                    'minLength': (error) => t.translate(
-                          i18.wageSeeker.minMobileCharacters,
-                        ),
-                    'maxLength': (error) => t.translate(
-                          i18.wageSeeker.maxMobileCharacters,
-                        ),
-                    // 'min': (error) => t.translate(
-                    //       i18.wageSeeker.validMobileCharacters,
-                    //     ),
-                    // 'max': (error) => t.translate(
-                    //       i18.wageSeeker.validMobileCharacters,
-                    //     ),
-                  },
-                  formControlName: mobileKey,
-                  showErrors: (control) => control.invalid && control.touched,
-                  builder: (field) {
-                    return DigitTextFormInput(
-                      validations: [
-                        ui_validation.Validator(
-                            ui_validation.ValidatorType.minLength, 10,
-                            errorMessage: t
-                                .translate(i18.wageSeeker.minMobileCharacters)),
-                        ui_validation.Validator(
-                            ui_validation.ValidatorType.maxLength, 10,
-                            errorMessage: t
-                                .translate(i18.wageSeeker.maxMobileCharacters)),
-                        // ui_validation.Validator(
-                        //     ui_validation.ValidatorType.maxValue, 10,
-                        //     errorMessage: t.translate(
-                        //         i18.wageSeeker.validMobileCharacters)),
-                        // ui_validation.Validator(
-                        //     ui_validation.ValidatorType.minValue, 10,
-                        //     errorMessage: t.translate(
-                        //         i18.wageSeeker.validMobileCharacters)),
-                        ui_validation.Validator(
-                          ui_validation.ValidatorType.required,
-                          "",
-                          errorMessage:
-                              t.translate(i18.wageSeeker.mobileRequired),
-                        ),
-                      ],
-                      controller: TextEditingController()
-                        ..text = form1.control(mobileKey).value ?? '',
-                      isRequired: true,
-                      onChange: (value) {
-                        field.control.markAsTouched();
-
-                        form1.control(mobileKey).value = value;
-                      },
-                      charCount: true,
-                      errorMessage: field.errorText,
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                      ],
-                    );
-                  },
-                ),
-              ),
-
-// old
-              // DigitReactiveDropdown<String>(
-              //   padding: EdgeInsets.zero,
-              //   label: t.translate(i18.common.socialCategory),
-              //   menuItems:
-              //       widget.socialCategory.map((e) => e.toString()).toList(),
-              //   formControlName: socialCategoryKey,
-              //   valueMapper: (value) =>
-              //       t.translate('COMMON_MASTERS_SOCIAL_$value'),
-              //   onChanged: (value) {},
-              // ),
-
-              // end
-              //
-
-              LabeledField(
-                label: t.translate(i18.common.socialCategory),
-                child: ReactiveWrapperField(
-                  formControlName: socialCategoryKey,
-                  builder: (field) {
-                    return DigitDropdown(
-                      dropdownController: TextEditingController()
-                        ..text = form1.control(socialCategoryKey).value ?? '',
-                      onSelect: (value) {
-                        field.control.markAsTouched();
-
-                        form1.control(socialCategoryKey).value = value.code;
-                      },
-                      items: widget.socialCategory
-                          .map(
-                            (e) => DropdownItem(
-                              name: t.translate(
-                                  'COMMON_MASTERS_SOCIAL_${e.toString()}'),
-                              code: e.toString(),
+              ui_card.DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
+                children: [
+                  DigitTextBlock(
+                    heading: t.translate(i18.wageSeeker.personalDetailHeader),
+                  ),
+          
+                  // old
+                  // DigitDateFormPicker(
+                  //   label: t.translate(i18.common.dateOfBirth),
+                  //   isRequired: true,
+                  //   cancelText: t.translate(i18.common.cancel),
+                  //   fieldHintText: 'dd/mm/yyyy',
+                  //   confirmText: t.translate(i18.common.oK),
+                  //   icon: Icons.info_outline_rounded,
+                  //   tooltipMessage: t.translate(i18.wageSeeker.ageValidation),
+                  //   formControlName: dobKey,
+                  //   autoValidation: AutovalidateMode.always,
+                  //   requiredMessage: t.translate(i18.wageSeeker.dobRequired),
+                  //   validationMessages: {
+                  //     'required': (_) => t.translate(
+                  //           i18.wageSeeker.dobRequired,
+                  //         ),
+                  //     'max': (_) => t.translate(i18.wageSeeker.ageValidation)
+                  //   },
+                  // ),
+                  //end
+                  LabeledField(
+                    isRequired: true,
+                    label: t.translate(i18.common.dateOfBirth),
+                    child: ReactiveWrapperField(
+                      showErrors: (control) =>
+                          control.invalid && control.touched,
+                      validationMessages: {
+                        'required': (error) => t.translate(
+                              i18.wageSeeker.dobRequired,
                             ),
-                          )
-                          .toList(),
-                    );
-                  },
-                ),
+                        'max': (error) =>
+                            t.translate(i18.wageSeeker.ageValidation)
+                      },
+                      formControlName: dobKey,
+                      builder: (field) {
+                        return DigitDateFormInput(
+                          controller: TextEditingController()
+                            ..text = form1.control(dobKey).value != null
+                                ? DateFormat('dd/MM/yyyy')
+                                    .format(form1.control(dobKey).value)
+                                : '',
+                          errorMessage: field.errorText,
+                          onChange: (p0) {
+                            DateTime selectedDate =
+                                DateFormat("dd/MM/yyyy").parse(p0);
+          
+                            field.control.markAsTouched();
+          
+                            // Calculate the current date minus 18 years
+                            DateTime minDate = DateTime.now()
+                                .subtract(const Duration(days: 365 * 18));
+          
+                            if (selectedDate.isAfter(minDate)) {
+                              field.control.setErrors({
+                                'max':
+                                    t.translate(i18.wageSeeker.ageValidation)
+                              });
+                            }
+          
+                            form1.control(dobKey).value = selectedDate;
+                          },
+          
+                          helpText: t.translate(i18.wageSeeker.ageValidation),
+                          firstDate: DateTime(1900),
+                          // lastDate: DateTime(DateTime.now().year),
+                          isRequired: true,
+                          cancelText: t.translate(i18.common.cancel),
+                          confirmText: t.translate(i18.common.oK),
+                          validations: [
+                            // ui_validation.Validator(
+                            //     ui_validation.ValidatorType.minValue, 18,
+                            //     errorMessage:
+                            //         t.translate(i18.wageSeeker.ageValidation)),
+                            ui_validation.Validator(
+                                ui_validation.ValidatorType.required, null,
+                                errorMessage:
+                                    t.translate(i18.wageSeeker.dobRequired)),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+          
+                  // old
+                  // StatefulBuilder(
+                  //     builder: (BuildContext context, StateSetter setState) {
+                  //   return DigitRadioButtonList<String>(
+                  //     labelText: t.translate(i18.common.gender),
+                  //     formControlName: genderKey,
+                  //     options: widget.gender.map((e) => e.toString()).toList(),
+                  //     isRequired: true,
+                  //     valueMapper: (value) => t.translate(value),
+                  //     onValueChange: (value) {
+                  //       genderController = value;
+                  //     },
+                  //   );
+                  // }),
+                  // end
+          
+                  LabeledField(
+                    label: t.translate(i18.common.gender),
+                    isRequired: true,
+                    child: ReactiveWrapperField(
+                      validationMessages: {
+                        "required": (error) =>
+                            t.translate(i18.wageSeeker.genderRequired),
+                      },
+                      showErrors: (control) =>
+                          control.invalid && control.touched,
+                      formControlName: genderKey,
+                      builder: (field) {
+                        return RadioList(
+                          errorMessage: field.errorText,
+                          groupValue: form1.control(genderKey).value,
+                          radioButtons: widget.gender
+                              .map((e) => RadioButtonModel(
+                                  code: e.toString(),
+                                  name: t.translate(e.toString())))
+                              .toList(),
+                          onChanged: (value) {
+                            // genderController = value.code;
+                            field.control.markAsTouched();
+          
+                            form1.control(genderKey).value = value.code;
+                          },
+                        );
+                      },
+                    ),
+                  ),
+          
+                  // old
+                  // DigitTextFormField(
+                  //   padding: EdgeInsets.zero,
+                  //   formControlName: fatherNameKey,
+                  //   isRequired: true,
+                  // label: t.translate(i18.common.guardianName),
+                  //   inputFormatters: [
+                  //     FilteringTextInputFormatter.allow(RegExp("[A-Za-z ]"))
+                  //   ],
+                  //   validationMessages: {
+                  //     'required': (_) => t.translate(
+                  //           i18.wageSeeker.fatherNameRequired,
+                  //         ),
+                  //     'minLength': (_) => t.translate(
+                  //           i18.wageSeeker.minFatherNameCharacters,
+                  //         ),
+                  //     'maxLength': (_) => t.translate(
+                  //           i18.wageSeeker.maxFatherNameCharacters,
+                  //         ),
+                  //   },
+                  // ),
+          
+                  // end
+          
+                  LabeledField(
+                    label: t.translate(i18.common.guardianName),
+                    isRequired: true,
+                    child: ReactiveWrapperField(
+                      validationMessages: {
+                        'required': (error) =>
+                            t.translate(i18.wageSeeker.fatherNameRequired),
+                        'minLength': (error) => t.translate(
+                            i18.wageSeeker.minFatherNameCharacters),
+                        'maxLength': (error) => t.translate(
+                            i18.wageSeeker.maxFatherNameCharacters),
+                      },
+                      formControlName: fatherNameKey,
+                      showErrors: (control) =>
+                          control.invalid && control.touched,
+                      builder: (field) {
+                        return DigitTextFormInput(
+                          controller: TextEditingController()
+                            ..text = form1.control(fatherNameKey).value,
+                          isRequired: true,
+                          onChange: (value) {
+                            field.control.markAsTouched();
+          
+                            form1.control(fatherNameKey).value = value;
+                          },
+                          errorMessage: field.errorText,
+                          keyboardType: TextInputType.text,
+                          validations: [
+                            ui_validation.Validator(
+                                ui_validation.ValidatorType.minLength, 2,
+                                errorMessage: t.translate(
+                                    i18.wageSeeker.minFatherNameCharacters)),
+                            ui_validation.Validator(
+                              ui_validation.ValidatorType.required,
+                              "",
+                              errorMessage: t.translate(
+                                  i18.wageSeeker.fatherNameRequired),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+          
+                  // old
+                  // DigitReactiveDropdown<String>(
+                  //   padding: EdgeInsets.zero,
+                  //   label: t.translate(i18.common.relationship),
+                  //   menuItems:
+                  //       widget.relationship.map((e) => e.toString()).toList(),
+                  //   isRequired: true,
+                  //   formControlName: relationshipKey,
+                  //   valueMapper: (value) => t.translate('CORE_COMMON_$value'),
+                  //   onChanged: (value) {},
+                  //   validationMessages: {
+                  //     'required': (_) => t.translate(
+                  //           i18.wageSeeker.relationshipRequired,
+                  //         ),
+                  //   },
+                  // ),
+                  // end
+          
+                  LabeledField(
+                    isRequired: true,
+                    label: t.translate(i18.common.relationship),
+                    child: ReactiveWrapperField(
+                      formControlName: relationshipKey,
+                      showErrors: (control) =>
+                          control.invalid && control.touched,
+                      builder: (field) {
+                        return DigitDropdown(
+                          dropdownController: TextEditingController()
+                            ..text =
+                                form1.control(relationshipKey).value ?? '',
+                          onSelect: (value) {
+                            field.control.markAsTouched();
+          
+                            // form1.control(relationshipKey).value = value;
+                            setState(() {
+                              form1.control(relationshipKey).value =
+                                  value.code;
+                            });
+          
+                            // form1.setErrors();
+                          },
+                          errorMessage: field.errorText,
+                          items: widget.relationship
+                              .map((e) => DropdownItem(
+                                  name: t.translate(
+                                      'CORE_COMMON_${e.toString()}'),
+                                  code: e.toString()))
+                              .toList(),
+                        );
+                      },
+                    ),
+                  ),
+          
+                  // old
+                  // DigitTextFormField(
+                  //   padding: const EdgeInsets.only(top: 10),
+                  //   label: t.translate(i18.common.mobileNumber),
+                  //   formControlName: mobileKey,
+                  //   isRequired: true,
+                  //   minLength: 10,
+                  //   maxLength: 10,
+                  //   keyboardType: TextInputType.phone,
+                  //   inputFormatters: [
+                  //     FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                  //   ],
+                  //   validationMessages: {
+                  //     'required': (_) => t.translate(
+                  //           i18.wageSeeker.mobileRequired,
+                  //         ),
+                  //     'minLength': (_) => t.translate(
+                  //           i18.wageSeeker.minMobileCharacters,
+                  //         ),
+                  //     'maxLength': (_) => t.translate(
+                  //           i18.wageSeeker.maxMobileCharacters,
+                  //         ),
+                  //     'min': (_) => t.translate(
+                  //           i18.wageSeeker.validMobileCharacters,
+                  //         ),
+                  //     'max': (_) => t.translate(
+                  //           i18.wageSeeker.validMobileCharacters,
+                  //         ),
+                  //   },
+                  // ),
+          
+                  // end
+          
+                  LabeledField(
+                    label: t.translate(i18.common.mobileNumber),
+                    isRequired: true,
+                    child: ReactiveWrapperField(
+                      validationMessages: {
+                        'required': (error) => t.translate(
+                              i18.wageSeeker.mobileRequired,
+                            ),
+                        'minLength': (error) => t.translate(
+                              i18.wageSeeker.minMobileCharacters,
+                            ),
+                        'maxLength': (error) => t.translate(
+                              i18.wageSeeker.maxMobileCharacters,
+                            ),
+                        // 'min': (error) => t.translate(
+                        //       i18.wageSeeker.validMobileCharacters,
+                        //     ),
+                        // 'max': (error) => t.translate(
+                        //       i18.wageSeeker.validMobileCharacters,
+                        //     ),
+                      },
+                      formControlName: mobileKey,
+                      showErrors: (control) =>
+                          control.invalid && control.touched,
+                      builder: (field) {
+                        return DigitTextFormInput(
+                          validations: [
+                            ui_validation.Validator(
+                                ui_validation.ValidatorType.minLength, 10,
+                                errorMessage: t.translate(
+                                    i18.wageSeeker.minMobileCharacters)),
+                            ui_validation.Validator(
+                                ui_validation.ValidatorType.maxLength, 10,
+                                errorMessage: t.translate(
+                                    i18.wageSeeker.maxMobileCharacters)),
+                            // ui_validation.Validator(
+                            //     ui_validation.ValidatorType.maxValue, 10,
+                            //     errorMessage: t.translate(
+                            //         i18.wageSeeker.validMobileCharacters)),
+                            // ui_validation.Validator(
+                            //     ui_validation.ValidatorType.minValue, 10,
+                            //     errorMessage: t.translate(
+                            //         i18.wageSeeker.validMobileCharacters)),
+                            ui_validation.Validator(
+                              ui_validation.ValidatorType.required,
+                              "",
+                              errorMessage:
+                                  t.translate(i18.wageSeeker.mobileRequired),
+                            ),
+                          ],
+                          controller: TextEditingController()
+                            ..text = form1.control(mobileKey).value ?? '',
+                          isRequired: true,
+                          onChange: (value) {
+                            field.control.markAsTouched();
+          
+                            form1.control(mobileKey).value = value;
+                          },
+                          charCount: true,
+                          errorMessage: field.errorText,
+                          keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+          
+                  // old
+                  // DigitReactiveDropdown<String>(
+                  //   padding: EdgeInsets.zero,
+                  //   label: t.translate(i18.common.socialCategory),
+                  //   menuItems:
+                  //       widget.socialCategory.map((e) => e.toString()).toList(),
+                  //   formControlName: socialCategoryKey,
+                  //   valueMapper: (value) =>
+                  //       t.translate('COMMON_MASTERS_SOCIAL_$value'),
+                  //   onChanged: (value) {},
+                  // ),
+          
+                  // end
+                  //
+          
+                  LabeledField(
+                    label: t.translate(i18.common.socialCategory),
+                    child: ReactiveWrapperField(
+                      formControlName: socialCategoryKey,
+                      builder: (field) {
+                        return DigitDropdown(
+                          dropdownController: TextEditingController()
+                            ..text =
+                                form1.control(socialCategoryKey).value ?? '',
+                          onSelect: (value) {
+                            field.control.markAsTouched();
+          
+                            form1.control(socialCategoryKey).value =
+                                value.code;
+                          },
+                          items: widget.socialCategory
+                              .map(
+                                (e) => DropdownItem(
+                                  name: t.translate(
+                                      'COMMON_MASTERS_SOCIAL_${e.toString()}'),
+                                  code: e.toString(),
+                                ),
+                              )
+                              .toList(),
+                        );
+                      },
+                    ),
+                  ),
+          
+                  // Button(
+                  //   type: ButtonType.primary,
+                  //   size: ButtonSize.large,
+                  //   mainAxisSize: MainAxisSize.max,
+                  //   onPressed: () {
+                  //     form1.markAllAsTouched(updateParent: false);
+                  //     if (!form1.valid) return;
+                  //     // if (form1.value[genderKey] == null ||
+                  //     //     form1.value[genderKey].toString().isEmpty) {
+                  //     //   // Notifiers.getToastMessage(context,
+                  //     //   //     t.translate(i18.wageSeeker.genderRequired), 'ERROR');
+                  //     //   Toast.showToast(context,
+                  //     //       message: t.translate(i18.wageSeeker.genderRequired),
+                  //     //       type: ToastType.error);
+                  //     // } else {
+                  //     context.read<WageSeekerBloc>().add(
+                  //           WageSeekerDetailsCreateEvent(
+                  //             dob: form1.value[dobKey] as DateTime,
+                  //             fatherName: form1.value[fatherNameKey].toString(),
+                  //             gender: form1.value[genderKey].toString(),
+                  //             mobileNumber: form1.value[mobileKey].toString(),
+                  //             relationShip:
+                  //                 form1.value[relationshipKey].toString(),
+                  //             socialCategory:
+                  //                 form1.value[socialCategoryKey].toString()==""?"null":form1.value[socialCategoryKey].toString(),
+                  //           ),
+                  //         );
+          
+                  //     widget.onPageChanged(2);
+                  //     // }
+                  //   },
+                  //   label: t.translate(i18.common.next),
+                  // )
+                ],
               ),
-
-             
-              Button(
-                type: ButtonType.primary,
-                size: ButtonSize.large,
-                mainAxisSize: MainAxisSize.max,
-                onPressed: () {
-                  form1.markAllAsTouched(updateParent: false);
-                  if (!form1.valid) return;
-                  // if (form1.value[genderKey] == null ||
-                  //     form1.value[genderKey].toString().isEmpty) {
-                  //   // Notifiers.getToastMessage(context,
-                  //   //     t.translate(i18.wageSeeker.genderRequired), 'ERROR');
-                  //   Toast.showToast(context,
-                  //       message: t.translate(i18.wageSeeker.genderRequired),
-                  //       type: ToastType.error);
-                  // } else {
-                  context.read<WageSeekerBloc>().add(
-                        WageSeekerDetailsCreateEvent(
-                          dob: form1.value[dobKey] as DateTime,
-                          fatherName: form1.value[fatherNameKey].toString(),
-                          gender: form1.value[genderKey].toString(),
-                          mobileNumber: form1.value[mobileKey].toString(),
-                          relationShip:
-                              form1.value[relationshipKey].toString(),
-                          socialCategory:
-                              form1.value[socialCategoryKey].toString()==""?"null":form1.value[socialCategoryKey].toString(),
-                        ),
-                      );
-              
-                  widget.onPageChanged(2);
-                  // }
-                },
-                label: t.translate(i18.common.next),
-              )
+              ui_card.DigitCard(
+                  // margin: EdgeInsets.only(
+                  //     left: Theme.of(context).spacerTheme.spacer2,
+                  //     right: Theme.of(context).spacerTheme.spacer2),
+                  children: [
+                    Button(
+                      type: ButtonType.primary,
+                      size: ButtonSize.large,
+                      mainAxisSize: MainAxisSize.max,
+                      onPressed: () {
+                        form1.markAllAsTouched(updateParent: false);
+                        if (!form1.valid) return;
+                        // if (form1.value[genderKey] == null ||
+                        //     form1.value[genderKey].toString().isEmpty) {
+                        //   // Notifiers.getToastMessage(context,
+                        //   //     t.translate(i18.wageSeeker.genderRequired), 'ERROR');
+                        //   Toast.showToast(context,
+                        //       message: t.translate(i18.wageSeeker.genderRequired),
+                        //       type: ToastType.error);
+                        // } else {
+                        context.read<WageSeekerBloc>().add(
+                              WageSeekerDetailsCreateEvent(
+                                dob: form1.value[dobKey] as DateTime,
+                                fatherName:
+                                    form1.value[fatherNameKey].toString(),
+                                gender: form1.value[genderKey].toString(),
+                                mobileNumber:
+                                    form1.value[mobileKey].toString(),
+                                relationShip:
+                                    form1.value[relationshipKey].toString(),
+                                socialCategory: form1.value[socialCategoryKey]
+                                            .toString() ==
+                                        ""
+                                    ? "null"
+                                    : form1.value[socialCategoryKey]
+                                        .toString(),
+                              ),
+                            );
+          
+                        widget.onPageChanged(2);
+                        // }
+                      },
+                      label: t.translate(i18.common.next),
+                    )
+                  ]),
             ],
           ),
         );
@@ -530,7 +590,9 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
           ],
         ),
         socialCategoryKey: FormControl<String>(
-            value: widget.individualDetails?.socialCategory=="null"?'' :widget.individualDetails?.socialCategory??''),
+            value: widget.individualDetails?.socialCategory == "null"
+                ? ''
+                : widget.individualDetails?.socialCategory ?? ''),
         mobileKey: FormControl<String>(
             value: widget.individualDetails?.mobileNumber,
             validators: [

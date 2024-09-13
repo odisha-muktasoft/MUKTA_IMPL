@@ -20,12 +20,12 @@ class AppLogo extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                      padding: const EdgeInsets.only(top: 4.0, bottom: 8),
+                      padding: const EdgeInsets.only(top: 0.0, bottom: 0),
                       child: Center(
                         child: GlobalVariables.stateInfoListModel?.logoUrl !=
                                 null
                             ? Image(
-                                width: 150,
+                                width: 130,
                                 image: NetworkImage(
                                   GlobalVariables.stateInfoListModel!.logoUrl
                                       .toString(),

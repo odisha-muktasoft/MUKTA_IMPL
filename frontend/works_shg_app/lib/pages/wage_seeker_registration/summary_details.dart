@@ -382,7 +382,98 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                       ? '( ${financialDetails?.bankName} )'
                       : ''),
             ]),
-            BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
+            // BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
+            //   listener: (context, individualState) {
+            //     individualState.maybeWhen(
+            //       orElse: () => false,
+            //       loading: () => shg_loader.Loaders.circularLoader(context),
+            //       loaded: (SingleIndividualModel? individualListModel) {
+                   
+            //         context.read<WageSeekerBankCreateBloc>().add(
+            //               CreateBankWageSeekerEvent(
+            //                   tenantId:
+            //                       individualListModel?.Individual?.tenantId,
+            //                   accountHolderName:
+            //                       financialDetails?.accountHolderName,
+            //                   accountNo: financialDetails?.accountNumber,
+            //                   accountType: financialDetails?.accountType,
+            //                   ifscCode: financialDetails?.ifscCode,
+            //                   referenceId: individualListModel?.Individual?.id,
+            //                   indId:
+            //                       individualListModel?.Individual?.individualId,
+            //                   bankName: '${financialDetails?.bankName}'),
+            //             );
+            //       },
+            //       error: (String? error) =>
+            //           // Notifiers.getToastMessage(
+            //           //     context, error.toString(), 'ERROR'),
+            //           Toast.showToast(context,
+            //               message: t.translate(error.toString()),
+            //               type: ToastType.error),
+            //     );
+            //   },
+            //   child: BlocListener<WageSeekerBankCreateBloc,
+            //       WageSeekerBankCreateState>(
+            //     listener: (context, individualState) {
+            //       individualState.maybeWhen(
+            //         orElse: () => false,
+            //         loading: () => shg_loader.Loaders.circularLoader(context),
+            //         loaded: (BankingDetailsModel? bankingDetails,
+            //             BankAccounts? bankAccountDetails) {
+            //                FilePickerData.imageFile = null;
+            //         FilePickerData.bytes = null;
+            //           var localizationText =
+            //               '${t.translate(i18.wageSeeker.wageSeekerSuccessSubText)}';
+            //           localizationText = localizationText.replaceFirst(
+            //               '{individualID}', bankAccountDetails?.indID ?? '');
+            //           context.router.popAndPush(SuccessResponseRoute(
+            //               header: t.translate(i18.wageSeeker.createIndSuccess),
+            //               subTitle: localizationText,
+            //               backButton: true,
+            //               callBack: () =>
+            //                   context.router.push(const HomeRoute()),
+            //               buttonLabel: t.translate(
+            //                 i18.common.backToHome,
+            //               )));
+            //         },
+            //         error: (String? error) =>
+            //             // Notifiers.getToastMessage(
+            //             //     context, error.toString(), 'ERROR'),
+            //             Toast.showToast(context,
+            //                 message: t.translate(error.toString()),
+            //                 type: ToastType.error),
+            //       );
+            //     },
+            //     child: Center(
+            //       child: Button(
+            //         type: ButtonType.primary,
+            //         size: ButtonSize.large,
+            //         mainAxisSize: MainAxisSize.max,
+            //         onPressed: () {
+            //           if (debouncer != null && debouncer!.isActive) {
+            //             debouncer!
+            //                 .cancel(); // Cancel the previous timer if it's active.
+            //           }
+            //           debouncer = Timer(const Duration(milliseconds: 1000), () {
+            //             context.read<WageSeekerCreateBloc>().add(
+            //                   CreateWageSeekerEvent(
+            //                       individualDetails: individualDetails,
+            //                       skillDetails: skillDetails,
+            //                       locationDetails: locationDetails,
+            //                       financialDetails: financialDetails),
+            //                 );
+            //           });
+            //         },
+            //         label: t.translate(i18.common.submit),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
+
+        ui_card.DigitCard(children: [
+           BlocListener<WageSeekerCreateBloc, WageSeekerCreateState>(
               listener: (context, individualState) {
                 individualState.maybeWhen(
                   orElse: () => false,
@@ -469,8 +560,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                 ),
               ),
             ),
-          ],
-        ),
+        ])
       ],
     );
   }

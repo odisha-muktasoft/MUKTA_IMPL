@@ -105,18 +105,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   heading: t.translate(i18.common.locationDetails),
                 ),
 
-                //old
-                // DigitTextFormField(
-                //   padding: const EdgeInsets.only(top: 10),
-                //   formControlName: pinCodeKey,
-                //   label: t.translate(i18.common.pinCode),
-                //   keyboardType: TextInputType.number,
-                //   maxLength: 6,
-                //   inputFormatters: [
-                //     FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-                //   ],
-                // ),
-// end
+                
 
                 ui_component.LabeledField(
                   label: t.translate(i18.common.pinCode),
@@ -149,24 +138,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
-//old
-                // DigitReactiveDropdown<String>(
-                //   label: t.translate(i18.common.city),
-                //   padding: const EdgeInsets.only(top: 0),
-                //   menuItems: city.map((e) => e.toString()).toList(),
-                //   isRequired: true,
-                //   formControlName: cityKey,
-                //   valueMapper: (value) => t.translate(
-                //       'TENANT_TENANTS_${value.replaceAll('.', '_').toUpperCase()}'),
-                //   onChanged: (value) {},
-                //   validationMessages: {
-                //     'required': (_) => t.translate(
-                //           i18.wageSeeker.cityRequired,
-                //         ),
-                //   },
-                // ),
 
-// end
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.city),
@@ -180,6 +152,11 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     showErrors: (control) => control.invalid && control.touched,
                     builder: (field) {
                       return ui_component.DigitDropdown(
+                        selectedOption: DropdownItem(name: locationDetails.city != null
+                ? AppLocalizations.of(context).translate(
+                    'TENANT_TENANTS_${locationDetails.city!.replaceAll('.', '_').toUpperCase()}')
+                :AppLocalizations.of(context).translate(
+                    'TENANT_TENANTS_${widget.city!.replaceAll('.', '_').toUpperCase()}'), code: locationDetails.city ?? widget.city.toString()),
                           dropdownController: TextEditingController()
                             ..text = form.control(cityKey).value ?? '',
                           onSelect: (value) {
@@ -203,25 +180,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
-//old
-                // DigitReactiveDropdown<String>(
-                //   label: t.translate(i18.common.ward),
-                //   menuMaxHeight: 300,
-                //   padding: const EdgeInsets.only(top: 12),
-                //   menuItems: ward.map((e) => e.toString()).toList(),
-                //   isRequired: true,
-                //   formControlName: wardKey,
-                //   valueMapper: (value) => t.translate(
-                //       '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_$value'),
-                //   validationMessages: {
-                //     'required': (_) => t.translate(
-                //           i18.wageSeeker.wardRequired,
-                //         ),
-                //   },
-                //   onChanged: (value) {},
-                // ),
 
-                // end
 
                 ui_component.LabeledField(
                   isRequired: true,
@@ -260,24 +219,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
-//old
-                // DigitReactiveDropdown<String>(
-                //     label: t.translate(i18.common.locality),
-                //     padding: const EdgeInsets.only(top: 12),
-                //     menuMaxHeight: 300,
-                //     menuItems: locality.map((e) => e.toString()).toList(),
-                //     formControlName: localityKey,
-                //     valueMapper: (value) => t.translate(
-                //         '${GlobalVariables.organisationListModel?.organisations?.first.tenantId.toUpperCase().replaceAll('.', '_')}_ADMIN_$value'),
-                //     isRequired: true,
-                //     onChanged: (value) {},
-                //     validationMessages: {
-                //       'required': (_) => t.translate(
-                //             i18.wageSeeker.localityRequired,
-                //           ),
-                //     }),
 
-// end
 
                 ui_component.LabeledField(
                   isRequired: true,
@@ -316,22 +258,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
-//old
-                // DigitTextFormField(
-                //     formControlName: streetNameKey,
-                //     //padding: const EdgeInsets.only(top: 12),
-                //     label: t.translate(i18.common.streetName),
-                // validationMessages: {
-                //   'maxLength': (_) => t.translate(
-                //         i18.wageSeeker.maxStreetCharacters,
-                //       ),
-                // },
-                //     inputFormatters: [
-                //       FilteringTextInputFormatter.allow(
-                //           RegExp("[a-zA-Z0-9 .,\\/\\-_@#\\']"))
-                //     ]),
 
-// end
 
                 ui_component.LabeledField(
                   label: t.translate(i18.common.streetName),
@@ -360,24 +287,7 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
-// old
-                // DigitTextFormField(
-                //     padding: EdgeInsets.zero,
-                //     formControlName: doorNoKey,
-                //     label: t.translate(i18.common.doorNo),
-                //     maxLength: 8,
-                //     validationMessages: {
-                //       'maxLength': (_) => t.translate(
-                //             i18.wageSeeker.maxDoorNoCharacters,
-                //           ),
-                //     },
-                //     inputFormatters: [
-                //       FilteringTextInputFormatter.allow(
-                //           RegExp("[a-zA-Z0-9 .,\\/\\-_@#\\']"))
-                //     ]),
 
-                // end
-                //
 
                 ui_component.LabeledField(
                   label: t.translate(i18.common.doorNo),
@@ -414,6 +324,59 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   ),
                 ),
 
+              //   Button(
+              //     size: ButtonSize.large,
+              //     type: ButtonType.primary,
+              //     mainAxisSize: MainAxisSize.max,
+              //     onPressed: () {
+              //       form.markAllAsTouched(updateParent: false);
+              //       if (!form.valid) return;
+              //       if (form.value[pinCodeKey].toString().isNotEmpty &&
+              //           form.value[pinCodeKey].toString().length < 6) {
+              //         // Notifiers.getToastMessage(
+              //         //     context,
+              //         //     t.translate(i18.wageSeeker.pinCodeValidation),
+              //         //     'ERROR');
+
+              //         Toast.showToast(context,
+              //             message:
+              //                 t.translate(i18.wageSeeker.pinCodeValidation),
+              //             type: ToastType.error);
+              //       } else if (form.value[pinCodeKey].toString().isNotEmpty &&
+              //           int.parse(form.value[pinCodeKey].toString()) < 100000) {
+              //         // Notifiers.getToastMessage(
+              //         //     context,
+              //         //     t.translate(i18.wageSeeker.pinCodeValidation),
+              //         //     'ERROR');
+
+              //         Toast.showToast(context,
+              //             message:
+              //                 t.translate(i18.wageSeeker.pinCodeValidation),
+              //             type: ToastType.error);
+              //       } else {
+              //         final locationDetails = LocationDetails(
+              //             pinCode: form.value[pinCodeKey].toString(),
+              //             city: form.value[cityKey].toString(),
+              //             locality: form.value[localityKey].toString(),
+              //             ward: form.value[wardKey].toString(),
+              //             streetName: form.value[streetNameKey].toString(),
+              //             doorNo: form.value[doorNoKey].toString());
+              //         BlocProvider.of<WageSeekerBloc>(context).add(
+              //           WageSeekerCreateEvent(
+              //               individualDetails: individualDetails,
+              //               skillDetails: skillDetails,
+              //               locationDetails: locationDetails,
+              //               financialDetails: financialDetails),
+              //         );
+              //         widget.onPressed();
+              //       }
+              //     },
+              //     label: t.translate(i18.common.next),
+              //   )
+               ],
+            ),
+        
+        ui_card.DigitCard(children: [
                 Button(
                   size: ButtonSize.large,
                   type: ButtonType.primary,
@@ -463,8 +426,8 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                   },
                   label: t.translate(i18.common.next),
                 )
-              ],
-            ),
+             
+        ],),
           ],
         );
       },
@@ -477,12 +440,12 @@ class LocationDetailsState extends State<LocationDetailsPage> {
             value: locationDetails.pinCode ?? '',
             validators: [Validators.maxLength(6)]),
         cityKey: FormControl<String>(
-            //value: locationDetails.city ?? widget.city,
-            value: locationDetails.city != null
-                ? AppLocalizations.of(context).translate(
-                    'TENANT_TENANTS_${locationDetails.city!.replaceAll('.', '_').toUpperCase()}')
-                :AppLocalizations.of(context).translate(
-                    'TENANT_TENANTS_${widget.city!.replaceAll('.', '_').toUpperCase()}'),
+            value: locationDetails.city ?? widget.city,
+            // value: locationDetails.city != null
+            //     ? AppLocalizations.of(context).translate(
+            //         'TENANT_TENANTS_${locationDetails.city!.replaceAll('.', '_').toUpperCase()}')
+            //     :AppLocalizations.of(context).translate(
+            //         'TENANT_TENANTS_${widget.city!.replaceAll('.', '_').toUpperCase()}'),
             validators: [Validators.required]),
         wardKey: FormControl<String>(
             value: locationDetails.ward, validators: [Validators.required]),
