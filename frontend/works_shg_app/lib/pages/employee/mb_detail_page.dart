@@ -760,8 +760,8 @@ class _MBDetailPageState extends State<MBDetailPage>
               //   },
               // ),
 
-              appBar: customAppBar(),
-              drawer: const MySideBar(),
+              // appBar: customAppBar(),
+              // drawer: const MySideBar(),
               body: BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
                 builder: (context, state) {
                   return state.maybeMap(

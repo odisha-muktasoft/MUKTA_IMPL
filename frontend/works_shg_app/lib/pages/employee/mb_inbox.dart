@@ -177,8 +177,8 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
               );
             },
           ),
-          appBar: customAppBar(),
-          drawer: const MySideBar(),
+          // appBar: customAppBar(),
+          // drawer: const MySideBar(),
           body: BlocBuilder<MeasurementInboxBloc, MeasurementInboxState>(
             builder: (context, state) {
               return state.maybeMap(

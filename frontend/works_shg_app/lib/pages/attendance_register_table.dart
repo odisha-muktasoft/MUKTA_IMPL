@@ -185,8 +185,8 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                     ),
                   ),
                 ]),
-            appBar: customAppBar(),
-            drawer: const MySideBar(),
+            // appBar: customAppBar(),
+            // drawer: const MySideBar(),
             body: Stack(
               children: [
                 Container(

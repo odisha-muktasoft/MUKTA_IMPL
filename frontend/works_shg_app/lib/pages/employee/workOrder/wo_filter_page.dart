@@ -115,8 +115,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
           loaded: (organization) {
             return Scaffold(
               backgroundColor: Theme.of(context).colorTheme.generic.background,
-              appBar: customAppBar(),
-              drawer: const MySideBar(),
+              // appBar: customAppBar(),
+              // drawer: const MySideBar(),
               body: ReactiveFormBuilder(
                   form: detailBuildForm,
                   builder: (BuildContext context, FormGroup formGroup,
@@ -349,8 +349,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loading: () {
             return Scaffold(
-              appBar: customAppBar(),
-              drawer: const MySideBar(),
+              // appBar: customAppBar(),
+              // drawer: const MySideBar(),
               body: Center(
                 child: shg_loader.Loaders.circularLoader(context),
               ),

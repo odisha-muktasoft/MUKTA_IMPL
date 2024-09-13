@@ -200,8 +200,8 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
-          appBar: customAppBar(),
-          drawer: const MySideBar(),
+          // appBar: customAppBar(),
+          // drawer: const MySideBar(),
           body: BlocBuilder<WorkOrderInboxBloc, WorkOrderInboxState>(
             builder: (context, state) {
               return state.maybeMap(

@@ -59,8 +59,8 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
         builder: (context, localState) {
       return Scaffold(
           backgroundColor: Theme.of(context).colorTheme.generic.background,
-          appBar: customAppBar(),
-          drawer: const MySideBar(),
+          // appBar: customAppBar(),
+          // drawer: const MySideBar(),
           bottomNavigationBar:
               BlocBuilder<MusterRollSearchBloc, MusterRollSearchState>(
                   builder: (context, state) {

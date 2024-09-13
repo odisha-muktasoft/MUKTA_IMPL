@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
@@ -109,142 +110,150 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-         backgroundColor: Theme.of(context).colorTheme.generic.background,
-          appBar:customAppBar(),
-          drawer: const MySideBar(),
-          body: SingleChildScrollView(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // const Back(),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16.0, top: 16, right: 16, bottom: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        BackNavigationButton(
-                          backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
-                          backButtonText: AppLocalizations.of(context)
-                                  .translate(i18.common.back) ??
-                              'Back',
-                          handleBack: () {
-                            FilePickerData.imageFile=null;
-                            FilePickerData.bytes=null;
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
+        appBar: customAppBar(),
+        drawer: const MySideBar(),
+        body: ScrollableContent(
+            // footer: Button(
+            //   label: t.translate(i18.common.next),
+            //   onPressed: () {
 
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  BlocBuilder<AppInitializationBloc, AppInitializationState>(
-                      builder: (context, initState) {
-                    // return DigitStepper(
-                    //   stepColor: const DigitColors().cloudGray,
-                    //   activeStepColor: const DigitColors().burningOrange,
-                    //   numberStyle: TextStyle(color: const DigitColors().white),
-                    //   lineDotRadius: 2.0,
-                    //   lineLength: MediaQuery.of(context).size.width / 10,
-                    //   activeStepBorderPadding: 0.0,
-                    //   lineColor: const DigitColors().regalBlue,
-                    //   activeStepBorderColor: const DigitColors().burningOrange,
-                    //   stepReachedAnimationEffect: Curves.ease,
-                    //   stepRadius: 12.0,
-                    //   numbers: stepNumbers,
-                    // headers: stepHeaders
-                    //     .map((e) => t.translate(e).toString())
-                    //     .toList(),
-                    //   activeStep: currentStep,
-                    //   // enableNextPreviousButtons: false,
-                    //   onStepReached: (index) {
-                    // setState(() {
-                    //   currentStep = index;
-                    // });
-                    //   },
-                    // );
-
-                    return SizedBox(
-                      height: 90,
-                      child: DigitStepper(
-                        inverted: true,
-                        activeIndex: currentStep,
-                        stepperList: stepHeaders
-                            .asMap()
-                            .map(
-                              (index, e) => MapEntry(
-                                index,
-                                StepperData(
-                                  title: t.translate(e).toString(),
-                                  onStepTap: currentStep > index
-                                      ? () {
-                                          setState(() {
-                                            currentStep = index;
-                                          });
-                                        }
-                                      : null,
-                                ),
-                              ),
-                            )
-                            .values
-                            .toList(),
-                      ),
-                    );
-                  }),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  BlocBuilder<WageSeekerMDMSBloc, WageSeekerMDMSState>(
-                      builder: (context, mdmsState) {
-                    return mdmsState.maybeWhen(
-                        orElse: () => Container(),
-                        loading: () => shg_loader.Loaders.circularLoader(context),
-                        loaded: (WageSeekerMDMS? wageSeekerMDMS) {
-                          return BlocBuilder<WageSeekerLocationBloc,
-                                  WageSeekerLocationState>(
-                              builder: (context, locationState) {
-                            return locationState.maybeWhen(
-                                orElse: () => Container(),
-                                loaded: (Location? ward) {
-                                  return BlocBuilder<WageSeekerLocalityBloc,
-                                          WageSeekerLocalityState>(
-                                      builder: (context, localityState) {
-                                    return localityState.maybeWhen(
-                                        orElse: () => Container(),
-                                        loaded: (Location? locality) {
-                                          return getFormConfig(
-                                              wageSeekerMDMS, ward, locality);
-                                        });
-                                  });
-                                });
-                          });
-                        },
-                        error: (String? error) => Notifiers.getToastMessage(
-                            context, error.toString(), 'ERROR'));
-                  }),
-                  const SizedBox(
-                    height: 16.0,
-                  ),
-                  const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: PoweredByDigit(
-                      version: Constants.appVersion,
+            //   },
+            //   type: ButtonType.primary,
+            //   size: ButtonSize.large,
+            //   mainAxisSize: MainAxisSize.max,
+            // ),
+            children: [
+              // const Back(),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 16.0, top: 16, right: 16, bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    BackNavigationButton(
+                      backNavigationButtonThemeData:
+                          const BackNavigationButtonThemeData().copyWith(
+                              context: context,
+                              backButtonIcon: Icon(
+                                Icons.arrow_circle_left_outlined,
+                                size: MediaQuery.of(context).size.width < 500
+                                    ? Theme.of(context).spacerTheme.spacer5
+                                    : Theme.of(context).spacerTheme.spacer6,
+                                color: Theme.of(context)
+                                    .colorTheme
+                                    .primary
+                                    .primary2,
+                              )),
+                      backButtonText: AppLocalizations.of(context)
+                              .translate(i18.common.back) ??
+                          'Back',
+                      handleBack: () {
+                        FilePickerData.imageFile = null;
+                        FilePickerData.bytes = null;
+                        Navigator.pop(context);
+                      },
                     ),
-                  )
-                ]),
-          ));
+                  ],
+                ),
+              ),
+
+              
+              BlocBuilder<AppInitializationBloc, AppInitializationState>(
+                  builder: (context, initState) {
+                // return DigitStepper(
+                //   stepColor: const DigitColors().cloudGray,
+                //   activeStepColor: const DigitColors().burningOrange,
+                //   numberStyle: TextStyle(color: const DigitColors().white),
+                //   lineDotRadius: 2.0,
+                //   lineLength: MediaQuery.of(context).size.width / 10,
+                //   activeStepBorderPadding: 0.0,
+                //   lineColor: const DigitColors().regalBlue,
+                //   activeStepBorderColor: const DigitColors().burningOrange,
+                //   stepReachedAnimationEffect: Curves.ease,
+                //   stepRadius: 12.0,
+                //   numbers: stepNumbers,
+                // headers: stepHeaders
+                //     .map((e) => t.translate(e).toString())
+                //     .toList(),
+                //   activeStep: currentStep,
+                //   // enableNextPreviousButtons: false,
+                //   onStepReached: (index) {
+                // setState(() {
+                //   currentStep = index;
+                // });
+                //   },
+                // );
+
+                return SizedBox(
+                  height: 90,
+                  child: DigitStepper(
+                    inverted: true,
+                    activeIndex: currentStep,
+                    stepperList: stepHeaders
+                        .asMap()
+                        .map(
+                          (index, e) => MapEntry(
+                            index,
+                            StepperData(
+                              title: t.translate(e).toString(),
+                              onStepTap: currentStep > index
+                                  ? () {
+                                      setState(() {
+                                        currentStep = index;
+                                      });
+                                    }
+                                  : null,
+                            ),
+                          ),
+                        )
+                        .values
+                        .toList(),
+                  ),
+                );
+              }),
+              const SizedBox(
+                height: 16.0,
+              ),
+              BlocBuilder<WageSeekerMDMSBloc, WageSeekerMDMSState>(
+                  builder: (context, mdmsState) {
+                return mdmsState.maybeWhen(
+                    orElse: () => Container(),
+                    loading: () => shg_loader.Loaders.circularLoader(context),
+                    loaded: (WageSeekerMDMS? wageSeekerMDMS) {
+                      return BlocBuilder<WageSeekerLocationBloc,
+                              WageSeekerLocationState>(
+                          builder: (context, locationState) {
+                        return locationState.maybeWhen(
+                            orElse: () => Container(),
+                            loaded: (Location? ward) {
+                              return BlocBuilder<WageSeekerLocalityBloc,
+                                      WageSeekerLocalityState>(
+                                  builder: (context, localityState) {
+                                return localityState.maybeWhen(
+                                    orElse: () => Container(),
+                                    loaded: (Location? locality) {
+                                      return getFormConfig(
+                                          wageSeekerMDMS, ward, locality);
+                                    });
+                              });
+                            });
+                      });
+                    },
+                    error: (String? error) => Notifiers.getToastMessage(
+                        context, error.toString(), 'ERROR'));
+              }),
+              const SizedBox(
+                height: 16.0,
+              ),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: PoweredByDigit(
+                  version: Constants.appVersion,
+                ),
+              )
+            ]),
+      );
     });
   }
 

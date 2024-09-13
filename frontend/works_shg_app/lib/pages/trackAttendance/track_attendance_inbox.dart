@@ -55,9 +55,9 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-        appBar: customAppBar(),
+        // appBar: customAppBar(),
           backgroundColor: Theme.of(context).colorTheme.generic.background,
-          drawer: const MySideBar(),
+          // drawer: const MySideBar(),
           bottomNavigationBar: BlocBuilder<AttendanceProjectsSearchBloc,
               AttendanceProjectsSearchState>(builder: (context, state) {
             return state.maybeWhen(

@@ -66,8 +66,8 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
        backgroundColor: Theme.of(context).colorTheme.generic.background,
-        appBar: customAppBar(),
-        drawer: const MySideBar(),
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<LocalizationBloc, LocalizationState>(
             builder: (context, localState) {
           return BlocBuilder<SearchMyServiceRequestsBloc,

@@ -49,8 +49,8 @@ class _WorkOrderDetailPageState extends State<WorkOrderDetailPage> {
           ),
         ),
       ),
-      appBar: customAppBar(),
-      drawer: const MySideBar(),
+      // appBar: customAppBar(),
+      // drawer: const MySideBar(),
       body: BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, state) {
           return ScrollableContent(

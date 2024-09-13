@@ -75,13 +75,13 @@ class SuccessResponsePage extends StatelessWidget {
             ),
           ),
         ),
-        appBar: isWithoutLogin
-            ? AppBar(
-                backgroundColor: const Color(0xff0B4B66),
-                title: const Text('MuktaSoft'),
-                automaticallyImplyLeading: false,
-              )
-            : customAppBar(),
+        // appBar: isWithoutLogin
+        //     ? AppBar(
+        //         backgroundColor: const Color(0xff0B4B66),
+        //         title: const Text('MuktaSoft'),
+        //         automaticallyImplyLeading: false,
+        //       )
+        //     : customAppBar(),
         drawer: isWithoutLogin ? null : const MySideBar(),
         body: SingleChildScrollView(
           child: Column(

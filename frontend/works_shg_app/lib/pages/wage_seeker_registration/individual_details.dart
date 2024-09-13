@@ -236,7 +236,41 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
             },
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.7,
-              child: Column(
+              child: ScrollableContent(
+                footer:  ui_card.DigitCard(
+                      // margin: EdgeInsets.only(
+                      //     left: Theme.of(context).spacerTheme.spacer2,
+                      //     right: Theme.of(context).spacerTheme.spacer2),
+                      children: [
+                        Button(
+                          label: t.translate(i18.common.next),
+                          onPressed: () {
+                            form.markAllAsTouched(updateParent: false);
+                            // setState(() {});
+                            if (!form.valid) return;
+
+                            context.read<WageSeekerBloc>().add(
+                                  WageSeekerIdentificationCreateEvent(
+                                      adharVerified: false,
+                                      documentType: form.value[identityDocument]
+                                          .toString(),
+                                      name: form.value[nameKey].toString(),
+                                      number:
+                                          form.value[aadhaarNoKey].toString(),
+                                      timeStamp:
+                                          DateTime.now().millisecondsSinceEpoch,
+                                      adharCardResponse:
+                                          const AdharCardResponse()),
+                                );
+                            setState(() {
+                              switchPage = 1;
+                            });
+                          },
+                          type: ButtonType.primary,
+                          size: ButtonSize.large,
+                          mainAxisSize: MainAxisSize.max,
+                        )
+                      ]),
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ui_card.DigitCard(
@@ -398,40 +432,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       // )
                     ],
                   ),
-                  ui_card.DigitCard(
-                      // margin: EdgeInsets.only(
-                      //     left: Theme.of(context).spacerTheme.spacer2,
-                      //     right: Theme.of(context).spacerTheme.spacer2),
-                      children: [
-                        Button(
-                          label: t.translate(i18.common.next),
-                          onPressed: () {
-                            form.markAllAsTouched(updateParent: false);
-                            // setState(() {});
-                            if (!form.valid) return;
-
-                            context.read<WageSeekerBloc>().add(
-                                  WageSeekerIdentificationCreateEvent(
-                                      adharVerified: false,
-                                      documentType: form.value[identityDocument]
-                                          .toString(),
-                                      name: form.value[nameKey].toString(),
-                                      number:
-                                          form.value[aadhaarNoKey].toString(),
-                                      timeStamp:
-                                          DateTime.now().millisecondsSinceEpoch,
-                                      adharCardResponse:
-                                          const AdharCardResponse()),
-                                );
-                            setState(() {
-                              switchPage = 1;
-                            });
-                          },
-                          type: ButtonType.primary,
-                          size: ButtonSize.large,
-                          mainAxisSize: MainAxisSize.max,
-                        )
-                      ])
+                 
                 ],
               ),
             ),

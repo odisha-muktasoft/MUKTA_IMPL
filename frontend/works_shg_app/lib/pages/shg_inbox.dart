@@ -167,8 +167,8 @@ class _SHGInboxPage extends State<SHGInboxPage> {
           builder: (context, localState) {
         return Scaffold(
             backgroundColor: Theme.of(context).colorTheme.generic.background,
-            appBar: customAppBar(),
-            drawer: const MySideBar(),
+            // appBar: customAppBar(),
+            // drawer: const MySideBar(),
             body: BlocBuilder<SkillsBloc, SkillsBlocState>(
                 builder: (context, skillsState) {
               return skillsState.maybeWhen(

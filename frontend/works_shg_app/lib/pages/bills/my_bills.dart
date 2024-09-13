@@ -59,8 +59,8 @@ class _MyBillsPage extends State<MyBillsPage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
        backgroundColor: Theme.of(context).colorTheme.generic.background,
-        appBar: customAppBar(),
-        drawer: const MySideBar(),
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<SearchMyBillsBloc, SearchMyBillsState>(
             builder: (context, state) {
           return state.maybeWhen(

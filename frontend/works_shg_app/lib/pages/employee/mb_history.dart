@@ -200,8 +200,8 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
 
                   backgroundColor:
                       Theme.of(context).colorTheme.generic.background,
-                  appBar: customAppBar(),
-                  drawer: const MySideBar(),
+                  // appBar: customAppBar(),
+                  // drawer: const MySideBar(),
                   body: Stack(
                     children: [
                       CustomScrollView(

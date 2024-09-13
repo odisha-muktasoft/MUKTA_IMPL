@@ -69,224 +69,8 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-    return Scaffold(
-       backgroundColor: Theme.of(context).colorTheme.generic.background,
-      //         actions: [
-
-      //          HeaderAction(
-      //             widget: Row(
-      //               children: [
-      //                 const Text('City'),
-      //                 const SizedBox(
-      //                   width: 8,
-      //                 ),
-      //                 Icon(
-      //                   Icons.arrow_drop_down,
-      //                   color: Colors.white,
-      //                 )
-      //               ],
-      //             ),
-      //             isSearchable: true,
-      //             dropdownItems: const [
-      //               DropdownItem(code: '1', name: 'Option 1'),
-      //               DropdownItem(code: '2', name: 'Option 2'),
-      //               DropdownItem(code: '3', name: 'Option 3'),
-      //               DropdownItem(code: '4', name: 'Option 4'),
-      //             ],
-      //           ),
-      //         ],
-      //       ),
-
-      //     ),
-      //   ),
-      // drawer: SideBar(
-      //   sidebarItems: [
-      //     SidebarItem(
-      //       title: 'Home',
-      //       icon: Icons.home,
-      //       onPressed: () {
-      //         Navigator.of(context).pop();
-      //         // Navigate to Home
-      //       },
-      //     ),
-      //     SidebarItem(
-      //       title: 'Language',
-      //       icon: Icons.language,
-      //       onPressed: () {
-      //         // Implement language change
-      //       },
-      //     ),
-      //     SidebarItem(
-      //       title: 'Profile',
-      //       icon: Icons.person,
-      //       onPressed: () {
-      //         Navigator.of(context).pop();
-      //         // Navigate to Profile
-      //       },
-      //     ),
-      //     SidebarItem(
-      //       title: 'View Downloaded Data',
-      //       icon: Icons.download,
-      //       onPressed: () {
-      //         Navigator.of(context).pop();
-      //         // Navigate to Downloaded Data
-      //       },
-      //     ),
-      //   ],
-      // ),
-
-      // appBar: AppBar(
-      //   backgroundColor: const Color(0xff0B4B66),
-      //   iconTheme: Theme.of(context)
-      //       .iconTheme
-      //       .copyWith(color: Theme.of(context).colorTheme.paper.primary),
-      //   titleSpacing: 0,
-      //   title: GlobalVariables.roleType == RoleType.cbo
-      //       ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-      //           builder: (context, state) {
-      //             return state.maybeWhen(
-      //                 orElse: () => Container(),
-      //                 loaded: (OrganisationListModel? organisationListModel) {
-      //                   return const AppBarLogo();
-      //                 });
-      //           },
-      //         )
-      //   : const AppBarLogo(),
-      // ),
-
-      appBar: customAppBar(),
-
-      // drawer: DrawerWrapper(
-      //   Drawer(
-      //       child: GlobalVariables.roleType == RoleType.cbo
-      //           ? BlocBuilder<ORGSearchBloc, ORGSearchState>(
-      //               builder: (context, state) {
-      //                 return state.maybeMap(
-      //                   orElse: () {
-      //                     return const SideBar();
-      //                   },
-      //                   loaded: (value) {
-      //                     return SideBar(
-      //                       module: CommonMethods.getLocaleModules(),
-      //                     );
-      //                   },
-      //                   error: (value) {
-      //                     return const SideBar();
-      //                   },
-      //                 );
-      //               },
-      //             )
-      //           : SideBar(
-      //               module: CommonMethods.getLocaleModules(),
-      //             )),
-      // ),
-
-      // drawer: BlocBuilder<LocalizationBloc, LocalizationState>(
-      //   builder: (context, state) {
-      //     return state.maybeMap(
-      //       orElse: () => const SizedBox.shrink(),
-      //       loaded: (value) {
-      //         return BlocBuilder<AppInitializationBloc, AppInitializationState>(
-      //           builder: (context, stateInit) {
-      //             return BlocBuilder<AuthBloc, AuthState>(
-      //               builder: (context, stateAuth) {
-      //                 return stateAuth.maybeMap(
-      //                   orElse: () => const SizedBox.shrink(),
-      //                   loaded: (authValue) {
-      //                     return SideBar(
-      //                       profile: ProfileWidget(
-      //                         title: authValue
-      //                                 .userDetailsModel?.userRequestModel?.name
-      //                                 .toString() ??
-      //                             '',
-      //                         description: authValue.userDetailsModel
-      //                                 ?.userRequestModel?.mobileNumber
-      //                                 .toString() ??
-      //                             '',
-      //                         leading: const SizedBox.shrink(),
-      //                       ),
-      //                       sidebarItems: [
-      //                         SidebarItem(
-      //                           title: AppLocalizations.of(context)
-      //                               .translate(i18.common.home),
-      //                           icon: Icons.home,
-      //                           onPressed: () {
-      //                             Navigator.of(context).pop();
-      //                             // Navigate to Home
-      //                           },
-      //                         ),
-      //                         SidebarItem(
-      //                           children: stateInit.digitRowCardItems != null &&
-      //                                   stateInit.isInitializationCompleted
-      //                               ? List.generate(
-      //                                   value.languages != null
-      //                                       ? value.languages!.length
-      //                                       : 0,
-      //                                   (index) => SidebarItem(
-      //                                       title:
-      //                                           value.languages![index].label,
-      //                                       icon: Icons.language,
-      //                                       onPressed: () {
-      //                                         print("hello welcome");
-      //                                         context
-      //                                             .read<LocalizationBloc>()
-      //                                             .add(
-      //                                               LocalizationEvent
-      //                                                   .onSpecificLoadLocalization(
-      //                                                 locale: value
-      //                                                     .languages![index]
-      //                                                     .value,
-      //                                                 module: CommonMethods
-      //                                                     .getLocaleModules(),
-      //                                                 tenantId: stateInit
-      //                                                     .initMdmsModel!
-      //                                                     .commonMastersModel!
-      //                                                     .stateInfoListModel!
-      //                                                     .first
-      //                                                     .code
-      //                                                     .toString(),
-      //                                               ),
-      //                                             );
-      //                                       }),
-      //                                 ).toList()
-      //                               : [],
-      //                           title: 'Language',
-      //                           icon: Icons.language,
-      //                           onPressed: () {
-      //                             print("object");
-      //                             // Implement language change
-      //                           },
-      //                         ),
-      //                         SidebarItem(
-      //                           title: 'Profile',
-      //                           icon: Icons.person,
-      //                           onPressed: () {
-      //                             Navigator.of(context).pop();
-      //                             // Navigate to Profile
-      //                           },
-      //                         ),
-      //                         SidebarItem(
-      //                           title: 'View Downloaded Data',
-      //                           icon: Icons.download,
-      //                           onPressed: () {
-      //                             Navigator.of(context).pop();
-      //                             // Navigate to Downloaded Data
-      //                           },
-      //                         ),
-      //                       ],
-      //                     );
-      //                   },
-      //                 );
-      //               },
-      //             );
-      //           },
-      //         );
-      //       },
-      //     );
-      //   },
-      // ),
-      drawer: const MySideBar(),
-      body: BlocBuilder<LocalizationBloc, LocalizationState>(
+    return 
+      BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
           return localState.maybeMap(
             orElse: () => const SizedBox.shrink(),
@@ -405,8 +189,8 @@ class _HomePage extends State<HomePage> {
             },
           );
         },
-      ),
-    );
+      );
+    //);
   }
 
   Widget empBasedLayout(BuildContext context, HomeConfigModel homeConfigModel,
@@ -421,8 +205,8 @@ class _HomePage extends State<HomePage> {
               return cards.elementAt(index);
             }, childCount: cards.length),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 170,
-              childAspectRatio: 105 / 129,
+              maxCrossAxisExtent: 145,
+              childAspectRatio: 104 / 128,
             ),
           ),
         ],

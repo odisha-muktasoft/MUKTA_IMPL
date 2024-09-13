@@ -15,7 +15,7 @@ PreferredSize customAppBar() {
                       onTap: () {
                         Scaffold.of(context).openDrawer();
                       },
-                      child: Icon(
+                      child: const Icon(
                         Icons.menu,
                         size: 24,
                         color: Colors.white,

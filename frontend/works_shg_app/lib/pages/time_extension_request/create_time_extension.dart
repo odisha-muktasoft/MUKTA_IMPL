@@ -93,8 +93,8 @@ class _CreateTimeExtensionRequestPage
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorTheme.generic.background,
-        appBar: customAppBar(),
-        drawer: const MySideBar(),
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         // bottomNavigationBar: const SizedBox(
         //   height: 50,
         // child: Align(

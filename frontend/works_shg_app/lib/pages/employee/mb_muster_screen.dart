@@ -101,8 +101,8 @@ class _MBMusterScreenPageState extends State<MBMusterScreenPage> {
           },
           child: Scaffold(
              backgroundColor: Theme.of(context).colorTheme.generic.background,
-            appBar: customAppBar(),
-            drawer: const MySideBar(),
+            // appBar: customAppBar(),
+            // drawer: const MySideBar(),
             body: BlocBuilder<MusterRollSearchBloc, MusterRollSearchState>(
               builder: (context, state) {
                 return state.maybeMap(

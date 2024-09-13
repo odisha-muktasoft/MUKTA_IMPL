@@ -69,8 +69,8 @@ class _ORGProfilePage extends State<ORGProfilePage> {
     var t = AppLocalizations.of(context);
     return Scaffold(
         backgroundColor: Theme.of(context).colorTheme.generic.background,
-        appBar: customAppBar(),
-        drawer: const MySideBar(),
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
             builder: (context, localState) {
           return SingleChildScrollView(

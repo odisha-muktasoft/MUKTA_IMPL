@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/blocs/organisation/org_search_bloc.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
+import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../blocs/localization/localization.dart';
 
@@ -58,6 +60,12 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedWrapperPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const AutoRouter();
+
+    return Scaffold(
+      appBar: customAppBar(),
+      drawer: const MySideBar(),
+      body: const AutoRouter(),
+    );
+   // return const AutoRouter();
   }
 }

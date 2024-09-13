@@ -129,8 +129,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       loaded: (location) {
                         return Scaffold(
                            backgroundColor: Theme.of(context).colorTheme.generic.background,
-                          appBar: customAppBar(),
-                          drawer: const MySideBar(),
+                          // appBar: customAppBar(),
+                          // drawer: const MySideBar(),
                           body: ReactiveFormBuilder(
                               form: () => detailBuildForm(valueMeasurement),
                               builder: (BuildContext context,

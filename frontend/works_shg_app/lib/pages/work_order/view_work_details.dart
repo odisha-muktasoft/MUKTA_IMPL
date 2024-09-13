@@ -129,8 +129,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
       },
       child: Scaffold(
          backgroundColor: Theme.of(context).colorTheme.generic.background,
-        appBar: customAppBar(),
-        drawer: const MySideBar(),
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         bottomNavigationBar:
             BlocBuilder<SearchIndividualWorkBloc, SearchIndividualWorkState>(
           builder: (context, state) {
