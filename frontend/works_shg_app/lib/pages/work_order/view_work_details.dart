@@ -7,7 +7,8 @@ import 'package:digit_ui_components/widgets/atoms/digit_action_card.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -506,7 +507,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                         right: 16.0,
                                         top: 16.0,
                                         bottom: 16.0),
-                                    child: TextChunk(
+                                    child: DigitTextBlock(
                                       heading:
                                           '${AppLocalizations.of(context).translate(i18.workOrder.workOrderDetails)}',
                                     ),
@@ -1640,7 +1641,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                     right: 16.0,
                                                     top: 16.0,
                                                     bottom: 16.0),
-                                                child: TextChunk(
+                                                child: DigitTextBlock(
                                                   heading:
                                                       '${AppLocalizations.of(context).translate(i18.workOrder.workOrderDetails)}',
                                                 ),

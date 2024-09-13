@@ -2,7 +2,8 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:digit_ui_components/utils/validators/validator.dart'
@@ -237,7 +238,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
               margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               cardType: CardType.primary,
               children: [
-                TextChunk(
+                DigitTextBlock(
                   heading: t.translate(
                     i18.wageSeeker.identificationHeader,
                   ),

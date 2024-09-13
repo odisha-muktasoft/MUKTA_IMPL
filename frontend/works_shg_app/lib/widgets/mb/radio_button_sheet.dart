@@ -5,7 +5,8 @@ import 'package:digit_ui_components/models/RadioButtonModel.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/divider_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_radio_list.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/employee/mb/measurement_book.dart';
@@ -38,7 +39,7 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 16.0),
-            child: TextChunk(
+            child: DigitTextBlock(
               heading: t.translate(i18.measurementBook.sortBy),
             ),
           ),

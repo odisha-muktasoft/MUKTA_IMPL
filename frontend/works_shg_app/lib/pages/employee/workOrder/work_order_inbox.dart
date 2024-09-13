@@ -6,7 +6,8 @@ import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart'
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -264,7 +265,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 12.0),
-                                  child: TextChunk(
+                                  child: DigitTextBlock(
                                     heading:
                                         "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                   ),

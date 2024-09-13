@@ -2,7 +2,8 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -264,7 +265,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                                               Theme.of(context)
                                                   .spacerTheme
                                                   .spacer2),
-                                          child: TextChunk(
+                                          child: DigitTextBlock(
                                             heading:
                                                 '${t.translate(i18.common.orgProfile)}',
                                           )),

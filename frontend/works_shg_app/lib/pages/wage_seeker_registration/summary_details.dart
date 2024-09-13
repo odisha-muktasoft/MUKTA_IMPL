@@ -2,7 +2,8 @@
 //import 'package:digit_components/widgets/atoms/details_card.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/foundation.dart';
@@ -71,7 +72,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: TextChunk(
+          child: DigitTextBlock(
             heading: t.translate(i18.wageSeeker.summaryDetails),
           ),
         ),
@@ -87,7 +88,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   child: Padding(
                     padding:
                         const EdgeInsets.only(left: 4.0, bottom: 8.0, top: 8.0),
-                    child: TextChunk(
+                    child: DigitTextBlock(
                       subHeading:
                           t.translate(i18.attendanceMgmt.individualDetails),
                     ),
@@ -216,7 +217,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextChunk(
+                          DigitTextBlock(
                             subHeading: t.translate(i18.common.photoGraph),
                           ),
                           //   style: const TextStyle(
@@ -254,7 +255,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   child: Padding(
                     padding:
                         const EdgeInsets.only(left: 4.0, bottom: 8.0, top: 8.0),
-                    child: TextChunk(
+                    child: DigitTextBlock(
                       subHeading: t.translate(i18.common.locationDetails),
                     ),
                   ),
@@ -335,7 +336,7 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                   child: Padding(
                     padding:
                         const EdgeInsets.only(left: 4.0, bottom: 8.0, top: 8.0),
-                    child: TextChunk(
+                    child: DigitTextBlock(
                       subHeading: t.translate(i18.common.financialDetails),
                     ),
                   ),

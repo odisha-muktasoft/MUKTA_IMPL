@@ -3,7 +3,8 @@ import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -327,7 +328,7 @@ class _CardWidgetState extends State<CardWidget> {
                   widget.type.toUpperCase(),
                   style:Theme.of(context).textTheme.headlineMedium
                 ),
-                TextChunk(
+                DigitTextBlock(
                  heading: '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
                   // style:
                   //     DigitTheme.instance.mobileTheme.textTheme.headlineLarge,

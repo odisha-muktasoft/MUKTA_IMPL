@@ -49,7 +49,7 @@ class _MySideBarState extends State<MySideBar> {
                                           ?.userRequestModel?.mobileNumber
                                           .toString() ??
                                       '',
-                                  leading: const SizedBox.shrink(),
+                                  //leading: const SizedBox.shrink(),
                                 ),
                                 sidebarItems: [
                                   SidebarItem(
@@ -137,7 +137,7 @@ class _MySideBarState extends State<MySideBar> {
                                           ?.userRequestModel?.mobileNumber
                                           .toString() ??
                                       '',
-                                  leading: const SizedBox.shrink(),
+                                 // leading: const SizedBox.shrink(),
                                 ),
                                 sidebarItems: [
                                   SidebarItem(

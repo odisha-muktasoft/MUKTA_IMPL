@@ -3,7 +3,8 @@ import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -135,11 +136,11 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
               children: [
                 // LabelText(AppLocalizations.of(context)
                 //     .translate(i18.login.otpVerification)),
-                TextChunk(
+                DigitTextBlock(
                   heading: AppLocalizations.of(context)
                       .translate(i18.login.otpVerification),
                 ),
-                TextChunk(
+                DigitTextBlock(
                   caption: localizationText,
                 ),
                 // const SizedBox(height: 10),

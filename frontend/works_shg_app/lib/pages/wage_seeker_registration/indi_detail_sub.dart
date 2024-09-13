@@ -1,7 +1,8 @@
 // import 'package:digit_components/widgets/digit_card.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
             margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
             cardType: CardType.primary,
             children: [
-              TextChunk(
+              DigitTextBlock(
                 heading: t.translate(i18.wageSeeker.personalDetailHeader),
               ),
 
@@ -463,9 +464,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                 ),
               ),
 
-              const SizedBox(
-                height: 16,
-              ),
+             
               Button(
                 type: ButtonType.primary,
                 size: ButtonSize.large,
@@ -531,7 +530,7 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
           ],
         ),
         socialCategoryKey: FormControl<String>(
-            value: widget.individualDetails?.socialCategory??''),
+            value: widget.individualDetails?.socialCategory=="null"?'' :widget.individualDetails?.socialCategory??''),
         mobileKey: FormControl<String>(
             value: widget.individualDetails?.mobileNumber,
             validators: [

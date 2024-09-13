@@ -3,7 +3,8 @@ import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart'
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
@@ -209,7 +210,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                       padding:
                                                           const EdgeInsets.all(
                                                               16.0),
-                                                      child: TextChunk(
+                                                      child: DigitTextBlock(
                                                         heading:
                                                             '${t.translate(i18.myServiceRequests.serviceRequestsLabel)} (${contractsModel?.contracts?.length})',
                                                       ),

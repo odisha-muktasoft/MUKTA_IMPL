@@ -7,7 +7,8 @@ import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/bottom_sheet.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
@@ -262,7 +263,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 8.0),
-                                      child: TextChunk(
+                                      child: DigitTextBlock(
                                         heading: t.translate(
                                             i18.measurementBook.mbHistory),
                                       ),

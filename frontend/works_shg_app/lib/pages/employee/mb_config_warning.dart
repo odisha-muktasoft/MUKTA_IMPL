@@ -4,7 +4,8 @@ import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:file_picker/file_picker.dart';
@@ -314,7 +315,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         width:
                                             MediaQuery.sizeOf(context).width *
                                                 0.9,
-                                        child: TextChunk(
+                                        child: DigitTextBlock(
                                           heading: widget.nextActions!.action ==
                                                   "EDIT/RE-SUBMIT"
                                               ? t.translate(
@@ -519,8 +520,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               ),
                                             ),
 
-                                            TextChunk(
-                                                body: t.translate(
+                                            DigitTextBlock(
+                                                description: t.translate(
                                                     i18.common.photoInfo)),
                                           ],
                                         )
@@ -655,7 +656,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         width:
                                             MediaQuery.sizeOf(context).width *
                                                 0.9,
-                                        child: TextChunk(
+                                        child: DigitTextBlock(
                                           heading: widget
                                                       .stateActions!.action ==
                                                   "SUBMIT"
@@ -841,8 +842,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               ),
                                             ),
 
-                                            TextChunk(
-                                                body: t.translate(
+                                            DigitTextBlock(
+                                                description: t.translate(
                                                     i18.common.photoInfo)),
                                           ],
                                         )

@@ -1,9 +1,8 @@
 // import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
-import 'package:digit_ui_components/widgets/scrollable_content.dart';
-import 'package:digit_ui_components/widgets/widgets.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -240,7 +239,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0),
-                                child: TextChunk(
+                                child: DigitTextBlock(
                                   heading:
                                       t.translate(i18.measurementBook.filter),
                                 ),

@@ -10,7 +10,8 @@ import 'package:digit_ui_components/widgets/atoms/digit_tab.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
     as ui_label;
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
 import 'package:digit_ui_components/widgets/molecules/bottom_sheet.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
@@ -848,7 +849,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     left: Theme.of(context).spacerTheme.spacer4,
                                     bottom:
                                         Theme.of(context).spacerTheme.spacer4),
-                                child: TextChunk(
+                                child: DigitTextBlock(
                                   heading: t.translate(
                                       i18.measurementBook.measurementBookTitle),
                                 ),
@@ -866,7 +867,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                     expandedCrossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     expandedAlignment: Alignment.topLeft,
-                                    title: TextChunk(
+                                    title: DigitTextBlock(
                                       subHeading: t.translate(
                                           i18.measurementBook.primaryDetails),
                                       subHeadingStyle: Theme.of(context)
@@ -1232,8 +1233,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         ),
                                                       ),
                                                     ),
-                                                    TextChunk(
-                                                        body: t.translate(i18
+                                                    DigitTextBlock(
+                                                        description: t.translate(i18
                                                             .measurementBook
                                                             .mbPhotoInfo)),
                                                   ],
@@ -1382,8 +1383,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             ),
                                                           ),
                                                           // TODO:[text change]
-                                                          TextChunk(
-                                                              body: t.translate(i18
+                                                          DigitTextBlock(
+                                                              description: t.translate(i18
                                                                   .measurementBook
                                                                   .mbPhotoInfo)),
                                                         ],
@@ -1543,8 +1544,8 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                 ),
                                                               ),
                                                             ),
-                                                            TextChunk(
-                                                                body: t.translate(i18
+                                                            DigitTextBlock(
+                                                                description: t.translate(i18
                                                                     .measurementBook
                                                                     .mbPhotoInfo)),
                                                           ],

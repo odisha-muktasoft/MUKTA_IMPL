@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/utils/validators/file_validator.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/atoms/upload_image.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
@@ -59,7 +60,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
             cardType: CardType.primary,
             margin: const EdgeInsets.all(8),
             children: [
-              TextChunk(
+              DigitTextBlock(
                 heading: t.translate(i18.wageSeeker.individualPhotoHeader),
               ),
               // const SizedBox(

@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
@@ -95,7 +96,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
           cardType: CardType.primary,
           margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
           children: [
-            TextChunk(
+            DigitTextBlock(
               heading: t.translate(i18.common.financialDetails),
             ),
 

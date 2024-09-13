@@ -3,7 +3,8 @@ import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -897,7 +898,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 0.0),
-                                            child: TextChunk(
+                                            child: DigitTextBlock(
                                               heading: t.translate(
                                                   i18.measurementBook.filter),
                                               // style: DigitTheme
@@ -988,7 +989,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                 label: t.translate(
                                                     i18.measurementBook.mbNumber),
                                                 child: DigitTextFormInput(
-                                                  controller: projectId,
+                                                  controller: mbNumber,
                                                 ),
                                               ),
                                           )

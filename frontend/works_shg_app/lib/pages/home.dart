@@ -3,7 +3,8 @@ import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_toast.dart';
-import 'package:digit_ui_components/widgets/atoms/text_chunk.dart';
+import 'package:digit_ui_components/widgets/atoms/text_block.dart';
+
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:digit_ui_components/widgets/scrollable_content.dart'
@@ -520,7 +521,7 @@ class _HomePage extends State<HomePage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      TextChunk(
+                                      DigitTextBlock(
                                         heading: t.translate(i18.home.mukta),
                                         // style: DigitTheme.instance.mobileTheme
                                         //      .textTheme.headlineLarge,
