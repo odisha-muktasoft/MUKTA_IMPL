@@ -122,6 +122,7 @@ const App = ({ path }) => {
     const ViewPaymentInstruction = Digit?.ComponentRegistryService?.getComponent("ViewPaymentInstruction");
     const ViewPayment = Digit?.ComponentRegistryService?.getComponent("ViewPayment");
     const PurchaseBillSession = Digit.Hooks.useSessionStorage("PURCHASE_BILL_CREATE", {});
+    const PaymentTrackerViewComponent = Digit?.ComponentRegistryService?.getComponent("PaymentTrackerView");
     const [sessionFormData, clearSessionFormData] = PurchaseBillSession;
   
     //remove session form data if user navigates away from the project create screen
@@ -157,6 +158,7 @@ const App = ({ path }) => {
           <PrivateRoute path={`${path}/create-purchase-bill`} component={() => <PurchaseBill parentRoute={path} />} />
           <PrivateRoute path={`${path}/create-purchase-bill-response`} component={() => <PurchaseBillResponse parentRoute={path} />} />
           <PrivateRoute path={`${path}/download-bill`} component={() => <DownloadBill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/payment-tracker-view`} component={() => <PaymentTrackerViewComponent parentRoute={path}/>} />
         </AppContainer>
       </Switch>
     );
