@@ -37,7 +37,15 @@ class CircularButton extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     width: 2,
-                    color: onTap != null
+                    color: viewOnly?
+                    index.isNegative
+                            ? Colors.black
+                            : index == 0.0
+                                ? const Color.fromRGBO(212, 53, 28, 1)
+                                : index == 0.5
+                                    ? const Color.fromRGBO(244, 169, 56, 1)
+                                    : const Color.fromRGBO(0, 112, 60, 1)
+                   : onTap != null
                         ? index.isNegative
                             ? Colors.black
                             : index == 0.0
@@ -52,6 +60,15 @@ class CircularButton extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
+                    viewOnly?
+                    index.isNegative 
+                        ? ''
+                        : index == 0.0
+                            ? 'A'
+                            : index == 0.5
+                                ? 'H'
+                                : 'F'
+                    :
                     index.isNegative || onTap == null
                         ? ''
                         : index == 0.0
@@ -61,7 +78,16 @@ class CircularButton extends StatelessWidget {
                                 : 'F',
                     style: TextStyle(
                         fontSize: 16,
-                        color: index.isNegative || onTap == null
+                        color: viewOnly?
+                        index.isNegative 
+                            ? null
+                            : index == 0.0
+                                ? const Color.fromRGBO(212, 53, 28, 1)
+                                : index == 0.5
+                                    ? const Color.fromRGBO(244, 169, 56, 1)
+                                    : const Color.fromRGBO(0, 112, 60, 1)
+                        :
+                        index.isNegative || onTap == null
                             ? null
                             : index == 0.0
                                 ? const Color.fromRGBO(212, 53, 28, 1)

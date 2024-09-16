@@ -61,10 +61,12 @@ class _AuthenticatedPageWrapper extends State<AuthenticatedWrapperPage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      appBar: customAppBar(),
-      drawer: const MySideBar(),
-      body: const AutoRouter(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: customAppBar(),
+        drawer: const MySideBar(),
+        body: const AutoRouter(),
+      ),
     );
    // return const AutoRouter();
   }

@@ -29,6 +29,7 @@ Map<String, dynamic> _$$AttendeeTrackListModelImplToJson(
 _$AttendeesTrackListImpl _$$AttendeesTrackListImplFromJson(
         Map<String, dynamic> json) =>
     _$AttendeesTrackListImpl(
+      deenrollment: (json['deenrollment'] as num?)?.toInt(),
       name: json['name'] as String?,
       aadhaar: json['aadhaar'] as String?,
       gender: json['gender'] as String?,
@@ -68,6 +69,7 @@ _$AttendeesTrackListImpl _$$AttendeesTrackListImplFromJson(
 Map<String, dynamic> _$$AttendeesTrackListImplToJson(
         _$AttendeesTrackListImpl instance) =>
     <String, dynamic>{
+      'deenrollment': instance.deenrollment,
       'name': instance.name,
       'aadhaar': instance.aadhaar,
       'gender': instance.gender,

@@ -114,6 +114,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
         // appBar: customAppBar(),
         // drawer: const MySideBar(),
         body: ScrollableContent(
+          backgroundColor: Theme.of(context).colorTheme.generic.background,
             // footer: Button(
             //   label: t.translate(i18.common.next),
             //   onPressed: () {

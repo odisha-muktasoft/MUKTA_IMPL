@@ -1,6 +1,7 @@
 import 'package:works_shg_app/models/muster_rolls/muster_roll_model.dart';
 
 class TrackAttendanceTableData {
+  int? deenrollment;
   String? name;
   String? aadhaar;
   String? gender;

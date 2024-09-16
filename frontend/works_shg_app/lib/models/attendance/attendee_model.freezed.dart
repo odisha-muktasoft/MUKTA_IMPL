@@ -341,6 +341,7 @@ AttendeesTrackList _$AttendeesTrackListFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AttendeesTrackList {
+  int? get deenrollment => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get aadhaar => throw _privateConstructorUsedError;
   String? get gender => throw _privateConstructorUsedError;
@@ -386,7 +387,8 @@ abstract class $AttendeesTrackListCopyWith<$Res> {
       _$AttendeesTrackListCopyWithImpl<$Res, AttendeesTrackList>;
   @useResult
   $Res call(
-      {String? name,
+      {int? deenrollment,
+      String? name,
       String? aadhaar,
       String? gender,
       String? individualGaurdianName,
@@ -433,6 +435,7 @@ class _$AttendeesTrackListCopyWithImpl<$Res, $Val extends AttendeesTrackList>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? deenrollment = freezed,
     Object? name = freezed,
     Object? aadhaar = freezed,
     Object? gender = freezed,
@@ -465,6 +468,10 @@ class _$AttendeesTrackListCopyWithImpl<$Res, $Val extends AttendeesTrackList>
     Object? auditDetails = freezed,
   }) {
     return _then(_value.copyWith(
+      deenrollment: freezed == deenrollment
+          ? _value.deenrollment
+          : deenrollment // ignore: cast_nullable_to_non_nullable
+              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -610,7 +617,8 @@ abstract class _$$AttendeesTrackListImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? name,
+      {int? deenrollment,
+      String? name,
       String? aadhaar,
       String? gender,
       String? individualGaurdianName,
@@ -656,6 +664,7 @@ class __$$AttendeesTrackListImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? deenrollment = freezed,
     Object? name = freezed,
     Object? aadhaar = freezed,
     Object? gender = freezed,
@@ -688,6 +697,10 @@ class __$$AttendeesTrackListImplCopyWithImpl<$Res>
     Object? auditDetails = freezed,
   }) {
     return _then(_$AttendeesTrackListImpl(
+      deenrollment: freezed == deenrollment
+          ? _value.deenrollment
+          : deenrollment // ignore: cast_nullable_to_non_nullable
+              as int?,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -816,7 +829,8 @@ class __$$AttendeesTrackListImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AttendeesTrackListImpl implements _AttendeesTrackList {
   const _$AttendeesTrackListImpl(
-      {this.name,
+      {this.deenrollment,
+      this.name,
       this.aadhaar,
       this.gender,
       this.individualGaurdianName,
@@ -851,6 +865,8 @@ class _$AttendeesTrackListImpl implements _AttendeesTrackList {
   factory _$AttendeesTrackListImpl.fromJson(Map<String, dynamic> json) =>
       _$$AttendeesTrackListImplFromJson(json);
 
+  @override
+  final int? deenrollment;
   @override
   final String? name;
   @override
@@ -930,7 +946,7 @@ class _$AttendeesTrackListImpl implements _AttendeesTrackList {
 
   @override
   String toString() {
-    return 'AttendeesTrackList(name: $name, aadhaar: $aadhaar, gender: $gender, individualGaurdianName: $individualGaurdianName, individualId: $individualId, id: $id, skill: $skill, monEntryId: $monEntryId, monExitId: $monExitId, monIndex: $monIndex, tueEntryId: $tueEntryId, tueExitId: $tueExitId, tueIndex: $tueIndex, wedEntryId: $wedEntryId, wedExitId: $wedExitId, wedIndex: $wedIndex, thuEntryId: $thuEntryId, thuExitId: $thuExitId, thursIndex: $thursIndex, friEntryId: $friEntryId, friExitId: $friExitId, skillCodeList: $skillCodeList, friIndex: $friIndex, satEntryId: $satEntryId, satExitId: $satExitId, satIndex: $satIndex, sunEntryId: $sunEntryId, sunExitId: $sunExitId, sunIndex: $sunIndex, auditDetails: $auditDetails)';
+    return 'AttendeesTrackList(deenrollment: $deenrollment, name: $name, aadhaar: $aadhaar, gender: $gender, individualGaurdianName: $individualGaurdianName, individualId: $individualId, id: $id, skill: $skill, monEntryId: $monEntryId, monExitId: $monExitId, monIndex: $monIndex, tueEntryId: $tueEntryId, tueExitId: $tueExitId, tueIndex: $tueIndex, wedEntryId: $wedEntryId, wedExitId: $wedExitId, wedIndex: $wedIndex, thuEntryId: $thuEntryId, thuExitId: $thuExitId, thursIndex: $thursIndex, friEntryId: $friEntryId, friExitId: $friExitId, skillCodeList: $skillCodeList, friIndex: $friIndex, satEntryId: $satEntryId, satExitId: $satExitId, satIndex: $satIndex, sunEntryId: $sunEntryId, sunExitId: $sunExitId, sunIndex: $sunIndex, auditDetails: $auditDetails)';
   }
 
   @override
@@ -938,6 +954,8 @@ class _$AttendeesTrackListImpl implements _AttendeesTrackList {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AttendeesTrackListImpl &&
+            (identical(other.deenrollment, deenrollment) ||
+                other.deenrollment == deenrollment) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.aadhaar, aadhaar) || other.aadhaar == aadhaar) &&
             (identical(other.gender, gender) || other.gender == gender) &&
@@ -999,6 +1017,7 @@ class _$AttendeesTrackListImpl implements _AttendeesTrackList {
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
+        deenrollment,
         name,
         aadhaar,
         gender,
@@ -1048,7 +1067,8 @@ class _$AttendeesTrackListImpl implements _AttendeesTrackList {
 
 abstract class _AttendeesTrackList implements AttendeesTrackList {
   const factory _AttendeesTrackList(
-          {final String? name,
+          {final int? deenrollment,
+          final String? name,
           final String? aadhaar,
           final String? gender,
           final String? individualGaurdianName,
@@ -1083,6 +1103,8 @@ abstract class _AttendeesTrackList implements AttendeesTrackList {
   factory _AttendeesTrackList.fromJson(Map<String, dynamic> json) =
       _$AttendeesTrackListImpl.fromJson;
 
+  @override
+  int? get deenrollment;
   @override
   String? get name;
   @override

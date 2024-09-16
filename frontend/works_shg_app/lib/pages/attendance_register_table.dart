@@ -108,7 +108,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
     super.deactivate();
   }
 
-@override
+  @override
   void dispose() {
     // TODO: implement dispose
     searchController.clear();
@@ -191,7 +191,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
             body: Stack(
               children: [
                 Container(
-                  color:Theme.of(context).colorTheme.generic.background,
+                  color: Theme.of(context).colorTheme.generic.background,
                   padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
                   height: MediaQuery.of(context).size.height - 50,
                   child: CustomScrollView(
@@ -608,11 +608,11 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                           loaded: () {
                                                             Notifiers.getToastMessage(
                                                                 context,
-                                                            AppLocalizations.of(
-                                                                    context)
-                                                                .translate(i18
-                                                                    .attendanceMgmt
-                                                                    .attendeeCreateSuccess),
+                                                                AppLocalizations.of(
+                                                                        context)
+                                                                    .translate(i18
+                                                                        .attendanceMgmt
+                                                                        .attendeeCreateSuccess),
                                                                 'SUCCESS');
 //new
                                                             // Toast.showToast(
@@ -637,13 +637,13 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               (String? error) {
                                                             Notifiers.getToastMessage(
                                                                 context,
-                                                            AppLocalizations.of(
-                                                                    context)
-                                                                .translate(error
-                                                                    .toString()),
+                                                                AppLocalizations.of(
+                                                                        context)
+                                                                    .translate(error
+                                                                        .toString()),
                                                                 'ERROR');
 
-                                                                // new
+                                                            // new
 
                                                             // Toast.showToast(
                                                             //     context,
@@ -686,7 +686,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                       label:
                                                                           "Deleting...");
                                                             },
-                                                            loaded: () {
+                                                            loaded: (uuid) {
                                                               Navigator.of(
                                                                 context,
                                                                 rootNavigator:
@@ -697,14 +697,14 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               );
                                                               Notifiers.getToastMessage(
                                                                   context,
-                                                              AppLocalizations.of(
-                                                                      context)
-                                                                  .translate(i18
-                                                                      .attendanceMgmt
-                                                                      .attendeeDeEnrollSuccess),
+                                                                  AppLocalizations.of(
+                                                                          context)
+                                                                      .translate(i18
+                                                                          .attendanceMgmt
+                                                                          .attendeeDeEnrollSuccess),
                                                                   'SUCCESS');
 
-                                                                  //new
+                                                              //new
 
                                                               // Toast.showToast(
                                                               //     context,
@@ -715,22 +715,51 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               //             .attendeeDeEnrollSuccess),
                                                               //     type: ToastType
                                                               //         .success);
+// TODO: commented for wage seeker deengagement
+// to avoid pop and push same screen
+                                                              // Future.delayed(
+                                                              //     const Duration(
+                                                              //         seconds:
+                                                              //             1));
+                                                              // context.router.popAndPush(AttendanceRegisterTableRoute(
+                                                              //     registerId: widget
+                                                              //         .registerId
+                                                              //         .toString(),
+                                                              //     tenantId: widget
+                                                              //         .tenantId
+                                                              //         .toString()));
 
-                                                              Future.delayed(
-                                                                  const Duration(
-                                                                      seconds:
-                                                                          1));
-                                                              context.router.popAndPush(AttendanceRegisterTableRoute(
-                                                                  registerId: widget
-                                                                      .registerId
-                                                                      .toString(),
-                                                                  tenantId: widget
-                                                                      .tenantId
-                                                                      .toString()));
+                                                              //end
+
+                                                              // new impl
+                                                              setState(() {
+                                                                searchUser =
+                                                                    true;
+                                                                createAttendeePayLoadList
+                                                                    .removeWhere((e) =>
+                                                                        e['individualId'] ==
+                                                                        uuid);
+                                                                attendeeTableList
+                                                                    .removeWhere((e) =>
+                                                                        e['uuid'] ==
+                                                                        uuid);
+                                                                userList.removeWhere(
+                                                                    (e) =>
+                                                                        e['uuid'] ==
+                                                                        uuid);
+                                                                addToTableList
+                                                                    .removeWhere((e) =>
+                                                                        e['uuid'] ==
+                                                                        uuid);
+                                                                userTableList
+                                                                    .removeWhere((e) =>
+                                                                        e.uuid ==
+                                                                        uuid);
+                                                              });
                                                             },
-                                                            error: (String?
-                                                                error) {
-                                                              
+                                                            error:
+                                                                (String? error,
+                                                                    uuid) {
                                                               Navigator.of(
                                                                 context,
                                                                 rootNavigator:
@@ -741,11 +770,11 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               );
                                                               Notifiers.getToastMessage(
                                                                   context,
-                                                              AppLocalizations.of(
-                                                                      context)
-                                                                  .translate(
-                                                                      error
-                                                                          .toString()),
+                                                                  AppLocalizations.of(
+                                                                          context)
+                                                                      .translate(
+                                                                          error
+                                                                              .toString()),
                                                                   'ERROR');
                                                               //new
                                                               // Toast.showToast(
@@ -758,13 +787,19 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               //     type: ToastType
                                                               //         .error);
 
-                                                              context.router.popAndPush(AttendanceRegisterTableRoute(
-                                                                  registerId: widget
-                                                                      .registerId
-                                                                      .toString(),
-                                                                  tenantId: widget
-                                                                      .tenantId
-                                                                      .toString()));
+                                                              //TODO:
+
+                                                              // context.router.popAndPush(AttendanceRegisterTableRoute(
+                                                              //     registerId: widget
+                                                              //         .registerId
+                                                              //         .toString(),
+                                                              //     tenantId: widget
+                                                              //         .tenantId
+                                                              //         .toString()));
+
+                                                              // new impl
+
+                                                              
                                                             },
                                                             orElse: () =>
                                                                 Container());
@@ -958,56 +993,65 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
   }
 
   void onDelete(String uuid) {
+     deleteAttendeePayLoadList.clear();
     switch (createAttendeePayLoadList.isNotEmpty &&
-        createAttendeePayLoadList.where((e) => e["individualId"] == uuid).isNotEmpty) {
+        createAttendeePayLoadList
+            .where((e) => e["individualId"] == uuid)
+            .isNotEmpty) {
       case true:
-        if(!(createAttendeePayLoadList.where((e) => e["individualId"] == uuid).isNotEmpty && createAttendeePayLoadList.where((e) => e["individualId"] == uuid).first['enrollmentDate'] !=null)){
-        deleteAttendeePayLoadList.add({
-          "registerId": registerId.toString(),
-          "individualId": uuid.toString(),
-          "enrollmentDate": null,
-          "denrollmentDate": DateTime.now()
-              .subtract(const Duration(minutes: 1, seconds: 30))
-              .millisecondsSinceEpoch,
-          "tenantId": widget.tenantId.toString()
-        });
-        context.read<AttendeeDeEnrollBloc>().add(
-              DeEnrollAttendeeEvent(attendeeList: deleteAttendeePayLoadList),
-            );
-        setState(() {
-          searchUser = true;
-          createAttendeePayLoadList
-              .removeWhere((e) => e['individualId'] == uuid);
-          attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
-          userList.removeWhere((e) => e['uuid'] == uuid);
-          addToTableList.removeWhere((e) => e['uuid'] == uuid);
-          userTableList.removeWhere((e) => e.uuid == uuid);
-        });
-        }else{
-          
-        setState(() {
-          searchUser = true;
-          createAttendeePayLoadList
-              .removeWhere((e) => e['individualId'] == uuid);
-          attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
-          userList.removeWhere((e) => e['uuid'] == uuid);
-          addToTableList.removeWhere((e) => e['uuid'] == uuid);
-          userTableList.removeWhere((e) => e.uuid == uuid);
-        });
-        deleteAttendeePayLoadList.add({
-          "registerId": registerId.toString(),
-          "individualId": uuid.toString(),
-          "enrollmentDate": null,
-          "denrollmentDate": DateTime.now()
-              .subtract(const Duration(minutes: 1, seconds: 30))
-              .millisecondsSinceEpoch,
-          "tenantId": widget.tenantId.toString()
-        });
-        
+        if (!(createAttendeePayLoadList
+                .where((e) => e["individualId"] == uuid)
+                .isNotEmpty &&
+            createAttendeePayLoadList
+                    .where((e) => e["individualId"] == uuid)
+                    .first['enrollmentDate'] !=
+                null)) {
+                //  deleteAttendeePayLoadList.clear();
+          deleteAttendeePayLoadList.add({
+            "registerId": registerId.toString(),
+            "individualId": uuid.toString(),
+            "enrollmentDate": null,
+            "denrollmentDate": DateTime.now()
+                .subtract(const Duration(minutes: 1, seconds: 30))
+                .millisecondsSinceEpoch,
+            "tenantId": widget.tenantId.toString()
+          });
+          context.read<AttendeeDeEnrollBloc>().add(
+                DeEnrollAttendeeEvent(
+                    attendeeList: deleteAttendeePayLoadList, uuid: uuid ?? ''),
+              );
+          setState(() {
+            searchUser = true;
+            createAttendeePayLoadList
+                .removeWhere((e) => e['individualId'] == uuid);
+            attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
+            userList.removeWhere((e) => e['uuid'] == uuid);
+            addToTableList.removeWhere((e) => e['uuid'] == uuid);
+            userTableList.removeWhere((e) => e.uuid == uuid);
+          });
+        } else {
+          setState(() {
+            searchUser = true;
+            createAttendeePayLoadList
+                .removeWhere((e) => e['individualId'] == uuid);
+            attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
+            userList.removeWhere((e) => e['uuid'] == uuid);
+            addToTableList.removeWhere((e) => e['uuid'] == uuid);
+            userTableList.removeWhere((e) => e.uuid == uuid);
+          });
+        //   deleteAttendeePayLoadList.clear();
+          deleteAttendeePayLoadList.add({
+            "registerId": registerId.toString(),
+            "individualId": uuid.toString(),
+            "enrollmentDate": null,
+            "denrollmentDate": DateTime.now()
+                .subtract(const Duration(minutes: 1, seconds: 30))
+                .millisecondsSinceEpoch,
+            "tenantId": widget.tenantId.toString()
+          });
         }
         break;
       case false:
-      
         if (existingAttendeeList.where((e) => e["uuid"] == uuid).isNotEmpty) {
           deleteAttendeePayLoadList.add({
             "registerId": registerId.toString(),
@@ -1020,17 +1064,18 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           });
         }
         context.read<AttendeeDeEnrollBloc>().add(
-              DeEnrollAttendeeEvent(attendeeList: deleteAttendeePayLoadList),
+              DeEnrollAttendeeEvent(
+                  attendeeList: deleteAttendeePayLoadList, uuid: uuid ?? ''),
             );
-        setState(() {
-          searchUser = true;
-          createAttendeePayLoadList
-              .removeWhere((e) => e['individualId'] == uuid);
-          attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
-          userList.removeWhere((e) => e['uuid'] == uuid);
-          addToTableList.removeWhere((e) => e['uuid'] == uuid);
-          userTableList.removeWhere((e) => e.uuid == uuid);
-        });
+        // setState(() {
+        //   searchUser = true;
+        //   createAttendeePayLoadList
+        //       .removeWhere((e) => e['individualId'] == uuid);
+        //   attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
+        //   userList.removeWhere((e) => e['uuid'] == uuid);
+        //   addToTableList.removeWhere((e) => e['uuid'] == uuid);
+        //   userTableList.removeWhere((e) => e.uuid == uuid);
+        // });
         break;
       default:
         break;

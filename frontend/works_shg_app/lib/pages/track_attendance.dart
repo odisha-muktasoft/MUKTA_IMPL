@@ -812,6 +812,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                   // ending it
                                                                                   .map(
                                                                                     (e) => AttendeesTrackList(
+                                                                                      deenrollment: e.denrollmentDate,
                                                                                         name: existingSkills.where((s) => s.individualId == e.individualId).toList().isNotEmpty && existingSkills.where((s) => s.individualId == e.individualId).first.name!.isNotEmpty
                                                                                             ? existingSkills.firstWhere((s) => s.individualId == e.individualId, orElse: () => IndividualSkills()).name
                                                                                             : estimateMusterRoll!.where((mu) => mu.individualId == e.individualId).toList().isNotEmpty
@@ -896,6 +897,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                 for (var i = 0; i < attendeeList.length; i++) {
                                                                                   var item1 = attendeeList[i];
                                                                                   TrackAttendanceTableData data = TrackAttendanceTableData();
+                                                                                   data.deenrollment=item1.deenrollment;
                                                                                   data.name = item1.name ?? '';
                                                                                   data.aadhaar = item1.aadhaar ?? '';
                                                                                   data.gender = item1.gender ?? '';
@@ -940,6 +942,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                 for (var i = 0; i < attendeeList.length; i++) {
                                                                                   var item1 = attendeeList[i];
                                                                                   TrackAttendanceTableData data = TrackAttendanceTableData();
+                                                                                  data.deenrollment=item1.deenrollment;
                                                                                   data.name = item1.name ?? '';
                                                                                   data.aadhaar = item1.aadhaar ?? '';
                                                                                   data.gender = item1.gender ?? '';
@@ -1755,11 +1758,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
         widget: CircularButton(
           icon: Icons.circle_rounded,
           size: 15,
-          viewOnly: isInWorkFlow,
+         viewOnly:(tableDataModel.deenrollment != null )||  isInWorkFlow,
           color: const Color.fromRGBO(0, 100, 0, 1),
           index: tableDataModel.monIndex ?? -1,
           isNotGreyed: false,
-          onTap: daysInRange == null || !daysInRange!.monday
+          onTap: (tableDataModel.deenrollment != null )|| daysInRange == null || !daysInRange!.monday
               ? null
               : entryExitList!.length > 2
                   ? () => onTapButton(
@@ -1780,11 +1783,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
           widget: CircularButton(
         icon: Icons.circle_rounded,
         size: 15,
-        viewOnly: isInWorkFlow,
+        viewOnly:(tableDataModel.deenrollment != null)|| isInWorkFlow,
         color: const Color.fromRGBO(0, 100, 0, 1),
         index: tableDataModel.tueIndex ?? -1,
         isNotGreyed: false,
-        onTap: daysInRange == null || !daysInRange!.tuesday
+        onTap: (tableDataModel.deenrollment != null)|| daysInRange == null || !daysInRange!.tuesday
             ? null
             : entryExitList!.length > 2
                 ? () => onTapButton(
@@ -1804,11 +1807,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
           widget: CircularButton(
         icon: Icons.circle_rounded,
         size: 15,
-        viewOnly: isInWorkFlow,
+        viewOnly: (tableDataModel.deenrollment != null )||isInWorkFlow,
         color: const Color.fromRGBO(0, 100, 0, 1),
         index: tableDataModel.wedIndex ?? -1,
         isNotGreyed: false,
-        onTap: daysInRange == null || !daysInRange!.wednesday
+        onTap:(tableDataModel.deenrollment != null )|| daysInRange == null || !daysInRange!.wednesday
             ? null
             : entryExitList!.length > 2
                 ? () => onTapButton(
@@ -1828,11 +1831,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
           widget: CircularButton(
         icon: Icons.circle_rounded,
         size: 15,
-        viewOnly: isInWorkFlow,
+        viewOnly: (tableDataModel.deenrollment != null )||isInWorkFlow,
         color: const Color.fromRGBO(0, 100, 0, 1),
         index: tableDataModel.thuIndex ?? -1,
         isNotGreyed: false,
-        onTap: daysInRange == null || !daysInRange!.thursday
+        onTap:(tableDataModel.deenrollment != null)|| daysInRange == null || !daysInRange!.thursday
             ? null
             : entryExitList!.length > 2
                 ? () => onTapButton(
@@ -1852,11 +1855,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
           widget: CircularButton(
         icon: Icons.circle_rounded,
         size: 15,
-        viewOnly: isInWorkFlow,
+        viewOnly:(tableDataModel.deenrollment != null )|| isInWorkFlow,
         color: const Color.fromRGBO(0, 100, 0, 1),
         index: tableDataModel.friIndex ?? -1,
         isNotGreyed: false,
-        onTap: daysInRange == null || !daysInRange!.friday
+        onTap:(tableDataModel.deenrollment != null )|| daysInRange == null || !daysInRange!.friday
             ? null
             : entryExitList!.length > 2
                 ? () => onTapButton(
@@ -1876,11 +1879,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
           widget: CircularButton(
         icon: Icons.circle_rounded,
         size: 15,
-        viewOnly: isInWorkFlow,
+        viewOnly:(tableDataModel.deenrollment != null)|| isInWorkFlow,
         color: const Color.fromRGBO(0, 100, 0, 1),
         index: tableDataModel.satIndex ?? -1,
         isNotGreyed: false,
-        onTap: daysInRange == null || !daysInRange!.saturday
+        onTap: (tableDataModel.deenrollment != null )||daysInRange == null || !daysInRange!.saturday
             ? null
             : entryExitList!.length > 2
                 ? () => onTapButton(
@@ -1900,11 +1903,11 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
           widget: CircularButton(
         icon: Icons.circle_rounded,
         size: 15,
-        viewOnly: isInWorkFlow,
+        viewOnly:(tableDataModel.deenrollment != null )|| isInWorkFlow,
         color: const Color.fromRGBO(0, 100, 0, 1),
         index: tableDataModel.sunIndex ?? -1,
         isNotGreyed: false,
-        onTap: daysInRange == null || !daysInRange!.sunday
+        onTap: (tableDataModel.deenrollment != null )|| daysInRange == null || !daysInRange!.sunday
             ? null
             : entryExitList!.length > 2
                 ? () => onTapButton(
