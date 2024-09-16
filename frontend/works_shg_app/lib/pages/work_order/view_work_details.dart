@@ -579,7 +579,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                           .timeLineDetails),
                                             ),
                                             ui_card.DigitCard(
-                                                margin: const EdgeInsets.all(8),
+                                                margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
                                                 cardType: CardType.primary,
                                                 children: [
                                                   Attachments(
@@ -1706,6 +1706,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                   .timeLineDetails),
                                                         ),
                                                         ui_card.DigitCard(
+                                                          margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
                                                             cardType: CardType
                                                                 .primary,
                                                             children: [
