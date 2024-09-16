@@ -442,323 +442,6 @@ class _MBDetailPageState extends State<MBDetailPage>
           builder: (context, state) {
             return Scaffold(
               backgroundColor: Theme.of(context).colorTheme.generic.background,
-              // bottomNavigationBar:
-              //     BlocBuilder<MeasurementDetailBloc, MeasurementDetailState>(
-              //   builder: (context, state) {
-              //     return state.maybeMap(
-              //       orElse: () {
-              //         return const SizedBox.shrink();
-              //       },
-              //       loaded: (value) {
-              //         if (widget.type == MBScreen.update) {
-              //           return BlocBuilder<MusterGetWorkflowBloc,
-              //               MusterGetWorkflowState>(
-              //             builder: (context, state) {
-              //               return state.maybeMap(
-              //                 orElse: () => const SizedBox.shrink(),
-              //                 loaded: (mbWorkFlow) {
-              //                   final g = mbWorkFlow
-              //                       .musterWorkFlowModel?.processInstances;
-
-              //                   return Draggable(
-              //                     childWhenDragging: FloatActionCard(
-              //                       actions: () {
-              //                         showDialog(
-              //                           context: context,
-              //                           builder: (context) => CommonButtonCard(
-              //                             g: g,
-              //                             contractNumber: widget.contractNumber,
-              //                             mbNumber: widget.mbNumber,
-              //                             type: widget.type,
-              //                           ),
-              //                         );
-              //                       },
-              //                       // amount: sorprice.toString(),
-              //                       amount: value.data.first.totalAmount != null
-              //                           ? value.data.first.totalAmount!
-              //                               .roundToDouble()
-              //                               .toStringAsFixed(2)
-              //                           : "0.00",
-              //                       openButtonSheet: () {
-              //                         _openBottomSheet(
-              //                             t,
-              //                             context,
-              //                             value.data.first.totalSorAmount!,
-              //                             value.data.first.totalNorSorAmount!,
-              //                             value.data.first.totalAmount!,
-              //                             g,
-              //                             widget.contractNumber,
-              //                             widget.mbNumber,
-              //                             widget.type,
-              //                             null,
-              //                             (g != null &&
-              //                                     (g.first.nextActions !=
-              //                                             null &&
-              //                                         g.first.nextActions!
-              //                                             .isEmpty))
-              //                                 ? false
-              //                                 : true,
-              //                             workorderStatus,
-              //                             estimateStatus,
-              //                             (value.data.length >= 2
-              //                                 ? (value.data[1].wfStatus ==
-              //                                         "APPROVED" ||
-              //                                     value.data[1].wfStatus ==
-              //                                         "REJECTED")
-              //                                 : false));
-              //                       },
-              //                       totalAmountText: t.translate(
-              //                           i18.measurementBook.totalMbAmount),
-              //                       subtext: t.translate(
-              //                           i18.measurementBook.forCurrentEntry),
-              //                       showAction: (g != null &&
-              //                               (g.first.nextActions != null &&
-              //                                   g.first.nextActions!.isEmpty))
-              //                           ? false
-              //                           : true,
-              //                     ),
-              //                     onDragEnd: (details) {
-              //                       _openBottomSheet(
-              //                           t,
-              //                           context,
-              //                           value.data.first.totalSorAmount!,
-              //                           value.data.first.totalNorSorAmount!,
-              //                           value.data.first.totalAmount!,
-              //                           g,
-              //                           widget.contractNumber,
-              //                           widget.mbNumber,
-              //                           widget.type,
-              //                           null,
-              //                           (g != null &&
-              //                                   (g.first.nextActions != null &&
-              //                                       g.first.nextActions!
-              //                                           .isEmpty))
-              //                               ? false
-              //                               : true,
-              //                           workorderStatus,
-              //                           estimateStatus,
-              //                           (value.data.length >= 2
-              //                               ? (value.data[1].wfStatus ==
-              //                                       "APPROVED" ||
-              //                                   value.data[1].wfStatus ==
-              //                                       "REJECTED")
-              //                               : false));
-              //                     },
-              //                     feedback: const SizedBox.shrink(),
-              //                     child: FloatActionCard(
-              //                       actions: () {
-              //                         showDialog(
-              //                             barrierDismissible: false,
-              //                             context: context,
-              //                             builder: (context) =>
-              //                                 CommonButtonCard(
-              //                                   g: g,
-              //                                   contractNumber:
-              //                                       widget.contractNumber,
-              //                                   mbNumber: widget.mbNumber,
-              //                                   type: widget.type,
-              //                                 ));
-              //                       },
-              //                       // amount: sorprice.toString(),
-              //                       amount: value.data.first.totalAmount != null
-              //                           ? value.data.first.totalAmount!
-              //                               .roundToDouble()
-              //                               .toStringAsFixed(2)
-              //                           : "0.00",
-              //                       openButtonSheet: () {
-              //                         _openBottomSheet(
-              //                             t,
-              //                             context,
-              //                             value.data.first.totalSorAmount!,
-              //                             value.data.first.totalNorSorAmount!,
-              //                             value.data.first.totalAmount!,
-              //                             g,
-              //                             widget.contractNumber,
-              //                             widget.mbNumber,
-              //                             widget.type,
-              //                             null,
-              //                             (g != null &&
-              //                                     (g.first.nextActions !=
-              //                                             null &&
-              //                                         g.first.nextActions!
-              //                                             .isEmpty))
-              //                                 ? false
-              //                                 : true,
-              //                             workorderStatus,
-              //                             estimateStatus,
-              //                             (value.data.length >= 2
-              //                                 ? (value.data[1].wfStatus ==
-              //                                         "APPROVED" ||
-              //                                     value.data[1].wfStatus ==
-              //                                         "REJECTED")
-              //                                 : false));
-              //                       },
-              //                       totalAmountText: t.translate(
-              //                           i18.measurementBook.totalMbAmount),
-              //                       subtext: t.translate(
-              //                           i18.measurementBook.forCurrentEntry),
-              //                       showAction: (g != null &&
-              //                               (g.first.nextActions != null &&
-              //                                   g.first.nextActions!.isEmpty))
-              //                           ? false
-              //                           : true,
-              //                     ),
-              //                   );
-              //                 },
-              //               );
-              //             },
-              //           );
-              //         } else {
-              //           return BlocBuilder<BusinessWorkflowBloc,
-              //               BusinessGetWorkflowState>(
-              //             builder: (context, state) {
-              //               return state.maybeMap(
-              //                 orElse: () => const SizedBox.shrink(),
-              //                 loaded: (business) {
-              //                   const g = null;
-              //                   final bk = business.businessWorkFlowModel!
-              //                           .businessServices ??
-              //                       [];
-
-              //                   return Draggable(
-              //                     childWhenDragging: FloatActionCard(
-              //                       actions: () {
-              //                         showDialog(
-              //                           context: context,
-              //                           builder: (context) => CommonButtonCard(
-              //                             g: g,
-              //                             contractNumber: widget.contractNumber,
-              //                             mbNumber: widget.mbNumber,
-              //                             type: widget.type,
-              //                             bs: bk,
-              //                           ),
-              //                         );
-              //                       },
-              //                       amount: value.data.first.totalAmount != null
-              //                           ? value.data.first.totalAmount!
-              //                               .roundToDouble()
-              //                               .toStringAsFixed(2)
-              //                           : "0.00",
-              //                       openButtonSheet: () {
-              //                         _openBottomSheet(
-              //                             t,
-              //                             context,
-              //                             value.data.first.totalSorAmount!,
-              //                             value.data.first.totalNorSorAmount!,
-              //                             value.data.first.totalAmount!,
-              //                             g,
-              //                             widget.contractNumber,
-              //                             widget.mbNumber,
-              //                             widget.type,
-              //                             bk,
-              //                             ((bk != null && bk.isEmpty))
-              //                                 ? false
-              //                                 : true,
-              //                             workorderStatus,
-              //                             estimateStatus,
-              //                             (value.data.length >= 2
-              //                                 ? (value.data[1].wfStatus ==
-              //                                         "APPROVED" ||
-              //                                     value.data[1].wfStatus ==
-              //                                         "REJECTED")
-              //                                 : true));
-              //                       },
-              //                       totalAmountText: t.translate(
-              //                           i18.measurementBook.totalMbAmount),
-              //                       subtext: t.translate(
-              //                           i18.measurementBook.forCurrentEntry),
-              //                       showAction: ((bk != null && bk.isEmpty))
-              //                           ? false
-              //                           : true,
-              //                     ),
-              //                     onDragEnd: (details) {
-              //                       _openBottomSheet(
-              //                           t,
-              //                           context,
-              //                           value.data.first.totalSorAmount!,
-              //                           value.data.first.totalNorSorAmount!,
-              //                           value.data.first.totalAmount!,
-              //                           g,
-              //                           widget.contractNumber,
-              //                           widget.mbNumber,
-              //                           widget.type,
-              //                           bk,
-              //                           ((bk != null && bk.isEmpty))
-              //                               ? false
-              //                               : true,
-              //                           workorderStatus,
-              //                           estimateStatus,
-              //                           (value.data.length >= 2
-              //                               ? (value.data[1].wfStatus ==
-              //                                       "APPROVED" ||
-              //                                   value.data[1].wfStatus ==
-              //                                       "REJECTED")
-              //                               : true));
-              //                     },
-              //                     feedback: const SizedBox.shrink(),
-              //                     child: FloatActionCard(
-              //                       actions: () {
-              //                         showDialog(
-              //                           context: context,
-              //                           builder: (context) => CommonButtonCard(
-              //                             g: g,
-              //                             contractNumber: widget.contractNumber,
-              //                             mbNumber: widget.mbNumber,
-              //                             type: widget.type,
-              //                             bs: bk,
-              //                           ),
-              //                         );
-              //                       },
-              //                       amount: value.data.first.totalAmount != null
-              //                           ? value.data.first.totalAmount!
-              //                               .roundToDouble()
-              //                               .toStringAsFixed(2)
-              //                           : "0.00",
-              //                       openButtonSheet: () {
-              //                         _openBottomSheet(
-              //                             t,
-              //                             context,
-              //                             value.data.first.totalSorAmount!,
-              //                             value.data.first.totalNorSorAmount!,
-              //                             value.data.first.totalAmount!,
-              //                             g,
-              //                             widget.contractNumber,
-              //                             widget.mbNumber,
-              //                             widget.type,
-              //                             bk,
-              //                             ((bk != null && bk.isEmpty))
-              //                                 ? false
-              //                                 : true,
-              //                             workorderStatus,
-              //                             estimateStatus,
-              //                             (value.data.length >= 2
-              //                                 ? (value.data[1].wfStatus ==
-              //                                         "APPROVED" ||
-              //                                     value.data[1].wfStatus ==
-              //                                         "REJECTED")
-              //                                 : true));
-              //                       },
-              //                       totalAmountText: t.translate(
-              //                           i18.measurementBook.totalMbAmount),
-              //                       subtext: t.translate(
-              //                           i18.measurementBook.forCurrentEntry),
-              //                       showAction: ((bk != null && bk.isEmpty))
-              //                           ? false
-              //                           : true,
-              //                     ),
-              //                   );
-              //                 },
-              //               );
-              //             },
-              //           );
-              //         }
-              //       },
-              //       loading: (value) {
-              //         return const SizedBox.shrink();
-              //       },
-              //     );
-              //   },
-              // ),
 
               // appBar: customAppBar(),
               // drawer: const MySideBar(),
@@ -846,12 +529,14 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                               Padding(
                                 padding: EdgeInsets.only(
-                                    left: Theme.of(context).spacerTheme.spacer4,
-                                    bottom:
-                                        Theme.of(context).spacerTheme.spacer4),
+                                  left: Theme.of(context).spacerTheme.spacer4,
+                                  // bottom:
+                                  //     Theme.of(context).spacerTheme.spacer2,
+                                ),
                                 child: DigitTextBlock(
                                   heading: t.translate(
                                       i18.measurementBook.measurementBookTitle),
+                                  //  headingStyle: Theme.of(context).digitTextTheme(context).headingXl,
                                 ),
                               ),
                               ui_component.DigitCard(
@@ -861,8 +546,18 @@ class _MBDetailPageState extends State<MBDetailPage>
                                 padding: EdgeInsets.zero,
                                 children: [
                                   ExpansionTile(
-                                    tilePadding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
+                                    collapsedIconColor: Theme.of(context)
+                                        .colorTheme
+                                        .text
+                                        .secondary,
+                                    iconColor: Theme.of(context)
+                                        .colorTheme
+                                        .primary
+                                        .primary1,
+                                    tilePadding: EdgeInsets.symmetric(
+                                        horizontal: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer2),
                                     // childrenPadding: EdgeInsets.zero,
                                     expandedCrossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -982,7 +677,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           ],
                                         ),
                                       )
-                                    : renderSor(value.sor!,"sor"),
+                                    : renderSor(value.sor!, "sor"),
                               // : ListView.builder(
                               //     shrinkWrap: true,
                               //     padding: EdgeInsets.zero,
@@ -1056,7 +751,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                           ],
                                         ),
                                       )
-                                    : renderSor(value.nonSor!,"NonSor"),
+                                    : renderSor(value.nonSor!, "NonSor"),
                               // : ListView.builder(
                               //     physics:
                               //         const NeverScrollableScrollPhysics(),
@@ -1179,9 +874,12 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   .toList()
                                                               : [],
                                                           noFileSelectedText:
-                                                              "No file selected",
+                                                              t.translate(i18
+                                                                  .common
+                                                                  .noFileSelected),
                                                           allowMultiples: true,
-                                                          label: 'Upload',
+                                                          label:
+                                                              "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
                                                           onFilesSelected:
                                                               (List<PlatformFile>
                                                                   files) {
@@ -1234,9 +932,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                       ),
                                                     ),
                                                     DigitTextBlock(
-                                                        description: t.translate(i18
-                                                            .measurementBook
-                                                            .mbPhotoInfo)),
+                                                        description:
+                                                            t.translate(i18
+                                                                .measurementBook
+                                                                .mbPhotoInfo)),
                                                   ],
                                                 ),
                                               ),
@@ -1332,10 +1031,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                         .toList()
                                                                     : [],
                                                                 noFileSelectedText:
-                                                                    "No file selected",
+                                                                    t.translate(i18
+                                                                        .common
+                                                                        .noFileSelected),
                                                                 allowMultiples:
                                                                     true,
-                                                                label: 'Upload',
+                                                                label:
+                                                                    "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
                                                                 onFilesSelected:
                                                                     (List<PlatformFile>
                                                                         files) {
@@ -1384,9 +1086,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                           ),
                                                           // TODO:[text change]
                                                           DigitTextBlock(
-                                                              description: t.translate(i18
-                                                                  .measurementBook
-                                                                  .mbPhotoInfo)),
+                                                              description: t
+                                                                  .translate(i18
+                                                                      .measurementBook
+                                                                      .mbPhotoInfo)),
                                                         ],
                                                       ),
                                                     ),
@@ -1494,11 +1197,13 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                           .toList()
                                                                       : [],
                                                                   noFileSelectedText:
-                                                                      "No file selected",
+                                                                      t.translate(i18
+                                                                          .common
+                                                                          .noFileSelected),
                                                                   allowMultiples:
                                                                       true,
                                                                   label:
-                                                                      'Upload',
+                                                                      "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
                                                                   onFilesSelected:
                                                                       (List<PlatformFile>
                                                                           files) {
@@ -1545,9 +1250,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               ),
                                                             ),
                                                             DigitTextBlock(
-                                                                description: t.translate(i18
-                                                                    .measurementBook
-                                                                    .mbPhotoInfo)),
+                                                                description: t
+                                                                    .translate(i18
+                                                                        .measurementBook
+                                                                        .mbPhotoInfo)),
                                                           ],
                                                         ),
                                                       ),
@@ -1687,7 +1393,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               ),
 
                               // ////////////////
-                               SizedBox(
+                              SizedBox(
                                 height: Theme.of(context).spacerTheme.spacer4,
                               ),
                               widget.type == MBScreen.update
@@ -3290,7 +2996,10 @@ class _SorCardState extends State<SorCard> {
   }
 }
 
-Widget renderSor(List<SorObject> value, String type,) {
+Widget renderSor(
+  List<SorObject> value,
+  String type,
+) {
   return ListView.builder(
     shrinkWrap: true,
     padding: EdgeInsets.zero,
@@ -3324,4 +3033,3 @@ Widget renderSor(List<SorObject> value, String type,) {
     itemCount: value!.length,
   );
 }
-

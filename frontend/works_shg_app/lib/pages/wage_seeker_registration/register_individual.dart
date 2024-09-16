@@ -111,8 +111,8 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
         builder: (context, localState) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorTheme.generic.background,
-        appBar: customAppBar(),
-        drawer: const MySideBar(),
+        // appBar: customAppBar(),
+        // drawer: const MySideBar(),
         body: ScrollableContent(
             // footer: Button(
             //   label: t.translate(i18.common.next),

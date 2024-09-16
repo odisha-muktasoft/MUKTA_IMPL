@@ -78,7 +78,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                       : [],
                   onImagesSelected: (List<File> imageFile) async {
                     // Handle the selected image file here
-                    print('Image selected: ${imageFile[0].path}');
+                   
                     Navigator.of(
                       context,
                       rootNavigator: true,

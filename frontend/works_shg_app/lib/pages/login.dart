@@ -167,8 +167,8 @@ class _LoginPageState extends State<LoginPage>
               //   children: [
                   AnimatedContainer(
                     height: _tabController.index == 0
-                        ? MediaQuery.of(context).size.height * 0.12
-                        : MediaQuery.of(context).size.height * 0.36,
+                        ? MediaQuery.of(context).size.height * 0.089
+                        : MediaQuery.of(context).size.height * 0.32,
                     duration: const Duration(milliseconds: 000),
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
@@ -365,31 +365,27 @@ class _LoginPageState extends State<LoginPage>
       padding: const EdgeInsets.only(top: 0.0),
       child: SizedBox(
         height: MediaQuery.of(loginContext).size.height * 0.7,
-        child: SingleChildScrollView(
-          
-
-          child: ui_label.LabeledField(
+        child: ui_label.LabeledField(
+          isRequired: true,
+          label:
+              '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}',
+          child: DigitTextFormInput(
+            keyboardType: TextInputType.number,
+            // focusNode: _numberFocus,
+            prefixText: '+91',
+            controller: userIdController,
             isRequired: true,
-            label:
-                '${AppLocalizations.of(loginContext).translate(i18.common.mobileNumber)}',
-            child: DigitTextFormInput(
-              keyboardType: TextInputType.number,
-              // focusNode: _numberFocus,
-              prefixText: '+91',
-              controller: userIdController,
-              isRequired: true,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp("[0-9]"))
-              ],
-              onChange: (value) {
-                setState(() {
-                  canContinue = value.length == 10;
-                });
-                // if (value.length == 10) {
-                //   _numberFocus.unfocus();
-                // }
-              },
-            ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+            ],
+            onChange: (value) {
+              setState(() {
+                canContinue = value.length == 10;
+              });
+              // if (value.length == 10) {
+              //   _numberFocus.unfocus();
+              // }
+            },
           ),
         ),
       ),
@@ -481,83 +477,85 @@ class _LoginPageState extends State<LoginPage>
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.5,
       width: MediaQuery.of(context).size.width,
-      child: ReactiveFormBuilder(
-          form: detailBuildForm,
-          builder:
-              (BuildContext context, FormGroup formGroup, Widget? child) {
-            return Column(
-              children: [
-                ui_label.LabeledField(
-                  isRequired: true,
-                  label: '${t.translate(i18.login.loginUserName)}',
-                  child: DigitTextFormInput(
-                    controller: userNameController,
+      child: SingleChildScrollView(
+        child: ReactiveFormBuilder(
+            form: detailBuildForm,
+            builder:
+                (BuildContext context, FormGroup formGroup, Widget? child) {
+              return Column(
+                children: [
+                  ui_label.LabeledField(
                     isRequired: true,
-                    onChange: (value) {},
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: ui_label.LabeledField(
-                    isRequired: true,
-                    wrapLabelText: true,
-                    label: '${t.translate(i18.login.loginPassword)}',
-                    child: DigitPasswordFormInput(
-                      toggleSuffixIcon: iconVisibility
-                          ? Icons.visibility_rounded
-                          : Icons.visibility_off_rounded,
-                      controller: userPasswordController,
+                    label: '${t.translate(i18.login.loginUserName)}',
+                    child: DigitTextFormInput(
+                      controller: userNameController,
                       isRequired: true,
-                      onSuffixTap: (p0) {
-                        setState(() {
-                          iconVisibility = !iconVisibility;
-                        });
-                      },
                       onChange: (value) {},
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0, bottom: 0.0),
-                  child: ui_label.LabeledField(
-                    isRequired: true,
-                    label: "${t.translate(i18.common.city)}",
-                    child: ui_component.DigitDropdown(
-                      // initialValue: null,
-                      // formControlName: cityDropDownKey,
-                      // onChanged: (value) {
-                      // setState(() {
-                      //   selectTenantId = value?.code ?? "";
-                      // });
-                      // },
-                      onSelect: (value) {
-                        setState(() {
-                          selectTenantId = value?.code ?? "";
-                        });
-                      },
-                      // label: "${t.translate(i18.common.city)} *",
-                      items: data.initMdmsModel!.tenant!.tenantListModel!
-                          .map((e) => DropdownItem(
-                              name: t.translate(
-                                  Conversion.convertToTenant(e!.code!)),
-                              code: e!.code!))
-                          .toList(),
-                      // valueMapper: (value) =>
-                      //     t.translate(Conversion.convertToTenant(value!.code!)),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: ui_label.LabeledField(
+                      isRequired: true,
+                      wrapLabelText: true,
+                      label: '${t.translate(i18.login.loginPassword)}',
+                      child: DigitPasswordFormInput(
+                        toggleSuffixIcon: iconVisibility
+                            ? Icons.visibility_rounded
+                            : Icons.visibility_off_rounded,
+                        controller: userPasswordController,
+                        isRequired: true,
+                        onSuffixTap: (p0) {
+                          setState(() {
+                            iconVisibility = !iconVisibility;
+                          });
+                        },
+                        onChange: (value) {},
+                      ),
                     ),
                   ),
-                ),
-                Button(
-                  type: ButtonType.tertiary,
-                  size: ButtonSize.large,
-                  label: t.translate(i18.login.forgotPassword),
-                  onPressed: () {
-                    forgotPassword(t);
-                  },
-                ),
-              ],
-            );
-          }),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 0.0),
+                    child: ui_label.LabeledField(
+                      isRequired: true,
+                      label: "${t.translate(i18.common.city)}",
+                      child: ui_component.DigitDropdown(
+                        // initialValue: null,
+                        // formControlName: cityDropDownKey,
+                        // onChanged: (value) {
+                        // setState(() {
+                        //   selectTenantId = value?.code ?? "";
+                        // });
+                        // },
+                        onSelect: (value) {
+                          setState(() {
+                            selectTenantId = value?.code ?? "";
+                          });
+                        },
+                        // label: "${t.translate(i18.common.city)} *",
+                        items: data.initMdmsModel!.tenant!.tenantListModel!
+                            .map((e) => DropdownItem(
+                                name: t.translate(
+                                    Conversion.convertToTenant(e!.code!)),
+                                code: e!.code!))
+                            .toList(),
+                        // valueMapper: (value) =>
+                        //     t.translate(Conversion.convertToTenant(value!.code!)),
+                      ),
+                    ),
+                  ),
+                  Button(
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                    label: t.translate(i18.login.forgotPassword),
+                    onPressed: () {
+                      forgotPassword(t);
+                    },
+                  ),
+                ],
+              );
+            }),
+      ),
     );
   }
 

@@ -42,12 +42,9 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
   List<String> initialOptions = [];
   List<String> options = [];
 
-  
-
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((_){
-if (widget.skillDetails != null &&
+    if (widget.skillDetails != null &&
         widget.skillDetails?.individualSkills != null) {
       selectedOptions =
           widget.skillDetails!.individualSkills!.any((a) => a.type == null)
@@ -56,8 +53,7 @@ if (widget.skillDetails != null &&
                   .where((e) => e.type != null)
                   .map((e) => '${e.level}')
                   .toList();
-                  initialOptions =
-                  
+      initialOptions =
           widget.skillDetails!.individualSkills!.any((a) => a.type == null)
               ? []
               : widget.skillDetails!.individualSkills!
@@ -65,11 +61,8 @@ if (widget.skillDetails != null &&
                   .map((e) => '${e.level}')
                   .toList();
     }
-    print('sdfjsdkfs');
-    //});
 
     options = widget.skills;
-    
 
     super.initState();
   }
@@ -78,15 +71,11 @@ if (widget.skillDetails != null &&
     setState(() {
       selectedOptions = options;
     });
-
-    
   }
 
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-
-    print(initialOptions);
 
     return SingleChildScrollView(
       child: SizedBox(
@@ -102,8 +91,7 @@ if (widget.skillDetails != null &&
                 children: [
                   DigitTextBlock(
                     //  "Individual's Skill Details",
-                    heading:
-                        t.translate(i18.wageSeeker.individualSkillHeader),
+                    heading: t.translate(i18.wageSeeker.individualSkillHeader),
                   ),
                   //  SizedBox(
                   //   height: Theme.of(context).spacerTheme.spacer4,
@@ -121,11 +109,11 @@ if (widget.skillDetails != null &&
                   //       const SizedBox(
                   //         height: 10,
                   //       ),
-    
+
                   //       // MultiSelectDropDown(
-    
+
                   //       //   showSelectAll: true,
-    
+
                   //       //   isSearchable: true,
                   //       //   options: widget.skills
                   //       //       .map((e) => DropdownItem(
@@ -146,23 +134,22 @@ if (widget.skillDetails != null &&
                   //     ],
                   //   ),
                   // ),
-    
+
                   MultiSelectDropDown(
                     //  showSelectAll: true,
                     isSearchable: true,
-                    initialOptions: selectedOptions.map((e) => DropdownItem(
-                        name: t.translate(
-                            "COMMON_MASTERS_SKILLS_$e"),
-                        code: e))
-                    .toList(),
-                  //  selectAllText: 'Select All',
-                  // options: const [DropdownItem(name: 'sdfsdf', code: '1'),
-                  // DropdownItem(name: 'sdfsdhgf', code: '2'),
-                  // ],
+                    initialOptions: selectedOptions
+                        .map((e) => DropdownItem(
+                            name: t.translate("COMMON_MASTERS_SKILLS_$e"),
+                            code: e))
+                        .toList(),
+                    //  selectAllText: 'Select All',
+                    // options: const [DropdownItem(name: 'sdfsdf', code: '1'),
+                    // DropdownItem(name: 'sdfsdhgf', code: '2'),
+                    // ],
                     options: options
                         .map((e) => DropdownItem(
-                            name: t.translate(
-                                "COMMON_MASTERS_SKILLS_$e"),
+                            name: t.translate("COMMON_MASTERS_SKILLS_$e"),
                             code: e))
                         .toList(),
                     onOptionSelected: (List<DropdownItem> selectedOptionss) {
@@ -199,8 +186,7 @@ if (widget.skillDetails != null &&
                         // Notifiers.getToastMessage(
                         //     context, i18.wageSeeker.skillsRequired, 'ERROR');
                         Toast.showToast(context,
-                            message:
-                                t.translate(i18.wageSeeker.skillsRequired),
+                            message: t.translate(i18.wageSeeker.skillsRequired),
                             type: ToastType.error);
                       } else {
                         final skillList = SkillDetails(
@@ -209,12 +195,12 @@ if (widget.skillDetails != null &&
                                     type: e.toString().split('.').last,
                                     level: e.toString().split('.').first))
                                 .toList());
-    
+
                         context.read<WageSeekerBloc>().add(
                               WageSeekerSkillCreateEvent(
                                   skillDetails: skillList),
                             );
-    
+
                         widget.onPageChanged(3);
                       }
                     },
