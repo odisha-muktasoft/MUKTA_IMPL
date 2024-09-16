@@ -324,55 +324,51 @@ class _CardWidgetState extends State<CardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.type.toUpperCase(),
-                  style:Theme.of(context).textTheme.headlineMedium
-                ),
+              //   DigitTextBlock(
+              //  caption:   widget.type.toUpperCase(),
+                 
+              //   ),
                 DigitTextBlock(
                  heading: '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
-                  // style:
-                  //     DigitTheme.instance.mobileTheme.textTheme.headlineLarge,
+                  
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: LabelValueList(
-                      maxLines: 2,
-                      labelFlex: 5,
-                      valueFlex: 5,
-                      items: [
-                        LabelValuePair(
-                            label: t.translate(i18.measurementBook.isDeduction),
-                            value: (widget
-                                            .filteredMeasurementsMeasure!
-                                            .contracts!
-                                            .first
-                                            .estimates!
-                                            .first
-                                            .isDeduction !=
-                                        null &&
-                                    widget
-                                        .filteredMeasurementsMeasure!
-                                        .contracts!
-                                        .first
-                                        .estimates!
-                                        .first
-                                        .isDeduction!)
-                                ? t.translate(i18.measurementBook.yes)
-                                : t.translate(i18.measurementBook.no)),
-                        LabelValuePair(
-                            label: t.translate(
-                              i18.measurementBook.description,
-                            ),
-                            value: widget
-                                    .filteredMeasurementsMeasure!
-                                    .contracts!
-                                    .first
-                                    .estimates!
-                                    .first
-                                    .description ??
-                                "")
-                      ]),
-                ),
+                LabelValueList(
+                    maxLines: 2,
+                    labelFlex: 5,
+                    valueFlex: 5,
+                    items: [
+                      LabelValuePair(
+                          label: t.translate(i18.measurementBook.isDeduction),
+                          value: (widget
+                                          .filteredMeasurementsMeasure!
+                                          .contracts!
+                                          .first
+                                          .estimates!
+                                          .first
+                                          .isDeduction !=
+                                      null &&
+                                  widget
+                                      .filteredMeasurementsMeasure!
+                                      .contracts!
+                                      .first
+                                      .estimates!
+                                      .first
+                                      .isDeduction!)
+                              ? t.translate(i18.measurementBook.yes)
+                              : t.translate(i18.measurementBook.no)),
+                      LabelValuePair(
+                          label: t.translate(
+                            i18.measurementBook.description,
+                          ),
+                          value: widget
+                                  .filteredMeasurementsMeasure!
+                                  .contracts!
+                                  .first
+                                  .estimates!
+                                  .first
+                                  .description ??
+                              "")
+                    ]),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.40,

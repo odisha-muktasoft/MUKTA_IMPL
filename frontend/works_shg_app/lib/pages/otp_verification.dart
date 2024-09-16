@@ -78,77 +78,78 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
         ),
       ),
       body: BlocListener<AuthBloc, AuthState>(
-                  listener: (context, state) {
-                    state.maybeWhen(
-                        error: () {
-                          // Notifiers.getToastMessage(
-                          //     context,
-                          //     AppLocalizations.of(context)
-                          //         .translate(i18.login.invalidOTP),
-                          //     'ERROR');
+        listener: (context, state) {
+          state.maybeWhen(
+              error: () {
+                // Notifiers.getToastMessage(
+                //     context,
+                //     AppLocalizations.of(context)
+                //         .translate(i18.login.invalidOTP),
+                //     'ERROR');
 
-                          Toast.showToast(context,
-                              message: AppLocalizations.of(context)
-                                  .translate(i18.login.invalidOTP),
-                              type: ToastType.error);
+                Toast.showToast(context,
+                    message: AppLocalizations.of(context)
+                        .translate(i18.login.invalidOTP),
+                    type: ToastType.error);
 
-                          context.router.popAndPush(OTPVerificationRoute(
-                              mobileNumber: widget.mobileNumber));
-                        },
-                        orElse: () => const Offstage());
-                  },
-                  child: 
-                
-      
-      SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  BackNavigationButton(
-                    backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
-                    handleBack: () {
-                      Navigator.pop(context);
-                    },
-                    backButtonText:
-                        AppLocalizations.of(context).translate(i18.common.back),
-                  ),
-                ],
+                context.router.popAndPush(
+                    OTPVerificationRoute(mobileNumber: widget.mobileNumber));
+              },
+              orElse: () => const Offstage());
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    BackNavigationButton(
+                      backNavigationButtonThemeData:
+                          const BackNavigationButtonThemeData().copyWith(
+                              context: context,
+                              backButtonIcon: Icon(
+                                Icons.arrow_circle_left_outlined,
+                                size: MediaQuery.of(context).size.width < 500
+                                    ? Theme.of(context).spacerTheme.spacer5
+                                    : Theme.of(context).spacerTheme.spacer6,
+                                color: Theme.of(context)
+                                    .colorTheme
+                                    .primary
+                                    .primary2,
+                              )),
+                      handleBack: () {
+                        Navigator.pop(context);
+                      },
+                      backButtonText: AppLocalizations.of(context)
+                          .translate(i18.common.back),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            DigitCard(
-              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-              cardType: CardType.primary,
-             
-              //children:
-              // mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // LabelText(AppLocalizations.of(context)
-                //     .translate(i18.login.otpVerification)),
-                DigitTextBlock(
-                  heading: AppLocalizations.of(context)
-                      .translate(i18.login.otpVerification),
-                ),
-                DigitTextBlock(
-                  caption: localizationText,
-                ),
-                // const SizedBox(height: 10),
+              DigitCard(
+                margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                cardType: CardType.primary,
 
-                // SubLabelText(localizationText),
-                Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Align(
+                //children:
+                // mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // LabelText(AppLocalizations.of(context)
+                  //     .translate(i18.login.otpVerification)),
+                  DigitTextBlock(
+                    heading: AppLocalizations.of(context)
+                        .translate(i18.login.otpVerification),
+                        description: localizationText,
+
+                  ),
+                  // DigitTextBlock(
+                  //   caption: localizationText,
+                  // ),
+                  // const SizedBox(height: 10),
+
+                  // SubLabelText(localizationText),
+                  Align(
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
                         height: 40,
@@ -188,10 +189,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                           ],
                         ),
                       )),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(0.0),
-                  child: Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: ResendOTP(
                       onPressed: () {
@@ -208,31 +206,30 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                       },
                     ),
                   ),
-                ),
-                // const SizedBox(height: 10),
-                Button(
-                  mainAxisSize: MainAxisSize.max,
-                  size: ButtonSize.large,
-                  type: ButtonType.primary,
-                  isDisabled: !next,
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          AuthLoginEvent(
-                            userId: widget.mobileNumber,
-                            password: otpController.text,
-                            roleType: RoleType.cbo,
-                          ),
-                        );
-                  },
-                  label:
-                      AppLocalizations.of(context).translate(i18.common.next),
-                ),
-                
-              ],
-            ),
-          ],
+                  // const SizedBox(height: 10),
+                  Button(
+                    mainAxisSize: MainAxisSize.max,
+                    size: ButtonSize.large,
+                    type: ButtonType.primary,
+                    isDisabled: !next,
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                            AuthLoginEvent(
+                              userId: widget.mobileNumber,
+                              password: otpController.text,
+                              roleType: RoleType.cbo,
+                            ),
+                          );
+                    },
+                    label:
+                        AppLocalizations.of(context).translate(i18.common.next),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),);
+    );
   }
 }
