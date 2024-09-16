@@ -23,6 +23,7 @@ import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/app_logo.dart';
 
 import '../blocs/app_initilization/app_initilization.dart';
@@ -200,16 +201,17 @@ class _LoginPageState extends State<LoginPage>
                   OTPVerificationRoute(mobileNumber: userIdController.text));
             },
             error: () {
-              // Notifiers.getToastMessage(
-              //   context,
-              //   t.translate(i18.login.enteredMobileNotRegistered),
-              //   'ERROR',
-              // );
-              Toast.showToast(
+              Notifiers.getToastMessage(
                 context,
-                message: t.translate(i18.login.enteredMobileNotRegistered),
-                type: ToastType.error,
+                t.translate(i18.login.enteredMobileNotRegistered),
+                'ERROR',
               );
+              //new
+              // Toast.showToast(
+              //   context,
+              //   message: t.translate(i18.login.enteredMobileNotRegistered),
+              //   type: ToastType.error,
+              // );
             },
           );
         },
@@ -257,16 +259,17 @@ class _LoginPageState extends State<LoginPage>
         listener: (context, state) {
           state.maybeWhen(
             error: () {
-              // Notifiers.getToastMessage(
-              //   context,
-              //   t.translate(i18.common.empLoginError),
-              //   'ERROR',
-              // );
-              Toast.showToast(
+              Notifiers.getToastMessage(
                 context,
-                message: t.translate(i18.common.empLoginError),
-                type: ToastType.error,
+                t.translate(i18.common.empLoginError),
+                'ERROR',
               );
+              // new
+              // Toast.showToast(
+              //   context,
+              //   message: t.translate(i18.common.empLoginError),
+              //   type: ToastType.error,
+              // );
             },
             orElse: () {},
           );
@@ -288,16 +291,17 @@ class _LoginPageState extends State<LoginPage>
                           ),
                         );
                   } else {
-                    // Notifiers.getToastMessage(
-                    //   context,
-                    //   t.translate(i18.common.allFieldsMandatory),
-                    //   'ERROR',
-                    // );
-                    Toast.showToast(
+                    Notifiers.getToastMessage(
                       context,
-                      message: t.translate(i18.common.allFieldsMandatory),
-                      type: ToastType.error,
+                      t.translate(i18.common.allFieldsMandatory),
+                      'ERROR',
                     );
+                    //new
+                    // Toast.showToast(
+                    //   context,
+                    //   message: t.translate(i18.common.allFieldsMandatory),
+                    //   type: ToastType.error,
+                    // );
                   }
                 }
               : null,

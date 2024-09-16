@@ -16,6 +16,7 @@ import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/utils/notifiers.dart';
 
 import '../blocs/auth/auth.dart';
 import '../data/remote_client.dart';
@@ -81,16 +82,16 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
         listener: (context, state) {
           state.maybeWhen(
               error: () {
-                // Notifiers.getToastMessage(
-                //     context,
-                //     AppLocalizations.of(context)
-                //         .translate(i18.login.invalidOTP),
-                //     'ERROR');
-
-                Toast.showToast(context,
-                    message: AppLocalizations.of(context)
+                Notifiers.getToastMessage(
+                    context,
+                    AppLocalizations.of(context)
                         .translate(i18.login.invalidOTP),
-                    type: ToastType.error);
+                    'ERROR');
+//new
+                // Toast.showToast(context,
+                //     message: AppLocalizations.of(context)
+                //         .translate(i18.login.invalidOTP),
+                //     type: ToastType.error);
 
                 context.router.popAndPush(
                     OTPVerificationRoute(mobileNumber: widget.mobileNumber));
@@ -140,8 +141,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                   DigitTextBlock(
                     heading: AppLocalizations.of(context)
                         .translate(i18.login.otpVerification),
-                        description: localizationText,
-
+                    description: localizationText,
                   ),
                   // DigitTextBlock(
                   //   caption: localizationText,

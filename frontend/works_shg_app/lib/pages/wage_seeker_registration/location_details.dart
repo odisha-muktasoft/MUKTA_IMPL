@@ -386,26 +386,26 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     if (!form.valid) return;
                     if (form.value[pinCodeKey].toString().isNotEmpty &&
                         form.value[pinCodeKey].toString().length < 6) {
-                      // Notifiers.getToastMessage(
-                      //     context,
-                      //     t.translate(i18.wageSeeker.pinCodeValidation),
-                      //     'ERROR');
+                      Notifiers.getToastMessage(
+                          context,
+                          t.translate(i18.wageSeeker.pinCodeValidation),
+                          'ERROR');
 
-                      Toast.showToast(context,
-                          message:
-                              t.translate(i18.wageSeeker.pinCodeValidation),
-                          type: ToastType.error);
+                      // Toast.showToast(context,
+                      //     message:
+                      //         t.translate(i18.wageSeeker.pinCodeValidation),
+                      //     type: ToastType.error);
                     } else if (form.value[pinCodeKey].toString().isNotEmpty &&
                         int.parse(form.value[pinCodeKey].toString()) < 100000) {
-                      // Notifiers.getToastMessage(
-                      //     context,
-                      //     t.translate(i18.wageSeeker.pinCodeValidation),
-                      //     'ERROR');
+                      Notifiers.getToastMessage(
+                          context,
+                          t.translate(i18.wageSeeker.pinCodeValidation),
+                          'ERROR');
 
-                      Toast.showToast(context,
-                          message:
-                              t.translate(i18.wageSeeker.pinCodeValidation),
-                          type: ToastType.error);
+                      // Toast.showToast(context,
+                      //     message:
+                      //         t.translate(i18.wageSeeker.pinCodeValidation),
+                      //     type: ToastType.error);
                     } else {
                       final locationDetails = LocationDetails(
                           pinCode: form.value[pinCodeKey].toString(),

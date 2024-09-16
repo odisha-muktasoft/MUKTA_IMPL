@@ -15,6 +15,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
@@ -132,19 +133,19 @@ class _CreateTimeExtensionRequestPage
                                           .value[extensionDaysKey]
                                           .toString()) >
                                       365) {
-                                    // Notifiers.getToastMessage(
-                                    //   context,
-                                    //   t.translate(
-                                    //     i18.workOrder.extensionReqInDaysMaxVal,
-                                    //   ),
-                                    //   'ERROR',
-                                    // );
-                                    Toast.showToast(context,
-                                        message: t.translate(
-                                          i18.workOrder
-                                              .extensionReqInDaysMaxVal,
-                                        ),
-                                        type: ToastType.error);
+                                    Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
+                                        i18.workOrder.extensionReqInDaysMaxVal,
+                                      ),
+                                      'ERROR',
+                                    );
+                                    // Toast.showToast(context,
+                                    //     message: t.translate(
+                                    //       i18.workOrder
+                                    //           .extensionReqInDaysMaxVal,
+                                    //     ),
+                                    //     type: ToastType.error);
 
                                     return;
                                   } else {
@@ -584,23 +585,23 @@ class _CreateTimeExtensionRequestPage
                                   loading: () =>
                                       Loaders.circularLoader(context),
                                   error: (String? error) =>
-                                      // Notifiers.getToastMessage(
-                                      //     context, error.toString(), 'ERROR'),
-                                      Toast.showToast(context,
-                                          message:
-                                              t.translate(error.toString()),
-                                          type: ToastType.error),
+                                      Notifiers.getToastMessage(
+                                          context, error.toString(), 'ERROR'),
+                                      // Toast.showToast(context,
+                                      //     message:
+                                      //         t.translate(error.toString()),
+                                      //     type: ToastType.error),
                                   loaded: (ContractsModel? contractsModel) {
                                     if (widget.isEdit == true) {
-                                      // Notifiers.getToastMessage(
-                                      //     context,
-                                      //     t.translate(i18.workOrder
-                                      //         .timeExtensionRequestedUpdatedSuccessfully),
-                                      //     "SUCCESS");
-                                      Toast.showToast(context,
-                                          message: t.translate(i18.workOrder
+                                      Notifiers.getToastMessage(
+                                          context,
+                                          t.translate(i18.workOrder
                                               .timeExtensionRequestedUpdatedSuccessfully),
-                                          type: ToastType.success);
+                                          "SUCCESS");
+                                      // Toast.showToast(context,
+                                      //     message: t.translate(i18.workOrder
+                                      //         .timeExtensionRequestedUpdatedSuccessfully),
+                                      //     type: ToastType.success);
                                       context.router.maybePopTop();
                                     } else {
                                       context.router.popAndPush(

@@ -165,26 +165,26 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                 // } else
                                 // end
                                 if (value.estimateStatus == false) {
-                                  // Notifiers.getToastMessage(
-                                  //     context,
-                                  //     t.translate(
-                                  //         i18.workOrder.estimateRevisionError),
-                                  //     'ERROR');
-                                  ui_component.Toast.showToast(context,
-                                      message: t.translate(
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
                                           i18.workOrder.estimateRevisionError),
-                                      type: ui_component.ToastType.error);
+                                      'ERROR');
+                                  // ui_component.Toast.showToast(context,
+                                  //     message: t.translate(
+                                  //         i18.workOrder.estimateRevisionError),
+                                  //     type: ui_component.ToastType.error);
                                 } else {
-                                  // Notifiers.getToastMessage(
-                                  //     context,
-                                  //     t.translate(
-                                  //         i18.workOrder.existingMBCreateError),
-                                  //     'ERROR');
-
-                                  ui_component.Toast.showToast(context,
-                                      message: t.translate(
+                                  Notifiers.getToastMessage(
+                                      context,
+                                      t.translate(
                                           i18.workOrder.existingMBCreateError),
-                                      type: ui_component.ToastType.error);
+                                      'ERROR');
+
+                                  // ui_component.Toast.showToast(context,
+                                  //     message: t.translate(
+                                  //         i18.workOrder.existingMBCreateError),
+                                  //     type: ui_component.ToastType.error);
                                 }
                               }
                             },
@@ -238,10 +238,13 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   orElse: () => false,
                   initial: () => false,
                   loading: () => shg_loader.Loaders.circularLoader(context),
-                  error: (String? error) => ui_component.Toast.showToast(
-                      context,
-                      message: t.translate(error.toString()),
-                      type: ToastType.error),
+                  error: (String? error) =>
+                  Notifiers.getToastMessage(context, t.translate(error.toString()), "ERROR"),
+                  //  ui_component.Toast.showToast(
+                  //     context,
+                  //     message: t.translate(error.toString()),
+                  //     type: ToastType.error),
+
                   loaded: (ContractsModel? contracts) {
                     if (contracts?.contracts != null) {
                       termsNCond = contracts!.contracts!.first
@@ -731,10 +734,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 initial: () => Container(),
                 loading: () => hasLoaded = false,
                 error: (String? error) {
-                  // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
-                  ui_component.Toast.showToast(context,
-                      message: t.translate(error.toString()),
-                      type: ToastType.error);
+                  Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                  // ui_component.Toast.showToast(context,
+                  //     message: t.translate(error.toString()),
+                  //     type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
                   Notifiers.getToastMessage(
@@ -1113,18 +1116,18 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 const SizedBox.shrink();
               },
               error: (value) {
-                // Notifiers.getToastMessage(
-                //     context,
-                //     AppLocalizations.of(context)
-                //         .translate(i18.common.statementnotfound),
-
-                //     // value.error!,
-                //     'ERROR');
-
-                Toast.showToast(context,
-                    message: AppLocalizations.of(context)
+                Notifiers.getToastMessage(
+                    context,
+                    AppLocalizations.of(context)
                         .translate(i18.common.statementnotfound),
-                    type: ToastType.error);
+
+                    // value.error!,
+                    'ERROR');
+
+                // Toast.showToast(context,
+                //     message: AppLocalizations.of(context)
+                //         .translate(i18.common.statementnotfound),
+                //     type: ToastType.error);
               },
             );
           },
@@ -1146,11 +1149,11 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                               loading: () =>
                                   shg_loader.Loaders.circularLoader(context),
                               error: (String? error) =>
-                                  // Notifiers.getToastMessage(
-                                  //     context, error.toString(), 'ERROR'),
-                                  ui_component.Toast.showToast(context,
-                                      message: t.translate(error.toString()),
-                                      type: ToastType.error),
+                                  Notifiers.getToastMessage(
+                                      context, error.toString(), 'ERROR'),
+                                  // ui_component.Toast.showToast(context,
+                                  //     message: t.translate(error.toString()),
+                                  //     type: ToastType.error),
                               loaded: (ContractsModel? contracts) {
                                 if (contracts?.contracts != null) {
                                   termsNCond = contracts!
@@ -1820,18 +1823,18 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                         )),
                                                                     error: (String?
                                                                             error) =>
-                                                                        // Notifiers.getToastMessage(
-                                                                        //     context,
-                                                                        //     error ??
-                                                                        //         'ERR!',
-                                                                        //     'ERROR'));
-
-                                                                        ui_component.Toast.showToast(
+                                                                        Notifiers.getToastMessage(
                                                                             context,
-                                                                            message: t.translate(error ??
-                                                                                'ERR!'),
-                                                                            type:
-                                                                                ToastType.error));
+                                                                            error ??
+                                                                                'ERR!',
+                                                                            'ERROR'));
+
+                                                                        // ui_component.Toast.showToast(
+                                                                        //     context,
+                                                                        //     message: t.translate(error ??
+                                                                        //         'ERR!'),
+                                                                        //     type:
+                                                                        //         ToastType.error));
                                                           },
                                                           child: const SizedBox
                                                               .shrink(),
@@ -1872,21 +1875,21 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 initial: () => Container(),
                 loading: () => hasLoaded = false,
                 error: (String? error) {
-                  // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
-                  ui_component.Toast.showToast(context,
-                      message: t.translate(error.toString()),
-                      type: ToastType.error);
+                  Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                  // ui_component.Toast.showToast(context,
+                  //     message: t.translate(error.toString()),
+                  //     type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
-                  // Notifiers.getToastMessage(
-                  //     context,
-                  //     '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
-                  //     'SUCCESS');
+                  Notifiers.getToastMessage(
+                      context,
+                      '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}',
+                      'SUCCESS');
 
-                  ui_component.Toast.showToast(context,
-                      message: t.translate(
-                          '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}'),
-                      type: ToastType.success);
+                  // ui_component.Toast.showToast(context,
+                  //     message: t.translate(
+                  //         '${contractsModel?.contracts?.first.contractNumber} ${AppLocalizations.of(context).translate(i18.workOrder.workOrderDeclineSuccess)}'),
+                  //     type: ToastType.success);
 
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(const WorkOrderRoute());
@@ -1901,21 +1904,21 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                 initial: () => Container(),
                 loading: () => shg_loader.Loaders.circularLoader(context),
                 error: (String? error) {
-                  // Notifiers.getToastMessage(context, error.toString(), 'ERROR');
-                  ui_component.Toast.showToast(context,
-                      message: t.translate(error.toString()),
-                      type: ToastType.error);
+                  Notifiers.getToastMessage(context, error.toString(), 'ERROR');
+                  // ui_component.Toast.showToast(context,
+                  //     message: t.translate(error.toString()),
+                  //     type: ToastType.error);
                 },
                 loaded: (ContractsModel? contractsModel) {
-                  // Notifiers.getToastMessage(
-                  //     context,
-                  //     '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
-                  //     'SUCCESS');
+                  Notifiers.getToastMessage(
+                      context,
+                      '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}',
+                      'SUCCESS');
 
-                  ui_component.Toast.showToast(context,
-                      message: t.translate(
-                          '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}'),
-                      type: ToastType.success);
+                  // ui_component.Toast.showToast(context,
+                  //     message: t.translate(
+                  //         '${AppLocalizations.of(context).translate(i18.workOrder.workOrderAcceptSuccess)}. ${contractsModel?.contracts?.first.additionalDetails?.attendanceRegisterNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceCreateSuccess)}'),
+                  //     type: ToastType.success);
                   Future.delayed(const Duration(seconds: 1));
                   context.router.popAndPush(ViewWorkDetailsRoute(
                       contractNumber: workOrderList.first['payload']

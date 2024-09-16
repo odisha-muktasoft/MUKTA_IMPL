@@ -23,6 +23,7 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/utils/employee/support_services.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
@@ -425,39 +426,39 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                             } else {
                                               if (value.estimateStatus ==
                                                   false) {
-                                                // Notifiers.getToastMessage(
-                                                //     context,
-                                                //     t.translate(i18.workOrder
-                                                //         .estimateRevisionError),
-                                                //     'ERROR');
-                                                Toast.showToast(context,
-                                                    message: t.translate(i18
-                                                        .workOrder
+                                                Notifiers.getToastMessage(
+                                                    context,
+                                                    t.translate(i18.workOrder
                                                         .estimateRevisionError),
-                                                    type: ToastType.error);
+                                                    'ERROR');
+                                                // Toast.showToast(context,
+                                                //     message: t.translate(i18
+                                                //         .workOrder
+                                                //         .estimateRevisionError),
+                                                //     type: ToastType.error);
                                               } else {
-                                                // Notifiers.getToastMessage(
-                                                //     context,
-                                                //     t.translate(i18.workOrder
-                                                //         .existingMBCreateError),
-                                                //     'ERROR');
-                                                Toast.showToast(context,
-                                                    message: t.translate(i18
-                                                        .workOrder
+                                                Notifiers.getToastMessage(
+                                                    context,
+                                                    t.translate(i18.workOrder
                                                         .existingMBCreateError),
-                                                    type: ToastType.error);
+                                                    'ERROR');
+                                                // Toast.showToast(context,
+                                                //     message: t.translate(i18
+                                                //         .workOrder
+                                                //         .existingMBCreateError),
+                                                //     type: ToastType.error);
                                               }
                                             }
                                           },
                                           error: (value) {
-                                            // Notifiers.getToastMessage(
-                                            //     context, value.error!, 'ERROR');
-                                            Toast.showToast(
-                                              context,
-                                              message:
-                                                  t.translate(value.error!),
-                                              type: ToastType.error,
-                                            );
+                                            Notifiers.getToastMessage(
+                                                context, value.error!, 'ERROR');
+                                            // Toast.showToast(
+                                            //   context,
+                                            //   message:
+                                            //       t.translate(value.error!),
+                                            //   type: ToastType.error,
+                                            // );
                                           },
                                         );
                                       },

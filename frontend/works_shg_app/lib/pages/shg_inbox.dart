@@ -218,15 +218,16 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                             loading: () => shg_loader.Loaders
                                                 .circularLoader(context),
                                             error: (String? error) =>
-                                                // Notifiers.getToastMessage(
-                                                //     context,
-                                                //     t.translate(
-                                                //         error.toString()),
-                                                //     'ERROR'),
-                                                Toast.showToast(context,
-                                                    message: t.translate(
+                                                Notifiers.getToastMessage(
+                                                    context,
+                                                    t.translate(
                                                         error.toString()),
-                                                    type: ToastType.error),
+                                                    'ERROR'),
+                                            //new
+                                            // Toast.showToast(context,
+                                            //     message: t.translate(
+                                            //         error.toString()),
+                                            //     type: ToastType.error),
                                             loaded: (MusterRollsModel?
                                                 individualMusterRollModel) {
                                               context
@@ -352,14 +353,15 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                               loading: () => shg_loader.Loaders
                                                   .circularLoader(context),
                                               error: (String? error) =>
-                                                  // Notifiers.getToastMessage(
-                                                  //     context,
-                                                  //     error.toString(),
-                                                  //     'ERROR'),
-                                                  Toast.showToast(context,
-                                                      message: t.translate(
-                                                          error.toString()),
-                                                      type: ToastType.error),
+                                                  Notifiers.getToastMessage(
+                                                      context,
+                                                      error.toString(),
+                                                      'ERROR'),
+                                              //new
+                                              // Toast.showToast(context,
+                                              //     message: t.translate(
+                                              //         error.toString()),
+                                              //     type: ToastType.error),
                                               loaded: (AttendanceRegistersModel?
                                                   individualAttendanceRegisterModel) {
                                                 daysInRange = DateFormats.checkDaysInRange(
@@ -432,14 +434,12 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                     children: [
                                                                       BackNavigationButton(
                                                                         backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                                                            context: context,
+                                                                            backButtonIcon: Icon(
+                                                                              Icons.arrow_circle_left_outlined,
+                                                                              size: MediaQuery.of(context).size.width < 500 ? Theme.of(context).spacerTheme.spacer5 : Theme.of(context).spacerTheme.spacer6,
+                                                                              color: Theme.of(context).colorTheme.primary.primary2,
+                                                                            )),
                                                                         backButtonText:
                                                                             AppLocalizations.of(context).translate(i18.common.back) ??
                                                                                 'Back',
@@ -743,33 +743,16 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                             //   )
                                                                             // : const SizedBox.shrink()
 
-                                                                           ? Padding(
-                                                              padding: EdgeInsets
-                                                                  .symmetric(
-                                                                horizontal: Theme.of(
-                                                                        context)
-                                                                    .spacerTheme
-                                                                    .spacer2,
-                                                                vertical: Theme.of(
-                                                                        context)
-                                                                    .spacerTheme
-                                                                    .spacer4,
-                                                              ),
-                                                              child: InfoCard(
-                                                                title: AppLocalizations.of(
-                                                                        context)
-                                                                    .translate(i18
-                                                                        .common
-                                                                        .info),
-                                                                type: InfoType
-                                                                    .info,
-                                                                description: AppLocalizations.of(
-                                                                        context)
-                                                                    .translate(i18
-                                                                        .attendanceMgmt
-                                                                        .toMarkAttendance),
-                                                                additionalWidgets:
-                                                                    entryExitList!.length > 2
+                                                                            ? Padding(
+                                                                                padding: EdgeInsets.symmetric(
+                                                                                  horizontal: Theme.of(context).spacerTheme.spacer2,
+                                                                                  vertical: Theme.of(context).spacerTheme.spacer4,
+                                                                                ),
+                                                                                child: InfoCard(
+                                                                                  title: AppLocalizations.of(context).translate(i18.common.info),
+                                                                                  type: InfoType.info,
+                                                                                  description: AppLocalizations.of(context).translate(i18.attendanceMgmt.toMarkAttendance),
+                                                                                  additionalWidgets: entryExitList!.length > 2
                                                                                       ? [
                                                                                           Row(
                                                                                             children: [
@@ -865,10 +848,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                         ],
                                                                                 ),
                                                                               )
-                                                                            : const SizedBox.shrink()
-                                                                            );
-
-
+                                                                            : const SizedBox.shrink());
                                                                   }),
                                                                   Padding(
                                                                     padding: EdgeInsets.all(Theme.of(
@@ -1094,15 +1074,15 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                 context),
                                                                         error:
                                                                             () {
-                                                                          // Notifiers.getToastMessage(
-                                                                          //     context,
-                                                                          //     AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus),
-                                                                          //     'ERROR');
-
-                                                                          Toast.showToast(
+                                                                          Notifiers.getToastMessage(
                                                                               context,
-                                                                              message: AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus),
-                                                                              type: ToastType.error);
+                                                                              AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus),
+                                                                              'ERROR');
+//new
+                                                                          // Toast.showToast(
+                                                                          //     context,
+                                                                          //     message: AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus),
+                                                                          //     type: ToastType.error);
                                                                         },
                                                                         loaded: (MusterWorkFlowModel?
                                                                                 musterWorkFlowModel,
@@ -1158,16 +1138,16 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                           logState.maybeWhen(
                                                                                               error: (String? error) {
                                                                                                 if (!hasLoaded) {
-                                                                                                  //  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
-                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
+                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
                                                                                                   onSubmit(registerId.toString());
                                                                                                   hasLoaded = true;
                                                                                                 }
                                                                                               },
                                                                                               loaded: () {
                                                                                                 if (!hasLoaded) {
-                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), 'SUCCESS');
-                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), type: ToastType.success);
+                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), 'SUCCESS');
+                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), type: ToastType.success);
                                                                                                   onSubmit(registerId.toString());
                                                                                                   hasLoaded = true;
                                                                                                 }
@@ -1180,8 +1160,8 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                             ? null
                                                                                             : () {
                                                                                                 if (selectedDateRange == null) {
-                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                 } else {
                                                                                                   hasLoaded = false;
                                                                                                   if (updateAttendeePayload.isNotEmpty && createAttendeePayload.isNotEmpty) {
@@ -1231,13 +1211,13 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                       listener: (context, musterUpdateState) {
                                                                                         musterUpdateState.maybeWhen(
                                                                                             error: () {
-                                                                                              //  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.musterUpdateFailed), 'ERROR');
-                                                                                              Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.musterUpdateFailed), type: ToastType.error);
+                                                                                              Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.musterUpdateFailed), 'ERROR');
+                                                                                              // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.musterUpdateFailed), type: ToastType.error);
                                                                                               context.router.popAndPush(SHGInboxRoute(tenantId: widget.tenantId, musterRollNo: widget.musterRollNo, sentBackCode: widget.sentBackCode));
                                                                                             },
                                                                                             loaded: (MusterRollsModel? createdMuster) {
-                                                                                              // Notifiers.getToastMessage(context, '${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', 'SUCCESS');
-                                                                                              Toast.showToast(context, message: '${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', type: ToastType.success);
+                                                                                              Notifiers.getToastMessage(context, '${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', 'SUCCESS');
+                                                                                              // Toast.showToast(context, message: '${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', type: ToastType.success);
                                                                                               updateLoaded = true;
                                                                                               context.router.popAndPush(SHGInboxRoute(tenantId: widget.tenantId, musterRollNo: widget.musterRollNo, sentBackCode: widget.sentBackCode));
                                                                                             },
@@ -1247,14 +1227,14 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                         onTap: !inWorkFlow
                                                                                             ? () {
                                                                                                 if (selectedDateRange == null) {
-                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                 } else if (updateAttendeePayload.isNotEmpty || createAttendeePayload.isNotEmpty) {
-                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
-                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
+                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
+                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
                                                                                                 } else if (newList.any((e) => e.skill == null || e.skill.toString().isEmpty)) {
-                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
-                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
+                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
+                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                 } else {
                                                                                                   updateLoaded = false;
                                                                                                   context.read<MusterCreateBloc>().add(UpdateMusterEvent(tenantId: widget.tenantId, id: musterId.toString(), reSubmitAction: musterWorkFlowModel?.processInstances?.first.nextActions?.first.action, contractId: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.contractId ?? 'NA', registerNo: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.attendanceRegisterNo ?? 'NA', registerName: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.attendanceRegisterName ?? 'NA', orgName: individualMusterRollModel.musterRoll!.first.musterAdditionalDetails!.contractId ?? 'NA', skillsList: skillsPayLoad));
@@ -1340,16 +1320,16 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                 musterSentBackCode: widget.sentBackCode),
           );
     } else {
-      // Notifiers.getToastMessage(
-      //     context,
-      //     AppLocalizations.of(context)
-      //         .translate(i18.attendanceMgmt.selectDateRangeFirst),
-      //     'ERROR');
-
-      Toast.showToast(context,
-          message: AppLocalizations.of(context)
+      Notifiers.getToastMessage(
+          context,
+          AppLocalizations.of(context)
               .translate(i18.attendanceMgmt.selectDateRangeFirst),
-          type: ToastType.error);
+          'ERROR');
+//new
+      // Toast.showToast(context,
+      //     message: AppLocalizations.of(context)
+      //         .translate(i18.attendanceMgmt.selectDateRangeFirst),
+      //     type: ToastType.error);
     }
   }
 

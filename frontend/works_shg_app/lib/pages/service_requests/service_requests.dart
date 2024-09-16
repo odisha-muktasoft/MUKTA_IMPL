@@ -108,12 +108,12 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                       'CONTRACT-REVISION'),
                             ),
                 error: (String? error) =>
-                    //  Notifiers.getToastMessage(
-                    //     context, error.toString(), 'ERROR'),
+                     Notifiers.getToastMessage(
+                        context, error.toString(), 'ERROR'),
 
-                    Toast.showToast(context,
-                        message: t.translate(error.toString()),
-                        type: ToastType.error),
+                    // Toast.showToast(context,
+                    //     message: t.translate(error.toString()),
+                    //     type: ToastType.error),
               );
             }, child: BlocBuilder<ServiceRequestsConfigBloc,
                         ServiceRequestsConfigBlocState>(
@@ -134,11 +134,11 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                 loading: () =>
                                     shg_loader.Loaders.circularLoader(context),
                                 error: (String? error) =>
-                                    // Notifiers.getToastMessage(
-                                    //     context, error.toString(), 'ERROR'),
-                                    Toast.showToast(context,
-                                        message: t.translate(error.toString()),
-                                        type: ToastType.error),
+                                    Notifiers.getToastMessage(
+                                        context, error.toString(), 'ERROR'),
+                                    // Toast.showToast(context,
+                                    //     message: t.translate(error.toString()),
+                                    //     type: ToastType.error),
                                 loaded: (ContractsModel? contracts) => false);
                           }, child: BlocBuilder<SearchMyServiceRequestsBloc,
                                       SearchMyServiceRequestsState>(

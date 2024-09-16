@@ -6,6 +6,7 @@ import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/multiselect_checkbox.dart';
 
 import '../../blocs/localization/app_localization.dart';
@@ -176,18 +177,18 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                     mainAxisSize: MainAxisSize.max,
                     onPressed: () {
                       if (!getSkillsValid()) {
-                        // Notifiers.getToastMessage(context,
-                        //     i18.wageSeeker.selectSkillValidation, 'ERROR');
-                        Toast.showToast(context,
-                            message: t.translate(
-                                i18.wageSeeker.selectSkillValidation),
-                            type: ToastType.error);
+                        Notifiers.getToastMessage(context,
+                            i18.wageSeeker.selectSkillValidation, 'ERROR');
+                        // Toast.showToast(context,
+                        //     message: t.translate(
+                        //         i18.wageSeeker.selectSkillValidation),
+                        //     type: ToastType.error);
                       } else if (selectedOptions.isEmpty) {
-                        // Notifiers.getToastMessage(
-                        //     context, i18.wageSeeker.skillsRequired, 'ERROR');
-                        Toast.showToast(context,
-                            message: t.translate(i18.wageSeeker.skillsRequired),
-                            type: ToastType.error);
+                        Notifiers.getToastMessage(
+                            context, i18.wageSeeker.skillsRequired, 'ERROR');
+                        // Toast.showToast(context,
+                        //     message: t.translate(i18.wageSeeker.skillsRequired),
+                        //     type: ToastType.error);
                       } else {
                         final skillList = SkillDetails(
                             individualSkills: selectedOptions

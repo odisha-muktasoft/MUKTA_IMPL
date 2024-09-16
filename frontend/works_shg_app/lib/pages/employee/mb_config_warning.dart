@@ -22,6 +22,7 @@ import 'package:works_shg_app/models/muster_rolls/business_service_workflow.dart
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/models/file_picker_data.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/loaders.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/mb/multi_image.dart';
@@ -152,9 +153,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
               (route) => route is! PopupRoute,
             );
 
-            ui_component.Toast.showToast(context,
-                message: value.error.toString(),
-                type: ui_component.ToastType.error);
+            Notifiers.getToastMessage(context, t.translate(value.error.toString()), "ERROR");
+
+            // ui_component.Toast.showToast(context,
+            //     message: value.error.toString(),
+            //     type: ui_component.ToastType.error);
           },
         );
       },
@@ -205,20 +208,20 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                           if (widget.nextActions!.action ==
                                                   "REJECT" &&
                                               comment.text == "") {
-                                            // Notifiers.getToastMessage(
-                                            //   context,
-                                            //   // AppLocalizations.of(context)
-                                            //   //     .translate(i18.login.invalidOTP),
+                                            Notifiers.getToastMessage(
+                                              context,
+                                              // AppLocalizations.of(context)
+                                              //     .translate(i18.login.invalidOTP),
 
-                                            //   t.translate(i18
-                                            //       .common.allFieldsMandatory),
-                                            //   'ERROR',
-                                            // );
+                                              t.translate(i18
+                                                  .common.allFieldsMandatory),
+                                              'ERROR',
+                                            );
 
-                                            Toast.showToast(context,
-                                                message: t.translate(i18
-                                                    .common.allFieldsMandatory),
-                                                type: ToastType.error);
+                                            // Toast.showToast(context,
+                                            //     message: t.translate(i18
+                                            //         .common.allFieldsMandatory),
+                                            //     type: ToastType.error);
                                           } else {
                                             List<List<SorObject>> sorList = [
                                               value.sor!,

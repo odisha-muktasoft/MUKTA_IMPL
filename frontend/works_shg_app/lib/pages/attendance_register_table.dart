@@ -13,6 +13,7 @@ import 'package:works_shg_app/models/table/table_model.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
@@ -190,7 +191,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
             body: Stack(
               children: [
                 Container(
-                  color: Colors.white,
+                  color:Theme.of(context).colorTheme.generic.background,
                   padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
                   height: MediaQuery.of(context).size.height - 50,
                   child: CustomScrollView(
@@ -605,24 +606,24 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                         (context, createState) {
                                                       createState.maybeWhen(
                                                           loaded: () {
-                                                            // Notifiers.getToastMessage(
-                                                            //     context,
-                                                            // AppLocalizations.of(
-                                                            //         context)
-                                                            //     .translate(i18
-                                                            //         .attendanceMgmt
-                                                            //         .attendeeCreateSuccess),
-                                                            //     'SUCCESS');
-
-                                                            Toast.showToast(
+                                                            Notifiers.getToastMessage(
                                                                 context,
-                                                                message: AppLocalizations.of(
-                                                                        context)
-                                                                    .translate(i18
-                                                                        .attendanceMgmt
-                                                                        .attendeeCreateSuccess),
-                                                                type: ToastType
-                                                                    .success);
+                                                            AppLocalizations.of(
+                                                                    context)
+                                                                .translate(i18
+                                                                    .attendanceMgmt
+                                                                    .attendeeCreateSuccess),
+                                                                'SUCCESS');
+//new
+                                                            // Toast.showToast(
+                                                            //     context,
+                                                            //     message: AppLocalizations.of(
+                                                            //             context)
+                                                            //         .translate(i18
+                                                            //             .attendanceMgmt
+                                                            //             .attendeeCreateSuccess),
+                                                            //     type: ToastType
+                                                            //         .success);
 
                                                             context.router.popAndPush(AttendanceRegisterTableRoute(
                                                                 registerId: widget
@@ -634,22 +635,24 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                           },
                                                           error:
                                                               (String? error) {
-                                                            // Notifiers.getToastMessage(
-                                                            //     context,
-                                                            // AppLocalizations.of(
-                                                            //         context)
-                                                            //     .translate(error
-                                                            //         .toString()),
-                                                            //     'ERROR');
-
-                                                            Toast.showToast(
+                                                            Notifiers.getToastMessage(
                                                                 context,
-                                                                message: AppLocalizations.of(
-                                                                        context)
-                                                                    .translate(error
-                                                                        .toString()),
-                                                                type: ToastType
-                                                                    .error);
+                                                            AppLocalizations.of(
+                                                                    context)
+                                                                .translate(error
+                                                                    .toString()),
+                                                                'ERROR');
+
+                                                                // new
+
+                                                            // Toast.showToast(
+                                                            //     context,
+                                                            //     message: AppLocalizations.of(
+                                                            //             context)
+                                                            //         .translate(error
+                                                            //             .toString()),
+                                                            //     type: ToastType
+                                                            //         .error);
 
                                                             context.router.popAndPush(AttendanceRegisterTableRoute(
                                                                 registerId: widget
@@ -692,24 +695,26 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                 (route) => route
                                                                     is! PopupRoute,
                                                               );
-                                                              // Notifiers.getToastMessage(
-                                                              //     context,
-                                                              // AppLocalizations.of(
-                                                              //         context)
-                                                              //     .translate(i18
-                                                              //         .attendanceMgmt
-                                                              //         .attendeeDeEnrollSuccess),
-                                                              //     'SUCCESS');
-
-                                                              Toast.showToast(
+                                                              Notifiers.getToastMessage(
                                                                   context,
-                                                                  message: AppLocalizations.of(
-                                                                          context)
-                                                                      .translate(i18
-                                                                          .attendanceMgmt
-                                                                          .attendeeDeEnrollSuccess),
-                                                                  type: ToastType
-                                                                      .success);
+                                                              AppLocalizations.of(
+                                                                      context)
+                                                                  .translate(i18
+                                                                      .attendanceMgmt
+                                                                      .attendeeDeEnrollSuccess),
+                                                                  'SUCCESS');
+
+                                                                  //new
+
+                                                              // Toast.showToast(
+                                                              //     context,
+                                                              //     message: AppLocalizations.of(
+                                                              //             context)
+                                                              //         .translate(i18
+                                                              //             .attendanceMgmt
+                                                              //             .attendeeDeEnrollSuccess),
+                                                              //     type: ToastType
+                                                              //         .success);
 
                                                               Future.delayed(
                                                                   const Duration(
@@ -725,14 +730,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                             },
                                                             error: (String?
                                                                 error) {
-                                                              // Notifiers.getToastMessage(
-                                                              //     context,
-                                                              // AppLocalizations.of(
-                                                              //         context)
-                                                              //     .translate(
-                                                              //         error
-                                                              //             .toString()),
-                                                              //     'ERROR');
+                                                              
                                                               Navigator.of(
                                                                 context,
                                                                 rootNavigator:
@@ -741,15 +739,24 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                                 (route) => route
                                                                     is! PopupRoute,
                                                               );
-                                                              Toast.showToast(
+                                                              Notifiers.getToastMessage(
                                                                   context,
-                                                                  message: AppLocalizations.of(
-                                                                          context)
-                                                                      .translate(
-                                                                          error
-                                                                              .toString()),
-                                                                  type: ToastType
-                                                                      .error);
+                                                              AppLocalizations.of(
+                                                                      context)
+                                                                  .translate(
+                                                                      error
+                                                                          .toString()),
+                                                                  'ERROR');
+                                                              //new
+                                                              // Toast.showToast(
+                                                              //     context,
+                                                              //     message: AppLocalizations.of(
+                                                              //             context)
+                                                              //         .translate(
+                                                              //             error
+                                                              //                 .toString()),
+                                                              //     type: ToastType
+                                                              //         .error);
 
                                                               context.router.popAndPush(AttendanceRegisterTableRoute(
                                                                   registerId: widget
@@ -862,12 +869,13 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
         deleteAttendeePayLoadList
             .removeWhere((e) => e["individualId"] == user["uuid"]);
       } else {
-        // Notifiers.getToastMessage(
-        //     context, i18.common.individualAlreadyAdded, 'ERROR');
-        Toast.showToast(context,
-            message: AppLocalizations.of(context)
-                .translate(i18.common.individualAlreadyAdded.toString()),
-            type: ToastType.error);
+        Notifiers.getToastMessage(
+            context, i18.common.individualAlreadyAdded, 'ERROR');
+        // new
+        // Toast.showToast(context,
+        //     message: AppLocalizations.of(context)
+        //         .translate(i18.common.individualAlreadyAdded.toString()),
+        //     type: ToastType.error);
       }
       searchUser = true;
     });
@@ -950,9 +958,10 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
   }
 
   void onDelete(String uuid) {
-    switch (createAttendeePayLoadList.length > 1 &&
-        existingAttendeeList.where((e) => e["uuid"] == uuid).isNotEmpty) {
+    switch (createAttendeePayLoadList.isNotEmpty &&
+        createAttendeePayLoadList.where((e) => e["individualId"] == uuid).isNotEmpty) {
       case true:
+        if(!(createAttendeePayLoadList.where((e) => e["individualId"] == uuid).isNotEmpty && createAttendeePayLoadList.where((e) => e["individualId"] == uuid).first['enrollmentDate'] !=null)){
         deleteAttendeePayLoadList.add({
           "registerId": registerId.toString(),
           "individualId": uuid.toString(),
@@ -974,8 +983,31 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
           addToTableList.removeWhere((e) => e['uuid'] == uuid);
           userTableList.removeWhere((e) => e.uuid == uuid);
         });
+        }else{
+          
+        setState(() {
+          searchUser = true;
+          createAttendeePayLoadList
+              .removeWhere((e) => e['individualId'] == uuid);
+          attendeeTableList.removeWhere((e) => e['uuid'] == uuid);
+          userList.removeWhere((e) => e['uuid'] == uuid);
+          addToTableList.removeWhere((e) => e['uuid'] == uuid);
+          userTableList.removeWhere((e) => e.uuid == uuid);
+        });
+        deleteAttendeePayLoadList.add({
+          "registerId": registerId.toString(),
+          "individualId": uuid.toString(),
+          "enrollmentDate": null,
+          "denrollmentDate": DateTime.now()
+              .subtract(const Duration(minutes: 1, seconds: 30))
+              .millisecondsSinceEpoch,
+          "tenantId": widget.tenantId.toString()
+        });
+        
+        }
         break;
       case false:
+      
         if (existingAttendeeList.where((e) => e["uuid"] == uuid).isNotEmpty) {
           deleteAttendeePayLoadList.add({
             "registerId": registerId.toString(),

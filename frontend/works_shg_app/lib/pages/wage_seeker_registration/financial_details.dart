@@ -360,9 +360,9 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     form.markAllAsTouched(updateParent: false);
                     if (!form.valid) return;
                     if (hintText.isEmpty) {
-                      // Notifiers.getToastMessage(
-                      //     context, i18.wageSeeker.enterValidIFSC, 'ERROR');
-                          Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
+                      Notifiers.getToastMessage(
+                          context, i18.wageSeeker.enterValidIFSC, 'ERROR');
+                          // Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
                     } else {
                       final financeDetails = FinancialDetails(
                           accountHolderName:

@@ -84,11 +84,11 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
           loaded: (value) {
             if (value.warningMsg != null && value.qtyErrorMsg == 2) {
               // SystemChannels.textInput.invokeMethod('TextInput.hide');
-              // Notifiers.getToastMessage(context,
-              //     t.translate(i18.measurementBook.mbQtyErrMsg), 'ERROR');
-              Toast.showToast(context,
-                  message: t.translate(i18.measurementBook.mbQtyErrMsg),
-                  type: ToastType.error);
+              Notifiers.getToastMessage(context,
+                  t.translate(i18.measurementBook.mbQtyErrMsg), 'ERROR');
+              // Toast.showToast(context,
+              //     message: t.translate(i18.measurementBook.mbQtyErrMsg),
+              //     type: ToastType.error);
               context
                   .read<MeasurementDetailBloc>()
                   .add(const UpdateMsgCodeEvent(updateCode: 1));

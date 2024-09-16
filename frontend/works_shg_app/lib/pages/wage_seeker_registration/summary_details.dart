@@ -496,11 +496,11 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                         );
                   },
                   error: (String? error) =>
-                      // Notifiers.getToastMessage(
-                      //     context, error.toString(), 'ERROR'),
-                      Toast.showToast(context,
-                          message: t.translate(error.toString()),
-                          type: ToastType.error),
+                      Notifiers.getToastMessage(
+                          context, error.toString(), 'ERROR'),
+                      // Toast.showToast(context,
+                      //     message: t.translate(error.toString()),
+                      //     type: ToastType.error),
                 );
               },
               child: BlocListener<WageSeekerBankCreateBloc,
@@ -528,11 +528,11 @@ class SummaryDetailsPageState extends State<SummaryDetailsPage> {
                           )));
                     },
                     error: (String? error) =>
-                        // Notifiers.getToastMessage(
-                        //     context, error.toString(), 'ERROR'),
-                        Toast.showToast(context,
-                            message: t.translate(error.toString()),
-                            type: ToastType.error),
+                        Notifiers.getToastMessage(
+                            context, error.toString(), 'ERROR'),
+                        // Toast.showToast(context,
+                        //     message: t.translate(error.toString()),
+                        //     type: ToastType.error),
                   );
                 },
                 child: Center(

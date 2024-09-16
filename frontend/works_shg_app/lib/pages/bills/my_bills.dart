@@ -11,6 +11,7 @@ import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/date_formats.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
@@ -96,11 +97,11 @@ class _MyBillsPage extends State<MyBillsPage> {
                               loading: () =>
                                   shg_loader.Loaders.circularLoader(context),
                               error: (String? error) {
-                                // Notifiers.getToastMessage(
-                                //     context, error.toString(), 'ERROR'),
-                                Toast.showToast(context,
-                                    message: t.translate(error.toString()),
-                                    type: ToastType.error);
+                                Notifiers.getToastMessage(
+                                    context, t.translate(error.toString()), 'ERROR');
+                                // Toast.showToast(context,
+                                //     message: t.translate(error.toString()),
+                                //     type: ToastType.error);
                               },
                               loaded: (MyBillsListModel? myBillsModel) {
                                 bills = List<MyBillModel>.from(myBillsModel!

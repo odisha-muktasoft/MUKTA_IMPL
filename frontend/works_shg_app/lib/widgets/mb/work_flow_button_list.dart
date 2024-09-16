@@ -7,6 +7,7 @@ import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/employee/mb/mb_detail_response.dart';
 import 'package:works_shg_app/models/muster_rolls/business_service_workflow.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
@@ -57,16 +58,16 @@ class CommonButtonCard extends StatelessWidget {
             ).popUntil(
               (route) => route is! PopupRoute,
             );
-            // Notifiers.getToastMessage(
-            //   context,
-            //   // AppLocalizations.of(context)
-            //   //     .translate(i18.login.invalidOTP),
+            Notifiers.getToastMessage(
+              context,
+              // AppLocalizations.of(context)
+              //     .translate(i18.login.invalidOTP),
 
-            //   value.error.toString(),
-            //   'ERROR',
-            // );
-            Toast.showToast(context,
-                message: value.error.toString(), type: ToastType.error);
+              value.error.toString(),
+              'ERROR',
+            );
+            // Toast.showToast(context,
+            //     message: value.error.toString(), type: ToastType.error);
           },
         );
       },

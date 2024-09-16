@@ -996,8 +996,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                             listener: (context, workflowState) {
                                                                                               workflowState.maybeWhen(
                                                                                                   error: () {
-                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus), 'ERROR');
-                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus), type: ToastType.error);
+                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus), 'ERROR');
+                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.unableToCheckWorkflowStatus), type: ToastType.error);
                                                                                                   },
                                                                                                   loading: () => shg_loader.Loaders.circularLoader(context),
                                                                                                   loaded: (MusterWorkFlowModel? musterWorkFlowModel, bool inWorkFlow) {
@@ -1051,8 +1051,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                           logState.maybeWhen(
                                                                                                                               error: (String? error) {
                                                                                                                                 if (!hasLoaded && selectedDateRange != null) {
-                                                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
-                                                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
+                                                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
                                                                                                                                   onSubmit(widget.id);
                                                                                                                                   hasLoaded = true;
                                                                                                                                 }
@@ -1060,8 +1060,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               loading: () => shg_loader.Loaders.circularLoader(context),
                                                                                                                               loaded: () {
                                                                                                                                 if (!hasLoaded && selectedDateRange != null) {
-                                                                                                                                  // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), 'SUCCESS');
-                                                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), type: ToastType.success);
+                                                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), 'SUCCESS');
+                                                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), type: ToastType.success);
                                                                                                                                   onSubmit(widget.id);
                                                                                                                                   hasLoaded = true;
                                                                                                                                 }
@@ -1078,8 +1078,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 }
                                                                                                                                 debouncer = Timer(const Duration(milliseconds: 1000), () {
                                                                                                                                   if (selectedDateRange == null) {
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                                                   } else {
                                                                                                                                     hasLoaded = false;
                                                                                                                                     if (updateAttendeePayload.isNotEmpty && createAttendeePayload.isNotEmpty) {
@@ -1153,8 +1153,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               );
 
                                                                                                                               if (!createMusterLoaded && selectedDateRange != null) {
-                                                                                                                                //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), 'ERROR');
-                                                                                                                                Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), type: ToastType.error);
+                                                                                                                                Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), 'ERROR');
+                                                                                                                                // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), type: ToastType.error);
                                                                                                                                 // onSubmit(registerId.toString());
                                                                                                                                 createMusterLoaded = true;
                                                                                                                                 context.router.popAndPush(TrackAttendanceRoute(
@@ -1172,8 +1172,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               );
 
                                                                                                                               if (!createMusterLoaded && selectedDateRange != null) {
-                                                                                                                                // Notifiers.getToastMessage(context, ' ${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', 'SUCCESS');
-                                                                                                                                Toast.showToast(context, message: ' ${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', type: ToastType.success);
+                                                                                                                                Notifiers.getToastMessage(context, ' ${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', 'SUCCESS');
+                                                                                                                                // Toast.showToast(context, message: ' ${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', type: ToastType.success);
                                                                                                                                 createMusterLoaded = true;
                                                                                                                                 // onSubmit(registerId.toString());
                                                                                                                                 context.router.popAndPush(TrackAttendanceRoute(
@@ -1196,23 +1196,23 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 }
                                                                                                                                 debouncer = Timer(const Duration(milliseconds: 1000), () {
                                                                                                                                   if (selectedDateRange == null) {
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                                                   } else if (newList.any((item) => (item.skillCodeList?.isNotEmpty ?? false) == false)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
                                                                                                                                   } else if (updateAttendeePayload.isNotEmpty) {
-                                                                                                                                    //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
                                                                                                                                   } else if (skillsDisable || newList.where((n) => n.skillCodeList?.isNotEmpty ?? false).any((e) => e.skill == null && e.skill.toString().isEmpty)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                                                   }
                                                                                                                                 });
                                                                                                                               }
@@ -1222,23 +1222,23 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 }
                                                                                                                                 debouncer = Timer(const Duration(milliseconds: 1000), () {
                                                                                                                                   if (selectedDateRange == null) {
-                                                                                                                                    //  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                                                     Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                                                   } else if (createAttendeePayload.isNotEmpty) {
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
                                                                                                                                   } else if (newList.any((item) => (item.skillCodeList?.isNotEmpty ?? false) == false)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
                                                                                                                                   } else if (skillsDisable || newList.where((n) => n.skillCodeList?.isNotEmpty ?? false).any((e) => e.skill == null || e.skill.toString().isEmpty)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                                                   } else {
                                                                                                                                     createMusterLoaded = false;
                                                                                                                                     context.read<MusterCreateBloc>().add(CreateMusterEvent(
@@ -1286,8 +1286,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                           logState.maybeWhen(
                                                                                                                               error: (String? error) {
                                                                                                                                 if (!hasLoaded && selectedDateRange != null) {
-                                                                                                                                  //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
-                                                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
+                                                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
                                                                                                                                   onSubmit(widget.id);
                                                                                                                                   hasLoaded = true;
                                                                                                                                 }
@@ -1295,8 +1295,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               loading: () => shg_loader.Loaders.circularLoader(context),
                                                                                                                               loaded: () {
                                                                                                                                 if (!hasLoaded && selectedDateRange != null) {
-                                                                                                                                  //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), 'SUCCESS');
-                                                                                                                                  Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), type: ToastType.success);
+                                                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), 'SUCCESS');
+                                                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceLoggedSuccess), type: ToastType.success);
                                                                                                                                   onSubmit(widget.id);
                                                                                                                                   hasLoaded = true;
                                                                                                                                 }
@@ -1311,8 +1311,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 ? null
                                                                                                                                 : () {
                                                                                                                                     if (selectedDateRange == null) {
-                                                                                                                                      // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                                      Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                                                      Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                                                      // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                                                     } else {
                                                                                                                                       hasLoaded = false;
                                                                                                                                       if (updateAttendeePayload.isNotEmpty && createAttendeePayload.isNotEmpty) {
@@ -1381,8 +1381,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 (route) => route is! PopupRoute,
                                                                                                                               );
                                                                                                                               if (!createMusterLoaded && selectedDateRange != null) {
-                                                                                                                                // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), 'ERROR');
-                                                                                                                                Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), type: ToastType.error);
+                                                                                                                                Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), 'ERROR');
+                                                                                                                                // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.musterCreateFailed), type: ToastType.error);
                                                                                                                                 // onSubmit(registerId.toString());
                                                                                                                                 createMusterLoaded = true;
                                                                                                                                 context.router.popAndPush(TrackAttendanceRoute(
@@ -1399,8 +1399,8 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 (route) => route is! PopupRoute,
                                                                                                                               );
                                                                                                                               if (!createMusterLoaded && selectedDateRange != null) {
-                                                                                                                                // Notifiers.getToastMessage(context, ' ${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', 'SUCCESS');
-                                                                                                                                Toast.showToast(context, message: '${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', type: ToastType.success);
+                                                                                                                                Notifiers.getToastMessage(context, ' ${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', 'SUCCESS');
+                                                                                                                                // Toast.showToast(context, message: '${createdMuster?.musterRoll?.first.musterRollNumber} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.musterSentForApproval)}', type: ToastType.success);
 
                                                                                                                                 createMusterLoaded = true;
                                                                                                                                 // onSubmit(registerId.toString());
@@ -1424,23 +1424,23 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 }
                                                                                                                                 debouncer = Timer(const Duration(milliseconds: 1000), () {
                                                                                                                                   if (selectedDateRange == null) {
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                                                   } else if (updateAttendeePayload.isNotEmpty) {
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
                                                                                                                                   } else if (newList.any((item) => (item.skillCodeList?.isNotEmpty ?? false) == false)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
                                                                                                                                   } else if (skillsDisable || newList.where((n) => n.skillCodeList?.isNotEmpty ?? false).any((e) => e.skill == null && e.skill.toString().isEmpty)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                                                   } else {
                                                                                                                                     createMusterLoaded = false;
                                                                                                                                     context.read<MusterCreateBloc>().add(UpdateMusterEvent(tenantId: widget.tenantId, id: musterRollsSearch.musterRoll!.first.id.toString(), orgName: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.orgName ?? 'NA', reSubmitAction: musterWorkFlowModel?.processInstances?.first.nextActions?.first.action, contractId: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.contractId ?? 'NA', registerNo: individualAttendanceRegisterModel.attendanceRegister?.first.registerNumber ?? 'NA', registerName: individualAttendanceRegisterModel.attendanceRegister?.first.name ?? 'NA', skillsList: skillsPayLoad));
@@ -1453,23 +1453,23 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                                 }
                                                                                                                                 debouncer = Timer(const Duration(milliseconds: 1000), () {
                                                                                                                                   if (selectedDateRange == null) {
-                                                                                                                                    //  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
+                                                                                                                                     Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), type: ToastType.error);
                                                                                                                                   } else if (createAttendeePayload.isNotEmpty) {
-                                                                                                                                    //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceChangedValidation), type: ToastType.info);
                                                                                                                                   } else if (newList.any((item) => (item.skillCodeList?.isNotEmpty ?? false) == false)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    //Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.noSkillPresent), type: ToastType.info);
                                                                                                                                   } else if (skillsDisable || newList.where((n) => n.skillCodeList?.isNotEmpty ?? false).any((e) => e.skill == null || e.skill.toString().isEmpty)) {
                                                                                                                                     setState(() {
                                                                                                                                       skillsDisable = false;
                                                                                                                                     });
-                                                                                                                                    // Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
-                                                                                                                                    Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), 'INFO');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(i18.attendanceMgmt.reviewSkills), type: ToastType.info);
                                                                                                                                   } else {
                                                                                                                                     createMusterLoaded = false;
                                                                                                                                     context.read<MusterCreateBloc>().add(CreateMusterEvent(tenantId: widget.tenantId, registerId: widget.id, startDate: selectedDateRange!.startDate, serviceCode: individualAttendanceRegisterModel.attendanceRegister?.first.serviceCode, referenceId: individualAttendanceRegisterModel.attendanceRegister?.first.referenceId, orgName: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.orgName ?? 'NA', contractId: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.contractId ?? 'NA', executingAuthority: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.executingAuthority, registerNo: individualAttendanceRegisterModel.attendanceRegister?.first.registerNumber ?? 'NA', registerName: individualAttendanceRegisterModel.attendanceRegister?.first.name ?? 'NA', projectName: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.projectName ?? '', projectType: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.projectType ?? '', projectDesc: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.projectDesc ?? '', projectId: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.projectId ?? '', locality: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.locality ?? '', ward: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.ward ?? '', amount: individualAttendanceRegisterModel.attendanceRegister?.first.attendanceRegisterAdditionalDetails?.amount ?? 14500, skillsList: skillsPayLoad));
@@ -1631,15 +1631,16 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
       isInWorkFlow = false;
       skillsDisable = true;
     } else {
-      // Notifiers.getToastMessage(
-      //     context,
-      //     AppLocalizations.of(context)
-      //         .translate(i18.attendanceMgmt.selectDateRangeFirst),
-      //     'ERROR');
-      Toast.showToast(context,
-          message: AppLocalizations.of(context)
+      Notifiers.getToastMessage(
+          context,
+          AppLocalizations.of(context)
               .translate(i18.attendanceMgmt.selectDateRangeFirst),
-          type: ToastType.error);
+          'ERROR');
+      //new
+      // Toast.showToast(context,
+      //     message: AppLocalizations.of(context)
+      //         .translate(i18.attendanceMgmt.selectDateRangeFirst),
+      //     type: ToastType.error);
     }
   }
 

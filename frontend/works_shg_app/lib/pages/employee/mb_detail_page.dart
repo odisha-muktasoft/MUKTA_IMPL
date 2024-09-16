@@ -34,6 +34,7 @@ import 'package:works_shg_app/models/muster_rolls/muster_workflow_model.dart';
 import 'package:works_shg_app/router/app_router.dart';
 import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
+import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
@@ -376,12 +377,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                   );
                 }
 
-                Toast.showToast(
-                  context,
-                  message: t.translate(
-                      "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
-                  type: ToastType.success,
-                );
+                Notifiers.getToastMessage(context, t.translate(
+                      "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"), "SUCCESS");
+
+                // Toast.showToast(
+                //   context,
+                //   message: t.translate(
+                //       "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
+                //   type: ToastType.success,
+                // );
 
                 context.read<MeasurementDetailBloc>().add(
                       MeasurementDetailBookBlocEvent(
