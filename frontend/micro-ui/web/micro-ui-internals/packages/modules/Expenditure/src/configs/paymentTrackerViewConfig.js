@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getBreakupDetails, transformBillData } from "../utils/paymentTrackerUtils";
 
 export const paymentTrackerViewConfig = (project, projectBillData, projectId) => {
 
-  const  [excludeFailed, setExcludeFailed] = useState(false);
+  const [excludeFailed, setExcludeFailed] = useState(false);
+  // const [tableRows, setTableRows] = useState([]);
+
+  // useEffect(() => {
+  //   if (projectBillData) {
+  //     setTableRows(transformBillData(projectBillData));
+  //   }
+  // }, [projectBillData]);
+
+  const tableRows = transformBillData({projectBillData});
+
+  const breakupDetails = getBreakupDetails({projectBillData});
+  console.log(breakupDetails);
+  console.log("tableRows",tableRows);
 
   return {
     cards: [
@@ -43,15 +57,15 @@ export const paymentTrackerViewConfig = (project, projectBillData, projectId) =>
               },
               {
                 key: "WAGE_AMOUNT_PAID",
-                value: "test",
+                value: breakupDetails?.wageAmountPaid,
               },
               {
                 key: "PURCHASE_AMOUNT_PAID",
-                value: "test",
+                value: breakupDetails?.purchaseAmountPaid,
               },
               {
                 key: "SUPERVISION_AMOUNT_PAID",
-                value: "test",
+                value: breakupDetails?.supervisionAmountPaid,
               },
               {
                 key: "FAILED_PAYMENT_AMOUNT_PAID",
@@ -69,7 +83,7 @@ export const paymentTrackerViewConfig = (project, projectBillData, projectId) =>
               component : "PaymentTrackerTable",
               props : {
                 projectId : "test",
-                tableRows : projectBillData?.paymentDetails,
+                tableRows : tableRows,
                 excludeFailed : excludeFailed,
                 setExcludeFailed : setExcludeFailed
               }
@@ -80,7 +94,7 @@ export const paymentTrackerViewConfig = (project, projectBillData, projectId) =>
             component: "ViewTotalPaymentAmount",
             props: {
               mode: "VIEWES",
-              tableRows : projectBillData?.paymentDetails,
+              tableRows : tableRows,
               excludeFailed : excludeFailed
             }
             // props: {mode: "VIEWES", detail : {...estimateDetails, value:measurement?.additionalDetails?.totalAmount} }

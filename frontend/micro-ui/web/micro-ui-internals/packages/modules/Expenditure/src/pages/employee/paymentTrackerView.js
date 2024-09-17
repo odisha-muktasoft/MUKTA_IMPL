@@ -8,38 +8,7 @@ const PaymentTrackerView = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { projectId } = Digit.Hooks.useQueryParams();
 
-  const projectSearchCriteria = {
-    url: `/project/v1/_search?limit=10&offset=0&tenantId=${tenantId}`,
-
-    body: {
-      Projects: [
-        {
-          tenantId: tenantId,
-          projectNumber: projectId
-        }
-      ],
-      apiOperation: "SEARCH"
-    }
-  }
-
-  let { isLoading: isProjectLoading, data : projectData } = Digit.Hooks.useCustomAPIHook(projectSearchCriteria);
-  
-  const billSearchCriteria = {
-    url: "/wms/report/payment_tracker",
-
-    body: {
-      "searchCriteria": {
-        "tenantId": "pg.citya",
-        "moduleSearchCriteria": {
-          "ward": "string",
-        },
-        "limit": 10,
-        "after_key": "PJ/2023-24/000172",
-      }
-    }
-  };
-
-  let { isLoading: isBillLoading, data : billData } = Digit.Hooks.useCustomAPIHook(billSearchCriteria);
+  const {projectData, billData, isProjectLoading, isBillLoading} = Digit.Hooks.paymentInstruction.useViewPaymentTracker({projectId, tenantId});
 
   // billData = {
   //   "total": {
@@ -107,20 +76,17 @@ const PaymentTrackerView = () => {
   //  "afterKey": "PJ/2023-24/000169"
   // }
 
-  console.log("heyhey", projectData, billData);
-
 
   const HandleDownloadPdf = () => {
     // Digit.Utils.downloadEgovPDF("measurementBook/measurement-book", { contractNumber : workOrderNumber, measurementNumber : mbNumber, tenantId }, `project-payments-${projectId}.pdf`);
   };
 
-  const config = paymentTrackerViewConfig(projectData?.Project[0], billData?.aggsResponse?.projects[0], projectId);
+  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billData?.items, projectId);
 
   if (isProjectLoading || isBillLoading) {
     return <Loader />;
   }
 
-  console.log(config);
   return (
     <React.Fragment>
       <div className={"employee-application-details"} style={{ marginBottom: "15px" }}>
