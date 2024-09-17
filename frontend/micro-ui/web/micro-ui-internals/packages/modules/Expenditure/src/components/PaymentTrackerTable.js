@@ -1,15 +1,17 @@
-import { Table, ArrowDown } from '@egovernments/digit-ui-react-components'
-import React, { useMemo } from 'react'
+import { Table, CheckBox } from '@egovernments/digit-ui-react-components'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-const PaymentTrackerTable = (props) => {
+const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   const { t } = useTranslation();
+
+  const [tableRows, setTableRows] = useState(props?.tableRows);
 
   const tableColumns = useMemo(()=>{
     return [
       {
         Header: t("BILL_NUMBER"),
-        accessor: "number",
+        accessor: "billNumber",
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ color: "#F47738", cursor: "pointer" }} onClick={() => {}}>
@@ -20,14 +22,14 @@ const PaymentTrackerTable = (props) => {
       },
       {
         Header: t("BILL_TYPE"),
-        accessor: "type",
+        accessor: "billType",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
         Header: t("BILL_AMOUNT"),
-        accessor: "amount",
+        accessor: "total",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
@@ -66,7 +68,7 @@ const PaymentTrackerTable = (props) => {
       },
       {
         Header: t("PI_AMOUNT"),
-        accessor: "piamount",
+        accessor: "paidAmount",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
@@ -88,14 +90,28 @@ const PaymentTrackerTable = (props) => {
     ]
   },[])
 
+  useEffect(() => {
+    if (excludeFailed) {
+      setTableRows(props?.tableRows.filter(row => row.pistatus !== "Failed"));
+    } else {
+      setTableRows(props?.tableRows);
+    }
+  }, [excludeFailed])
+
   return (
     <div>
-      <p>Exclude failed payment instructions</p>
-      <div style={{marginTop: "1rem", border: "1px solid #D6D5D4",  borderRadius: "2px" }}>
+      <CheckBox 
+        styles={{marginTop: "24px"}}
+        onChange={() => setExcludeFailed(!excludeFailed)}
+        checked={excludeFailed}
+        label={t("EXCLUDE_FAILED_PAYMENT_INSTRUCTIONS")}
+      />
+      <div style={{marginTop: "0rem", border: "1px solid #D6D5D4",  borderRadius: "2px" }}>
         <Table
+          customTableWrapperClassName={"dss-table-wrapper"}
           t={t}
-          data={props.tableRows}
-          totalRecords={props.tableRows.length}
+          data={tableRows}
+          // totalRecords={tableRows.length}
           columns={tableColumns}
           manualPagination={false}
           isPaginationRequired={false}
@@ -110,8 +126,6 @@ const PaymentTrackerTable = (props) => {
         />
       </div>
     </div>
-
-
   )
 }
 

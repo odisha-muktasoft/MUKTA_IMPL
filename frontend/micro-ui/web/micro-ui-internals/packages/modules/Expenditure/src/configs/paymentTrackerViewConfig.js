@@ -1,47 +1,8 @@
 import React, { useState } from "react";
 
-export const paymentTrackerViewConfig = () => {
+export const paymentTrackerViewConfig = (project, projectBillData, projectId) => {
 
-  const [failedRowschecked, setFailedRowschecked] = useState(false);
-
-  const tableRows = [
-    {
-      number: "123456",
-      type: "Wage Bill",
-      amount: 1000,
-      pinumber: "123456",
-      parentpi: "123456",
-      pitype: "Water",
-      picreationdate: "2021-01-01",
-      piamount: 10000,
-      pidate: "2021-01-01",
-      pistatus: "Successful",
-    },
-    {
-      number: "786521",
-      type: "Purchase Bill",
-      amount: 2000,
-      pinumber: "123456",
-      parentpi: "123456",
-      pitype: "Water",
-      picreationdate: "2021-01-01",
-      piamount: 10000,
-      pidate: "2021-01-01",
-      pistatus: "Partial",
-    },
-    {
-      number: "786521",
-      type: "Supervision Bill",
-      amount: 2000,
-      pinumber: "123456",
-      parentpi: "123456",
-      pitype: "Water",
-      picreationdate: "2021-01-01",
-      piamount: 10000,
-      pidate: "2021-01-01",
-      pistatus: "Failed",
-    },
-  ];
+  const  [excludeFailed, setExcludeFailed] = useState(false);
 
   return {
     cards: [
@@ -52,19 +13,19 @@ export const paymentTrackerViewConfig = () => {
             values: [
               {
                 key: "PROJECT_ID",
-                value: "test",
+                value: project?.projectNumber,
               },
               {
                 key: "PROJECT_NAME",
-                value: "test",
+                value: project?.name,
               },
               {
                 key: "PROJECT_LOCATION",
-                value: "test",
+                value: project?.address?.city,
               },
               {
                 key: "PROJECT_DESC",
-                value: "test",
+                value: project?.description,
               },
             ],
           },
@@ -78,7 +39,7 @@ export const paymentTrackerViewConfig = () => {
             values: [
               {
                 key: "ESTMATED_AMOUNT",
-                value: "test",
+                value: projectBillData?.estimatedAmount,
               },
               {
                 key: "WAGE_AMOUNT_PAID",
@@ -108,7 +69,9 @@ export const paymentTrackerViewConfig = () => {
               component : "PaymentTrackerTable",
               props : {
                 projectId : "test",
-                tableRows : tableRows
+                tableRows : projectBillData?.paymentDetails,
+                excludeFailed : excludeFailed,
+                setExcludeFailed : setExcludeFailed
               }
           },
           {
@@ -117,7 +80,8 @@ export const paymentTrackerViewConfig = () => {
             component: "ViewTotalPaymentAmount",
             props: {
               mode: "VIEWES",
-              tableRows : tableRows
+              tableRows : projectBillData?.paymentDetails,
+              excludeFailed : excludeFailed
             }
             // props: {mode: "VIEWES", detail : {...estimateDetails, value:measurement?.additionalDetails?.totalAmount} }
           }
