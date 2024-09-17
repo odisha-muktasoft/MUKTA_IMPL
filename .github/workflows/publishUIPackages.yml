@@ -11,18 +11,6 @@ on:
       - 'MUKTA-DEVELOP-v2.1.1'
     paths:
       - 'frontend/micro-ui/web/micro-ui-internals/**'
-  pull_request:
-    branches: 
-      # Push events on main branch
-      - 'master'
-      # Push events to branches matching refs/heads/mona/octocat
-      - 'develop'
-      # Push events to branches matching refs/heads/releases/10
-      - 'MUKTA-v2.1-Develop' 
-      # Push events to branches matching refs/heads/releases/10
-      - 'MUKTA-DEVELOP-v2.1.1'
-    paths:
-      - 'frontend/micro-ui/web/micro-ui-internals/**'
  
 
 jobs:
