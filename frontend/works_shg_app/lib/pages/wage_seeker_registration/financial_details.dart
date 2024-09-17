@@ -168,7 +168,8 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                     formControlName: accountNoKey,
                     builder: (field) {
-                      return DigitTextFormInput(
+                      return DigitPasswordFormInput(
+                        
                         // charCount: true,
                         controller: TextEditingController()
                           ..text = form.control(accountNoKey).value ?? '',
@@ -215,6 +216,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     formControlName: reAccountNoKey,
                     builder: (field) {
                       return DigitTextFormInput(
+                        
                         // charCount: true,
                         controller: TextEditingController()
                           ..text = form.control(reAccountNoKey).value ?? '',

@@ -117,7 +117,10 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                     formControlName: pinCodeKey,
                     builder: (field) {
+                      
                       return DigitTextFormInput(
+                        charCount: true,
+                        maxLength: 6,
                         keyboardType: TextInputType.number,
                         controller: TextEditingController()
                           ..text = form.control(pinCodeKey).value,

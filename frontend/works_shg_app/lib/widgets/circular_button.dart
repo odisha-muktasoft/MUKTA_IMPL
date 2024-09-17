@@ -38,6 +38,7 @@ class CircularButton extends StatelessWidget {
                   border: Border.all(
                     width: 2,
                     color: viewOnly?
+                    index==-2? const Color.fromRGBO(149, 148, 148, 1):
                     index.isNegative
                             ? Colors.black
                             : index == 0.0
@@ -45,6 +46,7 @@ class CircularButton extends StatelessWidget {
                                 : index == 0.5
                                     ? const Color.fromRGBO(244, 169, 56, 1)
                                     : const Color.fromRGBO(0, 112, 60, 1)
+                                   
                    : onTap != null
                         ? index.isNegative
                             ? Colors.black
