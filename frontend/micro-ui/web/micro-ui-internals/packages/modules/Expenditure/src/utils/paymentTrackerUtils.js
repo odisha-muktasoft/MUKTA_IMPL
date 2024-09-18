@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 export const getBreakupDetails = ({projectBillPaidData}) => {
   let {wageAmountPaid, purchaseAmountPaid, supervisionAmountPaid} = {wageAmountPaid: 0, purchaseAmountPaid: 0, supervisionAmountPaid: 0};
 
@@ -33,37 +35,38 @@ const getDate = (timestamp) => {
 }
 
 export const transformBillData = ({projectBillData}) => {
+  const { t } = useTranslation();
+
   let billData = [];
   if (projectBillData) {
     projectBillData?.map(bill => {
       let billType, piType;
       if (bill?.businessObject?.additionalDetails?.billNumber?.[0].startsWith("WB")) {
-        billType = "Wage Bill"
+        billType = t("WAGE_BILL")
       } else if (bill?.businessObject?.additionalDetails?.billNumber?.[0].startsWith("PB")) {
-        billType = "Purchase Bill"
+        billType = t("PURCHASE_BILL")
       } else if (bill?.businessObject?.additionalDetails?.billNumber?.[0].startsWith("SB")) {
-        billType = "Supervision Bill"
+        billType = t("SUPERVISION_BILL")
       }
       if (bill?.businessObject?.parentPiNumber) {
-        piType = "REVISED"
+        piType = t("REVISED")
       } else {
-        piType = "ORIGINAL"
+        piType = t("ORIGINAL")
       }
       const piCreationDate = new Date(bill?.businessObject?.auditDetails?.createdTime);
-      const piDate = new Date(bill?.businessObject?.additionalDetails?.paDetails?.auditDetails?.createdTime);
+      const piDate = new Date(bill?.businessObject?.auditDetails?.lastModifiedTime);
 
       billData.push({
         billNumber: bill?.businessObject?.additionalDetails?.billNumber?.[0],
         workOrderNumber: bill?.businessObject?.additionalDetails?.referenceId?.[0],
         billType: billType,
         total: bill?.businessObject?.netAmount,
-        piNumber: bill?.businessObject?.additionalDetails?.paDetails?.piId,
-        parentPi: bill?.businessObject?.parentPiNumber || "NA",
+        piNumber: bill?.businessObject?.muktaReferenceId,
+        parentPi: bill?.businessObject?.parentPiNumber || t("NA"),
         piType: piType,
         piCreationDate: getDate(piCreationDate),
         paidAmount: bill?.businessObject?.netAmount,
         piDate: getDate(piDate),
-        // piDate: bill?.businessObject?.additionalDetails?.paDetails?.auditDetails?.createdTime,
         piStatus: bill?.businessObject?.piStatus
       })
     })

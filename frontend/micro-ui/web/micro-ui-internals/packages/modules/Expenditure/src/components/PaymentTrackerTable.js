@@ -10,18 +10,18 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
 
   const [tableRows, setTableRows] = useState(props?.tableRows);
 
+  const amountFormatter = (amount) => {
+    return Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(amount)).toFixed(2),"number",undefined,true,undefined,2);
+  }
+  
   const tableColumns = useMemo(()=>{
     return [
       {
         Header: t("BILL_NUMBER"),
         accessor: "billNumber",
         Cell: ({ value, column, row }) => {
-          console.log("row", row, column, value);
           return (
             <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`)}>{String(t(value))}</LinkLabel>
-            // <div style={{ color: "#F47738", cursor: "pointer" }} onClick={() => {}}>
-            //   {String(t(value))}
-            // </div>
           )
         }
       },
@@ -36,7 +36,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("BILL_AMOUNT"),
         accessor: "total",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return amountFormatter(value);
         }
       },
       {
@@ -44,9 +44,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         accessor: "piNumber",
         Cell: ({ value, column, row }) => {
           return (
-            <div style={{ color: "#F47738", cursor: "pointer" }} onClick={() => {}}>
-              {String(t(value))}
-            </div>
+            <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${value}`)}>{String(t(value))}</LinkLabel>
           )
         }
       },
@@ -75,7 +73,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("PI_AMOUNT"),
         accessor: "paidAmount",
         Cell: ({ value, column, row }) => {
-          return String(t(value));
+          return amountFormatter(value);
         }
       },
       {
@@ -107,6 +105,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
     <div>
       <CheckBox 
         styles={{marginTop: "24px"}}
+        style={{marginLeft: "40px"}}
         onChange={() => setExcludeFailed(!excludeFailed)}
         checked={excludeFailed}
         label={t("EXCLUDE_FAILED_PAYMENT_INSTRUCTIONS")}
