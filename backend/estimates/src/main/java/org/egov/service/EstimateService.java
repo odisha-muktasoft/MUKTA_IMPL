@@ -1,7 +1,7 @@
 package org.egov.service;
 
-import digit.models.coremodels.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.contract.models.RequestInfoWrapper;
 import org.egov.config.EstimateServiceConfiguration;
 import org.egov.producer.EstimateProducer;
 import org.egov.repository.EstimateRepository;
@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -70,6 +71,7 @@ public class EstimateService {
         if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
             redisService.setCache(getEstimateRedisKey(estimateRequest.getEstimate().getId()), estimateRequest.getEstimate());
         producer.push(serviceConfiguration.getSaveEstimateTopic(), estimateRequest);
+        estimateRequest.getEstimate().setProcessInstances(null);
         return estimateRequest;
     }
 
@@ -126,6 +128,7 @@ public class EstimateService {
         if (Boolean.TRUE.equals(serviceConfiguration.getIsCachingEnabled()))
             redisService.setCache(getEstimateRedisKey(estimateRequest.getEstimate().getId()), estimateRequest.getEstimate());
         producer.push(serviceConfiguration.getUpdateEstimateTopic(), estimateRequest);
+        estimateRequest.getEstimate().setProcessInstances(null);
         try{
             notificationService.sendNotification(estimateRequest);
         }catch (Exception e){
@@ -148,6 +151,7 @@ public class EstimateService {
             }
         }
     }
+
     private List<Estimate> getEstimatesFromRedis(Set<String> ids) {
         log.info("EstimateService::getEstimatesFromRedis");
         List<Estimate> estimates = new ArrayList<>();
