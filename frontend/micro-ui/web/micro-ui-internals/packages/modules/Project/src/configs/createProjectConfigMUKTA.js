@@ -131,9 +131,9 @@ export const createProjectConfigMUKTA = {
                 "optionsKey": "name",
                 "error": "WORKS_REQUIRED_ERR",
                 "required": true,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                },
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // },
                 "mdmsConfig": {
                   "masterName": "ProjectType",
                   "moduleName": "works",
@@ -152,9 +152,9 @@ export const createProjectConfigMUKTA = {
                 "optionsKey": "name",
                 "error": "WORKS_REQUIRED_ERR",
                 "required": false,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                },
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // },
                 "mdmsConfig": {
                   "masterName": "TargetDemography",
                   "moduleName": "works",
@@ -216,9 +216,9 @@ export const createProjectConfigMUKTA = {
                 "options": [],
                 "error": "WORKS_REQUIRED_ERR",
                 "required": true,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                }
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // }
               }
             },
             {
@@ -237,9 +237,9 @@ export const createProjectConfigMUKTA = {
                 "optionsKey": "i18nKey",
                 "error": "WORKS_REQUIRED_ERR",
                 "required": false,
-                "optionsCustomStyle": {
-                  "top": "2.5rem"
-                },
+                // "optionsCustomStyle": {
+                //   "top": "2.5rem"
+                // },
                 "options": []
               }
             },

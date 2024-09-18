@@ -50,9 +50,9 @@ const searchWMSProjectConfig = {
                     "type": "ward",
                     "optionsKey": "i18nKey",
                     "allowMultiSelect": false,
-                    "optionsCustomStyle": {
-                      "top": "2.3rem"
-                    }
+                    // "optionsCustomStyle": {
+                    //   "top": "2.3rem"
+                    // }
                   }
                 },
                 {

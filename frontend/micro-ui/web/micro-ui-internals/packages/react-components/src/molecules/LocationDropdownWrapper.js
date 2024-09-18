@@ -1,10 +1,11 @@
 import React,{Fragment,useState,useEffect} from 'react'
 // import MultiSelectDropdown from '../atoms/MultiSelectDropdown'
-import Dropdown from '../atoms/Dropdown'
+// import Dropdown from '../atoms/Dropdown'
 import { Loader } from '../atoms/Loader'
 import { useTranslation } from 'react-i18next'
 
 import {MultiSelectDropdown } from "@egovernments/digit-ui-components";
+import {Dropdown } from "@egovernments/digit-ui-components";
 
 const LocationDropdownWrapper = ({populators,formData,props,inputRef,errors,setValue}) => {
     //based on type (ward/locality) we will render dropdowns respectively
