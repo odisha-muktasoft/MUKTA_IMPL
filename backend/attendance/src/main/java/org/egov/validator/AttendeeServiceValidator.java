@@ -26,11 +26,15 @@ import static org.egov.util.AttendanceServiceConstants.MDMS_TENANT_MODULE_NAME;
 @Slf4j
 public class AttendeeServiceValidator {
 
-    @Autowired
-    private MDMSUtils mdmsUtils;
+    private final MDMSUtils mdmsUtils;
+
+    private final IndividualServiceUtil individualServiceUtil;
 
     @Autowired
-    private IndividualServiceUtil individualServiceUtil;
+    public AttendeeServiceValidator(MDMSUtils mdmsUtils, IndividualServiceUtil individualServiceUtil) {
+        this.mdmsUtils = mdmsUtils;
+        this.individualServiceUtil = individualServiceUtil;
+    }
 
     public void validateAttendeeCreateRequestParameters(AttendeeCreateRequest attendeeCreateRequest) {
         List<IndividualEntry> attendeeList = attendeeCreateRequest.getAttendees();
@@ -213,10 +217,8 @@ public class AttendeeServiceValidator {
         Map<String, String> errorMap = new HashMap<>();
 
         String tenantId = attendeeListFromRequest.get(0).getTenantId();
-        //split the tenantId
-        String rootTenantId = tenantId.split("\\.")[0];
 
-        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, rootTenantId);
+        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, tenantId);
 
         //check tenant Id
         log.info("validate tenantId with MDMS");
@@ -238,10 +240,8 @@ public class AttendeeServiceValidator {
         Map<String, String> errorMap = new HashMap<>();
 
         String tenantId = attendeeListFromRequest.get(0).getTenantId();
-        //split the tenantId
-        String rootTenantId = tenantId.split("\\.")[0];
 
-        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, rootTenantId);
+        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, tenantId);
 
         //check tenant Id
         log.info("validate tenantId with MDMS");

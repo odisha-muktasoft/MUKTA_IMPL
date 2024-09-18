@@ -25,13 +25,17 @@ import static org.egov.util.AttendanceServiceConstants.MDMS_TENANT_MODULE_NAME;
 @Slf4j
 public class AttendanceServiceValidator {
 
-    @Autowired
-    private MDMSUtils mdmsUtils;
+    private final MDMSUtils mdmsUtils;
+
+    private final RegisterRepository registerRepository;
+    private final IndividualServiceUtil individualServiceUtil;
 
     @Autowired
-    private RegisterRepository registerRepository;
-    @Autowired
-    private IndividualServiceUtil individualServiceUtil;
+    public AttendanceServiceValidator(MDMSUtils mdmsUtils, RegisterRepository registerRepository, IndividualServiceUtil individualServiceUtil) {
+        this.mdmsUtils = mdmsUtils;
+        this.registerRepository = registerRepository;
+        this.individualServiceUtil = individualServiceUtil;
+    }
 
     /* Validates create Attendance Register request body */
     public void validateCreateAttendanceRegister(AttendanceRegisterRequest request) {
@@ -52,10 +56,9 @@ public class AttendanceServiceValidator {
         log.info("Attendance registers referenceId and ServiceCode are validated");
 
         String tenantId = attendanceRegisters.get(0).getTenantId();
-        String rootTenantId = tenantId.split("\\.")[0];
 
         //Get MDMS data using create attendance register request and tenantId
-        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, rootTenantId);
+        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, tenantId);
         validateMDMSData(attendanceRegisters, mdmsData, errorMap);
         log.info("Request data validated with MDMS");
 
@@ -108,10 +111,9 @@ public class AttendanceServiceValidator {
         }
 
         String tenantId = attendanceRegisters.get(0).getTenantId();
-        String rootTenantId = tenantId.split("\\.")[0];
 
         //Get MDMS data using create attendance register request and tenantId
-        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, rootTenantId);
+        Object mdmsData = mdmsUtils.mDMSCall(requestInfo, tenantId);
         validateMDMSData(attendanceRegisters, mdmsData, errorMap);
         log.info("Request data validated with MDMS");
 
