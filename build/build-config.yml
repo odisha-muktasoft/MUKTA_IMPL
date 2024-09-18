@@ -19,7 +19,7 @@
 config:
 
 # backend
-  - name: "builds/digit-works/backend/attendance"
+  - name: "builds/mukta_impl/backend/attendance"
     build:
       - work-dir: "backend/attendance"
         dockerfile: "build/maven-java17/Dockerfile"
