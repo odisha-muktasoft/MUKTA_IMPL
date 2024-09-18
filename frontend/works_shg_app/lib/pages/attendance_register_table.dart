@@ -14,8 +14,6 @@ import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
-import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
-import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
 import 'package:works_shg_app/widgets/atoms/delete_button.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
@@ -30,7 +28,6 @@ import '../blocs/localization/localization.dart';
 import '../models/attendance/individual_list_model.dart';
 import '../router/app_router.dart';
 import '../utils/models.dart';
-import '../widgets/button_link.dart';
 import '../widgets/atoms/auto_complete_search_bar.dart';
 import '../widgets/loaders.dart' as shg_loader;
 
@@ -249,22 +246,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                               ),
                             ),
 
-                            // Back(
-                            //     backLabel: AppLocalizations.of(context)
-                            //         .translate(i18.common.back),
-                            //     callback: () {
-                            //       if (context.router.stack[1].routeData.path
-                            //           .contains('work-orders')) {
-                            //         context.router
-                            //             .popUntilRouteWithPath('home');
-                            //         context.router.push(const WorkOrderRoute());
-                            //       } else {
-                            //         context.router
-                            //             .popUntilRouteWithPath('home');
-                            //         context.router.push(
-                            //             const TrackAttendanceInboxRoute());
-                            //       }
-                            //     }),
+                            
 
                             BlocListener<AttendanceIndividualProjectSearchBloc,
                                 AttendanceIndividualProjectSearchState>(

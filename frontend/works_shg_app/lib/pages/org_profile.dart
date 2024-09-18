@@ -213,10 +213,7 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                      // Back(
-                                      //     backLabel:
-                                      //         t.translate(i18.common.back)),
-
+                                      
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             left: 8.0, top: 16),

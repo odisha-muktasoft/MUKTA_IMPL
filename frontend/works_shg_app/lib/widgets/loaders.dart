@@ -1,5 +1,8 @@
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class Loaders {
   static circularLoader(BuildContext context) {
@@ -21,9 +24,9 @@ class Loaders {
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      'Loading...',
-                      style: TextStyle(
+                     Text(
+                       AppLocalizations.of(context).translate(i18.common.loading) ??'Loading...',
+                      style: const TextStyle(
                           color: Colors.white,
                           fontFamily: 'Roboto',
                           fontSize: 16,

@@ -171,6 +171,8 @@ class Common {
       "ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS";
   String get slaDaysRemaining => "COMMON_SLA_DAYS";
   String get issuedDate => "WORKS_CONTRACT_ISSUE_DATE";
+  String get loading=>"ES_COMMON_LOADING";
+  String get uploading=>"ES_COMMON_UPLOADING";
 }
 
 class Home {

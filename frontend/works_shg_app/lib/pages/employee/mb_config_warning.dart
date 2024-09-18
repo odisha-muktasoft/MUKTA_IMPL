@@ -143,7 +143,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
               (route) => route is! PopupRoute,
             );
             //Loaders.showLoadingDialog(context);
-            shg_loader.Loaders.showLoadingDialog(context);
+            shg_loader.Loaders.showLoadingDialog(
+              label:t.translate(i18.common.loading),
+              context);
           },
           error: (value) {
             Navigator.of(
@@ -884,7 +886,7 @@ void uploadFileToServer(List<PlatformFile> files, BuildContext context,
     ).popUntil(
       (route) => route is! PopupRoute,
     );
-    shg_loader.Loaders.showLoadingDialog(context, label: "Uploading...");
+    shg_loader.Loaders.showLoadingDialog(context, label: AppLocalizations.of(context).translate(i18.common.loading));
     var response = await CoreRepository().uploadFiles(
         files.map((e) => File(e.path ?? e.name!)).toList(),
         "img_measurement_book");

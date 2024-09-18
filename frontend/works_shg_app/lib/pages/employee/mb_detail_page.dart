@@ -36,8 +36,6 @@ import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/global_variables.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
-import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
-import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
 import '../../blocs/employee/emp_hrms/emp_hrms.dart';
 import '../../blocs/employee/mb/mb_detail_view.dart';
@@ -51,8 +49,6 @@ import '../../utils/common_methods.dart';
 import '../../utils/date_formats.dart';
 import '../../utils/employee/mb/mb_logic.dart';
 import '../../widgets/atoms/digit_timeline.dart';
-import '../../widgets/mb/float_action_card.dart';
-import '../../widgets/mb/multi_image.dart';
 import '../../widgets/mb/work_flow_button_list.dart';
 import '../../widgets/mb/sor_item_add_mb.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -166,7 +162,7 @@ class _MBDetailPageState extends State<MBDetailPage>
       );
       if (payload.isNotEmpty) {
         // Loaders.showLoadingDialog(context, label: "Uploading...");
-        shg_loader.Loaders.showLoadingDialog(context, label: "Uploading...");
+        shg_loader.Loaders.showLoadingDialog(context, label: AppLocalizations.of(context).translate(i18.common.uploading));
         var response = await CoreRepository().uploadFiles(
             payload.map((e) => File(e.path ?? e.name!)).toList(),
             "img_measurement_book");

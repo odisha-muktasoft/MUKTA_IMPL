@@ -16,7 +16,9 @@ import '../../router/app_router.dart';
 
 import '../../utils/employee/mb/mb_logic.dart';
 import 'package:works_shg_app/widgets/loaders.dart' as shg_loader;
-
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
+    
 class CommonButtonCard extends StatelessWidget {
   const CommonButtonCard({
     super.key,
@@ -49,7 +51,9 @@ class CommonButtonCard extends StatelessWidget {
               (route) => route is! PopupRoute,
             );
            // Loaders.showLoadingDialog(context);
-            shg_loader.Loaders.showLoadingDialog(context);
+            shg_loader.Loaders.showLoadingDialog(
+              label:t.translate(i18.common.loading),
+              context);
           },
           error: (value) {
             Navigator.of(

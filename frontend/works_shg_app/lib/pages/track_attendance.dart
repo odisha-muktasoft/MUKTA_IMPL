@@ -291,14 +291,6 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                         delegate:
                                                             SliverChildListDelegate(
                                                           [
-                                                            // Back(
-                                                            //   backLabel: AppLocalizations
-                                                            //           .of(
-                                                            //               context)
-                                                            //       .translate(i18
-                                                            //           .common
-                                                            //           .back),
-                                                            // ),
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
@@ -643,32 +635,21 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
 
 // end of search
 
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 8.0,
-                                                                      top: 16.0,
-                                                                      right:
-                                                                          8.0,
-                                                                      bottom:
-                                                                          0),
-                                                              child:
-                                                                  DigitTextFormInput(
-                                                                suffixIcon: Icons
-                                                                    .search_sharp,
-                                                                innerLabel: AppLocalizations.of(
-                                                                        context)
-                                                                    .translate(i18
-                                                                        .common
-                                                                        .searchByName),
-                                                                controller:
-                                                                    searchController,
-                                                                onChange:
-                                                                    (value) {
-                                                                  onTextSearch();
-                                                                },
-                                                              ),
+                                                            DigitSearchBar(
+                                                              // suffixIcon: Icons
+                                                              //     .search_sharp,
+                                                              hintText: AppLocalizations
+                                                                      .of(
+                                                                          context)
+                                                                  .translate(i18
+                                                                      .common
+                                                                      .searchByName),
+                                                              controller:
+                                                                  searchController,
+                                                              onChanged:
+                                                                  (value) {
+                                                                onTextSearch();
+                                                              },
                                                             ),
 
                                                             SizedBox(
@@ -1159,7 +1140,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               ).popUntil(
                                                                                                                                 (route) => route is! PopupRoute,
                                                                                                                               );
-                                                                                                                              Loaders.showLoadingDialog(context);
+                                                                                                                              Loaders.showLoadingDialog(label: t.translate(i18.common.loading), context);
                                                                                                                             },
                                                                                                                             error: () {
                                                                                                                               Navigator.of(
@@ -1388,7 +1369,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                               ).popUntil(
                                                                                                                                 (route) => route is! PopupRoute,
                                                                                                                               );
-                                                                                                                              Loaders.showLoadingDialog(context);
+                                                                                                                              Loaders.showLoadingDialog(label: t.translate(i18.common.loading), context);
                                                                                                                             },
                                                                                                                             error: () {
                                                                                                                               Navigator.of(

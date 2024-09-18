@@ -85,7 +85,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                     ).popUntil(
                       (route) => route is! PopupRoute,
                     );
-                    Loaders.showLoadingDialog(context, label: "Uploading...");
+                    Loaders.showLoadingDialog(context, label: t.translate(i18.common.uploading));
         
                     final List<FileStoreModel> ss =
                         await uploadProfile(imageFile, 'works');

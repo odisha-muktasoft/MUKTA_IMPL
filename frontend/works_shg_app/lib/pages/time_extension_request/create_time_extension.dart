@@ -1,4 +1,4 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_scrollable;
 import 'package:digit_ui_components/digit_components.dart' as ui_new;
 import 'package:digit_ui_components/digit_components.dart';
@@ -17,6 +17,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/empty_image.dart';
+import 'package:works_shg_app/widgets/loaders.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 
@@ -115,7 +116,8 @@ class _CreateTimeExtensionRequestPage
                     form: () => buildForm(contractState),
                     builder: (context, form, child) {
                       return ui_scrollable.ScrollableContent(
-                        backgroundColor: Theme.of(context).colorTheme.generic.background,
+                        backgroundColor:
+                            Theme.of(context).colorTheme.generic.background,
                         footer: ui_card.DigitCard(
                             margin: EdgeInsets.all(
                                 Theme.of(context).spacerTheme.spacer2),
@@ -248,15 +250,29 @@ class _CreateTimeExtensionRequestPage
                                                       MainAxisAlignment.start,
                                                   children: [
                                                     BackNavigationButton(
-                                                      backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                                      backNavigationButtonThemeData:
+                                                          const BackNavigationButtonThemeData()
+                                                              .copyWith(
+                                                                  context:
+                                                                      context,
+                                                                  backButtonIcon:
+                                                                      Icon(
+                                                                    Icons
+                                                                        .arrow_circle_left_outlined,
+                                                                    size: MediaQuery.of(context).size.width <
+                                                                            500
+                                                                        ? Theme.of(context)
+                                                                            .spacerTheme
+                                                                            .spacer5
+                                                                        : Theme.of(context)
+                                                                            .spacerTheme
+                                                                            .spacer6,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorTheme
+                                                                        .primary
+                                                                        .primary2,
+                                                                  )),
                                                       backButtonText:
                                                           AppLocalizations.of(
                                                                   context)
@@ -582,16 +598,38 @@ class _CreateTimeExtensionRequestPage
                             listener: (context, timeExtensionState) {
                               timeExtensionState.maybeWhen(
                                   orElse: () => false,
-                                  loading: () =>
-                                      Loaders.circularLoader(context),
-                                  error: (String? error) =>
-                                      Notifiers.getToastMessage(
-                                          context, error.toString(), 'ERROR'),
-                                      // Toast.showToast(context,
-                                      //     message:
-                                      //         t.translate(error.toString()),
-                                      //     type: ToastType.error),
+                                  loading: () {
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,
+                                    ).popUntil(
+                                      (route) => route is! PopupRoute,
+                                    );
+                                    shg_loader.Loaders.showLoadingDialog(
+                                    label:t.translate(i18.common.loading),
+                                        context);
+                                  },
+                                  error: (String? error) {
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,
+                                    ).popUntil(
+                                      (route) => route is! PopupRoute,
+                                    );
+                                    Notifiers.getToastMessage(
+                                        context, error.toString(), 'ERROR');
+                                    // Toast.showToast(context,
+                                    //     message:
+                                    //         t.translate(error.toString()),
+                                    //     type: ToastType.error),
+                                  },
                                   loaded: (ContractsModel? contractsModel) {
+                                    Navigator.of(
+                                      context,
+                                      rootNavigator: true,
+                                    ).popUntil(
+                                      (route) => route is! PopupRoute,
+                                    );
                                     if (widget.isEdit == true) {
                                       Notifiers.getToastMessage(
                                           context,
