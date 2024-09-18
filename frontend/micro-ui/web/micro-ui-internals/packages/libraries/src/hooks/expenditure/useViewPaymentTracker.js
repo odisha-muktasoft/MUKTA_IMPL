@@ -17,6 +17,23 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
   }
 
   let { isLoading: isProjectLoading, data : projectData } = Digit.Hooks.useCustomAPIHook(projectSearchCriteria);
+
+  const billPaidSearchCriteria = {
+    url: "/wms/report/payment_tracker",
+
+    body: {
+      "searchCriteria": {
+        "tenantId": "pg.citya",
+        "moduleSearchCriteria": {
+          "ward": "string"
+        },
+        "limit": 10,
+        after_key: projectId,
+      }
+    }
+  };
+
+  let { isLoading: isBillPaidLoading, data : billPaidData } = Digit.Hooks.useCustomAPIHook(billPaidSearchCriteria);
   
   const billSearchCriteria = {
     url: "/wms/ifms-pi/_search",
@@ -36,7 +53,7 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
 
   let { isLoading: isBillLoading, data : billData } = Digit.Hooks.useCustomAPIHook(billSearchCriteria);
 
-  return {projectData, billData, isProjectLoading, isBillLoading}
+  return {projectData, billPaidData, billData, isProjectLoading, isBillPaidLoading, isBillLoading}
 }
 
 export default useViewPaymentTracker

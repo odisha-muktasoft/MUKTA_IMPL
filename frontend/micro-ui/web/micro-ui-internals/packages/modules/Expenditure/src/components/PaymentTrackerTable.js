@@ -1,9 +1,12 @@
-import { Table, CheckBox } from '@egovernments/digit-ui-react-components'
+import { Table, CheckBox, LinkLabel } from '@egovernments/digit-ui-react-components'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from "react-router-dom";
 
 const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   const { t } = useTranslation();
+  const tenantId = Digit.ULBService.getCurrentTenantId();
+  const history = useHistory();
 
   const [tableRows, setTableRows] = useState(props?.tableRows);
 
@@ -13,10 +16,12 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("BILL_NUMBER"),
         accessor: "billNumber",
         Cell: ({ value, column, row }) => {
+          console.log("row", row, column, value);
           return (
-            <div style={{ color: "#F47738", cursor: "pointer" }} onClick={() => {}}>
-              {String(t(value))}
-            </div>
+            <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/purchase-bill-details?tenantId=${tenantId}&billNumber=${value}&workOrderNumber=${row.original.workOrderNumber}`)}>{String(t(value))}</LinkLabel>
+            // <div style={{ color: "#F47738", cursor: "pointer" }} onClick={() => {}}>
+            //   {String(t(value))}
+            // </div>
           )
         }
       },
@@ -36,7 +41,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
       },
       {
         Header: t("PI_NUMBER"),
-        accessor: "pinumber",
+        accessor: "piNumber",
         Cell: ({ value, column, row }) => {
           return (
             <div style={{ color: "#F47738", cursor: "pointer" }} onClick={() => {}}>
@@ -47,21 +52,21 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
       },
       {
         Header: t("PARENT_PI"),
-        accessor: "parentpi",
+        accessor: "parentPi",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
         Header: t("PI_TYPE"),
-        accessor: "pitype",
+        accessor: "piType",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
         Header: t("PI_CREATION_DATE"),
-        accessor: "picreationdate",
+        accessor: "piCreationDate",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
@@ -75,14 +80,14 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
       },
       {
         Header: t("PI_DATE"),
-        accessor: "pidate",
+        accessor: "piDate",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }
       },
       {
         Header: t("PI_STATUS"),
-        accessor: "pistatus",
+        accessor: "piStatus",
         Cell: ({ value, column, row }) => {
           return String(t(value));
         }

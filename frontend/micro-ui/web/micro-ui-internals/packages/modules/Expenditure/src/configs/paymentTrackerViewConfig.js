@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getBreakupDetails, transformBillData } from "../utils/paymentTrackerUtils";
 
-export const paymentTrackerViewConfig = (project, projectBillData, projectId) => {
+export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBillData, projectId) => {
 
   const [excludeFailed, setExcludeFailed] = useState(false);
-  // const [tableRows, setTableRows] = useState([]);
-
-  // useEffect(() => {
-  //   if (projectBillData) {
-  //     setTableRows(transformBillData(projectBillData));
-  //   }
-  // }, [projectBillData]);
+  console.log("allData", project, projectBillPaidData, projectBillData);
 
   const tableRows = transformBillData({projectBillData});
 
-  const breakupDetails = getBreakupDetails({projectBillData});
-  console.log(breakupDetails);
-  console.log("tableRows",tableRows);
+  const breakupDetails = getBreakupDetails({projectBillPaidData});
 
   return {
     cards: [
@@ -53,7 +45,7 @@ export const paymentTrackerViewConfig = (project, projectBillData, projectId) =>
             values: [
               {
                 key: "ESTMATED_AMOUNT",
-                value: projectBillData?.estimatedAmount,
+                value: projectBillPaidData?.estimatedAmount,
               },
               {
                 key: "WAGE_AMOUNT_PAID",
@@ -69,7 +61,7 @@ export const paymentTrackerViewConfig = (project, projectBillData, projectId) =>
               },
               {
                 key: "FAILED_PAYMENT_AMOUNT_PAID",
-                value: "test",
+                value: breakupDetails?.failedPaymentAmountPaid || "NA",
               },
             ],
           },

@@ -8,82 +8,17 @@ const PaymentTrackerView = () => {
   const tenantId = Digit.ULBService.getCurrentTenantId();
   const { projectId } = Digit.Hooks.useQueryParams();
 
-  const {projectData, billData, isProjectLoading, isBillLoading} = Digit.Hooks.paymentInstruction.useViewPaymentTracker({projectId, tenantId});
-
-  // billData = {
-  //   "total": {
-  //     "estimatedAmount": 0,
-  //     "paymentDetails": [
-  //       {
-  //         "billType": "EXPENSE.PURCHASE",
-  //         "total": 1412312,
-  //         "paidAmount": 1410000,
-  //         "remainingAmount": 2312
-  //       }
-  //     ]
-  //   },
-  //   "projects": [
-  //     {
-  //       "projectNumber": "PJ/2023-24/000169",
-  //       "estimatedAmount": 2250000,
-  //       "total": 2250000,
-  //       "paymentDetails": [
-  //         {
-  //           billNumber: "123456",
-  //           billType: "Wage Bill",
-  //           total: 1000,
-  //           pinumber: "123456",
-  //           parentpi: "123456",
-  //           pitype: "Water",
-  //           picreationdate: "2021-01-01",
-  //           paidAmount: 10000,
-  //           pidate: "2021-01-01",
-  //           pistatus: "Successful",
-  //         },
-  //         {
-  //           billNumber: "786521",
-  //           billType: "Purchase Bill",
-  //           total: 2000,
-  //           pinumber: "123456",
-  //           parentpi: "123456",
-  //           pitype: "Water",
-  //           picreationdate: "2021-01-01",
-  //           paidAmount: 10000,
-  //           pidate: "2021-01-01",
-  //           pistatus: "Partial",
-  //         },
-  //         {
-  //           billNumber: "786521",
-  //           billType: "Supervision Bill",
-  //           total: 2000,
-  //           pinumber: "123456",
-  //           parentpi: "123456",
-  //           pitype: "Water",
-  //           picreationdate: "2021-01-01",
-  //           paidAmount: 10000,
-  //           pidate: "2021-01-01",
-  //           pistatus: "Failed",
-  //         },
-  //         {
-  //           "billType": "EXPENSE.PURCHASE",
-  //           "total": 1412312,
-  //           "paidAmount": 1410000,
-  //           "remainingAmount": 2312
-  //         },
-  //       ]
-  //     }
-  //   ],
-  //  "afterKey": "PJ/2023-24/000169"
-  // }
-
+  const {projectData, billPaidData, billData, isProjectLoading, isBillPaidLoading, isBillLoading} = Digit.Hooks.paymentInstruction.useViewPaymentTracker({projectId, tenantId});
 
   const HandleDownloadPdf = () => {
     // Digit.Utils.downloadEgovPDF("measurementBook/measurement-book", { contractNumber : workOrderNumber, measurementNumber : mbNumber, tenantId }, `project-payments-${projectId}.pdf`);
   };
 
-  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billData?.items, projectId);
+  console.log("data", projectData, billPaidData, billData);
 
-  if (isProjectLoading || isBillLoading) {
+  const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.[0], billData?.items, projectId);
+
+  if (isProjectLoading || isBillPaidLoading || isBillLoading) {
     return <Loader />;
   }
 
