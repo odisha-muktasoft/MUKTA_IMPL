@@ -19,10 +19,10 @@
 config:
 
 # backend
-  - name: "builds/mukta_impl/backend/attendance"
+  - name: "builds/digit-works/backend/attendance"
     build:
       - work-dir: "backend/attendance"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "attendance"
       - work-dir: "backend/attendance/src/main/resources/db"
         image-name: "attendance-db"
