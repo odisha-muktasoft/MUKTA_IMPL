@@ -1,6 +1,11 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
+import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
 import 'package:flutter/material.dart';
+import 'package:works_shg_app/models/error/wager_seeker_attendance_error_model.dart';
+import 'package:works_shg_app/utils/common_methods.dart';
 
 class CommonWidgets {
   static getItemWidget(BuildContext context,
@@ -75,6 +80,57 @@ class CommonWidgets {
         label: label,
         onPressed: onPressed!,
       ),
+    );
+  }
+
+  static Widget getWageseekerErrorList(
+      List<DuplicateWageSeeker> listWageseekers, BuildContext context) {
+    return Popup(
+      title: "Error Testing",
+      additionalWidgets: [
+        CustomTable(
+            columns: [
+              DigitTableColumn(
+                cellValue: 'first', header: 'ID', type: ColumnType.text,
+                //columnType: ColumnType.checkbox,
+              ),
+              DigitTableColumn(
+                header: 'Name',
+                cellValue: 'second',
+                // isFrozen: true,
+                type: ColumnType.text,
+                //columnType: ColumnType.text,
+              ),
+              DigitTableColumn(
+                cellValue: 'third',
+                header: 'date',
+                type: ColumnType.text,
+                //columnType: ColumnType.numeric,
+              ),
+            ],
+            rows: List.generate(
+                listWageseekers.length,
+                (index) => DigitTableRow(
+                      tableRow: [
+                        DigitTableData(
+                            listWageseekers[index].individualId.toString(),
+                            cellKey: "first"),
+                        DigitTableData(listWageseekers[index].name.toString(),
+                            cellKey: "second"),
+                        DigitTableData(listWageseekers[index].date.toString(),
+                            cellKey: "third"),
+                      ],
+                    )).toList()),
+      ],
+      actions: [
+        Button(
+            label: "Close",
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            type: ButtonType.primary,
+            size: ButtonSize.large)
+      ],
     );
   }
 }

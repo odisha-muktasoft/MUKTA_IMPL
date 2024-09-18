@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/theme/colors.dart';
+// import 'package:digit_components/theme/colors.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
@@ -141,7 +141,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                   if (value.mbInboxResponse.items!.length > 19) {
                     return TextButton.icon(
                       style: TextButton.styleFrom(
-                        backgroundColor: const DigitColors().white,
+                        backgroundColor: Theme.of(context).colorTheme.paper.secondary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
@@ -195,15 +195,15 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                         delegate: MyHeaderDelegate(
                           child: LayoutBuilder(
                             builder: (context, constraints) => Container(
-                              color: const DigitColors().seaShellGray,
+                              color: Theme.of(context).colorTheme.generic.background,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 16,
+                                    padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer2,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
                                     ),
                                     child: Row(
                                         mainAxisAlignment:

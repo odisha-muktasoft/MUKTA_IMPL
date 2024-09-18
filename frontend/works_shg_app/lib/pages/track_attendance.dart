@@ -4,12 +4,18 @@ import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
+import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:works_shg_app/blocs/muster_rolls/create_muster.dart';
+import 'package:works_shg_app/models/error/wager_seeker_attendance_error_model.dart';
+import 'package:works_shg_app/utils/common_methods.dart';
+import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
@@ -1047,12 +1053,38 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                       listener: (context, logState) {
                                                                                                                         SchedulerBinding.instance.addPostFrameCallback((_) {
                                                                                                                           logState.maybeWhen(
-                                                                                                                              error: (String? error) {
-                                                                                                                                if (!hasLoaded && selectedDateRange != null) {
-                                                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
-                                                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
-                                                                                                                                  onSubmit(widget.id);
-                                                                                                                                  hasLoaded = true;
+                                                                                                                              error: (String? error, String? msg) {
+                                                                                                                                if (error == "SAME_DAY_ATTENDANCE_ERROR") {
+                                                                                                                                  if (msg != null) {
+                                                                                                                                    List<DuplicateWageSeeker>? listWageseekers = CommonMethods.getListofErrorWageSeeker(message: msg);
+
+                                                                                                                                    if (listWageseekers != null) {
+                                                                                                                                      Navigator.of(
+                                                                                                                                        context,
+                                                                                                                                        rootNavigator: true,
+                                                                                                                                      ).popUntil(
+                                                                                                                                        (route) => route is! PopupRoute,
+                                                                                                                                      );
+
+                                                                                                                                      showDialog(
+                                                                                                                                        context: context,
+                                                                                                                                        builder: (context) {
+                                                                                                                                          return CommonWidgets.getWageseekerErrorList(listWageseekers, context);
+                                                                                                                                        },
+                                                                                                                                      );
+                                                                                                                                    } else {
+                                                                                                                                      Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                    }
+                                                                                                                                  } else {
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                  }
+                                                                                                                                } else {
+                                                                                                                                  if (!hasLoaded && selectedDateRange != null) {
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
+                                                                                                                                    onSubmit(widget.id);
+                                                                                                                                    hasLoaded = true;
+                                                                                                                                  }
                                                                                                                                 }
                                                                                                                               },
                                                                                                                               loading: () => shg_loader.Loaders.circularLoader(context),
@@ -1282,12 +1314,37 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                       listener: (context, logState) {
                                                                                                                         SchedulerBinding.instance.addPostFrameCallback((_) {
                                                                                                                           logState.maybeWhen(
-                                                                                                                              error: (String? error) {
-                                                                                                                                if (!hasLoaded && selectedDateRange != null) {
-                                                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
-                                                                                                                                  // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
-                                                                                                                                  onSubmit(widget.id);
-                                                                                                                                  hasLoaded = true;
+                                                                                                                              error: (String? error, String? msg) {
+                                                                                                                                if (error == "SAME_DAY_ATTENDANCE_ERROR") {
+                                                                                                                                  if (msg != null) {
+                                                                                                                                    List<DuplicateWageSeeker>? listWageseekers = CommonMethods.getListofErrorWageSeeker(message: msg);
+
+                                                                                                                                    if (listWageseekers != null) {
+                                                                                                                                      Navigator.of(
+                                                                                                                                        context,
+                                                                                                                                        rootNavigator: true,
+                                                                                                                                      ).popUntil(
+                                                                                                                                        (route) => route is! PopupRoute,
+                                                                                                                                      );
+                                                                                                                                      showDialog(
+                                                                                                                                        context: context,
+                                                                                                                                        builder: (context) {
+                                                                                                                                          return CommonWidgets.getWageseekerErrorList(listWageseekers, context);
+                                                                                                                                        },
+                                                                                                                                      );
+                                                                                                                                    } else {
+                                                                                                                                      Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                    }
+                                                                                                                                  } else {
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                  }
+                                                                                                                                } else {
+                                                                                                                                  if (!hasLoaded && selectedDateRange != null) {
+                                                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
+                                                                                                                                    onSubmit(widget.id);
+                                                                                                                                    hasLoaded = true;
+                                                                                                                                  }
                                                                                                                                 }
                                                                                                                               },
                                                                                                                               loading: () => shg_loader.Loaders.circularLoader(context),

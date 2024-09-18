@@ -171,8 +171,10 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                           },
                     child: IgnorePointer(
                       child: ui_button.Button(
-                        isDisabled: (createAttendeePayLoadList.isEmpty &&
-                            deleteAttendeePayLoadList.isEmpty),
+                        isDisabled: (createAttendeePayLoadList.isEmpty ),
+                        //old
+                        // isDisabled: (createAttendeePayLoadList.isEmpty &&
+                        //     deleteAttendeePayLoadList.isEmpty),
                         type: ButtonType.primary,
                         size: ButtonSize.large,
                         mainAxisSize: MainAxisSize.max,

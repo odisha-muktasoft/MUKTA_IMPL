@@ -1,3 +1,4 @@
+import 'package:digit_ui_components/widgets/molecules/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/widgets/mb/radio_button_sheet.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
@@ -40,8 +41,8 @@ class Conversion {
       useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(12),
+          topRight: Radius.circular(12),
         ),
       ),
       builder: (BuildContext context) {
