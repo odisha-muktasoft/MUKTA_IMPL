@@ -41,6 +41,7 @@ module.exports = {
     deviationStatement_template: process.env.MEASUREMENT_TEMPLATE || "deviation-statement",
     measurement_template: process.env.MEASUREMENT_TEMPLATE || "measurement-book",
     detailedEstimate_template: process.env.DETAILED_ESTIMATE_TEMPLATE || "detailed-estimate",
+    paymentTracker_template: process.env.PAYMENT_TRACKER_TEMPLATE || "payment-tracker",
 
   },
   app: {
