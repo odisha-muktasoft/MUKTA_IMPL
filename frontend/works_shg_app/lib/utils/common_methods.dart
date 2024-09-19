@@ -13,6 +13,7 @@ import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';
 import 'package:works_shg_app/data/schema/localization.dart';
+import 'package:works_shg_app/models/error/wager_seeker_attendance_error_model.dart';
 import 'package:works_shg_app/services/local_storage.dart';
 
 import '../data/repositories/core_repo/core_repository.dart';
@@ -249,4 +250,42 @@ class CommonMethods {
     await Hive.box<KeyLocaleModel>('keyValueModel').clear();
     await Hive.box<Localization>('localization').clear();
   }
+
+
+  // error message processing for same   day attendance mark of particular wage seeker in different projects
+
+  static List<DuplicateWageSeeker>? getListofErrorWageSeeker(
+      {required String message}) {
+    try {
+      // Split the text by "||"
+      List<String> splitText = message.split("||");
+
+      // List to hold the attendance objects
+      List<DuplicateWageSeeker> attendanceList = [];
+
+      for (String part in splitText) {
+        // Extract individualId
+        String individualId = part.split('[')[1].split(' ')[0];
+
+        // Extract name (from givenName)
+        String name = part.split('givenName=')[1].split(',')[0];
+
+        // Extract date
+        String date = part.split('on this day : ')[1].split(' ')[0];
+
+        // Create an Attendance object and add it to the list
+        DuplicateWageSeeker attendance = DuplicateWageSeeker(
+            individualId: individualId, name: name, date: date);
+        attendanceList.add(attendance);
+
+       
+      }
+      // for development purpose to check the list 
+       //return [...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList];
+      return attendanceList;
+    } catch (ex) {
+      return null;
+    }
+  }
+  
 }

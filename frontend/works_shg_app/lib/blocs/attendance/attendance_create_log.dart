@@ -38,7 +38,7 @@ class AttendanceLogCreateBloc
       }
     } on DioError catch (e) {
       emit(AttendanceLogCreateState.error(
-          e.response?.data['Errors'][0]['code']));
+          e.response?.data['Errors'][0]['code'],e.response?.data['Errors'][0]['message']));
     }
   }
 
@@ -61,7 +61,7 @@ class AttendanceLogCreateBloc
       }
     } on DioError catch (e) {
       emit(AttendanceLogCreateState.error(
-          e.response?.data['Errors'][0]['code']));
+          e.response?.data['Errors'][0]['code'],e.response?.data['Errors'][0]['message']));
     }
   }
 }
@@ -80,5 +80,5 @@ class AttendanceLogCreateState with _$AttendanceLogCreateState {
   const factory AttendanceLogCreateState.initial() = _Initial;
   const factory AttendanceLogCreateState.loading() = _Loading;
   const factory AttendanceLogCreateState.loaded() = _Loaded;
-  const factory AttendanceLogCreateState.error(String? error) = _Error;
+  const factory AttendanceLogCreateState.error(String? error, String?message) = _Error;
 }

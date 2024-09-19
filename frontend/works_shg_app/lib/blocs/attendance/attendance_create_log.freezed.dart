@@ -415,7 +415,7 @@ mixin _$AttendanceLogCreateState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() loaded,
-    required TResult Function(String? error) error,
+    required TResult Function(String? error, String? message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -423,7 +423,7 @@ mixin _$AttendanceLogCreateState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? loaded,
-    TResult? Function(String? error)? error,
+    TResult? Function(String? error, String? message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -431,7 +431,7 @@ mixin _$AttendanceLogCreateState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? loaded,
-    TResult Function(String? error)? error,
+    TResult Function(String? error, String? message)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -521,7 +521,7 @@ class _$_Initial extends _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() loaded,
-    required TResult Function(String? error) error,
+    required TResult Function(String? error, String? message) error,
   }) {
     return initial();
   }
@@ -532,7 +532,7 @@ class _$_Initial extends _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? loaded,
-    TResult? Function(String? error)? error,
+    TResult? Function(String? error, String? message)? error,
   }) {
     return initial?.call();
   }
@@ -543,7 +543,7 @@ class _$_Initial extends _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? loaded,
-    TResult Function(String? error)? error,
+    TResult Function(String? error, String? message)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -635,7 +635,7 @@ class _$_Loading extends _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() loaded,
-    required TResult Function(String? error) error,
+    required TResult Function(String? error, String? message) error,
   }) {
     return loading();
   }
@@ -646,7 +646,7 @@ class _$_Loading extends _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? loaded,
-    TResult? Function(String? error)? error,
+    TResult? Function(String? error, String? message)? error,
   }) {
     return loading?.call();
   }
@@ -657,7 +657,7 @@ class _$_Loading extends _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? loaded,
-    TResult Function(String? error)? error,
+    TResult Function(String? error, String? message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -748,7 +748,7 @@ class _$_Loaded extends _Loaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() loaded,
-    required TResult Function(String? error) error,
+    required TResult Function(String? error, String? message) error,
   }) {
     return loaded();
   }
@@ -759,7 +759,7 @@ class _$_Loaded extends _Loaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? loaded,
-    TResult? Function(String? error)? error,
+    TResult? Function(String? error, String? message)? error,
   }) {
     return loaded?.call();
   }
@@ -770,7 +770,7 @@ class _$_Loaded extends _Loaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? loaded,
-    TResult Function(String? error)? error,
+    TResult Function(String? error, String? message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -827,7 +827,7 @@ abstract class _$$_ErrorCopyWith<$Res> {
   factory _$$_ErrorCopyWith(_$_Error value, $Res Function(_$_Error) then) =
       __$$_ErrorCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? error});
+  $Res call({String? error, String? message});
 }
 
 /// @nodoc
@@ -841,11 +841,16 @@ class __$$_ErrorCopyWithImpl<$Res>
   @override
   $Res call({
     Object? error = freezed,
+    Object? message = freezed,
   }) {
     return _then(_$_Error(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -854,14 +859,16 @@ class __$$_ErrorCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Error extends _Error {
-  const _$_Error(this.error) : super._();
+  const _$_Error(this.error, this.message) : super._();
 
   @override
   final String? error;
+  @override
+  final String? message;
 
   @override
   String toString() {
-    return 'AttendanceLogCreateState.error(error: $error)';
+    return 'AttendanceLogCreateState.error(error: $error, message: $message)';
   }
 
   @override
@@ -869,11 +876,12 @@ class _$_Error extends _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Error &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.error, error) || other.error == error) &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, error);
+  int get hashCode => Object.hash(runtimeType, error, message);
 
   @JsonKey(ignore: true)
   @override
@@ -887,9 +895,9 @@ class _$_Error extends _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() loaded,
-    required TResult Function(String? error) error,
+    required TResult Function(String? error, String? message) error,
   }) {
-    return error(this.error);
+    return error(this.error, message);
   }
 
   @override
@@ -898,9 +906,9 @@ class _$_Error extends _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? loaded,
-    TResult? Function(String? error)? error,
+    TResult? Function(String? error, String? message)? error,
   }) {
-    return error?.call(this.error);
+    return error?.call(this.error, message);
   }
 
   @override
@@ -909,11 +917,11 @@ class _$_Error extends _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? loaded,
-    TResult Function(String? error)? error,
+    TResult Function(String? error, String? message)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(this.error);
+      return error(this.error, message);
     }
     return orElse();
   }
@@ -957,10 +965,11 @@ class _$_Error extends _Error {
 }
 
 abstract class _Error extends AttendanceLogCreateState {
-  const factory _Error(final String? error) = _$_Error;
+  const factory _Error(final String? error, final String? message) = _$_Error;
   const _Error._() : super._();
 
   String? get error;
+  String? get message;
   @JsonKey(ignore: true)
   _$$_ErrorCopyWith<_$_Error> get copyWith =>
       throw _privateConstructorUsedError;

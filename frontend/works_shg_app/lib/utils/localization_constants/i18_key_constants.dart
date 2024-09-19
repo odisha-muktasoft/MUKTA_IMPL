@@ -371,6 +371,11 @@ class AttendanceMgmt {
   String get halfDay => 'ATM_HALF_DAY';
   String get absent => 'ATM_ABSENT';
   String get toMarkAttendance => 'ATM_INFO_TO_MARK_ATTENDANCE';
+
+   String get individualID=>"ATM_INDIVIDUAL_ID";
+  String get name=>"ATM_NAME";
+  String get attendanceAlert=>"ES_COMMON_ALERT";
+  String get sameDayAttendanceError=>"ATM_SAME_DAY_ATTENDANCE_ERROR";
 }
 
 class MyServiceRequests {
