@@ -166,6 +166,7 @@ import useViewPaymentInstruction from "./payments/useViewPaymentInstruction";
 import useViewPayment from "./payments/useViewPayment";
 import useUpdatePI from "./expenditure/useUpdatePI";
 import useMBDataForPB from "./expenditure/useMBDataForPB";
+import useViewPaymentTracker from "./expenditure/useViewPaymentTracker";
 
 import useViewMeasurement from "./measurement/useViewMeasurement";
 import useEstimateSearchValidation from "./mukta/useEstimateSearchValidation";
@@ -331,7 +332,8 @@ const paymentInstruction = {
   useViewPaymentInstruction,
   useUpdatePI,
   useMBDataForPB,
-  useViewPayment
+  useViewPayment,
+  useViewPaymentTracker
 }
 
 const measurement = {
