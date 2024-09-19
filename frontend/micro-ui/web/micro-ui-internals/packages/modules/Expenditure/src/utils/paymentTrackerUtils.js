@@ -55,8 +55,19 @@ export const transformBillData = ({projectBillData}) => {
       } else {
         piType = t("ORIGINAL")
       }
+
       const piCreationDate = new Date(bill?.businessObject?.auditDetails?.createdTime);
       const piDate = new Date(bill?.businessObject?.auditDetails?.lastModifiedTime);
+
+      // Payment successful needs changes
+      let paymentFailed = 0, paymentSuccessful = 0;
+      bill?.businessObject?.beneficiaryDetails?.map(subBill => {
+        if (subBill?.paymentStatus === "Payment Failed") {
+          paymentFailed += subBill?.amount;
+        } else if (subBill?.paymentStatus === "Payment Successful" || subBill?.paymentStatus === "Payment In Process" || subBill?.paymentStatus === "Payment Initiated") {
+          paymentSuccessful += subBill?.amount;
+        }
+      })
 
       billData.push({
         billNumber: bill?.businessObject?.additionalDetails?.billNumber?.[0],
@@ -70,7 +81,9 @@ export const transformBillData = ({projectBillData}) => {
         piCreationDate: getDate(piCreationDate),
         paidAmount: bill?.businessObject?.netAmount,
         piDate: getDate(piDate),
-        piStatus: bill?.businessObject?.piStatus
+        piStatus: bill?.businessObject?.piStatus,
+        paymentFailed: paymentFailed,
+        paymentSuccessful: paymentSuccessful
       })
     })
   }

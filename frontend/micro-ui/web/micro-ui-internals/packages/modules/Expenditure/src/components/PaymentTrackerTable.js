@@ -93,6 +93,20 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
           return String(t(value));
         }
       },
+      {
+        Header: t("PAYMENT_FAILED"),
+        accessor: "paymentFailed",
+        Cell: ({ value, column, row }) => {
+          return amountFormatter(value);
+        }
+      },
+      {
+        Header: t("PAYMENT_SUCCESSFUL"),
+        accessor: "paymentSuccessful",
+        Cell: ({ value, column, row }) => {
+          return amountFormatter(value);
+        }
+      },
     ]
   },[])
 
