@@ -1,11 +1,15 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:works_shg_app/blocs/localization/app_localization.dart';
 import 'package:works_shg_app/models/error/wager_seeker_attendance_error_model.dart';
 import 'package:works_shg_app/utils/common_methods.dart';
+import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
+    as i18;
 
 class CommonWidgets {
   static getItemWidget(BuildContext context,
@@ -85,17 +89,22 @@ class CommonWidgets {
 
   static Widget getWageseekerErrorList(
       List<DuplicateWageSeeker> listWageseekers, BuildContext context) {
+    final t = AppLocalizations.of(context);
     return Popup(
-      title: "Error Testing",
+      type: PopUpType.alert,
+      title: t.translate(i18.attendanceMgmt.attendanceAlert),
+      description: t.translate(i18.attendanceMgmt.sameDayAttendanceError),
       additionalWidgets: [
-        CustomTable(
+        DigitTable(
             columns: [
               DigitTableColumn(
-                cellValue: 'first', header: 'ID', type: ColumnType.text,
+                cellValue: 'first',
+                header: t.translate(i18.attendanceMgmt.individualID),
+                type: ColumnType.text,
                 //columnType: ColumnType.checkbox,
               ),
               DigitTableColumn(
-                header: 'Name',
+                header: t.translate(i18.attendanceMgmt.name),
                 cellValue: 'second',
                 // isFrozen: true,
                 type: ColumnType.text,
@@ -103,7 +112,7 @@ class CommonWidgets {
               ),
               DigitTableColumn(
                 cellValue: 'third',
-                header: 'date',
+                header: t.translate(i18.common.date),
                 type: ColumnType.text,
                 //columnType: ColumnType.numeric,
               ),
@@ -117,14 +126,18 @@ class CommonWidgets {
                             cellKey: "first"),
                         DigitTableData(listWageseekers[index].name.toString(),
                             cellKey: "second"),
-                        DigitTableData(listWageseekers[index].date.toString(),
+                        DigitTableData(
+                            DateFormat('dd/MM/yyyy')
+                                .format(DateTime.parse(
+                                    listWageseekers[index].date.toString()))
+                                .toString(),
                             cellKey: "third"),
                       ],
                     )).toList()),
       ],
       actions: [
         Button(
-            label: "Close",
+            label: AppLocalizations.of(context).translate(i18.common.close),
             onPressed: () {
               Navigator.of(context).pop();
             },

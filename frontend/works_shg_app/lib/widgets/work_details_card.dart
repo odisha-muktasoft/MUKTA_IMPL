@@ -616,7 +616,16 @@ class WorkDetailsCard extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return ActionCard(actions: [
+                                return ActionCard(
+                                  onOutsideTap: (){
+                      Navigator.of(
+              context,
+              rootNavigator: true,
+            ).popUntil(
+              (route) => route is! PopupRoute,
+            );
+                    },
+                                  actions: [
                                   Button(
                                     label: AppLocalizations.of(context)
                                         .translate(i18.home.manageWageSeekers),

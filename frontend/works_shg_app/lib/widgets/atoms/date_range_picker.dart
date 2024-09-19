@@ -47,8 +47,10 @@ class DateRangePicker extends StatelessWidget {
       return SafeArea(
         child: Column(
           children: [
+            
             Expanded(
                 child: SfDateRangePicker(
+                  
                     viewSpacing: 30,
                     onSelectionChanged: onChangeOfDate,
                     controller: rangePickerController,
@@ -58,9 +60,9 @@ class DateRangePicker extends StatelessWidget {
                     minDate: minDate,
                     maxDate: maxDate,
                     startRangeSelectionColor:
-                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary,
                     endRangeSelectionColor:
-                        Theme.of(context).colorScheme.secondary,
+                        Theme.of(context).colorScheme.primary,
                     selectionColor: Theme.of(context).hintColor,
                     monthViewSettings: const DateRangePickerMonthViewSettings(
                         enableSwipeSelection: false,

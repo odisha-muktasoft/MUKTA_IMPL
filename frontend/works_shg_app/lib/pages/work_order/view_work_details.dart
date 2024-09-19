@@ -87,7 +87,6 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
               contractNumber: widget.contractNumber,
               body: {
                 "wfStatus": [widget.wfStatus],
-                
               }),
         );
     context.read<AcceptWorkOrderBloc>().add(
@@ -128,7 +127,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
         }
       },
       child: Scaffold(
-         backgroundColor: Theme.of(context).colorTheme.generic.background,
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         // appBar: customAppBar(),
         // drawer: const MySideBar(),
         bottomNavigationBar:
@@ -238,8 +237,8 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                   orElse: () => false,
                   initial: () => false,
                   loading: () => shg_loader.Loaders.circularLoader(context),
-                  error: (String? error) =>
-                  Notifiers.getToastMessage(context, t.translate(error.toString()), "ERROR"),
+                  error: (String? error) => Notifiers.getToastMessage(
+                      context, t.translate(error.toString()), "ERROR"),
                   //  ui_component.Toast.showToast(
                   //     context,
                   //     message: t.translate(error.toString()),
@@ -434,27 +433,38 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                     backNavigationButtonThemeData:
                                         const BackNavigationButtonThemeData()
                                             .copyWith(
-                                      textColor: Theme.of(context)
-                                          .colorTheme
-                                          .primary
-                                          .primary2,
-                                      contentPadding: EdgeInsets.zero,
-                                      context: context,
-                                      backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )
-                                      // backButtonIcon: Icon(
-                                      //   Icons.arrow_left,
-                                      //   color: Theme.of(context)
-                                      //       .colorTheme
-                                      //       .primary
-                                      //       .primary2,
-                                      // ),
-                                    ),
+                                                textColor: Theme.of(context)
+                                                    .colorTheme
+                                                    .primary
+                                                    .primary2,
+                                                contentPadding: EdgeInsets.zero,
+                                                context: context,
+                                                backButtonIcon: Icon(
+                                                  Icons
+                                                      .arrow_circle_left_outlined,
+                                                  size: MediaQuery.of(context)
+                                                              .size
+                                                              .width <
+                                                          500
+                                                      ? Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer5
+                                                      : Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer6,
+                                                  color: Theme.of(context)
+                                                      .colorTheme
+                                                      .primary
+                                                      .primary2,
+                                                )
+                                                // backButtonIcon: Icon(
+                                                //   Icons.arrow_left,
+                                                //   color: Theme.of(context)
+                                                //       .colorTheme
+                                                //       .primary
+                                                //       .primary2,
+                                                // ),
+                                                ),
                                     backButtonText: AppLocalizations.of(context)
                                         .translate(i18.common.back),
                                     handleBack: () {
@@ -582,7 +592,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                           .timeLineDetails),
                                             ),
                                             ui_card.DigitCard(
-                                                margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                                                margin: EdgeInsets.all(
+                                                    Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2),
                                                 cardType: CardType.primary,
                                                 children: [
                                                   Attachments(
@@ -934,7 +947,6 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                           );
                                         },
                                       );
-                                      
                                     },
                                     type: ButtonType.tertiary,
                                     size: ButtonSize.large,
@@ -954,32 +966,26 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                         mainAxisSize: MainAxisSize.max,
                                         type: ButtonType.primary,
                                         size: ButtonSize.large,
-                                        onPressed: () => DigitActionDialog.show(
-                                            context,
-                                            widget: Center(
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 8.0),
-                                                    child:
-                                                        DigitOutlineIconButton(
-                                                      buttonStyle: OutlinedButton.styleFrom(
-                                                          minimumSize: Size(
-                                                              MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  2.8,
-                                                              50),
-                                                          shape:
-                                                              const RoundedRectangleBorder(),
-                                                          side: BorderSide(
-                                                              color: const DigitColors()
-                                                                  .burningOrange,
-                                                              width: 1)),
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return ActionCard(
+                                                  onOutsideTap: () {
+                                                    Navigator.of(
+                                                      context,
+                                                      rootNavigator: true,
+                                                    ).popUntil(
+                                                      (route) =>
+                                                          route is! PopupRoute,
+                                                    );
+                                                  },
+                                                  actions: [
+                                                    Button(
+                                                      label: AppLocalizations
+                                                              .of(context)
+                                                          .translate(i18.home
+                                                              .manageWageSeekers),
                                                       onPressed: () {
                                                         context.router.push(AttendanceRegisterTableRoute(
                                                             registerId: (contracts
@@ -1001,96 +1007,59 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                     true)
                                                             .pop();
                                                       },
+                                                      type:
+                                                          ButtonType.secondary,
+                                                      size: ButtonSize.large,
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      prefixIcon:
+                                                          Icons.fingerprint,
+                                                    ),
+                                                    Button(
                                                       label: AppLocalizations
                                                               .of(context)
-                                                          .translate(i18.home
-                                                              .manageWageSeekers),
-                                                      icon: Icons.fingerprint,
-                                                      textStyle:
-                                                          const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              fontSize: 18),
-                                                    ),
-                                                  ),
-                                                  /*Padding(
-                                              padding: const EdgeInsets.only(bottom: 8.0),
-                                              child: DigitOutlineIconButton(
-                                                label: AppLocalizations.of(context)
-                                                    .translate(i18.workOrder.projectClosure),
-                                                icon: Icons.cancel_outlined,
-                                                buttonStyle: OutlinedButton.styleFrom(
-                                                    minimumSize: Size(
-                                                        MediaQuery.of(context).size.width / 2.8,
-                                                        50),
-                                                    shape: const RoundedRectangleBorder(),
-                                                    side: BorderSide(
-                                                        color: const DigitColors().burningOrange,
-                                                        width: 1)),
-                                                onPressed: () =>
-                                                    Navigator.of(context, rootNavigator: true)
-                                                        .pop(),
-                                                textStyle: const TextStyle(
-                                                    fontWeight: FontWeight.w700, fontSize: 18),
-                                              ),
-                                            )*/
-                                                  DigitOutlineIconButton(
-                                                    label: AppLocalizations.of(
-                                                            context)
-                                                        .translate(i18.workOrder
-                                                            .requestTimeExtension),
-                                                    icon: Icons
-                                                        .calendar_today_rounded,
-                                                    buttonStyle: OutlinedButton.styleFrom(
-                                                        minimumSize: Size(
-                                                            MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width /
-                                                                2.8,
-                                                            50),
-                                                        shape:
-                                                            const RoundedRectangleBorder(),
-                                                        side: BorderSide(
-                                                            color: const DigitColors()
-                                                                .burningOrange,
-                                                            width: 1)),
-                                                    onPressed: () {
-                                                      Navigator.of(context,
-                                                              rootNavigator:
-                                                                  true)
-                                                          .pop();
-                                                      context
-                                                          .read<
-                                                              ValidTimeExtCreationsSearchBloc>()
-                                                          .add(SearchValidTimeExtCreationsEvent(
-                                                              contract: contracts
-                                                                  ?.contracts
-                                                                  ?.first,
-                                                              contractNo: (contracts
-                                                                          ?.contracts ??
-                                                                      [])
-                                                                  .first
-                                                                  .contractNumber
-                                                                  .toString(),
-                                                              tenantId: (contracts
-                                                                          ?.contracts ??
-                                                                      [])
-                                                                  .first
-                                                                  .tenantId
-                                                                  .toString(),
-                                                              status:
-                                                                  'APPROVED'));
-                                                    },
-                                                    textStyle: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontSize: 18),
-                                                  )
-                                                ],
-                                              ),
-                                            )),
+                                                          .translate(i18
+                                                              .workOrder
+                                                              .requestTimeExtension),
+                                                      onPressed: () {
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop();
+                                                        context
+                                                            .read<
+                                                                ValidTimeExtCreationsSearchBloc>()
+                                                            .add(SearchValidTimeExtCreationsEvent(
+                                                                contract: contracts
+                                                                    ?.contracts
+                                                                    ?.first,
+                                                                contractNo: (contracts
+                                                                            ?.contracts ??
+                                                                        [])
+                                                                    .first
+                                                                    .contractNumber
+                                                                    .toString(),
+                                                                tenantId: (contracts
+                                                                            ?.contracts ??
+                                                                        [])
+                                                                    .first
+                                                                    .tenantId
+                                                                    .toString(),
+                                                                status:
+                                                                    'APPROVED'));
+                                                      },
+                                                      type:
+                                                          ButtonType.secondary,
+                                                      size: ButtonSize.large,
+                                                      mainAxisSize:
+                                                          MainAxisSize.max,
+                                                      prefixIcon: Icons
+                                                          .calendar_today_rounded,
+                                                    )
+                                                  ]);
+                                            },
+                                          );
+                                        },
                                         label: AppLocalizations.of(context)
                                             .translate(i18.common.takeAction),
                                       ),
@@ -1151,9 +1120,9 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                               error: (String? error) =>
                                   Notifiers.getToastMessage(
                                       context, error.toString(), 'ERROR'),
-                                  // ui_component.Toast.showToast(context,
-                                  //     message: t.translate(error.toString()),
-                                  //     type: ToastType.error),
+                              // ui_component.Toast.showToast(context,
+                              //     message: t.translate(error.toString()),
+                              //     type: ToastType.error),
                               loaded: (ContractsModel? contracts) {
                                 if (contracts?.contracts != null) {
                                   termsNCond = contracts!
@@ -1386,27 +1355,32 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                   bottom: 0.0),
                                               child: BackNavigationButton(
                                                 backNavigationButtonThemeData:
-                                        const BackNavigationButtonThemeData()
-                                            .copyWith(
-                                                context: context,
-                                                backButtonIcon: Icon(
-                                                  Icons
-                                                      .arrow_circle_left_outlined,
-                                                  size: MediaQuery.of(context)
-                                                              .size
-                                                              .width <
-                                                          500
-                                                      ? Theme.of(context)
-                                                          .spacerTheme
-                                                          .spacer5
-                                                      : Theme.of(context)
-                                                          .spacerTheme
-                                                          .spacer6,
-                                                  color: Theme.of(context)
-                                                      .colorTheme
-                                                      .primary
-                                                      .primary2,
-                                                )),
+                                                    const BackNavigationButtonThemeData()
+                                                        .copyWith(
+                                                            context: context,
+                                                            backButtonIcon:
+                                                                Icon(
+                                                              Icons
+                                                                  .arrow_circle_left_outlined,
+                                                              size: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width <
+                                                                      500
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer5
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer6,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorTheme
+                                                                  .primary
+                                                                  .primary2,
+                                                            )),
                                                 backButtonText:
                                                     AppLocalizations.of(context)
                                                         .translate(
@@ -1709,7 +1683,11 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                   .timeLineDetails),
                                                         ),
                                                         ui_card.DigitCard(
-                                                          margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+                                                            margin: EdgeInsets
+                                                                .all(Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer2),
                                                             cardType: CardType
                                                                 .primary,
                                                             children: [
@@ -1821,20 +1799,18 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                                                           contractNumber:
                                                                               contracts?.contractNumber,
                                                                         )),
-                                                                    error: (String?
-                                                                            error) =>
-                                                                        Notifiers.getToastMessage(
-                                                                            context,
-                                                                            error ??
-                                                                                'ERR!',
-                                                                            'ERROR'));
+                                                                    error: (String? error) => Notifiers.getToastMessage(
+                                                                        context,
+                                                                        error ??
+                                                                            'ERR!',
+                                                                        'ERROR'));
 
-                                                                        // ui_component.Toast.showToast(
-                                                                        //     context,
-                                                                        //     message: t.translate(error ??
-                                                                        //         'ERR!'),
-                                                                        //     type:
-                                                                        //         ToastType.error));
+                                                            // ui_component.Toast.showToast(
+                                                            //     context,
+                                                            //     message: t.translate(error ??
+                                                            //         'ERR!'),
+                                                            //     type:
+                                                            //         ToastType.error));
                                                           },
                                                           child: const SizedBox
                                                               .shrink(),
