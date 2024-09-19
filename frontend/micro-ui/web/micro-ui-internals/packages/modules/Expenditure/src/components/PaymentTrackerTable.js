@@ -43,8 +43,11 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         Header: t("PI_NUMBER"),
         accessor: "piNumber",
         Cell: ({ value, column, row }) => {
+          if (value === "NA") {
+            return String(t("NA"));
+          }
           return (
-            <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${value}`)}>{String(t(value))}</LinkLabel>
+            <LinkLabel onClick={() => history.push(`/${window.contextPath}/employee/expenditure/view-payment?tenantId=${tenantId}&paymentNumber=${row.original.paymentNumber}`)}>{String(t(value))}</LinkLabel>
           )
         }
       },
@@ -95,7 +98,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
 
   useEffect(() => {
     if (excludeFailed) {
-      setTableRows(props?.tableRows.filter(row => row.pistatus !== "Failed"));
+      setTableRows(props?.tableRows.filter(row => row.piStatus !== "FAILED"));
     } else {
       setTableRows(props?.tableRows);
     }

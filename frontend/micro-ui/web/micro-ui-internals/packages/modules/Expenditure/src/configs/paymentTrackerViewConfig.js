@@ -4,11 +4,10 @@ import { getBreakupDetails, transformBillData } from "../utils/paymentTrackerUti
 export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBillData, projectId) => {
 
   const [excludeFailed, setExcludeFailed] = useState(false);
-  console.log("allData", project, projectBillPaidData, projectBillData);
-
-  const tableRows = transformBillData({projectBillData});
 
   const breakupDetails = getBreakupDetails({projectBillPaidData});
+
+  const tableRows = transformBillData({projectBillData});
 
   const amountFormatter = (amount) => {
     return Digit.Utils.dss.formatterWithoutRound(Math.round(parseFloat(amount)).toFixed(2),"number",undefined,true,undefined,2);
@@ -64,8 +63,8 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
                 value: amountFormatter(breakupDetails?.supervisionAmountPaid),
               },
               {
-                key: "FAILED_PAYMENT_AMOUNT_PAID",
-                value: amountFormatter(breakupDetails?.failedPaymentAmountPaid) || "NA",
+                key: "FAILED_PAYMENT_AMOUNT",
+                value: amountFormatter(breakupDetails?.failedPaymentAmount),
               },
             ],
           },
@@ -93,7 +92,6 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
               tableRows : tableRows,
               excludeFailed : excludeFailed
             }
-            // props: {mode: "VIEWES", detail : {...estimateDetails, value:measurement?.additionalDetails?.totalAmount} }
           }
         ]
       },

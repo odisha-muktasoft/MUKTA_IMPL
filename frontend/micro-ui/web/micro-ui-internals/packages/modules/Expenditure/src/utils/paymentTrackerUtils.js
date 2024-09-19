@@ -1,24 +1,26 @@
 import { useTranslation } from "react-i18next";
 
 export const getBreakupDetails = ({projectBillPaidData}) => {
-  let {wageAmountPaid, purchaseAmountPaid, supervisionAmountPaid} = {wageAmountPaid: 0, purchaseAmountPaid: 0, supervisionAmountPaid: 0};
+  let {wageAmountPaid, purchaseAmountPaid, supervisionAmountPaid, failedPaymentAmount} = {wageAmountPaid: 0, purchaseAmountPaid: 0, supervisionAmountPaid: 0, failedPaymentAmount: 0};
 
   if (projectBillPaidData) {
     projectBillPaidData?.paymentDetails?.map(bill => {
       if (bill?.billType === "EXPENSE.WAGE") {
-        wageAmountPaid += bill?.paidAmount
+        wageAmountPaid += bill?.paidAmount;
       } else if (bill?.billType === "EXPENSE.PURCHASE") {
-        purchaseAmountPaid += bill?.paidAmount
+        purchaseAmountPaid += bill?.paidAmount;
       } else if (bill?.billType === "EXPENSE.SUPERVISION") {
-        supervisionAmountPaid += bill?.paidAmount
+        supervisionAmountPaid += bill?.paidAmount;
       }
+      failedPaymentAmount += bill?.remainingAmount;
     })
   }
 
   const breakupDetails = {
     wageAmountPaid,
     purchaseAmountPaid,
-    supervisionAmountPaid
+    supervisionAmountPaid,
+    failedPaymentAmount
   };
 
   return breakupDetails;
@@ -61,7 +63,8 @@ export const transformBillData = ({projectBillData}) => {
         workOrderNumber: bill?.businessObject?.additionalDetails?.referenceId?.[0],
         billType: billType,
         total: bill?.businessObject?.netAmount,
-        piNumber: bill?.businessObject?.muktaReferenceId,
+        piNumber: bill?.businessObject?.jitBillNo,
+        paymentNumber: bill?.businessObject?.muktaReferenceId,
         parentPi: bill?.businessObject?.parentPiNumber || t("NA"),
         piType: piType,
         piCreationDate: getDate(piCreationDate),

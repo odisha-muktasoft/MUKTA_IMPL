@@ -6,7 +6,7 @@ const ViewTotalPaymentAmount = (props) => {
 
   const { t } = useTranslation();
 
-  const amount = props?.tableRows?.map(row => (props?.excludeFailed ? (row.pistatus === 'Failed' ? 0 : row.paidAmount) : row.paidAmount)).reduce((acc, curr) => acc + curr, 0);
+  const amount = props?.tableRows?.map(row => (props?.excludeFailed ? (row.piStatus === 'FAILED' ? 0 : row.paidAmount) : row.paidAmount)).reduce((acc, curr) => acc + curr, 0);
 
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "16px"}}>

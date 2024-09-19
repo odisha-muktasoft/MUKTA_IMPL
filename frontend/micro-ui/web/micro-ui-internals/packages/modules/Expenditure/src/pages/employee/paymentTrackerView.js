@@ -14,8 +14,6 @@ const PaymentTrackerView = () => {
     // Digit.Utils.downloadEgovPDF("measurementBook/measurement-book", { contractNumber : workOrderNumber, measurementNumber : mbNumber, tenantId }, `project-payments-${projectId}.pdf`);
   };
 
-  console.log("data", projectData, billPaidData, billData);
-
   const config = paymentTrackerViewConfig(projectData?.Project?.[0], billPaidData?.aggsResponse?.projects?.[0], billData?.items, projectId);
 
   if (isProjectLoading || isBillPaidLoading || isBillLoading) {

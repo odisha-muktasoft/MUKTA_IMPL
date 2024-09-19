@@ -36,7 +36,7 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
   let { isLoading: isBillPaidLoading, data : billPaidData } = Digit.Hooks.useCustomAPIHook(billPaidSearchCriteria);
   
   const billSearchCriteria = {
-    url: "/wms/ifms-pi/_search",
+    url: "/wms/mukta-pi/_search",
 
     body: {
       inbox: {
