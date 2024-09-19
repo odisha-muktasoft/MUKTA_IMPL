@@ -3065,6 +3065,91 @@ export const UICustomizations = {
       }
     },
   },
+  paymentTrackerSearchConfig:{
+    preProcess: (data) => {
+      data.body.searchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
+      data.body.searchCriteria.limit = data?.body?.pagination?.limit;
+      delete data.body.pagination;
+      if(data?.state?.searchForm?.ward)
+        data.body.searchCriteria.moduleSearchCriteria.ward = data?.state?.searchForm?.ward?.[0]?.code;
+      // const createdFrom = Digit.Utils.pt.convertDateToEpoch(data.body.Projects[0]?.createdFrom);
+      // const createdTo = Digit.Utils.pt.convertDateToEpoch(data.body.Projects[0]?.createdTo);
+      // data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId() };
+      //data.body.SearchCriteria = { ...data.body.SearchCriteria, tenantId: Digit.ULBService.getCurrentTenantId() };
+      
+      return data;
+    },
+    postProcess: (responseArray, uiConfig) => {
+      return responseArray;
+    },
+    additionalValidations: (type, data, keys) => {
+      if (type === "date") {
+        return data[keys.start] && data[keys.end] ? () => new Date(data[keys.start]).getTime() <= new Date(data[keys.end]).getTime() : true;
+      }
+    },
+    additionalCustomizations: (row, key, column, value, t, searchResult) => {
+      if (key === "EXP_PROJECT_NUMBER") {
+        //const billType = getBillType(row?.businessService);
+        return (
+          <span className="link">
+            <Link to={`/${window.contextPath}/employee`}>
+            <Button
+                className=""
+                iconFill=""
+                label={String(value ? value : t("ES_COMMON_NA"))}
+                size="medium"
+                style={{ padding: "0px" }}
+                title=""
+                variation="link"
+              />
+            </Link>
+          </span>
+        );
+      }
+      if (key === "EXP_ESTIMATED_AMT") {
+        return value ? `COMMON_MASTERS_BILL_TYPE_${Digit.Utils.locale.getTransformedLocale(value)}` : t("ES_COMMON_NA");
+      }
+      if(key === "EXP_PROJECT_NAME") {
+        let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
+          return (
+            <div class="tooltip">
+              <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
+                {String(t(value))}
+              </div>
+              {/* check condtion - if length greater than 20 */}
+              <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
+                {"harcoded for now"}
+              </span>
+            </div>
+          );
+      }
+      if (key === "EXP_WAGE_PAYMENT_SUCCESS") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+      }
+      if (key === "EXP_WAGE_PAYMENT_FAILED") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+      }
+      if (key === "EXP_PUR_PAYMENT_SUCCESS") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+      }
+      if (key === "EXP_PUR_PAYMENT_FAILED") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+      }
+      if (key === "EXP_SUP_PAYMENT_SUCCESS") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+      }
+      if (key === "EXP_SUP_PAYMENT_FAILED") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+      }
+      // if (key === "CORE_COMMON_STATUS") {
+      //   return value ? t(`BILL_STATUS_${value}`) : t("ES_COMMON_NA");
+      // }
+      // if (key === "ES_COMMON_LOCATION") {
+      //   const headerLocale = Digit.Utils.locale.getTransformedLocale(row?.tenantId);
+      //   return t(`TENANT_TENANTS_${headerLocale}`);
+      // }
+  }
+  }
 };
 
 const downloadPdf = (link, openIn = "_blank") => {

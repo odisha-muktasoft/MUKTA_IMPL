@@ -8,6 +8,9 @@ import SearchBillWMS from "./Bills/SearchBillWMS";
 import SearchPaymentInstruction from "./Bills/SearchPaymentInstruction";
 import InboxPaymentInstruction from "./Bills/InboxPaymentInstruction";
 import CreatePA from "./Bills/CreatePA";
+import PaymentTrackerSearch from "./paymentTrackerSearch";
+import ViewScheduledJobsExcel from "./ViewScheduledJobsExcel";
+
 const ExpenditureBreadCrumbs = ({ location }) => {
   const { t } = useTranslation();
 
@@ -108,57 +111,60 @@ const ExpenditureBreadCrumbs = ({ location }) => {
 };
 
 const App = ({ path }) => {
-  const location = useLocation();
-  const ViewBillsMenuComponent = Digit?.ComponentRegistryService?.getComponent("ViewBillsMenu");
-  const ViewBillsComponent = Digit?.ComponentRegistryService?.getComponent("ViewBills");
-  const BillInbox = Digit?.ComponentRegistryService?.getComponent("BillInbox");
-  const SearchBill = Digit?.ComponentRegistryService?.getComponent("SearchBill");
-  const ViewPurchaseBillComponent = Digit?.ComponentRegistryService?.getComponent("ViewPurchaseBill");
-  const PurchaseBill = Digit?.ComponentRegistryService?.getComponent("PurchaseBill");
-  const PurchaseBillResponse = Digit?.ComponentRegistryService?.getComponent("CreatePurchaseBillResponse");
-  const ViewWageBill = Digit?.ComponentRegistryService?.getComponent("ViewWageBill");
-  const DownloadBill = Digit?.ComponentRegistryService?.getComponent("DownloadBill");
-  const ViewPaymentInstruction = Digit?.ComponentRegistryService?.getComponent("ViewPaymentInstruction");
-  const ViewPayment = Digit?.ComponentRegistryService?.getComponent("ViewPayment");
-  const PurchaseBillSession = Digit.Hooks.useSessionStorage("PURCHASE_BILL_CREATE", {});
-  const [sessionFormData, clearSessionFormData] = PurchaseBillSession;
+    
+    const location = useLocation();
+    const ViewBillsMenuComponent = Digit?.ComponentRegistryService?.getComponent("ViewBillsMenu");
+    const ViewBillsComponent = Digit?.ComponentRegistryService?.getComponent("ViewBills");
+    const BillInbox = Digit?.ComponentRegistryService?.getComponent("BillInbox");
+    const SearchBill = Digit?.ComponentRegistryService?.getComponent("SearchBill");
+    const ViewPurchaseBillComponent = Digit?.ComponentRegistryService?.getComponent("ViewPurchaseBill");
+    const PurchaseBill = Digit?.ComponentRegistryService?.getComponent("PurchaseBill");
+    const PurchaseBillResponse = Digit?.ComponentRegistryService?.getComponent("CreatePurchaseBillResponse");
+    const ViewWageBill = Digit?.ComponentRegistryService?.getComponent("ViewWageBill");
+    const DownloadBill = Digit?.ComponentRegistryService?.getComponent("DownloadBill");
+    const ViewPaymentInstruction = Digit?.ComponentRegistryService?.getComponent("ViewPaymentInstruction");
+    const ViewPayment = Digit?.ComponentRegistryService?.getComponent("ViewPayment");
+    const PurchaseBillSession = Digit.Hooks.useSessionStorage("PURCHASE_BILL_CREATE", {});
+    const [sessionFormData, clearSessionFormData] = PurchaseBillSession;
+  
+    //remove session form data if user navigates away from the project create screen
+    useEffect(()=>{
+        if (!window.location.href.includes("create-purchase-bill") && sessionFormData && Object.keys(sessionFormData) != 0) {
+          clearSessionFormData();
+        }
+    },[location]);
 
-  //remove session form data if user navigates away from the project create screen
-  useEffect(() => {
-    if (!window.location.href.includes("create-purchase-bill") && sessionFormData && Object.keys(sessionFormData) != 0) {
-      clearSessionFormData();
-    }
-  }, [location]);
-
-  return (
-    <Switch>
-      <AppContainer>
-        <React.Fragment>
-          <ExpenditureBreadCrumbs location={location} />
-        </React.Fragment>
-        <PrivateRoute path={`${path}/create-application`} component={() => <div>Hi</div>} />
-        <PrivateRoute path={`${path}/billinbox`} component={() => <BillInbox parentRoute={path} />} />
-        <PrivateRoute path={`${path}/view-bills/bills`} component={ViewBillsComponent}></PrivateRoute>
-        <PrivateRoute path={`${path}/view-bills/menu`} component={ViewBillsMenuComponent}></PrivateRoute>
-        <PrivateRoute path={`${path}/create-pa`} component={() => <CreatePA parentRoute={path} />} />
-        <PrivateRoute path={`${path}/create-bill`} component={() => <CreateBill parentRoute={path} />} />
-        <PrivateRoute path={`${path}/inbox`} component={() => <BillInbox parentRoute={path} />} />
-        <PrivateRoute path={`${path}/search-bill`} component={() => <SearchBillWMS parentRoute={path} />} />
-
-        <PrivateRoute path={`${path}/search-bill-plain`} component={() => <SearchBill parentRoute={path} />} />
-        <PrivateRoute path={`${path}/search-payment-instruction`} component={() => <SearchPaymentInstruction parentRoute={path} />} />
-        <PrivateRoute path={`${path}/view-payment`} component={() => <ViewPayment parentRoute={path} />} />
-        <PrivateRoute path={`${path}/view-payment-instruction`} component={() => <ViewPaymentInstruction parentRoute={path} />} />
-        <PrivateRoute path={`${path}/inbox-payment-instruction`} component={() => <InboxPaymentInstruction parentRoute={path} />} />
-        <PrivateRoute path={`${path}/wage-bill-details`} component={() => <ViewWageBill parentRoute={path} />} />
-        <PrivateRoute path={`${path}/supervision-bill-details`} component={() => <ViewSupervisionbill parentRoute={path} />} />
-        <PrivateRoute path={`${path}/purchase-bill-details`} component={() => <ViewPurchaseBillComponent parentRoute={path} />} />
-        <PrivateRoute path={`${path}/create-purchase-bill`} component={() => <PurchaseBill parentRoute={path} />} />
-        <PrivateRoute path={`${path}/create-purchase-bill-response`} component={() => <PurchaseBillResponse parentRoute={path} />} />
-        <PrivateRoute path={`${path}/download-bill`} component={() => <DownloadBill parentRoute={path} />} />
-      </AppContainer>
-    </Switch>
-  );
+    return (
+      <Switch>
+        <AppContainer className="ground-container">
+          <React.Fragment>
+            <ExpenditureBreadCrumbs location={location} />
+          </React.Fragment>
+          <PrivateRoute path={`${path}/create-application`} component={() => <div>Hi</div>} />
+          <PrivateRoute path={`${path}/billinbox`} component={() => <BillInbox parentRoute={path} />} />
+          <PrivateRoute path={`${path}/view-bills/bills`} component={ViewBillsComponent}></PrivateRoute>
+          <PrivateRoute path={`${path}/view-bills/menu`} component={ViewBillsMenuComponent}></PrivateRoute>
+          <PrivateRoute path={`${path}/create-pa`} component={() => <CreatePA parentRoute={path} />} />
+          <PrivateRoute path={`${path}/create-bill`} component={() => <CreateBill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/inbox`} component={() => <BillInbox parentRoute={path} />} />
+          <PrivateRoute path={`${path}/search-bill`} component={() => <SearchBillWMS parentRoute={path} />} />
+   
+          <PrivateRoute path={`${path}/search-bill-plain`} component={() => <SearchBill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/search-payment-instruction`} component={() => <SearchPaymentInstruction parentRoute={path} />} />
+          <PrivateRoute path={`${path}/view-payment`} component={() => <ViewPayment parentRoute={path} />} />
+          <PrivateRoute path={`${path}/view-payment-instruction`} component={() => <ViewPaymentInstruction parentRoute={path} />} />
+          <PrivateRoute path={`${path}/inbox-payment-instruction`} component={() => <InboxPaymentInstruction parentRoute={path} />} />
+          <PrivateRoute path={`${path}/wage-bill-details`} component={() => <ViewWageBill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/supervision-bill-details`} component={() => <ViewSupervisionbill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/purchase-bill-details`} component={() => <ViewPurchaseBillComponent parentRoute={path} />}/>
+          <PrivateRoute path={`${path}/create-purchase-bill`} component={() => <PurchaseBill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/create-purchase-bill-response`} component={() => <PurchaseBillResponse parentRoute={path} />} />
+          <PrivateRoute path={`${path}/download-bill`} component={() => <DownloadBill parentRoute={path} />} />
+          <PrivateRoute path={`${path}/payment-tracker`} component={() => <PaymentTrackerSearch parentRoute={path}/>} />
+          <PrivateRoute path={`${path}/view-jobs-excel`} component={() => <ViewScheduledJobsExcel parentRoute={path}/>} />
+        </AppContainer>
+      </Switch>
+    );
 };
 
 export default App;

@@ -172,6 +172,7 @@ import useEstimateSearchValidation from "./mukta/useEstimateSearchValidation";
 import useTEorMBCreateValidation from "./mukta/useTEorMBCreateValidation";
 import fetchContractDetails from"./rateAnalysis/useviewcontractdetails";
 import useViewRateAnalysisDetails from "./rateAnalysis/useviewcontractdetails";
+import { paymentTrackerReport } from "./paymentTrackerReport";
 
 const works = {
   useViewEstimateDetails,
@@ -374,6 +375,7 @@ const Hooks = {
   useNotificationCount,
   useStore,
   useDocumentSearch,
+  paymentTrackerReport,
   useTenants,
   useAccessControl,
   usePrivacyContext,
