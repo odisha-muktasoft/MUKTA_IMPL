@@ -5,8 +5,7 @@
   "workspaces": [
     "packages/libraries",
     "packages/react-components",
-    "packages/modules/Estimate",
-    "packages/modules/RateAnalysis",
+    "packages/modules/*",
     "packages/Mukta"
   ],
   "author": "JaganKumar <jagan.kumar@egov.org.in>",
@@ -35,7 +34,7 @@
     "dev:expenditure": "cd packages/modules/Expenditure && yarn start",
     "dev:rateAnalysis":"cd packages/modules/RateAnalysis && yarn start",
     "dev:example": "cd example && yarn start",
-    "build": "run-p build:**",
+    "build": "run-p build:** &&yarn buildD",
     "buildD": "run-p buildD:**",
     "build:libraries": "cd packages/libraries && yarn build",
     "build:components": "cd packages/react-components && yarn build",
