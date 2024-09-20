@@ -546,6 +546,49 @@ async function search_measurementBookDetails(tenantId, requestinfo,contractNumbe
   });
 }
 
+async function search_payment_instruction(tenantId, requestinfo, piType) {
+
+  const searchEndpoint = config.paths.payment_instruction_search;
+  const data = {
+    "inbox": {
+      "moduleSearchCriteria": {
+        "tenantId": tenantId,
+        "piType": piType
+      },
+      "tenantId": tenantId,
+      "limit": 10,
+      "offset": 0
+    },
+    "RequestInfo": requestinfo
+  };
+  return await axios({
+      method: "post",
+      url: url.resolve(config.host.paymentTracker, searchEndpoint),
+      data: data
+  });
+}
+
+async function search_report_paymentTracker(tenantId, requestinfo, ward) {
+
+  const searchEndpoint = config.paths.report_paymentTracker_search;
+  const data = {
+    "searchCriteria": {
+      "moduleSearchCriteria": {
+        "ward": ward
+      },
+      "tenantId": tenantId,
+      "limit": 10
+    },
+    "RequestInfo": requestinfo
+  };
+  return await axios({
+      method: "post",
+      url: url.resolve(config.host.paymentTracker, searchEndpoint),
+      data: data
+  });
+}
+
+
 module.exports = {
   pool,
   create_pdf,
@@ -573,5 +616,7 @@ module.exports = {
   exec_query_eg_payments_excel,
   search_hrms,
   search_mdms_terms_and_conditions,
-  search_measurementBookDetails
+  search_measurementBookDetails,
+  search_payment_instruction,
+  search_report_paymentTracker
 };

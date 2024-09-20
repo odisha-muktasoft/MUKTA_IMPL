@@ -66,6 +66,7 @@ module.exports = {
     expense_calculator: process.env.EXPENSE_CALCULATOR_SERVICE_HOST || 'http://localhost:8093',
     hrms: process.env.EGOV_HRMS_HOST || 'http://localhost:8095',
     measurements: process.env.EGOV_MEASUREMENT_HOST || 'http://localhost:8099',
+    paymentTracker: process.env.EGOV_PAYMENT_TRACKER_HOST || 'http://localhost:8096',
   },
   paths: {
     pdf_create: "/pdf-service/v1/_createnosave",
@@ -87,6 +88,8 @@ module.exports = {
     hrms_search: "/egov-hrms/employees/_search",
     deviationStatement_search: "/estimate/v1/_search",
     measurement_book_search: "/mukta-services/measurement/_search",
+    payment_instruction_search: "/wms/ifms-pi/_search",
+    report_paymentTracker_search: "/wms/report/payment_tracker"
   },
   constraints: {
     "beneficiaryIdByHeadCode": "Deduction_{tanentId}_{headcode}"

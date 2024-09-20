@@ -3,7 +3,7 @@ var router = express.Router();
 var url = require("url");
 var config = require("../config");
 
-var { search_projectDetails, create_pdf, search_localization } = require("../api");
+var { search_projectDetails, create_pdf, search_localization, search_payment_instruction, search_report_paymentTracker} = require("../api");
 const { asyncMiddleware } = require("../utils/asyncMiddleware");
 const { getLanguageFromRequest, getStateLocalizationModule, getCityLocalizationModule, getStateLocalizationPrefix, getCityLocalizationPrefix, getLocalizationByKey } = require("../utils/localization");
 
@@ -12,6 +12,20 @@ function renderError(res, errorMessage, errorCode) {
     res.status(errorCode).send({ errorMessage })
 
 }
+
+function getCurrentDate() {
+    const today = new Date();
+  
+    // Get the components of the date
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = today.getFullYear();
+  
+    // Format the date as "dd-mm-yyyy"
+    const formattedDate = `${day}/${month}/${year}`;
+  
+    return formattedDate;
+  }
 
 // async function getStateCityLocalizaitons(request, tenantId) {
 //     let localizationMaps = {};
@@ -78,6 +92,32 @@ router.post(
                 if (ex.response && ex.response.data) console.log(ex.response.data);
                 return renderError(res, "Failed to query details of the project", 500);
             }
+
+            RequestInfo = requestinfo.RequestInfo;
+
+            var ward = "string";
+
+            try {
+                resHeadWiseData = await search_report_paymentTracker(tenantId, RequestInfo, ward);
+            }
+            catch (ex) {
+                if (ex.response && ex.response.data) console.log(ex.response.data);
+                return renderError(res, "Failed to query details of the report", 500);
+            }
+            var headWiseData = resHeadWiseData.data;
+
+            var piType = "ORIGINAL";
+            try {
+                resPaymentInstruction = await search_payment_instruction(tenantId, RequestInfo, piType);
+            }
+            catch (ex) {
+                if (ex.response && ex.response.data) console.log(ex.response.data);
+                return renderError(res, "Failed to query details of the payment instruction", 500);
+            }
+
+            var paymentInstruction = resPaymentInstruction.data;
+
+
             var project = resProject.data;
             if (project && project.Project && project.Project.length > 0) {
                     var pdfResponse;
@@ -87,6 +127,9 @@ router.post(
                     // project.Project = updateLocalization(project.Project, localizationMap, tenantId);
                     // Adding project as Projects because it's updating on create_pdf
                     project["Projects"] = project.Project;
+                    project["Projects"][0]["date"] = getCurrentDate(); 
+                    project["Projects"][0]["bills"] = paymentInstruction.items;
+                    project["Projects"][0]["headWiseData"] = headWiseData.aggsResponse.projects[0];
 
                     try {
                         pdfResponse = await create_pdf(
