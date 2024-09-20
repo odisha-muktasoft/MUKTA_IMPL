@@ -171,7 +171,8 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                           },
                     child: IgnorePointer(
                       child: ui_button.Button(
-                        isDisabled: (createAttendeePayLoadList.isEmpty ),
+                        isDisabled:
+                            (createAttendeePayLoadList.isEmpty ? true : false),
                         //old
                         // isDisabled: (createAttendeePayLoadList.isEmpty &&
                         //     deleteAttendeePayLoadList.isEmpty),
@@ -247,9 +248,6 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                 ],
                               ),
                             ),
-
-                            
-
                             BlocListener<AttendanceIndividualProjectSearchBloc,
                                 AttendanceIndividualProjectSearchState>(
                               listener: (context, registerState) {
@@ -719,6 +717,9 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               setState(() {
                                                                 searchUser =
                                                                     true;
+                                                                    existingAttendeeList.removeWhere((e) =>
+                                                                        e['uuid'] ==
+                                                                        uuid);
                                                                 createAttendeePayLoadList
                                                                     .removeWhere((e) =>
                                                                         e['individualId'] ==
@@ -782,8 +783,6 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               //         .toString()));
 
                                                               // new impl
-
-                                                              
                                                             },
                                                             orElse: () =>
                                                                 Container());
@@ -977,7 +976,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
   }
 
   void onDelete(String uuid) {
-     deleteAttendeePayLoadList.clear();
+    deleteAttendeePayLoadList.clear();
     switch (createAttendeePayLoadList.isNotEmpty &&
         createAttendeePayLoadList
             .where((e) => e["individualId"] == uuid)
@@ -990,7 +989,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                     .where((e) => e["individualId"] == uuid)
                     .first['enrollmentDate'] !=
                 null)) {
-                //  deleteAttendeePayLoadList.clear();
+          //  deleteAttendeePayLoadList.clear();
           deleteAttendeePayLoadList.add({
             "registerId": registerId.toString(),
             "individualId": uuid.toString(),
@@ -1023,7 +1022,7 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
             addToTableList.removeWhere((e) => e['uuid'] == uuid);
             userTableList.removeWhere((e) => e.uuid == uuid);
           });
-        //   deleteAttendeePayLoadList.clear();
+          //   deleteAttendeePayLoadList.clear();
           deleteAttendeePayLoadList.add({
             "registerId": registerId.toString(),
             "individualId": uuid.toString(),

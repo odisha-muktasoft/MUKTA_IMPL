@@ -284,7 +284,8 @@ class CommonMethods {
        
       }
       // for development purpose to check the list 
-      // return [...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList];
+      //  return [...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,
+      //   ...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList,...attendanceList];
       return attendanceList;
     } catch (ex) {
       return null;
