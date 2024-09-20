@@ -6,18 +6,18 @@ msg() {
   echo -e "\n\n\033[32;32m$1\033[0m"
 }
 
-# msg "Pre-building all packages"
+msg "Removing the default package dependency file"
+rm package.json
+
+msg "replacing the default package dependency file"
+cp publish-package.json package.json
+
+msg "Pre-building all packages"
 yarn 
 # sleep 5
 
 msg "Building and publishing css"
 cd "$BASEDIR/packages/css" &&  yarn&& npm publish --tag mukta-2.1.2-uicomp-v0.2
-
-# msg "Building and publishing libraries"
-# cd "$BASEDIR/packages/libraries" && yarn publish --access public
-
-# msg "Building and publishing react-components"
-# cd "$BASEDIR/packages/react-components" && yarn publish --access public
 
 # sleep 10
 # msg "Updating dependencies"
