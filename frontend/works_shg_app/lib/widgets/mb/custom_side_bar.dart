@@ -57,7 +57,15 @@ class _MySideBarState extends State<MySideBar> {
                                         .translate(i18.common.home),
                                     icon: Icons.home,
                                     onPressed: () {
-                                      context.router.replace(const HomeRoute());
+                                       Navigator.of(context).pop();
+                                      // context.router.replace(const HomeRoute());
+//  Navigator.of(
+//                                       context,
+//                                       rootNavigator: true,
+//                                     ).popUntil(
+//                                       (route) => route is! PopupRoute,
+//                                     );
+                                      context.router.replaceAll([const HomeRoute()]);
                                       //Navigator.of(context).pop();
                                       // Navigate to Home
                                     },
@@ -113,6 +121,8 @@ class _MySideBarState extends State<MySideBar> {
                                         .translate(i18.common.orgProfile),
                                     icon: Icons.person,
                                     onPressed: () {
+                                      Navigator.of(context).pop();
+
                                       context.router
                                           .push(const ORGProfileRoute());
                                       // Navigate to Profile
@@ -145,7 +155,10 @@ class _MySideBarState extends State<MySideBar> {
                                         .translate(i18.common.home),
                                     icon: Icons.home,
                                     onPressed: () {
-                                      context.router.replace(const HomeRoute());
+                                        Navigator.of(context).pop();
+                                      // context.router.replace(const HomeRoute());
+                                      
+                                       context.router.replaceAll([const HomeRoute()]);
                                       // Navigator.of(context).pop();
                                       // Navigate to Home
                                     },

@@ -3,6 +3,7 @@ import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_otp_input.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
@@ -38,7 +39,9 @@ class OTPVerificationPage extends StatefulWidget {
 }
 
 class _OTPVerificationPage extends State<OTPVerificationPage> {
-  final TextEditingController otpController = TextEditingController();
+   final TextEditingController otpController = TextEditingController();
+
+  // final OtpFieldControllerV2 otpController = OtpFieldControllerV2();
   bool next = false;
   Client client = Client();
   final FocusNode pinFocusNode = FocusNode();
@@ -149,6 +152,7 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                   // const SizedBox(height: 10),
 
                   // SubLabelText(localizationText),
+                  // old
                   Align(
                       alignment: Alignment.centerLeft,
                       child: SizedBox(
@@ -189,6 +193,27 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
                           ],
                         ),
                       )),
+                  // end
+
+                  // DigitOTPInput(
+                  //     controller: otpController,
+                  //     length: 6,
+                  //     hasError: true,
+                  //     autoFocus: true,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     fieldWidth: 45,
+                  //     outlineBorderRadius: 15,
+                  //     onChanged: (pin) {
+                  //       setState(() {
+                  //         next = otpController.getOtpText().length == 6;
+                  //       });
+                  //     },
+                  //     onCompleted: (pin) {
+                  //       //  setState(() {
+                  //       //                     next = otpController.getOtpText().length == 6;
+                  //       //                   });
+                  //     }),
+
                   Align(
                     alignment: Alignment.centerLeft,
                     child: ResendOTP(
