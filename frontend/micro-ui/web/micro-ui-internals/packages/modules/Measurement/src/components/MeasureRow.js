@@ -13,6 +13,15 @@ function has4DecimalPlaces(number, decimalPlaces) {
   return regex.test(numStr);
 }
 
+function checkIntAndDecimalLength(number, decimalPlaces) {
+  if (number === "" || isNaN(number)) return true;
+  
+  var numStr = number.toString();
+  // Regex to ensure up to 8 digits in the integer part and up to 4 decimal places
+  var regex = new RegExp(`^\\d{1,8}(\\.\\d{0,${decimalPlaces}})?$`);
+  
+  return regex.test(numStr);
+}
 //Reverting this validation for digits and decimal in input value as state problem is happening
 // function limitDecimalDigits(input) {
 
@@ -59,7 +68,8 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         //on addition of multimeasure updating its value inside additional details
         if(InputDecimalValidation?.active){
           //calling the input validation here to check if the input is under provided decimal places
-            if(has4DecimalPlaces(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
+            // if(has4DecimalPlaces(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
+            if(checkIntAndDecimalLength(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
             dispatch({
               type: "UPDATE_ROW",
               state: mode === "CREATE" ? { id: id, value: newValue.target.value, row: row, type: fieldKey, additionalDetails : {...row?.additionalDetails, measureLineItems : updatedMeasureLineItems }} : { id: id, value: newValue.target.value, row: row, type: fieldKey },
