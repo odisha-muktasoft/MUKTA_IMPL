@@ -203,13 +203,22 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
                 component: "ViewOnlyCard",
                 withoutLabel: true,
                 key: "viewAmount",
+                populators:{
+                  customStyle:{
+                    marginBottom:"0px"
+                  }
+                }
               },
               {
                 "type": "component",
                 "component": "ViewAnalysisStatement",
                 "withoutLabel": true,
                 "key": "labourMaterialAnalysis",
-                
+                populators:{
+                  customStyle:{
+                    marginBottom:"0px"
+                  }
+                },
                 "formData" : {
              Measurement:measurement,
              }
