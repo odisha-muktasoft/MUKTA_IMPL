@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:works_shg_app/blocs/muster_rolls/create_muster.dart';
+import 'package:works_shg_app/models/error/wager_seeker_attendance_error_model.dart';
 import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
@@ -270,7 +271,7 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                               .tenantId
                                                               .toString()),
                                                     );
-                                                    //TODO:
+                                                //TODO:
                                                 projectDetails =
                                                     individualMusterRollModel
                                                         .musterRoll!
@@ -956,11 +957,39 @@ class _SHGInboxPage extends State<SHGInboxPage> {
                                                                                       listener: (context, logState) {
                                                                                         SchedulerBinding.instance.addPostFrameCallback((_) {
                                                                                           logState.maybeWhen(
-                                                                                              error: (String? error) {
-                                                                                                if (!hasLoaded) {
-                                                                                                  Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
-                                                                                                  onSubmit(registerId.toString());
-                                                                                                  hasLoaded = true;
+                                                                                              error: (String? error, String? msg) {
+                                                                                                if (error == "SAME_DAY_ATTENDANCE_ERROR") {
+                                                                                                  if (msg != null) {
+                                                                                                    List<DuplicateWageSeeker>? listWageseekers = CommonMethods.getListofErrorWageSeeker(message: msg);
+
+                                                                                                    if (listWageseekers != null) {
+                                                                                                      Navigator.of(
+                                                                                                        context,
+                                                                                                        rootNavigator: true,
+                                                                                                      ).popUntil(
+                                                                                                        (route) => route is! PopupRoute,
+                                                                                                      );
+
+                                                                                                      // showDialog(
+                                                                                                      //   context: context,
+                                                                                                      //   builder: (context) {
+                                                                                                      //     return CommonWidgets.getWageseekerErrorList(listWageseekers, context);
+                                                                                                      //   },
+                                                                                                      // );
+                                                                                                      return CommonWidgets.getWageseekerErrorList(listWageseekers, context);
+                                                                                                    } else {
+                                                                                                      Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                    }
+                                                                                                  } else {
+                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                  }
+                                                                                                } else {
+                                                                                                  if (!hasLoaded) {
+                                                                                                    Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(error.toString()), 'ERROR');
+                                                                                                    // Toast.showToast(context, message: AppLocalizations.of(context).translate(error.toString()), type: ToastType.error);
+                                                                                                    onSubmit(registerId.toString());
+                                                                                                    hasLoaded = true;
+                                                                                                  }
                                                                                                 }
                                                                                               },
                                                                                               loaded: () {
