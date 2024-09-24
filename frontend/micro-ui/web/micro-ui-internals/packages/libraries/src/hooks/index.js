@@ -167,6 +167,7 @@ import useViewPayment from "./payments/useViewPayment";
 import useUpdatePI from "./expenditure/useUpdatePI";
 import useMBDataForPB from "./expenditure/useMBDataForPB";
 import useViewPaymentTracker from "./expenditure/useViewPaymentTracker";
+import useGenerateExcel from "./expenditure/useGenerateExcel";
 
 import useViewMeasurement from "./measurement/useViewMeasurement";
 import useEstimateSearchValidation from "./mukta/useEstimateSearchValidation";
@@ -356,6 +357,7 @@ const Hooks = {
   useFetchCitizenBillsForBuissnessService,
   useFetchBillsForBuissnessService,
   useGetPaymentRulesForBusinessServices,
+  useGenerateExcel,
   useWorkflowDetails,
   useWorkflowDetailsWorks,
   useInitStore,

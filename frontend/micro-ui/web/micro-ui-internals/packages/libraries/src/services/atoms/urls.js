@@ -102,7 +102,8 @@ expense:{
   regenerate : '/egov-pdf/bill/_generate',
   searchPaymentWMS:"/wms/mukta-pi/_search",
   updatePI:"/mukta-ifix-adapter/v1/disburse/_create",
-  searchPA:"/mukta-expense/payment/v1/_search"
+  searchPA:"/mukta-expense/payment/v1/_search",
+  generateExcel: "/wms/report/payment-tracker/_create"
 
 },
   pt: {

@@ -2,6 +2,7 @@ import React, {useMemo} from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
 import { paymentTrackerSearchConfig } from "../../configs/paymentTrackerSearchConfig";
+import { ActionBar, SubmitBar } from "@egovernments/digit-ui-components";
 
 const PaymentTrackerSearch = () => {
     const { t } = useTranslation();
@@ -43,6 +44,32 @@ const PaymentTrackerSearch = () => {
           ]
         }
         ),[paymentTrackerSearchConfig]);
+      
+        const { mutate: generateexcel } = Digit.Hooks.useGenerateExcel();
+
+    const handleGenerateExcel = async (data) => {
+
+      const payload = {
+        "report": {
+          "tenantId": "pg.citya",
+          "reportName": "expense",
+          "requestPayload": {
+              "tenantId": "pg.citya"
+          }
+      }
+      }
+      await generateexcel(payload, {
+        onError: async (error, variables) => {
+            
+            // sendDataToResponsePage("billNumber", tenantId, false, "EXPENDITURE_PB_MODIFIED_FORWARDED", false);
+        },
+        onSuccess: async (responseData, variables) => {
+            
+            //Add a toast here
+            //sendDataToResponsePage(responseData?.bills?.[0]?.billNumber, tenantId, true, "EXPENDITURE_PB_MODIFIED_FORWARDED", true);
+        },
+    });
+    }
     
 
     //if (isLoading) return <Loader />
@@ -52,6 +79,13 @@ const PaymentTrackerSearch = () => {
             <div className="inbox-search-wrapper">
                 <InboxSearchComposer configs={configs}></InboxSearchComposer>
             </div>
+            <ActionBar style={{ display: "flex", gap: "24px", justifyContent: "flex-end" }}>
+        <SubmitBar
+          label={t("RA_REVISE_RATE_FOR_SELECTED")}
+          onSubmit={() => handleGenerateExcel}
+          disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
+        />
+      </ActionBar>
         </React.Fragment>
     )
 }
