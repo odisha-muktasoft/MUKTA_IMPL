@@ -271,7 +271,7 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => (mode === "CREATERE" ? !obj?.number : !obj.noOfunit) && !obj.length && !obj.width && !obj.height) !== -1)
                           setError({message:`${t("ERR_LEN_DEP_HIGH_NO_NOT_PRESENT")} ${state.findIndex(obj => !obj.length && !obj.width && !obj.height && !obj.noOfunit)+1}`,enable:true});
                         else if((mode === "CREATEALL" || mode === "CREATERE") && state.findIndex(obj => (obj.noOfunit && obj.noOfunit > 1e15)) !== -1)
-                          setError({message:`${t("ERR_NO_OF_UNIT_EXCEEDING_LIMIT")} ${state.findIndex(obj => obj.noOfunit && obj.noOfunit > 1e15)+1}`,enable:true});
+                          setError({message:`${t("ERR_QUANTITY_EXCEEDING_LIMIT")} ${state.findIndex(obj => obj.noOfunit && obj.noOfunit > 1e15)+1}`,enable:true});
                         else
                         {
                         tableData[tableIndex].measures = state;

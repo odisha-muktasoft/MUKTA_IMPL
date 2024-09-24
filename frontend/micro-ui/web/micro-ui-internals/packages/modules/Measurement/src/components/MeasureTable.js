@@ -44,14 +44,14 @@ let defaultSOR = {
       ]
   };
 
-  function hasDecimalPlaces(number, decimalPlaces) {
+  function checkIntAndDecimalLength(number, decimalPlaces) {
     if(number == "")
     {  
         return true;
     }
     var numStr = number.toString();
-    // Using regex to check if its accepting upto given decimal places
-    var regex = new RegExp(`^[0-9]+(\\.[0-9]{0,${decimalPlaces}})?$`);
+    // Regex to ensure up to 6 digits in the integer part and up to 4 decimal places
+    var regex = new RegExp(`^\\d{1,6}(\\.\\d{0,${decimalPlaces}})?$`);
     return regex.test(numStr);
   }
 
@@ -266,7 +266,7 @@ const MeasureTable = (props) => {
         }
 
         fields[index] = { ...field };
-        if(tableKey === "NONSOR" && key === "unitRate" && !(hasDecimalPlaces(field[key],2)))
+        if(tableKey === "NONSOR" && key === "unitRate" && !(checkIntAndDecimalLength(field[key], 2)))
         {
           return;
         }

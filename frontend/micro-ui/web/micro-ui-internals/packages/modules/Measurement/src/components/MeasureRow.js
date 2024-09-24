@@ -3,22 +3,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Fragment } from "react";
 
-function has4DecimalPlaces(number, decimalPlaces) {
-
-  if(number == "" || isNaN(number))
-    return true;
-  var numStr = number.toString();
-  // Using regex to check if its accepting upto 4 decimal places
-  var regex = new RegExp(`^\\d+(\\.\\d{0,${decimalPlaces}})?$`);
-  return regex.test(numStr);
-}
-
 function checkIntAndDecimalLength(number, decimalPlaces) {
   if (number === "" || isNaN(number)) return true;
   
   var numStr = number.toString();
-  // Regex to ensure up to 8 digits in the integer part and up to 4 decimal places
-  var regex = new RegExp(`^\\d{1,8}(\\.\\d{0,${decimalPlaces}})?$`);
+  // Regex to ensure up to 6 digits in the integer part and up to 4 decimal places
+  var regex = new RegExp(`^\\d{1,6}(\\.\\d{0,${decimalPlaces}})?$`);
   
   return regex.test(numStr);
 }
