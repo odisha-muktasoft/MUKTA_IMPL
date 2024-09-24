@@ -196,217 +196,6 @@ class WorkDetailsCard extends StatelessWidget {
       case 2:
         return Column(
           children: detailsList.mapIndexed((index, e) {
-            // return ui_card.DigitCard(
-            //   margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
-            //   cardType: CardType.primary,
-            //   //spacing: 0.0,
-            //   children: [
-            //     isWorkOrderInbox &&
-            //             acceptWorkOrderCode != null &&
-            //             e['cardDetails'][Constants.activeInboxStatus] == 'true'
-            //         ? Align(
-            //             alignment: Alignment.centerLeft,
-            //             child: SvgPicture.asset('assets/svg/new_tag.svg'),
-            //           )
-            //         : const SizedBox.shrink(),
-            //     LabelValueList(
-            //       heading: ((viewWorkOrder || orgProfile) && cardTitle != null)
-            //           ? cardTitle
-            //           : null,
-            //       maxLines: 3,
-            //       labelFlex: 5,
-            //       valueFlex: 5,
-            //       items: getCardDetails(
-            //         context,
-            //         e['cardDetails'],
-            //         payload: e['payload'],
-            //         isAccept: acceptWorkOrderCode != null &&
-            //                 e['cardDetails'][Constants.activeInboxStatus] ==
-            //                     'true'
-            //             ? false
-            //             : true,
-            //         contractNumber: e['cardDetails'][i18.workOrder.workOrderNo],
-            //       ),
-            //     ),
-            //     isWorkOrderInbox ||
-            //             acceptWorkOrderCode != null &&
-            //                 e['cardDetails'][Constants.activeInboxStatus] ==
-            //                     'true'
-            //         ? Button(
-            //             label: AppLocalizations.of(context)
-            //                 .translate(i18.common.viewDetails),
-            //             onPressed: () {
-            //               context.router.push(
-            //                 ViewWorkDetailsRoute(
-            //                   contractNumber: e['cardDetails']
-            //                           [i18.workOrder.workOrderNo]
-            //                       .toString(),
-            //                   wfStatus: e['payload']!['wfStatus'].toString(),
-            //                 ),
-            //               );
-            //             },
-            //             type: ButtonType.tertiary,
-            //             size: ButtonSize.large,
-            //           )
-            //         : const SizedBox.shrink(),
-            //     acceptWorkOrderCode != null &&
-            //             e['cardDetails'][Constants.activeInboxStatus] == 'true'
-            //         ? Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               Expanded(
-            //                 flex: 10,
-            //                 child: Button(
-            //                     mainAxisSize: MainAxisSize.min,
-            //                     label: outlinedButtonLabel,
-            //                     onPressed: () {
-            //                       showDialog(
-            //                         context: context,
-            //                         builder: (context) {
-            //                           return Popup(
-            //                             onCrossTap: () {
-            //                               Navigator.of(context,
-            //                                       rootNavigator: true)
-            //                                   .pop();
-            //                             },
-            //                             type: PopUpType.simple,
-            //                             title: AppLocalizations.of(context)
-            //                                 .translate(i18.common.warning),
-            //                             description:
-            //                                 AppLocalizations.of(context)
-            //                                     .translate(
-            //                                         i18.workOrder.warningMsg),
-            //                             actions: [
-            //                               Button(
-            //                                   label:
-            //                                       AppLocalizations.of(context)
-            //                                           .translate(
-            //                                               i18.common.confirm),
-            //                                   onPressed: () {
-            //                                     context
-            //                                         .read<
-            //                                             DeclineWorkOrderBloc>()
-            //                                         .add(
-            //                                           WorkOrderDeclineEvent(
-            //                                               contractsModel:
-            //                                                   e['payload'],
-            //                                               action: 'DECLINE',
-            //                                               comments:
-            //                                                   'Work Order has been declined by CBO'),
-            //                                         );
-            //                                     Navigator.of(context,
-            //                                             rootNavigator: true)
-            //                                         .pop();
-            //                                   },
-            //                                   type: ButtonType.primary,
-            //                                   size: ButtonSize.large)
-            //                             ],
-            //                           );
-            //                         },
-            //                       );
-            //                     },
-            //                     type: ButtonType.secondary,
-            //                     size: ButtonSize.large),
-            //               ),
-            //               const Expanded(
-            //                   flex: 1,
-            //                   child: SizedBox(
-            //                     width: 5,
-            //                   )),
-            //               Expanded(
-            //                 flex: 10,
-            //                 child: Button(
-            //                     mainAxisSize: MainAxisSize.min,
-            //                     label: elevatedButtonLabel,
-            //                     onPressed: () {
-            //                       context.read<AcceptWorkOrderBloc>().add(
-            //                             WorkOrderAcceptEvent(
-            //                                 contractsModel: e['payload'],
-            //                                 action: 'ACCEPT',
-            //                                 comments:
-            //                                     'Work Order has been accepted by CBO'),
-            //                           );
-            //                     },
-            //                     type: ButtonType.primary,
-            //                     size: ButtonSize.large),
-            //               ),
-            //             ],
-            //           )
-            //         : const SizedBox.shrink(),
-            //     (isWorkOrderInbox && acceptWorkOrderCode != null) &&
-            //             !(e['cardDetails'][Constants.activeInboxStatus] ==
-            //                 'true')
-            //         ? Button(
-            //             mainAxisSize: MainAxisSize.max,
-            //             label: AppLocalizations.of(context)
-            //                 .translate(i18.common.takeAction),
-            //             onPressed: () {
-            //               showDialog(
-            //                 context: context,
-            //                 builder: (context) {
-            //                   return ActionCard(actions: [
-            //                     Button(
-            //                       label: AppLocalizations.of(context)
-            //                           .translate(i18.home.manageWageSeekers),
-            //                       onPressed: () {
-            //                         context.router.push(
-            //                             AttendanceRegisterTableRoute(
-            //                                 registerId: e['payload']![
-            //                                             'additionalDetails']
-            //                                         ['attendanceRegisterNumber']
-            //                                     .toString(),
-            //                                 tenantId: e['payload']['tenantId']
-            //                                     .toString()));
-            //                         Navigator.of(context, rootNavigator: true)
-            //                             .pop();
-            //                       },
-            //                       type: ButtonType.secondary,
-            //                       size: ButtonSize.large,
-            //                       mainAxisSize: MainAxisSize.max,
-            //                       prefixIcon: Icons.fingerprint,
-            //                     ),
-            //                     Button(
-            //                       label: AppLocalizations.of(context).translate(
-            //                           i18.workOrder.requestTimeExtension),
-            //                       onPressed: () {
-            //                         Navigator.of(context, rootNavigator: true)
-            //                             .pop();
-            //                         context
-            //                             .read<ValidTimeExtCreationsSearchBloc>()
-            //                             .add(SearchValidTimeExtCreationsEvent(
-            //                                 contract: ContractsMapper.fromMap(
-            //                                     e['payload'] ?? {}),
-            //                                 contractNo: e['cardDetails']
-            //                                         [i18.workOrder.workOrderNo]
-            //                                     .toString(),
-            //                                 tenantId: e['payload']!['tenantId']
-            //                                     .toString(),
-            //                                 status: 'APPROVED'));
-            //                       },
-            //                       type: ButtonType.secondary,
-            //                       size: ButtonSize.large,
-            //                       mainAxisSize: MainAxisSize.max,
-            //                       prefixIcon: Icons.calendar_today_rounded,
-            //                     )
-            //                   ]);
-            //                 },
-            //               );
-            //             },
-            //             type: ButtonType.primary,
-            //             size: ButtonSize.large,
-            //           )
-            //         : const SizedBox.shrink(),
-            //     (showButtonLink! && linkLabel!.isNotEmpty)
-            //         ? Button(
-            //             mainAxisAlignment: MainAxisAlignment.start,
-            //             type: ButtonType.tertiary,
-            //             size: ButtonSize.large,
-            //             mainAxisSize: MainAxisSize.max,
-            //             label: linkLabel ?? '',
-            //             onPressed: () => onLinkPressed!())
-            //         : const SizedBox.shrink(),
-            //   ],
-            // );
             if ((acceptWorkOrderCode != null &&
                     e['cardDetails'][Constants.activeInboxStatus] == 'true') &&
                 (isWorkOrderInbox ||
@@ -426,7 +215,12 @@ class WorkDetailsCard extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: SvgPicture.asset('assets/svg/new_tag.svg'),
                         )
-                      : const SizedBox.shrink(),
+                      : const Visibility(
+                          visible: false,
+                          maintainSize: false,
+                          maintainAnimation: false,
+                          maintainState: false,
+                          child: Offstage(offstage: true)),
                   LabelValueList(
                     heading:
                         ((viewWorkOrder || orgProfile) && cardTitle != null)
@@ -539,16 +333,6 @@ class WorkDetailsCard extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  // (showButtonLink! && linkLabel!.isNotEmpty)
-                  //     ? Button(
-                  //         mainAxisAlignment: MainAxisAlignment.start,
-                  //         type: ButtonType.tertiary,
-                  //         size: ButtonSize.large,
-                  //         mainAxisSize: MainAxisSize.max,
-                  //         label: linkLabel ?? '',
-                  //         onPressed: () => onLinkPressed!())
-                  //     : const SizedBox.shrink(),
                 ],
               );
             } else if ((isWorkOrderInbox ||
@@ -559,15 +343,23 @@ class WorkDetailsCard extends StatelessWidget {
                 cardType: CardType.primary,
                 //spacing: 0.0,
                 children: [
-                  isWorkOrderInbox &&
-                          acceptWorkOrderCode != null &&
-                          e['cardDetails'][Constants.activeInboxStatus] ==
-                              'true'
-                      ? Align(
-                          alignment: Alignment.centerLeft,
-                          child: SvgPicture.asset('assets/svg/new_tag.svg'),
-                        )
-                      : const SizedBox.shrink(),
+                  //TODO: temp comment
+                  // isWorkOrderInbox &&
+                  //         acceptWorkOrderCode != null &&
+                  //         e['cardDetails'][Constants.activeInboxStatus] ==
+                  //             'true'
+                  //     ? Align(
+                  //         alignment: Alignment.centerLeft,
+                  //         child: SvgPicture.asset('assets/svg/new_tag.svg'),
+                  //       )
+                  //     : const Visibility(
+                  //       visible:   false,
+                  //     maintainSize: false,
+                  //     maintainAnimation: false,
+                  //     maintainState: false,
+                  //       child: Offstage(offstage: true)),
+// end
+
                   LabelValueList(
                     heading:
                         ((viewWorkOrder || orgProfile) && cardTitle != null)
@@ -617,62 +409,70 @@ class WorkDetailsCard extends StatelessWidget {
                               context: context,
                               builder: (context) {
                                 return ActionCard(
-                                  onOutsideTap: (){
-                      Navigator.of(
-              context,
-              rootNavigator: true,
-            ).popUntil(
-              (route) => route is! PopupRoute,
-            );
-                    },
-                                  actions: [
-                                  Button(
-                                    label: AppLocalizations.of(context)
-                                        .translate(i18.home.manageWageSeekers),
-                                    onPressed: () {
-                                      context.router.push(
-                                          AttendanceRegisterTableRoute(
-                                              registerId: e['payload']![
-                                                          'additionalDetails'][
-                                                      'attendanceRegisterNumber']
-                                                  .toString(),
-                                              tenantId: e['payload']['tenantId']
-                                                  .toString()));
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop();
+                                    onOutsideTap: () {
+                                      Navigator.of(
+                                        context,
+                                        rootNavigator: true,
+                                      ).popUntil(
+                                        (route) => route is! PopupRoute,
+                                      );
                                     },
-                                    type: ButtonType.secondary,
-                                    size: ButtonSize.large,
-                                    mainAxisSize: MainAxisSize.max,
-                                    prefixIcon: Icons.fingerprint,
-                                  ),
-                                  Button(
-                                    label: AppLocalizations.of(context)
-                                        .translate(
-                                            i18.workOrder.requestTimeExtension),
-                                    onPressed: () {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pop();
-                                      context
-                                          .read<
-                                              ValidTimeExtCreationsSearchBloc>()
-                                          .add(SearchValidTimeExtCreationsEvent(
-                                              contract: ContractsMapper.fromMap(
-                                                  e['payload'] ?? {}),
-                                              contractNo: e['cardDetails'][
-                                                      i18.workOrder.workOrderNo]
-                                                  .toString(),
-                                              tenantId:
-                                                  e['payload']!['tenantId']
+                                    actions: [
+                                      Button(
+                                        label: AppLocalizations.of(context)
+                                            .translate(
+                                                i18.home.manageWageSeekers),
+                                        onPressed: () {
+                                          context.router.push(
+                                              AttendanceRegisterTableRoute(
+                                                  registerId: e['payload']![
+                                                              'additionalDetails']
+                                                          [
+                                                          'attendanceRegisterNumber']
                                                       .toString(),
-                                              status: 'APPROVED'));
-                                    },
-                                    type: ButtonType.secondary,
-                                    size: ButtonSize.large,
-                                    mainAxisSize: MainAxisSize.max,
-                                    prefixIcon: Icons.calendar_today_rounded,
-                                  )
-                                ]);
+                                                  tenantId: e['payload']
+                                                          ['tenantId']
+                                                      .toString()));
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                        },
+                                        type: ButtonType.secondary,
+                                        size: ButtonSize.large,
+                                        mainAxisSize: MainAxisSize.max,
+                                        prefixIcon: Icons.fingerprint,
+                                      ),
+                                      Button(
+                                        label: AppLocalizations.of(context)
+                                            .translate(i18.workOrder
+                                                .requestTimeExtension),
+                                        onPressed: () {
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .pop();
+                                          context
+                                              .read<
+                                                  ValidTimeExtCreationsSearchBloc>()
+                                              .add(SearchValidTimeExtCreationsEvent(
+                                                  contract:
+                                                      ContractsMapper.fromMap(
+                                                          e['payload'] ?? {}),
+                                                  contractNo: e['cardDetails'][
+                                                          i18.workOrder
+                                                              .workOrderNo]
+                                                      .toString(),
+                                                  tenantId:
+                                                      e['payload']!['tenantId']
+                                                          .toString(),
+                                                  status: 'APPROVED'));
+                                        },
+                                        type: ButtonType.secondary,
+                                        size: ButtonSize.large,
+                                        mainAxisSize: MainAxisSize.max,
+                                        prefixIcon:
+                                            Icons.calendar_today_rounded,
+                                      )
+                                    ]);
                               },
                             );
                           },
@@ -680,15 +480,6 @@ class WorkDetailsCard extends StatelessWidget {
                           size: ButtonSize.large,
                         )
                       : const SizedBox.shrink(),
-                  // (showButtonLink! && linkLabel!.isNotEmpty)
-                  //     ? Button(
-                  //         mainAxisAlignment: MainAxisAlignment.start,
-                  //         type: ButtonType.tertiary,
-                  //         size: ButtonSize.large,
-                  //         mainAxisSize: MainAxisSize.max,
-                  //         label: linkLabel ?? '',
-                  //         onPressed: () => onLinkPressed!())
-                  //     : const SizedBox.shrink(),
                 ],
               );
             } else if ((isWorkOrderInbox && acceptWorkOrderCode != null) &&
@@ -706,7 +497,12 @@ class WorkDetailsCard extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: SvgPicture.asset('assets/svg/new_tag.svg'),
                         )
-                      : const SizedBox.shrink(),
+                      : const Visibility(
+                          visible: false,
+                          maintainSize: false,
+                          maintainAnimation: false,
+                          maintainState: false,
+                          child: Offstage(offstage: true)),
                   LabelValueList(
                     heading:
                         ((viewWorkOrder || orgProfile) && cardTitle != null)
@@ -728,7 +524,6 @@ class WorkDetailsCard extends StatelessWidget {
                           [i18.workOrder.workOrderNo],
                     ),
                   ),
-
                   Button(
                     mainAxisSize: MainAxisSize.max,
                     label: AppLocalizations.of(context)
@@ -788,15 +583,6 @@ class WorkDetailsCard extends StatelessWidget {
                     type: ButtonType.primary,
                     size: ButtonSize.large,
                   ),
-                  // (showButtonLink! && linkLabel!.isNotEmpty)
-                  //     ? Button(
-                  //         mainAxisAlignment: MainAxisAlignment.start,
-                  //         type: ButtonType.tertiary,
-                  //         size: ButtonSize.large,
-                  //         mainAxisSize: MainAxisSize.max,
-                  //         label: linkLabel ?? '',
-                  //         onPressed: () => onLinkPressed!())
-                  //     : const SizedBox.shrink(),
                 ],
               );
             } else if (acceptWorkOrderCode != null &&
@@ -814,7 +600,12 @@ class WorkDetailsCard extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: SvgPicture.asset('assets/svg/new_tag.svg'),
                         )
-                      : const SizedBox.shrink(),
+                      : const Visibility(
+                          visible: false,
+                          maintainSize: false,
+                          maintainAnimation: false,
+                          maintainState: false,
+                          child: Offstage(offstage: true)),
                   LabelValueList(
                     heading:
                         ((viewWorkOrder || orgProfile) && cardTitle != null)
@@ -911,16 +702,6 @@ class WorkDetailsCard extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  // (showButtonLink! && linkLabel!.isNotEmpty)
-                  //     ? Button(
-                  //         mainAxisAlignment: MainAxisAlignment.start,
-                  //         type: ButtonType.tertiary,
-                  //         size: ButtonSize.large,
-                  //         mainAxisSize: MainAxisSize.max,
-                  //         label: linkLabel ?? '',
-                  //         onPressed: () => onLinkPressed!())
-                  //     : const SizedBox.shrink(),
                 ],
               );
             } else {
