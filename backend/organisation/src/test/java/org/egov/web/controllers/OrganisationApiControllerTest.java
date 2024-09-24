@@ -1,7 +1,7 @@
-/*
 package org.egov.web.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.egov.OrganizationMain;
 import org.egov.TestConfiguration;
 import org.egov.common.contract.response.ResponseInfo;
@@ -16,16 +16,18 @@ import org.egov.util.ResponseInfoFactory;
 import org.egov.validator.OrganisationServiceValidator;
 import org.egov.web.models.OrgRequest;
 import org.egov.web.models.OrgResponse;
-import org.junit.Ignore;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -60,7 +62,7 @@ import org.junit.jupiter.api.Test;
 @WebMvcTest(OrganisationApiController.class)
 @Import(TestConfiguration.class)
 @AutoConfigureMockMvc
-class OrganisationApiControllerTest {
+public class OrganisationApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,12 +70,11 @@ class OrganisationApiControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @InjectMocks
+    //    @InjectMocks
 //    @Autowired
     @MockBean
     private OrganisationService organisationService;
-    @MockBean
-    private JdbcTemplate jdbcTemplate;
+
     @MockBean
     private ResponseInfoFactory responseInfoFactory;
 
@@ -87,19 +88,17 @@ class OrganisationApiControllerTest {
     private OrganisationRepository organisationRepository;
 
     @MockBean
-    private OrganizationProducer organizationProducer;
+    private OrganizationProducer producer;
 
     @MockBean
     private Configuration configuration;
 
     @MockBean
     private UserService userService;
-
+/*
     @Test
     @DisplayName("Organisation request should pass with API Operation CREATE")
-    @Ignore
-    //TODO fix the test case
-    void createProjectPostSuccess() throws Exception {
+    public void createProjectPostSuccess() throws Exception {
         OrgRequest orgRequest = OrganisationRequestTestBuilder.builder().withRequestInfo().addGoodOrganisationForCreate().build();
         when(organisationService.createOrganisationWithoutWorkFlow(any(OrgRequest.class))).thenReturn(orgRequest);
 
@@ -124,6 +123,5 @@ class OrganisationApiControllerTest {
         assertNotNull(response.getOrganisations().get(0).getName());
         assertEquals("successful", response.getResponseInfo().getStatus());
     }
-
-}
 */
+}
