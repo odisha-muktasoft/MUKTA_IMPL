@@ -1,9 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_search_bar.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
@@ -18,6 +19,7 @@ import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/loaders.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
@@ -973,17 +975,26 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                             tableData =
                                                                                 getAttendanceData(newList);
                                                                             return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                                                              Padding(
-                                                                                padding: const EdgeInsets.all(8.0),
-                                                                                child: shg_app.DigitTable(
-                                                                                  headerList: headerList,
-                                                                                  tableData: tableData,
-                                                                                  leftColumnWidth: width,
-                                                                                  rightColumnWidth: skillsDisable ? width * 9 : width * 10,
-                                                                                  height: 58 + (52.0 * (tableData.length + 0.2)),
-                                                                                  scrollPhysics: const NeverScrollableScrollPhysics(),
-                                                                                ),
-                                                                              ),
+                                                                              // old
+                                                                              // Padding(
+                                                                              //   padding: const EdgeInsets.all(8.0),
+                                                                              //   child: shg_app.DigitTable(
+                                                                              //     headerList: headerList,
+                                                                              //     tableData: tableData,
+                                                                              //     leftColumnWidth: width,
+                                                                              //     rightColumnWidth: skillsDisable ? width * 9 : width * 10,
+                                                                              //     height: 58 + (52.0 * (tableData.length + 0.2)),
+                                                                              //     scrollPhysics: const NeverScrollableScrollPhysics(),
+                                                                              //   ),
+                                                                              // ),
+                                                                              // new
+                                                                              DigitTable(
+                                                                               
+                                                                           //  tableHeight: 58 + (52.0 * (newGetTableRow(newList).length + 0.2)),
+                                                                                frozenColumnsCount: 1, columns: newHeaderList, rows: newGetTableRow(newList)),
+
+                                                                              //
+
                                                                               Align(
                                                                                 alignment: Alignment.bottomCenter,
                                                                                 child: Padding(
@@ -1750,6 +1761,287 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
               .translate(i18.common.total),
         )
       ];
+
+// TODO: rnd table
+  // new headerlist
+
+  List<DigitTableColumn> get newHeaderList => [
+        DigitTableColumn(
+          isFrozen: true,
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.nameLabel),
+            cellValue: "name",
+            type: ColumnType.text),
+        DigitTableColumn(
+          header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+              .translate(i18.common.fatherName),
+          cellValue: 'individualGaurdianName',
+        ),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.mon),
+            description: dates.isNotEmpty ? dates[0] : '',
+            cellValue: 'monday'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.tue),
+            description: dates.isNotEmpty ? dates[1] : '',
+            cellValue: 'tue'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.wed),
+            description: dates.isNotEmpty ? dates[2] : '',
+            cellValue: 'wed'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.thu),
+            description: dates.isNotEmpty ? dates[3] : '',
+            cellValue: 'thus'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.fri),
+            description: dates.isNotEmpty ? dates[4] : '',
+            cellValue: 'fri'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.sat),
+            description: dates.isNotEmpty ? dates[5] : '',
+            cellValue: 'sat'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.sun),
+            description: dates.isNotEmpty ? dates[6] : '',
+            cellValue: 'sun'),
+        DigitTableColumn(
+            header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
+                .translate(i18.common.total),
+            cellValue: 'total'),
+      ];
+
+  List<DigitTableRow> newGetTableRow(List<TrackAttendanceTableData> list) {
+    return list.map((e) {
+      return DigitTableRow(tableRow: [
+        DigitTableData(e.name ?? '', cellKey: "name"),
+        DigitTableData(e.individualGaurdianName ?? "", cellKey: "guardian"),
+        DigitTableData(
+          e.monIndex.toString() ?? "",
+          cellKey: "monday",
+          widget: CircularButton(
+            icon: Icons.circle_rounded,
+            size: 15,
+            viewOnly: (e.deenrollment != null &&
+                    !(DateFormats.isEpochDateLessThan(
+                        selectedDateRange!.startDate +
+                            (0 * DateFormats.getNextDayMillis),
+                        e.deenrollment!))) ||
+                isInWorkFlow,
+            color: const Color.fromRGBO(0, 100, 0, 1),
+            index: e.monIndex ?? -1,
+            isNotGreyed: false,
+            onTap: (e.deenrollment != null &&
+                        !(DateFormats.isEpochDateLessThan(
+                            selectedDateRange!.startDate +
+                                (0 * DateFormats.getNextDayMillis),
+                            e.deenrollment!))) ||
+                    daysInRange == null ||
+                    !daysInRange!.monday
+                ? null
+                : entryExitList!.length > 2
+                    ? () => onTapButton(e.individualId ?? '', 'mon',
+                        e.monEntryId, e.monExitId, e.auditDetails)
+                    : () => onTapOnlyAbsentPresent(e.individualId ?? '', 'mon',
+                        e.monEntryId, e.monExitId, e.auditDetails),
+          ),
+        ),
+        DigitTableData(
+          e.tueIndex.toString(),
+          cellKey: "tue",
+          widget: CircularButton(
+            icon: Icons.circle_rounded,
+            size: 15,
+            viewOnly: (e.deenrollment != null &&
+                    !(DateFormats.isEpochDateLessThan(
+                        selectedDateRange!.startDate +
+                            (1 * DateFormats.getNextDayMillis),
+                        e.deenrollment!))) ||
+                isInWorkFlow,
+            color: const Color.fromRGBO(0, 100, 0, 1),
+            index: e.tueIndex ?? -1,
+            isNotGreyed: false,
+            onTap: (e.deenrollment != null &&
+                        !(DateFormats.isEpochDateLessThan(
+                            selectedDateRange!.startDate +
+                                (1 * DateFormats.getNextDayMillis),
+                            e.deenrollment!))) ||
+                    daysInRange == null ||
+                    !daysInRange!.tuesday
+                ? null
+                : entryExitList!.length > 2
+                    ? () => onTapButton(e.individualId ?? '', 'tue',
+                        e.tueEntryId, e.tueExitId, e.auditDetails)
+                    : () => onTapOnlyAbsentPresent(e.individualId ?? '', 'tue',
+                        e.tueEntryId, e.tueExitId, e.auditDetails),
+          ),
+        ),
+        DigitTableData(e.wedIndex.toString(),
+            cellKey: 'wed',
+            widget: CircularButton(
+              icon: Icons.circle_rounded,
+              size: 15,
+              viewOnly: (e.deenrollment != null &&
+                      !(DateFormats.isEpochDateLessThan(
+                          selectedDateRange!.startDate +
+                              (2 * DateFormats.getNextDayMillis),
+                          e.deenrollment!))) ||
+                  isInWorkFlow,
+              color: const Color.fromRGBO(0, 100, 0, 1),
+              index: e.wedIndex ?? -1,
+              isNotGreyed: false,
+              onTap: (e.deenrollment != null &&
+                          !(DateFormats.isEpochDateLessThan(
+                              selectedDateRange!.startDate +
+                                  (2 * DateFormats.getNextDayMillis),
+                              e.deenrollment!))) ||
+                      daysInRange == null ||
+                      !daysInRange!.wednesday
+                  ? null
+                  : entryExitList!.length > 2
+                      ? () => onTapButton(e.individualId ?? '', 'wed',
+                          e.wedEntryId, e.wedExitId, e.auditDetails)
+                      : () => onTapOnlyAbsentPresent(e.individualId ?? '',
+                          'wed', e.wedEntryId, e.wedExitId, e.auditDetails),
+            )),
+        DigitTableData(
+          e.thuIndex.toString(),
+          cellKey: 'thus',
+          widget: CircularButton(
+            icon: Icons.circle_rounded,
+            size: 15,
+            viewOnly: (e.deenrollment != null &&
+                    !(DateFormats.isEpochDateLessThan(
+                        selectedDateRange!.startDate +
+                            (3 * DateFormats.getNextDayMillis),
+                        e.deenrollment!))) ||
+                isInWorkFlow,
+            color: const Color.fromRGBO(0, 100, 0, 1),
+            index: e.thuIndex ?? -1,
+            isNotGreyed: false,
+            onTap: (e.deenrollment != null &&
+                        !(DateFormats.isEpochDateLessThan(
+                            selectedDateRange!.startDate +
+                                (3 * DateFormats.getNextDayMillis),
+                            e.deenrollment!))) ||
+                    daysInRange == null ||
+                    !daysInRange!.thursday
+                ? null
+                : entryExitList!.length > 2
+                    ? () => onTapButton(e.individualId ?? '', 'thu',
+                        e.thuEntryId, e.thuExitId, e.auditDetails)
+                    : () => onTapOnlyAbsentPresent(e.individualId ?? '', 'thu',
+                        e.thuEntryId, e.thuExitId, e.auditDetails),
+          ),
+        ),
+        DigitTableData(
+          e.friIndex.toString(),
+          cellKey: 'fri',
+          widget: CircularButton(
+            icon: Icons.circle_rounded,
+            size: 15,
+            viewOnly: (e.deenrollment != null &&
+                    !(DateFormats.isEpochDateLessThan(
+                        selectedDateRange!.startDate +
+                            (4 * DateFormats.getNextDayMillis),
+                        e.deenrollment!))) ||
+                isInWorkFlow,
+            color: const Color.fromRGBO(0, 100, 0, 1),
+            index: e.friIndex ?? -1,
+            isNotGreyed: false,
+            onTap: (e.deenrollment != null &&
+                        !(DateFormats.isEpochDateLessThan(
+                            selectedDateRange!.startDate +
+                                (4 * DateFormats.getNextDayMillis),
+                            e.deenrollment!))) ||
+                    daysInRange == null ||
+                    !daysInRange!.friday
+                ? null
+                : entryExitList!.length > 2
+                    ? () => onTapButton(e.individualId ?? '', 'fri',
+                        e.friEntryId, e.friExitId, e.auditDetails)
+                    : () => onTapOnlyAbsentPresent(e.individualId ?? '', 'fri',
+                        e.friEntryId, e.friExitId, e.auditDetails),
+          ),
+        ),
+        DigitTableData(e.satIndex.toString(),
+            cellKey: 'sat',
+            widget: CircularButton(
+              icon: Icons.circle_rounded,
+              size: 15,
+              viewOnly: (e.deenrollment != null &&
+                      !(DateFormats.isEpochDateLessThan(
+                          selectedDateRange!.startDate +
+                              (5 * DateFormats.getNextDayMillis),
+                          e.deenrollment!))) ||
+                  isInWorkFlow,
+              color: const Color.fromRGBO(0, 100, 0, 1),
+              index: e.satIndex ?? -1,
+              isNotGreyed: false,
+              onTap: (e.deenrollment != null &&
+                          !(DateFormats.isEpochDateLessThan(
+                              selectedDateRange!.startDate +
+                                  (5 * DateFormats.getNextDayMillis),
+                              e.deenrollment!))) ||
+                      daysInRange == null ||
+                      !daysInRange!.saturday
+                  ? null
+                  : entryExitList!.length > 2
+                      ? () => onTapButton(e.individualId ?? '', 'sat',
+                          e.satEntryId, e.satExitId, e.auditDetails)
+                      : () => onTapOnlyAbsentPresent(e.individualId ?? '',
+                          'sat', e.satEntryId, e.satExitId, e.auditDetails),
+            )),
+        DigitTableData(e.sunIndex.toString(),
+            cellKey: 'sun',
+            widget: CircularButton(
+              icon: Icons.circle_rounded,
+              size: 15,
+              viewOnly: (e.deenrollment != null &&
+                      !(DateFormats.isEpochDateLessThan(
+                          selectedDateRange!.startDate +
+                              (6 * DateFormats.getNextDayMillis),
+                          e.deenrollment!))) ||
+                  isInWorkFlow,
+              color: const Color.fromRGBO(0, 100, 0, 1),
+              index: e.sunIndex ?? -1,
+              isNotGreyed: false,
+              onTap: (e.deenrollment != null &&
+                          !(DateFormats.isEpochDateLessThan(
+                              selectedDateRange!.startDate +
+                                  (6 * DateFormats.getNextDayMillis),
+                              e.deenrollment!))) ||
+                      daysInRange == null ||
+                      !daysInRange!.sunday
+                  ? null
+                  : entryExitList!.length > 2
+                      ? () => onTapButton(e.individualId ?? '', 'sun',
+                          e.sunEntryId, e.sunExitId, e.auditDetails)
+                      : () => onTapOnlyAbsentPresent(e.individualId ?? '',
+                          'sun', e.sunEntryId, e.sunExitId, e.auditDetails),
+            )),
+        DigitTableData(
+            (convertedValue(e.monIndex!.toDouble()) +
+                    convertedValue(e.tueIndex!.toDouble()) +
+                    convertedValue(e.wedIndex!.toDouble()) +
+                    convertedValue(e.thuIndex!.toDouble()) +
+                    convertedValue(e.friIndex!.toDouble()) +
+                    convertedValue(e.satIndex!.toDouble()) +
+                    convertedValue(e.sunIndex!.toDouble()))
+                .toString(),
+            cellKey: 'total')
+      ]);
+    }).toList();
+  }
+
+  //
 
   TableDataRow getAttendanceRow(TrackAttendanceTableData tableDataModel) {
     return TableDataRow([
