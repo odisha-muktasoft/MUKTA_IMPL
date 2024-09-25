@@ -200,8 +200,11 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                         delegate: SliverChildListDelegate(
                           [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 16.0, bottom: 16.0),
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    Theme.of(context).spacerTheme.spacer4,
+                                vertical: Theme.of(context).spacerTheme.spacer4,
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -717,7 +720,8 @@ class _AttendanceRegisterTablePage extends State<AttendanceRegisterTablePage> {
                                                               setState(() {
                                                                 searchUser =
                                                                     true;
-                                                                    existingAttendeeList.removeWhere((e) =>
+                                                                existingAttendeeList
+                                                                    .removeWhere((e) =>
                                                                         e['uuid'] ==
                                                                         uuid);
                                                                 createAttendeePayLoadList

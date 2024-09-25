@@ -475,7 +475,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal:
-                                      Theme.of(context).spacerTheme.spacer2,
+                                      Theme.of(context).spacerTheme.spacer4,
                                   vertical:
                                       Theme.of(context).spacerTheme.spacer4,
                                 ),
@@ -678,56 +678,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       )
                                     : renderSor(value.sor!, "sor"),
-                              // : ListView.builder(
-                              //     shrinkWrap: true,
-                              //     padding: EdgeInsets.zero,
-                              //     physics:
-                              //         const NeverScrollableScrollPhysics(),
-                              //     itemBuilder:
-                              //         (BuildContext context,
-                              //             int index) {
-                              //       return SorCard(
-                              //         // consumedQty: consumedQty,
-                              //         // currentAmt: currentAmt,
-
-                              //         index: index,
-                              //         magic: value.sor![index]
-                              //             .filteredMeasurementsMeasure,
-
-                              //         preSorNonSor: value.preSor ==
-                              //                 null
-                              //             ? null
-                              //             : value.preSor?.firstWhereOrNull(
-                              //                         (element) =>
-                              //                             element
-                              //                                 .sorId ==
-                              //                             value
-                              //                                 .sor![
-                              //                                     index]
-                              //                                 .sorId) ==
-                              //                     null
-                              //                 ? null
-                              //                 : value.preSor!
-                              //                     .firstWhereOrNull(
-                              //                         (element) =>
-                              //                             element
-                              //                                 .sorId ==
-                              //                             value
-                              //                                 .sor![
-                              //                                     index]
-                              //                                 .sorId)!
-                              //                     .filteredMeasurementsMeasure,
-                              //         // value.preSor![index]
-                              //         //     .filteredMeasurementsMeasure,
-                              //         type: "sor",
-                              //         sorNonSorId:
-                              //             value.sor![index].sorId!,
-                              //         cardLevel: t.translate(i18
-                              //             .measurementBook.mbSor),
-                              //       );
-                              //     },
-                              //     itemCount: value.sor!.length,
-                              //   ),
+                              
 
                               if (tabIndex == 1)
                                 value.nonSor!.isEmpty
@@ -752,51 +703,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       )
                                     : renderSor(value.nonSor!, "NonSor"),
-                              // : ListView.builder(
-                              //     physics:
-                              //         const NeverScrollableScrollPhysics(),
-                              //     itemBuilder:
-                              //         (BuildContext context,
-                              //             int index) {
-                              //       return SorCard(
-                              //         // consumedQty: consumedQty,
-                              //         // currentAmt: currentAmt,
-
-                              //         index: index,
-                              //         magic: value.nonSor![index]
-                              //             .filteredMeasurementsMeasure,
-                              //         preSorNonSor: value
-                              //                     .preNonSor ==
-                              //                 null
-                              //             ? null
-                              //             : value.preNonSor?.firstWhereOrNull((element) =>
-                              //                         element
-                              //                             .sorId ==
-                              //                         value
-                              //                             .nonSor![
-                              //                                 index]
-                              //                             .sorId) !=
-                              //                     null
-                              //                 ? value.preNonSor!
-                              //                     .firstWhereOrNull((element) =>
-                              //                         element
-                              //                             .sorId ==
-                              //                         value
-                              //                             .nonSor![
-                              //                                 index]
-                              //                             .sorId)!
-                              //                     .filteredMeasurementsMeasure
-                              //                 : null,
-                              //         type: "NonSor",
-                              //         sorNonSorId: value
-                              //             .nonSor![index].sorId!,
-                              //         cardLevel: t.translate(i18
-                              //             .measurementBook
-                              //             .mbNonSor),
-                              //       );
-                              //     },
-                              //     itemCount: value.nonSor!.length,
-                              //   ),
+                              
                               if (tabIndex == 2)
                                 widget.type == MBScreen.create
                                     ? Padding(
@@ -815,42 +722,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                       padding: const EdgeInsets
                                                           .symmetric(
                                                           horizontal: 0.0),
-                                                      //old
-                                                      // child:
-                                                      //     FilePickerDemo(
-                                                      //   fromServerFile:
-                                                      //       value
-                                                      //           .data
-                                                      //           .first
-                                                      //           .documents,
-                                                      //   callBack: (List<
-                                                      //               FileStoreModel>?
-                                                      //           g,
-                                                      //       List<WorkflowDocument>?
-                                                      //           l) {
-                                                      //     context
-                                                      //         .read<
-                                                      //             MeasurementDetailBloc>()
-                                                      //         .add(
-                                                      //           MeasurementUploadDocumentBlocEvent(
-                                                      //             tenantId:
-                                                      //                 '',
-                                                      //             workflowDocument:
-                                                      //                 l!,
-                                                      //           ),
-                                                      //         );
-                                                      //   },
-                                                      //   extensions: const [
-                                                      //     'jpg',
-                                                      //     'png',
-                                                      //     'jpeg',
-                                                      //   ],
-                                                      //   moduleName:
-                                                      //       'img_measurement_book',
-                                                      //   headerType:
-                                                      //       MediaType
-                                                      //           .mbDetail,
-                                                      // ),
+                                                      
                                                       child:
                                                           ui_label.LabeledField(
                                                         label:
@@ -969,42 +841,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     horizontal:
                                                                         0.0),
 
-                                                            //old
-                                                            // child:
-                                                            //     FilePickerDemo(
-                                                            //   fromServerFile:
-                                                            //       value
-                                                            //           .data
-                                                            //           .first
-                                                            //           .documents,
-                                                            //   callBack: (List<
-                                                            //               FileStoreModel>?
-                                                            //           g,
-                                                            //       List<WorkflowDocument>?
-                                                            //           l) {
-                                                            // context
-                                                            //     .read<
-                                                            //         MeasurementDetailBloc>()
-                                                            //     .add(
-                                                            //       MeasurementUploadDocumentBlocEvent(
-                                                            //         tenantId:
-                                                            //             '',
-                                                            //         workflowDocument:
-                                                            //             l!,
-                                                            //       ),
-                                                            //     );
-                                                            //   },
-                                                            //   extensions: const [
-                                                            //     'jpg',
-                                                            //     'png',
-                                                            //     'jpeg',
-                                                            //   ],
-                                                            //   moduleName:
-                                                            //       'img_measurement_book',
-                                                            //   headerType:
-                                                            //       MediaType
-                                                            //           .mbDetail,
-                                                            // ),
+                                                           
 
                                                             child: ui_label
                                                                 .LabeledField(
@@ -1097,10 +934,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                 ),
                                               )
                                             : Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0,
-                                                    right: 8.0,
-                                                    bottom: 8.0,
+                                                padding:  EdgeInsets.only(
+                                                    left: Theme.of(context).spacerTheme.spacer2,
+                                                    right: Theme.of(context).spacerTheme.spacer2,
+                                                    bottom: Theme.of(context).spacerTheme.spacer2,
                                                     top: 0.0),
                                                 child: ui_component.DigitCard(
                                                     cardType: CardType.primary,
@@ -1118,10 +955,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               )
                                         : !value.viewStatus
                                             ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0,
-                                                    right: 8.0,
-                                                    bottom: 8.0,
+                                                padding:  EdgeInsets.only(
+                                                    left: Theme.of(context).spacerTheme.spacer2,
+                                                    right: Theme.of(context).spacerTheme.spacer2,
+                                                    bottom: Theme.of(context).spacerTheme.spacer2,
                                                     top: 0.0),
                                                 child: ui_component.DigitCard(
                                                     cardType: CardType.primary,
@@ -1141,37 +978,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .symmetric(
                                                                       horizontal:
                                                                           0.0),
-                                                              //old
-                                                              // child:
-                                                              //     FilePickerDemo(
-                                                              //   fromServerFile: value
-                                                              //       .data
-                                                              //       .first
-                                                              //       .documents,
-                                                              //   callBack: (List<FileStoreModel>?
-                                                              //           g,
-                                                              //       List<WorkflowDocument>?
-                                                              //           l) {
-                                                              //     context
-                                                              //         .read<MeasurementDetailBloc>()
-                                                              //         .add(
-                                                              //           MeasurementUploadDocumentBlocEvent(
-                                                              //             tenantId: '',
-                                                              //             workflowDocument: l!,
-                                                              //           ),
-                                                              //         );
-                                                              //   },
-                                                              //   extensions: const [
-                                                              //     'jpg',
-                                                              //     'png',
-                                                              //     'jpeg',
-                                                              //   ],
-                                                              //   moduleName:
-                                                              //       'img_measurement_book',
-                                                              //   headerType:
-                                                              //       MediaType
-                                                              //           .mbDetail,
-                                                              // ),
+                                                              
 
                                                               child: ui_label
                                                                   .LabeledField(
@@ -2270,86 +2077,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     value: preSorNonSor == null ? "0.0000" : preConumed),
               ]),
 
-          // ui_label.LabeledField(
-          //   label: t.translate(i18.measurementBook.currentMBEntry),
-          //   labelStyle: Theme.of(context).textTheme.labelLarge,
-          //   child: InkWell(
-          //     onTap: () {
-          //       showDialog(
-          //         context: ctx,
-          //         builder: (_) {
-          //           return HorizontalCardListDialog(
-          //             lineItems: magic,
-          //             index: index,
-          //             type: type,
-          //             noOfUnit: noOfQty,
-          //             cummulativePrevQty: preSorNonSor == null
-          //                 ? 0.0000
-          //                 : preSorNonSor.fold(0.0000, (sum, obj) {
-          //                     double m = obj.contracts!.first.estimates!.first
-          //                                 .isDeduction ==
-          //                             true
-          //                         ? -(obj.cumulativeValue!)
-          //                         : (obj.cumulativeValue!);
-          //                     return sum + m.toDouble();
-          //                   }),
-          //             sorId: sorNonSorId,
-          //           );
-          //         },
-          //       );
-          //     },
-          //     child: IgnorePointer(
-          //       child: DigitSearchFormInput(
-          //         controller: consumedQty
-          //           ..text = (magic.fold(0.0, (sum, obj) {
-          //             double m;
-          //             if (obj.contracts?.first.estimates?.first.isDeduction ==
-          //                 false) {
-          //               m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-          //                 double mk = double.parse(ob.quantity!.toString());
-          //                 return subSum + mk;
-          //               });
-          //             } else {
-          //               m = obj.measureLineItems!.fold(0.0, (subSum, ob) {
-          //                 double mr = double.parse(ob.quantity!.toString());
-          //                 return subSum + mr;
-          //               });
-          //               m = -m;
-          //             }
-          //             return sum + m;
-          //           })).toStringAsFixed(4),
-          //         readOnly: true,
-          //         suffixIcon: Icons.add_circle,
-          //         iconColor: Theme.of(context).colorTheme.primary.primary1,
-          //         onSuffixTap: (p0) {},
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          // ui_label.LabeledField(
-          //   label: t.translate(i18.measurementBook.mbAmtCurrentEntry),
-          //   labelStyle: Theme.of(context).textTheme.labelLarge,
-          //   child: DigitTextFormInput(
-          //     controller: currentAmt
-          //       ..text = (magic.fold(0.0, (sum, obj) {
-          //         double m = obj.mbAmount != null
-          //             ? (obj.mbAmount != null && obj.mbAmount! < 0)
-          //                 ? (obj.mbAmount! * (-1))
-          //                 : obj.mbAmount!
-          //             : 0.00;
-          //         if (obj.contracts?.first.estimates?.first.isDeduction ==
-          //             true) {
-          //           m = -(m); // Negate the amount for deductions
-          //         } else {
-          //           m = (m);
-          //         }
-          //         return sum + m;
-          //       })).toStringAsFixed(2),
-          //     readOnly: true,
-          //   ),
-          // ),
-
-// old
+          
 
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -3027,7 +2755,7 @@ Widget renderSor(
         type: type,
         sorNonSorId: value![index].sorId!,
         cardLevel:
-            AppLocalizations.of(context).translate(i18.measurementBook.mbSor),
+            AppLocalizations.of(context).translate( type=="sor"?i18.measurementBook.mbSor:i18.measurementBook.mbNonSor),
       );
     },
     itemCount: value!.length,

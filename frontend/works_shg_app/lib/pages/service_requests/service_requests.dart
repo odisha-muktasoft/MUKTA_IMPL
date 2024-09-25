@@ -152,15 +152,13 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              // Back(
-                                              //   backLabel: AppLocalizations.of(
-                                              //           context)
-                                              //       .translate(i18.common.back),
-                                              // ),
+                                             
 
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0, top: 16),
+                                                padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,

@@ -90,8 +90,10 @@ class SuccessResponsePage extends StatelessWidget {
             children: [
               backButton == true
                   ? Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, top: 16, bottom: 16, right: 8.0),
+                       padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [

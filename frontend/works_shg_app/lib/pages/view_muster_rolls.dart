@@ -152,8 +152,10 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                     // ),
 
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, top: 16, bottom: 0),
+                                      padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                       child: Row(
                                         children: [
                                           BackNavigationButton(

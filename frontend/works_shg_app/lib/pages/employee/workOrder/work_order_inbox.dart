@@ -222,11 +222,10 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 8.0,
-                                      bottom: 16.0,
-                                      top: 16.0,
-                                      right: 8.0),
+                                   padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,

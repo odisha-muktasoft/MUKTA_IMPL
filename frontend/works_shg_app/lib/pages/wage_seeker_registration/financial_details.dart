@@ -96,14 +96,12 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
           children: [
             ui_card.DigitCard(
               cardType: CardType.primary,
-              margin:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
+              margin: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
               children: [
                 DigitTextBlock(
                   heading: t.translate(i18.common.financialDetails),
                 ),
-            
-               
-            
+
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.accountHolderName),
@@ -127,7 +125,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                           ..text = form.control(accountHolderKey).value ?? '',
                         onChange: (value) {
                           field.control.markAsTouched();
-            
+
                           form.control(accountHolderKey).value = value;
                         },
                         errorMessage: field.errorText,
@@ -146,9 +144,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                   ),
                 ),
-            
-            
-            
+
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.accountNo),
@@ -168,16 +164,16 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                     formControlName: accountNoKey,
                     builder: (field) {
-                      return DigitPasswordFormInput(
-                        
+                      return BaseDigitFormInput(
                         // charCount: true,
                         controller: TextEditingController()
                           ..text = form.control(accountNoKey).value ?? '',
                         onChange: (value) {
                           field.control.markAsTouched();
-            
+
                           form.control(accountNoKey).value = value;
                         },
+
                         errorMessage: field.errorText,
                         isRequired: true,
                         keyboardType: TextInputType.number,
@@ -187,24 +183,22 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                         validations: [
                           ui_validation.Validator(
                               ui_validation.ValidatorType.maxLength, 18,
-                              errorMessage:
-                                  t.translate(i18.wageSeeker.maxAccNoCharacters)),
+                              errorMessage: t.translate(
+                                  i18.wageSeeker.maxAccNoCharacters)),
                           ui_validation.Validator(
                               ui_validation.ValidatorType.minLength, 8,
-                              errorMessage:
-                                  t.translate(i18.wageSeeker.minAccNoCharacters)),
+                              errorMessage: t.translate(
+                                  i18.wageSeeker.minAccNoCharacters)),
                           ui_validation.Validator(
                               ui_validation.ValidatorType.required, '',
-                              errorMessage: t
-                                  .translate(i18.wageSeeker.accountNumberRequired)),
+                              errorMessage: t.translate(
+                                  i18.wageSeeker.accountNumberRequired)),
                         ],
                       );
                     },
                   ),
                 ),
-            
-            
-            
+
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.reEnterAccountNo),
@@ -216,13 +210,12 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     formControlName: reAccountNoKey,
                     builder: (field) {
                       return DigitTextFormInput(
-                        
                         // charCount: true,
                         controller: TextEditingController()
                           ..text = form.control(reAccountNoKey).value ?? '',
                         onChange: (value) {
                           field.control.markAsTouched();
-            
+
                           form.control(reAccountNoKey).value = value;
                         },
                         errorMessage: field.errorText,
@@ -231,14 +224,11 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(RegExp("[0-9]"))
                         ],
-                       
                       );
                     },
                   ),
                 ),
-            
-            
-            
+
                 ui_component.LabeledField(
                   label: t.translate(i18.common.accountType),
                   isRequired: true,
@@ -261,16 +251,14 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                         onChanged: (value) {
                           // genderController = value.code;
                           field.control.markAsTouched();
-            
+
                           form.control(accountTypeKey).value = value.code;
                         },
                       );
                     },
                   ),
                 ),
-            
-            
-            
+
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.ifscCode),
@@ -289,7 +277,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                           ..text = form.control(ifscCodeKey).value ?? '',
                         onChange: (value) async {
                           field.control.markAsTouched();
-            
+
                           form.control(ifscCodeKey).value = value;
                           final url = Uri.parse(
                               '${Urls.commonServices.bankDetails}/${form.value[ifscCodeKey]}');
@@ -298,7 +286,7 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                             final data = jsonDecode(response.body);
                             final String bankName = data['BANK'];
                             final String branchName = data['BRANCH'];
-            
+
                             setState(() {
                               hintText = '$bankName, $branchName';
                             });
@@ -311,12 +299,11 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                         errorMessage: field.errorText,
                         isRequired: true,
                         keyboardType: TextInputType.text,
-                       
                       );
                     },
                   ),
                 ),
-            
+
                 // Button(
                 //   type: ButtonType.primary,
                 //   size: ButtonSize.large,
@@ -352,41 +339,40 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                 // )
               ],
             ),
-
             ui_card.DigitCard(children: [
-               Button(
-                  type: ButtonType.primary,
-                  size: ButtonSize.large,
-                  mainAxisSize: MainAxisSize.max,
-                  onPressed: () {
-                    form.markAllAsTouched(updateParent: false);
-                    if (!form.valid) return;
-                    if (hintText.isEmpty) {
-                      Notifiers.getToastMessage(
-                          context, i18.wageSeeker.enterValidIFSC, 'ERROR');
-                          // Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
-                    } else {
-                      final financeDetails = FinancialDetails(
-                          accountHolderName:
-                              form.value[accountHolderKey].toString(),
-                          accountNumber: form.value[accountNoKey].toString(),
-                          reAccountNumber: form.value[reAccountNoKey].toString(),
-                          ifscCode:
-                              form.value[ifscCodeKey].toString().toUpperCase(),
-                          accountType: form.value[accountTypeKey].toString(),
-                          bankName: hintText);
-                      BlocProvider.of<WageSeekerBloc>(context).add(
-                        WageSeekerCreateEvent(
-                            individualDetails: individualDetails,
-                            skillDetails: skillDetails,
-                            locationDetails: locationDetails,
-                            financialDetails: financeDetails),
-                      );
-                      widget.onPressed();
-                    }
-                  },
-                  label: t.translate(i18.common.next),
-                )
+              Button(
+                type: ButtonType.primary,
+                size: ButtonSize.large,
+                mainAxisSize: MainAxisSize.max,
+                onPressed: () {
+                  form.markAllAsTouched(updateParent: false);
+                  if (!form.valid) return;
+                  if (hintText.isEmpty) {
+                    Notifiers.getToastMessage(
+                        context, i18.wageSeeker.enterValidIFSC, 'ERROR');
+                    // Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
+                  } else {
+                    final financeDetails = FinancialDetails(
+                        accountHolderName:
+                            form.value[accountHolderKey].toString(),
+                        accountNumber: form.value[accountNoKey].toString(),
+                        reAccountNumber: form.value[reAccountNoKey].toString(),
+                        ifscCode:
+                            form.value[ifscCodeKey].toString().toUpperCase(),
+                        accountType: form.value[accountTypeKey].toString(),
+                        bankName: hintText);
+                    BlocProvider.of<WageSeekerBloc>(context).add(
+                      WageSeekerCreateEvent(
+                          individualDetails: individualDetails,
+                          skillDetails: skillDetails,
+                          locationDetails: locationDetails,
+                          financialDetails: financeDetails),
+                    );
+                    widget.onPressed();
+                  }
+                },
+                label: t.translate(i18.common.next),
+              )
             ])
           ],
         );

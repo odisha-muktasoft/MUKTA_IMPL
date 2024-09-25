@@ -202,7 +202,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                 children: [
                                   Padding(
                                     padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer2,
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
                                       vertical: Theme.of(context).spacerTheme.spacer4,
                                     ),
                                     child: Row(
@@ -255,7 +255,7 @@ class _MeasurementBookInboxPageState extends State<MeasurementBookInboxPage> {
                                         ]),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
+                                    padding: const EdgeInsets.only(left: 16.0,top: 0.0),
                                     child: DigitTextBlock(
                                       heading:
                                           "${t.translate(i18.measurementBook.mbInbox)} (${mbInboxResponse.mbInboxResponse.totalCount ?? 0})",

@@ -215,8 +215,10 @@ class _ORGProfilePage extends State<ORGProfilePage> {
                                   children: [
                                       
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0, top: 16),
+                                        padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,

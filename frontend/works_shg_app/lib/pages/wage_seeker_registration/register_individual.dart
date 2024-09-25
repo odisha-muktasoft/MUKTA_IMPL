@@ -114,7 +114,7 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
         // appBar: customAppBar(),
         // drawer: const MySideBar(),
         body: ScrollableContent(
-          backgroundColor: Theme.of(context).colorTheme.generic.background,
+            backgroundColor: Theme.of(context).colorTheme.generic.background,
             // footer: Button(
             //   label: t.translate(i18.common.next),
             //   onPressed: () {
@@ -127,8 +127,10 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
             children: [
               // const Back(),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 16.0, top: 16, right: 16, bottom: 16),
+                padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -159,7 +161,6 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                 ),
               ),
 
-              
               BlocBuilder<AppInitializationBloc, AppInitializationState>(
                   builder: (context, initState) {
                 // return DigitStepper(
@@ -188,33 +189,36 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
 
                 return SizedBox(
                   height: 90,
-                  child: DigitStepper(
-                    inverted: true,
-                    activeIndex: currentStep,
-                    stepperList: stepHeaders
-                        .asMap()
-                        .map(
-                          (index, e) => MapEntry(
-                            index,
-                            StepperData(
-                              title: t.translate(e).toString(),
-                              onStepTap: currentStep > index
-                                  ? () {
-                                      setState(() {
-                                        currentStep = index;
-                                      });
-                                    }
-                                  : null,
+                  width: 390,
+                  child: Center(
+                    child: DigitStepper(
+                      inverted: true,
+                      activeIndex: currentStep,
+                      stepperList: stepHeaders
+                          .asMap()
+                          .map(
+                            (index, e) => MapEntry(
+                              index,
+                              StepperData(
+                                title: t.translate(e).toString(),
+                                onStepTap: currentStep > index
+                                    ? () {
+                                        setState(() {
+                                          currentStep = index;
+                                        });
+                                      }
+                                    : null,
+                              ),
                             ),
-                          ),
-                        )
-                        .values
-                        .toList(),
+                          )
+                          .values
+                          .toList(),
+                    ),
                   ),
                 );
               }),
-              const SizedBox(
-                height: 16.0,
+              SizedBox(
+                height: Theme.of(context).spacerTheme.spacer4,
               ),
               BlocBuilder<WageSeekerMDMSBloc, WageSeekerMDMSState>(
                   builder: (context, mdmsState) {
