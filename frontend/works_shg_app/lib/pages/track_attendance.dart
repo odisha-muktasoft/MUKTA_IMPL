@@ -7,6 +7,7 @@ import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_search_bar.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -300,10 +301,17 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                             SliverChildListDelegate(
                                                           [
                                                             Padding(
-                                                              padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer4,
+                                                                vertical: Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer4,
+                                                              ),
                                                               child: Row(
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
@@ -983,10 +991,16 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                               //   ),
                                                                               // ),
                                                                               // new
-                                                                              DigitTable(
-                                                                               
-                                                                           //  tableHeight: 58 + (52.0 * (newGetTableRow(newList).length + 0.2)),
-                                                                                frozenColumnsCount: 1, columns: newHeaderList, rows: newGetTableRow(newList)),
+                                                                              DigitCard(
+                                                                                children: [
+                                                                                  DigitTable(
+
+                                                                                      //  tableHeight: 58 + (52.0 * (newGetTableRow(newList).length + 0.2)),
+                                                                                      frozenColumnsCount: 1,
+                                                                                      columns: newHeaderList,
+                                                                                      rows: newGetTableRow(newList)),
+                                                                                ],
+                                                                              ),
 
                                                                               //
 
@@ -1762,7 +1776,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
 
   List<DigitTableColumn> get newHeaderList => [
         DigitTableColumn(
-          isFrozen: true,
+            isFrozen: true,
             header: AppLocalizations.of(scaffoldMessengerKey.currentContext!)
                 .translate(i18.common.nameLabel),
             cellValue: "name",
