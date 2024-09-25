@@ -229,7 +229,10 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                             child: BackNavigationButton(
                                               backNavigationButtonThemeData:
                                                   const BackNavigationButtonThemeData()
@@ -262,7 +265,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 8.0),
+                                      padding: const EdgeInsets.only(left: 8.0,top: 0.0),
                                       child: DigitTextBlock(
                                         heading: t.translate(
                                             i18.measurementBook.mbHistory),
@@ -271,7 +274,7 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                   ],
                                 ),
                               ),
-                              height:kIsWeb?120: 100,
+                              height:kIsWeb?120: 120,
                             ),
                           ),
                           SliverList(

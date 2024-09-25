@@ -8,6 +8,7 @@ import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:digit_ui_components/utils/validators/validator.dart'
     as ui_validation;
+import 'package:digit_ui_components/widgets/molecules/digit_footer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -237,12 +238,11 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
             child: SizedBox(
               height: MediaQuery.sizeOf(context).height * 0.7,
               child: ScrollableContent(
-                footer:  ui_card.DigitCard(
-                      // margin: EdgeInsets.only(
-                      //     left: Theme.of(context).spacerTheme.spacer2,
-                      //     right: Theme.of(context).spacerTheme.spacer2),
-                      children: [
-                        Button(
+                backgroundColor: Theme.of(context).colorTheme.generic.background,
+                
+                footer: DigitFooter(actions: [
+                  FooterAction(button: 
+                   Button(
                           label: t.translate(i18.common.next),
                           onPressed: () {
                             form.markAllAsTouched(updateParent: false);
@@ -270,7 +270,9 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                           size: ButtonSize.large,
                           mainAxisSize: MainAxisSize.max,
                         )
-                      ]),
+                  )
+                ]),
+
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ui_card.DigitCard(

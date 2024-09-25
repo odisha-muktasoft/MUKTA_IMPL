@@ -424,11 +424,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8.0,
-                                      left: 8.0,
-                                      right: 8.0,
-                                      bottom: 0.0),
+                                   padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                   child: BackNavigationButton(
                                     backNavigationButtonThemeData:
                                         const BackNavigationButtonThemeData()
@@ -481,25 +480,7 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                     },
                                   ),
                                 ),
-                                // Back(
-                                // backLabel: AppLocalizations.of(context)
-                                //     .translate(i18.common.back),
-                                //   callback: () {
-                                //     // context.router.popUntilRouteWithPath('home') ;
-                                //     // context.router.push(const WorkOrderRoute());
-
-                                // if (GlobalVariables.roleType ==
-                                //     RoleType.cbo) {
-                                //   context.router
-                                //       .popUntilRouteWithPath('home');
-                                //   context.router
-                                //       .push(const WorkOrderRoute());
-                                // } else {
-                                //   Navigator.of(context).pop();
-                                //   // context.router.pop();
-                                // }
-                                //   },
-                                // ),
+                               
                                 CommonWidgets.downloadButton(
                                     AppLocalizations.of(context)
                                         .translate(i18.common.download), () {
@@ -1348,11 +1329,10 @@ class _ViewWorkDetailsPage extends State<ViewWorkDetailsPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0,
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  bottom: 0.0),
+                                              padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                                               child: BackNavigationButton(
                                                 backNavigationButtonThemeData:
                                                     const BackNavigationButtonThemeData()

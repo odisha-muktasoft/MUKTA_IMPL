@@ -105,7 +105,10 @@ class _OTPVerificationPage extends State<OTPVerificationPage> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding:  EdgeInsets.symmetric(
+                                      horizontal: Theme.of(context).spacerTheme.spacer4,
+                                      vertical: Theme.of(context).spacerTheme.spacer4,
+                                    ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [

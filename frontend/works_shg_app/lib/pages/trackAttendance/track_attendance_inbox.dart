@@ -55,7 +55,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
     return BlocBuilder<LocalizationBloc, LocalizationState>(
         builder: (context, localState) {
       return Scaffold(
-        // appBar: customAppBar(),
+          // appBar: customAppBar(),
           backgroundColor: Theme.of(context).colorTheme.generic.background,
           // drawer: const MySideBar(),
           bottomNavigationBar: BlocBuilder<AttendanceProjectsSearchBloc,
@@ -144,25 +144,38 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8.0,
-                                  top: 16.0,
-                                  right: 8.0,
-                                  bottom: .0),
+                              padding: EdgeInsets.symmetric(
+                                horizontal:
+                                    Theme.of(context).spacerTheme.spacer4,
+                                vertical: Theme.of(context).spacerTheme.spacer4,
+                              ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   BackNavigationButton(
-                                    backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                    backNavigationButtonThemeData:
+                                        const BackNavigationButtonThemeData()
+                                            .copyWith(
+                                                context: context,
+                                                backButtonIcon: Icon(
+                                                  Icons
+                                                      .arrow_circle_left_outlined,
+                                                  size: MediaQuery.of(context)
+                                                              .size
+                                                              .width <
+                                                          500
+                                                      ? Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer5
+                                                      : Theme.of(context)
+                                                          .spacerTheme
+                                                          .spacer6,
+                                                  color: Theme.of(context)
+                                                      .colorTheme
+                                                      .primary
+                                                      .primary2,
+                                                )),
                                     backButtonText: AppLocalizations.of(context)
                                         .translate(i18.common.back),
                                     handleBack: () {
@@ -172,20 +185,15 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                 ],
                               ),
                             ),
-                            // Back(
-                            //   backLabel: AppLocalizations.of(context)
-                            //       .translate(i18.common.back),
-                            // ),
+                           
 
                             Padding(
-                              padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
+                              padding: EdgeInsets.only(
+                                 left: Theme.of(context).spacerTheme.spacer4,bottom: Theme.of(context).spacerTheme.spacer4),
                               child: DigitTextBlock(
                                 heading:
                                     '${AppLocalizations.of(context).translate(i18.attendanceMgmt.attendanceRegisters)}(${projectList.length})',
-                                // style: DigitTheme.instance.mobileTheme.textTheme
-                                //     .displayMedium
-                                //     ?.apply(color: const DigitColors().black),
-                                // textAlign: TextAlign.left,
+                                
                               ),
                             ),
                             projectList.isEmpty
@@ -205,7 +213,7 @@ class _TrackAttendanceInboxPage extends State<TrackAttendanceInboxPage> {
                                     attendanceRegistersModel:
                                         attendanceRegisters,
                                   ),
-                             SizedBox(
+                            SizedBox(
                               height: Theme.of(context).spacerTheme.spacer4,
                             ),
                             projectList.isNotEmpty && projectList.length > 1

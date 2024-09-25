@@ -70,7 +70,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-       backgroundColor: Theme.of(context).colorTheme.generic.background,
+      backgroundColor: Theme.of(context).colorTheme.generic.background,
       // appBar: customAppBar(),
       // drawer: const MySideBar(),
       bottomNavigationBar: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -108,12 +108,11 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                       context.read<SearchMyWorksBloc>().add(
                             MyWorksSearchEvent(searchCriteria),
                           ),
-                  error: (String? error) =>
-                       Notifiers.getToastMessage(
-                          context, error.toString(), 'ERROR'),
-                      // Toast.showToast(context,
-                      //     message: t.translate(error.toString()),
-                      //     type: ToastType.error),
+                  error: (String? error) => Notifiers.getToastMessage(
+                      context, error.toString(), 'ERROR'),
+                  // Toast.showToast(context,
+                  //     message: t.translate(error.toString()),
+                  //     type: ToastType.error),
                 );
               },
               child: BlocBuilder<MyWorksSearchCriteriaBloc,
@@ -132,12 +131,11 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                             orElse: () => false,
                             loading: () =>
                                 shg_loader.Loaders.circularLoader(context),
-                            error: (String? error) =>
-                                 Notifiers.getToastMessage(
-                                    context, error.toString(), 'ERROR'),
-                                // Toast.showToast(context,
-                                //     message: t.translate(error.toString()),
-                                //     type: ToastType.error),
+                            error: (String? error) => Notifiers.getToastMessage(
+                                context, error.toString(), 'ERROR'),
+                            // Toast.showToast(context,
+                            //     message: t.translate(error.toString()),
+                            //     type: ToastType.error),
                             loaded: (ContractsModel? contracts) {
                               workOrderList = contracts!.contracts!
                                   .map((e) => {
@@ -201,24 +199,39 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16.0,
-                                      top: 16,
-                                      bottom: 0.0,
-                                      right: 16),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal:
+                                        Theme.of(context).spacerTheme.spacer4,
+                                    vertical:
+                                        Theme.of(context).spacerTheme.spacer4,
+                                  ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       BackNavigationButton(
-                                         backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                        backNavigationButtonThemeData:
+                                            const BackNavigationButtonThemeData()
+                                                .copyWith(
+                                                    context: context,
+                                                    backButtonIcon: Icon(
+                                                      Icons
+                                                          .arrow_circle_left_outlined,
+                                                      size: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width <
+                                                              500
+                                                          ? Theme.of(context)
+                                                              .spacerTheme
+                                                              .spacer5
+                                                          : Theme.of(context)
+                                                              .spacerTheme
+                                                              .spacer6,
+                                                      color: Theme.of(context)
+                                                          .colorTheme
+                                                          .primary
+                                                          .primary2,
+                                                    )),
                                         backButtonText: AppLocalizations.of(
                                                     context)
                                                 .translate(i18.common.back) ??
@@ -236,21 +249,30 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                                        padding: EdgeInsets.only(
+                                            left: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4),
                                         child: DigitTextBlock(
                                           heading:
                                               '${AppLocalizations.of(context).translate(i18.home.myWorks)} (${workOrderList.length})',
                                         ),
                                       ),
 
-                                      
-
                                       // TODO: new toogle
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 16.0, bottom: 8.0),
+                                        padding: EdgeInsets.only(
+                                            top: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                            bottom: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4),
                                         child: ToggleList(
-                                         toggleWidth: MediaQuery.of(context).size.width*.48,
+                                          toggleWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              .48,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           mainAxisAlignment:
@@ -388,8 +410,10 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                                           .noCompletedWorkOrderFound),
                                                   align: Alignment.center,
                                                 ),
-                                       SizedBox(
-                                        height: Theme.of(context).spacerTheme.spacer4,
+                                      SizedBox(
+                                        height: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
                                       ),
                                       workOrderList.isNotEmpty &&
                                               workOrderList.length > 1
@@ -479,12 +503,14 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                             contracts?.contractNumber,
                                       )),
                                       error: (String? error) =>
-                                          Notifiers.getToastMessage(context,
-                                              error.toString() ?? 'ERR!', 'ERROR'),
-                                          // Toast.showToast(context,
-                                          //     message:
-                                          //         t.translate(error ?? 'ERR!'),
-                                          //     type: ToastType.error),
+                                          Notifiers.getToastMessage(
+                                              context,
+                                              error.toString() ?? 'ERR!',
+                                              'ERROR'),
+                                      // Toast.showToast(context,
+                                      //     message:
+                                      //         t.translate(error ?? 'ERR!'),
+                                      //     type: ToastType.error),
                                     );
                                   },
                                   child: const SizedBox.shrink(),

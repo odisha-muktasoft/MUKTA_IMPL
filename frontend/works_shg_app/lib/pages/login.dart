@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage>
                 toggleWidth: MediaQuery.sizeOf(context).width * 0.4,
                 toggleButtons: [
                   ToggleButtonModel(
-                      code: "0", name: t.translate(i18.measurementBook.mbCbo)),
+                      code: "0", name: t.translate(i18.measurementBook.mbCbo).toString().toUpperCase()),
                   ToggleButtonModel(
                       name: t.translate(i18.measurementBook.mbEmployee),
                       code: "1")
