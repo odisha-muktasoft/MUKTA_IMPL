@@ -3,13 +3,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Fragment } from "react";
 
-function has4DecimalPlaces(number, decimalPlaces) {
+function checkIntAndDecimalLength(number, decimalPlaces) {
 
   if(number == "" || isNaN(number))
     return true;
   var numStr = number.toString();
-  // Using regex to check if its accepting upto 4 decimal places
-  var regex = new RegExp(`^\\d+(\\.\\d{0,${decimalPlaces}})?$`);
+  // Regex to ensure up to 6 digits in the integer part and up to 4 decimal places
+  var regex = new RegExp(`^\\d{1,6}(\\.\\d{0,${decimalPlaces}})?$`);
   return regex.test(numStr);
 }
 
@@ -59,7 +59,7 @@ const MeasureInputAtom = ({ id, row, mode, disable = false, fieldKey, value, dis
         //on addition of multimeasure updating its value inside additional details
         if(InputDecimalValidation?.active){
           //calling the input validation here to check if the input is under provided decimal places
-            if(has4DecimalPlaces(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
+            if(checkIntAndDecimalLength(parseFloat(newValue.target.value), InputDecimalValidation?.noOfDecimalPlaces))
             dispatch({
               type: "UPDATE_ROW",
               state: mode === "CREATE" ? { id: id, value: newValue.target.value, row: row, type: fieldKey, additionalDetails : {...row?.additionalDetails, measureLineItems : updatedMeasureLineItems }} : { id: id, value: newValue.target.value, row: row, type: fieldKey },
