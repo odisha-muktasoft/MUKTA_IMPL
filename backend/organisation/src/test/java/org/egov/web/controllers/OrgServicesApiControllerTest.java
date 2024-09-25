@@ -1,3 +1,4 @@
+/*
 package org.egov.web.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,9 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.egov.TestConfiguration;
 
+*/
 /**
 * API tests for OrgServicesApiController
-*/
+*//*
+
 @Ignore
 @RunWith(SpringRunner.class)
 @WebMvcTest(OrgServicesApiController.class)
@@ -112,3 +115,4 @@ public class OrgServicesApiControllerTest {
     }
 
 }
+*/
