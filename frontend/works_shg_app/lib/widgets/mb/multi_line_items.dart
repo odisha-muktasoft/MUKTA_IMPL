@@ -243,9 +243,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               LabeledField(
             label: "Measurement summary",
             child: DigitTextFormInput(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}')),
-              ],
+              
               keyboardType: TextInputType.text,
               // label: t.translate(i18.measurementBook.numberLabel),
               controller: measurementSummaryController,

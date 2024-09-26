@@ -185,7 +185,8 @@ class MeasurementDetailBloc
           List<MeasureLineItem> mk = [];
 
           if (event.single) {
-            MeasureLineItem mm = const MeasureLineItem(
+            MeasureLineItem mm =  MeasureLineItem(
+                measurementSummary: event.measurementSummary,
               width: 0,
               height: 0,
               length: 0,
@@ -196,6 +197,7 @@ class MeasurementDetailBloc
             mk = [mm];
           } else {
             MeasureLineItem mm = MeasureLineItem(
+              measurementSummary: event.measurementSummary,
               width: 0,
               height: 0,
               length: 0,
@@ -297,6 +299,7 @@ class MeasurementDetailBloc
         orElse: () => null,
         loaded: (value) {
           MeasureLineItem ml = MeasureLineItem(
+            measurementSummary: event.measurementSummary,
             width: event.width,
             height: event.height,
             length: event.length,
