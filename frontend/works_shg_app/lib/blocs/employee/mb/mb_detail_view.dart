@@ -764,6 +764,7 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     dynamic length,
     dynamic number,
     dynamic quantity,
+     dynamic measurementSummary,
     required bool single,
   }) = AddToMeasurementLineEvent;
 
@@ -780,6 +781,7 @@ class MeasurementDetailBlocEvent with _$MeasurementDetailBlocEvent {
     dynamic length,
     dynamic number,
     dynamic quantity,
+    dynamic measurementSummary,
   }) = UpdateToMeasurementLineEvent;
   // update view mode
 

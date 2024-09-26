@@ -406,7 +406,7 @@ class _CardWidgetState extends State<CardWidget> {
                                   measurementIndex: 0,
                                   sorId: widget.filteredMeasurementsMeasure!
                                       .contracts!.first.estimates!.first.sorId!,
-                                  type: widget.type, totalCount: 1,
+                                  type: widget.type, totalCount: 1, measurementSummary: '',
                                 ),
                               ),
                               // !widget.viewMode
@@ -654,6 +654,7 @@ class _CardWidgetState extends State<CardWidget> {
                                               .read<MeasurementDetailBloc>()
                                               .add(
                                                 AddToMeasurementLineEvent(
+                                                  measurementSummary: "",
                                                   sorId: widget
                                                       .filteredMeasurementsMeasure!
                                                       .contracts!
@@ -704,11 +705,50 @@ class _CardWidgetState extends State<CardWidget> {
                                 child: MultiLineItems(
                                   fieldValue: (p0, p1) {
                                     switch (p0) {
+                                      case "MeasurementSummary": 
+                                       context
+                                            .read<MeasurementDetailBloc>()
+                                            .add(
+                                              UpdateToMeasurementLineEvent(
+                                                measurementSummary: p1.toString(),
+                                                sorId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .sorId!,
+                                                type: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .contracts!
+                                                    .first
+                                                    .estimates!
+                                                    .first
+                                                    .category!,
+                                                index: index,
+                                                measurementLineIndex:
+                                                    data.measurelineitemNo!,
+                                                height: data.height.toString(),
+                                                length: data.length.toString(),
+                                                width: data.width.toString(),
+                                                quantity:
+                                                    data.quantity.toString(),
+                                                number: data.number.toString(),
+                                                filteredMeasurementMeasureId: widget
+                                                    .filteredMeasurementsMeasure!
+                                                    .id!,
+                                                cummulativePrevQty:
+                                                    widget.cummulativePrevQty,
+                                                noOfUnit: widget.noOfUnit,
+                                              ),
+                                            );
+                                        break;
                                       case "Number":
                                         context
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -747,6 +787,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -784,6 +825,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -821,6 +863,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -857,6 +900,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -894,6 +938,7 @@ class _CardWidgetState extends State<CardWidget> {
                                             .read<MeasurementDetailBloc>()
                                             .add(
                                               UpdateToMeasurementLineEvent(
+                                                 measurementSummary: data.measurementSummary.toString(),
                                                 sorId: widget
                                                     .filteredMeasurementsMeasure!
                                                     .contracts!
@@ -963,6 +1008,8 @@ class _CardWidgetState extends State<CardWidget> {
                                   totalCount: widget.filteredMeasurementsMeasure
                                           ?.measureLineItems?.length ??
                                       0,
+
+                                      measurementSummary: data.measurementSummary??"",
                                 ),
                               ); // Render your item here
                             },

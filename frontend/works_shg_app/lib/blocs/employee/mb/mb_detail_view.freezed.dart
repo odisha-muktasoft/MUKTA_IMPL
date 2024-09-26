@@ -21,7 +21,8 @@ mixin _$MeasurementDetailBlocEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -35,6 +36,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -49,10 +51,12 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -64,9 +68,7 @@ mixin _$MeasurementDetailBlocEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -87,6 +89,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -101,7 +104,8 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -139,6 +143,7 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -153,7 +158,8 @@ mixin _$MeasurementDetailBlocEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -339,7 +345,8 @@ class _$MeasurementUploadDocumentBlocEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -353,6 +360,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -367,10 +375,12 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -382,9 +392,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return uploadDocument(tenantId, workflowDocument);
   }
@@ -408,6 +416,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -422,7 +431,8 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -463,6 +473,7 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -477,7 +488,8 @@ class _$MeasurementUploadDocumentBlocEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -691,7 +703,8 @@ class _$MeasurementDetailBookBlocEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -705,6 +718,7 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -719,10 +733,12 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -734,9 +750,7 @@ class _$MeasurementDetailBookBlocEventImpl
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return create(tenantId, contractNumber, measurementNumber, screenType);
   }
@@ -760,6 +774,7 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -774,7 +789,8 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -816,6 +832,7 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -830,7 +847,8 @@ class _$MeasurementDetailBookBlocEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -984,7 +1002,8 @@ class _$MeasurementDetailBlocClearEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -998,6 +1017,7 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -1012,10 +1032,12 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1027,9 +1049,7 @@ class _$MeasurementDetailBlocClearEventImpl
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return clear();
   }
@@ -1053,6 +1073,7 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -1067,7 +1088,8 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -1108,6 +1130,7 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -1122,7 +1145,8 @@ class _$MeasurementDetailBlocClearEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -1235,6 +1259,7 @@ abstract class _$$AddToMeasurementLineEventImplCopyWith<$Res> {
       dynamic length,
       dynamic number,
       dynamic quantity,
+      dynamic measurementSummary,
       bool single});
 }
 
@@ -1261,6 +1286,7 @@ class __$$AddToMeasurementLineEventImplCopyWithImpl<$Res>
     Object? length = freezed,
     Object? number = freezed,
     Object? quantity = freezed,
+    Object? measurementSummary = freezed,
     Object? single = null,
   }) {
     return _then(_$AddToMeasurementLineEventImpl(
@@ -1304,6 +1330,10 @@ class __$$AddToMeasurementLineEventImplCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      measurementSummary: freezed == measurementSummary
+          ? _value.measurementSummary
+          : measurementSummary // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       single: null == single
           ? _value.single
           : single // ignore: cast_nullable_to_non_nullable
@@ -1326,6 +1356,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
       this.length,
       this.number,
       this.quantity,
+      this.measurementSummary,
       required this.single});
 
   @override
@@ -1349,11 +1380,13 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
   @override
   final dynamic quantity;
   @override
+  final dynamic measurementSummary;
+  @override
   final bool single;
 
   @override
   String toString() {
-    return 'MeasurementDetailBlocEvent.addToMeasurementLineList(sorId: $sorId, type: $type, index: $index, measurementLineIndex: $measurementLineIndex, filteredMeasurementMeasureId: $filteredMeasurementMeasureId, height: $height, width: $width, length: $length, number: $number, quantity: $quantity, single: $single)';
+    return 'MeasurementDetailBlocEvent.addToMeasurementLineList(sorId: $sorId, type: $type, index: $index, measurementLineIndex: $measurementLineIndex, filteredMeasurementMeasureId: $filteredMeasurementMeasureId, height: $height, width: $width, length: $length, number: $number, quantity: $quantity, measurementSummary: $measurementSummary, single: $single)';
   }
 
   @override
@@ -1375,6 +1408,8 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             const DeepCollectionEquality().equals(other.length, length) &&
             const DeepCollectionEquality().equals(other.number, number) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality()
+                .equals(other.measurementSummary, measurementSummary) &&
             (identical(other.single, single) || other.single == single));
   }
 
@@ -1391,6 +1426,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
       const DeepCollectionEquality().hash(length),
       const DeepCollectionEquality().hash(number),
       const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(measurementSummary),
       single);
 
   @JsonKey(ignore: true)
@@ -1406,7 +1442,8 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1420,6 +1457,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -1434,10 +1472,12 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1449,9 +1489,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return addToMeasurementLineList(
         sorId,
@@ -1464,6 +1502,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
         length,
         number,
         quantity,
+        measurementSummary,
         single);
   }
 
@@ -1486,6 +1525,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -1500,7 +1540,8 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -1530,6 +1571,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
         length,
         number,
         quantity,
+        measurementSummary,
         single);
   }
 
@@ -1552,6 +1594,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -1566,7 +1609,8 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -1598,6 +1642,7 @@ class _$AddToMeasurementLineEventImpl implements AddToMeasurementLineEvent {
           length,
           number,
           quantity,
+          measurementSummary,
           single);
     }
     return orElse();
@@ -1678,6 +1723,7 @@ abstract class AddToMeasurementLineEvent implements MeasurementDetailBlocEvent {
       final dynamic length,
       final dynamic number,
       final dynamic quantity,
+      final dynamic measurementSummary,
       required final bool single}) = _$AddToMeasurementLineEventImpl;
 
   String get sorId;
@@ -1690,6 +1736,7 @@ abstract class AddToMeasurementLineEvent implements MeasurementDetailBlocEvent {
   dynamic get length;
   dynamic get number;
   dynamic get quantity;
+  dynamic get measurementSummary;
   bool get single;
   @JsonKey(ignore: true)
   _$$AddToMeasurementLineEventImplCopyWith<_$AddToMeasurementLineEventImpl>
@@ -1715,7 +1762,8 @@ abstract class _$$UpdateToMeasurementLineEventImplCopyWith<$Res> {
       dynamic width,
       dynamic length,
       dynamic number,
-      dynamic quantity});
+      dynamic quantity,
+      dynamic measurementSummary});
 }
 
 /// @nodoc
@@ -1743,6 +1791,7 @@ class __$$UpdateToMeasurementLineEventImplCopyWithImpl<$Res>
     Object? length = freezed,
     Object? number = freezed,
     Object? quantity = freezed,
+    Object? measurementSummary = freezed,
   }) {
     return _then(_$UpdateToMeasurementLineEventImpl(
       noOfUnit: freezed == noOfUnit
@@ -1793,6 +1842,10 @@ class __$$UpdateToMeasurementLineEventImplCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      measurementSummary: freezed == measurementSummary
+          ? _value.measurementSummary
+          : measurementSummary // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -1813,7 +1866,8 @@ class _$UpdateToMeasurementLineEventImpl
       this.width,
       this.length,
       this.number,
-      this.quantity});
+      this.quantity,
+      this.measurementSummary});
 
   @override
   final dynamic noOfUnit;
@@ -1839,10 +1893,12 @@ class _$UpdateToMeasurementLineEventImpl
   final dynamic number;
   @override
   final dynamic quantity;
+  @override
+  final dynamic measurementSummary;
 
   @override
   String toString() {
-    return 'MeasurementDetailBlocEvent.updateToMeasurementLineList(noOfUnit: $noOfUnit, cummulativePrevQty: $cummulativePrevQty, sorId: $sorId, type: $type, index: $index, measurementLineIndex: $measurementLineIndex, filteredMeasurementMeasureId: $filteredMeasurementMeasureId, height: $height, width: $width, length: $length, number: $number, quantity: $quantity)';
+    return 'MeasurementDetailBlocEvent.updateToMeasurementLineList(noOfUnit: $noOfUnit, cummulativePrevQty: $cummulativePrevQty, sorId: $sorId, type: $type, index: $index, measurementLineIndex: $measurementLineIndex, filteredMeasurementMeasureId: $filteredMeasurementMeasureId, height: $height, width: $width, length: $length, number: $number, quantity: $quantity, measurementSummary: $measurementSummary)';
   }
 
   @override
@@ -1866,7 +1922,9 @@ class _$UpdateToMeasurementLineEventImpl
             const DeepCollectionEquality().equals(other.width, width) &&
             const DeepCollectionEquality().equals(other.length, length) &&
             const DeepCollectionEquality().equals(other.number, number) &&
-            const DeepCollectionEquality().equals(other.quantity, quantity));
+            const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality()
+                .equals(other.measurementSummary, measurementSummary));
   }
 
   @override
@@ -1883,7 +1941,8 @@ class _$UpdateToMeasurementLineEventImpl
       const DeepCollectionEquality().hash(width),
       const DeepCollectionEquality().hash(length),
       const DeepCollectionEquality().hash(number),
-      const DeepCollectionEquality().hash(quantity));
+      const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(measurementSummary));
 
   @JsonKey(ignore: true)
   @override
@@ -1899,7 +1958,8 @@ class _$UpdateToMeasurementLineEventImpl
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -1913,6 +1973,7 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -1927,10 +1988,12 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -1942,9 +2005,7 @@ class _$UpdateToMeasurementLineEventImpl
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return updateToMeasurementLineList(
         noOfUnit,
@@ -1958,7 +2019,8 @@ class _$UpdateToMeasurementLineEventImpl
         width,
         length,
         number,
-        quantity);
+        quantity,
+        measurementSummary);
   }
 
   @override
@@ -1980,6 +2042,7 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -1994,7 +2057,8 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -2025,7 +2089,8 @@ class _$UpdateToMeasurementLineEventImpl
         width,
         length,
         number,
-        quantity);
+        quantity,
+        measurementSummary);
   }
 
   @override
@@ -2047,6 +2112,7 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -2061,7 +2127,8 @@ class _$UpdateToMeasurementLineEventImpl
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -2094,7 +2161,8 @@ class _$UpdateToMeasurementLineEventImpl
           width,
           length,
           number,
-          quantity);
+          quantity,
+          measurementSummary);
     }
     return orElse();
   }
@@ -2176,7 +2244,8 @@ abstract class UpdateToMeasurementLineEvent
       final dynamic width,
       final dynamic length,
       final dynamic number,
-      final dynamic quantity}) = _$UpdateToMeasurementLineEventImpl;
+      final dynamic quantity,
+      final dynamic measurementSummary}) = _$UpdateToMeasurementLineEventImpl;
 
   dynamic get noOfUnit;
   dynamic get cummulativePrevQty;
@@ -2190,6 +2259,7 @@ abstract class UpdateToMeasurementLineEvent
   dynamic get length;
   dynamic get number;
   dynamic get quantity;
+  dynamic get measurementSummary;
   @JsonKey(ignore: true)
   _$$UpdateToMeasurementLineEventImplCopyWith<
           _$UpdateToMeasurementLineEventImpl>
@@ -2266,7 +2336,8 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2280,6 +2351,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -2294,10 +2366,12 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -2309,9 +2383,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return updateViewMode(updateView);
   }
@@ -2335,6 +2407,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -2349,7 +2422,8 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -2390,6 +2464,7 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -2404,7 +2479,8 @@ class _$UpdateViewModeEventImpl implements UpdateViewModeEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -2608,7 +2684,8 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -2622,6 +2699,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -2636,10 +2714,12 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -2651,9 +2731,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return cancelUpdate(
         this.cancelUpdate, sorId, filteredMeasurementsMeasureId, type);
@@ -2678,6 +2756,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -2692,7 +2771,8 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -2734,6 +2814,7 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -2748,7 +2829,8 @@ class _$CancelUpdateEventImpl implements CancelUpdateEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -2997,7 +3079,8 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3011,6 +3094,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -3025,10 +3109,12 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3040,9 +3126,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return submitLine(noOfUnit, cummulativePrevQty, sorId, type, index,
         measurementLineIndex, filteredMeasurementMeasureId);
@@ -3067,6 +3151,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -3081,7 +3166,8 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -3123,6 +3209,7 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -3137,7 +3224,8 @@ class _$SubmitLineEventImpl implements SubmitLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -3319,7 +3407,8 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3333,6 +3422,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -3347,10 +3437,12 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3362,9 +3454,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return updateMsgCode(updateCode);
   }
@@ -3388,6 +3478,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -3402,7 +3493,8 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -3443,6 +3535,7 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -3457,7 +3550,8 @@ class _$UpdateMsgCodeEventImpl implements UpdateMsgCodeEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -3674,7 +3768,8 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
     required TResult Function(
             String tenantId, List<WorkflowDocument> workflowDocument)
         uploadDocument,
-    required TResult Function(String tenantId, String contractNumber, String measurementNumber, MBScreen screenType)
+    required TResult Function(String tenantId, String contractNumber,
+            String measurementNumber, MBScreen screenType)
         create,
     required TResult Function() clear,
     required TResult Function(
@@ -3688,6 +3783,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)
         addToMeasurementLineList,
     required TResult Function(
@@ -3702,10 +3798,12 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)
+            dynamic quantity,
+            dynamic measurementSummary)
         updateToMeasurementLineList,
     required TResult Function(bool updateView) updateViewMode,
-    required TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)
+    required TResult Function(bool cancelUpdate, String sorId,
+            dynamic filteredMeasurementsMeasureId, String type)
         cancelUpdate,
     required TResult Function(
             dynamic noOfUnit,
@@ -3717,9 +3815,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             String? filteredMeasurementMeasureId)
         submitLine,
     required TResult Function(int updateCode) updateMsgCode,
-    required TResult Function(String sorId, String type, int index,
-            int measurementLineIndex, String filteredMeasurementMeasureId)
-        deleteMeasurementLine,
+    required TResult Function(String sorId, String type, int index, int measurementLineIndex, String filteredMeasurementMeasureId) deleteMeasurementLine,
   }) {
     return deleteMeasurementLine(
         sorId, type, index, measurementLineIndex, filteredMeasurementMeasureId);
@@ -3744,6 +3840,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult? Function(
@@ -3758,7 +3855,8 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult? Function(bool updateView)? updateViewMode,
     TResult? Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
@@ -3800,6 +3898,7 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic length,
             dynamic number,
             dynamic quantity,
+            dynamic measurementSummary,
             bool single)?
         addToMeasurementLineList,
     TResult Function(
@@ -3814,7 +3913,8 @@ class _$DeleteMeasurementLineEventImpl implements DeleteMeasurementLineEvent {
             dynamic width,
             dynamic length,
             dynamic number,
-            dynamic quantity)?
+            dynamic quantity,
+            dynamic measurementSummary)?
         updateToMeasurementLineList,
     TResult Function(bool updateView)? updateViewMode,
     TResult Function(bool cancelUpdate, String sorId, dynamic filteredMeasurementsMeasureId, String type)?
