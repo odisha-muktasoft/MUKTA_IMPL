@@ -162,7 +162,9 @@ class _MBDetailPageState extends State<MBDetailPage>
       );
       if (payload.isNotEmpty) {
         // Loaders.showLoadingDialog(context, label: "Uploading...");
-        shg_loader.Loaders.showLoadingDialog(context, label: AppLocalizations.of(context).translate(i18.common.uploading));
+        shg_loader.Loaders.showLoadingDialog(context,
+            label:
+                AppLocalizations.of(context).translate(i18.common.uploading));
         var response = await CoreRepository().uploadFiles(
             payload.map((e) => File(e.path ?? e.name!)).toList(),
             "img_measurement_book");
@@ -373,8 +375,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                   );
                 }
 
-                Notifiers.getToastMessage(context, t.translate(
-                      "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"), "SUCCESS");
+                Notifiers.getToastMessage(
+                    context,
+                    t.translate(
+                        "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
+                    "SUCCESS");
 
                 // Toast.showToast(
                 //   context,
@@ -637,7 +642,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       DigitTabBar(
                                     tabBarThemeData:
                                         const DigitTabBarThemeData().copyWith(
-                                            tabWidth: MediaQuery.sizeOf(context).width*0.32001,
+                                            tabWidth: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.32001,
                                             padding: const EdgeInsets.all(0)),
                                     tabs: [
                                       t.translate(i18.measurementBook.mbSor),
@@ -678,7 +685,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       )
                                     : renderSor(value.sor!, "sor"),
-                              
 
                               if (tabIndex == 1)
                                 value.nonSor!.isEmpty
@@ -703,7 +709,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       )
                                     : renderSor(value.nonSor!, "NonSor"),
-                              
+
                               if (tabIndex == 2)
                                 widget.type == MBScreen.create
                                     ? Padding(
@@ -722,7 +728,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                       padding: const EdgeInsets
                                                           .symmetric(
                                                           horizontal: 0.0),
-                                                      
                                                       child:
                                                           ui_label.LabeledField(
                                                         label:
@@ -738,6 +743,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   null
                                                               ? value.data.first
                                                                   .documents!
+                                                                  .where((element) =>
+                                                                      element
+                                                                          .isActive ==
+                                                                      true)
+                                                                  .toList()
                                                                   .map((e) => PlatformFile(
                                                                       name: e
                                                                           .documentAdditionalDetails!
@@ -840,9 +850,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     .symmetric(
                                                                     horizontal:
                                                                         0.0),
-
-                                                           
-
                                                             child: ui_label
                                                                 .LabeledField(
                                                               label:
@@ -861,6 +868,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                         .data
                                                                         .first
                                                                         .documents!
+                                                                        .where((element) =>
+                                                                            element.isActive ==
+                                                                            true)
+                                                                        .toList()
                                                                         .map((e) => PlatformFile(
                                                                             name:
                                                                                 e.documentAdditionalDetails!.fileName!,
@@ -934,10 +945,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                 ),
                                               )
                                             : Padding(
-                                                padding:  EdgeInsets.only(
-                                                    left: Theme.of(context).spacerTheme.spacer2,
-                                                    right: Theme.of(context).spacerTheme.spacer2,
-                                                    bottom: Theme.of(context).spacerTheme.spacer2,
+                                                padding: EdgeInsets.only(
+                                                    left: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    right: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    bottom: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
                                                     top: 0.0),
                                                 child: ui_component.DigitCard(
                                                     cardType: CardType.primary,
@@ -955,10 +972,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               )
                                         : !value.viewStatus
                                             ? Padding(
-                                                padding:  EdgeInsets.only(
-                                                    left: Theme.of(context).spacerTheme.spacer2,
-                                                    right: Theme.of(context).spacerTheme.spacer2,
-                                                    bottom: Theme.of(context).spacerTheme.spacer2,
+                                                padding: EdgeInsets.only(
+                                                    left: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    right: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    bottom: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
                                                     top: 0.0),
                                                 child: ui_component.DigitCard(
                                                     cardType: CardType.primary,
@@ -978,8 +1001,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .symmetric(
                                                                       horizontal:
                                                                           0.0),
-                                                              
-
                                                               child: ui_label
                                                                   .LabeledField(
                                                                 label:
@@ -998,6 +1019,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                           .data
                                                                           .first
                                                                           .documents!
+                                                                          .where((element) =>
+                                                                              element.isActive ==
+                                                                              true)
+                                                                          .toList()
                                                                           .map((e) => PlatformFile(
                                                                               name: e.documentAdditionalDetails!.fileName!,
                                                                               size: 0))
@@ -2077,8 +2102,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                     value: preSorNonSor == null ? "0.0000" : preConumed),
               ]),
 
-          
-
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2754,8 +2777,9 @@ Widget renderSor(
         //     .filteredMeasurementsMeasure,
         type: type,
         sorNonSorId: value![index].sorId!,
-        cardLevel:
-            AppLocalizations.of(context).translate( type=="sor"?i18.measurementBook.mbSor:i18.measurementBook.mbNonSor),
+        cardLevel: AppLocalizations.of(context).translate(type == "sor"
+            ? i18.measurementBook.mbSor
+            : i18.measurementBook.mbNonSor),
       );
     },
     itemCount: value!.length,

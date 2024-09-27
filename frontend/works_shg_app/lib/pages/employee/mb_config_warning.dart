@@ -296,7 +296,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 0.0,
+                                      left: 16.0,
+                                      right: 16.0,
+                                      bottom: 0.0),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -331,7 +335,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         widget.nextActions!.action ==
                                             "SEND_BACK_TO_ORIGINATOR")
                                     ? Padding(
-                                        padding: const EdgeInsets.all(16.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16.0,
+                                            top: 0.0,
+                                            bottom: 0.0),
                                         child: BlocBuilder<EmpHRMSBloc,
                                             EmpHRMsState>(
                                           builder: (context, state) {
@@ -532,10 +540,16 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 ],
                               ),
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Button(
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      right: 16.0,
+                                      left: 16.0,
+                                      bottom: 16.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Button(
                                         mainAxisSize: MainAxisSize.min,
                                         label: '',
                                         size: ButtonSize.large,
@@ -543,85 +557,104 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                         onPressed: () {
                                           context.router.maybePopTop();
                                         },
-                                        suffixIcon: Icons.close),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.9,
-                                      child: DigitTextBlock(
-                                        heading: widget.stateActions!.action ==
-                                                "SUBMIT"
-                                            ? t.translate(i18
-                                                .measurementBook.mbcreateLabel)
-                                            : t.translate(
-                                                "WF_MB_ACTION_${widget.stateActions!.action}"),
-                                        // style: DigitTheme.instance.mobileTheme
-                                        //     .textTheme.headlineLarge,
-                                        // overflow: TextOverflow.clip,
-                                        // maxLines: 1,
+                                        suffixIcon: Icons.close,
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0,
+                                      right: 16.0,
+                                      top: 0.0,
+                                      bottom: 0.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.sizeOf(context).width *
+                                                0.9,
+                                        child: DigitTextBlock(
+                                          heading: widget
+                                                      .stateActions!.action ==
+                                                  "SUBMIT"
+                                              ? t.translate(i18.measurementBook
+                                                  .mbcreateLabel)
+                                              : t.translate(
+                                                  "WF_MB_ACTION_${widget.stateActions!.action}"),
+                                          // style: DigitTheme.instance.mobileTheme
+                                          //     .textTheme.headlineLarge,
+                                          // overflow: TextOverflow.clip,
+                                          // maxLines: 1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 (widget.stateActions!.action == "SUBMIT")
-                                    ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
-                                        builder: (context, state) {
-                                          return state.maybeMap(
-                                            orElse: () =>
-                                                const SizedBox.shrink(),
-                                            loaded: (value) {
-                                              if (value.hrmsEmployee != null &&
-                                                  value.hrmsEmployee!
-                                                      .isNotEmpty) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 16.0),
-                                                  child:
-                                                      ui_component.LabeledField(
-                                                    label: t.translate(
-                                                        "WF_MODAL_APPROVER"),
-                                                    child: ui_component.DigitDropdown<
-                                                            HRMSEmployee>(
-                                                        valueMapper: value
-                                                            .hrmsEmployee!
-                                                            .map((e) => ValueMapper(
-                                                                code: e.uuid!,
-                                                                name: t.translate(e
-                                                                    .employeeUser!
-                                                                    .name
-                                                                    .toString())))
-                                                            .toList(),
-                                                        onSelect: (p0) {
-                                                          setState(() {
-                                                            selectedAssignee =
-                                                                p0.code!;
-                                                          });
-                                                        },
-                                                        items: value
-                                                            .hrmsEmployee!
-                                                            .map((e) => DropdownItem(
-                                                                name: e
-                                                                    .employeeUser!
-                                                                    .userName!,
-                                                                code: e.uuid!))
-                                                            .toList()),
-                                                  ),
-                                                );
-                                              } else {
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: BlocBuilder<EmpHRMSBloc,
+                                            EmpHRMsState>(
+                                          builder: (context, state) {
+                                            return state.maybeMap(
+                                              orElse: () =>
+                                                  const SizedBox.shrink(),
+                                              loaded: (value) {
+                                                if (value.hrmsEmployee !=
+                                                        null &&
+                                                    value.hrmsEmployee!
+                                                        .isNotEmpty) {
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 16.0),
+                                                    child: ui_component
+                                                        .LabeledField(
+                                                      label: t.translate(
+                                                          "WF_MODAL_APPROVER"),
+                                                      child: ui_component.DigitDropdown<
+                                                              HRMSEmployee>(
+                                                          valueMapper: value
+                                                              .hrmsEmployee!
+                                                              .map((e) => ValueMapper(
+                                                                  code: e.uuid!,
+                                                                  name: t.translate(e
+                                                                      .employeeUser!
+                                                                      .name
+                                                                      .toString())))
+                                                              .toList(),
+                                                          onSelect: (p0) {
+                                                            setState(() {
+                                                              selectedAssignee =
+                                                                  p0.code;
+                                                            });
+                                                          },
+                                                          items: value
+                                                              .hrmsEmployee!
+                                                              .map((e) => DropdownItem(
+                                                                  name: e
+                                                                      .employeeUser!
+                                                                      .name!,
+                                                                  code: e.uuid!))
+                                                              .toList()),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  return const SizedBox
+                                                      .shrink();
+                                                }
+                                              },
+                                              error: (value) {
                                                 return const SizedBox.shrink();
-                                              }
-                                            },
-                                            error: (value) {
-                                              return const SizedBox.shrink();
-                                            },
-                                          );
-                                        },
+                                              },
+                                            );
+                                          },
+                                        ),
                                       )
                                     : const SizedBox.shrink(),
                                 // DigitTextField(
@@ -630,7 +663,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 //   controller: comment,
                                 // ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 16.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0, left: 16.0, right: 16.0),
                                   child: ui_component.LabeledField(
                                     label: t.translate("WF_MODAL_COMMENTS"),
                                     child: DigitTextAreaFormInput(
@@ -640,34 +674,41 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   ),
                                 ),
                                 widget.stateActions!.action != null
-                                    ? Column(
-                                        children: [
-                                          SizedBox(
-                                            height: Theme.of(context)
-                                                .spacerTheme
-                                                .spacer4,
-                                          ),
-                                          LabeledField(
-                                            label:
-                                                "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
-                                            child: FileUploadWidget(
-                                              onFilesSelected: (files) {
-                                                uploadFileToServer(files,
-                                                    context, supportDocument);
-
-                                                Map<PlatformFile, String?>
-                                                    fileErrors = {};
-
-                                                return fileErrors;
-                                              },
-                                              label:
-                                                  "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16.0,
+                                            top: 8.0,
+                                            bottom: 0.0),
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: Theme.of(context)
+                                                  .spacerTheme
+                                                  .spacer4,
                                             ),
-                                          ),
-                                          DigitTextBlock(
-                                              description: t.translate(
-                                                  i18.common.photoInfo)),
-                                        ],
+                                            LabeledField(
+                                              label:
+                                                  "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
+                                              child: FileUploadWidget(
+                                                onFilesSelected: (files) {
+                                                  uploadFileToServer(files,
+                                                      context, supportDocument);
+
+                                                  Map<PlatformFile, String?>
+                                                      fileErrors = {};
+
+                                                  return fileErrors;
+                                                },
+                                                label:
+                                                    "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
+                                              ),
+                                            ),
+                                            DigitTextBlock(
+                                                description: t.translate(
+                                                    i18.common.photoInfo)),
+                                          ],
+                                        ),
                                       )
                                     : const SizedBox.shrink(),
                               ],
