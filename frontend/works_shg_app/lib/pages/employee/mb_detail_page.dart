@@ -637,7 +637,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       DigitTabBar(
                                     tabBarThemeData:
                                         const DigitTabBarThemeData().copyWith(
-                                            tabWidth: 130,
+                                            tabWidth: MediaQuery.sizeOf(context).width*0.32001,
                                             padding: const EdgeInsets.all(0)),
                                     tabs: [
                                       t.translate(i18.measurementBook.mbSor),

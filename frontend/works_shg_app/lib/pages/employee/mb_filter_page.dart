@@ -128,7 +128,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       },
                       loaded: (location) {
                         return Scaffold(
-                           backgroundColor: Theme.of(context).colorTheme.generic.background,
+                           backgroundColor: Theme.of(context).colorTheme.paper.primary,
                           // appBar: customAppBar(),
                           // drawer: const MySideBar(),
                           body: ReactiveFormBuilder(
@@ -138,7 +138,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: ui_component.ScrollableContent(
-                                   backgroundColor: Theme.of(context).colorTheme.generic.background,
+                                   backgroundColor: Theme.of(context).colorTheme.paper.primary,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
