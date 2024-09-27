@@ -264,17 +264,17 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                       ]),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding:  EdgeInsets.only(left: Theme.of(context).spacerTheme.spacer4,top: 0.0,bottom: 0.0),
                                   child: DigitTextBlock(
                                     heading:
                                         "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0,
-                                      right: 8.0,
-                                      top: 4.0,
+                                  padding:  EdgeInsets.only(
+                                      left: Theme.of(context).spacerTheme.spacer2,
+                                      right: Theme.of(context).spacerTheme.spacer2,
+                                      top: 0.0,
                                       bottom: 0),
                                   child: Row(
                                     mainAxisAlignment:

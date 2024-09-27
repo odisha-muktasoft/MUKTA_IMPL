@@ -534,6 +534,7 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                               Padding(
                                 padding: EdgeInsets.only(
+                                  top: 0.0,
                                   left: Theme.of(context).spacerTheme.spacer4,
                                   // bottom:
                                   //     Theme.of(context).spacerTheme.spacer2,

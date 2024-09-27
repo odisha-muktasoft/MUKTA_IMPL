@@ -1,4 +1,4 @@
-import 'package:digit_components/theme/colors.dart';
+// import 'package:digit_components/theme/colors.dart';
 import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
@@ -210,71 +210,80 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           SliverPersistentHeader(
                             pinned: true,
                             delegate: MyHeaderDelegate(
-                              child: Container(
-                                color: const DigitColors().seaShellGray,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 0.0,
-                                          bottom: 0.0,
-                                          top: 8.0,
-                                          right: 8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
-                                            child: BackNavigationButton(
-                                              backNavigationButtonThemeData:
-                                                  const BackNavigationButtonThemeData()
-                                                      .copyWith(
-                                                textColor: Theme.of(context)
-                                                    .colorTheme
-                                                    .primary
-                                                    .primary2,
-                                                contentPadding: EdgeInsets.zero,
-                                                context: context,
-                                                 backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )
-                                              ),
-                                              backButtonText:
-                                                  AppLocalizations.of(context)
-                                                          .translate(i18
-                                                              .common.back) ??
-                                                      'Back',
-                                              handleBack: () {
-                                                context.router.maybePopTop();
-                                              },
-                                            ),
-                                          ),
-                                        ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: Theme.of(context)
+                                              .spacerTheme
+                                              .spacer4,
+                                          vertical: Theme.of(context)
+                                              .spacerTheme
+                                              .spacer4,
+                                        ),
+                                        child: BackNavigationButton(
+                                          backNavigationButtonThemeData:
+                                              const BackNavigationButtonThemeData()
+                                                  .copyWith(
+                                                      textColor:
+                                                          Theme.of(context)
+                                                              .colorTheme
+                                                              .primary
+                                                              .primary2,
+                                                      contentPadding:
+                                                          EdgeInsets.zero,
+                                                      context: context,
+                                                      backButtonIcon: Icon(
+                                                        Icons
+                                                            .arrow_circle_left_outlined,
+                                                        size: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width <
+                                                                500
+                                                            ? Theme.of(context)
+                                                                .spacerTheme
+                                                                .spacer5
+                                                            : Theme.of(context)
+                                                                .spacerTheme
+                                                                .spacer6,
+                                                        color: Theme.of(context)
+                                                            .colorTheme
+                                                            .primary
+                                                            .primary2,
+                                                      )),
+                                          backButtonText: AppLocalizations.of(
+                                                      context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                          handleBack: () {
+                                            context.router.maybePopTop();
+                                          },
+                                        ),
                                       ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
+                                        top: 0.0),
+                                    child: DigitTextBlock(
+                                      heading: t.translate(
+                                          i18.measurementBook.mbHistory),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0,top: 0.0),
-                                      child: DigitTextBlock(
-                                        heading: t.translate(
-                                            i18.measurementBook.mbHistory),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              height:kIsWeb?120: 120,
+                              height: kIsWeb ? 120 : 120,
                             ),
                           ),
                           SliverList(

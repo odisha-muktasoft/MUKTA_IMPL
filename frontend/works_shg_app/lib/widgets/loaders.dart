@@ -26,8 +26,8 @@ class Loaders {
                     ),
                      Text(
                        AppLocalizations.of(context).translate(i18.common.loading) ??'Loading...',
-                      style: const TextStyle(
-                          color: Colors.white,
+                      style:  TextStyle(
+                          color: Theme.of(context).colorTheme.primary.primary1,
                           fontFamily: 'Roboto',
                           fontSize: 16,
                           fontWeight: FontWeight.w700),
