@@ -149,7 +149,7 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                        height: MediaQuery.sizeOf(context).height * 0.70,
+                        height: MediaQuery.sizeOf(context).height * 0.75,
                         child: PageView.builder(
                           controller: _scrollController,
                           scrollDirection: Axis.horizontal,

@@ -238,7 +238,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               Padding(
                 padding: const EdgeInsets.only(left: 0.0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.79 / 3,
+                  width: MediaQuery.of(context).size.width * 0.77 / 3,
                   child: LabeledField(
                     label: t.translate(i18.measurementBook.lengthLabel),
                     child: DigitTextFormInput(
@@ -258,7 +258,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               Padding(
                 padding: const EdgeInsets.only(left: 3.0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8 / 3,
+                  width: MediaQuery.of(context).size.width * 0.77 / 3,
                   child: LabeledField(
                     label: t.translate(i18.measurementBook.widthLabel),
                     child: DigitTextFormInput(
@@ -279,7 +279,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               Padding(
                 padding: const EdgeInsets.only(left: 3, right: 0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8 / 3,
+                  width: MediaQuery.of(context).size.width * 0.77 / 3,
                   child: LabeledField(
                     label: t.translate(i18.measurementBook.heightLabel),
                     child: DigitTextFormInput(
