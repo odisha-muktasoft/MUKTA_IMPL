@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:digit_components/digit_components.dart';
+
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_text_form_input.dart';
+import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

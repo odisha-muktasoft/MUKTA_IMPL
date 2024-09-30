@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_html/html.dart' as html;
@@ -37,12 +38,12 @@ class GlobalVariables {
   static dynamic getLanguages() async {
     if (kIsWeb) {
       return jsonDecode(html.window.sessionStorage['languages'].toString())
-          .map<DigitRowCardModel>((e) => DigitRowCardModel.fromJson(e))
+          .map<DigitRowCardModel>((e) => DigitRowCardModel(label: e['label'], value: e['value'],isSelected: e['isSelected']))
           .toList();
     } else {
       var localLanguage = await storage.read(key: 'languages');
       return jsonDecode(localLanguage ?? '')
-          .map<DigitRowCardModel>((e) => DigitRowCardModel.fromJson(e))
+          .map<DigitRowCardModel>((e) => DigitRowCardModel(label: e['label'], value: e['value'],isSelected: e['isSelected']))
           .toList();
     }
   }

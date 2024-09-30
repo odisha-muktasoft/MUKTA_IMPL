@@ -1,4 +1,4 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
@@ -7,6 +7,7 @@ import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
 
 import 'package:digit_ui_components/widgets/molecules/panel_cards.dart';
 import 'package:digit_ui_components/widgets/molecules/panel_cards.dart';
+import 'package:digit_ui_components/widgets/powered_by_digit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:works_shg_app/blocs/localization/app_localization.dart';

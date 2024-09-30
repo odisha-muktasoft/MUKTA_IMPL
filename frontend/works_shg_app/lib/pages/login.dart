@@ -1,5 +1,5 @@
 // import 'package:digit_components/digit_components.dart';
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
@@ -10,6 +10,7 @@ import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,10 +55,7 @@ class _LoginPageState extends State<LoginPage>
   String selectTenantId = "";
 
   bool iconVisibility = true;
-  List<DigitRowCardModel> btns = [
-    const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
-    const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
-  ];
+  
 
   String cityDropDownKey = "cityDropDownKey";
 

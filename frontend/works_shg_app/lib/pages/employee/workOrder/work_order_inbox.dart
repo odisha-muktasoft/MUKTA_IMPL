@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
@@ -163,7 +163,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   if (value.contracts!.length > 19) {
                     return TextButton.icon(
                       style: TextButton.styleFrom(
-                        backgroundColor: const DigitColors().white,
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
@@ -216,7 +216,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                         floating: true,
                         delegate: MyHeaderDelegate(
                           child: Container(
-                            color: const DigitColors().seaShellGray,
+                            color:Theme.of(context).colorTheme.generic.background ,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +290,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                           type:
                                               ui_component.ButtonType.tertiary,
                                           size: ui_component.ButtonSize.large),
-
+                            
                                       // reset
                                       //TODO: not needed
                                       // value.search

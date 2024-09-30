@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:works_shg_app/blocs/localization/app_localization.dart';
@@ -41,7 +42,7 @@ class MultiSelectSearchCheckBoxState extends State<MultiSelectSearchCheckBox> {
             children: [
               Text(
                 widget.label,
-                style: DigitTheme.instance.mobileTypography.textTheme.labelSmall,
+                style: Theme.of(context).digitTextTheme(context).headingS,
               ),
               const SizedBox(height: 8),
               TypeAheadFormField<String>(
@@ -128,7 +129,7 @@ class MultiSelectSearchCheckBoxState extends State<MultiSelectSearchCheckBox> {
                                       .translate('COMMON_MASTERS_SKILLS_$option'),
                                   preferBelow: false,
                                   child: Chip(
-                                    backgroundColor: const DigitColors().quillGray,
+                                    backgroundColor: Theme.of(context).colorTheme.paper.secondary,
                                     label: SizedBox(
                                       width: MediaQuery.sizeOf(context).width*0.66,
                                       child: Text(

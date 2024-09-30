@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -114,8 +115,7 @@ class AutoCompleteSearchBar extends StatelessWidget {
           child: Center(
             child: Text(
               AppLocalizations.of(context).translate(i18.common.noItems),
-              style: DigitTheme.instance.mobileTheme.textTheme.bodyMedium
-                  ?.apply(color: const DigitColors().davyGray),
+              style: Theme.of(context).digitTextTheme(context).bodyS,
             ),
           ),
         );

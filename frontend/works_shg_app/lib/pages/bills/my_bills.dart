@@ -59,7 +59,7 @@ class _MyBillsPage extends State<MyBillsPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-       backgroundColor: Theme.of(context).colorTheme.generic.background,
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         // appBar: customAppBar(),
         // drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<SearchMyBillsBloc, SearchMyBillsState>(
@@ -97,8 +97,8 @@ class _MyBillsPage extends State<MyBillsPage> {
                               loading: () =>
                                   shg_loader.Loaders.circularLoader(context),
                               error: (String? error) {
-                                Notifiers.getToastMessage(
-                                    context, t.translate(error.toString()), 'ERROR');
+                                Notifiers.getToastMessage(context,
+                                    t.translate(error.toString()), 'ERROR');
                                 // Toast.showToast(context,
                                 //     message: t.translate(error.toString()),
                                 //     type: ToastType.error);
@@ -314,22 +314,44 @@ class _MyBillsPage extends State<MyBillsPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                            vertical: Theme.of(context)
+                                                .spacerTheme
+                                                .spacer4,
+                                          ),
                                           child: Row(
                                             children: [
                                               BackNavigationButton(
-                                                backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                                backNavigationButtonThemeData:
+                                                    const BackNavigationButtonThemeData()
+                                                        .copyWith(
+                                                            context: context,
+                                                            backButtonIcon:
+                                                                Icon(
+                                                              Icons
+                                                                  .arrow_circle_left_outlined,
+                                                              size: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width <
+                                                                      500
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer5
+                                                                  : Theme.of(
+                                                                          context)
+                                                                      .spacerTheme
+                                                                      .spacer6,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorTheme
+                                                                  .primary
+                                                                  .primary2,
+                                                            )),
                                                 backButtonText:
                                                     AppLocalizations.of(context)
                                                         .translate(
@@ -349,7 +371,7 @@ class _MyBillsPage extends State<MyBillsPage> {
                                             children: [
                                               Padding(
                                                 padding:
-                                                    const EdgeInsets.all(16.0),
+                                                     EdgeInsets.only(left:Theme.of(context).spacerTheme.spacer4,bottom: Theme.of(context).spacerTheme.spacer4,top: 0.0,right: 0.0),
                                                 child: DigitTextBlock(
                                                   heading:
                                                       '${AppLocalizations.of(context).translate(i18.home.myBills)} (${billList.length})',

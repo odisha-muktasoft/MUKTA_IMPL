@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'digit_indicator.dart';
@@ -213,7 +214,7 @@ class DigitBaseStepperState extends State<DigitBaseStepper> {
       child: index < _selectedIndex
           ? Icon(
               Icons.check,
-              color: const DigitColors().white,
+              color: Theme.of(context).colorTheme.primary.primary1,
               size: 16,
             )
           : widget.children![index],

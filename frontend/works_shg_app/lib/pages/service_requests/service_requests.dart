@@ -65,7 +65,7 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     return Scaffold(
-       backgroundColor: Theme.of(context).colorTheme.generic.background,
+        backgroundColor: Theme.of(context).colorTheme.generic.background,
         // appBar: customAppBar(),
         // drawer: const MySideBar(),
         bottomNavigationBar: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -107,13 +107,12 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                           ?.searchCriteria ??
                                       'CONTRACT-REVISION'),
                             ),
-                error: (String? error) =>
-                     Notifiers.getToastMessage(
-                        context, error.toString(), 'ERROR'),
+                error: (String? error) => Notifiers.getToastMessage(
+                    context, error.toString(), 'ERROR'),
 
-                    // Toast.showToast(context,
-                    //     message: t.translate(error.toString()),
-                    //     type: ToastType.error),
+                // Toast.showToast(context,
+                //     message: t.translate(error.toString()),
+                //     type: ToastType.error),
               );
             }, child: BlocBuilder<ServiceRequestsConfigBloc,
                         ServiceRequestsConfigBlocState>(
@@ -136,9 +135,9 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                 error: (String? error) =>
                                     Notifiers.getToastMessage(
                                         context, error.toString(), 'ERROR'),
-                                    // Toast.showToast(context,
-                                    //     message: t.translate(error.toString()),
-                                    //     type: ToastType.error),
+                                // Toast.showToast(context,
+                                //     message: t.translate(error.toString()),
+                                //     type: ToastType.error),
                                 loaded: (ContractsModel? contracts) => false);
                           }, child: BlocBuilder<SearchMyServiceRequestsBloc,
                                       SearchMyServiceRequestsState>(
@@ -152,40 +151,43 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                             
-
                                               Padding(
-                                                padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: Theme.of(context)
+                                                      .spacerTheme
+                                                      .spacer4,
+                                                  vertical: Theme.of(context)
+                                                      .spacerTheme
+                                                      .spacer4,
+                                                ),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
                                                     BackNavigationButton(
                                                       backNavigationButtonThemeData:
-                                        const BackNavigationButtonThemeData()
-                                            .copyWith(
-                                                context: context,
-                                                backButtonIcon: Icon(
-                                                  Icons
-                                                      .arrow_circle_left_outlined,
-                                                  size: MediaQuery.of(context)
-                                                              .size
-                                                              .width <
-                                                          500
-                                                      ? Theme.of(context)
-                                                          .spacerTheme
-                                                          .spacer5
-                                                      : Theme.of(context)
-                                                          .spacerTheme
-                                                          .spacer6,
-                                                  color: Theme.of(context)
-                                                      .colorTheme
-                                                      .primary
-                                                      .primary2,
-                                                )),
+                                                          const BackNavigationButtonThemeData()
+                                                              .copyWith(
+                                                                  context:
+                                                                      context,
+                                                                  backButtonIcon:
+                                                                      Icon(
+                                                                    Icons
+                                                                        .arrow_circle_left_outlined,
+                                                                    size: MediaQuery.of(context).size.width <
+                                                                            500
+                                                                        ? Theme.of(context)
+                                                                            .spacerTheme
+                                                                            .spacer5
+                                                                        : Theme.of(context)
+                                                                            .spacerTheme
+                                                                            .spacer6,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorTheme
+                                                                        .primary
+                                                                        .primary2,
+                                                                  )),
                                                       backButtonText:
                                                           AppLocalizations.of(
                                                                   context)
@@ -205,16 +207,28 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              16.0),
+                                                      padding: EdgeInsets.only(
+                                                          left:
+                                                              Theme.of(context)
+                                                                  .spacerTheme
+                                                                  .spacer4,
+                                                          top: 0.0,
+                                                          bottom:
+                                                              Theme.of(context)
+                                                                  .spacerTheme
+                                                                  .spacer4,
+                                                          right: 0.0),
                                                       child: DigitTextBlock(
                                                         heading:
                                                             '${t.translate(i18.myServiceRequests.serviceRequestsLabel)} (${contractsModel?.contracts?.length})',
                                                       ),
                                                     ),
                                                     ToggleList(
-                                                      toggleWidth: MediaQuery.of(context).size.width*.48,
+                                                      toggleWidth:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              .48,
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
@@ -259,9 +273,11 @@ class _MyServiceRequestsPage extends State<MyServiceRequestsPage> {
                                                                     (contract) {
                                                               return ui_card
                                                                   .DigitCard(
-                                                                margin:
-                                                                     EdgeInsets
-                                                                        .all(Theme.of(context).spacerTheme.spacer2),
+                                                                margin: EdgeInsets
+                                                                    .all(Theme.of(
+                                                                            context)
+                                                                        .spacerTheme
+                                                                        .spacer2),
                                                                 cardType:
                                                                     CardType
                                                                         .primary,
