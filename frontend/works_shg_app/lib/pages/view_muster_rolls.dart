@@ -201,14 +201,15 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left:Theme.of(context)
-                                          .spacerTheme
-                                          .spacer4,
-                                          bottom: Theme.of(context)
-                                          .spacerTheme
-                                          .spacer4,
-                                          top: 0.0,
-                                          ),
+                                      padding: EdgeInsets.only(
+                                        left: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
+                                        bottom: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
+                                        top: 0.0,
+                                      ),
                                       child: DigitTextBlock(
                                         heading:
                                             '${t.translate(i18.attendanceMgmt.musterRolls)}(${musterList.length})',
