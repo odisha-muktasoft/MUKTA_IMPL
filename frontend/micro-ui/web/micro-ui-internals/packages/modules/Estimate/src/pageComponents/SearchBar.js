@@ -32,7 +32,6 @@ const SearchBar = (props) => {
       },
     };
     try {
-      console.log("selectedSOR", selectedSOR);
       const data = stateData?.SORType && (await Digit.CustomService.getResponse(requestCriteria));
       if (data?.MdmsRes?.["WORKS-SOR"]?.SOR?.length > 0) {
         setSuggestions(data?.MdmsRes?.["WORKS-SOR"]?.SOR);

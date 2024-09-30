@@ -31,7 +31,6 @@ const WorkflowTimeline = ({
   const { t } = useTranslation();
 
   const getTimelineCaptions = (checkpoint, index) => {
-    console.log("ffff", checkpoint, index);
     let captionDetails = {
       name: "",
       date: "",
@@ -69,7 +68,6 @@ const WorkflowTimeline = ({
       thumbnailsToShow: checkpoint?.thumbnailsToShow,
     };
 
-    console.log("caption", caption);
 
     const data = caption;
 
@@ -140,7 +138,6 @@ const WorkflowTimeline = ({
     }
   }, [workflowDetails]);
 
-  console.log("work", workflowDetails);
 
   return (
     <Fragment>

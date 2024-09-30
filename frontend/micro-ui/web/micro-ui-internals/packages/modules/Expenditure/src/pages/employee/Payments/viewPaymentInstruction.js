@@ -37,7 +37,6 @@ const ViewPaymentInstruction = () => {
 
   const handleUpdatePI = async () => {
     const piDetails = data?.[0]?.applicationData
-    // console.log("pi update");
     const payloadForUpdate = {
       tenantId,
     }

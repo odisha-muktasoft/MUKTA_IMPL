@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { PrivateRoute, BreadCrumb, AppContainer } from "@egovernments/digit-ui-react-components";
+import { PrivateRoute, AppContainer } from "@egovernments/digit-ui-react-components";
+import { BreadCrumb } from "@egovernments/digit-ui-components";
 import { Switch, useLocation } from "react-router-dom";
 import CreateBill from "./CreateBill";
 import ViewSupervisionbill from "./Bills/ViewSupervisionbill";
@@ -104,7 +105,7 @@ const ExpenditureBreadCrumbs = ({ location }) => {
       isBack: fromScreen && true,
     },
   ];
-  return <BreadCrumb crumbs={crumbs} spanStyle={{ maxWidth: "min-content" }} />;
+  return <BreadCrumb crumbs={crumbs} />;
 };
 
 const App = ({ path }) => {

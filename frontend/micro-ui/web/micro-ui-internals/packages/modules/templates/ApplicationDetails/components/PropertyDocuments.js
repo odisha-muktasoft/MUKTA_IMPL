@@ -43,7 +43,6 @@ function PropertyDocuments({ documents, svgStyles = {}, isSendBackFlow=false }) 
   const checkLocation = window.location.href.includes("employee/tl") || window.location.href.includes("/obps") || window.location.href.includes("employee/ws");
   const isStakeholderApplication = window.location.href.includes("stakeholder");
 
-  console.log("propertydocs")
   return (
     <div>
       {!isStakeholderApplication && documents?.map((document, index) => (

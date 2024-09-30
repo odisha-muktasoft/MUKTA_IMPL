@@ -34,7 +34,6 @@ const configNavItems = [
   },
 ];
 const CreateEstimate = ({ props }) => {
-  console.log("buttonnnnnnnnnn")
   const tenant = Digit.ULBService.getStateId();
   const { t } = useTranslation();
   const [showToast, setShowToast] = useState(null);
@@ -660,7 +659,9 @@ const CreateEstimate = ({ props }) => {
   if (isConfigLoading || isEstimateLoading || isUomLoading || isOverheadsLoading || isDocLoading || isAllEstimateLoading || isRatesLoading) {
     return <Loader />;
   }
-  if ((isEdit || isCreateRevisionEstimate || isEditRevisionEstimate) && Object.keys(sessionFormData).length === 0) return <Loader />;
+  if ((isEdit || isCreateRevisionEstimate || isEditRevisionEstimate) && Object.keys(sessionFormData).length === 0) {
+    return <Loader />;
+  }
   return (
     <Fragment>
       {showModal && <WorkflowModal closeModal={() => setShowModal(false)} onSubmit={onModalSubmit} config={config} isDisabled={isButtonDisabled} />}
