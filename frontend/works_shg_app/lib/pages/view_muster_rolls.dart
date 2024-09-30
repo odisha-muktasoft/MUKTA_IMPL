@@ -153,22 +153,43 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                     // ),
 
                                     Padding(
-                                      padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
+                                        vertical: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
+                                      ),
                                       child: Row(
                                         children: [
                                           BackNavigationButton(
-                                            backNavigationButtonThemeData: const BackNavigationButtonThemeData().copyWith(
-                  context: context,
-                  backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )),
+                                            backNavigationButtonThemeData:
+                                                const BackNavigationButtonThemeData()
+                                                    .copyWith(
+                                                        context: context,
+                                                        backButtonIcon: Icon(
+                                                          Icons
+                                                              .arrow_circle_left_outlined,
+                                                          size: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width <
+                                                                  500
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .spacerTheme
+                                                                  .spacer5
+                                                              : Theme.of(
+                                                                      context)
+                                                                  .spacerTheme
+                                                                  .spacer6,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorTheme
+                                                                  .primary
+                                                                  .primary2,
+                                                        )),
                                             handleBack: () {
                                               Navigator.pop(context);
                                             },
@@ -180,9 +201,14 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.all(Theme.of(context)
+                                      padding: EdgeInsets.only(left:Theme.of(context)
                                           .spacerTheme
-                                          .spacer4),
+                                          .spacer4,
+                                          bottom: Theme.of(context)
+                                          .spacerTheme
+                                          .spacer4,
+                                          top: 0.0,
+                                          ),
                                       child: DigitTextBlock(
                                         heading:
                                             '${t.translate(i18.attendanceMgmt.musterRolls)}(${musterList.length})',
@@ -204,10 +230,9 @@ class _ViewMusterRollsPage extends State<ViewMusterRollsPage> {
                                             elevatedButtonLabel: t.translate(
                                                 i18.common.viewDetails),
                                           ),
-                                     SizedBox(
-                                      height: Theme.of(context)
-                                          .spacerTheme
-                                          .spacer4,
+                                    SizedBox(
+                                      height:
+                                          Theme.of(context).spacerTheme.spacer4,
                                     ),
                                     musterList.isNotEmpty &&
                                             musterList.length > 1
