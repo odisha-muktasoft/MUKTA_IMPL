@@ -402,6 +402,9 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: ui_component.LabeledField(
+                                    isRequired: widget.nextActions!.action == "REJECT"
+                                              ? true
+                                              : false,
                                     label:
                                         "${t.translate("WF_MODAL_COMMENTS")}",
                                     child: DigitTextAreaFormInput(
@@ -666,6 +669,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                   padding: const EdgeInsets.only(
                                       top: 16.0, left: 16.0, right: 16.0),
                                   child: ui_component.LabeledField(
+                                    
                                     label: t.translate("WF_MODAL_COMMENTS"),
                                     child: DigitTextAreaFormInput(
                                       maxLine: 5,
