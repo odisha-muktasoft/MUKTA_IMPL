@@ -1,4 +1,4 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/models/models.dart';
@@ -128,7 +128,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       },
                       loaded: (location) {
                         return Scaffold(
-                           backgroundColor: Theme.of(context).colorTheme.generic.background,
+                           backgroundColor: Theme.of(context).colorTheme.paper.primary,
                           // appBar: customAppBar(),
                           // drawer: const MySideBar(),
                           body: ReactiveFormBuilder(
@@ -138,7 +138,7 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: ui_component.ScrollableContent(
-                                   backgroundColor: Theme.of(context).colorTheme.generic.background,
+                                   backgroundColor: Theme.of(context).colorTheme.paper.primary,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,

@@ -1,5 +1,6 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_button.dart'
     as ui_button;
 import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart'
@@ -47,10 +48,8 @@ class DateRangePicker extends StatelessWidget {
       return SafeArea(
         child: Column(
           children: [
-            
             Expanded(
                 child: SfDateRangePicker(
-                  
                     viewSpacing: 30,
                     onSelectionChanged: onChangeOfDate,
                     controller: rangePickerController,
@@ -81,6 +80,9 @@ class DateRangePicker extends StatelessWidget {
                     Navigator.pop(dialogContext);
                   },
                   label: cancelLabel ?? '',
+                ),
+                SizedBox(
+                  width: Theme.of(context).spacerTheme.spacer6,
                 ),
                 ui_button.Button(
                   size: ButtonSize.large,
@@ -161,29 +163,29 @@ class DateRangePicker extends StatelessWidget {
           child: Row(children: [
             SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
-                child: DigitTextField(
-                    label: label,
+                child: LabeledField(
+                  label: label,
+                  child: DigitTextFormInput(
+                    onSuffixTap: (val) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext dialogContext) {
+                            return Dialog(
+                                child: SizedBox(
+                              height: 350,
+                              child: Column(
+                                children: <Widget>[
+                                  getDateRangePicker(dialogContext),
+                                ],
+                              ),
+                            ));
+                          });
+                    },
                     readOnly: true,
                     controller: controller,
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext dialogContext) {
-                                return Dialog(
-                                    child: SizedBox(
-                                  height: 350,
-                                  child: Column(
-                                    children: <Widget>[
-                                      getDateRangePicker(dialogContext),
-                                    ],
-                                  ),
-                                ));
-                              });
-                        },
-                        icon: const Icon(
-                          Icons.date_range,
-                        )))),
+                    suffixIcon: Icons.date_range,
+                  ),
+                )),
           ]));
     }
   }

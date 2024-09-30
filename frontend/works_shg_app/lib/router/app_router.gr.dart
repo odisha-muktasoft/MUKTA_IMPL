@@ -285,12 +285,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const WorkOderInboxPage(),
       );
     },
-    WorkOrderDetailRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WorkOrderDetailPage(),
-      );
-    },
     WorkOrderRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -1128,20 +1122,6 @@ class WorkOderInboxRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'WorkOderInboxRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WorkOrderDetailPage]
-class WorkOrderDetailRoute extends PageRouteInfo<void> {
-  const WorkOrderDetailRoute({List<PageRouteInfo>? children})
-      : super(
-          WorkOrderDetailRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WorkOrderDetailRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

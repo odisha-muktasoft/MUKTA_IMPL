@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:collection/collection.dart';
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -127,7 +128,7 @@ class AppInitializationBloc
         stateInfoListModel =
             StateInfoListModel.fromJson(jsonDecode(localStateData));
         digitRowCardItems = jsonDecode(localLanguageData)
-            .map<DigitRowCardModel>((e) => DigitRowCardModel.fromJson(e))
+            .map<DigitRowCardModel>((e) => DigitRowCardModel(label: e['label'].toString(), value: e['value'].toString(),isSelected: e['isSelected']))
             .toList();
       } else {}
 
@@ -197,7 +198,7 @@ class AppInitializationBloc
         stateInfoListModel =
             StateInfoListModel.fromJson(jsonDecode(localStateData));
         digitRowCardItems = jsonDecode(localLanguageData)
-            .map<DigitRowCardModel>((e) => DigitRowCardModel.fromJson(e))
+            .map<DigitRowCardModel>((e) => DigitRowCardModel(label: e['label'], value: e['value'],isSelected: e['isSelected']))
             .toList();
       } else {}
 

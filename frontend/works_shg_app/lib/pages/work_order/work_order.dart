@@ -1,4 +1,4 @@
-import 'package:digit_components/digit_components.dart' as ui_old;
+// import 'package:digit_components/digit_components.dart' as ui_old;
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
@@ -86,7 +86,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                         height: 50,
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: ui_old.PoweredByDigit(
+                          child: PoweredByDigit(
                             version: Constants.appVersion,
                           ),
                         ),
@@ -250,6 +250,8 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
+                                            top: 0.0,
+                                            bottom: 0.0,
                                             left: Theme.of(context)
                                                 .spacerTheme
                                                 .spacer4),
@@ -421,7 +423,7 @@ class _WorkOrderPage extends State<WorkOrderPage> {
                                           // TODO:
                                           const Align(
                                               alignment: Alignment.bottomCenter,
-                                              child: ui_old.PoweredByDigit(
+                                              child: PoweredByDigit(
                                                 version: Constants.appVersion,
                                               ),
                                             )

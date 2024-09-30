@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
@@ -163,7 +163,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                   if (value.contracts!.length > 19) {
                     return TextButton.icon(
                       style: TextButton.styleFrom(
-                        backgroundColor: const DigitColors().white,
+                        backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: BorderSide(
@@ -216,7 +216,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                         floating: true,
                         delegate: MyHeaderDelegate(
                           child: Container(
-                            color: const DigitColors().seaShellGray,
+                            color:Theme.of(context).colorTheme.generic.background ,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,17 +264,17 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                       ]),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 12.0),
+                                  padding:  EdgeInsets.only(left: Theme.of(context).spacerTheme.spacer4,top: 0.0,bottom: 0.0),
                                   child: DigitTextBlock(
                                     heading:
                                         "${t.translate(i18.measurementBook.workOrderInbox)} (${value.contracts?.length ?? 0})",
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0,
-                                      right: 8.0,
-                                      top: 4.0,
+                                  padding:  EdgeInsets.only(
+                                      left: Theme.of(context).spacerTheme.spacer2,
+                                      right: Theme.of(context).spacerTheme.spacer2,
+                                      top: 0.0,
                                       bottom: 0),
                                   child: Row(
                                     mainAxisAlignment:
@@ -290,7 +290,7 @@ class _WorkOderInboxPageState extends State<WorkOderInboxPage> {
                                           type:
                                               ui_component.ButtonType.tertiary,
                                           size: ui_component.ButtonSize.large),
-
+                            
                                       // reset
                                       //TODO: not needed
                                       // value.search

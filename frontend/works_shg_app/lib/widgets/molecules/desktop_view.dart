@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/powered_by_digit.dart';
 import 'package:flutter/material.dart';
 import 'package:works_shg_app/utils/constants.dart';
 
@@ -25,7 +26,7 @@ class DesktopView extends StatelessWidget {
               const Center(
                   child: PoweredByDigit(
                     version: Constants.appVersion,
-                isWhiteLogo: true,
+               
               ))
             ]),
         bannerURL));

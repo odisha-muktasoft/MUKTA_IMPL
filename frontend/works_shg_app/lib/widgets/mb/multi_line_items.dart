@@ -1,6 +1,8 @@
 import 'dart:async';
-import 'package:digit_components/digit_components.dart';
+
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_text_form_input.dart';
+import 'package:digit_ui_components/widgets/atoms/labelled_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -202,10 +204,11 @@ class _MultiLineItemsState extends State<MultiLineItems> {
     return Container(
       width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
+        color: Theme.of(context).colorTheme.paper.secondary,
         border: Border.all(color: Colors.grey),
         borderRadius: BorderRadius.circular(5),
       ),
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(Theme.of(context).spacerTheme.spacer2),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -273,7 +276,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               Padding(
                 padding: const EdgeInsets.only(left: 0.0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8 / 3,
+                  width: MediaQuery.of(context).size.width * 0.79 / 3,
                   child: LabeledField(
                     label: t.translate(i18.measurementBook.lengthLabel),
                     child: DigitTextFormInput(

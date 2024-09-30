@@ -7,6 +7,8 @@ import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
 import 'package:digit_ui_components/widgets/atoms/upload_popUp.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
+import 'package:digit_ui_components/widgets/molecules/digit_footer.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -143,9 +145,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
               (route) => route is! PopupRoute,
             );
             //Loaders.showLoadingDialog(context);
-            shg_loader.Loaders.showLoadingDialog(
-              label:t.translate(i18.common.loading),
-              context);
+            String msg = t.translate(i18.common.loading);
+            shg_loader.Loaders.showLoadingDialog(label: msg, context);
           },
           error: (value) {
             Navigator.of(
@@ -155,7 +156,8 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
               (route) => route is! PopupRoute,
             );
 
-            Notifiers.getToastMessage(context, t.translate(value.error.toString()), "ERROR");
+            Notifiers.getToastMessage(
+                context, t.translate(value.error.toString()), "ERROR");
 
             // ui_component.Toast.showToast(context,
             //     message: value.error.toString(),
@@ -164,7 +166,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
         );
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).colorTheme.generic.background,
+        backgroundColor: Theme.of(context).colorTheme.paper.primary,
         // appBar: customAppBar(),
         // drawer: const MySideBar(),
         body: BlocBuilder<LocalizationBloc, LocalizationState>(
@@ -179,125 +181,106 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                         orElse: () => const SizedBox.shrink(),
                         loaded: (value) {
                           if (widget.type == MBScreen.update) {
-                            return Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              // padding: const EdgeInsets.only(
-                              //     left: 8.0, right: 8.0, top: 0.0, bottom: 0.0),
-                              child: ui_component.ScrollableContent(
-                                backgroundColor: Theme.of(context)
-                                    .colorTheme
-                                    .generic
-                                    .background,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                footer: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 0.0, bottom: 5.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Button(
-                                        mainAxisSize: MainAxisSize.max,
-                                        size: ButtonSize.large,
-                                        type: ButtonType.primary,
-                                        label: widget.nextActions!.action ==
-                                                "EDIT/RE-SUBMIT"
-                                            ? t.translate("WORKS_FORWARD")
-                                            : t.translate(
-                                                "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
-                                        onPressed: () {
-                                          if (widget.nextActions!.action ==
-                                                  "REJECT" &&
-                                              comment.text == "") {
-                                            Notifiers.getToastMessage(
-                                              context,
-                                              // AppLocalizations.of(context)
-                                              //     .translate(i18.login.invalidOTP),
+                            return ui_component.ScrollableContent(
+                              backgroundColor:
+                                  Theme.of(context).colorTheme.paper.primary,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              footer: DigitFooter(actions: [
+                                FooterAction(
+                                  button: Button(
+                                    mainAxisSize: MainAxisSize.max,
+                                    size: ButtonSize.large,
+                                    type: ButtonType.primary,
+                                    label: widget.nextActions!.action ==
+                                            "EDIT/RE-SUBMIT"
+                                        ? t.translate("WORKS_FORWARD")
+                                        : t.translate(
+                                            "WF_MODAL_SUBMIT_MB_${widget.nextActions!.action!}"),
+                                    onPressed: () {
+                                      if (widget.nextActions!.action ==
+                                              "REJECT" &&
+                                          comment.text == "") {
+                                        Notifiers.getToastMessage(
+                                          context,
+                                          // AppLocalizations.of(context)
+                                          //     .translate(i18.login.invalidOTP),
 
-                                              t.translate(i18
-                                                  .common.allFieldsMandatory),
-                                              'ERROR',
-                                            );
+                                          t.translate(
+                                              i18.common.allFieldsMandatory),
+                                          'ERROR',
+                                        );
 
-                                            // Toast.showToast(context,
-                                            //     message: t.translate(i18
-                                            //         .common.allFieldsMandatory),
-                                            //     type: ToastType.error);
-                                          } else {
-                                            List<List<SorObject>> sorList = [
-                                              value.sor!,
-                                              value.nonSor!
-                                            ];
-                                            MBDetailResponse kkk =
-                                                MBLogic.getMbPayloadUpdate(
-                                              data: value.data,
-                                              sorList: sorList,
-                                              workFlow: WorkFlow(
-                                                action:
-                                                    widget.nextActions!.action,
-                                                comment: comment.text,
-                                                assignees: selectedAssignee !=
-                                                        null
-                                                    ? selectedAssignee != null
-                                                        ? [selectedAssignee!]
-                                                        : null
-                                                    : null,
-                                                documents: supportDocument,
+                                        // Toast.showToast(context,
+                                        //     message: t.translate(i18
+                                        //         .common.allFieldsMandatory),
+                                        //     type: ToastType.error);
+                                      } else {
+                                        List<List<SorObject>> sorList = [
+                                          value.sor!,
+                                          value.nonSor!
+                                        ];
+                                        MBDetailResponse kkk =
+                                            MBLogic.getMbPayloadUpdate(
+                                          data: value.data,
+                                          sorList: sorList,
+                                          workFlow: WorkFlow(
+                                            action: widget.nextActions!.action,
+                                            comment: comment.text,
+                                            assignees: selectedAssignee != null
+                                                ? selectedAssignee != null
+                                                    ? [selectedAssignee!]
+                                                    : null
+                                                : null,
+                                            documents: supportDocument,
+                                          ),
+                                          type: widget.type,
+                                        );
+
+                                        context.read<MeasurementCrudBloc>().add(
+                                              MeasurementUpdateBlocEvent(
+                                                measurement: kkk.measurement!,
+                                                tenantId: '',
+                                                workFlow: WorkFlow(
+                                                  action: widget
+                                                      .nextActions!.action,
+                                                  comment: comment.text,
+                                                  assignees: selectedAssignee !=
+                                                          null
+                                                      ? selectedAssignee != null
+                                                          ? [selectedAssignee!]
+                                                          : null
+                                                      : null,
+                                                  documents: supportDocument,
+                                                ),
+                                                type: widget.type,
                                               ),
-                                              type: widget.type,
                                             );
-
-                                            context
-                                                .read<MeasurementCrudBloc>()
-                                                .add(
-                                                  MeasurementUpdateBlocEvent(
-                                                    measurement:
-                                                        kkk.measurement!,
-                                                    tenantId: '',
-                                                    workFlow: WorkFlow(
-                                                      action: widget
-                                                          .nextActions!.action,
-                                                      comment: comment.text,
-                                                      assignees:
-                                                          selectedAssignee !=
-                                                                  null
-                                                              ? selectedAssignee !=
-                                                                      null
-                                                                  ? [
-                                                                      selectedAssignee!
-                                                                    ]
-                                                                  : null
-                                                              : null,
-                                                      documents:
-                                                          supportDocument,
-                                                    ),
-                                                    type: widget.type,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      Button(
-                                        mainAxisSize: MainAxisSize.max,
-                                        label: t.translate(
-                                            i18.measurementBook.mbCancel),
-                                        onPressed: () {
-                                          context.router.maybePopTop();
-                                        },
-                                        type: ButtonType.secondary,
-                                        size: ButtonSize.large,
-                                      ),
-                                    ],
+                                      }
+                                    },
                                   ),
                                 ),
-                                children: [
-                                  Row(
+                                FooterAction(
+                                  button: Button(
+                                    mainAxisSize: MainAxisSize.max,
+                                    label: t.translate(
+                                        i18.measurementBook.mbCancel),
+                                    onPressed: () {
+                                      context.router.maybePopTop();
+                                    },
+                                    type: ButtonType.secondary,
+                                    size: ButtonSize.large,
+                                  ),
+                                ),
+                              ]),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0, right: 16.0, bottom: 0.0),
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Button(
                                         mainAxisSize: MainAxisSize.min,
@@ -311,7 +294,14 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       ),
                                     ],
                                   ),
-                                  Row(
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 0.0,
+                                      left: 16.0,
+                                      right: 16.0,
+                                      bottom: 0.0),
+                                  child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -335,15 +325,23 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       ),
                                     ],
                                   ),
-                                  (widget.nextActions!.action ==
-                                              "EDIT/RE-SUBMIT" ||
-                                          widget.nextActions!.action ==
-                                              "VERIFY_AND_FORWARD" ||
-                                          widget.nextActions!.action ==
-                                              "SUBMIT" ||
-                                          widget.nextActions!.action ==
-                                              "SEND_BACK_TO_ORIGINATOR")
-                                      ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
+                                ),
+                                (widget.nextActions!.action ==
+                                            "EDIT/RE-SUBMIT" ||
+                                        widget.nextActions!.action ==
+                                            "VERIFY_AND_FORWARD" ||
+                                        widget.nextActions!.action ==
+                                            "SUBMIT" ||
+                                        widget.nextActions!.action ==
+                                            "SEND_BACK_TO_ORIGINATOR")
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16.0,
+                                            top: 0.0,
+                                            bottom: 0.0),
+                                        child: BlocBuilder<EmpHRMSBloc,
+                                            EmpHRMsState>(
                                           builder: (context, state) {
                                             return state.maybeMap(
                                               orElse: () =>
@@ -388,37 +386,6 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                               .toList()),
                                                     ),
                                                   );
-
-                                                  //       DigitDropdown<
-                                                  //     HRMSEmployee>(
-                                                  //   formControlName: hrmsKey,
-                                                  //   onChanged: (value) {
-                                                  //     setState(() {
-                                                  //       selectedAssignee =
-                                                  //           value;
-                                                  //     });
-                                                  //   },
-                                                  //   initialValue:
-                                                  //       selectedAssignee,
-                                                  // label: t.translate(
-                                                  //     "WF_MODAL_APPROVER"),
-                                                  //   menuItems: value
-                                                  //       .hrmsEmployee!
-                                                  //       .map((e) => e)
-                                                  //       .toList(),
-                                                  //   valueMapper: (value) {
-                                                  //     if (value.employeeUser !=
-                                                  //         null) {
-                                                  //       return t.translate(value
-                                                  //           .employeeUser!.name
-                                                  //           .toString());
-                                                  //     } else {
-                                                  //       return t.translate(value
-                                                  //           .code
-                                                  //           .toString());
-                                                  //     }
-                                                  //   },
-                                                  // );
                                                 } else {
                                                   return const SizedBox
                                                       .shrink();
@@ -429,86 +396,36 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               },
                                             );
                                           },
-                                        )
-                                      : const SizedBox.shrink(),
-                                  // DigitTextField(
-                                  //   label:
-                                  //       "${t.translate("WF_MODAL_COMMENTS")}${widget.nextActions!.action == "REJECT" ? "*" : ""}",
-                                  //   maxLines: 5,
-                                  //   controller: comment,
-                                  //   isRequired:
-                                  // widget.nextActions!.action == "REJECT"
-                                  //     ? true
-                                  //     : false,
-                                  // ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16.0),
-                                    child: ui_component.LabeledField(
-                                      label:
-                                          "${t.translate("WF_MODAL_COMMENTS")}",
-                                      child: DigitTextAreaFormInput(
-                                        controller: comment,
-                                        maxLine: 5,
-                                        isRequired:
-                                            widget.nextActions!.action ==
-                                                    "REJECT"
-                                                ? true
-                                                : false,
-                                      ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: ui_component.LabeledField(
+                                    label:
+                                        "${t.translate("WF_MODAL_COMMENTS")}",
+                                    child: DigitTextAreaFormInput(
+                                      controller: comment,
+                                      maxLine: 5,
+                                      isRequired:
+                                          widget.nextActions!.action == "REJECT"
+                                              ? true
+                                              : false,
                                     ),
                                   ),
-                                  widget.nextActions!.action !=
-                                              "EDIT/RE-SUBMIT" &&
-                                          widget.nextActions!.action != "SUBMIT"
-                                      ? Column(
+                                ),
+                                widget.nextActions!.action !=
+                                            "EDIT/RE-SUBMIT" &&
+                                        widget.nextActions!.action != "SUBMIT"
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Column(
                                           children: [
                                             SizedBox(
                                               height: Theme.of(context)
                                                   .spacerTheme
                                                   .spacer4,
                                             ),
-                                            //old
-                                            // FilePickerDemo(
-                                            //   callBack: (List<FileStoreModel>?
-                                            //           g,
-                                            //       List<WorkflowDocument>? l) {
-                                            //     final supportDocumentData = l!
-                                            //         .where((element) =>
-                                            //             element.isActive ==
-                                            //             true)
-                                            //         .toList()
-                                            //         .map(
-                                            //       (e) {
-                                            //         return WorkFlowSupportDocument(
-                                            //           documentType:
-                                            //               e.documentType,
-                                            //           documentUid:
-                                            //               e.fileStore,
-                                            //           fileName: e
-                                            //               .documentAdditionalDetails
-                                            //               ?.fileName,
-                                            //           fileStoreId:
-                                            //               e.fileStore,
-                                            //           tenantId: e.tenantId,
-                                            //         );
-                                            //       },
-                                            //     ).toList();
-                                            //     supportDocument.clear();
-                                            //     supportDocument.addAll(
-                                            //         supportDocumentData);
-                                            //     setState(() {});
-                                            //   },
-                                            //   extensions: const [
-                                            //     'jpg',
-                                            //     'png',
-                                            //     'jpeg',
-                                            //     'pdf',
-                                            //     'xls',
-                                            //     'doc'
-                                            //   ],
-                                            //   moduleName: 'works',
-                                            //   headerType: MediaType.mbConfim,
-                                            // ),
                                             LabeledField(
                                               label:
                                                   "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
@@ -521,138 +438,137 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
 
                                                   return fileErrors;
                                                 },
-                                                label: "upload",
+                                                label:
+                                                    "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
                                               ),
                                             ),
-
                                             DigitTextBlock(
                                                 description: t.translate(
                                                     i18.common.photoInfo)),
                                           ],
-                                        )
-                                      : const SizedBox.shrink(),
-                                ],
-                              ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
                             );
                           } else {
-                            return Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: ui_component.ScrollableContent(
-                                backgroundColor: Theme.of(context)
-                                    .colorTheme
-                                    .generic
-                                    .background,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                footer: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 0.0, bottom: 5.0),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Button(
-                                        mainAxisSize: MainAxisSize.max,
-                                        size: ButtonSize.large,
-                                        type: ButtonType.primary,
-                                        label: widget.stateActions!.action ==
-                                                "SUBMIT"
-                                            ? t.translate(i18
-                                                .measurementBook.mbSubmitLabel)
-                                            : t.translate(
-                                                "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
-                                        onPressed: () {
-                                          List<List<SorObject>> sorList = [
-                                            value.sor!,
-                                            value.nonSor!
-                                          ];
-                                          MBDetailResponse kkk =
-                                              MBLogic.getMbPayloadUpdate(
-                                            data: value.data,
-                                            sorList: sorList,
-                                            workFlow: WorkFlow(
-                                              action: widget.stateActions!
-                                                          .action ==
-                                                      "CREATE"
-                                                  ? "SUBMIT"
-                                                  : widget.stateActions!.action,
-                                              comment: comment.text,
-                                              assignees:
-                                                  selectedAssignee != null
+                            return ui_component.ScrollableContent(
+                              backgroundColor:
+                                  Theme.of(context).colorTheme.paper.primary,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              footer: DigitFooter(
+                                actions: [
+                                  FooterAction(
+                                    button: Button(
+                                      mainAxisSize: MainAxisSize.max,
+                                      size: ButtonSize.large,
+                                      type: ButtonType.primary,
+                                      label: widget.stateActions!.action ==
+                                              "SUBMIT"
+                                          ? t.translate(
+                                              i18.measurementBook.mbSubmitLabel)
+                                          : t.translate(
+                                              "WF_MODAL_SUBMIT_MB_${widget.stateActions!.action}"),
+                                      onPressed: () {
+                                        List<List<SorObject>> sorList = [
+                                          value.sor!,
+                                          value.nonSor!
+                                        ];
+                                        MBDetailResponse kkk =
+                                            MBLogic.getMbPayloadUpdate(
+                                          data: value.data,
+                                          sorList: sorList,
+                                          workFlow: WorkFlow(
+                                            action: widget
+                                                        .stateActions!.action ==
+                                                    "CREATE"
+                                                ? "SUBMIT"
+                                                : widget.stateActions!.action,
+                                            comment: comment.text,
+                                            assignees: selectedAssignee != null
+                                                ? selectedAssignee != null
+                                                    ? [selectedAssignee!]
+                                                    : null
+                                                : null,
+                                            documents: supportDocument,
+                                          ),
+                                          type: widget.type,
+                                        );
+
+                                        context.read<MeasurementCrudBloc>().add(
+                                              MeasurementUpdateBlocEvent(
+                                                measurement: kkk.measurement!,
+                                                tenantId: '',
+                                                workFlow: WorkFlow(
+                                                  action: widget.stateActions!
+                                                              .action ==
+                                                          "CREATE"
+                                                      ? "SUBMIT"
+                                                      : widget
+                                                          .stateActions!.action,
+                                                  comment: comment.text,
+                                                  assignees: selectedAssignee !=
+                                                          null
                                                       ? selectedAssignee != null
                                                           ? [selectedAssignee!]
                                                           : null
                                                       : null,
-                                              documents: supportDocument,
-                                            ),
-                                            type: widget.type,
-                                          );
-
-                                          context
-                                              .read<MeasurementCrudBloc>()
-                                              .add(
-                                                MeasurementUpdateBlocEvent(
-                                                  measurement: kkk.measurement!,
-                                                  tenantId: '',
-                                                  workFlow: WorkFlow(
-                                                    action: widget.stateActions!
-                                                                .action ==
-                                                            "CREATE"
-                                                        ? "SUBMIT"
-                                                        : widget.stateActions!
-                                                            .action,
-                                                    comment: comment.text,
-                                                    assignees:
-                                                        selectedAssignee != null
-                                                            ? selectedAssignee !=
-                                                                    null
-                                                                ? [
-                                                                    selectedAssignee!
-                                                                  ]
-                                                                : null
-                                                            : null,
-                                                    documents: supportDocument,
-                                                  ),
-                                                  type: widget.type,
+                                                  documents: supportDocument,
                                                 ),
-                                              );
-                                          // Navigator.of(context)
-                                          //     .popUntil((route) => route is HomeRoute);
-                                          // context.router.push(const HomeRoute());
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 16.0,
-                                      ),
+                                                type: widget.type,
+                                              ),
+                                            );
+                                        // Navigator.of(context)
+                                        //     .popUntil((route) => route is HomeRoute);
+                                        // context.router.push(const HomeRoute());
+                                      },
+                                    ),
+                                  ),
+                                  FooterAction(
+                                    button: Button(
+                                      mainAxisSize: MainAxisSize.max,
+                                      type: ButtonType.secondary,
+                                      size: ButtonSize.large,
+                                      label: t.translate(
+                                          i18.measurementBook.mbCancel),
+                                      onPressed: () {
+                                        context.router.maybePopTop();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      right: 16.0,
+                                      left: 16.0,
+                                      bottom: 16.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
                                       Button(
-                                        mainAxisSize: MainAxisSize.max,
-                                        type: ButtonType.secondary,
+                                        mainAxisSize: MainAxisSize.min,
+                                        label: '',
                                         size: ButtonSize.large,
-                                        label: t.translate(
-                                            i18.measurementBook.mbCancel),
+                                        type: ButtonType.tertiary,
                                         onPressed: () {
                                           context.router.maybePopTop();
                                         },
+                                        suffixIcon: Icons.close,
                                       ),
                                     ],
                                   ),
                                 ),
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Button(
-                                          mainAxisSize: MainAxisSize.min,
-                                          label: '',
-                                          size: ButtonSize.large,
-                                          type: ButtonType.tertiary,
-                                          onPressed: () {
-                                            context.router.maybePopTop();
-                                          },
-                                          suffixIcon: Icons.close),
-                                    ],
-                                  ),
-                                  Row(
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0,
+                                      right: 16.0,
+                                      top: 0.0,
+                                      bottom: 0.0),
+                                  child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -677,8 +593,13 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                       ),
                                     ],
                                   ),
-                                  (widget.stateActions!.action == "SUBMIT")
-                                      ? BlocBuilder<EmpHRMSBloc, EmpHRMsState>(
+                                ),
+                                (widget.stateActions!.action == "SUBMIT")
+                                    ? Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: BlocBuilder<EmpHRMSBloc,
+                                            EmpHRMsState>(
                                           builder: (context, state) {
                                             return state.maybeMap(
                                               orElse: () =>
@@ -710,7 +631,7 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                           onSelect: (p0) {
                                                             setState(() {
                                                               selectedAssignee =
-                                                                  p0.code!;
+                                                                  p0.code;
                                                             });
                                                           },
                                                           items: value
@@ -718,41 +639,11 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                                               .map((e) => DropdownItem(
                                                                   name: e
                                                                       .employeeUser!
-                                                                      .userName!,
+                                                                      .name!,
                                                                   code: e.uuid!))
                                                               .toList()),
                                                     ),
                                                   );
-                                                  // return  DigitDropdown<
-                                                  //     HRMSEmployee>(
-                                                  //   onChanged: (value) {
-                                                  //     setState(() {
-                                                  //       selectedAssignee =
-                                                  //           value;
-                                                  //     });
-                                                  //   },
-                                                  //   initialValue:
-                                                  //       selectedAssignee,
-                                                  // label: t.translate(
-                                                  //     "WF_MODAL_APPROVER"),
-                                                  //   menuItems: value
-                                                  //       .hrmsEmployee!
-                                                  //       .map((e) => e)
-                                                  //       .toList(),
-                                                  //   formControlName: hrmsKey,
-                                                  //   valueMapper: (value) {
-                                                  //     if (value.employeeUser !=
-                                                  //         null) {
-                                                  //       return t.translate(value
-                                                  //           .employeeUser!.name
-                                                  //           .toString());
-                                                  //     } else {
-                                                  //       return t.translate(value
-                                                  //           .code
-                                                  //           .toString());
-                                                  //     }
-                                                  //   },
-                                                  // );
                                                 } else {
                                                   return const SizedBox
                                                       .shrink();
@@ -763,73 +654,39 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
                                               },
                                             );
                                           },
-                                        )
-                                      : const SizedBox.shrink(),
-                                  // DigitTextField(
-                                  // label: t.translate("WF_MODAL_COMMENTS"),
-                                  //   maxLines: 5,
-                                  //   controller: comment,
-                                  // ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 16.0),
-                                    child: ui_component.LabeledField(
-                                      label: t.translate("WF_MODAL_COMMENTS"),
-                                      child: DigitTextAreaFormInput(
-                                        maxLine: 5,
-                                        controller: comment,
-                                      ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                                // DigitTextField(
+                                // label: t.translate("WF_MODAL_COMMENTS"),
+                                //   maxLines: 5,
+                                //   controller: comment,
+                                // ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0, left: 16.0, right: 16.0),
+                                  child: ui_component.LabeledField(
+                                    label: t.translate("WF_MODAL_COMMENTS"),
+                                    child: DigitTextAreaFormInput(
+                                      maxLine: 5,
+                                      controller: comment,
                                     ),
                                   ),
-                                  widget.stateActions!.action != null
-                                      ? Column(
+                                ),
+                                widget.stateActions!.action != null
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0,
+                                            right: 16.0,
+                                            top: 8.0,
+                                            bottom: 0.0),
+                                        child: Column(
                                           children: [
                                             SizedBox(
                                               height: Theme.of(context)
                                                   .spacerTheme
                                                   .spacer4,
                                             ),
-                                            //old
-                                            // FilePickerDemo(
-                                            //   callBack: (List<FileStoreModel>?
-                                            //           g,
-                                            //       List<WorkflowDocument>? l) {
-                                            //     final supportDocumentData = l!
-                                            //         .where((element) =>
-                                            //             element.isActive ==
-                                            //             true)
-                                            //         .toList()
-                                            //         .map(
-                                            //       (e) {
-                                            //         return WorkFlowSupportDocument(
-                                            //           documentType:
-                                            //               e.documentType,
-                                            //           documentUid:
-                                            //               e.fileStore,
-                                            //           fileName: e
-                                            //               .documentAdditionalDetails
-                                            //               ?.fileName,
-                                            //           fileStoreId:
-                                            //               e.fileStore,
-                                            //           tenantId: e.tenantId,
-                                            //         );
-                                            //       },
-                                            //     ).toList();
-                                            //     supportDocument.clear();
-                                            //     supportDocument.addAll(
-                                            //         supportDocumentData);
-                                            //     setState(() {});
-                                            //   },
-                                            //   extensions: const [
-                                            //     'jpg',
-                                            //     'png',
-                                            //     'jpeg',
-                                            //     'pdf',
-                                            //     'xls',
-                                            //     'doc'
-                                            //   ],
-                                            //   moduleName: 'works',
-                                            //   headerType: MediaType.mbConfim,
-                                            // ),
                                             LabeledField(
                                               label:
                                                   "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
@@ -843,18 +700,18 @@ class _MBTypeConfirmationPageState extends State<MBTypeConfirmationPage> {
 
                                                   return fileErrors;
                                                 },
-                                                label: "upload",
+                                                label:
+                                                    "${AppLocalizations.of(context).translate(i18.common.chooseFile)}",
                                               ),
                                             ),
-
                                             DigitTextBlock(
                                                 description: t.translate(
                                                     i18.common.photoInfo)),
                                           ],
-                                        )
-                                      : const SizedBox.shrink(),
-                                ],
-                              ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
                             );
                           }
                         },
@@ -886,9 +743,11 @@ void uploadFileToServer(List<PlatformFile> files, BuildContext context,
     ).popUntil(
       (route) => route is! PopupRoute,
     );
-    shg_loader.Loaders.showLoadingDialog(context, label: AppLocalizations.of(context).translate(i18.common.loading));
+    String msg=AppLocalizations.of(context).translate(i18.common.loading);
+    shg_loader.Loaders.showLoadingDialog(context,
+        label: msg);
     var response = await CoreRepository().uploadFiles(
-        files.map((e) => File(e.path ?? e.name!)).toList(),
+        files.map((e) => File(e.path ?? e.name)).toList(),
         "img_measurement_book");
 
     for (int i = 0; i < response.length; i++) {

@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
@@ -58,7 +59,7 @@ class DigitSearchDropdown<T> extends StatelessWidget {
             ),
             itemBuilder: (context, item) {
               return Padding(
-                padding: const EdgeInsets.all(kPadding * 2),
+                padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                 child: Text(
                   valueMapper(item),
                   style: Theme.of(context).textTheme.bodyLarge,

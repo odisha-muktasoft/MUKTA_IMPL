@@ -114,7 +114,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
           },
           loaded: (organization) {
             return Scaffold(
-              backgroundColor: Theme.of(context).colorTheme.generic.background,
+              backgroundColor: Theme.of(context).colorTheme.paper.primary,
               // appBar: customAppBar(),
               // drawer: const MySideBar(),
               body: ReactiveFormBuilder(
@@ -124,7 +124,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                     return Padding(
                       padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                       child: ScrollableContent(
-                         backgroundColor: Theme.of(context).colorTheme.generic.background,
+                         backgroundColor: Theme.of(context).colorTheme.paper.primary,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         footer: Padding(

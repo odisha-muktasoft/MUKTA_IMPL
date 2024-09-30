@@ -17,7 +17,7 @@ import 'package:digit_ui_components/widgets/molecules/bottom_sheet.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_component;
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
 import 'package:digit_ui_components/widgets/widgets.dart';
 import 'package:file_picker/file_picker.dart';
@@ -162,7 +162,9 @@ class _MBDetailPageState extends State<MBDetailPage>
       );
       if (payload.isNotEmpty) {
         // Loaders.showLoadingDialog(context, label: "Uploading...");
-        shg_loader.Loaders.showLoadingDialog(context, label: AppLocalizations.of(context).translate(i18.common.uploading));
+        shg_loader.Loaders.showLoadingDialog(context,
+            label:
+                AppLocalizations.of(context).translate(i18.common.uploading));
         var response = await CoreRepository().uploadFiles(
             payload.map((e) => File(e.path ?? e.name!)).toList(),
             "img_measurement_book");
@@ -373,8 +375,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                   );
                 }
 
-                Notifiers.getToastMessage(context, t.translate(
-                      "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"), "SUCCESS");
+                Notifiers.getToastMessage(
+                    context,
+                    t.translate(
+                        "WF_UPDATE_SUCCESS_MB_${valueLoaded.measurement?.workflow?.action}"),
+                    "SUCCESS");
 
                 // Toast.showToast(
                 //   context,
@@ -529,6 +534,7 @@ class _MBDetailPageState extends State<MBDetailPage>
 
                               Padding(
                                 padding: EdgeInsets.only(
+                                  top: 0.0,
                                   left: Theme.of(context).spacerTheme.spacer4,
                                   // bottom:
                                   //     Theme.of(context).spacerTheme.spacer2,
@@ -637,7 +643,9 @@ class _MBDetailPageState extends State<MBDetailPage>
                                       DigitTabBar(
                                     tabBarThemeData:
                                         const DigitTabBarThemeData().copyWith(
-                                            tabWidth: 130,
+                                            tabWidth: MediaQuery.sizeOf(context)
+                                                    .width *
+                                                0.32001,
                                             padding: const EdgeInsets.all(0)),
                                     tabs: [
                                       t.translate(i18.measurementBook.mbSor),
@@ -678,7 +686,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       )
                                     : renderSor(value.sor!, "sor"),
-                              
 
                               if (tabIndex == 1)
                                 value.nonSor!.isEmpty
@@ -703,7 +710,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                                         ),
                                       )
                                     : renderSor(value.nonSor!, "NonSor"),
-                              
+
                               if (tabIndex == 2)
                                 widget.type == MBScreen.create
                                     ? Padding(
@@ -722,7 +729,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                       padding: const EdgeInsets
                                                           .symmetric(
                                                           horizontal: 0.0),
-                                                      
                                                       child:
                                                           ui_label.LabeledField(
                                                         label:
@@ -738,6 +744,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                   null
                                                               ? value.data.first
                                                                   .documents!
+                                                                  .where((element) =>
+                                                                      element
+                                                                          .isActive ==
+                                                                      true)
+                                                                  .toList()
                                                                   .map((e) => PlatformFile(
                                                                       name: e
                                                                           .documentAdditionalDetails!
@@ -840,9 +851,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                     .symmetric(
                                                                     horizontal:
                                                                         0.0),
-
-                                                           
-
                                                             child: ui_label
                                                                 .LabeledField(
                                                               label:
@@ -861,6 +869,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                         .data
                                                                         .first
                                                                         .documents!
+                                                                        .where((element) =>
+                                                                            element.isActive ==
+                                                                            true)
+                                                                        .toList()
                                                                         .map((e) => PlatformFile(
                                                                             name:
                                                                                 e.documentAdditionalDetails!.fileName!,
@@ -934,10 +946,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                 ),
                                               )
                                             : Padding(
-                                                padding:  EdgeInsets.only(
-                                                    left: Theme.of(context).spacerTheme.spacer2,
-                                                    right: Theme.of(context).spacerTheme.spacer2,
-                                                    bottom: Theme.of(context).spacerTheme.spacer2,
+                                                padding: EdgeInsets.only(
+                                                    left: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    right: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    bottom: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
                                                     top: 0.0),
                                                 child: ui_component.DigitCard(
                                                     cardType: CardType.primary,
@@ -955,10 +973,16 @@ class _MBDetailPageState extends State<MBDetailPage>
                                               )
                                         : !value.viewStatus
                                             ? Padding(
-                                                padding:  EdgeInsets.only(
-                                                    left: Theme.of(context).spacerTheme.spacer2,
-                                                    right: Theme.of(context).spacerTheme.spacer2,
-                                                    bottom: Theme.of(context).spacerTheme.spacer2,
+                                                padding: EdgeInsets.only(
+                                                    left: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    right: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
+                                                    bottom: Theme.of(context)
+                                                        .spacerTheme
+                                                        .spacer2,
                                                     top: 0.0),
                                                 child: ui_component.DigitCard(
                                                     cardType: CardType.primary,
@@ -978,8 +1002,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .symmetric(
                                                                       horizontal:
                                                                           0.0),
-                                                              
-
                                                               child: ui_label
                                                                   .LabeledField(
                                                                 label:
@@ -998,6 +1020,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                           .data
                                                                           .first
                                                                           .documents!
+                                                                          .where((element) =>
+                                                                              element.isActive ==
+                                                                              true)
+                                                                          .toList()
                                                                           .map((e) => PlatformFile(
                                                                               name: e.documentAdditionalDetails!.fileName!,
                                                                               size: 0))
@@ -1509,21 +1535,31 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         t.translate(i18
                                                             .measurementBook
                                                             .totalSorAmount),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
                                                       ),
                                                       subtitle: Text(
                                                         t.translate(i18
                                                             .measurementBook
                                                             .forCurrentEntry),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
                                                       ),
                                                       trailing: Text(
                                                         value.data.first
@@ -1531,11 +1567,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             .toDouble()
                                                             .toStringAsFixed(2),
                                                         // totalSorAmount.toDouble().toStringAsFixed(2),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingL
+                                                            .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
                                                       ),
                                                     ),
                                                   ),
@@ -1560,21 +1599,31 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         t.translate(i18
                                                             .measurementBook
                                                             .totalNonSorAmount),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
                                                       ),
                                                       subtitle: Text(
                                                         t.translate(i18
                                                             .measurementBook
                                                             .forCurrentEntry),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS
+                                                            .copyWith(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                            ),
                                                       ),
                                                       trailing: Text(
                                                         value.data.first
@@ -1582,11 +1631,14 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             .toDouble()
                                                             .toStringAsFixed(2),
                                                         // totalNonSorAmount.toDouble().toStringAsFixed(2),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingL
+                                                            .copyWith(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
                                                       ),
                                                     ),
                                                   ),
@@ -1627,21 +1679,33 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               t.translate(i18
                                                                   .measurementBook
                                                                   .totalMbAmount),
-                                                              style: DigitTheme
-                                                                  .instance
-                                                                  .mobileTheme
-                                                                  .textTheme
-                                                                  .headlineMedium,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .headingM
+                                                                  .copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .secondary,
+                                                                  ),
                                                             ),
                                                             subtitle: Text(
                                                               t.translate(i18
                                                                   .measurementBook
                                                                   .forCurrentEntry),
-                                                              style: DigitTheme
-                                                                  .instance
-                                                                  .mobileTheme
-                                                                  .textTheme
-                                                                  .bodySmall,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .bodyS
+                                                                  .copyWith(
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .secondary,
+                                                                  ),
                                                             ),
                                                           ),
                                                         ),
@@ -1662,11 +1726,15 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .toStringAsFixed(
                                                                           2),
                                                                   // mbAmount.roundToDouble().toStringAsFixed(2),
-                                                                  style: DigitTheme
-                                                                      .instance
-                                                                      .mobileTheme
-                                                                      .textTheme
-                                                                      .headlineMedium,
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .digitTextTheme(
+                                                                          context)
+                                                                      .headingL
+                                                                      .copyWith(
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
                                                                 ),
                                                               ],
                                                             )),
@@ -1737,21 +1805,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         t.translate(i18
                                                             .measurementBook
                                                             .totalSorAmount),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
                                                       ),
                                                       subtitle: Text(
                                                         t.translate(i18
                                                             .measurementBook
                                                             .forCurrentEntry),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS,
                                                       ),
                                                       trailing: Text(
                                                         value.data.first
@@ -1759,11 +1825,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             .toDouble()
                                                             .toStringAsFixed(2),
                                                         // totalSorAmount.toDouble().toStringAsFixed(2),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
                                                       ),
                                                     ),
                                                   ),
@@ -1788,21 +1853,19 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                         t.translate(i18
                                                             .measurementBook
                                                             .totalNonSorAmount),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
                                                       ),
                                                       subtitle: Text(
                                                         t.translate(i18
                                                             .measurementBook
                                                             .forCurrentEntry),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS,
                                                       ),
                                                       trailing: Text(
                                                         // "23.98",
@@ -1811,11 +1874,10 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                             .toDouble()
                                                             .toStringAsFixed(2),
                                                         // totalNonSorAmount.toDouble().toStringAsFixed(2),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM,
                                                       ),
                                                     ),
                                                   ),
@@ -1856,21 +1918,21 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                               t.translate(i18
                                                                   .measurementBook
                                                                   .totalMbAmount),
-                                                              style: DigitTheme
-                                                                  .instance
-                                                                  .mobileTheme
-                                                                  .textTheme
-                                                                  .headlineMedium,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .headingM,
                                                             ),
                                                             subtitle: Text(
                                                               t.translate(i18
                                                                   .measurementBook
                                                                   .forCurrentEntry),
-                                                              style: DigitTheme
-                                                                  .instance
-                                                                  .mobileTheme
-                                                                  .textTheme
-                                                                  .bodySmall,
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .digitTextTheme(
+                                                                      context)
+                                                                  .bodyS,
                                                             ),
                                                           ),
                                                         ),
@@ -1891,11 +1953,11 @@ class _MBDetailPageState extends State<MBDetailPage>
                                                                       .toStringAsFixed(
                                                                           2),
                                                                   // mbAmount.roundToDouble().toStringAsFixed(2),
-                                                                  style: DigitTheme
-                                                                      .instance
-                                                                      .mobileTheme
-                                                                      .textTheme
-                                                                      .headlineMedium,
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .digitTextTheme(
+                                                                          context)
+                                                                      .headingM,
                                                                 ),
                                                               ],
                                                             )),
@@ -2077,8 +2139,6 @@ class _MBDetailPageState extends State<MBDetailPage>
                     value: preSorNonSor == null ? "0.0000" : preConumed),
               ]),
 
-          
-
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2093,7 +2153,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                 height: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: const DigitColors().cloudGray,
+                    color: Theme.of(context).colorTheme.paper.secondary,
                     width: 2.0,
                   ),
                   borderRadius: BorderRadius.circular(1),
@@ -2160,7 +2220,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                         child: Icon(
                           Icons.add_circle,
                           size: 30,
-                          color: const DigitColors().burningOrange,
+                          color: Theme.of(context).colorTheme.primary.primary1,
                         ),
                       ),
                     ),
@@ -2190,7 +2250,7 @@ class _MBDetailPageState extends State<MBDetailPage>
                     top: 10.0, left: 5.0, right: 5.0, bottom: 10),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: const DigitColors().cloudGray,
+                    color: Theme.of(context).colorTheme.paper.secondary,
                     width: 2.0,
                   ),
                   borderRadius: BorderRadius.circular(1),
@@ -2414,72 +2474,6 @@ class _MBDetailPageState extends State<MBDetailPage>
           ),
         );
       },
-    );
-  }
-}
-
-class SORTableCard extends StatelessWidget {
-  final Map<String, dynamic> element;
-  final Border? border;
-  final Color? color;
-  final EdgeInsetsGeometry? padding;
-  final double gap;
-  final num fraction;
-
-  const SORTableCard({
-    super.key,
-    required this.element,
-    this.border,
-    this.color,
-    this.padding,
-    this.gap = 0,
-    this.fraction = 2,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Container(
-        decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.circular(4),
-            border: border),
-        child: Padding(
-          padding: padding ?? const EdgeInsets.only(right: 8, bottom: 16),
-          child: Column(
-            children: element.keys
-                .map((e) => Container(
-                      margin: DigitTheme.instance.verticalMargin,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / fraction,
-                            child: Text(
-                              e,
-                              style: theme.textTheme.headlineSmall,
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                          SizedBox(width: gap),
-                          Flexible(
-                              child: Padding(
-                            padding: const EdgeInsets.only(top: 1),
-                            child: Text(
-                              element[e].toString(),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )),
-                        ],
-                      ),
-                    ))
-                .toList(),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -2754,8 +2748,9 @@ Widget renderSor(
         //     .filteredMeasurementsMeasure,
         type: type,
         sorNonSorId: value![index].sorId!,
-        cardLevel:
-            AppLocalizations.of(context).translate( type=="sor"?i18.measurementBook.mbSor:i18.measurementBook.mbNonSor),
+        cardLevel: AppLocalizations.of(context).translate(type == "sor"
+            ? i18.measurementBook.mbSor
+            : i18.measurementBook.mbNonSor),
       );
     },
     itemCount: value!.length,

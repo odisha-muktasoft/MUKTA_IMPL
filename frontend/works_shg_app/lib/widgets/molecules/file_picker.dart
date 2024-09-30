@@ -1,7 +1,8 @@
 import 'dart:io';
 
-import 'package:digit_components/theme/colors.dart';
-import 'package:digit_components/theme/digit_theme.dart';
+// import 'package:digit_components/theme/colors.dart';
+// import 'package:digit_components/theme/digit_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -140,7 +141,8 @@ class SHGFilePickerState extends State<SHGFilePicker> {
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
-                      color: DigitTheme.instance.colorScheme.onSurface)))),
+                      color: Theme.of(context).colorScheme.onSurface,
+                      )))),
       Container(
         width: constraints.maxWidth > 760
             ? MediaQuery.of(context).size.width / 2.5
@@ -192,7 +194,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
                         children: [
                           Icon(
                             Icons.camera_enhance,
-                            color: DigitTheme.instance.colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                             size: 50,
                           ),
                           ButtonLink(
@@ -215,7 +217,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
             style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.normal,
-                color: const DigitColors().cloudGray)),
+                color:  Theme.of(context).colorScheme.secondary)),
       )
     ];
   }
@@ -370,7 +372,7 @@ class SHGFilePickerState extends State<SHGFilePicker> {
             iconSize: 45,
             icon: Icon(
               icon,
-              color: DigitTheme.instance.colorScheme.primary,
+              color:  Theme.of(context).colorScheme.primary,
             )),
         Text(
           AppLocalizations.of(context).translate(label),

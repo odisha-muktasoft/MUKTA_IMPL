@@ -1,5 +1,5 @@
 // import 'package:digit_components/digit_components.dart';
-import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
+// import 'package:digit_components/models/digit_row_card/digit_row_card_model.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
@@ -10,6 +10,7 @@ import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
 
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart';
+import 'package:digit_ui_components/widgets/molecules/language_selection_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,10 +55,7 @@ class _LoginPageState extends State<LoginPage>
   String selectTenantId = "";
 
   bool iconVisibility = true;
-  List<DigitRowCardModel> btns = [
-    const DigitRowCardModel(label: "CBO", value: "", isSelected: true),
-    const DigitRowCardModel(label: "Employee", value: "", isSelected: false)
-  ];
+  
 
   String cityDropDownKey = "cityDropDownKey";
 
@@ -123,36 +121,17 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
 //old
-              // TabBar - constant height
-              // TabBar(
-              //   controller: _tabController,
-              //   labelColor: Theme.of(context).colorScheme.primary,
-              //   unselectedLabelColor: Colors.black,
-              //   dividerHeight: 0,
-              //   indicatorColor: Theme.of(context).colorScheme.primary,
-              //   indicatorPadding: EdgeInsets.zero,
-              //   tabs: [
-              //     Tab(
-              //       child: TextChunk(
-              //        heading: t.translate(i18.measurementBook.mbCbo),
-              //         headingStyle: Theme.of(context).digitTextTheme(context).headingM,
-              //       ),
-              //     ),
-              //     Tab(
-              //       child: TextChunk(
-              //        heading:  t.translate(i18.measurementBook.mbEmployee),
-              //          headingStyle: Theme.of(context).digitTextTheme(context).headingM,
-              //       ),
-              //     ),
-              //   ],
-              // ),
 
               ToggleList(
                 contentPadding: const EdgeInsets.all(0),
                 toggleWidth: MediaQuery.sizeOf(context).width * 0.4,
                 toggleButtons: [
                   ToggleButtonModel(
-                      code: "0", name: t.translate(i18.measurementBook.mbCbo).toString().toUpperCase()),
+                      code: "0",
+                      name: t
+                          .translate(i18.measurementBook.mbCbo)
+                          .toString()
+                          .toUpperCase()),
                   ToggleButtonModel(
                       name: t.translate(i18.measurementBook.mbEmployee),
                       code: "1")
@@ -162,29 +141,51 @@ class _LoginPageState extends State<LoginPage>
                 },
                 selectedIndex: 0,
               ),
-              // Dynamic part - TabBarView and Button
-              // Column(
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: [
-                  AnimatedContainer(
-                    height: _tabController.index == 0
-                        ? MediaQuery.of(context).size.height * 0.089
-                        : MediaQuery.of(context).size.height * 0.32,
-                    duration: const Duration(milliseconds: 000),
-                    child: TabBarView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      controller: _tabController,
-                      children: [
-                        cboLogin(loginContext),
-                        employeeLogin(t, loginContext, data),
-                      ],
-                    ),
-                  ),
-                  _buildLoginButton(t, loginContext),
-                ],
+
+              AnimatedContainer(
+                height: _tabController.index == 0
+                    ? MediaQuery.of(context).size.height * 0.089
+                    : MediaQuery.of(context).size.height * 0.28,
+                duration: const Duration(milliseconds: 000),
+                child: TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: _tabController,
+                  children: [
+                    cboLogin(loginContext),
+                    employeeLogin(t, loginContext, data),
+                  ],
+                ),
               ),
-          //   ],
-          // ),
+              _buildLoginButton(t, loginContext),
+              // _tabController.index == 1
+              //     ? Center(
+              //         child: Button(
+              //           type: ButtonType.tertiary,
+              //           size: ButtonSize.large,
+              //           label: t.translate(i18.login.forgotPassword),
+              //           onPressed: () {
+              //             forgotPassword(t);
+              //           },
+              //         ),
+              //       )
+              //     : SizedBox.fromSize(
+              //         size: const Size(0, 0),
+              //       ),
+              Visibility(
+                visible: _tabController.index == 1,
+                child: Center(
+                  child: Button(
+                    type: ButtonType.tertiary,
+                    size: ButtonSize.large,
+                    label: t.translate(i18.login.forgotPassword),
+                    onPressed: () {
+                      forgotPassword(t);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -314,8 +315,6 @@ class _LoginPageState extends State<LoginPage>
               size: ButtonSize.large,
               type: ButtonType.primary,
               onPressed: () {},
-        
-             
               label: t.translate(i18.common.continueLabel),
             ),
           ),
@@ -330,7 +329,6 @@ class _LoginPageState extends State<LoginPage>
       context: context,
       builder: (context) {
         return Popup(
-            
             title: t.translate(i18.login.forgotPassword),
             additionalWidgets: [
               SizedBox(
@@ -343,8 +341,7 @@ class _LoginPageState extends State<LoginPage>
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12.0),
                       child: DigitTextBlock(
-                       subHeading: t.translate(i18.login.forgotPasswordMsg),
-                       
+                        subHeading: t.translate(i18.login.forgotPasswordMsg),
                       ),
                     ),
                     Button(
@@ -395,11 +392,10 @@ class _LoginPageState extends State<LoginPage>
       ),
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
-     double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     // Check if the keyboard is open
     bool isKeyboardOpen = keyboardHeight > 0;
@@ -407,7 +403,7 @@ class _LoginPageState extends State<LoginPage>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-      //  resizeToAvoidBottomInset: true,
+        //  resizeToAvoidBottomInset: true,
         appBar: AppBar(
           backgroundColor: const Color(0xff0B4B66),
           iconTheme: Theme.of(context)
@@ -419,8 +415,6 @@ class _LoginPageState extends State<LoginPage>
           builder: (context, state) {
             return LayoutBuilder(builder: (context, constraints) {
               if (constraints.maxWidth < 720) {
-               
-
                 return Stack(
                   children: [
                     Container(
@@ -434,7 +428,6 @@ class _LoginPageState extends State<LoginPage>
                               .toString()),
                           fit: BoxFit.cover,
                         ),
-                        
                       ),
                     ),
                     Padding(
@@ -444,20 +437,20 @@ class _LoginPageState extends State<LoginPage>
                         child: getLoginCard(t, context, state),
                       ),
                     ),
-                  ( isKeyboardOpen)? (Positioned(
-                      bottom: 10,
-                      left: MediaQuery.of(context).size.width / 4,
-                      right: MediaQuery.of(context).size.width / 4,
-                      child: const Align(
-                        alignment: Alignment.bottomCenter,
-                        child: PoweredByDigit(
-                          version: Constants.appVersion,
-                          //isWhiteLogo: true,
-                        ),
-                      ),
-                    )):const Positioned(child:SizedBox.shrink()
-                    )
-                    ,
+                    (isKeyboardOpen)
+                        ? (Positioned(
+                            bottom: 10,
+                            left: MediaQuery.of(context).size.width / 4,
+                            right: MediaQuery.of(context).size.width / 4,
+                            child: const Align(
+                              alignment: Alignment.bottomCenter,
+                              child: PoweredByDigit(
+                                version: Constants.appVersion,
+                                //isWhiteLogo: true,
+                              ),
+                            ),
+                          ))
+                        : const Positioned(child: SizedBox.shrink()),
                   ],
                 );
               } else {
@@ -524,13 +517,6 @@ class _LoginPageState extends State<LoginPage>
                       isRequired: true,
                       label: "${t.translate(i18.common.city)}",
                       child: ui_component.DigitDropdown(
-                        // initialValue: null,
-                        // formControlName: cityDropDownKey,
-                        // onChanged: (value) {
-                        // setState(() {
-                        //   selectTenantId = value?.code ?? "";
-                        // });
-                        // },
                         onSelect: (value) {
                           setState(() {
                             selectTenantId = value?.code ?? "";
@@ -548,14 +534,14 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                   ),
-                  Button(
-                    type: ButtonType.tertiary,
-                    size: ButtonSize.large,
-                    label: t.translate(i18.login.forgotPassword),
-                    onPressed: () {
-                      forgotPassword(t);
-                    },
-                  ),
+                  // Button(
+                  //   type: ButtonType.tertiary,
+                  //   size: ButtonSize.large,
+                  //   label: t.translate(i18.login.forgotPassword),
+                  //   onPressed: () {
+                  //     forgotPassword(t);
+                  //   },
+                  // ),
                 ],
               );
             }),

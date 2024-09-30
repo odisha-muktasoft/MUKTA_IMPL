@@ -46,7 +46,7 @@ class Constants {
   static const inWorkFlowKey = 'INWORKFLOW';
   static const verifyAdhar="SUCCESS";
   static const saveAsDraft="SAVE_AS_DRAFT";
-  static const appVersion="1.1.3";
+  static const appVersion="2.1.1";
 }
 
 final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

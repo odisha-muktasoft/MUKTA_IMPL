@@ -17,7 +17,7 @@ import '../pages/employee/mb_detail_page.dart';
 import '../pages/employee/mb_history.dart';
 import '../pages/employee/mb_inbox.dart';
 import '../pages/employee/mb_wrapper.dart';
-import '../pages/employee/workOrder/work_order_details.dart';
+
 import '../pages/employee/workOrder/work_order_inbox.dart';
 import '../pages/employee/workOrder/work_order_wrapper.dart';
 import '../pages/home.dart';
@@ -38,78 +38,6 @@ import '../widgets/molecules/success_page.dart';
 export 'package:auto_route/auto_route.dart';
 
 part 'app_router.gr.dart';
-
-
-// @MaterialAutoRouter(
-//   replaceInRouteName: 'Page,Route',
-//   routes: [
-//     AutoRoute(
-//       page: UnauthenticatedPageWrapper,
-//       path: '/',
-//       children: [
-//         AutoRoute(
-//           page: LanguageSelectionPage,
-//           path: 'language_selection',
-//           initial: true,
-//         ),
-//         AutoRoute(page: LoginPage, path: 'login'),
-//         AutoRoute(page: OTPVerificationPage, path: 'otp')
-//       ],
-//     ),
-//     AutoRoute(
-//       page: AuthenticatedPageWrapper,
-//       path: '/',
-//       children: [
-//         AutoRoute(page: HomePage, path: 'home', initial: true),
-//         AutoRoute(page: ORGProfilePage, path: 'orgProfile'),
-//         AutoRoute(
-//             page: AttendanceRegisterTablePage,
-//             path: 'manageAttendanceTable/:registerId/:tenantId'),
-//         AutoRoute(page: WorkOrderPage, path: 'work-orders'),
-//         AutoRoute(page: ViewMusterRollsPage, path: 'muster-rolls'),
-//         AutoRoute(
-//             page: SHGInboxPage,
-//             path: 'shg-inbox/:tenantId/:musterRollNo/:sentBackCode'),
-//         AutoRoute(
-//             page: TrackAttendanceInboxPage, path: 'track-attendance-inbox'),
-//         AutoRoute(
-//             page: TrackAttendancePage, path: 'track-attendance/:id/:tenantId'),
-//         AutoRoute(page: RegisterIndividualPage, path: 'register-individual'),
-//         AutoRoute(page: ViewWorkDetailsPage, path: 'view-work-order'),
-//         AutoRoute(page: SuccessResponsePage, path: 'success'),
-//         AutoRoute(page: MyBillsPage, path: 'my-bills'),
-//         AutoRoute(
-//             page: CreateTimeExtensionRequestPage,
-//             path: 'create-time-extension'),
-//         AutoRoute(page: MyServiceRequestsPage, path: 'my-service-requests'),
-
-//         // mb for employee
-
-//         // MeasurementBookInboxPage
-//         AutoRoute(
-//           page: MeasurementBookInboxPage,
-//           path: 'measurement-inbox',
-//         ),
-//         AutoRoute(page: MBFilterPage, path: 'mb-filter'),
-//         AutoRoute(page: MBDetailPage, path: 'mb-detail'),
-//         AutoRoute(page: MBHistoryBookPage, path: 'mb-history'),
-//          AutoRoute(page: MBMusterScreenPage, path: 'mb-muster-screen'),
-//         AutoRoute(page: MBTypeConfirmationPage, path: 'mb-type-confirmation'),
-       
-
-//         // work order -employee
-
-//         AutoRoute(
-//           page: WorkOderInboxPage,
-//           path: 'workOrder-inbox',
-//         ),
-//         AutoRoute(page: WorkOrderDetailPage, path: 'workOrder-details'),
-//         AutoRoute(page: WOFilterPage, path: 'wo-filter'),
-//       ],
-//     ),
-//   ],
-// )
-// class AppRouter extends _$AppRouter {}
 
 
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
@@ -177,7 +105,7 @@ List<AutoRoute> get routes => [
           page: WorkOderInboxRoute.page,
           path: 'workOrder-inbox',
         ),
-        AutoRoute(page: WorkOrderDetailRoute.page, path: 'workOrder-details'),
+     
         AutoRoute(page: WOFilterRoute.page, path: 'wo-filter'),
       ],
     ),

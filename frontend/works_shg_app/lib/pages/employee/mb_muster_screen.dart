@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/widgets/widgets.dart';
+// import 'package:digit_components/widgets/widgets.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
@@ -8,6 +8,7 @@ import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:digit_ui_components/widgets/molecules/digit_timeline_molecule.dart';
+import 'package:digit_ui_components/widgets/powered_by_digit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/auth/auth.dart';

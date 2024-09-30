@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/widgets/atoms/label_value_list.dart';
@@ -140,9 +140,9 @@ class _HorizontalCardListDialogState extends State<HorizontalCardListDialog> {
                               //     .add(const UpdateMsgCodeEvent(updateCode: 0));
                               context.router.maybePopTop();
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.close,
-                              color: const DigitColors().white,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -305,11 +305,10 @@ class _CardWidgetState extends State<CardWidget> {
     return Container(
       // width: MediaQuery.sizeOf(context).width-200,
       decoration: BoxDecoration(
-        color: const DigitColors().white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      padding:
-          const EdgeInsets.only(left: 2.5, right: 2.5, bottom: 8.0, top: 16.0),
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8.0, top: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -324,51 +323,32 @@ class _CardWidgetState extends State<CardWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              //   DigitTextBlock(
-              //  caption:   widget.type.toUpperCase(),
-                 
-              //   ),
+                //   DigitTextBlock(
+                //  caption:   widget.type.toUpperCase(),
+
+                //   ),
                 DigitTextBlock(
-                 heading: '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
-                  
+                  heading:
+                      '${t.translate(i18.measurementBook.item)} ${widget.index + 1}',
                 ),
-                LabelValueList(
-                    maxLines: 2,
-                    labelFlex: 5,
-                    valueFlex: 5,
-                    items: [
-                      LabelValuePair(
-                          label: t.translate(i18.measurementBook.isDeduction),
-                          value: (widget
-                                          .filteredMeasurementsMeasure!
-                                          .contracts!
-                                          .first
-                                          .estimates!
-                                          .first
-                                          .isDeduction !=
-                                      null &&
-                                  widget
-                                      .filteredMeasurementsMeasure!
-                                      .contracts!
-                                      .first
-                                      .estimates!
-                                      .first
-                                      .isDeduction!)
-                              ? t.translate(i18.measurementBook.yes)
-                              : t.translate(i18.measurementBook.no)),
-                      LabelValuePair(
-                          label: t.translate(
-                            i18.measurementBook.description,
-                          ),
-                          value: widget
-                                  .filteredMeasurementsMeasure!
-                                  .contracts!
-                                  .first
-                                  .estimates!
-                                  .first
-                                  .description ??
-                              "")
-                    ]),
+                LabelValueList(maxLines: 2, labelFlex: 5, valueFlex: 5, items: [
+                  LabelValuePair(
+                      label: t.translate(i18.measurementBook.isDeduction),
+                      value: (widget.filteredMeasurementsMeasure!.contracts!
+                                      .first.estimates!.first.isDeduction !=
+                                  null &&
+                              widget.filteredMeasurementsMeasure!.contracts!
+                                  .first.estimates!.first.isDeduction!)
+                          ? t.translate(i18.measurementBook.yes)
+                          : t.translate(i18.measurementBook.no)),
+                  LabelValuePair(
+                      label: t.translate(
+                        i18.measurementBook.description,
+                      ),
+                      value: widget.filteredMeasurementsMeasure!.contracts!
+                              .first.estimates!.first.description ??
+                          "")
+                ]),
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.40,
@@ -1030,7 +1010,8 @@ class _CardWidgetState extends State<CardWidget> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(
-                          width: 2, color: const DigitColors().burningOrange)),
+                          width: 2,
+                          color: Theme.of(context).colorScheme.primary)),
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     child: IconButton(
@@ -1046,7 +1027,8 @@ class _CardWidgetState extends State<CardWidget> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       border: Border.all(
-                          width: 2, color: const DigitColors().burningOrange)),
+                          width: 2,
+                          color: Theme.of(context).colorScheme.primary)),
                   child: CircleAvatar(
                     backgroundColor: Colors.transparent,
                     child: IconButton(

@@ -1,5 +1,5 @@
-import 'package:digit_components/theme/colors.dart';
-import 'package:digit_components/theme/digit_theme.dart';
+// import 'package:digit_components/theme/colors.dart';
+// import 'package:digit_components/theme/digit_theme.dart';
 import 'package:digit_ui_components/digit_components.dart' as ui_component;
 import 'package:digit_ui_components/enum/app_enums.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
@@ -73,131 +73,6 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                     .where((element) => element.wfStatus == "APPROVED")
                     .toList();
                 return Scaffold(
-                  // bottomNavigationBar: widget.type == MBScreen.create
-                  //     ? const SizedBox.shrink()
-                  //     : BlocBuilder<MusterGetWorkflowBloc,
-                  //         MusterGetWorkflowState>(
-                  //         builder: (context, state) {
-                  //           return state.maybeMap(
-                  //             orElse: () => const SizedBox.shrink(),
-                  //             loaded: (mbWorkFlow) {
-                  //               final g = mbWorkFlow
-                  //                   .musterWorkFlowModel?.processInstances;
-                  //               return Draggable(
-                  //                 childWhenDragging: FloatActionCard(
-                  //                   subtext: t.translate(
-                  //                       i18.measurementBook.forCurrentEntry),
-                  //                   actions: () {
-                  //                     showDialog(
-                  //                       context: context,
-                  //                       builder: (context) => CommonButtonCard(
-                  //                         g: g,
-                  //                         contractNumber: widget.contractNumber,
-                  //                         mbNumber: widget.mbNumber,
-                  //                         type: widget.type,
-                  //                       ),
-                  //                     );
-                  //                   },
-                  //                   amount: value.data.first.totalAmount != null
-                  //                       ? value.data.first.totalAmount!
-                  //                           .roundToDouble()
-                  //                           .toStringAsFixed(2)
-                  //                       : "0.00",
-                  //                   openButtonSheet: () {
-                  //                     _openBottomSheet(
-                  //                         t,
-                  //                         context,
-                  //                         value.data.first.totalSorAmount!,
-                  //                         value.data.first.totalNorSorAmount!,
-                  //                         value.data.first.totalAmount!,
-                  //                         g,
-                  //                         widget.contractNumber,
-                  //                         widget.mbNumber,
-                  //                         (g != null &&
-                  //                                 (g.first.nextActions !=
-                  //                                         null &&
-                  //                                     g.first.nextActions!
-                  //                                         .isEmpty))
-                  //                             ? false
-                  //                             : true);
-                  //                   },
-                  //                   totalAmountText: t.translate(
-                  //                       i18.measurementBook.totalMbAmount),
-                  //                   showAction: (g != null &&
-                  //                           (g.first.nextActions != null &&
-                  //                               g.first.nextActions!.isEmpty))
-                  //                       ? false
-                  //                       : true,
-                  //                 ),
-                  //                 onDragEnd: (details) {
-                  //                   _openBottomSheet(
-                  //                       t,
-                  //                       context,
-                  //                       value.data.first.totalSorAmount!,
-                  //                       value.data.first.totalNorSorAmount!,
-                  //                       value.data.first.totalAmount!,
-                  //                       g,
-                  //                       widget.contractNumber,
-                  //                       widget.mbNumber,
-                  //                       (g != null &&
-                  //                               (g.first.nextActions != null &&
-                  //                                   g.first.nextActions!
-                  //                                       .isEmpty))
-                  //                           ? false
-                  //                           : true);
-                  //                 },
-                  //                 feedback: const SizedBox.shrink(),
-                  //                 child: FloatActionCard(
-                  //                   subtext: t.translate(
-                  //                       i18.measurementBook.forCurrentEntry),
-                  //                   actions: () {
-                  //                     showDialog(
-                  //                       context: context,
-                  //                       builder: (context) => CommonButtonCard(
-                  //                         g: g,
-                  //                         contractNumber: widget.contractNumber,
-                  //                         mbNumber: widget.mbNumber,
-                  //                         type: widget.type,
-                  //                       ),
-                  //                     );
-                  //                   },
-                  //                   amount: value.data.first.totalAmount != null
-                  //                       ? value.data.first.totalAmount!
-                  //                           .roundToDouble()
-                  //                           .toStringAsFixed(2)
-                  //                       : "0.00",
-                  //                   openButtonSheet: () {
-                  //                     _openBottomSheet(
-                  //                         t,
-                  //                         context,
-                  //                         value.data.first.totalSorAmount!,
-                  //                         value.data.first.totalNorSorAmount!,
-                  //                         value.data.first.totalAmount!,
-                  //                         g,
-                  //                         widget.contractNumber,
-                  //                         widget.mbNumber,
-                  //                         (g != null &&
-                  //                                 (g.first.nextActions !=
-                  //                                         null &&
-                  //                                     g.first.nextActions!
-                  //                                         .isEmpty))
-                  //                             ? false
-                  //                             : true);
-                  //                   },
-                  //                   totalAmountText: t.translate(
-                  //                       i18.measurementBook.totalMbAmount),
-                  //                   showAction: (g != null &&
-                  //                           (g.first.nextActions != null &&
-                  //                               g.first.nextActions!.isEmpty))
-                  //                       ? false
-                  //                       : true,
-                  //                 ),
-                  //               );
-                  //             },
-                  //           );
-                  //         },
-                  //       ),
-
                   backgroundColor:
                       Theme.of(context).colorTheme.generic.background,
                   // appBar: customAppBar(),
@@ -210,71 +85,80 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           SliverPersistentHeader(
                             pinned: true,
                             delegate: MyHeaderDelegate(
-                              child: Container(
-                                color: const DigitColors().seaShellGray,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 0.0,
-                                          bottom: 0.0,
-                                          top: 8.0,
-                                          right: 8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
-                                            child: BackNavigationButton(
-                                              backNavigationButtonThemeData:
-                                                  const BackNavigationButtonThemeData()
-                                                      .copyWith(
-                                                textColor: Theme.of(context)
-                                                    .colorTheme
-                                                    .primary
-                                                    .primary2,
-                                                contentPadding: EdgeInsets.zero,
-                                                context: context,
-                                                 backButtonIcon: Icon(
-                    Icons.arrow_circle_left_outlined,
-                    size: MediaQuery.of(context).size.width < 500
-                        ? Theme.of(context).spacerTheme.spacer5
-                        : Theme.of(context).spacerTheme.spacer6,
-                    color: Theme.of(context).colorTheme.primary.primary2,
-                  )
-                                              ),
-                                              backButtonText:
-                                                  AppLocalizations.of(context)
-                                                          .translate(i18
-                                                              .common.back) ??
-                                                      'Back',
-                                              handleBack: () {
-                                                context.router.maybePopTop();
-                                              },
-                                            ),
-                                          ),
-                                        ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: Theme.of(context)
+                                              .spacerTheme
+                                              .spacer4,
+                                          vertical: Theme.of(context)
+                                              .spacerTheme
+                                              .spacer4,
+                                        ),
+                                        child: BackNavigationButton(
+                                          backNavigationButtonThemeData:
+                                              const BackNavigationButtonThemeData()
+                                                  .copyWith(
+                                                      textColor:
+                                                          Theme.of(context)
+                                                              .colorTheme
+                                                              .primary
+                                                              .primary2,
+                                                      contentPadding:
+                                                          EdgeInsets.zero,
+                                                      context: context,
+                                                      backButtonIcon: Icon(
+                                                        Icons
+                                                            .arrow_circle_left_outlined,
+                                                        size: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width <
+                                                                500
+                                                            ? Theme.of(context)
+                                                                .spacerTheme
+                                                                .spacer5
+                                                            : Theme.of(context)
+                                                                .spacerTheme
+                                                                .spacer6,
+                                                        color: Theme.of(context)
+                                                            .colorTheme
+                                                            .primary
+                                                            .primary2,
+                                                      )),
+                                          backButtonText: AppLocalizations.of(
+                                                      context)
+                                                  .translate(i18.common.back) ??
+                                              'Back',
+                                          handleBack: () {
+                                            context.router.maybePopTop();
+                                          },
+                                        ),
                                       ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4,
+                                        top: 0.0),
+                                    child: DigitTextBlock(
+                                      heading: t.translate(
+                                          i18.measurementBook.mbHistory),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8.0,top: 0.0),
-                                      child: DigitTextBlock(
-                                        heading: t.translate(
-                                            i18.measurementBook.mbHistory),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              height:kIsWeb?120: 120,
+                              height: kIsWeb ? 120 : 120,
                             ),
                           ),
                           SliverList(
@@ -579,21 +463,27 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                   t.translate(i18
                                                       .measurementBook
                                                       .totalSorAmount),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .headlineMedium,
+                                                  style: Theme.of(context)
+                                                      .digitTextTheme(context)
+                                                      .headingM
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
                                                 ),
                                                 subtitle: Text(
                                                   t.translate(i18
                                                       .measurementBook
                                                       .forCurrentEntry),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .bodySmall,
+                                                  style: Theme.of(context)
+                                                      .digitTextTheme(context)
+                                                      .bodyS
+                                                      .copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
                                                 ),
                                                 trailing: Text(
                                                   value.data.first
@@ -601,11 +491,12 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                       .toDouble()
                                                       .toStringAsFixed(2),
                                                   // totalSorAmount.toDouble().toStringAsFixed(2),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .headlineMedium,
+                                                  style: Theme.of(context)
+                                                      .digitTextTheme(context)
+                                                      .headingL
+                                                      .copyWith(
+                                                        color: Colors.black,
+                                                      ),
                                                 ),
                                               ),
                                             ),
@@ -628,21 +519,27 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                   t.translate(i18
                                                       .measurementBook
                                                       .totalNonSorAmount),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .headlineMedium,
+                                                  style: Theme.of(context)
+                                                      .digitTextTheme(context)
+                                                      .headingM
+                                                      .copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary),
                                                 ),
                                                 subtitle: Text(
                                                   t.translate(i18
                                                       .measurementBook
                                                       .forCurrentEntry),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .bodySmall,
+                                                  style: Theme.of(context)
+                                                      .digitTextTheme(context)
+                                                      .bodyS
+                                                      .copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary),
                                                 ),
                                                 trailing: Text(
                                                   // "23.98",
@@ -651,11 +548,11 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                       .toDouble()
                                                       .toStringAsFixed(2),
                                                   // totalNonSorAmount.toDouble().toStringAsFixed(2),
-                                                  style: DigitTheme
-                                                      .instance
-                                                      .mobileTheme
-                                                      .textTheme
-                                                      .headlineMedium,
+                                                  style: Theme.of(context)
+                                                      .digitTextTheme(context)
+                                                      .headingL
+                                                      .copyWith(
+                                                          color: Colors.black),
                                                 ),
                                               ),
                                             ),
@@ -695,21 +592,29 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                         t.translate(i18
                                                             .measurementBook
                                                             .totalMbAmount),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .headlineMedium,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .headingM
+                                                            .copyWith(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary),
                                                       ),
                                                       subtitle: Text(
                                                         t.translate(i18
                                                             .measurementBook
                                                             .forCurrentEntry),
-                                                        style: DigitTheme
-                                                            .instance
-                                                            .mobileTheme
-                                                            .textTheme
-                                                            .bodySmall,
+                                                        style: Theme.of(context)
+                                                            .digitTextTheme(
+                                                                context)
+                                                            .bodyS
+                                                            .copyWith(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary),
                                                       ),
                                                     ),
                                                   ),
@@ -728,11 +633,14 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                                                                 .toStringAsFixed(
                                                                     2),
                                                             // mbAmount.roundToDouble().toStringAsFixed(2),
-                                                            style: DigitTheme
-                                                                .instance
-                                                                .mobileTheme
-                                                                .textTheme
-                                                                .headlineMedium,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .digitTextTheme(
+                                                                    context)
+                                                                .headingL
+                                                                .copyWith(
+                                                                    color: Colors
+                                                                        .black),
                                                           ),
                                                         ],
                                                       )),
@@ -803,18 +711,15 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                     title: Text(
                       // "Total SOR Amount",
                       t.translate(i18.measurementBook.totalSorAmount),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context).digitTextTheme(context).headingM,
                     ),
                     subtitle: Text(
                       t.translate(i18.measurementBook.forCurrentEntry),
-                      style:
-                          DigitTheme.instance.mobileTheme.textTheme.bodySmall,
+                      style: Theme.of(context).digitTextTheme(context).bodyS,
                     ),
                     trailing: Text(
                       totalSorAmount.toDouble().toStringAsFixed(2),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context).digitTextTheme(context).headingM,
                     ),
                   ),
                 ),
@@ -834,18 +739,15 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                     title: Text(
                       // "Total Non SOR Amount",
                       t.translate(i18.measurementBook.totalNonSorAmount),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context).digitTextTheme(context).headingM,
                     ),
                     subtitle: Text(
                       t.translate(i18.measurementBook.forCurrentEntry),
-                      style:
-                          DigitTheme.instance.mobileTheme.textTheme.bodySmall,
+                      style: Theme.of(context).digitTextTheme(context).bodyS,
                     ),
                     trailing: Text(
                       totalNonSorAmount.toDouble().toStringAsFixed(2),
-                      style: DigitTheme
-                          .instance.mobileTheme.textTheme.headlineMedium,
+                      style: Theme.of(context).digitTextTheme(context).headingM,
                     ),
                   ),
                 ),
@@ -877,13 +779,14 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                           title: Text(
                             // "Total MB Amount",
                             t.translate(i18.measurementBook.totalMbAmount),
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.headlineMedium,
+                            style: Theme.of(context)
+                                .digitTextTheme(context)
+                                .headingM,
                           ),
                           subtitle: Text(
                             t.translate(i18.measurementBook.forCurrentEntry),
-                            style: DigitTheme
-                                .instance.mobileTheme.textTheme.bodySmall,
+                            style:
+                                Theme.of(context).digitTextTheme(context).bodyS,
                           ),
                         ),
                       ),
@@ -894,8 +797,9 @@ class _MBHistoryBookPageState extends State<MBHistoryBookPage> {
                             children: [
                               Text(
                                 mbAmount.roundToDouble().toStringAsFixed(2),
-                                style: DigitTheme.instance.mobileTheme.textTheme
-                                    .headlineMedium,
+                                style: Theme.of(context)
+                                    .digitTextTheme(context)
+                                    .headingM,
                               ),
                             ],
                           )),

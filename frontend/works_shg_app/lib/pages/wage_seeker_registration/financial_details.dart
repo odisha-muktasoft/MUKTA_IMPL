@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
@@ -164,7 +164,8 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                     },
                     formControlName: accountNoKey,
                     builder: (field) {
-                      return BaseDigitFormInput(
+                      return DigitTextFormInput(
+                        obscureText: true,
                         // charCount: true,
                         controller: TextEditingController()
                           ..text = form.control(accountNoKey).value ?? '',

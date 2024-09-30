@@ -1,4 +1,5 @@
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
+import 'package:digit_ui_components/widgets/powered_by_digit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/blocs/localization/localization.dart';
@@ -60,7 +61,7 @@ class MobileView extends StatelessWidget {
                                       alignment: Alignment.bottomCenter,
                                       child: PoweredByDigit(
                                         version: Constants.appVersion,
-                                        isWhiteLogo: true,
+                                        
                                       ),
                                     ),
                                   )),

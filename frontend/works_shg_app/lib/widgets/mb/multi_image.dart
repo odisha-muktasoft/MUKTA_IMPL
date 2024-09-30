@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
-import 'package:digit_components/theme/colors.dart';
+// import 'package:digit_components/theme/colors.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -215,12 +216,10 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                 ? "${AppLocalizations.of(context).translate(i18.measurementBook.workSitePhotos)}"
                 : "${AppLocalizations.of(context).translate(i18.common.supportingDocumentHeader)}",
             textAlign: TextAlign.left,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w400,
               fontSize: 16,
-              color: widget.headerType == MediaType.mbDetail
-                  ? const DigitColors().black
-                  : const DigitColors().black,
+              color: Colors.black,
             ),
           ),
         ),
@@ -258,7 +257,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
                           : "${AppLocalizations.of(context).translate(i18.common.accountNo)}",
                      
                       style: TextStyle(
-                          color: const DigitColors().burningOrange,
+                          color: Theme.of(context).colorTheme.primary.primary1,
                           fontSize: 16),
                     ),
                   )),
@@ -531,7 +530,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
             iconSize: 45,
             icon: Icon(
               icon,
-              color: const DigitColors().burningOrange,
+              color: Theme.of(context).colorTheme.primary.primary1,
             )),
         Text(
           AppLocalizations.of(context).translate(label),

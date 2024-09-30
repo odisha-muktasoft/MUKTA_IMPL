@@ -1,9 +1,10 @@
 import 'package:collection/collection.dart';
-import 'package:digit_components/digit_components.dart';
+// import 'package:digit_components/digit_components.dart';
 import 'package:digit_ui_components/digit_components.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/back_button_theme.dart';
 import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_back_button.dart';
+import 'package:digit_ui_components/widgets/atoms/digit_search_bar.dart';
 import 'package:digit_ui_components/widgets/atoms/pop_up_card.dart';
 import 'package:digit_ui_components/widgets/atoms/table_cell.dart';
 import 'package:digit_ui_components/widgets/molecules/digit_table.dart';
@@ -18,6 +19,7 @@ import 'package:works_shg_app/utils/common_methods.dart';
 import 'package:works_shg_app/utils/common_widgets.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
+import 'package:works_shg_app/widgets/loaders.dart';
 import 'package:works_shg_app/widgets/mb/custom_side_bar.dart';
 import 'package:works_shg_app/widgets/new_custom_app_bar.dart';
 import 'package:works_shg_app/widgets/work_details_card.dart';
@@ -298,10 +300,17 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                             SliverChildListDelegate(
                                                           [
                                                             Padding(
-                                                              padding:  EdgeInsets.symmetric(
-                                      horizontal: Theme.of(context).spacerTheme.spacer4,
-                                      vertical: Theme.of(context).spacerTheme.spacer4,
-                                    ),
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                horizontal: Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer4,
+                                                                vertical: Theme.of(
+                                                                        context)
+                                                                    .spacerTheme
+                                                                    .spacer4,
+                                                              ),
                                                               child: Row(
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
@@ -393,120 +402,6 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                       .common
                                                                       .cancel),
                                                             ),
-                                                            //old info
-                                                            // CustomInfoCard(
-                                                            //   title: AppLocalizations
-                                                            //           .of(
-                                                            //               context)
-                                                            //       .translate(i18
-                                                            //           .common
-                                                            //           .info),
-                                                            //   description: AppLocalizations
-                                                            //           .of(
-                                                            //               context)
-                                                            //       .translate(i18
-                                                            //           .attendanceMgmt
-                                                            //           .toMarkAttendance),
-                                                            //   child: Column(
-                                                            //     children:
-                                                            //         entryExitList!.length >
-                                                            //                 2
-                                                            //             ? [
-                                                            //                 Row(
-                                                            //                   children: [
-                                                            //                     CircularButton(
-                                                            //                       icon: Icons.circle_rounded,
-                                                            //                       size: 15,
-                                                            //                       color: const Color.fromRGBO(0, 100, 0, 1),
-                                                            //                       index: 1,
-                                                            //                       isNotGreyed: false,
-                                                            //                       onTap: () {},
-                                                            //                     ),
-                                                            //                     Padding(
-                                                            //                       padding: const EdgeInsets.only(left: 4.0),
-                                                            //                       child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
-                                                            //                     )
-                                                            //                   ],
-                                                            //                 ),
-                                                            //                 const SizedBox(
-                                                            //                   height: 4,
-                                                            //                 ),
-                                                            //                 Row(
-                                                            //                   children: [
-                                                            //                     CircularButton(
-                                                            //                       icon: Icons.circle_rounded,
-                                                            //                       size: 15,
-                                                            //                       color: const Color.fromRGBO(0, 100, 0, 1),
-                                                            //                       index: 0.5,
-                                                            //                       isNotGreyed: false,
-                                                            //                       onTap: () {},
-                                                            //                     ),
-                                                            //                     Padding(
-                                                            //                       padding: const EdgeInsets.only(left: 4.0),
-                                                            //                       child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.halfDay)}'),
-                                                            //                     )
-                                                            //                   ],
-                                                            //                 ),
-                                                            //                 const SizedBox(
-                                                            //                   height: 4,
-                                                            //                 ),
-                                                            //                 Row(
-                                                            //                   children: [
-                                                            //                     CircularButton(
-                                                            //                       icon: Icons.circle_rounded,
-                                                            //                       size: 15,
-                                                            //                       color: const Color.fromRGBO(0, 100, 0, 1),
-                                                            //                       index: 0,
-                                                            //                       isNotGreyed: false,
-                                                            //                       onTap: () {},
-                                                            //                     ),
-                                                            //                     Padding(
-                                                            //                       padding: const EdgeInsets.only(left: 4.0),
-                                                            //                       child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.tripleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
-                                                            //                     )
-                                                            //                   ],
-                                                            //                 )
-                                                            //               ]
-                                                            //             : [
-                                                            //                 Row(
-                                                            //                   children: [
-                                                            //                     CircularButton(
-                                                            //                       icon: Icons.circle_rounded,
-                                                            //                       size: 15,
-                                                            //                       color: const Color.fromRGBO(0, 100, 0, 1),
-                                                            //                       index: 1,
-                                                            //                       isNotGreyed: false,
-                                                            //                       onTap: () {},
-                                                            //                     ),
-                                                            //                     Padding(
-                                                            //                       padding: const EdgeInsets.only(left: 4.0),
-                                                            //                       child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.singleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.fullDay)}'),
-                                                            //                     )
-                                                            //                   ],
-                                                            //                 ),
-                                                            //                 const SizedBox(
-                                                            //                   height: 4,
-                                                            //                 ),
-                                                            //                 Row(
-                                                            //                   children: [
-                                                            //                     CircularButton(
-                                                            //                       icon: Icons.circle_rounded,
-                                                            //                       size: 15,
-                                                            //                       color: const Color.fromRGBO(0, 100, 0, 1),
-                                                            //                       index: 0,
-                                                            //                       isNotGreyed: false,
-                                                            //                       onTap: () {},
-                                                            //                     ),
-                                                            //                     Padding(
-                                                            //                       padding: const EdgeInsets.only(left: 4.0),
-                                                            //                       child: Text('${AppLocalizations.of(context).translate(i18.attendanceMgmt.doubleClick)} ${AppLocalizations.of(context).translate(i18.attendanceMgmt.absent)}'),
-                                                            //                     )
-                                                            //                   ],
-                                                            //                 )
-                                                            //               ],
-                                                            //   ),
-                                                            // ),
-// end
 
                                                             Padding(
                                                               padding: EdgeInsets
@@ -1125,29 +1020,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                             size: ButtonSize.large,
                                                                                                                             mainAxisSize: MainAxisSize.max,
                                                                                                                             onPressed: () {},
-                                                                                                                            // style: OutlinedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide(width: 2, color: createAttendeePayload.isEmpty && updateAttendeePayload.isEmpty ? const Color.fromRGBO(149, 148, 148, 1) : DigitTheme.instance.colorScheme.secondary)),
-                                                                                                                            // onPressed: musterRollsSearch != null && musterRollsSearch.musterRoll!.isNotEmpty && isInWorkFlow
-                                                                                                                            //     ? () {}
-                                                                                                                            //     : () {
-                                                                                                                            //         if (debouncer != null && debouncer!.isActive) {
-                                                                                                                            //           debouncer!.cancel(); // Cancel the previous timer if it's active.
-                                                                                                                            //         }
-                                                                                                                            //         debouncer = Timer(const Duration(milliseconds: 1000), () {
-                                                                                                                            //           if (selectedDateRange == null) {
-                                                                                                                            //             Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                            //           } else {
-                                                                                                                            //             hasLoaded = false;
-                                                                                                                            //             if (updateAttendeePayload.isNotEmpty && createAttendeePayload.isNotEmpty) {
-                                                                                                                            //               context.read<AttendanceLogCreateBloc>().add(UpdateAttendanceLogEvent(attendanceList: updateAttendeePayload));
-                                                                                                                            //               context.read<AttendanceLogCreateBloc>().add(CreateAttendanceLogEvent(attendanceList: createAttendeePayload));
-                                                                                                                            //             } else if (updateAttendeePayload.isNotEmpty) {
-                                                                                                                            //               context.read<AttendanceLogCreateBloc>().add(UpdateAttendanceLogEvent(attendanceList: updateAttendeePayload));
-                                                                                                                            //             } else if (createAttendeePayload.isNotEmpty) {
-                                                                                                                            //               context.read<AttendanceLogCreateBloc>().add(CreateAttendanceLogEvent(attendanceList: createAttendeePayload));
-                                                                                                                            //             }
-                                                                                                                            //           }
-                                                                                                                            //         });
-                                                                                                                            //       },
+
                                                                                                                             label: AppLocalizations.of(context).translate(i18.common.saveAsDraft),
                                                                                                                             // style: createAttendeePayload.isEmpty && updateAttendeePayload.isEmpty ? DigitTheme.instance.mobileTheme.textTheme.bodyLarge?.apply(color: const Color.fromRGBO(149, 148, 148, 1)) : DigitTheme.instance.mobileTheme.textTheme.bodyLarge?.apply(color: const DigitColors().burningOrange),
                                                                                                                           ),
@@ -1382,26 +1255,7 @@ class _TrackAttendancePage extends State<TrackAttendancePage> {
                                                                                                                             size: ButtonSize.large,
                                                                                                                             mainAxisSize: MainAxisSize.max,
                                                                                                                             onPressed: () {},
-                                                                                                                            //style: OutlinedButton.styleFrom(backgroundColor: Colors.white, side: BorderSide(width: 2, color: createAttendeePayload.isEmpty && updateAttendeePayload.isEmpty ? const Color.fromRGBO(149, 148, 148, 1) : DigitTheme.instance.colorScheme.secondary)),
-                                                                                                                            // onPressed: musterRollsSearch != null && musterRollsSearch.musterRoll!.isNotEmpty && isInWorkFlow
-                                                                                                                            //     ? () {}
-                                                                                                                            //     : updateAttendeePayload.isEmpty && createAttendeePayload.isEmpty
-                                                                                                                            //         ? () {}
-                                                                                                                            //         : () {
-                                                                                                                            //             if (selectedDateRange == null) {
-                                                                                                                            //               Notifiers.getToastMessage(context, AppLocalizations.of(context).translate(i18.attendanceMgmt.selectDateRangeFirst), 'ERROR');
-                                                                                                                            //             } else {
-                                                                                                                            //               hasLoaded = false;
-                                                                                                                            //               if (updateAttendeePayload.isNotEmpty && createAttendeePayload.isNotEmpty) {
-                                                                                                                            //                 context.read<AttendanceLogCreateBloc>().add(UpdateAttendanceLogEvent(attendanceList: updateAttendeePayload));
-                                                                                                                            //                 context.read<AttendanceLogCreateBloc>().add(CreateAttendanceLogEvent(attendanceList: createAttendeePayload));
-                                                                                                                            //               } else if (updateAttendeePayload.isNotEmpty) {
-                                                                                                                            //                 context.read<AttendanceLogCreateBloc>().add(UpdateAttendanceLogEvent(attendanceList: updateAttendeePayload));
-                                                                                                                            //               } else if (createAttendeePayload.isNotEmpty) {
-                                                                                                                            //                 context.read<AttendanceLogCreateBloc>().add(CreateAttendanceLogEvent(attendanceList: createAttendeePayload));
-                                                                                                                            //               }
-                                                                                                                            //             }
-                                                                                                                            //           },
+
                                                                                                                             label: AppLocalizations.of(context).translate(i18.common.saveAsDraft),
                                                                                                                             // style: createAttendeePayload.isEmpty && updateAttendeePayload.isEmpty ? DigitTheme.instance.mobileTheme.textTheme.bodyLarge?.apply(color: const Color.fromRGBO(149, 148, 148, 1)) : DigitTheme.instance.mobileTheme.textTheme.bodyLarge?.apply(color: const DigitColors().burningOrange),
                                                                                                                           ),

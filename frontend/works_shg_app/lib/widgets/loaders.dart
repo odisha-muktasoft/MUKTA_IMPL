@@ -6,6 +6,7 @@ import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dar
 
 class Loaders {
   static circularLoader(BuildContext context) {
+   final String msg= AppLocalizations.of(context).translate(i18.common.loading).toString();
     return PopScope(
         onPopInvoked: null,
         canPop: true,
@@ -25,9 +26,9 @@ class Loaders {
                       height: 10,
                     ),
                      Text(
-                       AppLocalizations.of(context).translate(i18.common.loading) ??'Loading...',
-                      style: const TextStyle(
-                          color: Colors.white,
+                       msg.toString().contains("_")==true?'Loading' :msg,
+                      style:  TextStyle(
+                          color: Theme.of(context).colorTheme.primary.primary1,
                           fontFamily: 'Roboto',
                           fontSize: 16,
                           fontWeight: FontWeight.w700),
