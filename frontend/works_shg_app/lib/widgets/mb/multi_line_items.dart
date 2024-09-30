@@ -241,9 +241,10 @@ class _MultiLineItemsState extends State<MultiLineItems> {
               : const SizedBox.shrink(),
 
               LabeledField(
-            label: "Measurement summary",
+            label: t.translate(i18.measurementBook.measurementSummaryLabel),
             child: DigitTextFormInput(
-              
+              maxLength: 32,
+              charCount: true,
               keyboardType: TextInputType.text,
               // label: t.translate(i18.measurementBook.numberLabel),
               controller: measurementSummaryController,
