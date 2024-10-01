@@ -677,7 +677,7 @@ public class ContractServiceValidator {
         // Validate if contract number is present
         validateContractNumber(contractRequest);
 
-        List<Contract> contractsFromDB = contractServiceUtil.getActiveContractsFromDB(contractRequest);
+        List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
 
         // Validate if contract is present in DB
         validateContractNumber(contractsFromDB);
@@ -710,7 +710,7 @@ public class ContractServiceValidator {
         // Validate if contract number is present
         validateContractNumber(contractRequest);
 
-        List<Contract> contractsFromDB = contractServiceUtil.getActiveContractsFromDB(contractRequest);
+        List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
 
         // Validate if contract is present in DB
         validateContractNumber(contractsFromDB);
@@ -805,7 +805,7 @@ public class ContractServiceValidator {
 
 
     public void validateLineItemRef(ContractRequest contractRequest) {
-        List<Contract> contractsFromDB = contractServiceUtil.getActiveContractsFromDB(contractRequest);
+        List<Contract> contractsFromDB = contractRepository.getActiveContractsFromDB(contractRequest);
         Set<String> contractLineItemRef = contractRequest.getContract().getLineItems().stream().map(LineItems::getContractLineItemRef).collect(Collectors.toSet());
         for (LineItems lineItems : contractsFromDB.get(0).getLineItems()) {
             if (!contractLineItemRef.contains(lineItems.getContractLineItemRef())) {
@@ -965,7 +965,7 @@ private void validateRevisionLimit(List<Contract> contractFromDB) {
         if (measurementValue != null) {
             for (Object value : measurementValue) {
                 if (value instanceof Integer) {
-                    convertedValue.add(new Double(value.toString()));
+                    convertedValue.add(Double.valueOf(value.toString()));
                 } else {
                     convertedValue.add((Double) value);
                 }
