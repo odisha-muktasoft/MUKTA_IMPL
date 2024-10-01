@@ -426,11 +426,11 @@ export const UICustomizations = {
 
       //here iterate over defaultValues and set from presets in the api
 
-      const presets = Digit.Hooks.useQueryParams();
-      if (Object.keys(presets).length > 0) {
-        Object.keys(presets).forEach((preset) => {
+      const presets = Digit.Hooks.useQueryParams();      
+      if (Object?.keys(presets)?.length > 0) {
+        Object?.keys(presets)?.forEach((preset) => {
           //if present in defaultValues object then only set it
-          if (Object.keys(defaultValues).some((key) => key === preset)) {
+          if (Object?.keys(defaultValues)?.some((key) => key === preset)) {
             data.body.inbox.moduleSearchCriteria[preset] = presets[preset];
           }
         });
@@ -1117,10 +1117,10 @@ export const UICustomizations = {
       };
 
       const presets = Digit.Hooks.useQueryParams();
-      if (Object.keys(presets).length > 0) {
-        Object.keys(presets).forEach((preset) => {
+      if (Object?.keys(presets)?.length > 0) {
+        Object?.keys(presets)?.forEach((preset) => {
           //if present in defaultValues object then only set it
-          if (Object.keys(defaultValues).some((key) => key === preset)) {
+          if (Object?.keys(defaultValues)?.some((key) => key === preset)) {
             data.body.inbox.moduleSearchCriteria[preset] = presets[preset];
           }
         });
@@ -1630,10 +1630,10 @@ export const UICustomizations = {
       data.body.inbox.moduleSearchCriteria = { ...SearchCriteria, tenantId: Digit.ULBService.getCurrentTenantId() };
 
       const presets = Digit.Hooks.useQueryParams();
-      if (Object.keys(presets).length > 0) {
-        Object.keys(presets).forEach((preset) => {
+      if (Object?.keys(presets)?.length > 0) {
+        Object?.keys(presets)?.forEach((preset) => {
           //if present in defaultValues object then only set it
-          if (Object.keys(defaultValues).some((key) => key === preset)) {
+          if (Object?.keys(defaultValues)?.some((key) => key === preset)) {
             data.body.inbox.moduleSearchCriteria[preset] = presets[preset];
           }
         });
@@ -1834,10 +1834,10 @@ export const UICustomizations = {
       data.body.inbox.moduleSearchCriteria = { ...SearchCriteria, tenantId: Digit.ULBService.getCurrentTenantId() };
 
       const presets = Digit.Hooks.useQueryParams();
-      if (Object.keys(presets).length > 0) {
-        Object.keys(presets).forEach((preset) => {
+      if (Object?.keys(presets)?.length > 0) {
+        Object?.keys(presets)?.forEach((preset) => {
           //if present in defaultValues object then only set it
-          if (Object.keys(defaultValues).some((key) => key === preset)) {
+          if (Object?.keys(defaultValues)?.some((key) => key === preset)) {
             data.body.inbox.moduleSearchCriteria[preset] = presets[preset];
           }
         });
@@ -2055,10 +2055,10 @@ export const UICustomizations = {
       data.body.inbox.moduleSearchCriteria = { ...SearchCriteria, tenantId: Digit.ULBService.getCurrentTenantId() };
 
       const presets = Digit.Hooks.useQueryParams();
-      if (Object.keys(presets).length > 0) {
-        Object.keys(presets).forEach((preset) => {
+      if (Object?.keys(presets)?.length > 0) {
+        Object?.keys(presets)?.forEach((preset) => {
           //if present in defaultValues object then only set it
-          if (Object.keys(defaultValues).some((key) => key === preset)) {
+          if (Object?.keys(defaultValues)?.some((key) => key === preset)) {
             data.body.inbox.moduleSearchCriteria[preset] = presets[preset];
           }
         });
@@ -2194,10 +2194,10 @@ export const UICustomizations = {
       data.body.paymentCriteria.status = "INITIATED";
 
       const presets = Digit.Hooks.useQueryParams();
-      if (Object.keys(presets).length > 0) {
-        Object.keys(presets).forEach((preset) => {
+      if (Object?.keys(presets)?.length > 0) {
+        Object?.keys(presets)?.forEach((preset) => {
           //if present in defaultValues object then only set it
-          if (Object.keys(defaultValues).some((key) => key === preset)) {
+          if (Object?.keys(defaultValues)?.some((key) => key === preset)) {
             data.body.paymentCriteria[preset] = presets[preset];
           }
         });

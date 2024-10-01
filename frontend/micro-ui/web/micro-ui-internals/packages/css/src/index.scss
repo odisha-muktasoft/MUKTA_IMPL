@@ -956,7 +956,7 @@ input[type="number"] {
 }
 
 .search-instruction-header {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-size: 16px;
   font-weight: 500;
   color: theme(colors.text.secondary);
@@ -1080,6 +1080,7 @@ input[type="number"] {
 }
 
 .h1 {
+  margin-bottom: 1.5rem;
   &.works-header-search {
     font-size: 36px;
   }

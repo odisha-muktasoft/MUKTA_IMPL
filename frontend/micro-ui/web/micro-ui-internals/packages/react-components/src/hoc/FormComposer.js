@@ -40,7 +40,7 @@ import {
   ErrorMessage,
   StringManipulator,
   Header,
-  TextBlock,
+  TextBlock
 } from "@egovernments/digit-ui-components";
 
 const wrapperStyles = {
@@ -582,6 +582,13 @@ export const FormComposer = (props) => {
 
   const titleStyle = { color: "#505A5F", fontWeight: "700", fontSize: "16px" };
 
+  function convertToSentenceCase(inputString) {
+    // Convert the string to lowercase and capitalize the first letter of each sentence
+    return inputString.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, function(c) {
+      return c.toUpperCase();
+    });
+  }
+
   const getCombinedComponent = (section) => {
     if (section.head && section.subHead) {
       return (
@@ -679,7 +686,9 @@ export const FormComposer = (props) => {
                 style={
                   props?.showWrapperContainers && !field.hideContainer
                     ? { ...wrapperStyles, ...field?.populators?.customStyle }
-                    : props?.fieldPairNoMargin ? {marginBottom : "0px"} : { border: "none", background: "white", ...field?.populators?.customStyle }
+                    : props?.fieldPairNoMargin
+                    ? { marginBottom: "0px" }
+                    : { border: "none", background: "white", ...field?.populators?.customStyle }
                 }
               >
                 {/* {!field.withoutLabel && (
@@ -700,8 +709,7 @@ export const FormComposer = (props) => {
                   <Header className={`label`}>
                     <div className={`label-container`}>
                       <div className={`label-styles`}>
-                        {StringManipulator(
-                          "TOSENTENCECASE",
+                        {convertToSentenceCase(
                           StringManipulator("TRUNCATESTRING", t(field.label), {
                             maxLength: 64,
                           })
@@ -726,10 +734,9 @@ export const FormComposer = (props) => {
                         lineHeight: "1.5rem",
                       }}
                     >
-                      {StringManipulator(
-                        "TOSENTENCECASE",
+                      {convertToSentenceCase(
                         StringManipulator("TRUNCATESTRING", t(description), {
-                          maxLength: 256,
+                          maxLength: 64,
                         })
                       )}
                     </CardText>

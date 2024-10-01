@@ -142,9 +142,6 @@ const CreateContract = (props) => {
   };
 
   const onModalSubmit = (data) => {
-    
-    //console.log(createFormData);
-    //console.log(sessionFormData);
     //here you can handle the data submitted in the modal and call the api
     //access comments from data and details such as dept,desig,approver are stored locally in this comp
   }

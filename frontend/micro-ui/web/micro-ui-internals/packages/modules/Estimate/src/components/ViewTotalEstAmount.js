@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { TextBlock } from "@egovernments/digit-ui-components";
 
 const ViewTotalEstAmount = ({ detail, ...props }) => {
-  console.log("viewtotalestamount")
   const { t } = useTranslation();
   return (
     <div

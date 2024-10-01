@@ -27,7 +27,6 @@ const RenderFormFields = ({data,...props}) => {
         const Component = typeof component === "string" ? Digit.ComponentRegistryService.getComponent(component) : component;
         let customValidations = config?.additionalValidation ? Digit?.Customizations?.[apiDetails?.masterName]?.[apiDetails?.moduleName]?.additionalValidations(config?.additionalValidation?.type, formData, config?.additionalValidation?.keys) : null
         const customRules = customValidations ? { validate: customValidations} : {}
-        console.log(type,"typeoffield")
         switch (type) {
           case "date":
           case "text":
