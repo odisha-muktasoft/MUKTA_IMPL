@@ -59,15 +59,10 @@ class AutoCompleteSearchBar extends StatelessWidget {
         );
       } else {
         return Container(
+         
             margin:
-                const EdgeInsets.only(top: 5.0, bottom: 5, right: 8, left: 8),
-            child: Column(
-              children: [
-                Container(
-                    padding: const EdgeInsets.only(top: 18, bottom: 3),
-                    child: _autoComplete(context)),
-              ],
-            ));
+                const EdgeInsets.only(top: 16.0, bottom: 5.0, right: 4, left: 4),
+            child:  _autoComplete(context));
       }
     });
   }
@@ -91,6 +86,7 @@ class AutoCompleteSearchBar extends StatelessWidget {
             hintText: hintText ?? '',
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.zero,
+             
             ),
             filled: true,
             fillColor: Colors.white,
@@ -99,7 +95,7 @@ class AutoCompleteSearchBar extends StatelessWidget {
             prefixStyle: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
-                color: Theme.of(context).primaryColorDark),
+                color: Theme.of(context).colorScheme.secondary),
             prefixIcon:  Padding(
                 padding:const EdgeInsets.all(8.0), child: Icon(Icons.search_sharp,
                 color: Theme.of(context).colorScheme.secondary,

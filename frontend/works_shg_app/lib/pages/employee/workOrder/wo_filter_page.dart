@@ -122,9 +122,11 @@ class _WOFilterPageState extends State<WOFilterPage> {
                   builder: (BuildContext context, FormGroup formGroup,
                       Widget? child) {
                     return Padding(
-                      padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
+                      padding:
+                          EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
                       child: ScrollableContent(
-                         backgroundColor: Theme.of(context).colorTheme.paper.primary,
+                        backgroundColor:
+                            Theme.of(context).colorTheme.paper.primary,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         footer: Padding(
@@ -173,7 +175,7 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                     }
 
                                     payload = {
-                                      "status":"ACTIVE",
+                                      "status": "ACTIVE",
                                       "tenantId": GlobalVariables.tenantId ??
                                           GlobalVariables.organisationListModel!
                                               .organisations!.first.tenantId,
@@ -231,24 +233,36 @@ class _WOFilterPageState extends State<WOFilterPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 child: Icon(
                                   Icons.filter_alt,
                                   size: 35,
+                                  color: Theme.of(context)
+                                      .colorTheme
+                                      .primary
+                                      .primary1,
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 0.0),
                                 child: DigitTextBlock(
-                                  heading:
-                                      t.translate(i18.measurementBook.filter),
-                                ),
+                                    heading:
+                                        t.translate(i18.measurementBook.filter),
+                                    headingStyle: Theme.of(context)
+                                        .digitTextTheme(context)
+                                        .headingXl
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorTheme
+                                                .text
+                                                .primary)),
                               ),
                             ],
                           ),
 
                           Padding(
-                            padding:  EdgeInsets.only(top: Theme.of(context).spacerTheme.spacer4),
+                            padding: EdgeInsets.only(
+                                top: Theme.of(context).spacerTheme.spacer4),
                             child: LabeledField(
                               label: t.translate(
                                   i18.measurementBook.workOrderNumber),
@@ -261,7 +275,8 @@ class _WOFilterPageState extends State<WOFilterPage> {
 // new
 
                           Padding(
-                            padding:  EdgeInsets.only(top: Theme.of(context).spacerTheme.spacer4),
+                            padding: EdgeInsets.only(
+                                top: Theme.of(context).spacerTheme.spacer4),
                             child: LabeledField(
                               label: t.translate(i18.measurementBook.cboName),
                               child: DigitDropdown<OrganisationModel>(
@@ -298,7 +313,10 @@ class _WOFilterPageState extends State<WOFilterPage> {
                                 orElse: () => const SizedBox.shrink(),
                                 loaded: (location) {
                                   return Padding(
-                                    padding:  EdgeInsets.only(top: Theme.of(context).spacerTheme.spacer4),
+                                    padding: EdgeInsets.only(
+                                        top: Theme.of(context)
+                                            .spacerTheme
+                                            .spacer4),
                                     child: LabeledField(
                                       label: t.translate(i18.common.ward),
                                       child: DigitDropdown<String>(

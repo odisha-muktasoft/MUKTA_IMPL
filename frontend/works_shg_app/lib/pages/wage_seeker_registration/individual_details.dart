@@ -236,7 +236,7 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
               }
             },
             child: SizedBox(
-              height: MediaQuery.sizeOf(context).height * 0.7,
+              height: MediaQuery.sizeOf(context).height * 0.719,
               child: ScrollableContent(
                 backgroundColor: Theme.of(context).colorTheme.generic.background,
                 
@@ -434,7 +434,12 @@ class IndividualDetailsPageState extends State<IndividualDetailsPage> {
                       // )
                     ],
                   ),
-                 
+                 const Align(
+                alignment: Alignment.bottomCenter,
+                child: PoweredByDigit(
+                  version: Constants.appVersion,
+                ),
+              )
                 ],
               ),
             ),

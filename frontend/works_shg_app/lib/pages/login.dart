@@ -55,7 +55,6 @@ class _LoginPageState extends State<LoginPage>
   String selectTenantId = "";
 
   bool iconVisibility = true;
-  
 
   String cityDropDownKey = "cityDropDownKey";
 
@@ -123,6 +122,7 @@ class _LoginPageState extends State<LoginPage>
 //old
 
               ToggleList(
+                capitalizeFirstLetter: false,
                 contentPadding: const EdgeInsets.all(0),
                 toggleWidth: MediaQuery.sizeOf(context).width * 0.4,
                 toggleButtons: [
@@ -130,8 +130,8 @@ class _LoginPageState extends State<LoginPage>
                       code: "0",
                       name: t
                           .translate(i18.measurementBook.mbCbo)
-                          .toString().toUpperCase()
-                          ),
+                          .toString()
+                          .toUpperCase()),
                   ToggleButtonModel(
                       name: t.translate(i18.measurementBook.mbEmployee),
                       code: "1")

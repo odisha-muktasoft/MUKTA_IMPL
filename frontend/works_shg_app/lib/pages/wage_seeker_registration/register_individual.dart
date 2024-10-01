@@ -248,15 +248,16 @@ class RegisterIndividualPageState extends State<RegisterIndividualPage> {
                     error: (String? error) => Notifiers.getToastMessage(
                         context, error.toString(), 'ERROR'));
               }),
-              const SizedBox(
-                height: 16.0,
-              ),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: PoweredByDigit(
-                  version: Constants.appVersion,
-                ),
-              )
+              // TODO:testing
+              // const SizedBox(
+              //   height: 16.0,
+              // ),
+              // const Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: PoweredByDigit(
+              //     version: Constants.appVersion,
+              //   ),
+              // )
             ]),
       );
     });

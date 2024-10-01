@@ -259,7 +259,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top:8.0),
+            padding:  EdgeInsets.only(top:Theme.of(context).spacerTheme.spacer4),
             child: LabeledField(
               label: t.translate(i18.measurementBook.numberLabel),
               child: DigitTextFormInput(
@@ -275,7 +275,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             ),
           ),
           Padding(
-             padding: const EdgeInsets.only(top:8.0),
+             padding:  EdgeInsets.only(top:Theme.of(context).spacerTheme.spacer4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -345,7 +345,7 @@ class _MultiLineItemsState extends State<MultiLineItems> {
             ),
           ),
           Padding(
-             padding: const EdgeInsets.only(top:8.0),
+             padding:  EdgeInsets.only(top:Theme.of(context).spacerTheme.spacer4),
             child: LabeledField(
               label: t.translate(i18.measurementBook.quantityLabel),
               child: DigitTextFormInput(

@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:works_shg_app/utils/constants.dart';
 
 import '../../blocs/localization/app_localization.dart';
 import '../../blocs/wage_seeker_registration/wage_seeker_registration_bloc.dart';
@@ -343,6 +344,15 @@ class _IndividualSubDetailPageState extends State<IndividualSubDetailPage> {
                     ),
                   ),
                 ],
+              ),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: PoweredByDigit(
+                    version: Constants.appVersion,
+                  ),
+                ),
               ),
               DigitFooter(actions: [
                 FooterAction(

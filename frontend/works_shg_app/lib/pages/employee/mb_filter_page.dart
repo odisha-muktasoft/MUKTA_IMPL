@@ -128,7 +128,8 @@ class _MBFilterPageState extends State<MBFilterPage> {
                       },
                       loaded: (location) {
                         return Scaffold(
-                           backgroundColor: Theme.of(context).colorTheme.paper.primary,
+                          backgroundColor:
+                              Theme.of(context).colorTheme.paper.primary,
                           // appBar: customAppBar(),
                           // drawer: const MySideBar(),
                           body: ReactiveFormBuilder(
@@ -138,7 +139,10 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                 return Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: ui_component.ScrollableContent(
-                                   backgroundColor: Theme.of(context).colorTheme.paper.primary,
+                                    backgroundColor: Theme.of(context)
+                                        .colorTheme
+                                        .paper
+                                        .primary,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -889,26 +893,30 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          const SizedBox(
+                                          SizedBox(
                                             child: Icon(
                                               Icons.filter_alt,
                                               size: 35,
+                                              color: Theme.of(context)
+                                                  .colorTheme
+                                                  .primary
+                                                  .primary1,
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 0.0),
                                             child: DigitTextBlock(
-                                              heading: t.translate(
-                                                  i18.measurementBook.filter),
-                                              // style: DigitTheme
-                                              //     .instance
-                                              //     .mobileTheme
-                                              //     .textTheme
-                                              //     .headlineMedium
-                                              //     ?.copyWith(
-                                              //         fontFamily: 'Roboto'),
-                                            ),
+                                                heading: t.translate(
+                                                    i18.measurementBook.filter),
+                                                headingStyle: Theme.of(context)
+                                                    .digitTextTheme(context)
+                                                    .headingXl
+                                                    .copyWith(
+                                                        color: Theme.of(context)
+                                                            .colorTheme
+                                                            .text
+                                                            .primary)),
                                           ),
                                         ],
                                       ),
@@ -946,11 +954,12 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   RadioList(
-                                                   
                                                     groupValue: assign,
                                                     containerPadding:
                                                         const EdgeInsets.only(
-                                                            left: 0.0, bottom: 16,top: 16),
+                                                            left: 0.0,
+                                                            bottom: 16,
+                                                            top: 16),
                                                     radioButtons: [
                                                       RadioButtonModel(
                                                           code:
@@ -984,19 +993,21 @@ class _MBFilterPageState extends State<MBFilterPage> {
                                       //     : const SizedBox.shrink(),
                                       project
                                           ? Padding(
-                                            padding: const EdgeInsets.only(top:0.0),
-                                            child: ui_component.LabeledField(
-                                                label: t.translate(
-                                                    i18.measurementBook.mbNumber),
+                                              padding: const EdgeInsets.only(
+                                                  top: 0.0),
+                                              child: ui_component.LabeledField(
+                                                label: t.translate(i18
+                                                    .measurementBook.mbNumber),
                                                 child: DigitTextFormInput(
                                                   controller: mbNumber,
                                                 ),
                                               ),
-                                          )
+                                            )
                                           : const SizedBox.shrink(),
                                       project
                                           ? Padding(
-                                             padding: const EdgeInsets.only(top:16.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 16.0),
                                               child: ui_component.LabeledField(
                                                 label: t.translate(i18
                                                     .measurementBook.projectId),

@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/services/urls.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -305,76 +306,57 @@ class FinancialDetailsState extends State<FinancialDetailsPage> {
                   ),
                 ),
 
-                // Button(
-                //   type: ButtonType.primary,
-                //   size: ButtonSize.large,
-                //   mainAxisSize: MainAxisSize.max,
-                //   onPressed: () {
-                //     form.markAllAsTouched(updateParent: false);
-                //     if (!form.valid) return;
-                //     if (hintText.isEmpty) {
-                //       // Notifiers.getToastMessage(
-                //       //     context, i18.wageSeeker.enterValidIFSC, 'ERROR');
-                //           Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
-                //     } else {
-                //       final financeDetails = FinancialDetails(
-                //           accountHolderName:
-                //               form.value[accountHolderKey].toString(),
-                //           accountNumber: form.value[accountNoKey].toString(),
-                //           reAccountNumber: form.value[reAccountNoKey].toString(),
-                //           ifscCode:
-                //               form.value[ifscCodeKey].toString().toUpperCase(),
-                //           accountType: form.value[accountTypeKey].toString(),
-                //           bankName: hintText);
-                //       BlocProvider.of<WageSeekerBloc>(context).add(
-                //         WageSeekerCreateEvent(
-                //             individualDetails: individualDetails,
-                //             skillDetails: skillDetails,
-                //             locationDetails: locationDetails,
-                //             financialDetails: financeDetails),
-                //       );
-                //       widget.onPressed();
-                //     }
-                //   },
-                //   label: t.translate(i18.common.next),
-                // )
+                
               ],
             ),
-            ui_card.DigitCard(children: [
-              Button(
-                type: ButtonType.primary,
-                size: ButtonSize.large,
-                mainAxisSize: MainAxisSize.max,
-                onPressed: () {
-                  form.markAllAsTouched(updateParent: false);
-                  if (!form.valid) return;
-                  if (hintText.isEmpty) {
-                    Notifiers.getToastMessage(
-                        context, i18.wageSeeker.enterValidIFSC, 'ERROR');
-                    // Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
-                  } else {
-                    final financeDetails = FinancialDetails(
-                        accountHolderName:
-                            form.value[accountHolderKey].toString(),
-                        accountNumber: form.value[accountNoKey].toString(),
-                        reAccountNumber: form.value[reAccountNoKey].toString(),
-                        ifscCode:
-                            form.value[ifscCodeKey].toString().toUpperCase(),
-                        accountType: form.value[accountTypeKey].toString(),
-                        bankName: hintText);
-                    BlocProvider.of<WageSeekerBloc>(context).add(
-                      WageSeekerCreateEvent(
-                          individualDetails: individualDetails,
-                          skillDetails: skillDetails,
-                          locationDetails: locationDetails,
-                          financialDetails: financeDetails),
-                    );
-                    widget.onPressed();
-                  }
-                },
-                label: t.translate(i18.common.next),
-              )
-            ])
+            Column(
+              children: [
+                Padding(
+                  padding:  EdgeInsets.all(Theme.of(context).spacerTheme.spacer4),
+                  child: const Align(
+                      alignment: Alignment.bottomCenter,
+                      child: PoweredByDigit(
+                        version: Constants.appVersion,
+                      ),
+                    ),
+                ),
+                ui_card.DigitCard(children: [
+                  Button(
+                    type: ButtonType.primary,
+                    size: ButtonSize.large,
+                    mainAxisSize: MainAxisSize.max,
+                    onPressed: () {
+                      form.markAllAsTouched(updateParent: false);
+                      if (!form.valid) return;
+                      if (hintText.isEmpty) {
+                        Notifiers.getToastMessage(
+                            context, i18.wageSeeker.enterValidIFSC, 'ERROR');
+                        // Toast.showToast(context, message: t.translate(i18.wageSeeker.enterValidIFSC), type: ToastType.error);
+                      } else {
+                        final financeDetails = FinancialDetails(
+                            accountHolderName:
+                                form.value[accountHolderKey].toString(),
+                            accountNumber: form.value[accountNoKey].toString(),
+                            reAccountNumber: form.value[reAccountNoKey].toString(),
+                            ifscCode:
+                                form.value[ifscCodeKey].toString().toUpperCase(),
+                            accountType: form.value[accountTypeKey].toString(),
+                            bankName: hintText);
+                        BlocProvider.of<WageSeekerBloc>(context).add(
+                          WageSeekerCreateEvent(
+                              individualDetails: individualDetails,
+                              skillDetails: skillDetails,
+                              locationDetails: locationDetails,
+                              financialDetails: financeDetails),
+                        );
+                        widget.onPressed();
+                      }
+                    },
+                    label: t.translate(i18.common.next),
+                  )
+                ]),
+              ],
+            )
           ],
         );
       },

@@ -11,6 +11,7 @@ import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:works_shg_app/data/repositories/core_repo/core_repository.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 
@@ -55,7 +56,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
         }
       },
       child: SizedBox(
-        height: MediaQuery.sizeOf(context).height*0.7,
+        height: MediaQuery.sizeOf(context).height * 0.72,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -66,7 +67,7 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                 DigitTextBlock(
                   heading: t.translate(i18.wageSeeker.individualPhotoHeader),
                 ),
-        
+
                 ImageUploader(
                   label: t.translate(i18.common.photoGraph),
                   validators: [
@@ -78,18 +79,19 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                       : [],
                   onImagesSelected: (List<File> imageFile) async {
                     // Handle the selected image file here
-                   
+
                     Navigator.of(
                       context,
                       rootNavigator: true,
                     ).popUntil(
                       (route) => route is! PopupRoute,
                     );
-                    Loaders.showLoadingDialog(context, label: t.translate(i18.common.uploading));
-        
+                    Loaders.showLoadingDialog(context,
+                        label: t.translate(i18.common.uploading));
+
                     final List<FileStoreModel> ss =
                         await uploadProfile(imageFile, 'works');
-        
+
                     if (ss.isNotEmpty) {
                       Navigator.of(
                         context,
@@ -124,17 +126,24 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                 //               photo: photo,
                 //             ),
                 //           );
-        
+
                 //       widget.onPageChanged(4);
                 //     },
                 //     label: t.translate(i18.common.next))
               ],
             ),
-            ui_card.DigitCard(
-                // margin: EdgeInsets.only(
-                //     left: Theme.of(context).spacerTheme.spacer2,
-                //     right: Theme.of(context).spacerTheme.spacer2),
-                children: [
+            Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: PoweredByDigit(
+                      version: Constants.appVersion,
+                    ),
+                  ),
+                ),
+                ui_card.DigitCard(children: [
                   Button(
                       type: ButtonType.primary,
                       size: ButtonSize.large,
@@ -147,11 +156,13 @@ class _IndividualPhotoSubPageState extends State<IndividualPhotoSubPage> {
                                 photo: photo,
                               ),
                             );
-        
+
                         widget.onPageChanged(4);
                       },
                       label: t.translate(i18.common.next)),
-                ])
+                ]),
+              ],
+            )
           ],
         ),
       ),

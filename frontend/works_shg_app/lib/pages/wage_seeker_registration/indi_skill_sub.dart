@@ -6,6 +6,7 @@ import 'package:digit_ui_components/widgets/molecules/digit_card.dart'
     as ui_card;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/notifiers.dart';
 import 'package:works_shg_app/widgets/atoms/multiselect_checkbox.dart';
 
@@ -80,7 +81,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
 
     return SingleChildScrollView(
       child: SizedBox(
-        height: MediaQuery.sizeOf(context).height * 0.70,
+        height: MediaQuery.sizeOf(context).height * 0.72,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -94,47 +95,7 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                     //  "Individual's Skill Details",
                     heading: t.translate(i18.wageSeeker.individualSkillHeader),
                   ),
-                  //  SizedBox(
-                  //   height: Theme.of(context).spacerTheme.spacer4,
-                  // ),
-                  // SingleChildScrollView(
-                  //   child: Column(
-                  //     children: [
-                  //       MultiSelectSearchCheckBox(
-                  //         label: t.translate(i18.attendanceMgmt.skill) + ' *',
-                  //         onChange: _onSelectedOptionsChanged,
-                  //         options: widget.skills,
-                  //         hintText: t.translate(i18.attendanceMgmt.skill),
-                  //         selectedOptions: selectedOptions,
-                  //       ),
-                  //       const SizedBox(
-                  //         height: 10,
-                  //       ),
-
-                  //       // MultiSelectDropDown(
-
-                  //       //   showSelectAll: true,
-
-                  //       //   isSearchable: true,
-                  //       //   options: widget.skills
-                  //       //       .map((e) => DropdownItem(
-                  //       //           name: t.translate(
-                  //       //               "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                  //       //           code: e.toString()))
-                  //       //       .toList(),
-                  //       //   onOptionSelected:
-                  //       //       (List<DropdownItem> selectedOptionss) {
-                  //       //         _onSelectedOptionsChanged(selectedOptionss.map((e) => e.code).toList());
-                  //       //       },
-                  //       //       // selectedOptions: selectedOptions.isNotEmpty?selectedOptions.map((e) => DropdownItem(
-                  //       //       //     name: t.translate(
-                  //       //       //         "COMMON_MASTERS_SKILLS_${e.toString()}"),
-                  //       //       //     code: e.toString()))
-                  //       //       // .toList():[],
-                  //       // ),
-                  //     ],
-                  //   ),
-                  // ),
+                  
 
                   MultiSelectDropDown(
                     //  showSelectAll: true,
@@ -166,6 +127,12 @@ class _IndividualSkillSubPageState extends State<IndividualSkillSubPage> {
                 ],
               ),
             ),
+             const Align(
+                alignment: Alignment.bottomCenter,
+                child: PoweredByDigit(
+                  version: Constants.appVersion,
+                ),
+              ),
             Center(
               child: Container(
                 padding:

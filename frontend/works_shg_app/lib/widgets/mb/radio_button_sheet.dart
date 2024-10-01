@@ -2,6 +2,7 @@ import 'package:digit_ui_components/digit_components.dart';
 
 import 'package:digit_ui_components/models/RadioButtonModel.dart';
 import 'package:digit_ui_components/theme/ComponentTheme/divider_theme.dart';
+import 'package:digit_ui_components/theme/digit_extended_theme.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_divider.dart';
 import 'package:digit_ui_components/widgets/atoms/digit_radio_list.dart';
 import 'package:digit_ui_components/widgets/atoms/text_block.dart';
@@ -40,12 +41,18 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
             padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 16.0),
             child: Row(
               children: [
-                const Icon(
+                 Icon(
                   Icons.swap_vert,
-                  size: 30,
+                  size: 35,
+                  color: Theme.of(context).colorTheme.primary.primary1,
                 ),
                 DigitTextBlock(
                   heading: t.translate(i18.measurementBook.sortBy),
+                  headingStyle: Theme.of(context)
+                      .digitTextTheme(context)
+                      .headingXl
+                      .copyWith(
+                          color: Theme.of(context).colorTheme.text.primary),
                 ),
               ],
             ),

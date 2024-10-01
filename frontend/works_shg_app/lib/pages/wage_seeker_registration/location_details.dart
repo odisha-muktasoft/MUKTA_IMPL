@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:works_shg_app/models/wage_seeker/location_details_model.dart';
+import 'package:works_shg_app/utils/constants.dart';
 import 'package:works_shg_app/utils/localization_constants/i18_key_constants.dart'
     as i18;
 import 'package:works_shg_app/utils/notifiers.dart';
@@ -104,9 +105,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                 DigitTextBlock(
                   heading: t.translate(i18.common.locationDetails),
                 ),
-
-                
-
                 ui_component.LabeledField(
                   label: t.translate(i18.common.pinCode),
                   child: ReactiveWrapperField(
@@ -117,7 +115,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                     formControlName: pinCodeKey,
                     builder: (field) {
-                      
                       return DigitTextFormInput(
                         charCount: true,
                         maxLength: 6,
@@ -140,8 +137,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                   ),
                 ),
-
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.city),
@@ -155,11 +150,14 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     showErrors: (control) => control.invalid && control.touched,
                     builder: (field) {
                       return ui_component.DigitDropdown(
-                        selectedOption: DropdownItem(name: locationDetails.city != null
-                ? AppLocalizations.of(context).translate(
-                    'TENANT_TENANTS_${locationDetails.city!.replaceAll('.', '_').toUpperCase()}')
-                :AppLocalizations.of(context).translate(
-                    'TENANT_TENANTS_${widget.city!.replaceAll('.', '_').toUpperCase()}'), code: locationDetails.city ?? widget.city.toString()),
+                          selectedOption: DropdownItem(
+                              name: locationDetails.city != null
+                                  ? AppLocalizations.of(context).translate(
+                                      'TENANT_TENANTS_${locationDetails.city!.replaceAll('.', '_').toUpperCase()}')
+                                  : AppLocalizations.of(context).translate(
+                                      'TENANT_TENANTS_${widget.city!.replaceAll('.', '_').toUpperCase()}'),
+                              code: locationDetails.city ??
+                                  widget.city.toString()),
                           dropdownController: TextEditingController()
                             ..text = form.control(cityKey).value ?? '',
                           onSelect: (value) {
@@ -182,9 +180,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                   ),
                 ),
-
-
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.ward),
@@ -221,9 +216,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                   ),
                 ),
-
-
-
                 ui_component.LabeledField(
                   isRequired: true,
                   label: t.translate(i18.common.locality),
@@ -260,9 +252,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                   ),
                 ),
-
-
-
                 ui_component.LabeledField(
                   label: t.translate(i18.common.streetName),
                   child: ReactiveWrapperField(
@@ -289,9 +278,6 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                   ),
                 ),
-
-
-
                 ui_component.LabeledField(
                   label: t.translate(i18.common.doorNo),
                   child: ReactiveWrapperField(
@@ -326,111 +312,77 @@ class LocationDetailsState extends State<LocationDetailsPage> {
                     },
                   ),
                 ),
-
-              //   Button(
-              //     size: ButtonSize.large,
-              //     type: ButtonType.primary,
-              //     mainAxisSize: MainAxisSize.max,
-              //     onPressed: () {
-              //       form.markAllAsTouched(updateParent: false);
-              //       if (!form.valid) return;
-              //       if (form.value[pinCodeKey].toString().isNotEmpty &&
-              //           form.value[pinCodeKey].toString().length < 6) {
-              //         // Notifiers.getToastMessage(
-              //         //     context,
-              //         //     t.translate(i18.wageSeeker.pinCodeValidation),
-              //         //     'ERROR');
-
-              //         Toast.showToast(context,
-              //             message:
-              //                 t.translate(i18.wageSeeker.pinCodeValidation),
-              //             type: ToastType.error);
-              //       } else if (form.value[pinCodeKey].toString().isNotEmpty &&
-              //           int.parse(form.value[pinCodeKey].toString()) < 100000) {
-              //         // Notifiers.getToastMessage(
-              //         //     context,
-              //         //     t.translate(i18.wageSeeker.pinCodeValidation),
-              //         //     'ERROR');
-
-              //         Toast.showToast(context,
-              //             message:
-              //                 t.translate(i18.wageSeeker.pinCodeValidation),
-              //             type: ToastType.error);
-              //       } else {
-              //         final locationDetails = LocationDetails(
-              //             pinCode: form.value[pinCodeKey].toString(),
-              //             city: form.value[cityKey].toString(),
-              //             locality: form.value[localityKey].toString(),
-              //             ward: form.value[wardKey].toString(),
-              //             streetName: form.value[streetNameKey].toString(),
-              //             doorNo: form.value[doorNoKey].toString());
-              //         BlocProvider.of<WageSeekerBloc>(context).add(
-              //           WageSeekerCreateEvent(
-              //               individualDetails: individualDetails,
-              //               skillDetails: skillDetails,
-              //               locationDetails: locationDetails,
-              //               financialDetails: financialDetails),
-              //         );
-              //         widget.onPressed();
-              //       }
-              //     },
-              //     label: t.translate(i18.common.next),
-              //   )
-               ],
+              ],
             ),
-        
-        ui_card.DigitCard(children: [
-                Button(
-                  size: ButtonSize.large,
-                  type: ButtonType.primary,
-                  mainAxisSize: MainAxisSize.max,
-                  onPressed: () {
-                    form.markAllAsTouched(updateParent: false);
-                    if (!form.valid) return;
-                    if (form.value[pinCodeKey].toString().isNotEmpty &&
-                        form.value[pinCodeKey].toString().length < 6) {
-                      Notifiers.getToastMessage(
-                          context,
-                          t.translate(i18.wageSeeker.pinCodeValidation),
-                          'ERROR');
+            Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: PoweredByDigit(
+                      version: Constants.appVersion,
+                    ),
+                  ),
+                ),
+                ui_card.DigitCard(
+                  children: [
+                    Button(
+                      size: ButtonSize.large,
+                      type: ButtonType.primary,
+                      mainAxisSize: MainAxisSize.max,
+                      onPressed: () {
+                        form.markAllAsTouched(updateParent: false);
+                        if (!form.valid) return;
+                        if (form.value[pinCodeKey].toString().isNotEmpty &&
+                            form.value[pinCodeKey].toString().length < 6) {
+                          Notifiers.getToastMessage(
+                              context,
+                              t.translate(i18.wageSeeker.pinCodeValidation),
+                              'ERROR');
 
-                      // Toast.showToast(context,
-                      //     message:
-                      //         t.translate(i18.wageSeeker.pinCodeValidation),
-                      //     type: ToastType.error);
-                    } else if (form.value[pinCodeKey].toString().isNotEmpty &&
-                        int.parse(form.value[pinCodeKey].toString()) < 100000) {
-                      Notifiers.getToastMessage(
-                          context,
-                          t.translate(i18.wageSeeker.pinCodeValidation),
-                          'ERROR');
+                          // Toast.showToast(context,
+                          //     message:
+                          //         t.translate(i18.wageSeeker.pinCodeValidation),
+                          //     type: ToastType.error);
+                        } else if (form.value[pinCodeKey]
+                                .toString()
+                                .isNotEmpty &&
+                            int.parse(form.value[pinCodeKey].toString()) <
+                                100000) {
+                          Notifiers.getToastMessage(
+                              context,
+                              t.translate(i18.wageSeeker.pinCodeValidation),
+                              'ERROR');
 
-                      // Toast.showToast(context,
-                      //     message:
-                      //         t.translate(i18.wageSeeker.pinCodeValidation),
-                      //     type: ToastType.error);
-                    } else {
-                      final locationDetails = LocationDetails(
-                          pinCode: form.value[pinCodeKey].toString(),
-                          city: form.value[cityKey].toString(),
-                          locality: form.value[localityKey].toString(),
-                          ward: form.value[wardKey].toString(),
-                          streetName: form.value[streetNameKey].toString(),
-                          doorNo: form.value[doorNoKey].toString());
-                      BlocProvider.of<WageSeekerBloc>(context).add(
-                        WageSeekerCreateEvent(
-                            individualDetails: individualDetails,
-                            skillDetails: skillDetails,
-                            locationDetails: locationDetails,
-                            financialDetails: financialDetails),
-                      );
-                      widget.onPressed();
-                    }
-                  },
-                  label: t.translate(i18.common.next),
-                )
-             
-        ],),
+                          // Toast.showToast(context,
+                          //     message:
+                          //         t.translate(i18.wageSeeker.pinCodeValidation),
+                          //     type: ToastType.error);
+                        } else {
+                          final locationDetails = LocationDetails(
+                              pinCode: form.value[pinCodeKey].toString(),
+                              city: form.value[cityKey].toString(),
+                              locality: form.value[localityKey].toString(),
+                              ward: form.value[wardKey].toString(),
+                              streetName: form.value[streetNameKey].toString(),
+                              doorNo: form.value[doorNoKey].toString());
+                          BlocProvider.of<WageSeekerBloc>(context).add(
+                            WageSeekerCreateEvent(
+                                individualDetails: individualDetails,
+                                skillDetails: skillDetails,
+                                locationDetails: locationDetails,
+                                financialDetails: financialDetails),
+                          );
+                          widget.onPressed();
+                        }
+                      },
+                      label: t.translate(i18.common.next),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ],
         );
       },
