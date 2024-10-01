@@ -69,9 +69,6 @@ public class ContractServiceValidator {
     @Autowired
     private MeasurementUtil measurementUtil;
 
-    @Autowired
-    private ContractServiceUtil contractServiceUtil;
-
     public void validateCreateContractRequest(ContractRequest contractRequest) {
         log.info("Validate contract create request");
 
