@@ -126,30 +126,8 @@ const Table = ({
       }
     }
   );
-  console.log(stickyFooter, page, data, columns, "heyhey");
   let isTotalColSpanRendered = false;
   const [toast, setToast] = useState({show : false, label : "", error : false});
-  // const [grandTotal, setGrandTotal] = useState([]);
-
-  // useEffect(() => {
-  //   if (page && page[0]) {
-  //     const TotalRow = Array(page[0].cells.length - 2).fill(0);
-  
-  //     page.forEach(row => {
-  //       row.cells.forEach((cell, index) => {
-  //         if (index > 1){
-  //           const value = parseFloat(cell.value);
-  //           if (!isNaN(value)) {
-  //             TotalRow[index - 2] += value;
-  //           }
-  //         }
-  //       });
-  //     });
-  
-  //     setGrandTotal(TotalRow); // Set the calculated total
-  //     console.log(TotalRow);
-  //   }
-  // }, [page]);
 
   useEffect(() => {
     onSort(sortBy);

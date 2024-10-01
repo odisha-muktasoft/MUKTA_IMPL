@@ -1,5 +1,12 @@
+import { useTranslation } from "react-i18next";
+
+const Amount = ({t,roundOff=true,...props}) => {
+    const value=roundOff?Math.round(props?.value):props?.value;
+    return `${props?.rupeeSymbol ? "₹" : ""}${value !== undefined && value !== null ? (props?.sameDisplay ? value : `${Digit?.Utils?.dss?.formatterWithoutRound(value, "number")}`) : t("ES_COMMON_NA")}`;
+}
 
 export const paymentTrackerReport = (props) => {
+    const { t } = useTranslation();
     var { isLoading, data, revalidate, isFetching, error } = Digit.Hooks.useCustomAPIHook(props);
     //search Project
     const requestrevisionCriteria = {
@@ -49,6 +56,9 @@ export const paymentTrackerReport = (props) => {
             data.stickyFooterRow[7] += ob?.supervisionbillSuccess
             data.stickyFooterRow[8] += ob?.supervisionbillFailed
         })
+        for (let i = 2; i < 9; i++) {
+            data.stickyFooterRow[i] = Amount({ value: data.stickyFooterRow[i], rupeeSymbol: true, t: t });
+        }
     }
 
     return { isLoading : (isLoading || isProjectDetailsLoading), data, revalidate, isFetching, error };

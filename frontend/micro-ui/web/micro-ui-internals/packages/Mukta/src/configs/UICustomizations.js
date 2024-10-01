@@ -3106,9 +3106,6 @@ export const UICustomizations = {
           </span>
         );
       }
-      if (key === "EXP_ESTIMATED_AMT") {
-        return value ? `COMMON_MASTERS_BILL_TYPE_${Digit.Utils.locale.getTransformedLocale(value)}` : t("ES_COMMON_NA");
-      }
       if(key === "EXP_PROJECT_NAME") {
         let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
           return (
@@ -3123,23 +3120,26 @@ export const UICustomizations = {
             </div>
           );
       }
+      if (key === "EXP_ESTIMATED_AMT") {
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
+      }
       if (key === "EXP_WAGE_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_WAGE_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_PUR_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_SUCCESS") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
       }
       if (key === "EXP_SUP_PAYMENT_FAILED") {
-        return <Amount customStyle={{ textAlign: "right" }} value={value} t={t}></Amount>;
+        return <Amount customStyle={{ textAlign: "right" }} value={value} rupeeSymbol={true} t={t}></Amount>;
       }
       // if (key === "CORE_COMMON_STATUS") {
       //   return value ? t(`BILL_STATUS_${value}`) : t("ES_COMMON_NA");
