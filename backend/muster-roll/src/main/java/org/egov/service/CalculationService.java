@@ -3,18 +3,23 @@ package org.egov.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
-import digit.models.coremodels.AuditDetails;
-import digit.models.coremodels.RequestInfoWrapper;
+import org.egov.common.contract.models.AuditDetails;
+import org.egov.common.contract.models.RequestInfoWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.egov.common.contract.request.RequestInfo;
+import org.egov.common.models.individual.Individual;
+import org.egov.common.models.individual.IndividualBulkResponse;
+import org.egov.common.models.individual.IndividualSearch;
+import org.egov.common.models.individual.IndividualSearchRequest;
 import org.egov.config.MusterRollServiceConfiguration;
 import org.egov.tracer.model.CustomException;
 import org.egov.util.MdmsUtil;
 import org.egov.util.MusterRollServiceUtil;
 import org.egov.web.models.*;
-import org.json.JSONObject;
+import org.egov.works.services.common.models.bankaccounts.*;
+import org.egov.works.services.common.models.musterroll.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -74,8 +79,8 @@ public class CalculationService {
         MusterRoll musterRoll = musterRollRequest.getMusterRoll();
         String tenantId = musterRoll.getTenantId();
         Object mdmsData = mdmsUtils.mDMSCallMuster(musterRollRequest, tenantId);
-
         Object mdmsV2Data = mdmsUtils.mDMSV2CallMuster(musterRollRequest, tenantId);
+
 
         //fetch the log events for all individuals in a muster roll
         List<AttendanceLog> attendanceLogList = fetchAttendanceLogsAndHours(musterRollRequest,mdmsData);
@@ -205,7 +210,7 @@ public class CalculationService {
 						.findFirst().orElse(null);
 
 				if (individual != null /* && bankAccount != null */) {
-                    setAdditionalDetails(entry, individualEntriesFromRequest, mdmsV2Data, individual,
+					setAdditionalDetails(entry, individualEntriesFromRequest, mdmsV2Data, individual,
 							bankAccount, isCreate);
 				} else {
 					log.info(
