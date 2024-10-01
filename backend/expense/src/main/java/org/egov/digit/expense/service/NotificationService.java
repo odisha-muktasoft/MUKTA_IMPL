@@ -1,6 +1,6 @@
 package org.egov.digit.expense.service;
 
-import digit.models.coremodels.SMSRequest;
+import org.egov.digit.expense.web.models.SMSRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.digit.expense.config.Configuration;
