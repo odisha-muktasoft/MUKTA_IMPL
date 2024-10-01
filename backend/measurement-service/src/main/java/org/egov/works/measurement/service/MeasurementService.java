@@ -25,28 +25,29 @@ import java.util.Objects;
 @Slf4j
 public class MeasurementService {
 
+    private final MeasurementServiceValidator measurementServiceValidator;
+    private final ResponseInfoFactory responseInfoFactory;
+    private final MBServiceProducer MBServiceProducer;
+    private final MBServiceConfiguration MBServiceConfiguration;
+    private final MeasurementRegistry measurementRegistry;
+    private final MeasurementServiceUtil measurementServiceUtil;
+    private final MeasurementRegistryUtil measurementRegistryUtil;
+    private final NotificationService notificationService;
+   private final MeasurementEnrichment measurementEnrichment;
+
     @Autowired
-    private WorkflowService workflowService;
-    @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
-    private MeasurementServiceValidator measurementServiceValidator;
-    @Autowired
-    private ResponseInfoFactory responseInfoFactory;
-    @Autowired
-    private MBServiceProducer MBServiceProducer;
-    @Autowired
-    private MBServiceConfiguration MBServiceConfiguration;
-    @Autowired
-    private MeasurementRegistry measurementRegistry;
-    @Autowired
-    private MeasurementServiceUtil measurementServiceUtil;
-    @Autowired
-    private MeasurementRegistryUtil measurementRegistryUtil;
-    @Autowired
-    private MeasurementEnrichment measurementEnrichment;
-    @Autowired
-    private NotificationService notificationService;
+    public MeasurementService(MeasurementServiceValidator measurementServiceValidator, ResponseInfoFactory responseInfoFactory, MBServiceProducer MBServiceProducer, MBServiceConfiguration MBServiceConfiguration, MeasurementRegistry measurementRegistry, MeasurementServiceUtil measurementServiceUtil, MeasurementRegistryUtil measurementRegistryUtil, NotificationService notificationService,
+                              MeasurementEnrichment measurementEnrichment) {
+        this.measurementServiceValidator = measurementServiceValidator;
+        this.responseInfoFactory = responseInfoFactory;
+        this.MBServiceProducer = MBServiceProducer;
+        this.MBServiceConfiguration = MBServiceConfiguration;
+        this.measurementRegistry = measurementRegistry;
+        this.measurementServiceUtil = measurementServiceUtil;
+        this.measurementRegistryUtil = measurementRegistryUtil;
+        this.notificationService = notificationService;
+        this.measurementEnrichment = measurementEnrichment;
+    }
 
     /**
      * Handles create MeasurementRegistry
@@ -136,6 +137,7 @@ public class MeasurementService {
         List<org.egov.works.measurement.web.models.MeasurementService> measurementServices = measurementRegistry.changeToMeasurementService(measurementResponse.getMeasurements());
 
         // Filter Active Documents
+
         measurementEnrichment.enrichMeasurementWithActiveDocuments(measurementServices);
 
         // Set the converted measurement services in the response

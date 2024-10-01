@@ -1,6 +1,6 @@
 package org.egov.works.measurement.service;
 
-import digit.models.coremodels.SMSRequest;
+import org.egov.works.services.common.models.estimate.SMSRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.models.Workflow;
 import org.egov.common.contract.request.RequestInfo;
@@ -23,12 +23,16 @@ import static org.egov.works.measurement.config.ServiceConstants.*;
 @Slf4j
 public class NotificationService {
 
+    private final MBServiceProducer producer;
+    private final MBServiceConfiguration config;
+    private final NotificationUtil notificationUtil;
+
     @Autowired
-    private MBServiceProducer producer;
-    @Autowired
-    private MBServiceConfiguration config;
-    @Autowired
-    private NotificationUtil notificationUtil;
+    public NotificationService(MBServiceProducer producer, MBServiceConfiguration config, NotificationUtil notificationUtil) {
+        this.producer = producer;
+        this.config = config;
+        this.notificationUtil = notificationUtil;
+    }
 
     public void sendNotification(MeasurementServiceRequest request) {
 

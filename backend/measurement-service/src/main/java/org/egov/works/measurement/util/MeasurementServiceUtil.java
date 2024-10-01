@@ -3,7 +3,9 @@ package org.egov.works.measurement.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.egov.common.contract.response.ResponseInfo;
+import org.egov.works.measurement.config.MBServiceConfiguration;
 import org.egov.works.measurement.enrichment.MeasurementEnrichment;
+import org.egov.works.measurement.service.MeasurementRegistry;
 import org.egov.works.measurement.service.WorkflowService;
 import org.egov.works.measurement.web.models.*;
 import org.springframework.beans.BeanUtils;
@@ -19,13 +21,17 @@ import java.util.Map;
 @Slf4j
 public class MeasurementServiceUtil {
 
+    private final WorkflowService workflowService;
+    private final MeasurementEnrichment measurementEnrichment;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    private WorkflowService workflowService;
-    @Autowired
-    private MeasurementEnrichment measurementEnrichment;
-    @Autowired
-    private ObjectMapper objectMapper;
+    public MeasurementServiceUtil(WorkflowService workflowService, MeasurementEnrichment measurementEnrichment,ObjectMapper objectMapper) {
+        this.workflowService = workflowService;
+        this.measurementEnrichment = measurementEnrichment;
+        this.objectMapper=objectMapper;
+    }
+
     public List<Measurement> convertToMeasurementList(List<MeasurementService> measurementServices) {
         List<Measurement> measurements = new ArrayList<>();
 
