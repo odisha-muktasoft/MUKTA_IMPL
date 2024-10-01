@@ -175,7 +175,8 @@ export const paymentTrackerSearchConfig = {
                     },
                     {
                       "label": "EXP_ESTIMATED_AMT",
-                      "jsonPath": "estimatedAmount"
+                      "jsonPath": "estimatedAmount",
+                      "additionalCustomization": true
                     },
                     {
                       "label": "EXP_WAGE_PAYMENT_SUCCESS",
@@ -214,7 +215,8 @@ export const paymentTrackerSearchConfig = {
                   "resultsJsonPath": "aggsResponse.projects",
                   "showCheckBox": false,
                   "checkBoxActionLabel": "ES_COMMON_GENERATE_PAYMENT_ADVICE",
-                  "showTableInstruction": "EXP_DOWNLOAD_BILL_INSTRUCTION"
+                  "showTableInstruction": "EXP_DOWNLOAD_BILL_INSTRUCTION",
+                  "stickyFooter": true
                 },
                 "children": {},
                 "show": true
