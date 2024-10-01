@@ -29,43 +29,40 @@ import static org.egov.works.util.ContractServiceConstants.*;
 @Slf4j
 public class NotificationService {
 
-    @Autowired
     private ContractProducer contractProducer;
-
-    @Autowired
     private ServiceRequestRepository repository;
-
-    @Autowired
     private RestTemplate restTemplate;
-
-    @Autowired
     private ContractServiceConfiguration config;
-
-    @Autowired
     private HRMSUtils hrmsUtils;
-
-    @Autowired
     private EstimateServiceUtil estimateServiceUtil;
-
-    @Autowired
     private ProjectServiceUtil projectServiceUtil;
+    private LocationServiceUtil locationServiceUtil;
+    private OrgUtils organisationServiceUtil;
+    private final ContractRepository contractRepository;
+    private static final String SMS_NOT_FOUND = "SMS content has not been configured for this case";
+    private static final String MOBILE_NUMBERS = "mobileNumbers";
+    private static final String MOBILE_NUMBER = "mobileNumber";
+    private static final String PROJECT_NUMBER = "projectNumber";
+    private static final String FETCH_LOG_STATEMENT = "get project number, location, userDetails";
+    private static final String PROJECT_ID = "projectId";
+    private static final String PROJECT_ID_REPLACEMENT_STRING = "{projectid}";
+    private static final String WORK_ORDER_NO_REPLACEMENT_STRING = "{workorderno}";
+
+
 
     @Autowired
-    private LocationServiceUtil locationServiceUtil;
-
-   @Autowired
-   private OrgUtils organisationServiceUtil;
-   @Autowired
-   private ContractService contractService;
-
-   private static final String SMS_NOT_FOUND = "SMS content has not been configured for this case";
-   private static final String MOBILE_NUMBERS = "mobileNumbers";
-   private static final String MOBILE_NUMBER = "mobileNumber";
-   private static final String PROJECT_NUMBER = "projectNumber";
-   private static final String FETCH_LOG_STATEMENT = "get project number, location, userDetails";
-   private static final String PROJECT_ID = "projectId";
-   private static final String PROJECT_ID_REPLACEMENT_STRING =  "{projectid}";
-   private static final String WORK_ORDER_NO_REPLACEMENT_STRING = "{workorderno}";
+    public NotificationService(ContractRepository contractRepository, OrgUtils organisationServiceUtil, LocationServiceUtil locationServiceUtil, ProjectServiceUtil projectServiceUtil, EstimateServiceUtil estimateServiceUtil, HRMSUtils hrmsUtils, ContractServiceConfiguration config, RestTemplate restTemplate, ServiceRequestRepository repository, ContractProducer contractProducer) {
+        this.contractRepository = contractRepository;
+        this.organisationServiceUtil = organisationServiceUtil;
+        this.locationServiceUtil = locationServiceUtil;
+        this.projectServiceUtil = projectServiceUtil;
+        this.estimateServiceUtil = estimateServiceUtil;
+        this.hrmsUtils = hrmsUtils;
+        this.config = config;
+        this.restTemplate = restTemplate;
+        this.repository = repository;
+        this.contractProducer = contractProducer;
+    }
 
     /**
      * Sends notification by putting the sms content onto the core-sms topic
@@ -74,7 +71,7 @@ public class NotificationService {
      */
     public void sendNotification(ContractRequest request) {
 
-        if(config.getIsSMSEnabled()){
+        if (config.getIsSMSEnabled()) {
             log.info("Notification is enabled for this service");
 
             Workflow workflow = request.getWorkflow();
@@ -82,9 +79,9 @@ public class NotificationService {
             if (request.getContract().getBusinessService() != null
                     && !request.getContract().getBusinessService().isEmpty()
                     && request.getContract().getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE)) {
-                pushNotificationForRevisedContract (request);
+                pushNotificationForRevisedContract(request);
 
-            }else {
+            } else {
                 if (REJECT_ACTION.equalsIgnoreCase(workflow.getAction())) {
                     pushNotificationToCreatorForRejectAction(request);
                 } else if (APPROVE_ACTION.equalsIgnoreCase(workflow.getAction())) {
@@ -97,11 +94,12 @@ public class NotificationService {
                     pushNotificationToCreatorForDeclineAction(request);
                 }
             }
-        }else{
+        } else {
             log.info("Notification is not enabled for this service");
         }
 
     }
+
     private void pushNotificationForRevisedContract(ContractRequest request) {
         String message = getMessage(request, false);
 
@@ -120,23 +118,24 @@ public class NotificationService {
         Boolean isSendBack = (request.getWorkflow().getAction().equalsIgnoreCase("SEND_BACK") || request.getWorkflow().getAction().equalsIgnoreCase("SEND_BACK_TO_ORIGINATOR"));
         message = buildMessageForRevisedContract(smsDetailsMap, message, isSendBack);
 
-        smsDetailsMap.put("mobileNumber",cboMobileNumber);
+        smsDetailsMap.put("mobileNumber", cboMobileNumber);
 
-        Map<String, Object> additionalField=new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,ContractServiceConstants.CONTRACT_REVISION_SEND_BACK_LOCALIZATION_CODE,additionalField);
+        Map<String, Object> additionalField = new HashMap<>();
+        if (config.isAdditonalFieldRequired()) {
+            setAdditionalFields(request, ContractServiceConstants.CONTRACT_REVISION_SEND_BACK_LOCALIZATION_CODE, additionalField);
         }
 
         if (isSendBack) {
             log.info("Sending message to CBO");
-            checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetailsMap);
-        }else{
+            checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetailsMap);
+        } else {
             log.info("Sending message to Originator:");
-            pushNotificationToOriginator(request,message,cboMobileNumber);
+            pushNotificationToOriginator(request, message, cboMobileNumber);
         }
 
     }
-    private void pushNotificationToOriginator (ContractRequest request, String message,String cboMobileNumber) {
+
+    private void pushNotificationToOriginator(ContractRequest request, String message, String cboMobileNumber) {
 
         Pagination pagination = Pagination.builder()
                 .limit(config.getContractMaxLimit())
@@ -149,43 +148,41 @@ public class NotificationService {
                 .pagination(pagination)
                 .build();
 
-        List<Contract> contractsFromDB = contractService.getContracts(contractCriteria);
+        List<Contract> contractsFromDB = contractRepository.getContracts(contractCriteria);
         Contract originalContractFromDB = contractsFromDB.stream().filter(contract -> (contract.getBusinessService() != null && contract.getBusinessService().equalsIgnoreCase(CONTRACT_TIME_EXTENSION_BUSINESS_SERVICE))).collect(Collectors.toList()).get(0);
         log.info("Getting officer-in-charge for contract :: " + originalContractFromDB.getContractNumber());
         ObjectMapper objectMapper = new ObjectMapper();
         String officerInchargeCode = null;
-        try{
+        try {
             Map<String, Object> addtionalDetailsMap = objectMapper.convertValue(originalContractFromDB.getAdditionalDetails(), Map.class);
             if (addtionalDetailsMap.containsKey("officerInChargeName")) {
                 Map<String, String> officerInChargeNameMap = (Map<String, String>) addtionalDetailsMap.get("officerInChargeName");
                 officerInchargeCode = officerInChargeNameMap.get("code");
             }
-        }catch (Exception e){
-            throw new CustomException("OFFICER_INCHARGE_NOT_FOUND","Failed tp fetch officerInCharge details");
+        } catch (Exception e) {
+            throw new CustomException("OFFICER_INCHARGE_NOT_FOUND", "Failed tp fetch officerInCharge details");
         }
-        Map<String,String> officerInChargeMobileNumberMap =hrmsUtils.getEmployeeDetailsByCode(request.getRequestInfo(), request.getContract().getTenantId(),officerInchargeCode);
+        Map<String, String> officerInChargeMobileNumberMap = hrmsUtils.getEmployeeDetailsByCode(request.getRequestInfo(), request.getContract().getTenantId(), officerInchargeCode);
         String officerInChargeMobileNumber = officerInChargeMobileNumberMap.get(MOBILE_NUMBER);
         Map<String, String> smsDetailsMap = new HashMap<>();
 
-        smsDetailsMap.put("mobileNumber",officerInChargeMobileNumber);
-        smsDetailsMap.put("cboMobileNumber",cboMobileNumber);
+        smsDetailsMap.put("mobileNumber", officerInChargeMobileNumber);
+        smsDetailsMap.put("cboMobileNumber", cboMobileNumber);
         Workflow workflow = request.getWorkflow();
         String message1 = null;
 
 
-
-        Map<String, Object> additionalField=new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            if ("REJECT".equalsIgnoreCase(workflow.getAction())){
-                setAdditionalFields(request,ContractServiceConstants.CONTRACT_REVISION_REJECT_LOCALIZATION_CODE,additionalField);
-            }
-            else if ("APPROVE".equalsIgnoreCase(workflow.getAction())) {
-                setAdditionalFields(request,ContractServiceConstants.CONTRACT_REVISION_APPROVE_LOCALIZATION_CODE,additionalField);
+        Map<String, Object> additionalField = new HashMap<>();
+        if (config.isAdditonalFieldRequired()) {
+            if ("REJECT".equalsIgnoreCase(workflow.getAction())) {
+                setAdditionalFields(request, ContractServiceConstants.CONTRACT_REVISION_REJECT_LOCALIZATION_CODE, additionalField);
+            } else if ("APPROVE".equalsIgnoreCase(workflow.getAction())) {
+                setAdditionalFields(request, ContractServiceConstants.CONTRACT_REVISION_APPROVE_LOCALIZATION_CODE, additionalField);
             }
 
         }
         log.info("Sending message to Officer In charge");
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetailsMap);
+        checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetailsMap);
 
     }
 
@@ -204,16 +201,16 @@ public class NotificationService {
         //get project number, location, userDetails
         log.info("get project number, location, userDetails");
         Map<String, String> smsDetails = getDetailsForSMS(request, createdByUuid);
-        Map<String, Object> additionalField=new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,ContractServiceConstants.CONTRACTS_REJECT_LOCALIZATION_CODE,additionalField);
+        Map<String, Object> additionalField = new HashMap<>();
+        if (config.isAdditonalFieldRequired()) {
+            setAdditionalFields(request, ContractServiceConstants.CONTRACTS_REJECT_LOCALIZATION_CODE, additionalField);
         }
 
 
         log.info("build Message For Reject Action");
         message = buildMessageForRejectAction(contract, smsDetails, message);
         log.info("push message for REJECT Action");
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetails);
 
     }
 
@@ -233,14 +230,14 @@ public class NotificationService {
         log.info("get project number, location, userDetails");
         Map<String, String> smsDetails = getDetailsForSMS(request, createdByUuid);
         Map<String, Object> additionalField = new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,ContractServiceConstants.CONTRACTS_APPROVE_CREATOR_LOCALIZATION_CODE,additionalField);
+        if (config.isAdditonalFieldRequired()) {
+            setAdditionalFields(request, ContractServiceConstants.CONTRACTS_APPROVE_CREATOR_LOCALIZATION_CODE, additionalField);
         }
         log.info("build Message For Approve Action for WO Creator");
         message = buildMessageForWOCreator(contract, smsDetails, message);
 
         log.info("push Message For Approve Action for WO Creator");
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetails);
 
     }
 
@@ -260,13 +257,13 @@ public class NotificationService {
         log.info("get project number, location, userDetails");
         Map<String, String> smsDetails = getDetailsForSMS(request, createdByUuid);
         Map<String, Object> additionalField = new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,ContractServiceConstants.CONTRACTS_DECLINE_CREATOR_LOCALIZATION_CODE,additionalField);
+        if (config.isAdditonalFieldRequired()) {
+            setAdditionalFields(request, ContractServiceConstants.CONTRACTS_DECLINE_CREATOR_LOCALIZATION_CODE, additionalField);
         }
         log.info("build Message For decline Action for WO Creator");
         message = buildMessageForDeclineAction_WOCreator(contract, smsDetails, message);
         log.info("push Message For decline Action for WO Creator");
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetails);
 
 
     }
@@ -287,13 +284,13 @@ public class NotificationService {
         log.info("get project number, location, userDetails");
         Map<String, String> smsDetails = getDetailsForSMS(request, createdByUuid);
         Map<String, Object> additionalField = new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,ContractServiceConstants.CONTRACTS_ACCEPT_CREATOR_LOCALIZATION_CODE,additionalField);
+        if (config.isAdditonalFieldRequired()) {
+            setAdditionalFields(request, ContractServiceConstants.CONTRACTS_ACCEPT_CREATOR_LOCALIZATION_CODE, additionalField);
         }
         log.info("build Message For Accept Action for WO Creator");
         message = buildMessageForAcceptAction_WOCreator(contract, smsDetails, message);
         log.info("push Message For Accept Action for WO Creator");
-        checkAdditionalFieldAndPushONSmsTopic(message,additionalField,smsDetails);
+        checkAdditionalFieldAndPushONSmsTopic(message, additionalField, smsDetails);
     }
 
     private void pushNotificationToCBOForApproveAction(ContractRequest request) {
@@ -310,15 +307,15 @@ public class NotificationService {
 
         Map<String, List<String>> projDetails = getProjectNumber(request);
         Map<String, Object> additionalField = new HashMap<>();
-        if(config.isAdditonalFieldRequired()){
-            setAdditionalFields(request,ContractServiceConstants.CONTRACTS_APPROVE_CBO_LOCALIZATION_CODE,additionalField);
+        if (config.isAdditonalFieldRequired()) {
+            setAdditionalFields(request, ContractServiceConstants.CONTRACTS_APPROVE_CBO_LOCALIZATION_CODE, additionalField);
         }
         for (int i = 0; i < projDetails.get(MOBILE_NUMBERS).size(); i++) {
-            Map<String,String> smsDetails=new HashMap<>();
-            smsDetails.put(PROJECT_ID,projDetails.get(PROJECT_NUMBER).get(0));
-            smsDetails.put(MOBILE_NUMBER,projDetails.get(MOBILE_NUMBERS).get(i));
+            Map<String, String> smsDetails = new HashMap<>();
+            smsDetails.put(PROJECT_ID, projDetails.get(PROJECT_NUMBER).get(0));
+            smsDetails.put(MOBILE_NUMBER, projDetails.get(MOBILE_NUMBERS).get(i));
             String customizedMessage = buildMessageForApproveActionWOCBO(contract, smsDetails, message);
-            checkAdditionalFieldAndPushONSmsTopic(customizedMessage,additionalField,smsDetails);
+            checkAdditionalFieldAndPushONSmsTopic(customizedMessage, additionalField, smsDetails);
 
         }
     }
@@ -346,15 +343,16 @@ public class NotificationService {
         //get org name
         Map<String, List<String>> orgDetails = organisationServiceUtil.getOrganisationInfo(request);
 
-        smsDetails.put("orgName",orgDetails.get("orgName").get(0));
+        smsDetails.put("orgName", orgDetails.get("orgName").get(0));
         smsDetails.putAll(userDetailsForSMS);
-        smsDetails.put(PROJECT_ID,projectDetails.get(PROJECT_NUMBER));
+        smsDetails.put(PROJECT_ID, projectDetails.get(PROJECT_NUMBER));
 
        /* smsDetails.putAll(projectDetails);
         smsDetails.putAll(locationName);*/
 
         return smsDetails;
     }
+
     private Map<String, List<String>> getProjectNumber(ContractRequest request) {
 
         RequestInfo requestInfo = request.getRequestInfo();
@@ -368,12 +366,12 @@ public class NotificationService {
 
         //As the new template only requires the project id so fetching it in this class only rather than calling the util method
         String projectId = estimates.get(0).getProjectId();
-         Map<String, String> projectDetails = projectServiceUtil.getProjectDetails(requestInfo, estimates.get(0));
+        Map<String, String> projectDetails = projectServiceUtil.getProjectDetails(requestInfo, estimates.get(0));
 
         // Fetching org mobile number and maintaining in the map
-        Map<String,List<String>> projectAndOrgDetails= organisationServiceUtil.getOrganisationInfo(request);
+        Map<String, List<String>> projectAndOrgDetails = organisationServiceUtil.getOrganisationInfo(request);
 
-        projectAndOrgDetails.put(PROJECT_ID,Collections.singletonList(projectId));
+        projectAndOrgDetails.put(PROJECT_ID, Collections.singletonList(projectId));
         projectAndOrgDetails.put(PROJECT_NUMBER, Collections.singletonList(projectDetails.get(PROJECT_NUMBER)));
 
         return projectAndOrgDetails;
@@ -391,7 +389,7 @@ public class NotificationService {
         List<Estimate> estimates = estimateServiceUtil.fetchActiveEstimates(requestInfo, tenantId, lineItemsMap.keySet());
         Map<String, String> projectDetails = projectServiceUtil.getProjectDetails(requestInfo, estimates.get(0));
 
-        Map<String,List<String>> orgDetails=organisationServiceUtil.getOrganisationInfo(request);
+        Map<String, List<String>> orgDetails = organisationServiceUtil.getOrganisationInfo(request);
         orgDetails.put("projectName", Collections.singletonList(projectDetails.get("projectName")));
         orgDetails.put(PROJECT_NUMBER, Collections.singletonList(projectDetails.get(PROJECT_NUMBER)));
 
@@ -414,7 +412,7 @@ public class NotificationService {
             } else if ("SEND_BACK_TO_ORIGINATOR".equalsIgnoreCase(workflow.getAction()) || "SEND_BACK".equalsIgnoreCase(workflow.getAction())) {
                 message = getMessage(request, ContractServiceConstants.CONTRACT_REVISION_SEND_BACK_LOCALIZATION_CODE);
             }
-        }else {
+        } else {
 
             if (REJECT_ACTION.equalsIgnoreCase(workflow.getAction()) && !isCBORole) {
                 message = getMessage(request, ContractServiceConstants.CONTRACTS_REJECT_LOCALIZATION_CODE);
@@ -442,12 +440,13 @@ public class NotificationService {
     public String getMessage(ContractRequest request, String msgCode) {
         String locale = "en_IN";
         String rootTenantId = request.getContract().getTenantId().split("\\.")[0];
-        if(request.getRequestInfo().getMsgId().split("\\|").length > 1)
+        if (request.getRequestInfo().getMsgId().split("\\|").length > 1)
             locale = request.getRequestInfo().getMsgId().split("\\|")[1];
         Map<String, Map<String, String>> localizedMessageMap = getLocalisedMessages(request.getRequestInfo(), rootTenantId,
                 locale, ContractServiceConstants.CONTRACTS_MODULE_CODE);
         return localizedMessageMap.get(locale + "|" + rootTenantId).get(msgCode);
     }
+
     private String buildMessageForRevisedContract(Map<String, String> userDetailsForSMS, String message, Boolean isSendBack) {
         if (Boolean.FALSE.equals(isSendBack)) {
             message = message.replace(PROJECT_ID_REPLACEMENT_STRING, userDetailsForSMS.get(PROJECT_NUMBER));
@@ -533,48 +532,46 @@ public class NotificationService {
     }
 
     /**
-     *
      * @param actualURL Actual URL
      * @return Shortened URL
      */
     public String getShortnerURL(String actualURL) {
-        HashMap<String,String> body = new HashMap<>();
-        body.put("url",actualURL);
+        HashMap<String, String> body = new HashMap<>();
+        body.put("url", actualURL);
         StringBuilder builder = new StringBuilder(config.getUrlShortnerHost());
         builder.append(config.getUrlShortnerEndpoint());
         String res = restTemplate.postForObject(builder.toString(), body, String.class);
 
-        if(StringUtils.isEmpty(res)){
-            log.error("URL_SHORTENING_ERROR","Unable to shorten url: "+actualURL);
+        if (StringUtils.isEmpty(res)) {
+            log.error("URL_SHORTENING_ERROR", "Unable to shorten url: " + actualURL);
             return actualURL;
-        }
-        else return res;
+        } else return res;
     }
 
-    private void setAdditionalFields(ContractRequest request, String localizationCode,Map<String, Object> additionalField ){
-        additionalField.put("templateCode",localizationCode);
-        additionalField.put("requestInfo",request.getRequestInfo());
-        additionalField.put("tenantId",request.getContract().getTenantId());
+    private void setAdditionalFields(ContractRequest request, String localizationCode, Map<String, Object> additionalField) {
+        additionalField.put("templateCode", localizationCode);
+        additionalField.put("requestInfo", request.getRequestInfo());
+        additionalField.put("tenantId", request.getContract().getTenantId());
 
     }
 
-    private void checkAdditionalFieldAndPushONSmsTopic( String customizedMessage , Map<String, Object> additionalField,Map<String,String> smsDetails){
+    private void checkAdditionalFieldAndPushONSmsTopic(String customizedMessage, Map<String, Object> additionalField, Map<String, String> smsDetails) {
 
 
-        if(!additionalField.isEmpty()){
-            WorksSmsRequest smsRequest= new WorksSmsRequest();
-            if(null!=smsDetails.get("cboMobileNumber")){
-                smsRequest=WorksSmsRequest.builder().message(customizedMessage).additionalFields(additionalField)
+        if (!additionalField.isEmpty()) {
+            WorksSmsRequest smsRequest = new WorksSmsRequest();
+            if (null != smsDetails.get("cboMobileNumber")) {
+                smsRequest = WorksSmsRequest.builder().message(customizedMessage).additionalFields(additionalField)
                         .mobileNumber(smsDetails.get("cboMobileNumber")).build();
                 log.info("SMS message with additonal fields to CBO:::::" + smsRequest.toString());
                 contractProducer.push(config.getMuktaNotificationTopic(), smsRequest);
             }
-            smsRequest=WorksSmsRequest.builder().message(customizedMessage).additionalFields(additionalField)
+            smsRequest = WorksSmsRequest.builder().message(customizedMessage).additionalFields(additionalField)
                     .mobileNumber(smsDetails.get("mobileNumber")).build();
             log.info("SMS message with additonal fields:::::" + smsRequest.toString());
             contractProducer.push(config.getMuktaNotificationTopic(), smsRequest);
 
-        }else{
+        } else {
             SMSRequest smsRequest = SMSRequest.builder().mobileNumber(smsDetails.get("mobileNumber")).message(customizedMessage).build();
             log.info("SMS message without Additonal Fields:::::" + smsRequest.toString());
             contractProducer.push(config.getSmsNotifTopic(), smsRequest);
