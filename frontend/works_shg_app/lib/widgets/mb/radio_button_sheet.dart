@@ -1,4 +1,3 @@
-
 import 'package:digit_ui_components/digit_components.dart';
 
 import 'package:digit_ui_components/models/RadioButtonModel.dart';
@@ -39,18 +38,23 @@ class _MyBottomSheetState extends State<MyBottomSheet> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 16.0),
-            child: DigitTextBlock(
-              heading: t.translate(i18.measurementBook.sortBy),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.swap_vert,
+                  size: 30,
+                ),
+                DigitTextBlock(
+                  heading: t.translate(i18.measurementBook.sortBy),
+                ),
+              ],
             ),
           ),
           const DigitDivider(
             dividerType: DividerType.large,
-            
           ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-             
-
               return RadioList(
                 groupValue: _selectedValue.toString(),
                 containerPadding: const EdgeInsets.all(16),

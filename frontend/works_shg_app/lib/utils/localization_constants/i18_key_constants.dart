@@ -486,4 +486,6 @@ String get addMeasurement=>"MB_ADD_MEASUREMENT";
  String get imageLimit=>"MB_IMGAE_LIMIT";
  String get imageSize=>"MB_FILE_SIZE";
 
+ String get measurementSummaryLabel=>"MB_SUMMARY_LABEL";
+
 }

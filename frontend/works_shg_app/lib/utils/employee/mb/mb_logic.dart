@@ -784,6 +784,7 @@ class MBLogic {
                   'number': item.number,
                   'quantity': item.quantity,
                   'measurelineitemNo': item.measurelineitemNo,
+                  'measurementSummary':item.measurementSummary
                 };
               }
               return null;

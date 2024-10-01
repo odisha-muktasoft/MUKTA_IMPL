@@ -344,6 +344,7 @@ _$MeasureLineItemImpl _$$MeasureLineItemImplFromJson(
       number: json['number'],
       quantity: json['quantity'],
       measurelineitemNo: json['measurelineitemNo'],
+      measurementSummary: json['measurementSummary'],
     );
 
 Map<String, dynamic> _$$MeasureLineItemImplToJson(
@@ -355,6 +356,7 @@ Map<String, dynamic> _$$MeasureLineItemImplToJson(
       'number': instance.number,
       'quantity': instance.quantity,
       'measurelineitemNo': instance.measurelineitemNo,
+      'measurementSummary': instance.measurementSummary,
     };
 
 _$ContractImpl _$$ContractImplFromJson(Map<String, dynamic> json) =>
