@@ -31,10 +31,9 @@ import static org.egov.works.util.ContractServiceConstants.*;
 public class ContractService {
 
     @Autowired
-    private ContractServiceValidator contractServiceValidator;
-
-    @Autowired
     private ResponseInfoFactory responseInfoFactory;
+    @Autowired
+    private ContractServiceValidator contractServiceValidator;
 
     @Autowired
     private ContractServiceConfiguration contractServiceConfiguration;

@@ -10,6 +10,8 @@ import org.egov.works.config.ContractServiceConfiguration;
 import org.egov.works.repository.LineItemsRepository;
 import org.egov.works.repository.ServiceRequestRepository;
 import org.egov.works.service.ContractService;
+import org.egov.works.services.common.models.estimate.Estimate;
+import org.egov.works.services.common.models.estimate.EstimateDetail;
 import org.egov.works.util.*;
 import org.egov.works.repository.ContractRepository;
 import org.egov.works.web.models.*;

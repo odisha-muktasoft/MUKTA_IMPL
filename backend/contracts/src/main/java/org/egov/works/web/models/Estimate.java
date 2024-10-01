@@ -3,9 +3,10 @@ package org.egov.works.web.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import digit.models.coremodels.AuditDetails;
-import digit.models.coremodels.ProcessInstance;
+
 import lombok.*;
+import org.egov.common.contract.models.AuditDetails;
+import org.egov.common.contract.workflow.ProcessInstance;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -18,7 +19,7 @@ import java.util.List;
  * Estimate
  */
 @Validated
-@javax.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2022-12-30T13:05:25.880+05:30")
+@jakarta.annotation.Generated(value = "org.egov.codegen.SpringBootCodegen", date = "2022-12-30T13:05:25.880+05:30")
 
 @Getter
 @Setter
