@@ -241,6 +241,80 @@ config:
         dockerfile: "build/maven/Dockerfile"
         image-name: "sms-adapter"
 
+   # mukta
+  - name: "builds/mukta_impl/mukta/mukta-contracts"
+    build:
+      - work-dir: "backend/contracts"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-contracts"
+      - work-dir: "backend/contracts/src/main/resources/db"
+        image-name: "mukta-contracts-db"      
+
+  - name: "builds/mukta_impl/mukta/mukta-estimates"
+    build:
+      - work-dir: "backend/estimates"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-estimates"
+      - work-dir: "backend/estimates/src/main/resources/db"
+        image-name: "mukta-estimates-db"      
+
+  - name: "builds/mukta_impl/mukta/mukta-expense"
+    build:
+      - work-dir: "backend/expense"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-expense"
+      - work-dir: "backend/expense/src/main/resources/db"
+        image-name: "mukta-expense-db"      
+
+  - name: "builds/mukta_impl/mukta/mukta-expense-calculator"
+    build:
+      - work-dir: "backend/expense-calculator"
+        dockerfile: "build/maven-java17/Dockerfile"
+        image-name: "mukta-expense-calculator"
+      - work-dir: "backend/expense-calculator/src/main/resources/db"
+        image-name: "mukta-expense-calculator-db"     
+
+  - name: "builds/mukta_impl/mukta/mukta-individual"
+    build:
+      - work-dir: "backend/individual"
+        dockerfile: "build/maven/Dockerfile"
+        image-name: "mukta-individual"
+      - work-dir: "backend/individual/src/main/resources/db"
+        image-name: "mukta-individual-db"   
+
+  - name: "builds/mukta_impl/mukta/mukta-mukta-services"
+    build:
+      - work-dir: "utilities/mukta-services"
+        dockerfile: "utilities/mukta-services/Dockerfile"
+        image-name: "mukta-mukta-services" 
+
+  - name: "builds/mukta_impl/mukta/mukta-works-pdf"
+    build:
+      - work-dir: "utilities/works-pdf"
+        image-name: "mukta-works-pdf"
+      - work-dir: "utilities/works-pdf/migration"
+        image-name: "mukta-works-pdf-db"    
+
+  - name: "builds/mukta_impl/mukta/mukta-egov-hrms"
+    build:
+      - work-dir: "backend/egov-hrms"
+        image-name: "mukta-egov-hrms"
+        dockerfile: "build/maven/Dockerfile"
+      - work-dir: "backend/egov-hrms/src/main/resources/db"
+        image-name: "mukta-egov-hrms-db"
+
+  - name: "builds/mukta_impl/mukta/mukta-user-otp"
+    build:
+      - work-dir: "backend/user-otp"
+        image-name: "mukta-user-otp"
+        dockerfile: "build/maven/Dockerfile"   
+
+  - name: "builds/mukta_impl/mukta/mukta-egov-notification-sms"
+    build:
+      - work-dir: "backend/egov-notification-sms"
+        image-name: "mukta-egov-notification-sms"
+        dockerfile: "build/maven/Dockerfile"     
+
         
 
         
