@@ -246,6 +246,7 @@ const MeasureTable = (props) => {
         t("WORKS_SNO"),
         t("MB_IS_DEDUCTION"),
         t("MB_DESCRIPTION"),
+        t("MB_MEASURE_SUMMARY"),
         t("MB_ONLY_NUMBER"),
         t("MB_LENGTH"),
         t("MB_WIDTH"),
