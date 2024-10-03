@@ -44,20 +44,27 @@ export const paymentTrackerReport = (props) => {
                 project : /*projectDetails?.items?.filter((pj) => pj?.businessObject?.projectNumber === ob?.projectNumber)?.[0] */ projectDetails?.items?.[0]
             }
         })
-        data.stickyFooterRow = Array(9).fill(0);
-        data.stickyFooterRow[0] = '';
-        data.stickyFooterRow[1] = 'Grand Total';
-        data?.aggsResponse?.projects?.map((ob, index) => {
-            data.stickyFooterRow[2] += ob?.estimatedAmount
-            data.stickyFooterRow[3] += ob?.wagebillsuccess
-            data.stickyFooterRow[4] += ob?.wagebillFailed
-            data.stickyFooterRow[5] += ob?.purchasebillSuccess
-            data.stickyFooterRow[6] += ob?.purchasebillFailed
-            data.stickyFooterRow[7] += ob?.supervisionbillSuccess
-            data.stickyFooterRow[8] += ob?.supervisionbillFailed
+        data.stickyFooterRow = [
+            {'name': '', 'value':''},
+            {'name': 'total', 'value': t('Grand Total')},
+            {'name': 'estimatedAmount', 'value': 0},
+            {'name': 'wagebillsuccess', 'value': 0},
+            {'name': 'wagebillFailed', 'value': 0},
+            {'name': 'purchasebillSuccess', 'value': 0},
+            {'name': 'purchasebillFailed', 'value': 0},
+            {'name': 'supervisionbillSuccess', 'value': 0},
+            {'name': 'supervisionbillFailed', 'value': 0}
+        ]
+
+        data?.aggsResponse?.projects?.forEach((ob, index) => {
+            data.stickyFooterRow.forEach((row, index) => {
+                if(index > 1 && typeof ob?.[row.name] === 'number') {
+                    data.stickyFooterRow[index].value += ob?.[row.name] || 0;
+                }
+            })
         })
-        for (let i = 2; i < 9; i++) {
-            data.stickyFooterRow[i] = Amount({ value: data.stickyFooterRow[i], rupeeSymbol: true, t: t });
+        for (let i = 2; i < data.stickyFooterRow.length; i++) {
+            data.stickyFooterRow[i].value = Amount({ value: data.stickyFooterRow[i].value, rupeeSymbol: true, t: t });
         }
     }
 

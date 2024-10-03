@@ -213,13 +213,13 @@ const Table = ({
             })}
 
             {stickyFooter && (
-            <tr>
-              {stickyFooter?.map((amount, index) => (
-                <td style={{ ...getCellProps().style, fontWeight: 'bold', textAlign: "right"}}>
-                  <span>{amount}</span>
-                </td>
-              ))}
-            </tr>
+              <tr>
+                {stickyFooter?.map(el => (
+                  <td style={{ ...getCellProps().style, fontWeight: 'bold', textAlign: "right"}}>
+                    <span>{el?.value}</span>
+                  </td>
+                ))}
+              </tr>
             )}
           </tbody>
         </table>
