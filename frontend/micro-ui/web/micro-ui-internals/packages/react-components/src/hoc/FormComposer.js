@@ -215,7 +215,7 @@ export const FormComposer = (props) => {
       case "amount":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
-          <div className="field-container">
+          <div className="digit-field-container">
             {populators?.componentInFront ? (
               <span className={`component-in-front ${disable && "disabled"}`}>{populators.componentInFront}</span>
             ) : null}

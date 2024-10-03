@@ -156,3 +156,18 @@
   .digit-bread-crumb{
     margin-bottom: 1.5rem;
   }
+
+
+  th{
+    background-color: theme(digitv2.lightTheme.paper-primary);
+  }
+
+  .uploadfile-composer-textfield{
+    margin-bottom: 1.5rem;
+  }
+
+  .digit-header-content{
+    &.label{
+      margin-top: 0.565rem;
+    }
+  }
