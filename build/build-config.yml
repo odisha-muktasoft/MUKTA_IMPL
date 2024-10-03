@@ -277,7 +277,7 @@ config:
   - name: "builds/mukta_impl/mukta/mukta-individual"
     build:
       - work-dir: "backend/individual"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "mukta-individual"
       - work-dir: "backend/individual/src/main/resources/db"
         image-name: "mukta-individual-db"   
