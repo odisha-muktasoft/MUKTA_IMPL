@@ -23,6 +23,10 @@ import org.egov.digit.expense.calculator.util.ProjectUtil;
 import org.egov.digit.expense.calculator.validator.ExpenseCalculatorServiceValidator;
 import org.egov.digit.expense.calculator.web.models.*;
 import org.egov.tracer.model.CustomException;
+import org.egov.works.services.common.models.contract.Contract;
+import org.egov.works.services.common.models.expense.calculator.IndividualEntry;
+import org.egov.works.services.common.models.musterroll.MusterRoll;
+import org.egov.works.services.common.models.musterroll.MusterRollRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -289,8 +293,8 @@ public class ExpenseCalculatorService {
         List<Bill> wageSeekerBills = wageSeekerBillGeneratorService.createWageSeekerBills(requestInfo,Collections.singletonList(musterRoll),sorDetails,context);
         BillResponse billResponse = null;
         Workflow workflow = Workflow.builder()
-                .action(WF_SUBMIT_ACTION_CONSTANT)
-                .build();
+                            .action(WF_SUBMIT_ACTION_CONSTANT)
+                            .build();
         for(Bill bill : wageSeekerBills) {
             billResponse = postCreateBill(requestInfo, bill,workflow);
             if(SUCCESSFUL_CONSTANT.equalsIgnoreCase( billResponse.getResponseInfo().getStatus()))
@@ -326,7 +330,7 @@ public class ExpenseCalculatorService {
 
     private List<SorDetail> fetchMDMSDataForLabourCharges(RequestInfo requestInfo, String tenantId, List<MusterRoll> musterRolls){
         log.info("Fetch wage seeker skills MDMS");
-        //        Object mdmsData = mdmsUtils.fetchMDMSDataForLabourCharges(requestInfo, tenantId);
+//        Object mdmsData = mdmsUtils.fetchMDMSDataForLabourCharges(requestInfo, tenantId);
         List<String> sorList = getLabourSorFromMusterRolls(musterRolls);
         if (sorList.isEmpty()) {
             throw new CustomException("SOR_NOT_FOUND", "No sor found in additional details of muster roll");
@@ -388,28 +392,28 @@ public class ExpenseCalculatorService {
         expenseCalculatorServiceValidator.validateCalculatorSearchRequest(calculatorSearchRequest);
 
         RequestInfo requestInfo=calculatorSearchRequest.getRequestInfo();
-
+        
         CalculatorSearchCriteria searchCriteria = calculatorSearchRequest.getSearchCriteria();
 
         String tenantId=searchCriteria.getTenantId();
-
+        
         //If we've got a project name or ward search, do this step first
         if(searchCriteria.getProjectName()!=null || searchCriteria.getBoundary()!=null) {
-            //Add the other search criteria and fetch the project numbers that match the criteria
-            Object projectResults = projectUtils.getProjectDetails(calculatorSearchRequest);
-
-            //If project payload changes, this key needs to be modified!
+        	//Add the other search criteria and fetch the project numbers that match the criteria
+        	Object projectResults = projectUtils.getProjectDetails(calculatorSearchRequest);
+        	
+        	 //If project payload changes, this key needs to be modified!
             List<Project> projects = objectMapper.convertValue(((LinkedHashMap) projectResults).get("Project"), new TypeReference<List<Project>>() {
             })  ;
-
+            
             List<String> list = projects.stream()
                     .map(t->t.getProjectNumber())
                     .collect(Collectors.toList());
-
-            //Now go back and fetch the bill Ids that satisfy this criteria.
-            searchCriteria.setProjectNumbers(list);
+            
+        	//Now go back and fetch the bill Ids that satisfy this criteria.
+        	searchCriteria.setProjectNumbers(list);
         }
-
+        
         Map<String,BillMapper> billMappers=expenseCalculatorRepository.getBillMappers(calculatorSearchRequest);
         List<String> billIds = billMappers.values().stream().map(m->m.getBillId()).collect(Collectors.toList());
         //set total count
@@ -420,7 +424,7 @@ public class ExpenseCalculatorService {
         //checks if billIds are present
         List<Bill> bills=new ArrayList<>();
         if(!CollectionUtils.isEmpty(billMappers.keySet())) {
-            bills= expenseCalculatorUtil.fetchBillsWithBillIds(requestInfo, tenantId, billIds);
+             bills= expenseCalculatorUtil.fetchBillsWithBillIds(requestInfo, tenantId, billIds);
         }
 
         //set bills in billMapper
@@ -433,7 +437,7 @@ public class ExpenseCalculatorService {
     }
 
 
-
+  
 
 
     /**
@@ -464,15 +468,15 @@ public class ExpenseCalculatorService {
         List<IndividualEntry> individualEntries = musterRolls.stream().map(musterRoll -> musterRoll.getIndividualEntries()).flatMap(List::stream).collect(Collectors.toList());
 //        List<String> sorList = individualEntries.stream().filter(individualEntries -> individualEntries.getAdditionalDetails() != null && individualEntries.getAdditionalDetails().get("sor") != null).map(individualEntries -> (String) individualEntries.getAdditionalDetails().get("sor")).collect(Collectors.toList());
         return individualEntries.stream() // Stream<IndividualEntry>
-                .filter(entry -> {
-                    Map<String, Object> additionalDetails = (Map<String, Object>) entry.getAdditionalDetails(); // Cast to Map<String, Object>
-                    return additionalDetails != null && additionalDetails.get("skillCode") != null;
-                })
-                .map(entry -> {
-                    Map<String, Object> additionalDetails = (Map<String, Object>) entry.getAdditionalDetails(); // Cast to Map<String, Object>
-                    return (String) additionalDetails.get("skillCode");
-                })
-                .collect(Collectors.toList());
+                        .filter(entry -> {
+                            Map<String, Object> additionalDetails = (Map<String, Object>) entry.getAdditionalDetails(); // Cast to Map<String, Object>
+                            return additionalDetails != null && additionalDetails.get("skillCode") != null;
+                        })
+                        .map(entry -> {
+                            Map<String, Object> additionalDetails = (Map<String, Object>) entry.getAdditionalDetails(); // Cast to Map<String, Object>
+                            return (String) additionalDetails.get("skillCode");
+                        })
+                        .collect(Collectors.toList());
     }
-
+    
 }

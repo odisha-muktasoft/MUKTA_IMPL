@@ -57,7 +57,6 @@ public class ExpenseCalculatorServiceConstants {
     public static final String DOCUMENTS_CONSTANT = "documents";
     public static final String LINEITEM_STATUS_ACTIVE = "ACTIVE";
     public static final String LINEITEM_STATUS_INACTIVE = "INACTIVE";
-
     public static final String FILTER_START = "[?(";
     public static final String FILTER_END = "')]";
     public static final String ID_SEARCH_CONSTANT = "@.id=='";
