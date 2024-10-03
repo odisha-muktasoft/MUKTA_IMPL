@@ -3092,7 +3092,7 @@ export const UICustomizations = {
         //const billType = getBillType(row?.businessService);
         return (
           <span className="link">
-            <Link to={`/${window.contextPath}/employee`}>
+            <Link to={`/${window.contextPath}/employee/expenditure/payment-tracker-view?projectId=${value}`}>
             <Button
                 className=""
                 iconFill=""

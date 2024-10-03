@@ -1,11 +1,14 @@
-import React, {useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { Header, InboxSearchComposer,Loader } from "@egovernments/digit-ui-react-components";
 import { paymentTrackerSearchConfig } from "../../configs/paymentTrackerSearchConfig";
-import { ActionBar, SubmitBar } from "@egovernments/digit-ui-components";
+import { Toast, ActionBar, SubmitBar } from "@egovernments/digit-ui-components";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const PaymentTrackerSearch = () => {
     const { t } = useTranslation();
+    const history = useHistory();
+    const [toast, setToast] = useState({show : false, label : "", type : ""});
 
     const configModuleName = Digit.Utils.getConfigModuleName()
     const tenant = Digit.ULBService.getStateId();
@@ -44,8 +47,17 @@ const PaymentTrackerSearch = () => {
           ]
         }
         ),[paymentTrackerSearchConfig]);
+
+    //remove Toast after 3s
+    useEffect(()=>{
+        if(toast?.show) {
+        setTimeout(()=>{
+          setToast({show : false, label : "", type : ""});
+        },3000);
+        }
+    },[toast?.show]);
       
-        const { mutate: generateexcel } = Digit.Hooks.useGenerateExcel();
+    const { mutate: generateexcel } = Digit.Hooks.useGenerateExcel();
 
     const handleGenerateExcel = async (data) => {
 
@@ -56,17 +68,15 @@ const PaymentTrackerSearch = () => {
           "requestPayload": {
               "tenantId": "pg.citya"
           }
+        }
       }
-      }
+
       await generateexcel(payload, {
         onError: async (error, variables) => {
-            
-            // sendDataToResponsePage("billNumber", tenantId, false, "EXPENDITURE_PB_MODIFIED_FORWARDED", false);
+          setToast(()=>({show : true, label : t("EXP_EXCEL_GENERATE_FAILED"), type : "error"}));
         },
         onSuccess: async (responseData, variables) => {
-            
-            //Add a toast here
-            //sendDataToResponsePage(responseData?.bills?.[0]?.billNumber, tenantId, true, "EXPENDITURE_PB_MODIFIED_FORWARDED", true);
+          setToast(()=>({show : true, label : t("EXP_EXCEL_GENERATING"), type : "success"}));
         },
     });
     }
@@ -74,19 +84,27 @@ const PaymentTrackerSearch = () => {
 
     //if (isLoading) return <Loader />
     return (
-        <React.Fragment>
+      <React.Fragment>
         <Header className="works-header-search">{t(configs?.label)}</Header>
-            <div className="inbox-search-wrapper">
-                <InboxSearchComposer configs={configs}></InboxSearchComposer>
-            </div>
-            <ActionBar style={{ display: "flex", gap: "24px", justifyContent: "flex-end" }}>
-        <SubmitBar
-          label={t("RA_REVISE_RATE_FOR_SELECTED")}
-          onSubmit={() => handleGenerateExcel}
-          disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
-        />
-      </ActionBar>
-        </React.Fragment>
+        <div className="inbox-search-wrapper">
+            <InboxSearchComposer configs={configs}></InboxSearchComposer>
+        </div>
+        {toast?.show && <Toast type={toast?.type} label={toast?.label} isDleteBtn={true} onClose={() => setToast({show : false, label : "", type : ""})} />}
+        <ActionBar style={{ display: "flex", gap: "24px", justifyContent: "flex-end" }}>
+          <SubmitBar
+            label={t("EXP_GENERATE_EXCEL")}
+            onSubmit={() => handleGenerateExcel()}
+            style={{width: "auto"}}
+            // disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
+          />
+          <SubmitBar
+            label={t("VIEW_EXCEL")}
+            onSubmit={() => {history.push(`/${window.contextPath}/employee/expenditure/view-jobs-excel`) }}
+            style={{width: "auto"}}
+            // disabled={!selectedSorIds.hasOwnProperty("sorIds") || selectedSorIds?.sorIds?.length <= 0 || selectedSorIds?.sorType !== "W"}
+          />
+        </ActionBar>
+      </React.Fragment>
     )
 }
 

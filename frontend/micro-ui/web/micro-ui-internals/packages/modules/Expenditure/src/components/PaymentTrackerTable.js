@@ -33,7 +33,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("BILL_AMOUNT"),
+        Header: t("BILL_AMOUNT_RS"),
         accessor: "total",
         Cell: ({ value, column, row }) => {
           return amountFormatter(value);
@@ -73,7 +73,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PI_AMOUNT"),
+        Header: t("PI_AMOUNT_RS"),
         accessor: "paidAmount",
         Cell: ({ value, column, row }) => {
           return amountFormatter(value);
@@ -94,14 +94,14 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PAYMENT_FAILED"),
+        Header: t("PAYMENT_FAILED_RS"),
         accessor: "paymentFailed",
         Cell: ({ value, column, row }) => {
           return amountFormatter(value);
         }
       },
       {
-        Header: t("PAYMENT_SUCCESSFUL"),
+        Header: t("PAYMENT_SUCCESSFUL_RS"),
         accessor: "paymentSuccessful",
         Cell: ({ value, column, row }) => {
           return amountFormatter(value);

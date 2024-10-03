@@ -25,7 +25,7 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
                 value: project?.projectNumber,
               },
               {
-                key: "PROJECT_NAME",
+                key: "PROJECT_NAME_SIMPLE",
                 value: project?.name,
               },
               {
@@ -33,7 +33,7 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
                 value: project?.address?.city,
               },
               {
-                key: "PROJECT_DESC",
+                key: "PROJECT_DESCRIPTION",
                 value: project?.description,
               },
             ],

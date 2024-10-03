@@ -9,7 +9,7 @@ const ViewScheduledJobsExcelConfig = {
         actionRole: "",
         actionLink: "",
         apiDetails: {
-          serviceName: "/rate-analysis/v1/scheduler/_search",
+          serviceName: "/wms/report/payment-tracker/_search",
           requestParam: {},
           requestBody: {
               SearchCriteria: {},
