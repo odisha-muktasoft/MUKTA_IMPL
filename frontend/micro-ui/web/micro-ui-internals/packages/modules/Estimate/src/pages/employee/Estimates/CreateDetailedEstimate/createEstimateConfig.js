@@ -123,13 +123,19 @@ export const createEstimateConfig = () => {
             {
                 "head": "",
                 "subHead": "",
+                "sectionClassName":"viewstatement-viewamount-wrapper-create",
                 "navLink": "Work Details",
                 "body": [
                     {
                         "type": "component",
                         "component": "TotalEstAmount",
                         "withoutLabel": true,
-                        "key": "totalEstimatedAmount"
+                        "key": "totalEstimatedAmount",
+                        "props":{
+                            style:{
+                                marginTop:"0px"
+                            }
+                        }
                     },
                     {
                         "type": "component",

@@ -1,4 +1,5 @@
-import { Button, CardLabelError, CardSectionHeader, CloseSvg } from "@egovernments/digit-ui-react-components";
+import { CardLabelError, CardSectionHeader, CloseSvg } from "@egovernments/digit-ui-react-components";
+import { Button } from "@egovernments/digit-ui-components";
 import React, { useReducer, Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import MeasureRow from "./MeasureRow";
@@ -231,8 +232,9 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                     {(mode == "CREATEALL" || mode == "CREATERE") && (
                       <Button
                         className={"outline-btn"}
+                        variation={"secondary"}
                         label={t("MB_ADD_ROW")}
-                        onButtonClick={() => {
+                        onClick={() => {
                           dispatch({
                             type: "ADD_ROW",
                             state: {
@@ -255,15 +257,17 @@ const MeasureCard = React.memo(({ columns, fields = [], register, setValue, tabl
                     )}
                     {!(mode.includes("VIEW")) && <Button
                       className={"outline-btn clear-button"}
+                      variation={"secondary"}
                       label={t("MB_CLEAR")}
-                      onButtonClick={() => {
+                      onClick={() => {
                         dispatch({ type: "CLEAR_STATE" });
                       }}
                     />}
                     {!(mode.includes("VIEW")) && <Button
+                      variation={"secondary"}
                       className={"outline-btn done-button"}
                       label={t("MB_DONE")}
-                      onButtonClick={() => {
+                      onClick={() => {
                         // check for deduction and set accordingly
                         const totalQuantity = state?.reduce((total, item) => item?.isDeduction == true ? total - parseFloat(item.noOfunit) :  total + parseFloat(item.noOfunit), 0);
                         if(mode === "CREATE" && (totalQuantity < 0 || totalQuantity > tableData[tableIndex]?.approvedQuantity - tableData[tableIndex]?.consumedQ))

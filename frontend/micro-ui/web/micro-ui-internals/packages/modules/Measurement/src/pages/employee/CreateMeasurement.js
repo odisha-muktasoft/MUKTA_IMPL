@@ -265,6 +265,7 @@ const CreateMeasurement = ({ props }) => {
         showMultipleCardsWithoutNavs={true}
         onFormValueChange={onFormValueChange}
         noBreakLine={true}
+        fieldPairNoMargin={true}
       />
       {showToast?.display && <Toast type={showToast?.type} label={errorMessage} isDleteBtn={true} onClose={closeToast} />}
       <ActionBar

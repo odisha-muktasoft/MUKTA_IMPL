@@ -171,3 +171,34 @@
       margin-top: 0.565rem;
     }
   }
+
+  @media (max-width: 30rem){
+    .digit-action-bar-wrap{
+      height: fit-content;
+    }
+  }
+
+  .digit-action-bar-wrap{
+    .digit-action-bar-fields{
+      .action-bar-individual-action-field{
+        button{
+          min-width: 14rem;
+        }
+      }
+    }
+  }
+
+  .viewstatement-viewamount-wrapper,
+  .totalEstimateAmoutCrad{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .viewstatement-viewamount-wrapper-create{
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }

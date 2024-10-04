@@ -151,9 +151,9 @@ const ViewComposer = ({ isLoading = false,data, ...props }) => {
     <>
     {/* This first {} is for rendering cards at the top without navigationKey(out of navbar) */}
       {cards?.filter(card => !card?.navigationKey)?.map((card, cardIdx) => {
-          const { sections } = card;
+          const { sections ,sectionClassName} = card;
           return (
-            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={"employeeCard-override"}>
+            <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={`employeeCard-override ${sectionClassName || ""}`}>
               {sections?.map((section, sectionIdx) => {
                 return renderCardSectionJSX(section);
               })}
@@ -164,7 +164,7 @@ const ViewComposer = ({ isLoading = false,data, ...props }) => {
 
       <HorizontalNav showNav={data?.horizontalNav?.showNav} configNavItems={data?.horizontalNav?.configNavItems} activeLink={activeNav} setActiveLink={setActiveNav} inFormComposer={false}>
         {cards?.filter(card => card?.navigationKey)?.map((card, cardIdx) => {
-          const { sections } = card;
+          const { sections,sectionClassName } = card;
           return (
             <Card style={activeNav && card.navigationKey ? (activeNav!==card.navigationKey?{display:"none"}:{}) : {}} className={`employeeCard-override ${card?.className}`}>
               {sections?.map((section, sectionIdx) => {

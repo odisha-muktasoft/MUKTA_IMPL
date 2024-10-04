@@ -737,7 +737,7 @@ const CreateEstimate = ({ props }) => {
               onOptionSelect={(option) => {
                 onActionSelect(option);
               }}
-            ></Button>,
+            ></Button>
           ]}
           setactionFieldsToRight={true}
           className={"new-actionbar"}
