@@ -96,7 +96,7 @@ const LocationDropdownWrapper = ({populators,formData,props,inputRef,errors,setV
                   defaultValue={props.value?.[0] || populators.defaultValue}
                   t={t}
                   errorStyle={errors?.[populators.name]}
-                  optionCardStyles={populators?.optionsCustomStyle}
+                  optionCardStyles={populators?.optionsCustomStyle ? populators?.optionsCustomStyle : {top:"2.3rem"}}
               />
           }
     </>

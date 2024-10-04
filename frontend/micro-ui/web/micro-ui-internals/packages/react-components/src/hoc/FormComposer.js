@@ -7,8 +7,6 @@ import CardText from "../atoms/CardText";
 import CardSubHeader from "../atoms/CardSubHeader";
 import CardLabelDesc from "../atoms/CardLabelDesc";
 import CardLabelError from "../atoms/CardLabelError";
-import ActionBar from "../atoms/ActionBar";
-import SubmitBar from "../atoms/SubmitBar";
 import LinkButton from "../atoms/LinkButton";
 import ApiDropdown from "../molecules/ApiDropdown";
 import { useTranslation } from "react-i18next";
@@ -29,6 +27,9 @@ import WrapperComponent from "../atoms/WrapperComponent";
 // import TextInput from "../atoms/TextInput";
 // import CardLabelError from "../atoms/CardLabelError";
 // import CardSectionHeader from "../atoms/CardSectionHeader";
+// import ActionBar from "../atoms/ActionBar";
+// import SubmitBar from "../atoms/SubmitBar";
+
 import {
   CustomDropdown,
   Toast,
@@ -40,7 +41,9 @@ import {
   ErrorMessage,
   StringManipulator,
   Header,
-  TextBlock
+  TextBlock,
+  ActionBar,
+  SubmitBar
 } from "@egovernments/digit-ui-components";
 
 const wrapperStyles = {
@@ -915,7 +918,11 @@ export const FormComposer = (props) => {
           {props?.showMultipleCardsInNavs ? (
             props?.config?.map((section, index, array) => {
               return section.navLink ? (
-                <Card style={section.navLink !== activeLink ? getCardStyles(false) : getCardStyles()} noCardStyle={props.noCardStyle}>
+                <Card
+                  className={`${section?.sectionClassName}`}
+                  style={section.navLink !== activeLink ? getCardStyles(false) : getCardStyles()}
+                  noCardStyle={props.noCardStyle}
+                >
                   {renderFormFields(props, section, index, array, section?.sectionFormCategory)}
                 </Card>
               ) : null;
@@ -936,10 +943,14 @@ export const FormComposer = (props) => {
         </HorizontalNav>
       )}
       {!props.submitInForm && props.label && (
-        <ActionBar>
-          <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />
-          {props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />}
-        </ActionBar>
+        <ActionBar
+          actionFields={[
+            <SubmitBar label={t(props.label)} submit="submit" disabled={isDisabled} />,
+            props.onSkip && props.showSkip && <LinkButton style={props?.skipStyle} label={t(`CS_SKIP_CONTINUE`)} onClick={props.onSkip} />,
+          ]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
       )}
       {showErrorToast && <Toast type={"error"} label={t("ES_COMMON_PLEASE_ENTER_ALL_MANDATORY_FIELDS")} isDleteBtn={true} onClose={closeToast} />}
     </form>
