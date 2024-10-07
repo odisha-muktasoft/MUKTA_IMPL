@@ -1,7 +1,7 @@
 package org.egov.util;
 
-import digit.models.coremodels.AuditDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.egov.common.contract.models.AuditDetails;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.service.OrganisationService;
 import org.egov.web.models.Function;
@@ -33,7 +33,7 @@ public class OrganisationUtil {
                 AuditDetails auditDetailsForCreate = AuditDetails.builder().createdBy(by).lastModifiedBy(by).createdTime(time).lastModifiedTime(time).build();
                 organisation.setAuditDetails(auditDetailsForCreate);
             } else {
-                AuditDetails auditDetailsForUpdate = AuditDetails.builder().createdBy(organisation.getAuditDetails().getCreatedBy()).createdTime(organisation.getAuditDetails().getCreatedTime()).lastModifiedBy(by).lastModifiedTime(time).build();
+                AuditDetails auditDetailsForUpdate = AuditDetails.builder().lastModifiedBy(by).lastModifiedTime(time).build();
                 organisation.setAuditDetails(auditDetailsForUpdate);
             }
         }

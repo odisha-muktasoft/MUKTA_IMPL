@@ -1,8 +1,8 @@
 package org.egov.service;
 
-import digit.models.coremodels.AuditDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.egov.common.contract.models.AuditDetails;
 import org.egov.common.contract.request.RequestInfo;
 import org.egov.config.Configuration;
 import org.egov.util.IdgenUtil;
@@ -25,8 +25,6 @@ public class OrganisationEnrichmentService {
     private final IdgenUtil idgenUtil;
 
     private final Configuration config;
-
-
 
     @Autowired
     public OrganisationEnrichmentService(OrganisationUtil organisationUtil, IdgenUtil idgenUtil, Configuration config) {
