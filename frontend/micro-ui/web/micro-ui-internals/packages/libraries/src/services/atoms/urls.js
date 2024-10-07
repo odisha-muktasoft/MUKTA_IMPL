@@ -1,12 +1,12 @@
 const Urls = {
-  MDMS: `/egov-mdms-service/v1/_search`,
+   MDMS: `/mdms-v2/v1/_search`,
   WorkFlow: `/egov-workflow-v2/egov-wf/businessservice/_search`,
   WorkFlowProcessSearch: `/egov-workflow-v2/egov-wf/process/_search`,
   localization: `/localization/messages/v1/_search`,
   location: {
-    localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=ADMIN&boundaryType=Locality`,
-    wards: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=ADMIN&boundaryType=Ward`,
-    revenue_localities: `/egov-location/location/v11/boundarys/_search?hierarchyTypeCode=REVENUE&boundaryType=Locality`,
+    localities: `/boundary-service/boundary-relationships/_search?hierarchyType=ADMIN&boundaryType=locality`,
+    wards: `/boundary-service/boundary-relationships/_search?hierarchyType=ADMIN&boundaryType=Ward`,
+    revenue_localities: `/boundary-service/boundary-relationships/_search?hierarchyType=REVENUE&boundaryType=locality`,
   },
 
   pgr_search: `/pgr-services/v2/request/_search`,

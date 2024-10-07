@@ -99,7 +99,7 @@ const CreateEstimate = ({ props }) => {
 
   actionMB =
     actionMB && (isEdit || isEditRevisionEstimate) && estimate && estimate?.wfStatus === "PENDINGFORCORRECTION"
-      ? actionMB?.filter((ob) => ob?.name !== "DRAFT")
+      ? actionMB?.filter((ob) => ob?.name !== "WF_DRAFT")
       : actionMB;
 
   const searchParams = {
@@ -196,12 +196,12 @@ const CreateEstimate = ({ props }) => {
     "common-masters",
     [
       {
-        name: "uom",
+        name: "UOM",
       },
     ],
     {
       select: (data) => {
-        return data?.["common-masters"]?.uom;
+        return data?.["common-masters"]?.UOM;
       },
     }
   );
@@ -445,7 +445,7 @@ const CreateEstimate = ({ props }) => {
         parseInt(getLabourMaterialAnalysisCost(_data, ["MHA"])) ||
       _data?.labourMaterialAnalysis?.labour + _data?.labourMaterialAnalysis?.material + _data?.labourMaterialAnalysis?.machinery;
     //here check totalEst amount should be less than material+labour
-    if (_data.totalEstimateAmount < totalLabourAndMaterial && action !== "DRAFT") {
+    if (_data.totalEstimateAmount < totalLabourAndMaterial && action !== "WF_DRAFT") {
       setShowToast({ type: "warning", label: "ERR_ESTIMATE_AMOUNT_MISMATCH" });
       setIsButtonDisabled(false);
       closeToast();
@@ -461,7 +461,7 @@ const CreateEstimate = ({ props }) => {
     setInputFormData((prevState) => _data);
     //first do whatever processing you want on form data then pass it over to modal's onSubmit function
 
-    if (action === "DRAFT") onModalSubmit(_data, action);
+    if (action === "WF_DRAFT") onModalSubmit(_data, action);
     else setShowModal(true);
   };
 
@@ -498,7 +498,7 @@ const CreateEstimate = ({ props }) => {
     };
 
     removeNonsortableObjectWithoutRequiredParams(completeFormData);
-    let validated = action !== "DRAFT" ? validateData(completeFormData) : true;
+    let validated = action !== "WF_DRAFT" ? validateData(completeFormData) : true;
     if(validated){
       const payload = createEstimatePayload(completeFormData, projectData, isEdit,  currentEstimate, isCreateRevisionEstimate, isEditRevisionEstimate);
       setShowModal(false);
@@ -541,7 +541,7 @@ const CreateEstimate = ({ props }) => {
                 },
               ],
             };
-            if(action === "DRAFT")
+            if(action === "WF_DRAFT")
             {
               setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
               if(isCreateRevisionEstimate || isEditRevisionEstimate)
@@ -582,7 +582,7 @@ const CreateEstimate = ({ props }) => {
                 },
               ],
             };
-            if(action === "DRAFT")
+            if(action === "WF_DRAFT")
             {
               setShowToast({ label: t("WORKS_ESTIMATE_APPLICATION_DRAFTED") });
               if(isCreateRevisionEstimate || isEditRevisionEstimate)
