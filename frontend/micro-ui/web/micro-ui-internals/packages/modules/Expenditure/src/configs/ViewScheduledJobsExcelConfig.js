@@ -12,14 +12,14 @@ const ViewScheduledJobsExcelConfig = {
           serviceName: "/wms/report/payment-tracker/_search",
           requestParam: {},
           requestBody: {
-              SearchCriteria: {},
+            reportSearchCriteria: {},
           },
           minParametersForSearchForm: 1,
           masterName: "commonUiConfig",
           moduleName: "ViewScheduledJobsConfig",
-          tableFormJsonPath: "requestBody.Pagination",
-          filterFormJsonPath: "requestBody.SearchCriteria",
-          searchFormJsonPath: "requestBody.SearchCriteria",
+          tableFormJsonPath: "requestBody.pagination",
+          filterFormJsonPath: "requestBody.reportSearchCriteria",
+          searchFormJsonPath: "requestBody.reportSearchCriteria",
         },
         sections: {
           search: {
@@ -48,9 +48,10 @@ const ViewScheduledJobsExcelConfig = {
                       top: "2.3rem",
                     },
                     options:[
-                      {code:"SCHEDULED",name:"Scheduled"},
-                      {code:"IN_PROGRESS",name:"In progress"},
-                      {code:"COMPLETED",name:"Completed"}
+                      {code:"INITIATED",name:"Initiated"},
+                      {code:"INPROGRESS",name:"In progress"},
+                      {code:"COMPLETED",name:"Completed"},
+                      {code:"FAILED",name:"Failed"}
                     ]
                   },
                 },
@@ -59,7 +60,7 @@ const ViewScheduledJobsExcelConfig = {
                   type: "date",
                   isMandatory: false,
                   disable: false,
-                  key: "schedulefFrom",
+                  key: "scheduleFrom",
                   preProcess: {
                     updateDependent: ["populators.max"],
                   },
@@ -102,7 +103,7 @@ const ViewScheduledJobsExcelConfig = {
               columns: [
                 {
                   label: "EXP_JOB_ID",
-                  jsonPath: "jobId",
+                  jsonPath: "reportNumber",
                   additionalCustomization: true,
                 },
                 {
@@ -110,25 +111,25 @@ const ViewScheduledJobsExcelConfig = {
                   jsonPath: "auditDetails.createdTime",
                   additionalCustomization: true,
                 },
+                // {
+                //   label: "EXP_NO_OF_PROJECTS_SCHEDULED",
+                //   jsonPath: "noOfSorScheduled",
+                //   // additionalCustomization: false,
+                // },
+                // {
+                //   label: "EXP_SUCCESSFUL",
+                //   jsonPath: "",
+                //   // additionalCustomization: true,
+                // },
                 {
-                  label: "EXP_NO_OF_PROJECTS_SCHEDULED",
-                  jsonPath: "noOfSorScheduled",
-                  additionalCustomization: false,
-                },
-                {
-                  label: "RA_SUCCESSFUL",
-                  jsonPath: "",
-                  additionalCustomization: true,
-                },
-                {
-                  label: "RA_STATUS",
+                  label: "EXP_STATUS_ACTION",
                   jsonPath: "status",
                   additionalCustomization: true,
                 },
               ],
               enableGlobalSearch: false,
               enableColumnSort: true,
-              resultsJsonPath: "ScheduledJobs",
+              resultsJsonPath: "reportJobs",
             },
             children: {},
             show: true,

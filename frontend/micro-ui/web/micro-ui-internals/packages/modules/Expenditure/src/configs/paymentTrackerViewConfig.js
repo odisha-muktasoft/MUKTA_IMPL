@@ -44,11 +44,11 @@ export const paymentTrackerViewConfig = (project, projectBillPaidData ,projectBi
         sections: [
           {
             type: "DATA",
-            cardHeader: { value: "HEAD_WISE_BREAKUP" },
+            cardHeader: { value: "HEAD_WISE_BREAKUP", inlineStyles: {marginBottom : "16px"} },
             values: [
               {
                 key: "ESTMATED_AMOUNT",
-                value: amountFormatter(projectBillPaidData?.estimatedAmount),
+                value: amountFormatter(projectBillPaidData?.estimatedAmount || 0),
               },
               {
                 key: "WAGE_AMOUNT_PAID",

@@ -8,10 +8,11 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 const PaymentTrackerSearch = () => {
     const { t } = useTranslation();
     const history = useHistory();
+    const tenantId = Digit.ULBService.getCurrentTenantId();
     const [toast, setToast] = useState({show : false, label : "", type : ""});
 
-    const configModuleName = Digit.Utils.getConfigModuleName()
-    const tenant = Digit.ULBService.getStateId();
+    // const configModuleName = Digit.Utils.getConfigModuleName()
+    // const tenant = Digit.ULBService.getStateId();
     // const { isLoading, data } = Digit.Hooks.useCustomMDMS(
     //     tenant,
     //     configModuleName,
@@ -29,10 +30,8 @@ const PaymentTrackerSearch = () => {
     //         },
     //     }
     // );
-    // const configs = Digit.Utils.configUpdater(searchConfigMuktaFuzzy())
     //let configs = paymentTrackerSearchConfig?.paymentTrackerSearchConfig?.[0];
     
-    // const configs = data?.[configModuleName].SearchEstimateWMSConfig?.[0]
     let configs = useMemo(
         () => Digit.Utils.preProcessMDMSConfigInboxSearch(t, paymentTrackerSearchConfig?.paymentTrackerSearchConfig?.[0], "sections.search.uiConfig.fields",{
           updateDependent : [
@@ -63,10 +62,10 @@ const PaymentTrackerSearch = () => {
 
       const payload = {
         "report": {
-          "tenantId": "pg.citya",
+          "tenantId": tenantId,
           "reportName": "expense",
           "requestPayload": {
-              "tenantId": "pg.citya"
+              "tenantId": tenantId
           }
         }
       }

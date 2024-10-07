@@ -121,7 +121,7 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
   return (
     <div>
       <CheckBox 
-        styles={{marginTop: "24px"}}
+        styles={{marginTop: "14px"}}
         style={{marginLeft: "40px"}}
         onChange={() => setExcludeFailed(!excludeFailed)}
         checked={excludeFailed}

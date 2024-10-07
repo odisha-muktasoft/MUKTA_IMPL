@@ -48,32 +48,31 @@ export const paymentTrackerSearchConfig = {
                       "isMandatory": false,
                       "disable": false,
                       "populators": {
-                        "name": "ward",
-                        "type": "ward",
-                        "optionsKey": "i18nKey",
-                        "allowMultiSelect": false,
-                        "optionsCustomStyle": {
-                          "top": "2.3rem"
-                        }
-                      }
-                    },
-                    {
-                        "label": "WORKS_PROJECT_TYPE",
-                        "type": "dropdown",
-                        "isMandatory": false,
-                        "disable": false,
-                        "populators": {
-                          "name": "projectType",
+                          "name": "ward",
+                          "type": "ward",
                           "optionsKey": "name",
-                          "optionsCustomStyle": {
-                            "top": "2.3rem"
-                          },
+                          "defaultText": "COMMON_SELECT_WARD",
+                          "selectedText": "COMMON_SELECTED",
+                          "allowMultiSelect": false
+                      }
+                  },
+                    {
+                      "label": "WORKS_PROJECT_TYPE",
+                      "type": "dropdown",
+                      "isMandatory": false,
+                      "disable": false,
+                      "populators": { 
+                        "name": "projectType", 
+                        "optionsKey": "name",
+                        // "optionsCustomStyle": {
+                        //     "top": "2.3rem"
+                        //   },
                           "mdmsConfig": {
                             "masterName": "ProjectType",
                             "moduleName": "works",
                             "localePrefix": "COMMON_MASTERS"
                           }
-                        }
+                      }
                     },
                     {
                         "label": "WORKS_PROJECT_NAME",
@@ -86,14 +85,14 @@ export const paymentTrackerSearchConfig = {
                           ]
                         },
                         "populators": {
-                          "name": "name",
+                          "name": "projectName",
                           "error": "PROJECT_PATTERN_ERR_MSG",
                           "validation": {
                               "pattern": "^[^\\$\"<>?\\\\~`!@$%^()+={}\\[\\]*:;“”‘’]{1,50}$",
                               "minlength": 2
                           }
                         }
-                      },
+                    },
                     {
                       "label": "WORKS_PROJECT_ID",
                       "type": "text",
@@ -105,7 +104,7 @@ export const paymentTrackerSearchConfig = {
                         ]
                       },
                       "populators": {
-                        "name": "projectNumber",
+                        "name": "projectId",
                         "error": "PROJECT_PATTERN_ERR_MSG",
                         "validation": {
                           "pattern": "PJ\\/[0-9]+-[0-9]+\\/[0-9]+\\/[0-9]+",
