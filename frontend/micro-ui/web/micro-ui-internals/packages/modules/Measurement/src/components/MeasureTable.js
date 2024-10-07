@@ -336,7 +336,8 @@ const MeasureTable = (props) => {
                                     fontSize: "medium",
                                     bottom : "100%",
                                     overflow : "auto",
-
+                                    left:"100%",
+                                    marginLeft:"0px"
                                 }}>
                                     {row.description}
                                 </span>}

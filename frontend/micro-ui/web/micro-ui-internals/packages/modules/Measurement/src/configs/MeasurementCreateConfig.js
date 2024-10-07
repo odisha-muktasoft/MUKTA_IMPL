@@ -197,6 +197,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             head: "",
             subHead: "",
+            sectionClassName:"viewstatement-viewamount-wrapper-create",
             body: [
               {
                 type: "component",

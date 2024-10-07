@@ -1,12 +1,13 @@
 import React, { useEffect, useRef,useState } from "react";
 import { useTranslation } from "react-i18next";
 import SubmitBar from "./SubmitBar";
-import ActionBar from "./ActionBar";
+// import ActionBar from "./ActionBar";
 import Menu from "./Menu";
 import ActionModal from "./Modals";
 import { Loader } from "./Loader";
-import Toast from "./Toast";
+// import Toast from "./Toast";
 import { useHistory } from "react-router-dom";
+import { Toast, ActionBar,Button } from "@egovernments/digit-ui-components";
 const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActionPrefix, ActionBarStyle = {}, MenuStyle = {}, applicationDetails, url, setStateChanged, moduleCode,editApplicationNumber,editCallback ,callback, WorflowValidation, fullData}) => {
   
   const history = useHistory()
@@ -77,7 +78,7 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
   const closeModal = () => {
     setSelectedAction(null);
     setShowModal(false);
-    setShowToast({ warning:true,label:`WF_ACTION_CANCELLED`})
+    setShowToast({ type:"warning",label:`WF_ACTION_CANCELLED`})
     closeToast()
   };
 
@@ -144,7 +145,7 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
       onError:(error,variables)=>{
         setIsEnableLoader(false)
         //show error toast acc to selectAction
-        setShowToast({ error: true, label: Digit.Utils.locale.getTransformedLocale(`WF_UPDATE_ERROR_${businessService}_${selectAction.action}`), isDleteBtn:true })
+        setShowToast({ type:"error", label: Digit.Utils.locale.getTransformedLocale(`WF_UPDATE_ERROR_${businessService}_${selectAction.action}`), isDleteBtn:true })
         
         callback?.onError?.();
 
@@ -174,54 +175,97 @@ const WorkflowActions = ({ businessService, tenantId, applicationNo, forcedActio
   return (
     <React.Fragment>
       {!workflowDetails?.isLoading && isMenuBotton && !isSingleButton && (
-        <ActionBar style={{ ...ActionBarStyle }}>
-          {displayMenu && (workflowDetails?.data?.actionState?.nextActions || workflowDetails?.data?.nextActions) ? (
-            <Menu
-              localeKeyPrefix={forcedActionPrefix || Digit.Utils.locale.getTransformedLocale(`WF_${businessService?.toUpperCase()}_ACTION`)}
-              options={actions}
-              optionKey={"action"}
+        // <ActionBar style={{ ...ActionBarStyle }}>
+        //   {displayMenu && (workflowDetails?.data?.actionState?.nextActions || workflowDetails?.data?.nextActions) ? (
+        //     <Menu
+        //       localeKeyPrefix={forcedActionPrefix || Digit.Utils.locale.getTransformedLocale(`WF_${businessService?.toUpperCase()}_ACTION`)}
+        //       options={actions}
+        //       optionKey={"action"}
+        //       t={t}
+        //       onSelect={onActionSelect}
+        //       style={MenuStyle}
+        //       actionStyle={{height:"auto",width:"100%"}}
+        //     />
+        //   ) : null}
+        //   <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
+        // </ActionBar>
+        <ActionBar
+          style={{ ...ActionBarStyle }}
+          actionFields={[
+            <Button
               t={t}
-              onSelect={onActionSelect}
-              style={MenuStyle}
-              actionStyle={{height:"auto",width:"100%"}}
-            />
-          ) : null}
-          <SubmitBar ref={menuRef} label={t("WORKS_ACTIONS")} onSubmit={() => setDisplayMenu(!displayMenu)} />
-        </ActionBar>
+              type={workflowDetails?.data?.actionState?.nextActions || workflowDetails?.data?.nextActions ? "actionButton" : "submit"}
+              options={actions}
+              label={t("WORKS_ACTIONS")}
+              variation={"primary"}
+              optionsKey={"action"}
+              isSearchable={false}
+              onOptionSelect={(option) => {
+                onActionSelect(option);
+              }}
+              menuStyles={MenuStyle}
+            ></Button>,
+          ]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
       )}
-      {!workflowDetails?.isLoading && !isMenuBotton && isSingleButton && (
-        <ActionBar style={{ ...ActionBarStyle }}>
-          <button
-            style={{ color: "#FFFFFF", fontSize: "18px" }}
-            className={"submit-bar"}
-            name={actions?.[0]?.action}
-            value={actions?.[0]?.action}
-            onClick={(e) => { onActionSelect(actions?.[0] || {}) }}>
-            {t( Digit.Utils.locale.getTransformedLocale(`${forcedActionPrefix || `WF_${businessService?.toUpperCase()}_ACTION`}_${actions?.[0]?.action}`))}
-          </button>
-        </ActionBar>
+      { !workflowDetails?.isLoading && !isMenuBotton && isSingleButton && (
+        // <ActionBar style={{ ...ActionBarStyle }}>
+        //   <button
+        //     style={{ color: "#FFFFFF", fontSize: "18px" }}
+        //     className={"submit-bar"}
+        //     name={actions?.[0]?.action}
+        //     value={actions?.[0]?.action}
+        //     onClick={(e) => { onActionSelect(actions?.[0] || {}) }}>
+        //     {t( Digit.Utils.locale.getTransformedLocale(`${forcedActionPrefix || `WF_${businessService?.toUpperCase()}_ACTION`}_${actions?.[0]?.action}`))}
+        //   </button>
+        // </ActionBar>
+        <ActionBar
+          style={{ ...ActionBarStyle }}
+          actionFields={[
+            <Button
+              type={"submit"}
+              value={actions?.[0]?.action}
+              name={actions?.[0]?.action}
+              label={t(
+                Digit.Utils.locale.getTransformedLocale(
+                  `${forcedActionPrefix || `WF_${businessService?.toUpperCase()}_ACTION`}_${actions?.[0]?.action}`
+                )
+              )}
+              variation={"primary"}
+              onClick={(e) => {
+                onActionSelect(actions?.[0] || {});
+              }}
+            ></Button>,
+          ]}
+          setactionFieldsToRight={true}
+          className={"new-actionbar"}
+        />
       )}
-
-      {showModal && <ActionModal
-        t={t}
-        action={selectedAction}
-        tenantId={tenantId}
-        id={applicationNo}
-        closeModal={closeModal}
-        submitAction={submitAction}
-        businessService={businessService}
-        applicationDetails={applicationDetails}
-        moduleCode={moduleCode}
-      />}
-      {showToast && <Toast
-        error={showToast?.error}
-        warning={t(showToast?.warning)}
-        label={t(showToast?.label)}
-        onClose={() => {
-          setShowToast(null);
-        }}
-        isDleteBtn={showToast?.isDleteBtn}
-      />}
+      {showModal && (
+        <ActionModal
+          t={t}
+          action={selectedAction}
+          tenantId={tenantId}
+          id={applicationNo}
+          closeModal={closeModal}
+          submitAction={submitAction}
+          businessService={businessService}
+          applicationDetails={applicationDetails}
+          moduleCode={moduleCode}
+        />
+      )}
+      {showToast && (
+        <Toast
+          type={showToast?.type}
+          label={t(showToast?.label)}
+          onClose={() => {
+            setShowToast(null);
+          }}
+          isDleteBtn={showToast?.isDleteBtn}
+        />
+      )}
     </React.Fragment>
   );
 }

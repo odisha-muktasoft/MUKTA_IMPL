@@ -183,6 +183,7 @@ const searchSor = (props) => {
         label={t("ESTIMATE_ADD_LABEL")}
         onClick={buttonClick}
         className={"add-sor-button"}
+        style={{marginTop:"24px"}}
       />
       </div>
       </div>
