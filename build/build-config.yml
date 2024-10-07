@@ -51,7 +51,7 @@ config:
   - name: "builds/mukta_impl/backend/organisation"
     build:
       - work-dir: "backend/organisation"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
         image-name: "organisation"
       - work-dir: "backend/organisation/src/main/resources/db"
         image-name: "organisation-db"
