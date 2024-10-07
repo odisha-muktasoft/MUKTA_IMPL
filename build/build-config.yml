@@ -299,7 +299,7 @@ config:
     build:
       - work-dir: "backend/egov-hrms"
         image-name: "mukta-egov-hrms"
-        dockerfile: "build/maven/Dockerfile"
+        dockerfile: "build/maven-java17/Dockerfile"
       - work-dir: "backend/egov-hrms/src/main/resources/db"
         image-name: "mukta-egov-hrms-db"
 
@@ -307,13 +307,13 @@ config:
     build:
       - work-dir: "backend/user-otp"
         image-name: "mukta-user-otp"
-        dockerfile: "build/maven/Dockerfile"   
+        dockerfile: "build/maven-java17/Dockerfile"
 
   - name: "builds/mukta_impl/mukta/mukta-egov-notification-sms"
     build:
       - work-dir: "backend/egov-notification-sms"
         image-name: "mukta-egov-notification-sms"
-        dockerfile: "build/maven/Dockerfile"     
+        dockerfile: "build/maven-java17/Dockerfile"   
 
         
 
