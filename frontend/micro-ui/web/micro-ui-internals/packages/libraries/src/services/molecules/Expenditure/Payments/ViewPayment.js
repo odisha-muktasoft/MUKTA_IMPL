@@ -59,7 +59,8 @@ const transformViewDataToApplicationDetails = async (t, payment, tenantId) => {
   //fetch all pis
   const piSearchPayload = {
     "criteria": {
-      payment_number:paymentNumber
+      payment_number:paymentNumber,
+      tenantId: tenantId
   }
   }
   const piResponse = await ExpenseService.searchPayment(piSearchPayload)
