@@ -49,7 +49,8 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
         let isUserContractCreator = loggedInUserRoles?.includes("WORK_ORDER_CREATOR");
         if (applicationDetails?.applicationData?.wfStatus === "APPROVED" && isUserContractCreator && !(actionsMenu?.find((ob) => ob?.name === "CREATE_CONTRACT"))){
             setActionsMenu((prevState => [...prevState,{
-                name:"EST_VIEW_ACTIONS_CREATE_CONTRACT"
+                name:"CREATE_CONTRACT",
+                displayNamw:"EST_VIEW_ACTIONS_CREATE_CONTRACT"
             }]))
         }
         //checking if any work order is inworflow, if it is then view contract will be shown otherwise create contract
@@ -58,7 +59,8 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
         //if contract is already there just remove the prevState and push View contract state
         if(contract?.contractNumber && isCreateContractallowed) {
             setActionsMenu((prevState => [{
-                name: "EST_VIEW_ACTIONS_VIEW_CONTRACT"
+                name: "VIEW_CONTRACT",
+                displayNamw:"EST_VIEW_ACTIONS_VIEW_CONTRACT"
             }]))
         }
     }, [applicationDetails, isStateChanged,contract])
@@ -77,10 +79,10 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
     }, [location]);
     
     const handleActionBar = (option) => {
-        if (option?.name === "EST_VIEW_ACTIONS_CREATE_CONTRACT") {
+        if (option?.name === "CREATE_CONTRACT") {
             history.push(`/${window.contextPath}/employee/contracts/create-contract?tenantId=${tenantId}&estimateNumber=${estimateNumber}`);
         }
-        if (option?.name === "EST_VIEW_ACTIONS_VIEW_CONTRACT") {
+        if (option?.name === "VIEW_CONTRACT") {
             history.push(`/${window.contextPath}/employee/contracts/contract-details?tenantId=${tenantId}&workOrderNumber=${inWorkflowContract?.contractNumber}`);
         }
     }
@@ -127,7 +129,7 @@ const ViewEstimateComponent = ({editApplicationNumber,...props}) => {
                     options={actionsMenu}
                     label={t("WORKS_ACTIONS")}
                     variation={"primary"}
-                    optionsKey={"name"}
+                    optionsKey={"displayName"}
                     isSearchable={false}
                     onOptionSelect={(option) => {
                       handleActionBar(option);

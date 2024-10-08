@@ -213,7 +213,7 @@ const SORDetailsTemplate = (props) => {
     }
     >
       <div style={{ display: "flex", width: "70.25%", justifyContent: "space-between", flexWrap: "wrap" }}>
-        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"?{}:{marginBottom:"-20px"}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
+        <span className={pageType !== "VIEW"?"search-sor-label":"card-section-header"} style={pageType !== "VIEW"? {}:{}}>{t(`RA_${props?.config?.sorType}_HEADER`)}</span>
         {pageType !== "VIEW" && (
           <div className="search-sor-button">
             <SearchBar
