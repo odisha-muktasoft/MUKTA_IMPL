@@ -1,6 +1,6 @@
 {
   "name": "@egovernments/digit-ui-module-rate-analysis",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Rate Analysis Module UI",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
