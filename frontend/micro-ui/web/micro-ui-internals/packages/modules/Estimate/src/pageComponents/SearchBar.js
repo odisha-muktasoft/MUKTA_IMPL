@@ -1,6 +1,7 @@
-import { TextInput } from "@egovernments/digit-ui-react-components";
+// import { TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import {TextInput } from "@egovernments/digit-ui-components";
 
 const SearchBar = (props) => {
   const { t } = useTranslation();
@@ -82,21 +83,23 @@ const SearchBar = (props) => {
   };
 
   return (
-    <div className={"search-bar-sor"} ref={menuRef}>
-      <TextInput type="text" name={"Search"} placeholder={props?.placeholder ? props?.placeholder : "Type any SOR description..."} value={inputValue} onChange={handleInputChange} customClass="search-sor-input"/>
+    <div className={"search-bar-sor"} style={{marginTop:"24px"}} ref={menuRef}>
+      <TextInput
+        type="text"
+        name={"Search"}
+        placeholder={props?.placeholder ? props?.placeholder : "Type any SOR description..."}
+        value={inputValue}
+        onChange={handleInputChange}
+        // customClass="search-sor-input"
+      />
       {suggestions?.length > 0 && (
-      <ul
-        className="suggestions-sor" style={{zIndex:"10", maxHeight:"33rem", overflow:"auto"}}
-      >
-        {suggestions.map((option) => (
-          <li
-            key={option.id}
-            onClick={() => handleSelectOption(option)}
-          >
-            {option.description}
-          </li>
-        ))}
-      </ul>
+        <ul className="suggestions-sor" style={{ zIndex: "10", maxHeight: "33rem", overflow: "auto" }}>
+          {suggestions.map((option) => (
+            <li key={option.id} onClick={() => handleSelectOption(option)}>
+              {option.description}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

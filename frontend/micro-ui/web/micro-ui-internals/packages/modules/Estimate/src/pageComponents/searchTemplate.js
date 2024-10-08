@@ -1,7 +1,7 @@
-import { TextInput } from "@egovernments/digit-ui-react-components";
+// import { TextInput } from "@egovernments/digit-ui-react-components";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import {Toast,Button } from "@egovernments/digit-ui-components";
+import {Toast,Button,TextInput } from "@egovernments/digit-ui-components";
 
 const fetchSorDetails = async (inputDATA) => {
  //method to fetch the data for estimate template
@@ -363,14 +363,14 @@ const searchTemplate = (props) => {
      <div className="search-sor-container">
        <span className="search-sor-label">{t("ESTIMATE_SEARCH_TEMPLATE_LABEL")}</span>
        <div className="search-sor-button">
-         <div className={"search-bar-sor"} style={{ margin: "20px 1.4rem 0" }} ref={menuRef}>
+         <div className={"search-bar-sor"} style={{ margin:"0px", marginTop: "20px", width:"unset" ,flex:1,maxWidth:"37.5rem"}} ref={menuRef}>
            <TextInput
              type="text"
              name={"Search"}
              placeholder={t("SEARCH_TEMPLATE_HINT")}
              value={inputValue}
              onChange={handleSearchTextChange}
-             customClass="search-sor-input"
+            //  customClass="search-sor-input"
            />
            {suggestions?.length > 0 && (
              <ul className="suggestions-sor" style={{ zIndex: "21", maxHeight: "33rem", overflow: "auto" }}>
@@ -382,7 +382,7 @@ const searchTemplate = (props) => {
              </ul>
            )}
          </div>
-         <Button label={t("ESTIMATE_ADD_LABEL")} onClick={buttonClick} className={"add-sor-button"} />
+         <Button label={t("ESTIMATE_ADD_LABEL")} onClick={buttonClick} className={"add-sor-button"}/>
        </div>
      </div>
      {showToast?.show && (

@@ -895,7 +895,7 @@ export const FormComposer = (props) => {
         props?.config?.map((section, index, array) => {
           return (
             !section.navLink && (
-              <Card style={getCardStyles()} noCardStyle={props.noCardStyle} className={props.cardClassName}>
+              <Card style={getCardStyles()} noCardStyle={props.noCardStyle} className={` ${section?.sectionClassName} ${props.cardClassName}`}>
                 {renderFormFields(props, section, index, array)}
               </Card>
             )
