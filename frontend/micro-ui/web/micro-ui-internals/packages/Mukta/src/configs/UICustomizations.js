@@ -2882,8 +2882,8 @@ export const UICustomizations = {
   },
   ViewScheduledJobsConfig: {
     preProcess: (data) => {
-      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.reportSearchCriteria?.scheduleFrom);
-      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.reportSearchCriteria?.scheduleTo);
+      const scheduledFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.reportSearchCriteria?.scheduledFrom);
+      const scheduledTo = Digit.Utils.pt.convertDateToEpoch(data.body.reportSearchCriteria?.scheduledTo);
       const status = data.body.reportSearchCriteria?.status?.code;
       data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId(), includeAncestors: true };
       data.body.reportSearchCriteria.tenantId = Digit.ULBService.getCurrentTenantId();
@@ -2891,8 +2891,8 @@ export const UICustomizations = {
         ...data.body.reportSearchCriteria,
         tenantId: Digit.ULBService.getCurrentTenantId(),
         status,
-        scheduleFrom:scheduledFrom,
-        scheduleTo:scheduledTo,
+        scheduledFrom:scheduledFrom,
+        scheduledTo:scheduledTo,
       };
 
       data.body.pagination = {
@@ -2912,9 +2912,6 @@ export const UICustomizations = {
       return false;
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
-      //here we can add multiple conditions
-      //like if a cell is link then we return link
-      //first we can identify which column it belongs to then we can return relevant result
       switch (key) {
         case "EXP_JOB_ID":
           return value;
@@ -2972,17 +2969,6 @@ export const UICustomizations = {
                             excel = row.fileStoreId && (await Digit.UploadServices.Filefetch([row.fileStoreId], Digit.ULBService.getCurrentTenantId()));
                             const excelLink = excel?.data?.fileStoreIds?.[0]?.url;
                             downloadPdf(excelLink);
-                            // const paySearchResponse =
-                            //   row?.paymentNumber &&
-                            //   (await Digit.ExpenseService.searchPA({
-                            //     paymentCriteria: {
-                            //       tenantId: row?.tenantId,
-                            //       paymentNumbers: [row?.paymentNumber],
-                            //     },
-                            //   }));
-                            // if (paySearchResponse && paySearchResponse?.payments?.[0]) {
-                            //   const payUpdateResponse = await Digit.ExpenseService.updatePayment(getUpdatePaymentPayload(paySearchResponse?.payments?.[0]));
-                            // }
                           } catch (error) {
                             console.error(error, "downloaderror");
                           }
@@ -3009,12 +2995,6 @@ export const UICustomizations = {
             default:
               return t("CS_COMMON_NA");
           }
-          // return (
-          //   <div style={{ color: value === "FAILED" ? "#D4351C" : value === "COMPLETED" ? "#27AE60" : "#F47738" }}>
-          //     {value === "FAILED" ? "Failed" : value === "COMPLETED" ? "Completed" : value === "IN_PROGRESS" ? "In Progress" : "Scheduled"}
-          //   </div>
-          // );
-
         default:
           return t("ES_COMMON_NA");
       }
@@ -3139,11 +3119,19 @@ export const UICustomizations = {
       delete data.body.pagination;
       if(data?.state?.searchForm?.ward)
         data.body.searchCriteria.moduleSearchCriteria.ward = data?.state?.searchForm?.ward?.[0]?.code;
-      // const createdFrom = Digit.Utils.pt.convertDateToEpoch(data.body.Projects[0]?.createdFrom);
-      // const createdTo = Digit.Utils.pt.convertDateToEpoch(data.body.Projects[0]?.createdTo);
-      // data.params = { ...data.params, tenantId: Digit.ULBService.getCurrentTenantId() };
-      //data.body.SearchCriteria = { ...data.body.SearchCriteria, tenantId: Digit.ULBService.getCurrentTenantId() };
+
+      const projectType = data?.body?.searchCriteria?.moduleSearchCriteria?.projectType?.code;
+      delete data.body.searchCriteria.moduleSearchCriteria.projectType;
+      if (projectType) data.body.searchCriteria.moduleSearchCriteria.projectType = projectType;
       
+      const projectName = data?.body?.searchCriteria?.moduleSearchCriteria?.projectName?.trim();
+      if (projectName) data.body.searchCriteria.moduleSearchCriteria.projectName = projectName;
+
+      const createdFrom = Digit.Utils.pt.convertDateToEpoch(data?.body?.searchCriteria?.moduleSearchCriteria?.createdFrom, "daystart");
+      if (createdFrom) data.body.searchCriteria.moduleSearchCriteria.createdFrom = createdFrom;
+      const createdTo = Digit.Utils.pt.convertDateToEpoch(data?.body?.searchCriteria?.moduleSearchCriteria?.createdTo);
+      if (createdTo) data.body.searchCriteria.moduleSearchCriteria.createdTo = createdTo;
+
       return data;
     },
     postProcess: (responseArray, uiConfig) => {
@@ -3156,6 +3144,7 @@ export const UICustomizations = {
     },
     additionalCustomizations: (row, key, column, value, t, searchResult) => {
       if (key === "EXP_PROJECT_NUMBER") {
+
         //const billType = getBillType(row?.businessService);
         return (
           <span className="link">
@@ -3174,7 +3163,7 @@ export const UICustomizations = {
         );
       }
       if(key === "EXP_PROJECT_NAME") {
-        let currentProject = searchResult?.filter((result) => result?.id === row?.id)[0];
+        let currentProject = searchResult?.filter((result) => result?.projectNumber === row?.projectNumber)[0];
           return (
             <div class="tooltip">
               <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
@@ -3182,7 +3171,7 @@ export const UICustomizations = {
               </div>
               {/* check condtion - if length greater than 20 */}
               <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
-                {"harcoded for now"}
+                {row?.project?.businessObject?.description}
               </span>
             </div>
           );

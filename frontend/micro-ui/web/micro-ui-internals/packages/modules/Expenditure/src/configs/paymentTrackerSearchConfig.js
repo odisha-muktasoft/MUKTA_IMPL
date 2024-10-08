@@ -55,7 +55,7 @@ export const paymentTrackerSearchConfig = {
                           "selectedText": "COMMON_SELECTED",
                           "allowMultiSelect": false
                       }
-                  },
+                    },
                     {
                       "label": "WORKS_PROJECT_TYPE",
                       "type": "dropdown",

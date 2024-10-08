@@ -20,7 +20,7 @@ export const paymentTrackerReport = (props) => {
             "inbox": {
             "moduleSearchCriteria": {
                 "tenantId": Digit.ULBService.getCurrentTenantId(),
-                "projectNumber": /*data?.aggsResponse?.projects.map((ob) => ob?.projectNumber)*/ ["PJ/2023-24/11/000085"] 
+                "projectNumber": data?.aggsResponse?.projects.map((ob) => ob?.projectNumber) /* ["PJ/2023-24/11/000085"] */
             },
             "tenantId": "pg.citya",
             "limit": 10,
@@ -29,7 +29,8 @@ export const paymentTrackerReport = (props) => {
         changeQueryName: "allProjectDetails"
       };
     
-      const {isLoading: isProjectDetailsLoading, data: projectDetails} = Digit.Hooks.useCustomAPIHook(requestrevisionCriteria);
+    const {isLoading: isProjectDetailsLoading, data: projectDetails} = Digit.Hooks.useCustomAPIHook(requestrevisionCriteria);
+    console.log("hehe",isLoading, projectDetails)
 
     if(data?.aggsResponse?.projects) {
         data.aggsResponse.projects = data?.aggsResponse?.projects?.map((ob) => {
@@ -41,9 +42,10 @@ export const paymentTrackerReport = (props) => {
                 purchasebillFailed : ob?.paymentDetails?.filter((obj) => obj?.billType?.includes("PURCHASE"))?.[0]?.remainingAmount,
                 supervisionbillSuccess : ob?.paymentDetails?.filter((obj) => obj?.billType?.includes("SUPERVISION"))?.[0]?.paidAmount,
                 supervisionbillFailed : ob?.paymentDetails?.filter((obj) => obj?.billType?.includes("SUPERVISION"))?.[0]?.remainingAmount,
-                project : /*projectDetails?.items?.filter((pj) => pj?.businessObject?.projectNumber === ob?.projectNumber)?.[0] */ projectDetails?.items?.[0]
+                project : projectDetails?.items?.filter((pj) => pj?.businessObject?.projectNumber === ob?.projectNumber)?.[0] /* projectDetails?.items?.[0] */
             }
         })
+        console.log(data?.aggsResponse?.projects, "hehe")
         data.stickyFooterRow = [
             {'name': '', 'value':''},
             {'name': 'total', 'value': t('Grand Total')},

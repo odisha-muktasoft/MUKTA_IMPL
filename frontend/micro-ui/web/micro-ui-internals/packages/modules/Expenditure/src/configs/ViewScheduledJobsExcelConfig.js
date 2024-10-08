@@ -60,12 +60,12 @@ const ViewScheduledJobsExcelConfig = {
                   type: "date",
                   isMandatory: false,
                   disable: false,
-                  key: "scheduleFrom",
+                  key: "scheduledFrom",
                   preProcess: {
                     updateDependent: ["populators.max"],
                   },
                   populators: {
-                    name: "scheduleFrom",
+                    name: "scheduledFrom",
                     max: "currentDate",
                   },
                 },
@@ -74,12 +74,12 @@ const ViewScheduledJobsExcelConfig = {
                   type: "date",
                   isMandatory: false,
                   disable: false,
-                  key: "scheduleTo",
+                  key: "scheduledTo",
                   preProcess: {
                     updateDependent: ["populators.max"],
                   },
                   populators: {
-                    name: "scheduleTo",
+                    name: "scheduledTo",
                     error: "DATE_VALIDATION_MSG",
                     max: "currentDate",
                   },
@@ -111,11 +111,11 @@ const ViewScheduledJobsExcelConfig = {
                   jsonPath: "auditDetails.createdTime",
                   additionalCustomization: true,
                 },
-                // {
-                //   label: "EXP_NO_OF_PROJECTS_SCHEDULED",
-                //   jsonPath: "noOfSorScheduled",
-                //   // additionalCustomization: false,
-                // },
+                {
+                  label: "EXP_NO_OF_PROJECTS",
+                  jsonPath: "noOfProjects",
+                  // additionalCustomization: true,
+                },
                 // {
                 //   label: "EXP_SUCCESSFUL",
                 //   jsonPath: "",

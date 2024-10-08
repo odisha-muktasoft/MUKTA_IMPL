@@ -41,7 +41,7 @@ const useViewPaymentTracker = ({projectId, tenantId}) => {
         "tenantId": "pg.citya",
         "moduleSearchCriteria": {
           "tenantId": "pg.citya",
-          // "projectId": projectId
+          "projectId": projectId
         },
         "limit": 10,
         "offset": 0,
