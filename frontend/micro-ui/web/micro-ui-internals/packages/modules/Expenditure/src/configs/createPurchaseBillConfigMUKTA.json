@@ -223,11 +223,12 @@
                   "isMandatory": true,
                   "key": "billDetails_billDate",
                   "type": "date",
-                  "disable": true,
+                  "disable": false,
                   "preProcess" : {
                     "updateDependent" : ["populators.max"]
                   },
                   "populators": { 
+                    "nonEditable": true,
                     "name": "billDetails_billDate",
                     "error": "WORKS_REQUIRED_ERR",
                     "max" : "currentDate"

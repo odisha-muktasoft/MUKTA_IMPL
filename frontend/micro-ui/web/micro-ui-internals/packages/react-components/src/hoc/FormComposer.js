@@ -161,6 +161,10 @@ export const FormComposer = (props) => {
       case "number":
       case "password":
       case "time":
+      case "geolocation":
+      case "search":
+      case "number":
+      case "numeric":
         // if (populators.defaultValue) setTimeout(setValue(populators?.name, populators.defaultValue));
         return (
           <div className="digit-field-container">
@@ -180,6 +184,7 @@ export const FormComposer = (props) => {
                   max={populators?.validation?.max}
                   min={populators?.validation?.min}
                   disabled={disable}
+                  nonEditable={populators?.nonEditable}
                   // style={type === "date" ? { paddingRight: "3px" } : ""}
                   maxlength={populators?.validation?.maxlength}
                   minlength={populators?.validation?.minlength}

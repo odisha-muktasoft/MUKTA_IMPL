@@ -16,7 +16,7 @@ const ViewOnlyCard = (props) => {
     SOR?.reduce((acc, item) => acc + parseFloat(item?.amount), 0) + NONSOR?.reduce((acc, item) => acc + parseFloat(item?.amount), 0) || 0;
 
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", marginTop: props?.mode === "VIEW" ? "-4rem" : "0rem" ,...style}}>
+    <div style={{ display: "flex", justifyContent: "flex-end", marginTop: props?.mode === "VIEW" ? "-4rem" : "0rem" ,...props?.style}}>
       <div className="total_amount_wrapper">
         {/* <CardSectionHeader style={{ marginRight: "1rem", marginBottom: "0px", color: "#505A5F", fontSize: "18px",width:"fit-content" }}>
           {t("MB_AMOUNT_TOTAL")}
