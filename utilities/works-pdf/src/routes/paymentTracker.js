@@ -95,20 +95,53 @@ router.post(
 
             RequestInfo = requestinfo.RequestInfo;
 
-            var ward = "string";
+            var estimatedAmount = 0;
+            var wageAmountPaid = 0;
+            var purchaseAmountPaid = 0;
+            var supervisionAmountPaid = 0;
+            var failedPaymentAmount = 0;
+            var total = 0;
 
             try {
-                resHeadWiseData = await search_report_paymentTracker(tenantId, RequestInfo, ward);
+                resHeadWiseData = await search_report_paymentTracker(tenantId, RequestInfo, projectNum);
             }
             catch (ex) {
                 if (ex.response && ex.response.data) console.log(ex.response.data);
                 return renderError(res, "Failed to query details of the report", 500);
             }
             var headWiseData = resHeadWiseData.data;
+            var projects = headWiseData.aggsResponse.projects[0];
 
-            var piType = "ORIGINAL";
+            if (projects) {
+                if(projects.estimatedAmount != null){
+                    estimatedAmount = projects.estimatedAmount;
+                }
+                if(projects.total != null){
+                    total = projects.total;
+                }
+
+                if(projects.paymentDetails && projects.paymentDetails.length > 0){
+                    for (var i = 0; i < projects.paymentDetails.length; i++) {
+                        billType = projects.paymentDetails[i].billType;
+                        paidAmount = projects.paymentDetails[i].paidAmount;
+                        remainingAmount = projects.paymentDetails[i].remainingAmount;
+                        if (billType == "EXPENSE.WAGES") {
+                            wageAmountPaid = paidAmount;
+                        }
+                        if (billType == "EXPENSE.PURCHASE") {
+                            purchaseAmountPaid = paidAmount;
+                        }
+                        if (billType == "EXPENSE.SUPERVISION") {
+                            supervisionAmountPaid = paidAmount;
+                        }
+                        failedPaymentAmount += remainingAmount;
+                    }
+                    
+                }
+            }
+
             try {
-                resPaymentInstruction = await search_payment_instruction(tenantId, RequestInfo, piType);
+                resPaymentInstruction = await search_payment_instruction(tenantId, RequestInfo, projectNum);
             }
             catch (ex) {
                 if (ex.response && ex.response.data) console.log(ex.response.data);
@@ -116,6 +149,29 @@ router.post(
             }
 
             var paymentInstruction = resPaymentInstruction.data;
+            var bills = paymentInstruction.items;
+            if (bills && bills.length > 0) {
+                for (var i = 0; i < bills.length; i++) {
+                    bills[i].businessObject["failedAmount"] = 0;
+                    bills[i].businessObject["successAmount"] = 0;
+                    if(bills[i].businessObject.piStatus == "FAILED"){
+                        bills[i].businessObject["failedAmount"] = bills[i].businessObject.netAmount;
+                    }else if(bills[i].businessObject.piStatus == "SUCCESSFUL"){
+                        bills[i].businessObject["successAmount"] = bills[i].businessObject.netAmount;
+                    }else if(bills[i].businessObject.piStatus == "PARTIAL"){
+                        if(bills[i].businessObject.beneficiaryDetails && bills[i].businessObject.beneficiaryDetails.length > 0){
+                            for(var j = 0; j < bills[i].businessObject.beneficiaryDetails.length; j++){
+                                if(bills[i].businessObject.beneficiaryDetails[j].paymentStatus == "Payment Successful"){
+                                    bills[i].businessObject["successAmount"] += bills[i].businessObject.netAmount;
+                                }
+                                if(bills[i].businessObject.beneficiaryDetails[j].paymentStatus == "Payment Failed"){
+                                    bills[i].businessObject["failedAmount"] += bills[i].businessObject.netAmount;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 
             var project = resProject.data;
@@ -128,8 +184,14 @@ router.post(
                     // Adding project as Projects because it's updating on create_pdf
                     project["Projects"] = project.Project;
                     project["Projects"][0]["date"] = getCurrentDate(); 
-                    project["Projects"][0]["bills"] = paymentInstruction.items;
-                    project["Projects"][0]["headWiseData"] = headWiseData.aggsResponse.projects[0];
+                    project["Projects"][0]["bills"] = bills;
+                    project["Projects"][0]["estimatedAmount"] = estimatedAmount;
+                    project["Projects"][0]["wageAmountPaid"] = wageAmountPaid;
+                    project["Projects"][0]["purchaseAmountPaid"] = purchaseAmountPaid;
+                    project["Projects"][0]["supervisionAmountPaid"] = supervisionAmountPaid;
+                    project["Projects"][0]["failedPaymentAmount"] = failedPaymentAmount;
+
+                    project["Projects"][0]["total"] = total;
 
                     try {
                         pdfResponse = await create_pdf(
@@ -161,7 +223,7 @@ router.post(
                     );
                 }
             } catch (ex) {
-                return renderError(res, "Failed to query details of the project", 500);
+                return renderError(res, "Failed to query details of the Parent", 500);
             }
 
         })

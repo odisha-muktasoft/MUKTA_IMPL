@@ -546,14 +546,14 @@ async function search_measurementBookDetails(tenantId, requestinfo,contractNumbe
   });
 }
 
-async function search_payment_instruction(tenantId, requestinfo, piType) {
+async function search_payment_instruction(tenantId, requestinfo, projectNum) {
 
   const searchEndpoint = config.paths.payment_instruction_search;
   const data = {
     "inbox": {
       "moduleSearchCriteria": {
         "tenantId": tenantId,
-        "piType": piType
+        "projectId": projectNum
       },
       "tenantId": tenantId,
       "limit": 10,
@@ -568,13 +568,13 @@ async function search_payment_instruction(tenantId, requestinfo, piType) {
   });
 }
 
-async function search_report_paymentTracker(tenantId, requestinfo, ward) {
+async function search_report_paymentTracker(tenantId, requestinfo, projectNum) {
 
   const searchEndpoint = config.paths.report_paymentTracker_search;
   const data = {
     "searchCriteria": {
       "moduleSearchCriteria": {
-        "ward": ward
+        "projectId": projectNum
       },
       "tenantId": tenantId,
       "limit": 10
