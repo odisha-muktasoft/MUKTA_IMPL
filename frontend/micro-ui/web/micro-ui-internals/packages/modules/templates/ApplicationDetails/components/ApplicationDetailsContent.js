@@ -291,7 +291,7 @@ function ApplicationDetailsContent({
               <div style={detail.mainDivStyles ? detail.mainDivStyles : getMainDivStyles()} className={customClass}>
                 {index === 0 && !detail.asSectionHeader && detail?.title &&  detail?.title !== "" && detail?.title !== " "  ? (
                   // <CardSubHeader style={{ marginBottom: "16px", fontSize: "24px" }}>{t(detail?.title)}</CardSubHeader>
-                  <TextBlock subHeader={t(detail?.title)} subHeaderClasName={"view-subheader"}></TextBlock>
+                  <TextBlock subHeader={t(detail?.title)} subHeaderClassName={"view-subheader"}></TextBlock>
                 ) : (
                   ((detail?.title &&  detail?.title !=="" && detail?.title !== " ") || detail?.Component) && (
                     <React.Fragment>
@@ -302,7 +302,7 @@ function ApplicationDetailsContent({
                             {detail?.Component ? <detail.Component detail={detail} /> : null}
                           </>
                         }
-                        subHeaderClasName={`view-subheader`}
+                        subHeaderClassName={`view-subheader`}
                         style={sectionHeadStyle ? sectionHeadStyle : {}}
                       ></TextBlock>
                       {/* <CardSectionHeader
@@ -447,7 +447,7 @@ function ApplicationDetailsContent({
                       {/* <CardSectionHeader style={{ marginBottom: "16px", fontSize: "24px" }}>
                         {t(detail?.additionalDetails?.table?.weekTable?.tableHeader)}
                       </CardSectionHeader> */}
-                      <TextBlock subHeader={t(detail?.additionalDetails?.table?.weekTable?.tableHeader)} subHeaderClasName={"view-subheader"}></TextBlock>
+                      <TextBlock subHeader={t(detail?.additionalDetails?.table?.weekTable?.tableHeader)} subHeaderClassName={"view-subheader"}></TextBlock>
                       {detail?.additionalDetails?.table.weekTable.renderTable && (
                         <WeekAttendence
                           state={state}

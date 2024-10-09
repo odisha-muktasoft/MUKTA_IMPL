@@ -66,7 +66,7 @@ const UploadFileComposer = ({ module, config, Controller, control, register, for
     <React.Fragment>
       {/* <Header styles={{ fontSize: "24px", marginTop: "40px" }}>{t("WORKS_RELEVANT_DOCUMENTS")}</Header> */}
 
-      <TextBlock subHeader={t("WORKS_RELEVANT_DOCUMENTS")} subHeaderClasName={`uploadfile-composer-header create-header`}></TextBlock>
+      <TextBlock subHeader={t("WORKS_RELEVANT_DOCUMENTS")} subHeaderClassName={`uploadfile-composer-header create-header`}></TextBlock>
 
       {docConfig?.bannerLabel && (
         <InfoCard

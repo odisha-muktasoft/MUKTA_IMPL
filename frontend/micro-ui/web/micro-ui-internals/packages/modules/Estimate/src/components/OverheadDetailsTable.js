@@ -162,7 +162,7 @@ const OverheadDetailsTable = ({ data }) => {
               ></Amount>
             }
           </CardSectionHeader> */}
-          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClasName={"table_total_amount"}></TextBlock>
+          <TextBlock subHeader={`${t("WORKS_TABLE_TOTAL_AMOUNT")} :`} subHeaderClassName={"table_total_amount"}></TextBlock>
           <TextBlock
             subHeader={
               <Amount
@@ -174,7 +174,7 @@ const OverheadDetailsTable = ({ data }) => {
                 rupeeSymbol={true}
               ></Amount>
             }
-            subHeaderClasName={"table_total_amount_value"}
+            subHeaderClassName={"table_total_amount_value"}
           ></TextBlock>
         </div>
       </div>

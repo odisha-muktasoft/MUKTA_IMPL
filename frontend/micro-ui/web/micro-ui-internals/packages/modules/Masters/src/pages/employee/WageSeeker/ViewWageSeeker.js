@@ -19,7 +19,7 @@ const ViewWageSeeker = () => {
 
   const payload = {
     Individual: {
-      individualId
+      individualId: [individualId]
     }
   }
   const searchParams = {

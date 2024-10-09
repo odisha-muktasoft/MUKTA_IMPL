@@ -128,7 +128,7 @@ const renderCardSectionJSX = (section) => {
         <>
           {section?.cardHeader && section?.cardHeader?.value && (
             // <CardSectionHeader style={section?.cardHeader?.inlineStyles}>{t(section.cardHeader.value)}</CardSectionHeader>
-            <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClasName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section.cardHeader.value)}></TextBlock>
+            <TextBlock style={{...section?.cardHeader?.inlineStyles}} subHeaderClassName={`view-composer-subheader ${section?.cardHeader?.className}`} subHeader={t(section.cardHeader.value)}></TextBlock>
           )}
           <Component {...section.props} />
         </>

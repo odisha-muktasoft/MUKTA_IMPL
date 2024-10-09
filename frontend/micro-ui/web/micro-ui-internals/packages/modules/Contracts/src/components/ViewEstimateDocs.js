@@ -36,7 +36,7 @@ function ViewEstimateDocs(props) {
         {documents?.map((document, index) => (
             <React.Fragment key={index}>
             {/* {document?.title ? <CardSubHeader style={{ marginTop: "32px", marginBottom: "8px", color: "#505A5F", fontSize: "24px" }}>{t(document?.title)}</CardSubHeader>: null} */}
-            {document?.title ? <TextBlock subHeader={t(document?.title)} subHeaderClasName={"view-subheader"}></TextBlock> : null}
+            {document?.title ? <TextBlock subHeader={t(document?.title)} subHeaderClassName={"view-subheader"}></TextBlock> : null}
             <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start" }}>
                 {document?.values && document?.values.length>0 ? document?.values?.map((value, index) => (
                 <a target="_" href={pdfFiles[value.fileStoreId]?.split(",")[0]} style={{ minWidth: "80px", marginRight: "10px", maxWidth: "100px", height: "auto" }} key={index}>
