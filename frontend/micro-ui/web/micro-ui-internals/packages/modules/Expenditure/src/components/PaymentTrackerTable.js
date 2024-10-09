@@ -40,7 +40,11 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PI_NUMBER"),
+        Header: () => (
+          <div style={{ minWidth: '200px' }}>
+            {t("PI_NUMBER")}
+          </div>
+        ),
         accessor: "piNumber",
         Cell: ({ value, column, row }) => {
           if (value === "NA") {
@@ -52,7 +56,11 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PARENT_PI"),
+        Header: () => (
+          <div style={{ minWidth: '200px' }}>
+            {t("PARENT_PI")}
+          </div>
+        ),
         accessor: "parentPi",
         Cell: ({ value, column, row }) => {
           return String(t(value));
@@ -80,7 +88,11 @@ const PaymentTrackerTable = ({excludeFailed, setExcludeFailed, ...props}) => {
         }
       },
       {
-        Header: t("PI_DATE"),
+        Header: () => (
+          <div style={{ minWidth: '100px' }}>
+            {t("PI_DATE")}
+          </div>
+        ),
         accessor: "piDate",
         Cell: ({ value, column, row }) => {
           return String(t(value));
