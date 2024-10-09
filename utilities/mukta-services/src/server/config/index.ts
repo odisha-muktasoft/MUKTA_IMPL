@@ -54,13 +54,13 @@ const config = {
     user_search: "/user/_search",
     mdms_search: "/egov-mdms-service/v1/_search",
     workflow_search: "/egov-workflow-v2/egov-wf/process/_search",
-    ind_search: "/individual/v1/_search",
+    ind_search: "/mukta-individual/v1/_search",
     mus_search: "/muster-roll/v1/_search",
     localization_search: "/localization/messages/v1/_search",
-    contract_search: "/contract/v1/_search",
-    estimate_search: "/estimate/v1/_search",
+    contract_search: "/mukta-contract/v1/_search",
+    estimate_search: "/mukta-estimate/v1/_search",
     measurement_search: "/measurement-service/v1/_search",
-    expense_caluclator:"/expense-calculator/v1/_estimate",
+    expense_caluclator:"/mukta-expense-calculator/v1/_estimate",
     mdmsV2_search: "/mdms-v2/v1/_search"
   },
 };
