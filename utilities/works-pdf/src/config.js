@@ -88,7 +88,7 @@ module.exports = {
     hrms_search: "/egov-hrms/employees/_search",
     deviationStatement_search: "/estimate/v1/_search",
     measurement_book_search: "/mukta-services/measurement/_search",
-    payment_instruction_search: "/wms/ifms-pi/_search",
+    payment_instruction_search: "/wms/mukta-pi/_search",
     report_paymentTracker_search: "/wms/report/payment_tracker"
   },
   constraints: {
