@@ -22,6 +22,7 @@ export const createEstimateConfig = () => {
             "head": "WORKS_NON_SOR",
             "subHead": "",
             "navLink": "Work Details",
+            "sectionClassName":"table-included-section",
             "body": [
                 {
                     "type": "component",
@@ -45,6 +46,7 @@ export const createEstimateConfig = () => {
             "head": "WORKS_OVERHEADS",
             "subHead": "",
             "navLink": "Work Details",
+            "sectionClassName":"table-included-section",
             "body": [
                 {
                     "type": "component",

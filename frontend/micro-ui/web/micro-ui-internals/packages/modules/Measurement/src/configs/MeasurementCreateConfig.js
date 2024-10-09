@@ -152,6 +152,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             subHead: "",
             //forOnlyUpdate : "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -169,6 +170,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             head: "MB_SORS",
             subHead: "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
@@ -183,6 +185,7 @@ export const CreateConfig = ({ defaultValue, measurement, mbnumber }) => {
           {
             head: "MB_NONSOR",
             subHead: "",
+            sectionClassName:"table-included-section",
             body: [
               {
                 type: "component",
