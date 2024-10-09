@@ -3163,11 +3163,10 @@ export const UICustomizations = {
         );
       }
       if(key === "EXP_PROJECT_NAME") {
-        let currentProject = searchResult?.filter((result) => result?.projectNumber === row?.projectNumber)[0];
           return (
             <div class="tooltip">
               <div class="textoverflow" style={{ "--max-width": column.maxLength ? `${column.maxLength}ch` : `30ch`, wordBreak: "break-all" }}>
-                {String(t(value))}
+                {value && value !== '' ? String(t(value)) : t("ES_COMMON_NA")}
               </div>
               {/* check condtion - if length greater than 20 */}
               <span class="tooltiptext" style={{ whiteSpace: "nowrap" }}>
