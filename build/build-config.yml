@@ -282,7 +282,7 @@ config:
       - work-dir: "backend/individual/src/main/resources/db"
         image-name: "mukta-individual-db"   
 
-  - name: "builds/mukta_impl/mukta/mukta-mukta-services"
+  - name: "builds/mukta_impl/mukta/mukta-mukta-service"
     build:
       - work-dir: "utilities/mukta-services"
         dockerfile: "utilities/mukta-services/Dockerfile"
